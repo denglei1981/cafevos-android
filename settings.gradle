@@ -1,0 +1,9 @@
+rootProject.name = "FordEVOS"
+include ':app'
+include ':common'
+include ':base'
+include ':home'
+include ':circle'
+include ':car'
+include ':shop'
+include ':my'

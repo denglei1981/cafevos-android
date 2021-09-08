@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment3"
+    android:id="@+id/nav3"
+    tools:ignore="UnusedNavigation">
+    <fragment
+        android:name="com.changanford.car.CarFragment"
+        android:id="@+id/fragment3"
+        android:label="car_fragment"/>
+
+</navigation>
+    <!--        android:name="com.changanford.evos.demo.DemoFragment3"-->
+
+

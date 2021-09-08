@@ -1,0 +1,48 @@
+<resources>
+    <dimen name="toolbarheight">0dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="dp50">50dp</dimen>
+    <dimen name="dp80">80dp</dimen>
+    <!--    三种字体大小  -->
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_mid">14sp</dimen>
+    <dimen name="text_size_big">16sp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_29">29sp</dimen>
+    <dimen name="design_tab_scrollable_min_width">72dp</dimen>
+    <dimen name="dialog_radius">15dp</dimen>
+
+    <dimen name="dp_2">2dp</dimen>
+    <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_7">7dp</dimen>
+    <dimen name="dp_6">6dp</dimen>
+    <dimen name="dp_2_5">2.5dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_14">14dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+    <dimen name="dp_17">17dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_30">30dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
+    <dimen name="dp_60">60dp</dimen>
+    <dimen name="dp_62">62dp</dimen>
+    <dimen name="dp_74">74dp</dimen>
+    <dimen name="dp_79">79dp</dimen>
+    <dimen name="dp_86">86dp</dimen>
+    <dimen name="dp_89">89dp</dimen>
+    <dimen name="dp_90">90dp</dimen>
+    <dimen name="dp_92">92dp</dimen>
+    <dimen name="dp25">25dp</dimen>
+    <dimen name="dot_width">5dp</dimen>
+    <dimen name="dot_height">5dp</dimen>
+</resources>

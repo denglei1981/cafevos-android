@@ -1,0 +1,145 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+def versions_compose = "1.0.0"
+def versions_datastore = "1.0.0-beta01"
+def versions_retrofit = "2.9.0"
+def versions_coroutine = "1.3.5"
+def versions_navigation ="2.3.5"
+def versions_okhttp ="4.5.0"
+def versions_constraint = "2.1.0"
+def versions_lifecycle = "2.3.1"
+def versions_worker = "2.5.0"
+def versions_room = "2.3.0"
+def versions_appcompat = "1.3.1"
+def versions_paging = "3.0.0"
+def versions_camerax = "1.1.0-alpha07"
+def versions_camerax_view = "1.0.0-alpha27"
+def versions_multidex = "2.0.1"
+//def versions_fragment = "1.2.5"
+def versions_animation = "1.1.0-alpha03"
+def versions_material = "1.4.0"
+
+
+android {
+    compileSdkVersion compileSDKVersion
+    buildToolsVersion "$buildToolsVersion"
+
+    defaultConfig {
+        minSdkVersion minSDKVersion
+        targetSdkVersion targetSDKVersion
+        multiDexEnabled = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
+        compose = true
+    }
+    composeOptions{
+        kotlinCompilerVersion = "$kotlin_version"
+        kotlinCompilerExtensionVersion  = "$versions_compose"
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []    //disable automatic ndk-build
+        }
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+dependencies {
+
+    api(project(":base"))
+    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //multidex
+    api "androidx.multidex:multidex:$versions_multidex"
+    //fragment
+//    api "androidx.fragment:fragment-ktx:$versions_fragment"
+    //navigation
+    api "androidx.navigation:navigation-fragment-ktx:$versions_navigation"
+    api "androidx.navigation:navigation-ui-ktx:$versions_navigation"
+    //Retrofit
+    api "com.squareup.retrofit2:retrofit:$versions_retrofit"
+    api "com.squareup.retrofit2:converter-gson:$versions_retrofit"
+    //okhttp
+    api "com.squareup.okhttp3:logging-interceptor:$versions_okhttp"
+    //Coroutine
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions_coroutine"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions_coroutine"
+    //lifecycle
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$versions_lifecycle"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions_lifecycle"
+    //worker
+    api "androidx.work:work-runtime-ktx:$versions_worker"
+    //room
+    api "androidx.room:room-runtime:$versions_room"
+    api "androidx.room:room-ktx:$versions_room"
+    kapt("androidx.room:room-compiler:$versions_room")
+    //paging
+    api "androidx.paging:paging-runtime-ktx:$versions_paging"
+    //camerax
+    api "androidx.camera:camera-core:$versions_camerax"
+    api "androidx.camera:camera-camera2:$versions_camerax"
+    api "androidx.camera:camera-lifecycle:$versions_camerax"
+    api "androidx.camera:camera-extensions:$versions_camerax_view"
+    api "androidx.camera:camera-view:$versions_camerax_view"
+    //constraintLayout motionLayout
+    api "androidx.constraintlayout:constraintlayout:$versions_constraint"
+    //animation
+    api "androidx.dynamicanimation:dynamicanimation:$versions_animation"
+
+
+    //compose
+    api "androidx.compose.ui:ui:$versions_compose"
+    api "androidx.compose.ui:ui-tooling:$versions_compose"// Tooling support (Previews, etc.)
+    api "androidx.compose.foundation:foundation:$versions_compose"// Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    api "androidx.compose.material:material:$versions_compose"// Material Design
+    api "androidx.compose.material:material-icons-core:$versions_compose"// Material design icons
+    api "androidx.compose.material:material-icons-extended:$versions_compose"// Integration with observables
+    api "androidx.compose.runtime:runtime-livedata:$versions_compose"
+    api "androidx.compose.runtime:runtime:$versions_compose"
+
+    //other
+    api 'androidx.core:core-ktx:1.6.0'
+    api "androidx.datastore:datastore-preferences:$versions_datastore"
+    api "androidx.appcompat:appcompat:$versions_appcompat"
+    api "com.google.android.material:material:$versions_material"
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    api 'androidx.recyclerview:recyclerview:1.1.0'
+    //json
+    api "com.alibaba:fastjson:1.1.68.android"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

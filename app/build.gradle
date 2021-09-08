@@ -1,0 +1,95 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+}
+
+def keystorePropertiesFile = rootProject.file("./keystore.properties")
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+
+android {
+
+    signingConfigs {
+        keyconfig {
+            storeFile file(keystoreProperties["storeFile"])
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+        }
+    }
+    compileSdkVersion compileSDKVersion
+    buildToolsVersion "${buildToolsVersion}"
+
+    defaultConfig {
+        applicationId "com.changanford.evos"
+        minSdkVersion minSDKVersion
+        targetSdkVersion targetSDKVersion
+        versionCode 1
+        versionName "1.0"
+        resConfigs "zh"
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.keyconfig
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+//            minifyEnabled true
+//            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //多渠道打包
+    flavorDimensions "default"
+    productFlavors {
+        baidu {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "baidu"]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+}
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
+
+    implementation(project(":common"))
+    implementation(project(":home"))
+    implementation(project(":circle"))
+    implementation(project(":car"))
+    implementation(project(":shop"))
+    implementation(project(":my"))
+}
