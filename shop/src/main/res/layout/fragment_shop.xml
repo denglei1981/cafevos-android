@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_150"
+                    android:background="#171E31" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_82"
+                    android:layout_marginRight="@dimen/dp_20"
+                    android:orientation="vertical"
+                    app:layout_scrollFlags="scroll">
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:background="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_190"
+                        app:banner_indicator_height="@dimen/dp_5"
+                        app:banner_indicator_marginBottom="@dimen/dp_13"
+                        app:banner_indicator_normal_color="@color/white"
+                        app:banner_indicator_normal_width="@dimen/dp_5"
+                        app:banner_indicator_radius="@dimen/dp_8"
+                        app:banner_indicator_selected_color="#FFAC29"
+                        app:banner_indicator_selected_width="@dimen/dp_15"
+                        app:banner_indicator_space="@dimen/dp_10"
+                        app:layout_collapseMode="parallax"
+                        app:layout_collapseParallaxMultiplier="0.7" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_shop_integral"
+                        android:background="@color/color_99"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:textColor="@color/black"
+                        android:text="@string/str_integral"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100"/>
+
+                </LinearLayout>
+                <include
+                    layout="@layout/header_shop"/>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/tab_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:elevation="0dp"
+                android:gravity="bottom">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

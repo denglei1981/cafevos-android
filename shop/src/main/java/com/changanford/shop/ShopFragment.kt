@@ -1,56 +1,36 @@
 package com.changanford.shop
-
-import androidx.lifecycle.lifecycleScope
+import android.content.Intent
+import android.view.View
+import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.RecommendData
-import com.changanford.common.util.paging.PagingSingleAdapter
-import com.changanford.common.utilext.load
-import com.changanford.shop.databinding.FragmentCircleBinding
-import com.changanford.shop.databinding.FragmentCircleListBinding
-import kotlinx.coroutines.flow.collectLatest
+import com.changanford.shop.adapter.ViewPage2Adapter
+import com.changanford.shop.databinding.FragmentShopBinding
+import com.changanford.shop.ui.IntegralDetailsActivity
+import com.changanford.shop.ui.exchange.ExchangeFragment
+import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * A fragment representing a list of Items.
  */
-class ShopFragment : BaseFragment<FragmentCircleListBinding, ShopViewModel>() {
-
-
-    //paging使用：begin
-    private var adapter = object :
-        PagingSingleAdapter<FragmentCircleBinding, RecommendData>(bind = { binding, data, position ->
-            binding.content.text = data.postsTitle
-            binding.img.load(data.postsPics)
-            //...
-        }) {}
-
-
+class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(), View.OnClickListener {
+    private val tabTitles by lazy {arrayOf(getString(R.string.str_pointsFor), getString(R.string.str_earnPoints))}
+    private val fragments= arrayListOf<Fragment>(ExchangeFragment.newInstance(),ExchangeFragment.newInstance())
     override fun initView() {
-        binding.list.adapter = adapter
-//            .withLoadStateFooter(
-//            footer = PagingFooterAdapter()
-//        )
-        //可选，判断接口数据是否请求完
-//        adapter.addLoadStateListener {
-//            if (it.refresh is LoadState.NotLoading && it.refresh.endOfPaginationReached) {
-//                Toast.makeText(mContext, "没有数据", Toast.LENGTH_SHORT).show()
-//            }
-//            if (it.append is LoadState.NotLoading && it.append.endOfPaginationReached) {
-//                Toast.makeText(mContext, "加载完了", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
+        binding.viewpager.isSaveEnabled=false
+        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
+            tab.text = tabTitles[tabPosition]
+        }.attach()
+        binding.tvShopIntegral.setOnClickListener(this)
     }
-    ////paging使用！end
-
     override fun initData() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.getRecommendList().collectLatest {
-                adapter.submitData(it)
-            }
-        }
-    }
 
-    override fun onResume() {
-        super.onResume()
+    }
+    override fun onClick(v: View?) {
+        when(v?.id){
+            //积分明细
+            R.id.tv_shop_integral->startActivity(Intent(requireContext(),IntegralDetailsActivity::class.java))
+        }
     }
 }
 

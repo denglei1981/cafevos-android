@@ -34,6 +34,16 @@
         <activity android:name="com.changanford.evos.com.changanford.circle.viewpager.Banner" />
         <activity android:name=".car.DetailActivity" />
         <activity android:name=".demo.DemoDetail" />
+
+        <!--================================ 商城 Start-->
+        <!--积分明细-->
+        <activity android:name="com.changanford.shop.ui.IntegralDetailsActivity"/>
+        <!-- 商品详情-->
+        <activity android:name="com.changanford.shop.ui.goods.GoodsDetailsActivity"/>
+        <!-- 订单确认-->
+        <activity android:name="com.changanford.shop.ui.order.OrderConfirmActivity"/>
+        <!--================================= 商城 End-->
+
     </application>
 
 </manifest>
