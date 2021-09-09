@@ -5,8 +5,10 @@
     <data>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:background="@color/color_ee"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dp_50">
         <com.google.android.material.appbar.AppBarLayout
             android:background="@color/white"
             android:layout_width="match_parent"

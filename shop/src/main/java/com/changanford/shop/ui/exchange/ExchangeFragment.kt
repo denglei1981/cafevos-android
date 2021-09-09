@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.exchange
 
+import android.util.Log
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.ExchangeAdapter
 import com.changanford.shop.databinding.FragmentShopExchangeBinding
@@ -20,6 +21,9 @@ class ExchangeFragment: BaseFragment<FragmentShopExchangeBinding, ExchangeViewMo
         adapter.setItems(arrayListOf("", ""))
         binding.prvShopExchange.setStickyHeight(20)
         binding.prvShopExchange.adapter = adapter
+        binding.prvShopExchange.setStickyListener {
+            Log.e("wenke","吸顶$it")
+        }
     }
     override fun initData() {
     }
