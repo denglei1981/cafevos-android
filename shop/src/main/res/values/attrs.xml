@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RatioImageView">
+        <attr name="ratio" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="NineGridLayout">
+        <attr name="sapcing" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="VerticalRollingTextView">
+        <!--文字颜色-->
+        <attr name="android:textColor" />
+        <!--文字大小-->
+        <attr name="android:textSize" />
+        <!--每个条目显示的最大的行数-->
+        <attr name="android:maxLines" />
+        <!--文字过长处理-->
+        <attr name="android:ellipsize" />
+        <!--滚动动画时长-->
+        <attr name="android:duration" />
+        <!--两次动画之间的间隔-->
+        <attr name="animInterval" format="integer" />
+        <!--展示条目的个数-->
+        <attr name="itemCount" format="integer" />
+        <!--多行显示时自适应文字的最大文字大小-->
+        <attr name="maxTextSize" format="dimension" />
+        <!--多行显示时自适应文字的最小文字大小-->
+        <attr name="minTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundCornerImageView">
+        <attr name="leftTop_angle" format="boolean"/>
+        <attr name="leftBottom_angle" format="boolean"/>
+        <attr name="rightTop_angle" format="boolean"/>
+        <attr name="rightBottom_angle" format="boolean"/>
+        <attr name="corner_radius" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="TitleBar">
+        <attr name="enable_right" format="boolean" />
+        <attr name="title_color" format="reference" />
+        <attr name="back_icon" format="reference" />
+        <attr name="right_icon" format="reference" />
+        <attr name="title_text" format="string" />
+        <attr name="right_text" format="string" />
+        <attr name="background_res" format="reference" />
+        <attr name="resource_res" format="reference" />
+    </declare-styleable>
+    <!--进度条样式-->
+    <declare-styleable name="NumberProgressBar">
+        <attr name="progress_unreached_color" format="color" />
+        <attr name="progress_reached_color" format="color" />
+        <attr name="progress_textsize" format="dimension" />
+        <attr name="progress_textcolor" format="color" />
+    </declare-styleable>
+
+
+    <!-- 描边字体 -->
+    <declare-styleable name="StrokeTextView">
+        <!-- 自定义的属性名称 和对应的单位 -->
+        <attr name="outerColor" format="color|reference" />
+        <attr name="innnerColor" format="color|reference" />
+    </declare-styleable>
+</resources>

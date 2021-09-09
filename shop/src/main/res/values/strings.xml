@@ -5,4 +5,7 @@
     <string name="str_integral">积分</string>
     <string name="str_pointsFor">积分兑换</string>
     <string name="str_earnPoints">赚取积分</string>
+    <string name="str_text">-------</string>
+    <string name="str_collection">收藏</string>
+    <string name="str_immediatelyChange">立即兑换</string>
 </resources>
