@@ -2,6 +2,7 @@ package com.changanford.my
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.basic.BaseActivity
@@ -18,5 +19,9 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarUtil.setColor(this, Color.RED)
+    }
+
+    protected fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

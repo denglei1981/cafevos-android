@@ -4,7 +4,9 @@
 
     <application>
         <activity android:name=".TestActivity" />
-        <activity android:name=".ui.LoginUI" />
+        <activity
+            android:name=".ui.LoginUI"
+            android:launchMode="singleTask" />
         <activity android:name=".ui.SettingUI" />
     </application>
 </manifest>

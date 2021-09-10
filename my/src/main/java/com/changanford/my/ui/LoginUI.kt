@@ -1,11 +1,14 @@
 package com.changanford.my.ui
 
+import android.content.Intent
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.StringUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.MINE_SIGN_WX_CODE
+import com.changanford.common.util.bus.USER_LOGIN_STATUS
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.viewmodel.SignViewModel
@@ -21,9 +24,12 @@ import com.tencent.tauth.UiError
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.functions.Function3
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -46,19 +52,30 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 var json = JSONObject(p0.toString())
                 var openId = json.getString("openid")
                 var accessToken = json.getString("access_token")
-//                viewModel.otherAuthLogin("qq", "$accessToken,$openId")
+                lifecycleScope.launch {
+                    viewModel.otherLogin("qq", "$accessToken,$openId", "11111")
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
         override fun onCancel() {
-//            ToastUtils.showLong("取消QQ登录")
+            showToast("取消QQ登录")
+        }
+
+        override fun onWarning(p0: Int) {
+
         }
 
         override fun onError(p0: UiError?) {
-//            ToastUtils.showLong("QQ登录失败")
+            showToast("QQ登录失败")
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
     override fun initView() {
@@ -86,7 +103,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-
+                lifecycleScope.launch {
+                    viewModel.getSmsCode(binding.etLoginMobile.text.toString())
+                }
             }, {
 
             })
@@ -94,8 +113,16 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnLogin.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                lifecycleScope.launch {
+                    viewModel.smsLogin(
+                        binding.etLoginMobile.text.toString(),
+                        binding.etLoginSmsCode.text.toString(),
+                        "11111"
+                    )
+                }
+            }, {
 
-            }, {})
+            })
 
         //QQ登录
         binding.imQqLogin.clicks().debounce(500, TimeUnit.MILLISECONDS)
@@ -106,11 +133,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer {
 //                longLog("勾选结果", "$it")
-//                if (!it) {
-//                    showToast("请同意相关协议")
-//                } else {
-//                    qqLogin()
-//                }
+                if (!it) {
+                    showToast("请同意相关协议")
+                } else {
+                    qqLogin()
+                }
             })
         //微信登录
         binding.imWeixinLogin.clicks().debounce(500, TimeUnit.MILLISECONDS)
@@ -121,7 +148,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer {
                 if (!it) {
-//                    showToast("请同意相关协议")
+                    showToast("请同意相关协议")
                 } else {
                     //产生6位数随机数为例
                     MConstant.NUM = ((Math.random() * 9 + 1) * 100000).toString()
@@ -132,9 +159,84 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 }
             })
 
+        //三方微信返回
+        LiveDataBus.get().with(MINE_SIGN_WX_CODE, String::class.java)
+            .observe(this, androidx.lifecycle.Observer {
+                lifecycleScope.launch {
+                    viewModel.otherLogin("weixin", it, "11111")
+                }
+            })
+
+        viewModel.smsSuccess.observe(this, androidx.lifecycle.Observer {
+            smsCountDownTimer()
+        })
+
+        LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, androidx.lifecycle.Observer {
+                if (it == UserManger.UserLoginStatus.USER_LOGIN_SUCCESS) {
+                    finish()
+                }
+            })
     }
+
+    /**
+     * qq登录
+     */
+    private fun qqLogin() {
+        tencent.login(this, "all", qqCallback)
+    }
+
 
     override fun initData() {
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Tencent.onActivityResultData(requestCode, resultCode, data, qqCallback)
+    }
+
+
+    /**
+     * 获取验证码倒计时
+     */
+    private var subscribe: Disposable? = null
+
+    private fun smsCountDownTimer() {
+        var time: Long = 60
+        Observable.interval(1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : io.reactivex.rxjava3.core.Observer<Long> {
+                override fun onSubscribe(d: Disposable) {
+                    subscribe = d
+                    binding.btnGetSms.isEnabled = false
+                }
+
+                override fun onNext(t: Long) {
+                    if (t < 59) {
+                        time -= 1
+                        binding.btnGetSms.text = "${time}s"
+                    } else {
+                        onComplete()
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                }
+
+                override fun onComplete() {
+                    binding.btnGetSms.text = "获取验证码"
+                    binding.btnGetSms.isEnabled = true
+                    subscribe?.dispose()
+                }
+            })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        subscribe?.let {
+            it.dispose()
+        }
     }
 }

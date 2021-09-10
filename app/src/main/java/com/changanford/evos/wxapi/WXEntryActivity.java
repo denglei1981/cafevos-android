@@ -124,7 +124,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     default:
 //                        result = ShareResultType.SHARE_FAIL;
                         break;
-
                 }
                 LiveDataBus.get().with(LiveDataBusKeyKt.WX_SHARE_BACK, Integer.class).postValue(result);
 //                eventScreen = new EventScreen(Constant.WXSHARE, result);

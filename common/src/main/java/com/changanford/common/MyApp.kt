@@ -1,5 +1,6 @@
 package com.changanford.common
 
+import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter

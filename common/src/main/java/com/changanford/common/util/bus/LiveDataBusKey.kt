@@ -21,3 +21,5 @@ const val WXPAY_RESULT = "wxpay_result"
 
 const val WX_SHARE_BACK = "wx_share_back"
 
+const val USER_LOGIN_STATUS = "sys:user_login_status"
+
