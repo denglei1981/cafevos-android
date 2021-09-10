@@ -4,9 +4,28 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.StringUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.checkedChanges
+import com.jakewharton.rxbinding4.widget.textChanges
+import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import com.tencent.tauth.IUiListener
+import com.tencent.tauth.Tencent
+import com.tencent.tauth.UiError
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.functions.Function
+import io.reactivex.rxjava3.functions.Function3
+import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 /**
  *  文件名：LoginUI
@@ -18,8 +37,100 @@ import com.changanford.my.viewmodel.SignViewModel
 @Route(path = ARouterMyPath.SignUI)
 class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
-    override fun initView() {
+    private lateinit var tencent: Tencent
+    private lateinit var wxApi: IWXAPI
 
+    var qqCallback = object : IUiListener {
+        override fun onComplete(p0: Any?) {
+            try {
+                var json = JSONObject(p0.toString())
+                var openId = json.getString("openid")
+                var accessToken = json.getString("access_token")
+//                viewModel.otherAuthLogin("qq", "$accessToken,$openId")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        override fun onCancel() {
+//            ToastUtils.showLong("取消QQ登录")
+        }
+
+        override fun onError(p0: UiError?) {
+//            ToastUtils.showLong("QQ登录失败")
+        }
+    }
+
+    override fun initView() {
+        tencent = Tencent.createInstance(MConstant.QQAPPID, this)
+
+        wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
+        wxApi.registerApp(MConstant.WXAPPID)
+
+        var mobileText = binding.etLoginMobile.textChanges()
+        var smsText = binding.etLoginSmsCode.textChanges()
+        var checkBox = binding.cbEx.checkedChanges()
+
+        Observable.combineLatest(
+            mobileText,
+            smsText,
+            checkBox,
+            Function3<CharSequence, CharSequence, Boolean, Boolean> { t1, t2, t3 ->
+                binding.btnGetSms.isEnabled = t1.isNotEmpty()
+                t1.isNotEmpty() && t2.isNotEmpty() && t3
+            })
+            .subscribe {
+                binding.btnLogin.isEnabled = it
+            }
+
+        binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {
+
+            })
+
+        binding.btnLogin.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+
+            }, {})
+
+        //QQ登录
+        binding.imQqLogin.clicks().debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap(Function<Any, ObservableSource<Boolean>> {
+                Observable.just(binding.cbEx.isChecked)
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(Consumer {
+//                longLog("勾选结果", "$it")
+//                if (!it) {
+//                    showToast("请同意相关协议")
+//                } else {
+//                    qqLogin()
+//                }
+            })
+        //微信登录
+        binding.imWeixinLogin.clicks().debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap(Function<Any, ObservableSource<Boolean>> {
+                Observable.just(binding.cbEx.isChecked)
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(Consumer {
+                if (!it) {
+//                    showToast("请同意相关协议")
+                } else {
+                    //产生6位数随机数为例
+                    MConstant.NUM = ((Math.random() * 9 + 1) * 100000).toString()
+                    val req = SendAuth.Req()
+                    req.state = "diandi_wx_login"
+                    req.scope = "snsapi_userinfo"
+                    wxApi.sendReq(req)
+                }
+            })
 
     }
 

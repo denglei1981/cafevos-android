@@ -11,7 +11,7 @@ import com.changanford.circle.databinding.FragmentSecondBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.ui.viewpager.Banner
-import com.changanford.common.util.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.bus.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.getPermissionLauncher
 import com.changanford.common.util.hasPermission

@@ -26,6 +26,8 @@
             android:id="@+id/et_login_mobile"
             style="@style/login_mobile_et_style"
             android:hint="请输入手机号码"
+            android:inputType="phone"
+            android:maxLength="11"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_login_hint" />
@@ -36,6 +38,8 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_40"
             android:hint="请输入验证码"
+            android:inputType="number"
+            android:maxLength="8"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btn_get_sms"
             app:layout_constraintTop_toBottomOf="@+id/et_login_mobile" />
@@ -47,7 +51,7 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:background="@drawable/next_btn_bg"
             android:gravity="center"
-            android:text="或者验证码"
+            android:text="获取验证码"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@+id/et_login_sms_code"
@@ -74,13 +78,28 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/im_qq_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            android:src="@mipmap/ic_launcher_round"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="QQ"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/im_weixin_login"
+            app:layout_constraintTop_toBottomOf="@+id/cb_ex" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/im_weixin_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:src="@mipmap/ic_launcher_round"
+            android:text="微信"
+            app:layout_constraintLeft_toRightOf="@+id/im_qq_login"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cb_ex" />
     </androidx.constraintlayout.widget.ConstraintLayout>

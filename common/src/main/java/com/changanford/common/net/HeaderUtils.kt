@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON
 import com.changan.nativelib.JNIInterface
 import com.changanford.common.MyApp
 import com.changanford.common.util.*
+import com.changanford.common.util.bus.COOKIE_DB
 import com.changanford.common.util.bus.LiveDataBus
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
