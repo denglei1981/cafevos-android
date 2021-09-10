@@ -138,6 +138,9 @@ dependencies {
     api "com.alibaba:fastjson:1.1.68.android"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
+    //rxbinding4
+    api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    api 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

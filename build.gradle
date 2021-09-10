@@ -10,6 +10,7 @@ buildscript {
         targetSDKVersion = 30
         minSDKVersion = 21
         versions_router_compiler = "1.2.2"
+        compose_version = '1.0.0'
         //TODO
     }
     repositories {
