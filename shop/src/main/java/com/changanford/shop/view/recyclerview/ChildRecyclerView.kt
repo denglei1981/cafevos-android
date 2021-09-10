@@ -154,7 +154,6 @@ class ChildRecyclerView @JvmOverloads constructor(
                     return
                 }
             }
-
             lastTraverseView = parentView
             parentView = parentView.parent as View
         }

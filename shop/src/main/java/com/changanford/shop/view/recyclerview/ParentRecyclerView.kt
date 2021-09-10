@@ -53,12 +53,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
             this.stopFling()
             childRecyclerView?.stopFling()
         }
-
-        return if (doNotInterceptTouchEvent) {
-            false
-        } else {
-            super.onInterceptTouchEvent(e)
-        }
+        return if (doNotInterceptTouchEvent)false else  super.onInterceptTouchEvent(e)
     }
 
     /**
@@ -104,7 +99,6 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
                     dy + childScrollY
                 }
             }
-
             if (consumeY != 0) {
                 consumed[1] = consumeY
                 this.scrollBy(0, consumeY)
@@ -127,26 +121,11 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
         return target is ChildRecyclerView
     }
 
-    override fun onNestedScroll(
-        target: View,
-        dxConsumed: Int,
-        dyConsumed: Int,
-        dxUnconsumed: Int,
-        dyUnconsumed: Int,
-        type: Int
-    ) {
+    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
         // do nothing
     }
 
-    override fun onNestedScroll(
-        target: View,
-        dxConsumed: Int,
-        dyConsumed: Int,
-        dxUnconsumed: Int,
-        dyUnconsumed: Int,
-        type: Int,
-        consumed: IntArray
-    ) {
+    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int, consumed: IntArray) {
         // do nothing
     }
 
@@ -186,7 +165,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
             val layoutManagerFiled = ViewPager2::class.java.getDeclaredField("mLayoutManager")
             layoutManagerFiled.isAccessible = true
             val pagerLayoutManager = layoutManagerFiled.get(innerViewPager2) as LinearLayoutManager
-            var currentChild = pagerLayoutManager.findViewByPosition(innerViewPager2!!.currentItem)
+            val currentChild = pagerLayoutManager.findViewByPosition(innerViewPager2!!.currentItem)
 
             if (currentChild is ChildRecyclerView) {
                 return currentChild

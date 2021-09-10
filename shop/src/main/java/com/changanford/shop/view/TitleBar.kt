@@ -1,4 +1,4 @@
-package com.changanford.shop.view.recyclerview
+package com.changanford.shop.view
 
 import android.content.Context
 import android.util.AttributeSet

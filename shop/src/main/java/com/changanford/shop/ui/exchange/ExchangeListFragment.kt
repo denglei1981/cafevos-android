@@ -34,7 +34,7 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
             datas.add(item)
         }
         adatpter.setList(datas)
-        adatpter.setOnItemChildClickListener { _, _, position ->
+        adatpter.setOnItemClickListener { _, _, position ->
             GoodsDetailsActivity.start(requireContext(),"$position")
         }
     }
