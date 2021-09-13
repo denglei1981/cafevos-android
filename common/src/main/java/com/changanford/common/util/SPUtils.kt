@@ -209,7 +209,13 @@ object SPUtils {
     suspend fun putToken(token: String) {
         setParam(MyApp.mContext, LOGIN_TOKEN, token)
     }
-
+    fun clearByKey(key: String) {
+        runBlocking {
+            MyApp.mContext.dataStore.edit {
+                it.remove(stringPreferencesKey(key))
+            }
+        }
+    }
     /**
      * 清除所有数据
      * @param context

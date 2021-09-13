@@ -110,3 +110,55 @@
 
 # If single-type injection is used, that is, no interface is defined to implement IProvider, the following rules need to be added to protect the implementation
 # -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+
+#AgentWeb
+-keep class com.just.agentweb.** {
+    *;
+}
+-dontwarn com.just.agentweb.**
+-keepclassmembers class com.changanford.common.web.AgentWebInterface{ *; }
+
+#百度baidu
+-keep class com.baidu.**{*;}
+-keep class vi.com.** {*;}
+-dontwarn com.baidu.**
+-keep class mapsdkvi.com.gdi.bgl.android.java.EnvDrawText{*;}
+-keepclassmembers class com.baidu.mapapi.model.ParcelItem{*;}
+
+#微信分享
+-keep class com.tencent.mm.opensdk.** {*;}
+-keep class com.tencent.wxop.** {*;}
+-keep class com.tencent.mm.sdk.** {*;}
+#QQ分享
+
+-keep class com.tencent.bugly.**{*;}
+-keep class com.tencent.stat.**{*;}
+-keep class com.tencent.smtt.**{*;}
+-keep class com.tencent.beacon.**{*;}
+-keep class com.tencent.mm.**{*;}
+-keep class com.tencent.apkupdate.**{*;}
+-keep class com.tencent.tmassistantsdk.**{*;}
+-keep class org.apache.http.** { * ;}
+-keep class com.qq.jce.**{*;}
+-keep class com.qq.taf.**{*;}
+-keep class com.tencent.connect.**{*;}
+-keep class com.tencent.map.**{*;}
+-keep class com.tencent.open.**{*;}
+-keep class com.tencent.qqconnect.**{*;}
+-keep class com.tencent.tauth.**{*;}
+-keep class com.tencent.feedback.**{*;}
+-keep class common.**{*;}
+-keep class exceptionupload.**{*;}
+-keep class mqq.**{*;}
+-keep class qimei.**{*;}
+-keep class strategy.**{*;}
+-keep class userinfo.**{*;}
+-keep class com.pay.**{*;}
+-keep class com.demon.plugin.**{*;}
+-keep class com.tencent.midas.**{*;}
+-keep class oicq.wlogin_sdk.**{*;}
+-keep class com.tencent.ysdk.**{*;}
+-dontwarn java.nio.file.Files
+-dontwarn java.nio.file.Path
+-dontwarn java.nio.file.OpenOption
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement

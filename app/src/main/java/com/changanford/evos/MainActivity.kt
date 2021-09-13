@@ -8,8 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.util.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.setupWithNavController
 import com.changanford.evos.databinding.ActivityMainBinding

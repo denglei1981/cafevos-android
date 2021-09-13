@@ -19,6 +19,9 @@
     <application>
         <activity android:name="com.changanford.common.ui.TestActivity"></activity>
         <activity android:name=".ui.viewpager.Banner" />
+        <activity android:name=".ui.CaptureActivity" />
+        <activity android:name=".sharelib.activity.SinaShareActivity" />
+        <activity android:name=".web.AgentWebActivity" />
     </application>
 
 </manifest>

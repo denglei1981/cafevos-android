@@ -84,4 +84,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
         findNavController().navigate(id)
         requireActivity().finish()
     }
+
+    fun <T:ViewModel> createViewModel(claaz:Class<T>) =
+        ViewModelProvider.AndroidViewModelFactory.getInstance(BaseApplication.INSTANT).create(claaz)
+
 }
