@@ -1,7 +1,7 @@
 package com.changanford.shop.ui.exchange
 
+import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.goods.GoodsAdatpter
@@ -16,16 +16,25 @@ import com.changanford.shop.ui.goods.GoodsDetailsActivity
  */
 class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
     companion object{
-        fun newInstance(): ExchangeListFragment {
-            return ExchangeListFragment()
+        fun newInstance(itemId:String): ExchangeListFragment {
+            val bundle = Bundle()
+            bundle.putString("itemId", itemId)
+            val fragment= ExchangeListFragment()
+            fragment.arguments = bundle
+            return fragment
         }
     }
-    private val adatpter by lazy { GoodsAdatpter() }
-    override fun initView() {}
+    private val adapter by lazy { GoodsAdatpter() }
+    override fun initView() {
+        if(arguments!=null){
+            val itemId=arguments?.getString("itemId","0")
+        }
+    }
     override fun initData() {
-        binding.rvList.layoutManager= StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-        adatpter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
-        binding.rvList.adapter=adatpter
+//        binding.rvList.layoutManager= StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
+        binding.rvList.layoutManager= GridLayoutManager(requireContext(),2)
+        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.AlphaIn)
+        binding.rvList.adapter=adapter
         val datas= arrayListOf<GoodsBean>()
         val title=StringBuffer("Title")
         for (i in 0..30){
@@ -33,8 +42,8 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
             val item=GoodsBean(i,if(i%3>0)"Title$i" else "$title")
             datas.add(item)
         }
-        adatpter.setList(datas)
-        adatpter.setOnItemClickListener { _, _, position ->
+        adapter.setList(datas)
+        adapter.setOnItemClickListener { _, _, position ->
             GoodsDetailsActivity.start(requireContext(),"$position")
         }
     }

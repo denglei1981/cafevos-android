@@ -25,6 +25,7 @@
                 app:elevation="0dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
                 <include
+                    android:id="@+id/inTop"
                     layout="@layout/in_shop_top"/>
                 <LinearLayout
                     android:id="@+id/tab_container"

@@ -14,4 +14,7 @@
     <string name="str_shop">商城</string>
     <string name="str_earnPointsMoreGifts">赚取积分换更多好礼</string>
     <string name="str_immediatelyTo">立即前往</string>
+    <string name="str_ongoing">进行中</string>
+    <string name="str_limitedXa">限量%1$s件</string>
+    <string name="str_zeroPercent">0%</string>
 </resources>

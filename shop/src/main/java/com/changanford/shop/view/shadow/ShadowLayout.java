@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.changanford.shop.R;
 
 /**
@@ -275,7 +277,7 @@ public class ShadowLayout extends LinearLayout {
 
         @Override
         public Shadow setShadowColorRes(int colorRes) {
-            shadow.shadowColor = shadow.getResources().getColor(colorRes);
+            shadow.shadowColor = ContextCompat.getColor(getContext(),colorRes);
             return this;
         }
 
