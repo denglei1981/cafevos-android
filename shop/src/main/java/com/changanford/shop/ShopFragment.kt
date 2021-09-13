@@ -24,6 +24,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
             fragments.add(ExchangeListFragment.newInstance("$i"))
         }
         binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
+        binding.viewpager.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
             tab.text = tabTitles[tabPosition]
         }.attach()

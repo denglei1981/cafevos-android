@@ -33,7 +33,7 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
     override fun initData() {
 //        binding.rvList.layoutManager= StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         binding.rvList.layoutManager= GridLayoutManager(requireContext(),2)
-        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.AlphaIn)
+        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         binding.rvList.adapter=adapter
         val datas= arrayListOf<GoodsBean>()
         val title=StringBuffer("Title")
