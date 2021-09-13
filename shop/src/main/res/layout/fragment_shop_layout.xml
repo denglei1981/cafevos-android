@@ -22,10 +22,9 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="0dp"
+                app:elevation="0dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
                 <include
-                    app:layout_scrollFlags="scroll"
                     layout="@layout/in_shop_top"/>
                 <LinearLayout
                     android:id="@+id/tab_container"
@@ -36,9 +35,12 @@
                     android:gravity="bottom">
 
                     <com.google.android.material.tabs.TabLayout
+                        app:tabMode="scrollable"
                         android:id="@+id/tab_layout"
+                        style="@style/tabLayout_style"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/dp_30"
+                        android:paddingBottom="@dimen/dp_m_10"
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>

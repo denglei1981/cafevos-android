@@ -1,36 +1,32 @@
 package com.changanford.shop
-import android.content.Intent
-import android.view.View
+import android.graphics.Typeface
 import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.ViewPage2Adapter
-import com.changanford.shop.databinding.FragmentShopBinding
-import com.changanford.shop.ui.IntegralDetailsActivity
-import com.changanford.shop.ui.exchange.ExchangeFragment
+import com.changanford.shop.databinding.FragmentShopLayoutBinding
+import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.utils.WCommonUtil
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * A fragment representing a list of Items.
  */
-class ShopFragment : BaseFragment<FragmentShopBinding, ShopViewModel>(), View.OnClickListener {
-    private val tabTitles by lazy {arrayOf(getString(R.string.str_pointsFor), getString(R.string.str_earnPoints))}
-    private val fragments= arrayListOf<Fragment>(ExchangeFragment.newInstance(),ExchangeFragment.newInstance())
+class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
     override fun initView() {
+        val tabTitles= arrayListOf<String>()
+        val fragments= arrayListOf<Fragment>()
+        for(i in 0..20){
+            tabTitles.add("Tab$i")
+            fragments.add(ExchangeListFragment.newInstance())
+        }
         binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
-        binding.viewpager.isSaveEnabled=false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
             tab.text = tabTitles[tabPosition]
         }.attach()
-        binding.tvShopIntegral.setOnClickListener(this)
+        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,16f, Typeface.DEFAULT_BOLD,R.color.color_33)
     }
     override fun initData() {
 
-    }
-    override fun onClick(v: View?) {
-        when(v?.id){
-            //积分明细
-            R.id.tv_shop_integral->startActivity(Intent(requireContext(),IntegralDetailsActivity::class.java))
-        }
     }
 }
 

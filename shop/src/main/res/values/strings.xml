@@ -12,4 +12,6 @@
     <string name="str_comment">评价</string>
     <string name="str_details">详情</string>
     <string name="str_shop">商城</string>
+    <string name="str_earnPointsMoreGifts">赚取积分换更多好礼</string>
+    <string name="str_immediatelyTo">立即前往</string>
 </resources>

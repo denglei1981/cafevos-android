@@ -1,0 +1,18 @@
+<resources>
+    <style name="tabLayout_style">
+        <item name="tabMode">auto</item>
+        <item name="tabMaxWidth">@dimen/dp_200</item>
+        <item name="tabMinWidth">@dimen/dp_20</item>
+        <item name="tabIndicator">@drawable/shadow_1b51d9_10dp</item>
+        <item name="tabIndicatorColor">@color/color_1b51d9</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabTextAppearance">@style/style_indexTabItemStyle</item>
+        <item name="tabBackground">@color/transparent</item>
+        <item name="tabRippleColor">@color/transparent</item>
+        <item name="tabSelectedTextColor">@color/color_33</item>
+        <item name="tabTextColor">@color/text_colorv6</item>
+    </style>
+    <style name="style_indexTabItemStyle" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+</resources>

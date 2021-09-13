@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
  * @Time : 2021/9/8 0008
  * @Description : WCommonUtils
  */
-object WCommonUtils {
+object WCommonUtil {
     /**
      * 设置tabLayout选择样式
      * [size]被选择的字体大小
