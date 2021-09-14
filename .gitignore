@@ -15,5 +15,5 @@
 .cxx
 local.properties
 *.jks
-.idea
+/.idea
 build
