@@ -14,3 +14,13 @@ data class User(
     val name: String = "",
     val sotr: String? = null
 )
+
+
+data class LoginBean(
+    val openid: String,
+    val phone: String,
+    val roleSession: String,
+    val token: String,
+    val userId: String,
+    val isNewUser: Int
+)

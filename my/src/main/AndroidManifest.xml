@@ -4,5 +4,11 @@
 
     <application>
         <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.LoginUI"
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.SettingUI" />
+        <activity android:name=".ui.TaskListUI" />
+        <activity android:name=".ui.JiFenList" />
     </application>
 </manifest>

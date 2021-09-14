@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_40"
+            android:text="HI\n欢迎来到长安福特"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_login_mobile"
+            style="@style/login_mobile_et_style"
+            android:hint="请输入手机号码"
+            android:inputType="phone"
+            android:maxLength="11"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_hint" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_login_sms_code"
+            style="@style/login_mobile_et_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_40"
+            android:hint="请输入验证码"
+            android:inputType="number"
+            android:maxLength="8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_get_sms"
+            app:layout_constraintTop_toBottomOf="@+id/et_login_mobile" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_get_sms"
+            android:layout_width="@dimen/dp_99"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:background="@drawable/next_btn_bg"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/et_login_sms_code"
+            app:layout_constraintLeft_toRightOf="@+id/et_login_sms_code"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_login_sms_code" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_login"
+            style="@style/login_btn_style"
+            android:text="登录/注册"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_login_sms_code" />
+
+        <CheckBox
+            android:id="@+id/cb_ex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="登录协议"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/im_qq_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="QQ"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/im_weixin_login"
+            app:layout_constraintTop_toBottomOf="@+id/cb_ex" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/im_weixin_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:src="@mipmap/ic_launcher_round"
+            android:text="微信"
+            app:layout_constraintLeft_toRightOf="@+id/im_qq_login"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_ex" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
