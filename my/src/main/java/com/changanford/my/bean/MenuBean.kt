@@ -1,6 +1,7 @@
 package com.changanford.my.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.changanford.common.router.path.ARouterMyPath
 
 /**
  *  文件名：Menu
@@ -14,8 +15,8 @@ const val MINE_ITEM_MENU = 2 //常用菜单
 
 var getMenus: ArrayList<MineMenuMultiEntity> = arrayListOf(
     MineMenuMultiEntity(MINE_ITEM_TITLE, "我的日常任务", spanSize = 4),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "任务中心"),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的钉钉"),
+    MineMenuMultiEntity(MINE_ITEM_MENU, "任务中心", ARouterMyPath.MineTaskListUI),
+    MineMenuMultiEntity(MINE_ITEM_MENU, "我的积分", ARouterMyPath.MineIntegralUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的圈子"),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的任务"),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的日常"),
@@ -27,13 +28,15 @@ data class MineMenuMultiEntity(
     override val itemType: Int,
     val menuName: String,
     val icon: String,
-    val spanSize: Int
+    val spanSize: Int,
+    val routeUrl: String
 ) : MultiItemEntity {
-    constructor(itemType: Int, menuName: String, spanSize: Int = 1) : this(
+    constructor(itemType: Int, menuName: String, routeUrl: String = "", spanSize: Int = 1) : this(
         itemType,
         menuName,
         "",
-        spanSize
+        spanSize = spanSize,
+        routeUrl = routeUrl
     )
 }
 

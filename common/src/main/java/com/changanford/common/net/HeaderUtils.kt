@@ -25,7 +25,7 @@ import kotlin.random.Random
  */
 
 suspend fun Map<String, Any>.header(key: String): HashMap<String, String> {
-    return getHeader(this, key, SPUtils.getToken())
+    return getHeader(this, key, MConstant.token)
 }
 
 

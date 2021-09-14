@@ -17,7 +17,7 @@ object MConstant {
     const val COOKIE = false
 
     var pubKey = ""
-    var token = ""
+    var token: String = ""
     var imgcdn = ""
 
     const val WXAPPID = "wx134a7f5ed01da769" //微信appid

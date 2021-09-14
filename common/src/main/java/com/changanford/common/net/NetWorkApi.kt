@@ -77,4 +77,13 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<LoginBean>
 
+    /**
+     * 获取个人信息
+     */
+    @POST("user/myInfo")
+    suspend fun queryUserInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
 }

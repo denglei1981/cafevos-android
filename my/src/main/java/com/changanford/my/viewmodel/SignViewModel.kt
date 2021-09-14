@@ -4,17 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.changanford.common.MyApp
 import com.changanford.common.bean.LoginBean
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.USER_LOGIN_STATUS
-import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.util.room.UserDatabase
-import kotlin.math.log
 
 /**
  *  文件名：SignViewModel
@@ -73,11 +73,38 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    suspend fun getUserInfo() {
+        if (UserManger.isLogin()) {
+            var user = fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+            }
+            if (user.code == 0) {
+                saveUserInfo(user.data)
+            } else {
+                saveUserInfo(null)
+            }
+        } else {
+            saveUserInfo(null)
+        }
+    }
+
+
+    private fun saveUserInfo(userInfoBean: UserInfoBean?) {
+        UserManger.updateUserInfo(userInfoBean)
+    }
+
     /**
      * 登录成功
      */
-    private fun loginSuccess(loginBean: LoginBean) {
-        UserManger.saveUserInfo(loginBean)
+    private suspend fun loginSuccess(loginBean: LoginBean) {
+        loginBean?.let {
+            UserManger.saveUserInfo(loginBean)
+            MConstant.token = it.token
+            SPUtils.putToken(it.token)
+            getUserInfo()
+        }
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
     }
@@ -85,7 +112,9 @@ class SignViewModel : ViewModel() {
     /**
      * 退出登录
      */
-    private fun loginOut() {
+    fun loginOut() {
+        UserManger.deleteUserInfo()
+        MConstant.token = ""
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
     }

@@ -1,8 +1,10 @@
 package com.changanford.common.util.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 /**
  *  文件名：UniUserInfoDao
@@ -37,6 +39,10 @@ interface UserInfoDao {
     @Query("Update table_sys_uni_user set user_integral = :integral Where uni_user_id = :userId")
     fun updateIntegral(userId: String, integral: String): Int
 
+    //按userId去更新user json
+    @Query("Update table_sys_uni_user set user_json = :userJson Where uni_user_id = :userId")
+    fun updateUserJson(userId: String, userJson: String): Int
+
     @Query("Select * from table_sys_uni_user Where uni_user_id = :userId")
     fun getUser(userId: String): LiveData<SysUserInfoBean>
 
@@ -45,5 +51,8 @@ interface UserInfoDao {
 
     @Query("SELECT * FROM table_sys_uni_user LIMIT 1")
     fun getUser(): LiveData<SysUserInfoBean>
+
+    @Query("SELECT * FROM table_sys_uni_user LIMIT 1")
+    fun getNoLiveDataUser(): SysUserInfoBean
 
 }

@@ -1,8 +1,9 @@
 package com.changanford.common.manger
 
-import androidx.lifecycle.LiveData
+import com.alibaba.fastjson.JSON
 import com.changanford.common.MyApp
 import com.changanford.common.bean.LoginBean
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.util.room.UserDatabase
@@ -34,13 +35,36 @@ object UserManger {
         }
     }
 
+    fun updateUserInfo(userInfoBean: UserInfoBean?) {
+        userInfoBean?.let {
+            var userDatabase = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
+            userDatabase.updateMobile(
+                it.userId, when {
+                    it.phone.isNotEmpty() -> {
+                        it.phone
+                    }
+                    else -> {
+                        it.mobile
+                    }
+                }
+            )
+            userDatabase.updateIntegral(it.userId, "${it.integralDecimal}")
+            userDatabase.updateUserJson(it.userId, JSON.toJSONString(it))
+        }
+    }
+
+
     fun deleteUserInfo() {
         UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().deleteAll()
     }
 
 
-    fun getSysUserInfo(): LiveData<SysUserInfoBean> {
-        return UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
+    /**
+     * 没有liveData监听
+     */
+    fun getSysUserInfo(): SysUserInfoBean {
+        return UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
+            .getNoLiveDataUser()
     }
 
 }
