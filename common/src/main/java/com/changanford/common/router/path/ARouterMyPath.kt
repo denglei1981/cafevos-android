@@ -62,6 +62,7 @@ object ARouterMyPath {
     const val FansTipUI = "/my/FansTipUI"
     const val DealerTotalListUI = "/my/DealerTotalListUI"
     const val DealerIntegralDetailUI = "/my/DealerIntegralDetailUI"
+    const val MedalDetailUI = "/my/MedalDetailUI"
 
 
     /*-------------------U享卡--------------------*/

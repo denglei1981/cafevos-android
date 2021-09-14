@@ -11,17 +11,29 @@
         <entry key="..\:/ford/common/src/main/res/drawable/next_btn_bg.xml" value="0.19427083333333334" />
         <entry key="..\:/ford/common/src/main/res/layout/about_fragment.xml" value="0.178125" />
         <entry key="..\:/ford/common/src/main/res/layout/comm_bar_title_view.xml" value="0.21666666666666667" />
+        <entry key="..\:/ford/common/src/main/res/layout/item_medal.xml" value="0.2" />
+        <entry key="..\:/ford/common/src/main/res/layout/my_two_level_header.xml" value="0.15677083333333333" />
+        <entry key="..\:/ford/common/src/main/res/layout/view_empty.xml" value="0.2046875" />
+        <entry key="..\:/ford/my/src/main/res/drawable/task_finish_bg.xml" value="0.1953125" />
         <entry key="..\:/ford/my/src/main/res/layout/about_fragment.xml" value="0.17552083333333332" />
         <entry key="..\:/ford/my/src/main/res/layout/activity_test.xml" value="0.13854166666666667" />
+        <entry key="..\:/ford/my/src/main/res/layout/fm_medal.xml" value="0.22135416666666666" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_jifen.xml" value="0.1" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_medal_tab.xml" value="0.22135416666666666" />
         <entry key="..\:/ford/my/src/main/res/layout/item_menu.xml" value="0.22447916666666667" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_task_content.xml" value="0.1" />
         <entry key="..\:/ford/my/src/main/res/layout/item_task_title.xml" value="0.4" />
         <entry key="..\:/ford/my/src/main/res/layout/item_title.xml" value="0.22447916666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/mine_fragment.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/playcaard.xml" value="0.14130434782608695" />
+        <entry key="..\:/ford/my/src/main/res/layout/ui_all_medal.xml" value="0.209375" />
+        <entry key="..\:/ford/my/src/main/res/layout/ui_jifen.xml" value="0.1" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_login.xml" value="0.264" />
+        <entry key="..\:/ford/my/src/main/res/layout/ui_medal_detail.xml" value="0.178125" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_seeting.xml" value="0.19791666666666666" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_task.xml" value="0.21666666666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/view_recycler.xml" value="0.21666666666666667" />
+        <entry key="..\:/ford/my/src/main/res/layout/view_task_head_1.xml" value="0.1" />
         <entry key="..\:/ford/my/src/main/res/layout/view_toolbar.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/drawable/bt_car.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/drawable/bt_circle.xml" value="0.19322916666666667" />

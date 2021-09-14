@@ -6,14 +6,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.bean.*
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.utilext.logE
-import com.changanford.my.bean.MINE_ITEM_MENU
-import com.changanford.my.bean.MINE_ITEM_TITLE
-import com.changanford.my.bean.MineMenuMultiEntity
-import com.changanford.my.bean.getMenus
 import com.changanford.my.databinding.MineFragmentBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson

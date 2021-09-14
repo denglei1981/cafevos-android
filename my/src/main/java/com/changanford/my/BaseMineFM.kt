@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseFragment
 import com.changanford.common.databinding.ViewEmptyBinding
 import com.changanford.common.utilext.StatusBarUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -22,7 +22,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
  *  描述: TODO
  *  修改描述：TODO
  */
-abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, VM>(),
+abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, VM>(),
     OnRefreshLoadMoreListener {
 
     private var pageSize: Int = 1
@@ -33,7 +33,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtil.setColor(this, Color.RED)
+        StatusBarUtil.setColor(requireActivity(), Color.RED)
     }
 
     override fun initData() {
@@ -46,7 +46,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     }
 
     protected fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     open fun hasLoadMore(): Boolean {

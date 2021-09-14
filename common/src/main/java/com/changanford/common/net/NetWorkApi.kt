@@ -1,6 +1,8 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
+import com.changanford.my.bean.GrowUpBean
+import com.changanford.my.bean.RootTaskBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -91,5 +93,42 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<UserInfoBean>
+
+    /**
+     * 任务列表
+     */
+    @POST("userTask/getAllTasks")
+    suspend fun queryTasksList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<RootTaskBean>>
+
+
+    //user/accountLog/getUserAccountLogList 成长值
+    @POST("user/accountLog/getUserAccountLogList")
+    suspend fun mineGrowUp(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GrowUpBean>
+
+    //user/accountLog/getIntegralLogList
+    @POST("user/accountLog/getIntegralLogList")
+    suspend fun mineGrowUpNew(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GrowUpBean>
+
+
+    /*---------徽章-----------------*/
+
+    /**
+     * 获取徽章列表
+     */
+
+    @POST("user/medal/getAllMedalList")
+    suspend fun queryMedalList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MedalListBeanItem>>
 
 }

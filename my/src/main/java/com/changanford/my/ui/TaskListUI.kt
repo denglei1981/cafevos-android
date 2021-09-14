@@ -1,9 +1,10 @@
 package com.changanford.my.ui
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseNodeAdapter
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.adapter.RootNodeProvider
@@ -13,7 +14,9 @@ import com.changanford.my.bean.RootTaskBean
 import com.changanford.my.databinding.UiTaskBinding
 import com.changanford.my.databinding.ViewTaskHead1Binding
 import com.changanford.my.databinding.ViewTaskHead2Binding
-import java.util.*
+import com.changanford.my.viewmodel.SignViewModel
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import kotlinx.coroutines.launch
 
 /**
  *  文件名：TaskListUI
@@ -23,15 +26,13 @@ import java.util.*
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineTaskListUI)
-class TaskListUI : BaseMineUI<UiTaskBinding, EmptyViewModel>() {
+class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     val taskAdapter: TaskAdapter by lazy {
         TaskAdapter()
     }
 
     override fun initView() {
-
-        taskAdapter.addData(getEntity())
 
         var headView = ViewTaskHead1Binding.inflate(layoutInflater, null, false)
         taskAdapter.addHeaderView(headView.root)
@@ -42,14 +43,27 @@ class TaskListUI : BaseMineUI<UiTaskBinding, EmptyViewModel>() {
         binding.taskRcy.rcyCommonView.adapter = taskAdapter
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()
 
+        viewModel.taskBean.observe(this, Observer {
+            completeRefresh(it, taskAdapter)
+        })
     }
 
-    override fun initData() {
+    override fun bindSmartLayout(): SmartRefreshLayout? {
+        return binding.taskRcy.smartCommonLayout
+    }
 
+    override fun initRefreshData(pageSize: Int) {
+        super.initRefreshData(pageSize)
+        lifecycleScope.launch {
+            task()
+        }
+    }
+
+    suspend fun task() {
+        viewModel.queryTasksList()
     }
 
     inner class TaskAdapter : BaseNodeAdapter() {
-
         init {
             addFullSpanNodeProvider(RootNodeProvider())
             addNodeProvider(SecondNodeProvider())
@@ -68,27 +82,5 @@ class TaskListUI : BaseMineUI<UiTaskBinding, EmptyViewModel>() {
                 }
             }
         }
-    }
-
-    private fun getEntity(): List<BaseNode> {
-        val list: MutableList<BaseNode> = ArrayList()
-        for (i in 1..3) {
-            //Item Node
-            val itemEntity1 = ItemTaskBean()
-            val itemEntity2 = ItemTaskBean()
-            val itemEntity3 = ItemTaskBean()
-            val items: MutableList<BaseNode> = ArrayList()
-            items.add(itemEntity1)
-            items.add(itemEntity2)
-            items.add(itemEntity3)
-            // Root Node
-            val entity = RootTaskBean(items, "我的任务 $i")
-            if (i == 1) {
-                // 第1号数据默认不展开
-                entity.isExpanded = false
-            }
-            list.add(entity)
-        }
-        return list
     }
 }

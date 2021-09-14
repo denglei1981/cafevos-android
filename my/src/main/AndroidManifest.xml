@@ -10,5 +10,7 @@
         <activity android:name=".ui.SettingUI" />
         <activity android:name=".ui.TaskListUI" />
         <activity android:name=".ui.JiFenList" />
+        <activity android:name=".ui.AllMedalListUI" />
+        <activity android:name=".ui.MedalDetailUI" />
     </application>
 </manifest>

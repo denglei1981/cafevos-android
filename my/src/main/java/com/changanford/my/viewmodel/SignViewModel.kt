@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.changanford.common.MyApp
 import com.changanford.common.bean.LoginBean
+import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.body
@@ -15,6 +16,8 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.my.bean.GrowUpBean
+import com.changanford.my.bean.RootTaskBean
 
 /**
  *  文件名：SignViewModel
@@ -87,6 +90,49 @@ class SignViewModel : ViewModel() {
             }
         } else {
             saveUserInfo(null)
+        }
+    }
+
+
+    var taskBean: MutableLiveData<List<RootTaskBean>> = MutableLiveData()
+
+    suspend fun queryTasksList() {
+        var task = fetchRequest {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            apiService.queryTasksList(body.header(rkey), body.body(rkey))
+        }
+        if (task.code == 0) {
+            taskBean.postValue(task.data)
+        }
+    }
+
+    var jifenBean: MutableLiveData<GrowUpBean> = MutableLiveData()
+
+    suspend fun mineGrowUp(pageNo: Int, type: String) {
+        var task = fetchRequest {
+            var body = HashMap<String, Any>()
+            body["pageNo"] = pageNo
+            body["pageSize"] = "20"
+            body["queryParams"] = mapOf("type" to type)
+            var rkey = getRandomKey()
+            apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+        }
+        if (task.code == 0) {
+            jifenBean.postValue(task.data)
+        }
+    }
+
+    val allMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
+
+    suspend fun mineMedal() {
+        var medal = fetchRequest {
+            var body = HashMap<String, String>()
+            var rkey = getRandomKey()
+            apiService.queryMedalList(body.header(rkey), body.body(rkey))
+        }
+        if (medal.code == 0) {
+            allMedal.postValue(medal.data)
         }
     }
 

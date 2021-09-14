@@ -21,6 +21,7 @@ def versions_multidex = "2.0.1"
 //def versions_fragment = "1.2.5"
 def versions_animation = "1.1.0-alpha03"
 def versions_material = "1.4.0"
+def versions_smart = "2.0.0"
 
 
 android {
@@ -148,6 +149,11 @@ dependencies {
 
     //adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    //SmartRefresh
+    api "com.scwang.smart:refresh-layout-kernel:$versions_smart"
+    api "com.scwang.smart:refresh-header-classics:$versions_smart"
+    api "com.scwang.smart:refresh-header-two-level:$versions_smart"
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
