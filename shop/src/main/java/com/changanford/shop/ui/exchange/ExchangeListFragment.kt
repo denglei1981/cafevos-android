@@ -1,7 +1,6 @@
 package com.changanford.shop.ui.exchange
 
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.goods.GoodsAdatpter
@@ -31,8 +30,6 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
         }
     }
     override fun initData() {
-//        binding.rvList.layoutManager= StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-        binding.rvList.layoutManager= GridLayoutManager(requireContext(),2)
         adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         binding.rvList.adapter=adapter
         val datas= arrayListOf<GoodsBean>()

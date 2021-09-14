@@ -66,6 +66,7 @@
                     android:layout_weight="1"
                     android:layout_height="@dimen/dp_4"/>
                 <TextView
+                    android:textColor="@color/color_99"
                     android:layout_marginStart="@dimen/dp_5"
                     android:text="@string/str_zeroPercent"
                     tools:text="10%"
