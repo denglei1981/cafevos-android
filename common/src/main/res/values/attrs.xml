@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UBanner">
+        <attr name="canLoop" format="boolean" /><!--自动轮播-->
+        <attr name="autoTurningTime" format="integer" /><!--轮播间隔时间-->
+    </declare-styleable>
+
+
+    <!--透明渐变的TabView-->
+    <declare-styleable name="AlphaTabView">
+        <attr name="tabIconNormal" format="reference" />
+        <attr name="tabIconSelected" format="reference" />
+        <attr name="tabText" format="string" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="textColorNormal" format="color" />
+        <attr name="textColorSelected" format="color" />
+        <attr name="badgeBackgroundColor" format="color" />
+        <attr name="paddingTexwithIcon" format="dimension" />
+        <attr name="tabRightIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RangeBar">
+        <attr name="RangeBartickCount" format="integer" />
+        <attr name="tickHeight" format="dimension" />
+        <attr name="barWeight" format="dimension" />
+        <attr name="barColor" format="reference|color" />
+        <attr name="connectingLineWeight" format="dimension" />
+        <attr name="connectingLineColor" format="reference|color" />
+        <attr name="thumbRadius" format="dimension" />
+        <attr name="thumbImageNormal" format="reference" />
+        <attr name="thumbImagePressed" format="reference" />
+        <attr name="thumbColorNormal" format="reference|color" />
+        <attr name="thumbColorPressed" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="RangeSlider">
+        <attr name="lineHeight" format="dimension" />
+        <attr name="thumbWidth" format="dimension" />
+        <attr name="lineColor" format="color" />
+        <attr name="maskColor" format="color" />
+        <attr name="tickCount" format="integer" />
+        <attr name="leftThumbIndex" format="integer" />
+        <attr name="rightThumbIndex" format="integer" />
+        <attr name="leftThumbDrawable" format="reference" />
+        <attr name="rightThumbDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DYLoadingView">
+        <attr name="radius1" format="dimension" />
+        <attr name="radius2" format="dimension" />
+        <attr name="rtlScale" format="float" />
+        <attr name="ltrScale" format="float" />
+        <attr name="color1" format="color" />
+        <attr name="color2" format="color" />
+        <attr name="mixColor" format="color" />
+        <attr name="duration" format="integer" />
+        <attr name="pauseDuration" format="integer" />
+        <attr name="gap" format="dimension" />
+        <attr name="scaleStartFraction" format="float" />
+        <attr name="scaleEndFraction" format="float" />
+    </declare-styleable>
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="round" value="1" />
+    </attr>
+    <attr name="scale">
+        <enum name="crop" value="0" />
+        <enum name="fit" value="1" />
+    </attr>
+
+    <attr name="top_left" format="boolean" />
+    <attr name="top_right" format="boolean" />
+    <attr name="bottom_left" format="boolean" />
+    <attr name="bottom_right" format="boolean" />
+    <attr name="borderRadius" format="dimension" />
+    <declare-styleable name="RoundImageView">
+        <attr name="type" />
+        <attr name="scale" />
+        <attr name="borderRadius" />
+        <attr name="top_left" />
+        <attr name="top_right" />
+        <attr name="bottom_left" />
+        <attr name="bottom_right" />
+    </declare-styleable>
+
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="TransformersLayout">
+        <!--每页几列-->
+        <attr name="tl_spanCount" format="integer"/>
+        <!--每页几行-->
+        <attr name="tl_lines" format="integer"/>
+        <!--分页模式-->
+        <attr name="tl_pagingMode" format="boolean"/>
+        <!--滚动条宽度-->
+        <attr name="tl_scrollbarWidth" format="dimension|reference"/>
+        <!--滚动条高度-->
+        <attr name="tl_scrollbarHeight" format="dimension|reference"/>
+        <!--滚动条上间距-->
+        <attr name="tl_scrollbarMarginTop" format="dimension|reference"/>
+        <!--滚动条圆角-->
+        <attr name="tl_scrollbarRadius" format="dimension|reference"/>
+        <!--滚动条轨道颜色-->
+        <attr name="tl_scrollbarTrackColor" format="color|reference"/>
+        <!--滚动条进度颜色-->
+        <attr name="tl_scrollbarThumbColor" format="color|reference"/>
+    </declare-styleable>
+</resources>

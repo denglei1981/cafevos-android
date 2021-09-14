@@ -10,14 +10,17 @@ import androidx.lifecycle.lifecycleScope
 import com.changanford.circle.databinding.FragmentSecondBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.bean.ShareBean
 import com.changanford.common.ui.viewpager.Banner
-import com.changanford.common.util.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.getPermissionLauncher
 import com.changanford.common.util.hasPermission
 import com.changanford.common.util.work.BuriedWorker
 import com.changanford.common.util.work.doOneWork
 import com.changanford.common.utilext.toast
+import com.changanford.common.web.ShareViewModule
 import kotlinx.coroutines.launch
 
 /**
@@ -69,6 +72,25 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
     }
 
     override fun initView() {
+        binding.scan.setOnClickListener {
+            JumpUtils.instans?.jump(61, "")
+        }
+        binding.share.setOnClickListener {
+            val shareViewModel = createViewModel(ShareViewModule::class.java)
+            var shareBean = ShareBean(
+                "https://www.baidu.com",
+                "https://pics6.baidu.com/feed/728da9773912b31b488e11528b942d73dbb4e105.jpeg?token=d006ff7e58f523c108ce2c3af650d9aa",
+                "分享",
+                "分享的内容",
+                "1",
+                "2",
+                "0"
+            )
+            shareViewModel.share(requireActivity(), shareBean)
+        }
+        binding.web.setOnClickListener {
+            JumpUtils.instans?.jump(1, "https://www.baidu.com")
+        }
     }
 
     override fun initData() {

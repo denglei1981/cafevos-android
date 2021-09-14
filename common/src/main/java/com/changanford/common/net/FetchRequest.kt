@@ -1,6 +1,6 @@
 package com.changanford.common.net
 
-import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.ui.LoadingDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +21,7 @@ suspend fun <T> fetchRequest(
     var dialog: LoadingDialog? = null
     if (showLoading) {
         withContext(Dispatchers.Main) {
-            dialog = LoadingDialog(BaseActivity.curActivity)
+            dialog = LoadingDialog(BaseApplication.curActivity)
             dialog?.show()
         }
     }

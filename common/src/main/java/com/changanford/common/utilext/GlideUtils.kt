@@ -17,8 +17,8 @@ import com.changanford.common.util.MConstant
  */
 
 fun ImageView.load(url: String?, drawable: Int? = null) {
-    var string :String? = url
-    if (url?.startsWith("http") == false){
+    var string: String? = url
+    if (url?.startsWith("http") == false) {
         string = MConstant.imgcdn + url
     }
 
@@ -51,16 +51,27 @@ fun ImageView.load(url: String?, drawable: Int? = null) {
 fun ImageView.load(string: Int?, drawable: Int? = null) {
     val requestOptions: RequestOptions = RequestOptions()
         .centerCrop()
-        Glide
-            .with(this)
-            .load(string).apply {
-                drawable?.let { it ->
-                    this.placeholder(it)
-                }
+    Glide
+        .with(this)
+        .load(string).apply {
+            drawable?.let { it ->
+                this.placeholder(it)
             }
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .thumbnail(0.25f)
-            .apply(requestOptions)
-            .fitCenter()
-            .into(this)
+        }
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .thumbnail(0.25f)
+        .apply(requestOptions)
+        .fitCenter()
+        .into(this)
+}
+
+
+object GlideUtils {
+    /**
+     * 图片地址没有前缀时加上
+     */
+    fun handleImgUrl(preUrl: String?): String? =
+        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
+            preUrl
+        )
 }

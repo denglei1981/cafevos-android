@@ -1,9 +1,6 @@
 package com.changanford.common.net
 
-import com.changanford.common.bean.AdBean
-import com.changanford.common.bean.ConfigBean
-import com.changanford.common.bean.RecommendListBean
-import com.changanford.common.bean.User
+import com.changanford.common.bean.*
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -47,4 +44,11 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
+
+    //扫描二维码 扫一扫
+    @POST("base/app/scan")
+    fun scan(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommonResponse<JumpDataBean>>
 }

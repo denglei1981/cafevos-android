@@ -1,12 +1,12 @@
 package com.changanford.common.basic
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import java.lang.reflect.ParameterizedType
 
 /**********************************************************************************
@@ -23,9 +23,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 
     lateinit var binding: VB
     lateinit var viewModel: VM
-    companion object{
-        lateinit var curActivity:Context
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,4 +51,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
         viewModel = ViewModelProvider(this).get(vmClass)
     }
+
+    fun <T:ViewModel> createViewModel(claaz:Class<T>) =
+        ViewModelProvider.AndroidViewModelFactory.getInstance(BaseApplication.INSTANT).create(claaz)
+
 }

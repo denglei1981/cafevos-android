@@ -17,3 +17,7 @@ import com.changanford.common.MyApp
 fun String.toast() {
     Toast.makeText(MyApp.mContext, this, Toast.LENGTH_SHORT).show()
 }
+
+fun toastShow(s:String){
+    s.toast()
+}

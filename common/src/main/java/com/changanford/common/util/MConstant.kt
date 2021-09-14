@@ -19,6 +19,9 @@ object MConstant {
     var pubKey = ""
     var token = ""
     var imgcdn = ""
+    var userId = ""
+
+    var totalWebNum = 0//AgentWebActivity的个数
 
     //ARouter拦截登录
     const val LOGIN_INTERCEPT = "intercept_login"

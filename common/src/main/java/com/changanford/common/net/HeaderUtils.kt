@@ -6,6 +6,7 @@ import com.changan.nativelib.JNIInterface
 import com.changanford.common.MyApp
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -106,3 +107,12 @@ fun String.body(): RequestBody {
     return this
         .toRequestBody("application/json;charset=utf-8".toMediaType())
 }
+
+fun aesEncrypt(content: String, key: String): String = AESUtil.encrypts(content, key)
+fun rsaEncrypt(key: String): String = handlePubKey(MConstant.pubKey, key)
+fun sign(content: String): String = MD5Utils.encode_big(
+    content.plus("hyzh-unistar-5KWJKH291IvadR")
+)
+fun signMD(content: String): String = MD5Utils.encode_big(
+    content.plus("hyzh-unistar-12340101")
+)
