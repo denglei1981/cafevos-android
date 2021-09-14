@@ -9,7 +9,7 @@ import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ItemGoodsBinding
 
 
-class GoodsAdatpter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemGoodsBinding>>(R.layout.item_goods), LoadMoreModule {
+class GoodsAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemGoodsBinding>>(R.layout.item_goods), LoadMoreModule {
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsBinding>, item: GoodsBean) {
         val dataBinding=holder.dataBinding

@@ -11,8 +11,8 @@ import com.changanford.shop.databinding.ItemKillGoodsBinding
 import com.changanford.shop.utils.ScreenUtils
 
 
-class GoodsKillAdatpter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
-    val dp11 by lazy { ScreenUtils.dp2px(context,11f) }
+class GoodsKillAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
+    private val dp11 by lazy { ScreenUtils.dp2px(context,11f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemKillGoodsBinding>, item: GoodsBean) {
         val dataBinding=holder.dataBinding

@@ -3,7 +3,7 @@ package com.changanford.shop.ui.exchange
 import android.os.Bundle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.changanford.common.basic.BaseFragment
-import com.changanford.shop.adapter.goods.GoodsAdatpter
+import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.InListBinding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
@@ -23,7 +23,7 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
             return fragment
         }
     }
-    private val adapter by lazy { GoodsAdatpter() }
+    private val adapter by lazy { GoodsAdapter() }
     override fun initView() {
         if(arguments!=null){
             val itemId=arguments?.getString("itemId","0")
