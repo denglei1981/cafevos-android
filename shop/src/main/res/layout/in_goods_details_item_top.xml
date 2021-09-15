@@ -11,11 +11,12 @@
             android:background="@color/color_99"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_250"/>
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tvKill"
             android:background="@color/color_99"
             android:gravity="center"
-            android:text="秒杀区"
+            android:text="秒杀区001111"
+            app:typeface="ZenDots-Regular"
             android:layout_marginTop="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/banner"
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:id="@+id/tvTitle"
             android:background="@color/color_99"
             android:gravity="center"
-            android:text="Title"
+            android:text="Title1111"
             android:layout_marginTop="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/tvKill"
             android:layout_width="match_parent"

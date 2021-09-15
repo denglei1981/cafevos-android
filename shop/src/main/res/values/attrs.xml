@@ -79,5 +79,7 @@
         <attr name="yOffset" format="dimension"/>
 
     </declare-styleable>
-
+    <declare-styleable name="TypefaceTextView">
+        <attr name="typeface" format="string" />
+    </declare-styleable>
 </resources>
