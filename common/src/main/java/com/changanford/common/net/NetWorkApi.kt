@@ -131,4 +131,20 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MedalListBeanItem>>
 
+
+    /**
+     * 获取车主认证状态
+     */
+    @POST("ser/carAuth/isAuthCrmAndIncall")
+    fun getAuthStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CarItemBean>>
+
+    @POST("ser/carAuth/getCarAuthAndInCallList")
+    fun queryAuthCarAndIncallList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CarItemBean>>
+
 }

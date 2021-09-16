@@ -12,5 +12,6 @@
         <activity android:name=".ui.JiFenList" />
         <activity android:name=".ui.AllMedalListUI" />
         <activity android:name=".ui.MedalDetailUI" />
+        <activity android:name=".ui.CarCrmAuthUI" />
     </application>
 </manifest>
