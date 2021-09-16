@@ -26,7 +26,6 @@ class SplashViewModel : ViewModel() {
             }
         } else {
             request.msg ?: "tag".logE()
-           "adasfadf".logD()
         }
     }
     suspend fun getConfig(){
