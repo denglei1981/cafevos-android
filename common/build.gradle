@@ -79,7 +79,8 @@ dependencies {
 
     api(project(":base"))
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api project(path: ':picture_library')
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //multidex
     api "androidx.multidex:multidex:$versions_multidex"
     //fragment
@@ -107,11 +108,11 @@ dependencies {
     //paging
     api "androidx.paging:paging-runtime-ktx:$versions_paging"
     //camerax
-    api "androidx.camera:camera-core:$versions_camerax"
-    api "androidx.camera:camera-camera2:$versions_camerax"
-    api "androidx.camera:camera-lifecycle:$versions_camerax"
-    api "androidx.camera:camera-extensions:$versions_camerax_view"
-    api "androidx.camera:camera-view:$versions_camerax_view"
+//    api "androidx.camera:camera-core:$versions_camerax"
+//    api "androidx.camera:camera-camera2:$versions_camerax"
+//    api "androidx.camera:camera-lifecycle:$versions_camerax"
+//    api "androidx.camera:camera-extensions:$versions_camerax_view"
+//    api "androidx.camera:camera-view:$versions_camerax_view"
     //constraintLayout motionLayout
     api "androidx.constraintlayout:constraintlayout:$versions_constraint"
     //animation
@@ -149,6 +150,10 @@ dependencies {
 
     //adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+    api 'androidx.camera:camera-camera2:1.0.0-beta03'
+    api 'androidx.camera:camera-core:1.0.0-beta03'
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
     //SmartRefresh
     api "com.scwang.smart:refresh-layout-kernel:$versions_smart"
     api "com.scwang.smart:refresh-header-classics:$versions_smart"

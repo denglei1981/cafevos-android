@@ -2,6 +2,7 @@ package com.changanford.common.utilext
 
 import android.widget.Toast
 import com.changanford.common.MyApp
+import com.changanford.common.util.toast.ToastUtils
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -15,7 +16,8 @@ import com.changanford.common.MyApp
 
 @Synchronized
 fun String.toast() {
-    Toast.makeText(MyApp.mContext, this, Toast.LENGTH_SHORT).show()
+//    Toast.makeText(MyApp.mContext, this, Toast.LENGTH_SHORT).show()
+    ToastUtils.showShortToast(this, MyApp.mContext)
 }
 
 fun toastShow(s:String){

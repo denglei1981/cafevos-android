@@ -1,9 +1,16 @@
 package com.changanford.common
 
 import android.content.Context
+import androidx.camera.camera2.Camera2Config
+import androidx.camera.core.CameraXConfig
+import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MConstant.isDebug
+import com.luck.picture.lib.app.IApp
+import com.luck.picture.lib.app.PictureAppMaster
+import com.luck.picture.lib.engine.PictureSelectorEngine
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -18,7 +25,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
  * @Description: 　
  * *********************************************************************************
  */
-class MyApp : BaseApplication() {
+class MyApp : BaseApplication(), CameraXConfig.Provider {
     companion object {
         lateinit var mContext: Context
 
@@ -53,4 +60,10 @@ class MyApp : BaseApplication() {
             MConstant.token = "${it.token}"
         }
     }
+
+    override fun getCameraXConfig(): CameraXConfig {
+      return  Camera2Config.defaultConfig()
+    }
+
+
 }

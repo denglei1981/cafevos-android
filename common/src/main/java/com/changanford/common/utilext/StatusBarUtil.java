@@ -14,11 +14,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 
 import com.changanford.common.R;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -739,5 +741,39 @@ public class StatusBarUtil {
         } else {
             decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+    }
+
+    public static void setTransparentBar(Toolbar toolbar,Activity activity){
+        ImmersionBar.with(activity).titleBar(toolbar).init();
+    }
+
+    public static void setTransparentBar(Activity activity){
+        ImmersionBar.with(activity).init();
+    }
+
+    /**
+     * 设置状态栏marginTop
+     *
+     * @param view
+     * @param activity
+     */
+    public static void setStatusBarMarginTop(View view, Activity activity) {
+        int height = ImmersionBar.getStatusBarHeight(activity);
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        if (params instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
+            marginParams.topMargin = marginParams.topMargin + height;
+        }
+    }
+
+    /**
+     * 设置状态栏marginPaddingTop
+     *
+     * @param view
+     * @param activity
+     */
+    public static void setStatusBarPaddingTop(View view, Activity activity) {
+        int height = ImmersionBar.getStatusBarHeight(activity);
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + height, view.getPaddingRight(), view.getPaddingBottom());
     }
 }

@@ -63,6 +63,9 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
             val intent = Intent(activity, Banner::class.java)
             startActivity(intent)
         }
+        binding.permission.setOnClickListener {
+            "测试".toast()
+        }
     }
 
 
