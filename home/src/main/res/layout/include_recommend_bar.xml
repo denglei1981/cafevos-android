@@ -27,7 +27,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/icon_home_more"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_ford_title"
@@ -35,9 +35,50 @@
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
         android:src="@drawable/icon_home_ford_title"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/iv_more"
-        app:layout_constraintTop_toTopOf="@+id/iv_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_more" />
+
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/icon_home_gray_search"
+        app:layout_constraintStart_toStartOf="@+id/iv_ford_title"
+        app:layout_constraintBottom_toBottomOf="@+id/et_search_content"
+        app:layout_constraintTop_toTopOf="@+id/et_search_content"
+        android:contentDescription="@string/app_name"
+        />
+    <com.changanford.home.widget.ClearEditText
+        android:id="@+id/et_search_content"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_44"
+        android:layout_marginTop="@dimen/dp_44"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:hint="@string/home_search_hint"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:textColorHint="#E2E2E2"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_search"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ford_title"
+        app:layout_constraintWidth_percent="0.64"/>
+
+    <View
+        android:id="@+id/v_white_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_search"
+        app:layout_constraintEnd_toEndOf="@+id/et_search_content"
+        app:layout_constraintTop_toBottomOf="@+id/et_search_content"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
         />
 
 
