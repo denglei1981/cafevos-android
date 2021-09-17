@@ -11,6 +11,8 @@ import com.changanford.circle.databinding.FragmentSecondBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.viewpager.Banner
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -64,7 +66,10 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
             startActivity(intent)
         }
         binding.permission.setOnClickListener {
-            "测试".toast()
+            startARouter(ARouterCirclePath.PostGraphicActivity)
+        }
+        binding.btnVideo.setOnClickListener {
+            startARouter(ARouterCirclePath.PostVideoDetailsActivity)
         }
     }
 

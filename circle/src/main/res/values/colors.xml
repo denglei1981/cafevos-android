@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="circle_white">#FFFFFF</color>
+    <color name="circle_00095b">#00095B</color>
+    <color name="circle_FAFBFD">#FAFBFD</color>
+    <color name="circle_1B3B89">#1B3B89</color>
+    <color name="circle_8195C8">#8195C8</color>
+    <color name="circle_a8f6">#A8F6F6F6</color>
+</resources>

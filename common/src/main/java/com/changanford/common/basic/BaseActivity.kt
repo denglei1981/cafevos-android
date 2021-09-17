@@ -29,7 +29,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         super.onCreate(savedInstanceState)
         binding = bindings
         setContentView(binding.root)
-        ImmersionBar.with(this).init()
+        ImmersionBar.with(this).statusBarDarkFont(true).init()
         initViewModel()
         curActivity = this
         initView()

@@ -12,11 +12,13 @@ object ARouterCirclePath {
     const val PerfectQuessionActivity = "/circle/PerfectQuessionActivity"
     const val QuestionnaireActivity = "/circle/QuestionnaireActivity"
     const val EsayVideoEditActivity = "/circle/EsayVideoEditActivity"
-    const val PictureeditlActivity ="/circle/PictureeditlActivity"
-    const val ReleaseUpActivity ="/circle/ReleaseUpActivity"
-    const val AddCircleActivity ="/circle/AddCircleActivity"
+    const val PictureeditlActivity = "/circle/PictureeditlActivity"
+    const val ReleaseUpActivity = "/circle/ReleaseUpActivity"
+    const val AddCircleActivity = "/circle/AddCircleActivity"
 
-    const val ReleaseEditActivity ="/circle/ReleaseEditActivity"
+    const val ReleaseEditActivity = "/circle/ReleaseEditActivity"
+    const val PostGraphicActivity = "/circle/PostGraphicActivity"
+    const val PostVideoDetailsActivity = "/circle/PostVideoDetailsActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////
