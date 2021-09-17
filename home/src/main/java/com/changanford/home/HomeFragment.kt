@@ -1,33 +1,28 @@
 package com.changanford.home
 
-import android.os.Bundle
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.AdBean
-import com.changanford.common.ui.viewpager.bindAdapter
-import com.changanford.common.util.AppUtils
+import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
-import com.changanford.home.databinding.FragmentFirstBinding
+import com.changanford.home.databinding.FragmentHomeManagerBinding
+
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
+class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -37,6 +32,7 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
 
     override fun initView() {
         //Tab+Fragment
+        StatusBarUtil.setColor(requireActivity(), Color.WHITE)
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
@@ -58,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
                 R.color.transparent
             )
         )
-        binding.hometab.tabRippleColor=null // 取消水波纹。
+        binding.hometab.tabRippleColor=null
 
         TabLayoutMediator(binding.hometab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
@@ -119,28 +115,13 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
             //设置样式
             binding.hometab.getTabAt(i)?.customView = view
         }
-
     }
 
     override fun initData() {
-        //获取banner数据
-        lifecycleScope.launch {
-            var data = viewModel.getAdList("recommend_banner")
-            data?.let { initBanner(it) }
-        }
+
     }
 
-    private suspend fun initBanner(data: List<AdBean>) {
-        //banner的使用
-        binding.homeBanner?.isSaveEnabled = false
-        binding.homeBanner?.bindAdapter(this@HomeFragment, data.size) {
-            val homeBannerItem = HomeBannerItem()
-            val bundle = Bundle()
-            bundle.putSerializable("data", data[it])
-            homeBannerItem.arguments = bundle
-            homeBannerItem
-        }
-    }
+
 
 
 }
