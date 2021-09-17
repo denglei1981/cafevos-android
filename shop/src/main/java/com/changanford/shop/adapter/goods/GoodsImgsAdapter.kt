@@ -11,9 +11,9 @@ import com.changanford.shop.databinding.ItemImgBinding
 class GoodsImgsAdapter: BaseQuickAdapter<String, BaseDataBindingHolder<ItemImgBinding>>(R.layout.item_img), LoadMoreModule {
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemImgBinding>, item: String) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
-            //Test
-        }
+//        val dataBinding=holder.dataBinding
+//        if(dataBinding!=null){
+//            //Test
+//        }
     }
 }

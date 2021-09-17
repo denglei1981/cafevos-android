@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
@@ -27,7 +28,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
         }
     }
-    private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false)}
+    private lateinit var headerBinding:HeaderGoodsDetailsBinding
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
     private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_comment),getString(R.string.str_details))}
@@ -39,7 +40,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     private var isClickSelect=false//是否点击选中tab
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if(hasFocus&&0==topBarH)initH()
+//        if(hasFocus&&0==topBarH)initH()
     }
     private fun initH(){
         topBarBg=binding.inHeader.layoutHeader.background
@@ -50,8 +51,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         topBarBg.alpha=0
     }
     override fun initView() {
-        mAdapter.addHeaderView(headerBinding.root)
+        binding.recyclerView.layoutManager=LinearLayoutManager(this)
+        headerBinding= DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.header_goods_details, null, false)
         binding.recyclerView.adapter=mAdapter
+        mAdapter.addHeaderView(headerBinding.root)
         binding.recyclerView.addOnScrollListener(onScrollListener)
         initTab()
     }
@@ -126,10 +129,5 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.recyclerView.removeOnScrollListener(onScrollListener)
     }
 }

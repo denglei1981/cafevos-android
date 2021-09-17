@@ -10,12 +10,12 @@
         android:layout_height="@dimen/dp_54">
        <ImageView
            android:id="@+id/img_logoKill"
-           android:background="@color/white"
+           android:src="@mipmap/shop_kill"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintTop_toTopOf="parent"
-           android:layout_width="@dimen/dp_33"
-           android:layout_height="@dimen/dp_33"/>
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_integral"
             android:layout_marginStart="@dimen/dp_8"

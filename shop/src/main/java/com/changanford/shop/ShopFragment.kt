@@ -28,7 +28,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
             tab.text = tabTitles[tabPosition]
         }.attach()
-        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,16f, Typeface.DEFAULT_BOLD,R.color.color_33)
+        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
 
         //秒杀列表
         binding.inTop.recyclerView.layoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
