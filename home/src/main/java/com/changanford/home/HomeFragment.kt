@@ -45,15 +45,9 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
         pagerAdapter=HomeViewPagerAdapter(this,fragmentList)
         binding.homeViewpager.adapter = pagerAdapter;
 
-
         binding.homeViewpager.isSaveEnabled = false
         TabLayoutMediator(binding.hometab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
-            if (i == 1) {
-                val badge = tab.orCreateBadge
-                badge.number = 22
-                badge.isVisible = true
-            }
         }.attach()
     }
 
