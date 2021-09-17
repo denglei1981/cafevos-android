@@ -27,7 +27,6 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 app:layout_collapseMode="pin"
-                android:tooltipText="@string/app_shop"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
                 android:layout_height="?attr/actionBarSize">
                 <RelativeLayout
@@ -53,7 +52,19 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/hometab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/black"
+            app:tabSelectedTextColor="@color/black"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorColor="@color/transparent"
+            app:tabPadding="0dp"
+            app:tabPaddingBottom="0dp"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="0dp"
+            app:tabPaddingTop="0dp"
+            app:tabBackground="@color/transparent"
+            app:tabRippleColor="@color/transparent"
+            />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
