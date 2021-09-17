@@ -2,17 +2,18 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
+import com.changanford.shop.utils.WCommonUtil
 import kotlin.math.roundToInt
 
 /**
@@ -26,7 +27,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
         }
     }
-    private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, binding.recyclerView, false)}
+    private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false)}
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
     private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_comment),getString(R.string.str_details))}
@@ -49,7 +50,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         topBarBg.alpha=0
     }
     override fun initView() {
-        binding.recyclerView.layoutManager=LinearLayoutManager(this)
         mAdapter.addHeaderView(headerBinding.root)
         binding.recyclerView.adapter=mAdapter
         binding.recyclerView.addOnScrollListener(onScrollListener)
@@ -57,6 +57,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
+        WCommonUtil.setTabSelectStyle(this,tabLayout,15f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
         tabClick()
     }
     override fun initData() {
