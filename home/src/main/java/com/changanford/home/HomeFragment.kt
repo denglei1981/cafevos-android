@@ -11,8 +11,8 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
-import com.changanford.home.databinding.FragmentHomeManagerBinding
-
+import com.changanford.home.databinding.FragmentHomeRecommendBinding
+import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.shot.fragment.BigShotFragment
@@ -22,7 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() {
+class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -32,7 +32,7 @@ class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() 
 
     override fun initView() {
         //Tab+Fragment
-        StatusBarUtil.setColor(requireActivity(), Color.WHITE)
+
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
@@ -48,21 +48,21 @@ class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() 
 
         binding.homeViewpager.isSaveEnabled = false
 
-        binding.hometab.setSelectedTabIndicatorColor(
+        binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
                 R.color.transparent
             )
         )
-        binding.hometab.tabRippleColor=null
+        binding.homeTab.tabRippleColor=null
 
-        TabLayoutMediator(binding.hometab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
+        TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
 
         }.attach().apply {
             initTab()
         }
-        binding.hometab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab, true)
             }
@@ -93,7 +93,7 @@ class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() 
     var itemPunchWhat: Int = 0
     //初始化tab
     private fun initTab() {
-        for (i in 0 until binding.hometab.tabCount) {
+        for (i in 0 until binding.homeTab.tabCount) {
             //寻找到控件
             val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_home, null)
             val mTabText = view.findViewById<TextView>(R.id.tv_title)
@@ -113,7 +113,7 @@ class HomeFragment : BaseFragment<FragmentHomeManagerBinding, EmptyViewModel>() 
             }
             //更改选中项样式
             //设置样式
-            binding.hometab.getTabAt(i)?.customView = view
+            binding.homeTab.getTabAt(i)?.customView = view
         }
     }
 

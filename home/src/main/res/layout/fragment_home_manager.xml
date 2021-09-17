@@ -10,7 +10,6 @@
     <include
         android:id="@+id/layout_top_bar"
         layout="@layout/include_top_bar"
-
         android:layout_width="0dp"
         android:layout_height="@dimen/dp50"
         app:layout_constraintEnd_toEndOf="parent"
