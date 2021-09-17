@@ -8,7 +8,11 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.ui.viewpager.BannerFragment
 import com.changanford.common.ui.viewpager.bindAdapter
+import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.databinding.FragmentFirstBinding
+import com.changanford.home.news.fragment.NewsListFragment
+import com.changanford.home.recommend.fragment.RecommendFragment
+import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
@@ -18,13 +22,33 @@ import kotlinx.coroutines.launch
  */
 class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
 
+    var pagerAdapter:HomeViewPagerAdapter?=null
+
+    var fragmentList:ArrayList<Fragment> = arrayListOf()
+
+    var titleList= mutableListOf<String>()
 
     override fun initView() {
         //Tab+Fragment
-        binding.homeViewpager?.adapter = HomeViewPagerAdapter(this)
+
+
+        fragmentList.add(RecommendFragment.newInstance())
+        fragmentList.add(NewsListFragment.newInstance())
+        fragmentList.add(ActsListFragment.newInstance())
+        fragmentList.add(BigShotFragment.newInstance())
+
+        titleList.add(getString(R.string.recommend))
+        titleList.add(getString(R.string.acts))
+        titleList.add(getString(R.string.news))
+        titleList.add(getString(R.string.big_shot))
+
+        pagerAdapter=HomeViewPagerAdapter(this,fragmentList)
+        binding.homeViewpager.adapter = pagerAdapter;
+
+
         binding.homeViewpager.isSaveEnabled = false
         TabLayoutMediator(binding.hometab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
-            tab.text = "Fragment $i"
+            tab.text = titleList[i]
             if (i == 1) {
                 val badge = tab.orCreateBadge
                 badge.number = 22
@@ -53,16 +77,7 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
         }
     }
 
-    inner class HomeViewPagerAdapter(fragmentActivity: Fragment) :
-        FragmentStateAdapter(fragmentActivity) {
-        override fun getItemCount(): Int {
-            return 3
-        }
 
-        override fun createFragment(position: Int): Fragment {
-            return BannerFragment()
-        }
-    }
 
 
 }
