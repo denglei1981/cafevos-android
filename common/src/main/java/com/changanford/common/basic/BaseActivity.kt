@@ -25,14 +25,16 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     lateinit var binding: VB
     lateinit var viewModel: VM
 
+    var isDarkFont=true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = bindings
         setContentView(binding.root)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
         initViewModel()
         curActivity = this
         initView()
+        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
         initData()
     }
 

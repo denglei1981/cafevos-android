@@ -37,6 +37,7 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
             ivHead.loadImage(CircleConfig.TestUrl, ImageOptions().apply { circleCrop = true })
             MUtils.postDetailsFrom(tvOneFrom, "重庆车友圈")
             MUtils.postDetailsFrom(tvTwoFrom, "重庆车友圈")
+            MUtils.setDrawableStar(tvTwoTitle,R.mipmap.circle_very_post)
             banner.run {
                 setAutoPlay(true)
                 setScrollDuration(500)
@@ -61,6 +62,9 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
 
     private fun initListener() {
         binding.run {
+            ivBack.setOnClickListener {
+                finish()
+            }
             ivMenu.setOnClickListener {
                 if (clImageAndText.visibility == View.VISIBLE) {
                     clImageAndText.visibility = View.GONE
@@ -74,7 +78,7 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
     }
 
     override fun initData() {
-        val list = arrayListOf("", "", "", "","", "", "", "")
+        val list = arrayListOf("", "", "", "", "", "", "", "")
         commentAdapter.setItems(list)
         commentAdapter.notifyDataSetChanged()
     }
