@@ -13,6 +13,7 @@ import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.setupWithNavController
 import com.changanford.evos.databinding.ActivityMainBinding
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -39,6 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 
     override fun initView() {
+
         setSupportActionBar(binding.toolbar)
         //旧
 //        val navController = findNavController(R.id.nav_host_fragment_content_main)

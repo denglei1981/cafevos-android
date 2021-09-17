@@ -18,6 +18,7 @@ import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.gyf.immersionbar.ImmersionBar
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

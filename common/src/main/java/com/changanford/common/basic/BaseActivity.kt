@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
+import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
 
 /**********************************************************************************
@@ -28,6 +29,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         super.onCreate(savedInstanceState)
         binding = bindings
         setContentView(binding.root)
+        ImmersionBar.with(this).init()
         initViewModel()
         curActivity = this
         initView()
