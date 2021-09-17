@@ -3,10 +3,8 @@ package com.changanford.home
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
-import com.changanford.common.ui.viewpager.BannerFragment
 import com.changanford.common.ui.viewpager.bindAdapter
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.databinding.FragmentFirstBinding
@@ -37,10 +35,10 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
         fragmentList.add(ActsListFragment.newInstance())
         fragmentList.add(BigShotFragment.newInstance())
 
-        titleList.add(getString(R.string.recommend))
-        titleList.add(getString(R.string.acts))
-        titleList.add(getString(R.string.news))
-        titleList.add(getString(R.string.big_shot))
+        titleList.add(getString(R.string.home_recommend))
+        titleList.add(getString(R.string.home_acts))
+        titleList.add(getString(R.string.home_news))
+        titleList.add(getString(R.string.home_big_shot))
 
         pagerAdapter=HomeViewPagerAdapter(this,fragmentList)
         binding.homeViewpager.adapter = pagerAdapter;
