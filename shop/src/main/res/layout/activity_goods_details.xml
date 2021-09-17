@@ -9,17 +9,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_withe">
-        <include
-            android:id="@+id/in_header"
-            layout="@layout/topbar_goods_details"/>
+        android:background="@color/white">
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/in_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <include
             android:id="@+id/in_bottom"
             layout="@layout/in_goods_bottom"/>
+        <include
+            android:id="@+id/in_header"
+            layout="@layout/topbar_goods_details"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

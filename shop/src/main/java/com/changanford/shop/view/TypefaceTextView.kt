@@ -29,6 +29,8 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         setTypeface(typeface)
         //行高
         setLineSpacing(0f,1.5f)
+        //默认文字
+        setText("00000111111111")
         typedArray.recycle()
     }
     private fun initView(){
