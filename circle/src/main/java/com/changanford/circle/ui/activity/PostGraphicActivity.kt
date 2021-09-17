@@ -83,12 +83,12 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
         commentAdapter.notifyDataSetChanged()
     }
 
-    private fun getBannerList(): ArrayList<Int> {
+    private fun getBannerList(): ArrayList<String> {
         return arrayListOf(
-            R.mipmap.circle_test_banner,
-            R.mipmap.circle_test_banner,
-            R.mipmap.circle_test_banner,
-            R.mipmap.circle_test_banner
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png"
         )
     }
 

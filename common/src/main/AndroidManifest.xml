@@ -24,7 +24,7 @@
         <activity android:name=".ui.CaptureActivity" />
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity android:name=".web.AgentWebActivity" />
-
+        <activity android:name=".ui.PhotoViewActivity" />
     </application>
 
 </manifest>

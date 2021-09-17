@@ -1,5 +1,7 @@
 package com.changanford.common.util
 
+import com.changanford.common.MyApp
+
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
  * @FileName: com.changanford.common.util.Constants
@@ -15,7 +17,7 @@ object MConstant {
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
     const val COOKIE = false
-
+    val rootPath = MyApp.mContext.getExternalFilesDir("")?.absolutePath
     var pubKey = ""
     var token: String = ""
     var imgcdn = ""

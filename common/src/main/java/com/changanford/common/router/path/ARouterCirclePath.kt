@@ -19,6 +19,7 @@ object ARouterCirclePath {
     const val ReleaseEditActivity = "/circle/ReleaseEditActivity"
     const val PostGraphicActivity = "/circle/PostGraphicActivity"
     const val PostVideoDetailsActivity = "/circle/PostVideoDetailsActivity"
+    const val PhotoViewActivity = "/common/PhotoViewActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

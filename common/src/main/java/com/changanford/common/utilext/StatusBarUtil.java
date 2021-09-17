@@ -776,4 +776,6 @@ public class StatusBarUtil {
         int height = ImmersionBar.getStatusBarHeight(activity);
         view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + height, view.getPaddingRight(), view.getPaddingBottom());
     }
+
+
 }

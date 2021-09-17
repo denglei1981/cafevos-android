@@ -165,6 +165,8 @@ dependencies {
     api 'com.github.dueeeke.dkplayer:player-ijk:3.2.6'
     api 'com.github.dueeeke.dkplayer:player-exo:3.2.6'
 
+    api 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

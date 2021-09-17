@@ -1,14 +1,19 @@
 package com.changanford.common.util
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.pm.ActivityInfo
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.compose.animation.fadeOut
 import androidx.core.app.ActivityCompat
 import com.changanford.common.MyApp
 import com.changanford.common.R
+import com.changanford.common.utilext.toast
+import com.dueeeke.videoplayer.util.PlayerUtils.getApplication
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -129,4 +134,25 @@ object PictureUtil {
             //.forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
             .forResult(onResultCallbackListener);
     }
+
+
+    /**
+     * 保存图片到相册(适配安卓11)
+     */
+    fun saveBitmapPhoto(bm: Bitmap) {
+        val resolver = MyApp.mContext.contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "ft${System.currentTimeMillis()}")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+        }
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        if (uri != null) {
+            resolver.openOutputStream(uri).use {
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                "保存成功".toast()
+            }
+        }
+
+    }
+
 }
