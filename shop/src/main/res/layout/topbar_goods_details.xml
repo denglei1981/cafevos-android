@@ -9,6 +9,7 @@
         android:id="@+id/layout_header"
         android:background="#fcffffff">
         <ImageView
+            android:onClick="onClick"
             android:id="@+id/img_back"
             android:padding="@dimen/dp_4"
             android:layout_marginStart="@dimen/dp_16"

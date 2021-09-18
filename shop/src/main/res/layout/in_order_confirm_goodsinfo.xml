@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_200"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_36"
+        android:paddingBottom="@dimen/dp_20">
+      <ImageView
+          android:id="@+id/img_goodsCover"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          android:scaleType="fitXY"
+          android:src="@drawable/shadow_1b51d9_5dp"
+          android:layout_width="@dimen/dp_90"
+          android:layout_height="@dimen/dp_90"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goodsTitle"
+            style="@style/style_txt_ellipsize"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/img_goodsCover"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/dp_11"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            tools:text="无线蓝牙耳机 降噪耳机全新苹…"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_goods_property"
+            android:layout_marginTop="@dimen/dp_9"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
+            app:layout_constraintStart_toStartOf="@id/tv_goodsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_height="@dimen/dp_22"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginBottom="@dimen/dp_3"
+            android:id="@+id/tv_integral"
+            app:end_txt="@string/str_integral"
+            app:layout_constraintStart_toStartOf="@id/tv_goodsTitle"
+            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1300积分"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_14" />
+        <include layout="@layout/in_addnumber"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_distribution"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/img_goodsCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_distribution"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_distribution_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_distribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_packageMail"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_leaveMsg"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/dp_27"
+            app:layout_constraintTop_toBottomOf="@id/tv_distribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_leaveMessage"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:maxLength="100"
+            android:background="@null"
+            android:id="@+id/edt_leaveMsg"
+            android:gravity="end"
+            android:maxLines="1"
+            android:layout_marginStart="@dimen/dp_150"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_leaveMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/str_optionalMore100Words"
+            android:textColorHint="@color/color_cc"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

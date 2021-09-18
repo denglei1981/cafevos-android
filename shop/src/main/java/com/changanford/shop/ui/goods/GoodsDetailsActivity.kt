@@ -76,6 +76,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             R.id.btn_submit->{
                 OrderConfirmActivity.start(this,"goodsInfo")
             }
+            //返回
+            R.id.img_back->this.finish()
         }
     }
     private fun tabClick(){

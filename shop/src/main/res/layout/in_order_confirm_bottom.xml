@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80"
+        android:paddingTop="@dimen/dp_7"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:background="@color/white">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integral"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:end_txt="@string/str_integral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1300积分"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/btn_submit"
+            app:start_txt="@string/str_yourAccount"
+            app:end_txt="@string/str_integral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="您的账户：1600积分"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_10" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:text="@string/str_submitOrder"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:background="@drawable/btn_selector"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/dp_98"
+            android:layout_height="@dimen/dp_40"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

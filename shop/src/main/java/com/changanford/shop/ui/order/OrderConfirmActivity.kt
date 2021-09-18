@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 
@@ -23,4 +24,5 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding,OrderViewModel>()
     override fun initData() {
 
     }
+    fun onBack(v: View)=this.finish()
 }

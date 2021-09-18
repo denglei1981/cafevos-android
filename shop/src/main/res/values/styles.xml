@@ -31,4 +31,9 @@
         <item name="android:button">@null</item>
         <item name="android:drawableTop">@drawable/cb_style_collection</item>
     </style>
+    <style name="style_txt_ellipsize">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>

@@ -28,4 +28,19 @@
     <string name="str_fromEnd">距结束</string>
     <string name="str_zero">00</string>
     <string name="str_colon">:</string>
+    <string name="str_submitOrder">提交订单</string>
+    <string name="str_yourAccount">您的账户：</string>
+    <string name="str_ose">-</string>
+    <string name="str_one">1</string>
+    <string name="str_add">+</string>
+    <string name="str_distribution">配送方式</string>
+    <string name="str_leaveMessage">留言</string>
+    <string name="str_optionalMore100Words">选填，100字以内</string>
+    <string name="str_amountGoods">商品金额</string>
+    <string name="str_memberDiscount">会员优惠</string>
+    <string name="str_freight">运费</string>
+    <string name="str_combinedXintegral">合计：<font color="#00095B">1300积分 </font></string>
+    <string name="str_payType">支付方式</string>
+    <string name="str_integralPay">积分支付</string>
+    <string name="str_packageMail">快递包邮</string>
 </resources>

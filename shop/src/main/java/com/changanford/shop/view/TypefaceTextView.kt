@@ -16,6 +16,7 @@ import com.changanford.shop.R
 class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     AppCompatTextView(context, attrs, defStyleAttr) {
     private var startText:String?=""
+    private var endText:String?=""
     init {
         initTypefaceTextView(context, attrs)
         initView()
@@ -24,6 +25,7 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TypefaceTextView)
         //开头字体
         startText=typedArray.getString(R.styleable.TypefaceTextView_start_txt)
+        endText=typedArray.getString(R.styleable.TypefaceTextView_end_txt)
         //字体
         val typeface: Typeface= when (val typefaceName = typedArray.getString(R.styleable.TypefaceTextView_typeface)) {
             "ZenDots-Regular" -> Typeface.createFromAsset(context.assets, "$typefaceName.ttf")
@@ -36,8 +38,11 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
     private fun initView(){
         if(TextUtils.isEmpty(text)){
-            val defountTxt=context.getString(R.string.str_text)
-            text = if(startText==null)defountTxt else "$startText$defountTxt"
+            val txt=context.getString(R.string.str_text)
+            text=if(startText!=null&&endText!=null)"$startText$txt$endText"
+            else if(startText!=null)"$startText$txt"
+            else if(endText!=null)"$txt$endText"
+            else txt
         }
     }
 }
