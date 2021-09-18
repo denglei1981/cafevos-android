@@ -10,7 +10,8 @@ import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.databinding.ItemJifenBinding
+import com.changanford.my.adapter.GrowUpAndJifenViewHolder
+import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiJifenBinding
 import com.changanford.my.databinding.ViewTaskHead1Binding
 import com.changanford.my.viewmodel.SignViewModel
@@ -65,9 +66,15 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
     }
 
     inner class JifenAdapter :
-        BaseQuickAdapter<GrowUpItem, BaseDataBindingHolder<ItemJifenBinding>>(R.layout.item_jifen) {
-        override fun convert(holder: BaseDataBindingHolder<ItemJifenBinding>, item: GrowUpItem) {
+        BaseQuickAdapter<GrowUpItem, BaseDataBindingHolder<ItemGrowUpBinding>>(R.layout.item_grow_up) {
+        private var source: String = ""
 
+        override fun convert(holder: BaseDataBindingHolder<ItemGrowUpBinding>, item: GrowUpItem) {
+            GrowUpAndJifenViewHolder(holder, item, true, source)
+        }
+
+        fun setSource(source: String) {
+            this.source = source
         }
     }
 }

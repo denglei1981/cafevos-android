@@ -4,11 +4,13 @@ import android.graphics.Color
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.bean.ItemTaskBean
 import com.changanford.common.bean.RootTaskBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.my.R
+import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.ItemTaskContentBinding
 import com.changanford.my.databinding.ItemTaskTitleBinding
 
@@ -86,3 +88,38 @@ class TaskContentAdapter :
         }
     }
 }
+
+/**
+ * 成长值，积分
+ */
+fun GrowUpAndJifenViewHolder(
+    holder: BaseDataBindingHolder<ItemGrowUpBinding>,
+    item: GrowUpItem,
+    isGrowUp: Boolean,
+    source: String = ""
+) {
+    holder.dataBinding?.let {
+        it.title.text = item.actionName
+//                it.date.text = TimeUtils.MillisToStr(item.createTime)
+        it.from.text =
+            if (item.source.isNullOrEmpty()) source else item.source
+
+        if (isGrowUp) {
+            if (item.growth < 0) {
+                it.num.text = "${item.growth}"
+            } else {
+                it.num.text = "+${item.growth}"
+            }
+        } else {
+            if (item.integral < 0) {
+                holder.dataBinding?.num?.text = "${item.integral}"
+            } else {
+                holder.dataBinding?.num?.text = "+${item.integral}"
+            }
+        }
+    }
+}
+
+
+
+

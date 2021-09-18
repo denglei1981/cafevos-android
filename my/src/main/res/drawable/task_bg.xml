@@ -8,6 +8,6 @@
         android:useLevel="true" />
 
     <corners
-        android:bottomLeftRadius="@dimen/dp_18"
-        android:bottomRightRadius="@dimen/dp_18" />
+        android:bottomLeftRadius="@dimen/dp_30"
+        android:bottomRightRadius="@dimen/dp_30" />
 </shape>

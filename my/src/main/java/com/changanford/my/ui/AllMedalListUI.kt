@@ -37,8 +37,6 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private var oldPosition = 0
 
     override fun initView() {
-
-
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->
@@ -76,29 +74,35 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     super.onPageSelected(position)
                     val oldTitle =
                         binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tv_tab)
+                    val oldIn =
+                        binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (oldTitle != null) {
                         oldTitle.textSize = 14F
                         oldTitle.setTextColor(
                             ContextCompat.getColor(
                                 context,
-                                R.color.text_161E37
+                                R.color.color_0817
                             )
                         )
                         oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+                        oldIn?.isSelected = false
                     }
 
                     val title =
                         binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tv_tab)
+                    val newIn =
+                        binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (title != null) {
                         title.textSize = 15F
                         title.setTextColor(
                             ContextCompat.getColor(
                                 context,
-                                R.color.text_161E37
+                                R.color.text_01025C
                             )
                         )
                         //加粗
                         title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                        newIn?.isSelected = true
                     }
 
                     oldPosition = position
@@ -109,12 +113,13 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 val itemHelpTabBinding = ItemMedalTabBinding.inflate(layoutInflater)
                 itemHelpTabBinding.tvTab.text = titles[tabPosition]
                 //解决第一次进来item显示不完的bug
+                itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
                 if (tabPosition == 0) {
                     itemHelpTabBinding.tvTab.textSize = 15F
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.text_161E37
+                            R.color.text_01025C
                         )
                     )
                     //加粗
@@ -126,7 +131,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.text_161E37
+                            R.color.color_0817
                         )
                     )
                 }

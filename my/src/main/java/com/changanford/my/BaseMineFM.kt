@@ -1,6 +1,5 @@
 package com.changanford.my
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -10,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.databinding.ViewEmptyBinding
-import com.changanford.common.utilext.StatusBarUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -33,7 +31,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtil.setColor(requireActivity(), Color.RED)
+//        StatusBarUtil.setColor(requireActivity(), Color.RED)
     }
 
     override fun initData() {

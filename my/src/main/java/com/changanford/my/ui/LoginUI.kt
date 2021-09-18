@@ -12,7 +12,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
-import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.my.utils.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement

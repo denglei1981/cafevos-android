@@ -6,35 +6,81 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_10"
-        android:orientation="vertical">
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_8"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dp_5"
+        app:cardElevation="@dimen/dp_6">
 
-        <ImageView
-            android:id="@+id/im_medal_icon"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/im_medal_icon">
+            android:minWidth="@dimen/dp_104"
+            android:minHeight="@dimen/dp_148"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_medal_name"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/im_medal_icon"
+                android:layout_width="@dimen/dp_68"
+                android:layout_height="@dimen/dp_74"
+                android:layout_marginTop="@dimen/dp_8"
+                android:src="@mipmap/ic_medal_ex"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:layout_marginTop="@dimen/dp_2"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/im_medal_icon">
 
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_medal_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/app_name"
+                    android:textColor="#071726"
+                    android:textSize="@dimen/sp_14" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_medal_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2"
+                    android:maxLines="2"
+                    android:text="2021.08.31点亮\n车迷级勋章"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_10"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_get_medal"
+                    android:layout_width="@dimen/dp_67"
+                    android:layout_height="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_11"
+                    android:background="@drawable/shape_login_sms_r_16_c_89"
+                    android:gravity="center"
+                    android:text="立即点亮"
+                    android:textColor="#01025C"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </layout>

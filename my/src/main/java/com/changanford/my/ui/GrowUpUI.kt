@@ -1,6 +1,5 @@
 package com.changanford.my.ui
 
-import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -10,9 +9,9 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
+import com.changanford.my.adapter.GrowUpAndJifenViewHolder
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiGrowUpBinding
 import com.changanford.my.viewmodel.SignViewModel
@@ -30,8 +29,7 @@ import kotlinx.coroutines.launch
 class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
 
     override fun initView() {
-        StatusBarUtil.setColor(this, Color.WHITE)
-        StatusBarUtil.setAndroidNativeLightStatusBar(this, true)
+
         val gAdapter by lazy {
             GrowUpAdapter()
         }
@@ -64,6 +62,26 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                 }
             } else {
                 completeRefresh(it.dataList, gAdapter, it.total)
+                if (pageSize == 1) {
+                    var growUp = it.extend
+                    growUp?.let {
+                        binding.myGradeV.text = it.growSeriesName
+
+                        try {
+                            binding.myGradeDes.text =
+                                "再获取${(it.nextSeriesMinGrow - it.growthSum).toInt()}成长值即可升级为${it.nextGrowSeriesName}"
+                            binding.myGradeNum.text =
+                                "${it.growthSum.toInt()}/${it.nextSeriesMinGrow.toInt()}"
+                            binding.myGradeProgressbar.setProgressWithAnimation((it.growthSum * 100 / it.nextSeriesMinGrow).toFloat())
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        binding.num.text = "当前成长值${growUp.growthSum.toInt()}"
+                        binding.tvExplainTitle.text = "${it.growSeriesName} 权益说明："
+                        binding.tvExplain.text = "${it.rulesDesc}"
+                    }
+                }
             }
         })
     }
@@ -83,8 +101,13 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
         BaseQuickAdapter<GrowUpItem, BaseDataBindingHolder<ItemGrowUpBinding>>(
             R.layout.item_grow_up
         ) {
+        private var source: String = ""
         override fun convert(holder: BaseDataBindingHolder<ItemGrowUpBinding>, item: GrowUpItem) {
+            GrowUpAndJifenViewHolder(holder, item, true, source)
+        }
 
+        fun setSource(source: String) {
+            this.source = source
         }
     }
 }

@@ -17,7 +17,7 @@ var getMenus: ArrayList<MineMenuMultiEntity> = arrayListOf(
     MineMenuMultiEntity(MINE_ITEM_TITLE, "我的日常任务", spanSize = 4),
     MineMenuMultiEntity(MINE_ITEM_MENU, "任务中心", ARouterMyPath.MineTaskListUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的积分", ARouterMyPath.MineIntegralUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的勋章", ARouterMyPath.AllMedalUI),
+    MineMenuMultiEntity(MINE_ITEM_MENU, "所有勋章", ARouterMyPath.AllMedalUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的爱车", ARouterMyPath.MineLoveCarListUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的成长值", ARouterMyPath.MineGrowUpUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的日常任务"),

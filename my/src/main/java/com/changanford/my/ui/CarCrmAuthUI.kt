@@ -7,7 +7,6 @@ import com.changanford.common.util.AuthCarStatus
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.viewmodel.CarViewModel
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
 
 /**
@@ -32,7 +31,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
         }
     }
 
-    override fun bindSmartLayout(): SmartRefreshLayout? {
-        return binding.rcyAuth.smartCommonLayout
-    }
+//    override fun bindSmartLayout(): SmartRefreshLayout? {
+//        return binding.rcyAuth.smartCommonLayout
+//    }
 }
