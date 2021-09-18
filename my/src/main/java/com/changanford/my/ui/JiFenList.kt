@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.bean.GrowUpItem
 import com.changanford.my.databinding.ItemJifenBinding
 import com.changanford.my.databinding.UiJifenBinding
 import com.changanford.my.databinding.ViewTaskHead1Binding

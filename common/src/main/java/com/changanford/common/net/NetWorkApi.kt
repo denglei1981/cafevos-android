@@ -1,8 +1,6 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
-import com.changanford.my.bean.GrowUpBean
-import com.changanford.my.bean.RootTaskBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -68,10 +66,29 @@ interface NetWorkApi {
 
 
     /**
+     * 获取CAC验证码
+     */
+    @POST("login/getSmsCode")
+    suspend fun sendCacSmsCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
      * 手机验证码登录
      */
     @POST("login/loginBySmsCode")
     suspend fun smsCodeSign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<LoginBean>
+
+    /**
+     * 绑定手机
+     */
+    @POST("login/bindPhone")
+    fun bindMobile(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<LoginBean>
@@ -105,6 +122,7 @@ interface NetWorkApi {
 
 
     //user/accountLog/getUserAccountLogList 成长值
+    //
     @POST("user/accountLog/getUserAccountLogList")
     suspend fun mineGrowUp(
         @HeaderMap headMap: Map<String, String>,

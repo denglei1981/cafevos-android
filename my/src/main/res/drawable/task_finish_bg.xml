@@ -4,15 +4,15 @@
     <!-- 标签选中时的背景 -->
     <item android:state_selected="true">
         <shape>
-            <corners android:radius="@dimen/dp_30" />
-            <solid android:color="#FC883B" />
+            <corners android:radius="@dimen/dp_12" />
+            <solid android:color="#201B3B89" />
         </shape>
     </item>
     <!-- 标签的正常背景 -->
-    <item>
+    <item android:state_selected="false">
         <shape>
-            <corners android:radius="@dimen/dp_30" />
-            <solid android:color="#f2f2f2" />
+            <corners android:radius="@dimen/dp_12" />
+            <solid android:color="#F7F7F7" />
         </shape>
     </item>
 

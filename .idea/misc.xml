@@ -14,6 +14,11 @@
         <entry key="..\:/ford/common/src/main/res/layout/item_medal.xml" value="0.2" />
         <entry key="..\:/ford/common/src/main/res/layout/my_two_level_header.xml" value="0.15677083333333333" />
         <entry key="..\:/ford/common/src/main/res/layout/view_empty.xml" value="0.2046875" />
+        <entry key="..\:/ford/my/src/main/res/drawable/edittext_bg.xml" value="0.13986486486486485" />
+        <entry key="..\:/ford/my/src/main/res/drawable/et_focused.xml" value="0.215625" />
+        <entry key="..\:/ford/my/src/main/res/drawable/et_normal.xml" value="0.2296875" />
+        <entry key="..\:/ford/my/src/main/res/drawable/shape_login_sms_r_16_c_89.xml" value="0.21927083333333333" />
+        <entry key="..\:/ford/my/src/main/res/drawable/shape_top_r_5_c_ff.xml" value="0.21354166666666666" />
         <entry key="..\:/ford/my/src/main/res/drawable/task_finish_bg.xml" value="0.1953125" />
         <entry key="..\:/ford/my/src/main/res/layout/about_fragment.xml" value="0.17552083333333332" />
         <entry key="..\:/ford/my/src/main/res/layout/activity_test.xml" value="0.13854166666666667" />
@@ -27,6 +32,7 @@
         <entry key="..\:/ford/my/src/main/res/layout/mine_fragment.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/playcaard.xml" value="0.14130434782608695" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_all_medal.xml" value="0.209375" />
+        <entry key="..\:/ford/my/src/main/res/layout/ui_bind_mobile.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_jifen.xml" value="0.1" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_login.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_medal_detail.xml" value="0.178125" />
