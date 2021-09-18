@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/con_content"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:background="@color/white"
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_logo"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/icon_home_scan"
+        android:src="@drawable/icon_home_more_action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
