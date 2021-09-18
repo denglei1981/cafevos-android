@@ -2,14 +2,20 @@ package com.changanford.home
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.util.DisplayUtil
 import com.changanford.common.utilext.logE
 import com.changanford.home.acts.fragment.ActsListFragment
+import com.changanford.home.callback.ICallback
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentHomeRecommendBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
@@ -31,6 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
     var titleList = mutableListOf<String>()
 
     var immersionBar: ImmersionBar? = null
+
     override fun initView() {
         //Tab+Fragment
         immersionBar = ImmersionBar.with(requireActivity())
@@ -57,7 +64,6 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
                 R.color.blue_tab
             )
         )
-//        StatusBarUtil.setStatusBarMarginTop(binding.toolbar,requireActivity());
         binding.homeTab.tabRippleColor = null
 //        setAppbarPercent()
 
@@ -79,17 +85,22 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        binding.recommendContent.ivMore.setOnClickListener {
+            showPublish(binding.recommendContent.ivMore)
+        }
+        binding.layoutTopBar.ivScan.setOnClickListener {
+            showPublish(binding.layoutTopBar.ivScan)
+        }
+
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
-
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
-
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
@@ -130,6 +141,25 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         setAppbarPercent()
     }
 
+    private fun showPublish(publishLocationView : ImageView) {
+        val location = IntArray(2)
+        var height = DisplayUtil.getDpi(requireContext())
+        publishLocationView.getLocationOnScreen(location)
+        height -= location[1]
+        val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
+        val publishPopup = PublishPopup(
+            requireContext(),
+            publishView,
+            Constraints.LayoutParams.WRAP_CONTENT,
+            Constraints.LayoutParams.WRAP_CONTENT,
+            object :ICallback{
+                override fun onResult(result: ResultData) {
+                }
+            }
+        )
+        publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED)
+        publishPopup.showAsDropDown(publishLocationView)
+    }
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             "verticalOffset=$verticalOffset".logE()
