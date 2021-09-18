@@ -17,15 +17,15 @@ object MConstant {
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
     const val COOKIE = false
-<<<<<<< HEAD
+
     val rootPath = MyApp.mContext.getExternalFilesDir("")?.absolutePath
-=======
+
 
     val H5_BASE_URL_CSCIR by lazy {
         "https://cir.uni.changan.com.cn"
     }
 
->>>>>>> dev
+
     var pubKey = ""
     var token: String = ""
     var imgcdn = ""
