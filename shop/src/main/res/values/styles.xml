@@ -21,4 +21,14 @@
         <!-- 根据自定义星星图片的大小,设置相应的值,否则可能显示不全 -->
         <item name="android:numColumns">5</item>
     </style>
+    <style name="style_cb_collection" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@drawable/cb_text_collection</item>
+        <item name="android:textSize">@dimen/sp_10</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableTop">@drawable/cb_style_collection</item>
+    </style>
 </resources>

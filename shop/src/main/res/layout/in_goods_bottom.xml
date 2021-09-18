@@ -10,18 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
-        <androidx.appcompat.widget.AppCompatTextView
+        <CheckBox
+            style="@style/style_cb_collection"
             android:paddingStart="@dimen/dp_20"
             android:paddingEnd="@dimen/dp_20"
-            android:textSize="@dimen/sp_10"
-            android:textColor="@color/text_colorv6"
-            android:id="@+id/tv_collect"
-            android:drawablePadding="@dimen/dp_5"
-            android:text="@string/str_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:drawableTopCompat="@drawable/ic_baseline_star_border_24" />
+            android:id="@+id/cb_collect"
+            android:text="@string/str_collection" />
         <androidx.appcompat.widget.AppCompatButton
+            android:onClick="onClick"
+            android:id="@+id/btn_submit"
             android:background="@drawable/btn_selector"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/white"

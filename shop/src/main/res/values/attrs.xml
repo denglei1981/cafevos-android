@@ -81,5 +81,7 @@
     </declare-styleable>
     <declare-styleable name="TypefaceTextView">
         <attr name="typeface" format="string" />
+        <attr name="start_txt" format="string" />
+        <attr name="end_txt" format="string" />
     </declare-styleable>
 </resources>

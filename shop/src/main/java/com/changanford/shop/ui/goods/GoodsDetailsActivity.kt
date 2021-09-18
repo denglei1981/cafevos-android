@@ -14,6 +14,8 @@ import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
+import com.changanford.shop.ui.order.OrderConfirmActivity
+import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import kotlin.math.roundToInt
 
@@ -34,16 +36,16 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     private val tabLayout by lazy { binding.inHeader.tabLayout }
     private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_comment),getString(R.string.str_details))}
     private var topBarH =0
-    private var commentH=100f
+    private var commentH=300f
     private var detailsH =0f
     private var oldScrollY=0
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
     private var isCoolection=false //是否收藏
     private fun initH(){
-        topBarH= binding.inHeader.layoutHeader.height
+        topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.inComment.layoutComment.y-topBarH
-        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
+        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH-30
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -67,6 +69,14 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     override fun initData() {
         val imgs= arrayListOf("","","","","","","","","","","","","","","","")
         mAdapter.setList(imgs)
+    }
+    fun onClick(v:View){
+        when(v.id){
+            //确认订单
+            R.id.btn_submit->{
+                OrderConfirmActivity.start(this,"goodsInfo")
+            }
+        }
     }
     private fun tabClick(){
         for (i in 0 until tabLayout.tabCount) {

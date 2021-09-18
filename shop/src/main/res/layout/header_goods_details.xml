@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_10"/>
         <!-- 商品详情           -->
-        <TextView
+        <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsDetails_title"
             android:textStyle="bold"
             android:layout_marginBottom="@dimen/dp_15"
