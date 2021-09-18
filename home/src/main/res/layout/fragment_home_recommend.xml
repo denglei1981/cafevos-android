@@ -1,51 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false">
-
-    <!-- TODO: Update blank fragment layout -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <include android:id="@+id/recommend_content"
-                layout="@layout/include_recommend_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </include>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/home_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabBackground="@color/transparent"
-            app:tabIndicatorColor="@color/transparent"
-            app:tabIndicatorHeight="0dp"
-            app:tabPadding="0dp"
-            app:tabPaddingBottom="0dp"
-            app:tabPaddingEnd="0dp"
-            app:tabPaddingStart="0dp"
-            app:tabPaddingTop="0dp"
-            app:tabRippleColor="@color/transparent"
-            app:tabSelectedTextColor="@color/black"
-            app:tabTextColor="@color/black"/>
-    </com.google.android.material.appbar.AppBarLayout>
+    app:layoutDescription="@xml/fragment_home_recommend_scene">
 
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/home_viewpager"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:clipChildren="false">
+
+        <!-- TODO: Update blank fragment layout -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="@dimen/dp_0"
+            >
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/coll_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <include
+                    android:id="@+id/recommend_content"
+                    layout="@layout/include_recommend_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_0"
+                    app:contentInsetStart="@dimen/dp_0"
+                    app:layout_collapseMode="pin">
+
+                    <include
+                        android:id="@+id/layout_top_bar"
+                        layout="@layout/include_top_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/home_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabBackground="@color/transparent"
+                app:tabIndicator="@drawable/shape_home_tab_indicator"
+                app:tabIndicatorHeight="8dp"
+                app:tabMode="scrollable"
+                app:tabPadding="0dp"
+                app:tabPaddingBottom="0dp"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp"
+                app:tabPaddingTop="0dp"
+                app:tabRippleColor="@color/transparent"
+                app:tabSelectedTextColor="@color/blue_tab"
+                app:tabTextColor="@color/black" />
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/home_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
