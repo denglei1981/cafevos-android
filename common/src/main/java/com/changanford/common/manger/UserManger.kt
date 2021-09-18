@@ -5,6 +5,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.LoginBean
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.MConstant
+
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.util.room.UserDatabase
 

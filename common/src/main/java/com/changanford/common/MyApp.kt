@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.MConstant.isDebug
+
 import com.luck.picture.lib.app.IApp
 import com.luck.picture.lib.app.PictureAppMaster
 import com.luck.picture.lib.engine.PictureSelectorEngine

@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.util.MConstant
 
+
 /**
  * @Author hpb
  * @Date 2020/4/30 10:42

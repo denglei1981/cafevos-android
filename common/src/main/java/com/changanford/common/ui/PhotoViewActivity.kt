@@ -14,6 +14,7 @@ import com.changanford.common.databinding.PhotoviewActivityBinding
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.GifUtils
 import com.changanford.common.util.MConstant
+
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
