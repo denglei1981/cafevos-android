@@ -8,12 +8,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingEnd="@dimen/dp_20"
-        android:paddingStart="@dimen/dp_20"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.LinearLayoutCompat
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_horizontal"
@@ -48,6 +47,8 @@
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/btn_submit"
             android:layout_marginTop="@dimen/dp_250"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,5 +59,7 @@
             android:background="@drawable/btn_selector"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"/>
+        <include
+            layout="@layout/in_header_layout"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
