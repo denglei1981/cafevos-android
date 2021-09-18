@@ -58,34 +58,11 @@
             tools:text="抽绳双肩包"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_13" />
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/lLayout_vip"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_width="wrap_content"
+        <include
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_16"
-            android:minWidth="@dimen/dp_120"
-            android:background="@drawable/bord_01025c_2dp">
-            <com.changanford.shop.view.TypefaceTextView
-                android:background="@drawable/shadow_01025c_l_2dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:minWidth="@dimen/dp_48"
-                android:text="@string/str_vipExclusive"
-                android:textColor="@color/color_withe"
-                android:textSize="@dimen/sp_11" />
-            <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_vipIntegral"
-                android:textStyle="bold"
-                android:paddingStart="@dimen/dp_5"
-                android:paddingEnd="@dimen/dp_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="11600积分"
-                android:textColor="@color/color_01025C"
-                android:textSize="@dimen/sp_13" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            layout="@layout/in_goods_vip"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"

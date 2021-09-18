@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
+import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.utils.WCommonUtil
@@ -27,22 +28,22 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
         }
     }
-    private lateinit var headerBinding:HeaderGoodsDetailsBinding
+    private lateinit var control: GoodsDetailsControl
+    private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
     private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_comment),getString(R.string.str_details))}
     private var topBarH =0
-    private var commentH=0f
+    private var commentH=100f
     private var detailsH =0f
     private var oldScrollY=0
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
+    private var isCoolection=false //是否收藏
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height
         commentH=headerBinding.inComment.layoutComment.y-topBarH
         detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
-        tabLayout.alpha=0f
-        topBarBg.alpha=0
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -51,11 +52,12 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     }
     override fun initView() {
         binding.rvGoodsImg.layoutManager=LinearLayoutManager(this)
-        headerBinding= DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.header_goods_details, null, false)
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
+        control= GoodsDetailsControl(this,binding,headerBinding)
+        control.initTimeCount(15613202365)
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
@@ -118,6 +120,16 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
                 topBarBg.alpha=alpha
                 val tabAlpha=oldScrollY / commentH * 1.0f
                 tabLayout.alpha=tabAlpha
+
+//                val alpha0 = 255-alpha
+                val alpha0 = 255
+                binding.inHeader.imgBack.background.alpha=alpha0
+                binding.inHeader.imgShare.background.alpha=alpha0
+                binding.inHeader.imgCollection.background.alpha=alpha0
+
+                binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back)
+                binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share)
+                binding.inHeader.imgCollection.setImageResource(if(isCoolection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_0)
             }else{
                 topBarBg.alpha=255
                 tabLayout.alpha=1f
@@ -126,7 +138,21 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
                 }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
                     tabLayout.getTabAt(1)?.select()
                 }
+
+                binding.inHeader.imgBack.background.alpha=0
+                binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back_black)
+
+                binding.inHeader.imgShare.background.alpha=0
+                binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share_black)
+
+                binding.inHeader.imgCollection.background.alpha=0
+                binding.inHeader.imgCollection.setImageResource(if(isCoolection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_00)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(::control.isInitialized)control.onDestroy()
     }
 }

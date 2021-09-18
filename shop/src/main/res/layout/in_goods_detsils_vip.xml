@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+        <com.changanford.shop.view.TypefaceTextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1300积分"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_18" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1600"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_12" />
+        <include layout="@layout/in_goods_vip"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:gravity="end|center_vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="限量200件"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_10" />
+    </LinearLayout>
+</layout>

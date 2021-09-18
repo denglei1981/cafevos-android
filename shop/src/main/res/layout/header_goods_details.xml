@@ -15,7 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="375dp"/>
         <!-- 商品秒杀信息           -->
-        <include layout="@layout/in_goods_details_kill"/>
+        <include
+            android:id="@+id/inKill"
+            layout="@layout/in_goods_details_kill"/>
+        <!-- 会员专享/会员折扣       -->
+        <include layout="@layout/in_goods_detsils_vip"/>
         <!-- 商品基本信息           -->
         <include layout="@layout/in_goods_details_info"/>
         <View

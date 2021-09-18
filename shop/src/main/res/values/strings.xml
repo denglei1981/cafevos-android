@@ -25,4 +25,7 @@
     <string name="str_productEvaluationX">商品评价(%1$d)</string>
     <string name="str_goodsDetails">商品详情</string>
     <string name="str_vipExclusive">会员专享</string>
+    <string name="str_fromEnd">距结束</string>
+    <string name="str_zero">00</string>
+    <string name="str_colon">:</string>
 </resources>

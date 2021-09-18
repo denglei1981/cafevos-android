@@ -43,6 +43,100 @@
             tools:text="限量20件"
             android:textColor="@color/color_withe"
             android:textSize="@dimen/sp_10" />
-
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_timeCount"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_fromEnd"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
+                android:layout_marginEnd="@dimen/dp_8"/>
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_kill_h"
+                android:background="@drawable/shadow_white_3dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dp_18"
+                android:minHeight="@dimen/dp_18"
+                android:paddingStart="@dimen/dp_1"
+                android:paddingEnd="@dimen/dp_1"
+                android:text="@string/str_zero"
+                android:textColor="@color/color_E94A52"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_colon"
+                android:textColor="@color/color_withe"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_kill_m"
+                android:background="@drawable/shadow_white_3dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dp_18"
+                android:minHeight="@dimen/dp_18"
+                android:paddingStart="@dimen/dp_1"
+                android:paddingEnd="@dimen/dp_1"
+                android:text="@string/str_zero"
+                android:textColor="@color/color_E94A52"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_colon"
+                android:textColor="@color/color_withe"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_kill_s"
+                android:background="@drawable/shadow_white_3dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dp_18"
+                android:minHeight="@dimen/dp_18"
+                android:paddingStart="@dimen/dp_1"
+                android:paddingEnd="@dimen/dp_1"
+                android:text="@string/str_zero"
+                android:textColor="@color/color_E94A52"
+                android:textSize="@dimen/sp_12" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintTop_toBottomOf="@id/layout_timeCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="已抢30%"
+                android:textColor="@color/color_withe"
+                android:textSize="@dimen/sp_10" />
+            <ProgressBar
+                android:layout_marginStart="@dimen/dp_8"
+                android:id="@+id/pb_task"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100"
+                tools:progress="10"
+                android:progress="0"
+                android:progressDrawable="@drawable/progressbar_kill_bg"
+                android:layout_width="@dimen/dp_67"
+                android:layout_height="@dimen/dp_4"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
