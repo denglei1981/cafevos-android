@@ -2,18 +2,18 @@ package com.changanford.my.ui
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.chad.library.adapter.base.BaseNodeAdapter
-import com.chad.library.adapter.base.entity.node.BaseNode
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
-import com.changanford.my.adapter.RootNodeProvider
-import com.changanford.my.adapter.SecondNodeProvider
-import com.changanford.my.bean.ItemTaskBean
-import com.changanford.my.bean.RootTaskBean
+import com.changanford.my.R
+import com.changanford.my.adapter.TaskTitleAdapter
+import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
-import com.changanford.my.databinding.ViewTaskHead1Binding
-import com.changanford.my.databinding.ViewTaskHead2Binding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
@@ -28,17 +28,12 @@ import kotlinx.coroutines.launch
 @Route(path = ARouterMyPath.MineTaskListUI)
 class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
-    val taskAdapter: TaskAdapter by lazy {
-        TaskAdapter()
+    val taskAdapter: TaskTitleAdapter by lazy {
+        TaskTitleAdapter()
     }
 
     override fun initView() {
-
-        var headView = ViewTaskHead1Binding.inflate(layoutInflater, null, false)
-        taskAdapter.addHeaderView(headView.root)
-
-        var headViewQD = ViewTaskHead2Binding.inflate(layoutInflater, null, false)
-        taskAdapter.addHeaderView(headViewQD.root)
+        StatusBarUtil.setTranslucentForImageView(this, null)
 
         binding.taskRcy.rcyCommonView.adapter = taskAdapter
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()
@@ -46,6 +41,19 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         viewModel.taskBean.observe(this, Observer {
             completeRefresh(it, taskAdapter)
         })
+
+        binding.rcyDay.layoutManager = LinearLayoutManager(this).apply {
+            orientation = RecyclerView.HORIZONTAL
+        }
+        binding.rcyDay.adapter = DayAdapter().apply {
+            addData("")
+            addData("")
+            addData("")
+            addData("")
+            addData("")
+            addData("")
+            addData("")
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -63,24 +71,43 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         viewModel.queryTasksList()
     }
 
-    inner class TaskAdapter : BaseNodeAdapter() {
-        init {
-            addFullSpanNodeProvider(RootNodeProvider())
-            addNodeProvider(SecondNodeProvider())
-        }
+    inner class DayAdapter :
+        BaseQuickAdapter<String, BaseDataBindingHolder<ItemSignDayBinding>>(R.layout.item_sign_day) {
+        override fun convert(holder: BaseDataBindingHolder<ItemSignDayBinding>, item: String) {
 
-        override fun getItemType(data: List<BaseNode>, position: Int): Int {
-            return when (data[position]) {
-                is RootTaskBean -> {
-                    0
-                }
-                is ItemTaskBean -> {
-                    1
-                }
-                else -> {
-                    -1
+            holder.dataBinding?.let {
+                when (holder.layoutPosition) {
+                    0, 1, 2 -> {
+                        it.clLayout.isSelected = true
+                        it.num.isSelected = true
+                    }
+                    else -> {
+                        it.clLayout.isSelected = false
+                        it.num.isSelected = false
+                    }
                 }
             }
         }
     }
+
+//    inner class TaskAdapter : BaseNodeAdapter() {
+//        init {
+//            addFullSpanNodeProvider(RootNodeProvider())
+//            addNodeProvider(SecondNodeProvider())
+//        }
+//
+//        override fun getItemType(data: List<BaseNode>, position: Int): Int {
+//            return when (data[position]) {
+//                is RootTaskBean -> {
+//                    0
+//                }
+//                is ItemTaskBean -> {
+//                    1
+//                }
+//                else -> {
+//                    -1
+//                }
+//            }
+//        }
+//    }
 }

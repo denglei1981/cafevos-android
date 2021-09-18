@@ -3,14 +3,19 @@ package com.changanford.my.ui
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MConstant.PUSH_ID
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
+import com.changanford.my.utils.signAgreement
 import com.changanford.my.viewmodel.SignViewModel
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.checkedChanges
@@ -53,7 +58,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 var openId = json.getString("openid")
                 var accessToken = json.getString("access_token")
                 lifecycleScope.launch {
-                    viewModel.otherLogin("qq", "$accessToken,$openId", "11111")
+                    viewModel.otherLogin(
+                        "qq", "$accessToken,$openId",
+                        SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
+                    )
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -79,10 +87,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        StatusBarUtil.setTranslucentForImageView(this, null)
         tencent = Tencent.createInstance(MConstant.QQAPPID, this)
 
         wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
         wxApi.registerApp(MConstant.WXAPPID)
+
+        signAgreement(binding.signAgreement)
 
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
@@ -117,7 +128,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     viewModel.smsLogin(
                         binding.etLoginMobile.text.toString(),
                         binding.etLoginSmsCode.text.toString(),
-                        "11111"
+                        SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
                     )
                 }
             }, {
@@ -163,7 +174,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         LiveDataBus.get().with(MINE_SIGN_WX_CODE, String::class.java)
             .observe(this, androidx.lifecycle.Observer {
                 lifecycleScope.launch {
-                    viewModel.otherLogin("weixin", it, "11111")
+                    viewModel.otherLogin(
+                        "weixin", it, SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
+                    )
                 }
             })
 
@@ -173,8 +186,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this, androidx.lifecycle.Observer {
-                if (it == UserManger.UserLoginStatus.USER_LOGIN_SUCCESS) {
-                    finish()
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                        finish()
+                    }
+                    UserManger.UserLoginStatus.USE_UNBIND_MOBILE -> {
+                        RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
+                    }
                 }
             })
     }

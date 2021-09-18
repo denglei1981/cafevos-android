@@ -20,7 +20,6 @@ class RootNodeProvider(
 ) :
     BaseNodeProvider() {
 
-
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
 
     }

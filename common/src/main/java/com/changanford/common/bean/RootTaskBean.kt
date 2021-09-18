@@ -1,7 +1,4 @@
-package com.changanford.my.bean
-
-import com.chad.library.adapter.base.entity.node.BaseExpandNode
-import com.chad.library.adapter.base.entity.node.BaseNode
+package com.changanford.common.bean
 
 /**
  *  文件名：RootTaskBean
@@ -10,19 +7,14 @@ import com.chad.library.adapter.base.entity.node.BaseNode
  *  描述: TODO
  *  修改描述：TODO
  */
-class RootTaskBean(
-    val list: ArrayList<ItemTaskBean>?,
+data class RootTaskBean(
+    val list: ArrayList<ItemTaskBean>,
     val taskTypeName: String,
     val taskType: Int = 1,
     val userTatalScore: Double = 0.0
-) :
-    BaseExpandNode() {
-    override val childNode: ArrayList<BaseNode>
-        get() = list as ArrayList<BaseNode>
-}
+)
 
-class ItemTaskBean(
-    override val childNode: MutableList<BaseNode>? = null,
+data class ItemTaskBean(
     val jumpDataType: Int,
     val jumpDataValue: String,
     val taskAllCount: Int,
@@ -37,9 +29,7 @@ class ItemTaskBean(
     val taskSort: Int,
     val taskType: Int,
     val taskAbcCount: Int
-) : BaseNode() {
-
-}
+)
 
 data class GrowUpBean(
     val dataList: List<GrowUpItem>,

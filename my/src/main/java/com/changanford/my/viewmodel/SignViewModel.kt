@@ -3,9 +3,7 @@ package com.changanford.my.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.changanford.common.MyApp
-import com.changanford.common.bean.LoginBean
-import com.changanford.common.bean.MedalListBeanItem
-import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
@@ -16,8 +14,6 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
-import com.changanford.my.bean.GrowUpBean
-import com.changanford.my.bean.RootTaskBean
 
 /**
  *  文件名：SignViewModel
@@ -44,6 +40,16 @@ class SignViewModel : ViewModel() {
         smsSuccess.postValue(sms.code == 0)
     }
 
+    suspend fun smsCacLogin(mobile: String) {
+        var sms = fetchRequest {
+            var body = HashMap<String, String>()
+            body["phone"] = mobile
+            var rkey = getRandomKey()
+            apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+        }
+        smsSuccess.postValue(sms.code == 0)
+    }
+
     suspend fun smsLogin(mobile: String, sms: String, pushId: String) {
         var login = fetchRequest {
             var body = HashMap<String, String>()
@@ -59,6 +65,7 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+
 
     suspend fun otherLogin(type: String, code: String, pushId: String) {
         var other = fetchRequest {
@@ -109,6 +116,7 @@ class SignViewModel : ViewModel() {
 
     var jifenBean: MutableLiveData<GrowUpBean> = MutableLiveData()
 
+    //成长值 2 积分 1
     suspend fun mineGrowUp(pageNo: Int, type: String) {
         var task = fetchRequest {
             var body = HashMap<String, Any>()
@@ -136,6 +144,21 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    suspend fun bindMobile(phone: String, smsCode: String) {
+        var smsbind = fetchRequest {
+            var body = HashMap<String, String>()
+            body["phone"] = phone
+            body["smsCode"] = smsCode
+            var rkey = getRandomKey()
+            apiService.bindMobile(body.header(rkey), body.body(rkey))
+        }
+        if (smsbind.code == 0) {
+            smsbind.data?.let {
+                loginSuccess(it)
+            }
+        }
+    }
+
 
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
         UserManger.updateUserInfo(userInfoBean)
@@ -150,9 +173,19 @@ class SignViewModel : ViewModel() {
             MConstant.token = it.token
             SPUtils.putToken(it.token)
             getUserInfo()
+            when {
+                it.phone.isNullOrEmpty() -> {
+                    LiveDataBus.get()
+                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                        .postValue(UserManger.UserLoginStatus.USE_UNBIND_MOBILE)
+                }
+                else -> {
+                    LiveDataBus.get()
+                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                }
+            }
         }
-        LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
     }
 
     /**

@@ -104,7 +104,7 @@
             <!--            不能点-->
             <item android:state_enabled="false">
                 <shape android:shape="rectangle">
-                    <solid android:color="#D9F7F5" />
+                    <solid android:color="#201B3B89" />
                     <corners android:radius="@dimen/dp_17" />
                 </shape>
             </item>
@@ -113,8 +113,8 @@
                 <shape android:shape="rectangle">
                     <gradient
                         android:angle="270"
-                        android:endColor="#4DCAC1"
-                        android:startColor="#A9F6E3" />
+                        android:endColor="#1B3B89"
+                        android:startColor="#1B3B89" />
                     <corners android:radius="@dimen/dp_17" />
                 </shape>
             </item>
