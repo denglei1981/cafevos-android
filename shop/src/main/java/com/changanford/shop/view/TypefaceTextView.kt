@@ -45,4 +45,11 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
             else txt
         }
     }
+    fun setText(str:String?){
+        if(str==null)return
+        text=if(startText!=null&&endText!=null) "$startText$str$endText"
+        else if(startText!=null) "$startText$str"
+        else if (endText != null) "$str$endText"
+        else str
+    }
 }

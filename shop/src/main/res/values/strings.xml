@@ -43,4 +43,8 @@
     <string name="str_payType">支付方式</string>
     <string name="str_integralPay">积分支付</string>
     <string name="str_packageMail">快递包邮</string>
+    <string name="str_payConfirm">确认支付</string>
+    <string name="str_remainingTimePayment">支付剩余时间：</string>
+    <string name="str_yourAccountPoints">您的账户积分：</string>
+    <string name="str_yourAccountPoints_font">您的账户积分：<font color="#00095B">1300积分</font></string>
 </resources>

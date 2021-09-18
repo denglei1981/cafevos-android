@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import com.changanford.common.basic.BaseActivity
+import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 
 /**
@@ -23,6 +24,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding,OrderViewModel>()
 
     override fun initData() {
 
+    }
+    fun onClick(v:View){
+        when(v.id){
+            //提交订单
+            R.id.btn_submit->PayConfirmActivity.start(this,"orderInfo")
+        }
     }
     fun onBack(v: View)=this.finish()
 }

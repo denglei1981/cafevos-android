@@ -35,6 +35,7 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_10" />
         <androidx.appcompat.widget.AppCompatButton
+            android:onClick="onClick"
             android:id="@+id/btn_submit"
             android:text="@string/str_submitOrder"
             android:textSize="@dimen/sp_15"

@@ -2,6 +2,7 @@ package com.changanford.shop.control
 
 import android.app.Activity
 import android.os.CountDownTimer
+import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 
@@ -18,7 +19,8 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
      * [remainingTime]剩余时间 毫秒
     * */
     fun initTimeCount(remainingTime:Long){
-        timeCount=TimeCountControl(remainingTime,headerBinding.inKill.tvKillH,headerBinding.inKill.tvKillM,headerBinding.inKill.tvKillS,object :TimeCountControl.OnTimeCountListener{
+        timeCount= KllTimeCountControl(remainingTime,headerBinding.inKill.tvKillH,headerBinding.inKill.tvKillM,headerBinding.inKill.tvKillS,object :
+            KllTimeCountControl.OnTimeCountListener{
             override fun onFinish() {
 
             }
