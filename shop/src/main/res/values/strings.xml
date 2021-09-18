@@ -1,7 +1,7 @@
 <resources>
     <string name="searchForItemsYouWant">搜索你想要的商品</string>
     <string name="str_limitedTimeSecondsKill">限时秒杀</string>
-    <string name="str_more">更多》</string>
+    <string name="str_more">更多</string>
     <string name="str_integral">积分</string>
     <string name="str_pointsFor">积分兑换</string>
     <string name="str_earnPoints">赚取积分</string>

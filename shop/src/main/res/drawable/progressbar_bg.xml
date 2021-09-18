@@ -8,10 +8,10 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <corners android:radius="@dimen/dp_5" />
+                <corners android:radius="@dimen/dp_3" />
                 <gradient
-                    android:endColor="@color/indicator"
-                    android:startColor="@color/indicator" />
+                    android:endColor="@color/color_01025C"
+                    android:startColor="@color/color_01025C" />
             </shape>
         </clip>
     </item>

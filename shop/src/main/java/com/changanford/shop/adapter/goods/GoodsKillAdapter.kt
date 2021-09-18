@@ -12,7 +12,7 @@ import com.changanford.shop.utils.ScreenUtils
 
 
 class GoodsKillAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
-    private val dp11 by lazy { ScreenUtils.dp2px(context,11f) }
+    private val dp15 by lazy { ScreenUtils.dp2px(context,15f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemKillGoodsBinding>, item: GoodsBean) {
         val dataBinding=holder.dataBinding
@@ -23,9 +23,9 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKi
             val layoutParams=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             layoutParams.setMargins(0,0,0,20)
             when (position) {
-                0 -> ScreenUtils.setMargin(holder.itemView,dp11,0,0,0)
-                data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp11,0)
-                else -> ScreenUtils.setMargin(holder.itemView,0,0,0,0)
+                0 -> ScreenUtils.setMargin(holder.itemView,dp15,0,0,0)
+                data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)
+                else -> ScreenUtils.setMargin(holder.itemView,0,0,9,0)
             }
         }
     }
