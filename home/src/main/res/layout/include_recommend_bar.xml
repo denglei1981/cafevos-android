@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:id="@+id/title_view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbarheight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img1"
@@ -27,7 +34,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/icon_home_more"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/title_view" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_ford_title"

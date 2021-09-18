@@ -138,12 +138,8 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
 //            } else if (verticalOffset >= -600) {
 //                binding.layoutTopBar.conContent.visibility = View.GONE
 //            }
-
-            val percent: Float = -verticalOffset / 2204f//滑动比例
-
+            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
             "percent=$percent".logE()
-
-
             if (percent > 0.8) {
                 binding.layoutTopBar.conContent.visibility = View.VISIBLE
 //                    val alpha = 1 - (1 - percent) * 5 //渐变变换

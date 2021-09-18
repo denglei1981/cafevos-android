@@ -37,7 +37,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_44"
+                    android:layout_height="wrap_content"
                     android:padding="@dimen/dp_0"
                     app:contentInsetStart="@dimen/dp_0"
                     app:layout_collapseMode="pin">
@@ -46,7 +46,7 @@
                         android:id="@+id/layout_top_bar"
                         layout="@layout/include_top_bar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp50" />
+                        android:layout_height="wrap_content" />
                 </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -65,7 +65,7 @@
                 app:tabPaddingStart="0dp"
                 app:tabPaddingTop="0dp"
                 app:tabRippleColor="@color/transparent"
-                app:tabSelectedTextColor="@color/black"
+                app:tabSelectedTextColor="@color/blue_tab"
                 app:tabTextColor="@color/black" />
         </com.google.android.material.appbar.AppBarLayout>
 
