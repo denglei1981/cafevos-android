@@ -1,7 +1,9 @@
 package com.changanford.shop.view
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.shop.R
@@ -29,12 +31,15 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         setTypeface(typeface)
         //行高
         setLineSpacing(0f,1.5f)
-        //默认文字
-        setText("00000111111111")
         typedArray.recycle()
     }
     private fun initView(){
 
     }
 
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        //默认文字
+        if(TextUtils.isEmpty(text))text = context.getString(R.string.str_text)
+    }
 }

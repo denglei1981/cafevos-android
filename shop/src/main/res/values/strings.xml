@@ -24,4 +24,5 @@
     <string name="str_productEvaluation">商品评价(0)</string>
     <string name="str_productEvaluationX">商品评价(%1$d)</string>
     <string name="str_goodsDetails">商品详情</string>
+    <string name="str_vipExclusive">会员专享</string>
 </resources>

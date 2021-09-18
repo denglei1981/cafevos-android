@@ -15,7 +15,7 @@
                 android:layout_margin="@dimen/dp_20"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/banner"
-                android:background="@drawable/shape_c9_radius_15dp"
+                android:background="@drawable/shadow_1b51d9_5dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_250"
                 app:banner_indicator_height="@dimen/dp_5"
