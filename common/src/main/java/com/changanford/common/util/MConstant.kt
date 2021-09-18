@@ -1,3 +1,4 @@
+package com.changanford.common.util
 import com.changanford.common.MyApp
 
 /**********************************************************************************
