@@ -1,6 +1,5 @@
 package com.changanford.home
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -9,13 +8,13 @@ import androidx.fragment.app.Fragment
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.logE
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.databinding.FragmentHomeRecommendBinding
-import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.shot.fragment.BigShotFragment
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
@@ -31,8 +30,11 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
 
     var titleList = mutableListOf<String>()
 
+    var immersionBar: ImmersionBar? = null
     override fun initView() {
         //Tab+Fragment
+        immersionBar = ImmersionBar.with(requireActivity())
+        immersionBar?.fitsSystemWindows(true)
 
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
@@ -52,10 +54,12 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
-                R.color.transparent
+                R.color.blue_tab
             )
         )
-        binding.homeTab.tabRippleColor=null
+//        StatusBarUtil.setStatusBarMarginTop(binding.toolbar,requireActivity());
+        binding.homeTab.tabRippleColor = null
+//        setAppbarPercent()
 
         TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
@@ -71,46 +75,49 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 selectTab(tab, false)
             }
+
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
     }
+
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
-        var line = tab.customView?.findViewById<View>(R.id.line)
+
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
-            line?.visibility = View.VISIBLE
+
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
-            line?.visibility = View.INVISIBLE
+
         }
     }
+
     var itemPunchWhat: Int = 0
+
     //初始化tab
     private fun initTab() {
         for (i in 0 until binding.homeTab.tabCount) {
             //寻找到控件
             val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_home, null)
             val mTabText = view.findViewById<TextView>(R.id.tv_title)
-            val line = view.findViewById<View>(R.id.line)
+
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 18f
-                line.visibility = View.VISIBLE
+
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.textSize = 15f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
-                line.visibility = View.INVISIBLE
             }
             //更改选中项样式
             //设置样式
@@ -118,11 +125,41 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         }
     }
 
-    override fun initData() {
+    override fun onResume() {
+        super.onResume()
+        setAppbarPercent()
+    }
+
+    private fun setAppbarPercent() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            "verticalOffset=$verticalOffset".logE()
+//            if (verticalOffset <= -50) {
+//                binding.layoutTopBar.conContent.visibility = View.VISIBLE
+//            } else if (verticalOffset >= -600) {
+//                binding.layoutTopBar.conContent.visibility = View.GONE
+//            }
+            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
+            "percent=$percent".logE()
+            if (percent > 0.8) {
+                binding.layoutTopBar.conContent.visibility = View.VISIBLE
+//                    val alpha = 1 - (1 - percent) * 5 //渐变变换
+//                    binding.layoutTopBar.conContent.alpha = alpha
+                "conContent=visiable".logE()
+
+            } else {
+                binding.layoutTopBar.conContent.visibility = View.GONE
+                "conContent=gone".logE()
+
+            }
+
+
+        })
 
     }
 
+    override fun initData() {
 
+    }
 
 
 }
