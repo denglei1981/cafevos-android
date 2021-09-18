@@ -3,7 +3,6 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -36,26 +35,26 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     private var commentH=0f
     private var detailsH =0f
     private var oldScrollY=0
-    private lateinit var topBarBg: Drawable
+    private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-//        if(hasFocus&&0==topBarH)initH()
-    }
     private fun initH(){
-        topBarBg=binding.inHeader.layoutHeader.background
         topBarH= binding.inHeader.layoutHeader.height
         commentH=headerBinding.inComment.layoutComment.y-topBarH
         detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
         tabLayout.alpha=0f
         topBarBg.alpha=0
     }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if(hasFocus&&0==topBarH) initH()
+    }
     override fun initView() {
-        binding.recyclerView.layoutManager=LinearLayoutManager(this)
+        binding.rvGoodsImg.layoutManager=LinearLayoutManager(this)
         headerBinding= DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.header_goods_details, null, false)
-        binding.recyclerView.adapter=mAdapter
+        binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
-        binding.recyclerView.addOnScrollListener(onScrollListener)
+        binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
     }
     private  fun initTab(){
@@ -87,7 +86,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
                         else ->0-oldScrollY
                     }
                     isClickSelect=true
-                    binding.recyclerView.smoothScrollBy(0, scrollY)
+                    binding.rvGoodsImg.smoothScrollBy(0, scrollY)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -100,12 +99,12 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             if(newState==RecyclerView.SCROLL_STATE_IDLE){
                 isClickSelect=false
                 if(oldScrollY <= 100){
-                    binding.inHeader.layoutHeader.background.alpha=0
+                    topBarBg.alpha=0
                     tabLayout.alpha=0f
                 }
             }
             if(newState==RecyclerView.SCROLL_STATE_IDLE&&oldScrollY <= 100){
-                binding.inHeader.layoutHeader.background.alpha=0
+                topBarBg.alpha=0
                 tabLayout.alpha=0f
             }
         }
@@ -116,11 +115,11 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             if(oldScrollY<commentH){
                 if(!isClickSelect&&selectedTabPosition!=0)tabLayout.getTabAt(0)?.select()
                 val alpha = (oldScrollY / commentH * 255).roundToInt()
-                binding.inHeader.layoutHeader.background.alpha=alpha
+                topBarBg.alpha=alpha
                 val tabAlpha=oldScrollY / commentH * 1.0f
                 tabLayout.alpha=tabAlpha
             }else{
-                binding.inHeader.layoutHeader.background.alpha=255
+                topBarBg.alpha=255
                 tabLayout.alpha=1f
                 if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
                     tabLayout.getTabAt(2)?.select()

@@ -7,7 +7,7 @@
         android:paddingTop="@dimen/dp_30"
         android:paddingBottom="@dimen/dp_13"
         android:id="@+id/layout_header"
-        android:background="@color/white">
+        android:background="#fcffffff">
         <ImageView
             android:id="@+id/img_back"
             android:padding="@dimen/dp_4"

@@ -16,7 +16,6 @@ class GoodsAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemGoodsB
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
-
         }
     }
 }
