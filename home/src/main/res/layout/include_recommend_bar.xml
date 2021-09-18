@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_44"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="@dimen/dp_44"
+        android:layout_marginTop="@dimen/dp_30"
         android:background="@null"
         android:drawableLeft="@drawable/icon_home_gray_search"
         android:drawablePadding="10dp"
@@ -68,7 +68,7 @@
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_ford_title"
-        app:layout_constraintWidth_percent="0.64" />
+        app:layout_constraintWidth_percent="0.72" />
 
     <View
         android:id="@+id/v_white_line"

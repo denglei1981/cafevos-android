@@ -3,13 +3,17 @@ package com.changanford.home
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.util.DisplayUtil
 import com.changanford.common.utilext.logE
 import com.changanford.home.acts.fragment.ActsListFragment
+import com.changanford.home.callback.ICallback
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentHomeRecommendBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
@@ -57,7 +61,6 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
                 R.color.blue_tab
             )
         )
-//        StatusBarUtil.setStatusBarMarginTop(binding.toolbar,requireActivity());
         binding.homeTab.tabRippleColor = null
 //        setAppbarPercent()
 
@@ -129,6 +132,28 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         super.onResume()
         setAppbarPercent()
     }
+
+    fun showPublish() {
+        val location = IntArray(2)
+        var height = DisplayUtil.getDpi(requireContext())
+        binding.layoutTopBar.ivScan.getLocationOnScreen(location)
+        height -= location[1]
+        val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
+        val publishPopup = PublishPopup(
+            requireContext(),
+            publishView,
+            Constraints.LayoutParams.WRAP_CONTENT,
+            height,
+            object :ICallback{
+                override fun onResult(result: ResultData) {
+
+                }
+            }
+        )
+        publishPopup.showAsDropDown(binding.layoutTopBar.ivScan)
+
+    }
+
 
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
