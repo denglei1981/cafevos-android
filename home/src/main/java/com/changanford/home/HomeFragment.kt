@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
-                R.color.transparent
+                R.color.blue_tab
             )
         )
         binding.homeTab.tabRippleColor=null
@@ -77,18 +77,18 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
     }
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
-        var line = tab.customView?.findViewById<View>(R.id.line)
+
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
-            line?.visibility = View.VISIBLE
+
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
-            line?.visibility = View.INVISIBLE
+
         }
     }
     var itemPunchWhat: Int = 0
@@ -98,19 +98,19 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             //寻找到控件
             val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_home, null)
             val mTabText = view.findViewById<TextView>(R.id.tv_title)
-            val line = view.findViewById<View>(R.id.line)
+
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 18f
-                line.visibility = View.VISIBLE
+
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.textSize = 15f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
-                line.visibility = View.INVISIBLE
+
             }
             //更改选中项样式
             //设置样式

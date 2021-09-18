@@ -28,8 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabBackground="@color/transparent"
-            app:tabIndicatorColor="@color/transparent"
-            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorHeight="8dp"
             app:tabPadding="0dp"
             app:tabPaddingBottom="0dp"
             app:tabPaddingEnd="0dp"
@@ -37,6 +36,7 @@
             app:tabPaddingTop="0dp"
             app:tabRippleColor="@color/transparent"
             app:tabSelectedTextColor="@color/black"
+            app:tabIndicator="@drawable/shape_home_tab_indicator"
             app:tabTextColor="@color/black"/>
     </com.google.android.material.appbar.AppBarLayout>
 
