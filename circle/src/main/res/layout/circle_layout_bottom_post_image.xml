@@ -24,12 +24,13 @@
         android:textSize="13sp"
         tools:ignore="HardcodedText,RtlSymmetry" />
 
-    <androidx.appcompat.widget.AppCompatCheckedTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableTop="@mipmap/circle_talk_image"
         android:drawablePadding="3dp"
         android:text="255"
+        android:gravity="center"
         android:textColor="@color/color_99"
         android:textSize="@dimen/sp_10" />
 
@@ -75,13 +76,14 @@
             android:textSize="@dimen/sp_10" />
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatCheckedTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableTop="@mipmap/circle_share_image"
         android:drawablePadding="3dp"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="19dp"
+        android:gravity="center"
         android:text="255"
         android:textColor="@color/color_99"
         android:textSize="@dimen/sp_10" />

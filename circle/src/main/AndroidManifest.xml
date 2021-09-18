@@ -5,5 +5,8 @@
     <application>
         <activity android:name=".ui.activity.PostGraphicActivity" />
         <activity android:name=".ui.activity.PostVideoDetailsActivity" />
+        <activity android:name=".ui.activity.CircleListActivity" />
+        <activity android:name=".ui.activity.AllReplyActivity" />
+        <activity android:name=".ui.activity.CircleDetailsActivity" />
     </application>
 </manifest>

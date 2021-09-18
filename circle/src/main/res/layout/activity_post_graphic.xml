@@ -237,11 +237,11 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
+                <include
+                    layout="@layout/circle_line_10"
                     android:layout_marginTop="34dp"
-                    android:background="@color/circle_a8f6" />
+                    android:layout_height="10dp"
+                    android:layout_width="match_parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ry_comment"
@@ -255,7 +255,9 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/circle_layout_bottom_post_image" />
+        <include
+            android:id="@+id/bottom_view"
+            layout="@layout/circle_layout_bottom_post_image" />
 
     </LinearLayout>
 </layout>

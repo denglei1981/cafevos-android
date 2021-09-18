@@ -71,6 +71,9 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
         binding.btnVideo.setOnClickListener {
             startARouter(ARouterCirclePath.PostVideoDetailsActivity)
         }
+        binding.btnCircleList.setOnClickListener {
+            startARouter(ARouterCirclePath.CircleListActivity)
+        }
     }
 
 

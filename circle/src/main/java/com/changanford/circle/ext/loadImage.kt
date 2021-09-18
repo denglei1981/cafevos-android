@@ -6,6 +6,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.changanford.common.utilext.GlideUtils
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.ShapeAppearanceModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
@@ -63,6 +66,12 @@ private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply
             circleCrop()
         }
     }
+}
+
+fun ShapeableImageView.setCircular(circular: Int) {
+    this.shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, circular.toPx())
+            .build()
 }
 
 class ImageOptions {

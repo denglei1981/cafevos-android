@@ -13,9 +13,13 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.PostGraphicViewModel
+import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.toast
 import com.zhpan.bannerview.constants.IndicatorGravity
 
 /**
@@ -37,7 +41,7 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
             ivHead.loadImage(CircleConfig.TestUrl, ImageOptions().apply { circleCrop = true })
             MUtils.postDetailsFrom(tvOneFrom, "重庆车友圈")
             MUtils.postDetailsFrom(tvTwoFrom, "重庆车友圈")
-            MUtils.setDrawableStar(tvTwoTitle,R.mipmap.circle_very_post)
+            MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
             banner.run {
                 setAutoPlay(true)
                 setScrollDuration(500)
@@ -65,6 +69,14 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
             ivBack.setOnClickListener {
                 finish()
             }
+            bottomView.tvTalk.setOnClickListener {
+                ReplyDialog(this@PostGraphicActivity, object : ReplyDialog.ReplyListener {
+                    override fun getContent(content: String) {
+                        content.toast()
+                    }
+
+                }).show()
+            }
             ivMenu.setOnClickListener {
                 if (clImageAndText.visibility == View.VISIBLE) {
                     clImageAndText.visibility = View.GONE
@@ -75,6 +87,12 @@ class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphic
                 }
             }
         }
+        commentAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                startARouter(ARouterCirclePath.AllReplyActivity)
+            }
+
+        })
     }
 
     override fun initData() {

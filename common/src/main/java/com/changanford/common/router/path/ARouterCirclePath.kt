@@ -20,6 +20,9 @@ object ARouterCirclePath {
     const val PostGraphicActivity = "/circle/PostGraphicActivity"
     const val PostVideoDetailsActivity = "/circle/PostVideoDetailsActivity"
     const val PhotoViewActivity = "/common/PhotoViewActivity"
+    const val CircleListActivity = "/circle/CircleListActivity"
+    const val AllReplyActivity = "/circle/AllReplyActivity"
+    const val CircleDetailsActivity = "/circle/CircleDetailsActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

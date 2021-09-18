@@ -1,7 +1,6 @@
 package com.changanford.circle.utils
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.*
 import android.text.method.LinkMovementMethod
