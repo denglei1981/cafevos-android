@@ -33,8 +33,7 @@
                     layout="@layout/include_recommend_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-                <androidx.appcompat.widget.Toolbar
+                <com.changanford.home.widget.EvosToolBar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,7 +46,7 @@
                         layout="@layout/include_top_bar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-                </androidx.appcompat.widget.Toolbar>
+                </com.changanford.home.widget.EvosToolBar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

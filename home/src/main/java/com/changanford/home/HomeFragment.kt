@@ -85,6 +85,9 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        binding.recommendContent.ivMore.setOnClickListener {
+            showPublish(binding.recommendContent.ivMore)
+        }
         binding.layoutTopBar.ivScan.setOnClickListener {
             showPublish(binding.layoutTopBar.ivScan)
         }
@@ -93,13 +96,11 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
-
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
-
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
@@ -140,10 +141,9 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         setAppbarPercent()
     }
 
-    fun showPublish(publishLocationView : ImageView) {
+    private fun showPublish(publishLocationView : ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
-
         publishLocationView.getLocationOnScreen(location)
         height -= location[1]
         val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
@@ -154,12 +154,11 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             Constraints.LayoutParams.WRAP_CONTENT,
             object :ICallback{
                 override fun onResult(result: ResultData) {
-
                 }
             }
         )
         publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED)
-        publishPopup.showAsDropDown(binding.layoutTopBar.ivScan)
+        publishPopup.showAsDropDown(publishLocationView)
     }
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
