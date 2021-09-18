@@ -12,7 +12,6 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.databinding.PhotoviewActivityBinding
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.util.FileHelper
 import com.changanford.common.util.GifUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.PictureUtil
