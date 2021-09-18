@@ -7,5 +7,6 @@ import androidx.lifecycle.ViewModel
  *Time on 2021/9/18
  *Purpose
  */
-class CircleDetailsViewModel:ViewModel() {
+class CircleDetailsViewModel : ViewModel() {
+    val tabList = arrayListOf("推荐", "最新", "精华")
 }

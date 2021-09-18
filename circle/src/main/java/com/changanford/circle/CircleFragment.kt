@@ -100,7 +100,8 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
             shareViewModel.share(requireActivity(), shareBean)
         }
         binding.web.setOnClickListener {
-            JumpUtils.instans?.jump(1, "https://www.baidu.com")
+//            JumpUtils.instans?.jump(1, "https://www.baidu.com")
+            startARouter(ARouterCirclePath.CircleDetailsActivity)
         }
     }
 

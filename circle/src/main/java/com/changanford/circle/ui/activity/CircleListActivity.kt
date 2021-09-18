@@ -59,14 +59,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             tab.text=viewModel.tabList[position]
         }.attach()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            binding.tabs.setSelectedTabIndicator(
-//                ContextCompat.getDrawable(
-//                    this@CircleListActivity,
-//                    R.drawable.circle_tab_circle_list
-//                )
-//            )
-        }
+
     }
 
     override fun initData() {
