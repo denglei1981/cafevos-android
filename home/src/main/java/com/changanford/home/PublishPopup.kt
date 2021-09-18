@@ -28,9 +28,9 @@ class PublishPopup(
     }
 
     fun initView(layoutView: View) {
-        list.add(PublishData(1, context.getString(R.string.home_publish_acts)))
-        list.add(PublishData(2, context.getString(R.string.home_publish_answer)))
-        list.add(PublishData(3, context.getString(R.string.home_publish_scan)))
+        list.add(PublishData(1, context.getString(R.string.home_publish_acts),R.drawable.icon_home_publish_acts))
+        list.add(PublishData(2, context.getString(R.string.home_publish_answer),R.drawable.icon_home_answer))
+        list.add(PublishData(3, context.getString(R.string.home_publish_scan),R.drawable.icon_home_scan))
         homeViewPagerAdapter = HomePublishAdapter(list)
         var recyclerView = layoutView.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager =

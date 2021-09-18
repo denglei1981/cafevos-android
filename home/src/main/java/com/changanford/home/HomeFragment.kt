@@ -2,6 +2,8 @@ package com.changanford.home
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
@@ -35,6 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
     var titleList = mutableListOf<String>()
 
     var immersionBar: ImmersionBar? = null
+
     override fun initView() {
         //Tab+Fragment
         immersionBar = ImmersionBar.with(requireActivity())
@@ -82,6 +85,10 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        binding.layoutTopBar.ivScan.setOnClickListener {
+            showPublish(binding.layoutTopBar.ivScan)
+        }
+
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -133,28 +140,27 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         setAppbarPercent()
     }
 
-    fun showPublish() {
+    fun showPublish(publishLocationView : ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
-        binding.layoutTopBar.ivScan.getLocationOnScreen(location)
+
+        publishLocationView.getLocationOnScreen(location)
         height -= location[1]
         val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
         val publishPopup = PublishPopup(
             requireContext(),
             publishView,
             Constraints.LayoutParams.WRAP_CONTENT,
-            height,
+            Constraints.LayoutParams.WRAP_CONTENT,
             object :ICallback{
                 override fun onResult(result: ResultData) {
 
                 }
             }
         )
+        publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED)
         publishPopup.showAsDropDown(binding.layoutTopBar.ivScan)
-
     }
-
-
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             "verticalOffset=$verticalOffset".logE()
