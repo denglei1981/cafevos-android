@@ -50,7 +50,11 @@
             tools:text="1300积分"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_14" />
-        <include layout="@layout/in_addnumber"/>
+      <com.changanford.shop.view.AddSubtractView
+          app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_distribution"
             app:layout_constraintStart_toStartOf="parent"

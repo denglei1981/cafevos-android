@@ -45,4 +45,16 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center</item>
     </style>
+<!-- radiobutton   商品属性-->
+    <style name="rb_goods">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/radiobutton_text_goods</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:background">@drawable/radiobutton_bt_goods</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">@dimen/dp_70</item>
+        <item name="android:minHeight">@dimen/dp_32</item>
+    </style>
 </resources>

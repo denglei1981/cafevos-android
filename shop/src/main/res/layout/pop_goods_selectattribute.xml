@@ -87,7 +87,9 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_color"
                 android:id="@+id/rv_color"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_specifications"
                 android:textStyle="bold"
@@ -104,7 +106,9 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_specifications"
                 android:id="@+id/rv_specifications"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_number"
                 android:layout_marginTop="@dimen/dp_28"
