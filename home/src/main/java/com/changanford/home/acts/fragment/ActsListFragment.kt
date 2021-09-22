@@ -8,6 +8,7 @@ import com.changanford.home.R
 import com.changanford.home.acts.adapter.SimpleAdapter
 import com.changanford.home.databinding.FragmentActsListBinding
 import com.zhpan.bannerview.BannerViewPager
+import com.zhpan.indicator.enums.IndicatorSlideMode
 import java.util.*
 
 /**
@@ -36,6 +37,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
             setAdapter(SimpleAdapter())
             setIndicatorView(binding.drIndicator)
             setRoundCorner(20)
+
             setOnPageClickListener(object : BannerViewPager.OnPageClickListener {
                 override fun onPageClick(position: Int) {
                 }
