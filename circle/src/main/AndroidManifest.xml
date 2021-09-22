@@ -8,5 +8,6 @@
         <activity android:name=".ui.activity.CircleListActivity" />
         <activity android:name=".ui.activity.AllReplyActivity" />
         <activity android:name=".ui.activity.CircleDetailsActivity" />
+        <activity android:name=".ui.activity.PersonalActivity" />
     </application>
 </manifest>

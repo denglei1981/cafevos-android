@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="15dp"
+            android:src="@mipmap/circle_ic_close_dialog"
+            tools:ignore="RtlHardcoded" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="7.5dp"
+            android:background="@drawable/circle_top_white_5_bg"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="22dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:text="申请星推官"
+                    android:textColor="@color/color_33"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="账户信息仅作为工作人员审核需要，不会公开或泄露"
+                    android:textColor="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                    tools:ignore="SmallSp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_card"
+                    android:layout_width="0dp"
+                    android:layout_height="172dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title_hint">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_up_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/circle_id_card_hint" />
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓&#12288;&#12288;名"
+                    android:textColor="@color/color_33"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_name"
+                    app:layout_constraintLeft_toLeftOf="@+id/rl_card"
+                    app:layout_constraintTop_toTopOf="@+id/et_name" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/circle_f4f4_5"
+                    android:gravity="center_vertical"
+                    android:hint="拍照上传自动识别"
+                    android:maxLength="8"
+                    android:paddingStart="11dp"
+                    android:textColor="@color/color_33"
+                    android:textColorHint="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_name"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/rl_card"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_card_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="身份证号"
+                    android:textColor="@color/color_33"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_card_num"
+                    app:layout_constraintLeft_toLeftOf="@+id/rl_card"
+                    app:layout_constraintTop_toTopOf="@+id/et_card_num" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_card_num"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/circle_f4f4_5"
+                    android:gravity="center_vertical"
+                    android:hint="拍照上传自动识别"
+                    android:inputType="text"
+                    android:maxLength="18"
+                    android:paddingStart="11dp"
+                    android:textColor="@color/color_33"
+                    android:textColorHint="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_card_num"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/et_name"
+                    tools:ignore="HardcodedText,RtlSymmetry,SmallSp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_input_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="* 请确认姓名和身份证号是否正确"
+                    android:textColor="@color/circle_E53030"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_card_num"
+                    app:layout_constraintTop_toBottomOf="@+id/et_card_num"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="申请理由"
+                    android:textColor="@color/color_33"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_input_hint" />
+
+                <LinearLayout
+                    android:id="@+id/ll_content"
+                    android:layout_width="0dp"
+                    android:layout_height="97dp"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/circle_f4f4_5"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_card_num"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_input_hint">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/circle_f4f4_5"
+                        android:gravity="start"
+                        android:maxLength="100"
+                        android:paddingStart="11dp"
+                        android:paddingTop="5dp"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_input_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="0 / 100"
+                        android:textColor="@color/color_99"
+                        android:textSize="@dimen/sp_12"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_reason_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="16dp"
+                    android:text="时间比较充裕"
+                    android:textColor="@color/circle_666666"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_card_num"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_input_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="审核状态"
+                    android:textColor="@color/color_33"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_reason_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_type_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:text="审核中"
+                    android:textColor="@color/circle_666666"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_type"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_card_num"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toTopOf="@+id/tv_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_fail_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="12dp"
+                    android:text="管理人数已满足"
+                    android:textColor="@color/color_99"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_card_num"
+                    app:layout_constraintRight_toRightOf="@+id/rl_card"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_type_content" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/circle_app_color_20"
+                android:gravity="center"
+                android:text="立即申请"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

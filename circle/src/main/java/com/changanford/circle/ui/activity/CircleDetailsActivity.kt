@@ -1,17 +1,40 @@
 package com.changanford.circle.ui.activity
 
+import android.content.Context
+import android.graphics.Color
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
+import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
-import com.changanford.circle.ui.fragment.CircleListFragment
+import com.changanford.circle.ext.loadImage
+import com.changanford.circle.ext.setCircular
+import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
+import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import jp.wasabeef.glide.transformations.BlurTransformation
+import net.lucode.hackware.magicindicator.ViewPagerHelper
+import net.lucode.hackware.magicindicator.buildins.UIUtil
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import kotlin.math.abs
 
 /**
@@ -20,14 +43,34 @@ import kotlin.math.abs
  *Purpose
  */
 @Route(path = ARouterCirclePath.CircleDetailsActivity)
-class CircleDetailsActivity:BaseActivity<ActivityCircleDetailsBinding,CircleDetailsViewModel>() {
+class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
 
     private var isWhite = true//是否是白色状态
 
+    private val personalAdapter by lazy {
+        CircleDetailsPersonalAdapter(this)
+    }
+
     override fun initView() {
+        initMagicIndicator()
         binding.run {
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
+        }
+        binding.topContent.run {
+            Glide.with(this@CircleDetailsActivity)
+                .load(CircleConfig.TestUrl)
+                .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
+                .into(ivBg)
+            ivIcon.setCircular(5)
+            ivIcon.loadImage(CircleConfig.TestUrl)
+            ryPersonal.adapter = personalAdapter
+            tvPersonal.setOnClickListener {
+                startARouter(ARouterCirclePath.PersonalActivity)
+            }
+            tvJoin.setOnClickListener {
+                ApplicationCircleManagementDialog(this@CircleDetailsActivity).show()
+            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -35,13 +78,13 @@ class CircleDetailsActivity:BaseActivity<ActivityCircleDetailsBinding,CircleDeta
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
                 binding.backImg.setImageResource(R.mipmap.whit_left)
-//                binding.shareImg.setImageResource(R.mipmap.ic_w_share)
+                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
                 isWhite = true
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
                 binding.backImg.setImageResource(R.mipmap.back_xhdpi)
-//                binding.shareImg.setImageResource(R.mipmap.ic_big_share)
+                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
                 isWhite = false
             }
             //改变透明度
@@ -60,31 +103,80 @@ class CircleDetailsActivity:BaseActivity<ActivityCircleDetailsBinding,CircleDeta
 
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
-            adapter = object : FragmentStateAdapter(this@CircleDetailsActivity) {
-                override fun getItemCount(): Int {
+
+            adapter = object : FragmentPagerAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
+                override fun getCount(): Int {
                     return viewModel.tabList.size
                 }
 
-                override fun createFragment(position: Int): Fragment {
-                    return CircleListFragment.newInstance(position.toString())
-
+                override fun getItem(position: Int): Fragment {
+                    return CircleDetailsFragment.newInstance(position.toString())
                 }
 
             }
 
-//            registerOnPageChangeCallback(callback)
-
             offscreenPageLimit = 3
         }
-
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.text=viewModel.tabList[position]
-        }.attach()
-
 
     }
 
     override fun initData() {
-        
+        val personalList = arrayListOf("", "", "", "", "", "", "", "", "", "")
+        personalAdapter.setItems(personalList)
+        personalAdapter.notifyDataSetChanged()
     }
+
+
+    private fun initMagicIndicator() {
+        val magicIndicator = binding.magicTab
+        magicIndicator.setBackgroundColor(Color.WHITE)
+        val commonNavigator = CommonNavigator(this)
+        commonNavigator.scrollPivotX = 0.8f
+        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+            override fun getCount(): Int {
+                return viewModel.tabList.size
+            }
+
+            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+                val simplePagerTitleView: SimplePagerTitleView =
+                    ScaleTransitionPagerTitleView(context)
+                simplePagerTitleView.text = viewModel.tabList[index]
+                simplePagerTitleView.textSize = 18f
+                simplePagerTitleView.setPadding(15.toIntPx(),0,15.toIntPx(),0)
+                simplePagerTitleView.normalColor =
+                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_33)
+                simplePagerTitleView.selectedColor =
+                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.circle_app_color)
+                simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
+                return simplePagerTitleView
+            }
+
+            override fun getIndicator(context: Context): IPagerIndicator {
+                val indicator = LinePagerIndicator(context)
+                indicator.mode = LinePagerIndicator.MODE_EXACTLY
+                indicator.lineHeight =
+                    UIUtil.dip2px(context, 3.0).toFloat()
+                indicator.lineWidth =
+                    UIUtil.dip2px(context, 22.0).toFloat()
+                indicator.roundRadius =
+                    UIUtil.dip2px(context, 1.5).toFloat()
+                indicator.startInterpolator = AccelerateInterpolator()
+                indicator.endInterpolator = DecelerateInterpolator(2.0f)
+                indicator.setColors(
+                    ContextCompat.getColor(
+                        this@CircleDetailsActivity,
+                        R.color.circle_app_color
+                    )
+                )
+                return indicator
+            }
+        }
+        magicIndicator.navigator = commonNavigator
+        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
+    }
+
+
 }

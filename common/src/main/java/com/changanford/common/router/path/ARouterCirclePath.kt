@@ -23,6 +23,7 @@ object ARouterCirclePath {
     const val CircleListActivity = "/circle/CircleListActivity"
     const val AllReplyActivity = "/circle/AllReplyActivity"
     const val CircleDetailsActivity = "/circle/CircleDetailsActivity"
+    const val PersonalActivity = "/circle/PersonalActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

@@ -1,15 +1,20 @@
 package com.changanford.circle.ext
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
+import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import java.io.File
 
 fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
@@ -54,6 +59,28 @@ fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
             )
         )
         .into(this)
+}
+
+@SuppressLint("CheckResult")
+fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
+    Glide.with(context)
+        .load(url)
+        .apply(requestOptions(imageOptions))
+        .transition(
+            DrawableTransitionOptions.with(
+                DrawableCrossFadeFactory
+                    .Builder(300)
+                    .setCrossFadeEnabled(true)
+                    .build()
+            )
+        )
+        .downloadOnly(object : SimpleTarget<File>() {
+            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                val uri = Uri.fromFile(resource)
+                this@loadBigImage.setImageURI(uri)
+            }
+
+        })
 }
 
 private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply {
