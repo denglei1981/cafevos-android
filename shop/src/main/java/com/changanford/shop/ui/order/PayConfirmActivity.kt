@@ -7,6 +7,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
+import com.changanford.shop.listener.OnTimeCountListener
 
 /**
  * @Author : wenke
@@ -20,7 +21,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding,OrderViewModel>()
         }
     }
     override fun initView() {
-        PayTimeCountControl(1561615,binding.tvPayTime,object : PayTimeCountControl.OnTimeCountListener{
+        PayTimeCountControl(1561615,binding.tvPayTime,object : OnTimeCountListener {
             override fun onFinish() {
 
             }

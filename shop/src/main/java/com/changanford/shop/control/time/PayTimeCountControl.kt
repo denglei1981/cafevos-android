@@ -2,6 +2,7 @@ package com.changanford.shop.control.time
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.view.TypefaceTextView
 
 /**
@@ -24,8 +25,5 @@ class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextVie
     }
     override fun onFinish() {
         listener.onFinish()
-    }
-    interface OnTimeCountListener {
-        fun onFinish()
     }
 }

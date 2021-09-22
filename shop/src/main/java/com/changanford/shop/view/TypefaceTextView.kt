@@ -26,6 +26,8 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         //开头字体
         startText=typedArray.getString(R.styleable.TypefaceTextView_start_txt)
         endText=typedArray.getString(R.styleable.TypefaceTextView_end_txt)
+        val textFlag=typedArray.getInt(R.styleable.TypefaceTextView_text_flags,0)
+        if(0!=textFlag)paint.flags= textFlag
         //字体
         val typeface: Typeface= when (val typefaceName = typedArray.getString(R.styleable.TypefaceTextView_typeface)) {
             "ZenDots-Regular" -> Typeface.createFromAsset(context.assets, "$typefaceName.ttf")

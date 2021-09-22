@@ -3,6 +3,7 @@ package com.changanford.shop.control.time
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
 import android.widget.TextView
+import com.changanford.shop.listener.OnTimeCountListener
 
 /**
  * Author:wenke
@@ -23,8 +24,5 @@ class KllTimeCountControl (millisInFuture: Long, private val tvH:TextView, priva
     }
     override fun onFinish() {
         listener.onFinish()
-    }
-    interface OnTimeCountListener {
-        fun onFinish()
     }
 }

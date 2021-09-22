@@ -47,7 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_type"
+            android:onClick="onClick"
+            android:id="@+id/tv_goodsAttrs"
             android:gravity="center_vertical"
             android:drawableEnd="@mipmap/shop_right"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
@@ -60,7 +61,7 @@
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_freight"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/tv_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsAttrs"
             android:layout_marginTop="@dimen/dp_27"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

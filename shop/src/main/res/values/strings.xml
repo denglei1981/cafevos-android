@@ -52,4 +52,10 @@
     <string name="str_payFailure">支付失败</string>
     <string name="str_orderDetails">订单详情</string>
     <string name="str_commodityGrade">商品评分：</string>
+    <string name="str_serialNumber">编号 :</string>
+    <string name="str_color">颜色</string>
+    <string name="str_specifications">规格</string>
+    <string name="str_number">数量</string>
+    <string name="str_xgXjkcXj">（<font color="#00095B">限购5件</font> 库存1024件）</string>
+    <string name="str_yourAccountPointsF">您的账户积分：<font color="#00095B">1800</font>分</string>
 </resources>

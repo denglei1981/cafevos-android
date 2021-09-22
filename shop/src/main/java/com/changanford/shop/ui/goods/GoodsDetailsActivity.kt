@@ -76,6 +76,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
             R.id.btn_submit->OrderConfirmActivity.start(this,"goodsInfo")
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
+            //选择商品属性
+            R.id.tv_goodsAttrs ->control.createAttribute()
             //返回
             R.id.img_back->this.finish()
         }
