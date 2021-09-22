@@ -124,40 +124,11 @@
                 tools:text="@string/str_xgXjkcXj"
                 android:textColor="@color/color_99"
                 android:textSize="@dimen/sp_12" />
-            <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_reduction"
-                app:layout_constraintTop_toTopOf="@id/tv_number"
-                app:layout_constraintEnd_toStartOf="@id/tv_numberValue"
-                android:paddingStart="@dimen/dp_10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_ose"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_15"
-                android:paddingEnd="@dimen/dp_7"/>
-            <com.changanford.shop.view.TypefaceTextView
-                app:layout_constraintTop_toTopOf="@id/tv_number"
-                app:layout_constraintEnd_toStartOf="@id/tv_addNumber"
-                android:id="@+id/tv_numberValue"
-                android:background="@drawable/shadow_f9_3dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="@dimen/dp_40"
-                android:minHeight="@dimen/dp_20"
-                android:text="@string/str_one"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_12" />
-            <com.changanford.shop.view.TypefaceTextView
-                app:layout_constraintBottom_toBottomOf="@id/tv_number"
+            <com.changanford.shop.view.AddSubtractView
                 app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/tv_addNumber"
-                android:paddingStart="@dimen/dp_7"
+                app:layout_constraintTop_toTopOf="@id/tv_number"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_add"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_15" />
+                android:layout_height="wrap_content"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_accountPoints"
                 android:layout_marginTop="@dimen/dp_30"

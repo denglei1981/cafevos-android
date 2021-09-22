@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.changanford.shop.view.TypefaceTextView
+        android:id="@+id/tv_reduction"
+        android:paddingStart="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_ose"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_15"
+        android:paddingEnd="@dimen/dp_7"/>
+    <com.changanford.shop.view.TypefaceTextView
+        android:id="@+id/tv_numberValue"
+        android:background="@drawable/shadow_f9_3dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/dp_40"
+        android:minHeight="@dimen/dp_20"
+        android:text="@string/str_one"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_12" />
+    <com.changanford.shop.view.TypefaceTextView
+        android:id="@+id/tv_addNumber"
+        android:paddingStart="@dimen/dp_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_add"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_15" />
 </LinearLayout>
