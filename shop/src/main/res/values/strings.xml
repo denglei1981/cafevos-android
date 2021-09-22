@@ -47,4 +47,8 @@
     <string name="str_remainingTimePayment">支付剩余时间：</string>
     <string name="str_yourAccountPoints">您的账户积分：</string>
     <string name="str_yourAccountPoints_font">您的账户积分：<font color="#00095B">1300积分</font></string>
+    <string name="str_paySucces">支付成功</string>
+    <string name="str_total">共计</string>
+    <string name="str_payFailure">支付失败</string>
+    <string name="str_orderDetails">订单详情</string>
 </resources>

@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_pay"
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_100"
@@ -46,6 +47,9 @@
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <include
+            android:visibility="gone"
+            layout="@layout/in_pay_results"/>
         <androidx.appcompat.widget.AppCompatButton
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"

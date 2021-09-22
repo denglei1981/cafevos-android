@@ -37,13 +37,7 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         typedArray.recycle()
     }
     private fun initView(){
-        if(TextUtils.isEmpty(text)){
-            val txt=context.getString(R.string.str_text)
-            text=if(startText!=null&&endText!=null)"$startText$txt$endText"
-            else if(startText!=null)"$startText$txt"
-            else if(endText!=null)"$txt$endText"
-            else txt
-        }
+        if(TextUtils.isEmpty(text))setText(context.getString(R.string.str_text))
     }
     fun setText(str:String?){
         if(str==null)return
