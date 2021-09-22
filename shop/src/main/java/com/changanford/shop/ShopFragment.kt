@@ -8,6 +8,7 @@ import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -33,6 +34,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         //秒杀列表
         binding.inTop.recyclerView.layoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
         binding.inTop.recyclerView.adapter=adapter
+        binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
     }
     override fun initData() {
         val datas= arrayListOf<GoodsBean>()

@@ -1,7 +1,6 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
-import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -20,8 +19,6 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKi
             val position=holder.absoluteAdapterPosition
             dataBinding.model=item
             dataBinding.executePendingBindings()
-            val layoutParams=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            layoutParams.setMargins(0,0,0,20)
             when (position) {
                 0 -> ScreenUtils.setMargin(holder.itemView,dp15,0,0,0)
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)
