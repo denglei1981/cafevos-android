@@ -170,6 +170,8 @@ dependencies {
 
     api 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
+    api 'io.github.youth5201314:banner:2.2.2'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

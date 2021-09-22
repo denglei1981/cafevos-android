@@ -4,8 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/statusbar_view_height">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -16,29 +17,55 @@
             android:layout_height="wrap_content"
             android:background="@color/bg_color"
             android:elevation="0dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:orientation="vertical">
 
             <include
                 layout="@layout/view_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@mipmap/ic_medal_top_bg"
+                android:minHeight="@dimen/dp_181"
                 app:layout_scrollFlags="scroll">
 
-                <TextView
-                    style="@style/text_14_color_00_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_120"
-                    android:gravity="center"
-                    android:text="我的勋章"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/im_medal_with_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_27"
+                    android:src="@mipmap/ic_medal_ex"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/im_medal_with_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="当前未佩戴勋章"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/im_medal_with_icon" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/mine_medal"
+                    android:layout_width="@dimen/dp_76"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_marginTop="@dimen/dp_25"
+                    android:background="@drawable/shape_r_lift_18_c_ff"
+                    android:gravity="center"
+                    android:text="我的勋章"
+                    android:textColor="#01025C"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -46,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_2"
-                android:background="@color/bg_color"
+                android:background="@color/white"
                 android:elevation="0dp"
                 android:gravity="bottom">
 
@@ -55,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/bg_color"
+                    android:background="@color/white"
                     app:tabIndicator="@null"
                     app:tabIndicatorColor="@android:color/transparent"
                     app:tabIndicatorHeight="0dp"

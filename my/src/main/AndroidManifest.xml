@@ -15,5 +15,6 @@
         <activity android:name=".ui.CarCrmAuthUI" />
         <activity android:name=".ui.BindMobileUI" />
         <activity android:name=".ui.GrowUpUI" />
+        <activity android:name=".ui.MineMedalUI" />
     </application>
 </manifest>

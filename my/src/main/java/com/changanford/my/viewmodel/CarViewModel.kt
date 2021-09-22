@@ -1,6 +1,8 @@
 package com.changanford.my.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.changanford.common.bean.CarItemBean
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.net.getRandomKey
@@ -25,11 +27,16 @@ class CarViewModel : ViewModel() {
         }
     }
 
+    var carAuth: MutableLiveData<ArrayList<CarItemBean>> = MutableLiveData()
+
     suspend fun queryAuthCarAndIncallList(status: AuthCarStatus) {
         var car = fetchRequest {
             var body = HashMap<String, Any>()
             var rkey = getRandomKey()
             apiService.queryAuthCarAndIncallList(body.header(rkey), body.body(rkey))
+        }
+        if (car.code == 0) {
+            carAuth.postValue(car.data)
         }
     }
 }

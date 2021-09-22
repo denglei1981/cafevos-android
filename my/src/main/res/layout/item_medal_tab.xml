@@ -2,21 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="data"
-            type="String" />
-    </data>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_tab"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        tools:ignore="RtlSymmetry"
-        tools:text="1231231" />
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry"
+            tools:text="1231231" />
+
+        <TextView
+            android:id="@+id/tab_in"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_4"
+            android:background="@drawable/tab_item_bg" />
+
+    </LinearLayout>
 
 </layout>

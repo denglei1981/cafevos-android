@@ -14,6 +14,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.common.utilext.logE
 
 /**
  *  文件名：SignViewModel
@@ -141,8 +142,47 @@ class SignViewModel : ViewModel() {
         }
         if (medal.code == 0) {
             allMedal.postValue(medal.data)
+        } else {
+            medal.msg?.logE()
         }
     }
+
+
+    /**
+     *操作类型 1佩戴 2领取
+     */
+    val wearMedal: MutableLiveData<String> = MutableLiveData()
+
+    suspend fun wearMedal(medalId: String, type: String) {
+        var medal = fetchRequest {
+            var body = HashMap<String, String>()
+            body["medalId"] = medalId
+            body["type"] = type
+            var rkey = getRandomKey()
+            apiService.wearMedal(body.header(rkey), body.body(rkey))
+        }
+        if (medal.code == 0) {
+            wearMedal.postValue("佩戴成功")
+        } else {
+            wearMedal.postValue(medal.msg)
+        }
+    }
+
+    val mineMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
+
+    suspend fun oneselfMedal() {
+        var medal = fetchRequest {
+            var body = HashMap<String, String>()
+            var rkey = getRandomKey()
+            apiService.queryUserMedalList(body.header(rkey), body.body(rkey))
+        }
+        if (medal.code == 0) {
+            mineMedal.postValue(medal.data)
+        } else {
+            medal.msg?.logE()
+        }
+    }
+
 
     suspend fun bindMobile(phone: String, smsCode: String) {
         var smsbind = fetchRequest {

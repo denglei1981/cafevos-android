@@ -1,6 +1,7 @@
 package com.changanford.my.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -23,6 +24,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  修改描述：TODO
  */
 class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
+    var list: ArrayList<MedalListBeanItem> = ArrayList()
 
     companion object {
         fun newInstance(list: ArrayList<MedalListBeanItem>?): MedalFragment {
@@ -35,7 +37,6 @@ class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
     }
 
     override fun initView() {
-        var list: ArrayList<MedalListBeanItem> = ArrayList()
         arguments?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             list = it as ArrayList<MedalListBeanItem>
         }
@@ -49,11 +50,29 @@ class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
                     item: MedalListBeanItem
                 ) {
                     holder.dataBinding?.let {
-                        it.imMedalIcon.load(item.medalImage)
+                        it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
                         it.tvMedalName.text = item.medalName
+
+                        when {
+                            item.isGet == "0" -> {//获得未领取
+                                it.btnGetMedal.visibility = View.VISIBLE
+                                it.tvMedalDes.visibility = View.GONE
+                            }
+                            item.isGet.isNullOrEmpty() -> {//未获取
+                                it.btnGetMedal.visibility = View.GONE
+                                it.tvMedalDes.visibility = View.VISIBLE
+                                it.tvMedalDes.text = "暂未点亮\n车迷级勋章"
+                            }
+                            else -> {//已获取
+                                it.btnGetMedal.visibility = View.GONE
+                                it.tvMedalDes.visibility = View.VISIBLE
+                                it.tvMedalDes.text = "2021.08.31点亮\n车迷级勋章"
+                            }
+                        }
                     }
                     holder.itemView.setOnClickListener {
-                        RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+                        RouterManger.param(RouterManger.KEY_TO_OBJ, list)
+                            .param(RouterManger.KEY_TO_ID, holder.absoluteAdapterPosition)
                             .startARouter(ARouterMyPath.MedalDetailUI)
                     }
                 }

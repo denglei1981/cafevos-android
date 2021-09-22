@@ -8,12 +8,12 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
 import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()
 
         viewModel.taskBean.observe(this, Observer {
-            completeRefresh(it, taskAdapter)
+            completeRefresh(it, taskAdapter, 0)
         })
 
         binding.rcyDay.layoutManager = LinearLayoutManager(this).apply {
@@ -88,6 +88,14 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                 }
             }
         }
+    }
+
+    override fun hasRefresh(): Boolean {
+        return false
+    }
+
+    override fun isUseFullScreenMode(): Boolean {
+        return true
     }
 
 //    inner class TaskAdapter : BaseNodeAdapter() {

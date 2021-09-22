@@ -11,7 +11,13 @@
 
         <include
             android:id="@+id/rcy_medal"
-            layout="@layout/view_recycler" />
+            layout="@layout/view_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginEnd="@dimen/dp_6" />
 
     </RelativeLayout>
 </layout>
