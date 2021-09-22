@@ -110,7 +110,7 @@
 
 # If single-type injection is used, that is, no interface is defined to implement IProvider, the following rules need to be added to protect the implementation
 # -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
-<<<<<<< HEAD
+
 
 #AgentWeb
 -keep class com.just.agentweb.** {
@@ -163,7 +163,7 @@
 -dontwarn java.nio.file.Path
 -dontwarn java.nio.file.OpenOption
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-=======
+
 -keep class com.chad.library.adapter.** {
 *;
 }
@@ -172,4 +172,4 @@
 -keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
      <init>(...);
 }
->>>>>>> dev
+

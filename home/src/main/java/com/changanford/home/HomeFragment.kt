@@ -44,8 +44,8 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         immersionBar?.fitsSystemWindows(true)
 
         fragmentList.add(RecommendFragment.newInstance())
-        fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
+        fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(BigShotFragment.newInstance())
 
         titleList.add(getString(R.string.home_recommend))
