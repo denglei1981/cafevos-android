@@ -3,10 +3,10 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
+import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
 
@@ -21,12 +21,14 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             context.startActivity(Intent(context, GoodsKillAreaActivity::class.java))
         }
     }
+    private val dateAdapter by lazy { GoodsKillDateAdapter(0) }
     private val timeAdapter by lazy { GoodsKillAreaTimeAdapter(0) }
     private val mAdapter by lazy { GoodsKillAreaAdapter() }
 
     override fun initView() {
-        binding.rvTime.layoutManager=LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        binding.rvDate.adapter=dateAdapter
         binding.rvTime.adapter=timeAdapter
+//        binding.rvTime.addItemDecoration(DividerItemDecoration(this))
         binding.rvList.adapter=mAdapter
 
     }
@@ -36,6 +38,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             val item=GoodsBean(i,"Title$i")
             datas.add(item)
         }
+        dateAdapter.setList(arrayListOf("","","","","","","","","",""))
         mAdapter.setList(datas)
         timeAdapter.setList(datas)
     }

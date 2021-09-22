@@ -49,7 +49,7 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<GoodsBean, B
 
             lastBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_f9_5dp)
             lastBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_99))
-            itemBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_99))
+            lastBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_99))
             lastBinding=itemBinding
         }
     }

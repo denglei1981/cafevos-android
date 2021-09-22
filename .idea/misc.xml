@@ -39,7 +39,12 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/progressbar_bg_0.xml" value="0.19166666666666668" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/progressbar_kill_bg.xml" value="0.1125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_goods.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_kill.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_kill_dot.xml" value="0.252233676975945" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_text_goods.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_text_kill.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_00095b_12dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_00095b_w5dp.xml" value="0.252233676975945" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_01025c_l_2dp.xml" value="0.115625" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b3b89_20dp.xml" value="0.18229166666666666" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_10dp.xml" value="0.190625" />
@@ -57,8 +62,11 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_551b3b89_20dp.xml" value="0.178125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_551b51d9_20dp.xml" value="0.190625" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_55black_1dp.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_7d00095b_20dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_cfd5e6_w5dp.xml" value="0.252233676975945" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_e8ebf3_16dp.xml" value="0.252233676975945" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_e8ebf3_5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_ebe835_12dp.xml" value="0.252233676975945" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_11dp.xml" value="0.1125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_3dp.xml" value="0.1125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_5dp.xml" value="0.252233676975945" />
@@ -105,9 +113,11 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_shop_top.xml" value="0.25" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_community_tab.xml" value="0.29375" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods.xml" value="0.21" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_attribute.xml" value="0.24409722222222222" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_evaluate.xml" value="0.1" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_kill.xml" value="0.24409722222222222" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_img.xml" value="0.28125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_date.xml" value="0.24409722222222222" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_goods.xml" value="0.25" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_time.xml" value="0.25" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_rdb.xml" value="0.234375" />
