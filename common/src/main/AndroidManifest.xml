@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
     <application>
         <activity android:name=".ui.viewpager.Banner" />
@@ -25,6 +25,13 @@
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity android:name=".web.AgentWebActivity" />
         <activity android:name=".ui.PhotoViewActivity" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="yDrzoBSH2Itl1PqXR5GMrbIrsfTLOLpb"/>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="56913eab3a5c4f59dd961dbc1b1b909c" />
     </application>
 
 </manifest>

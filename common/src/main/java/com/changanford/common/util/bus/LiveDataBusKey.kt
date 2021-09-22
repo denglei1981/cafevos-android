@@ -226,5 +226,7 @@ object LiveDataBusKey {
 
     const val USER_LOGIN_STATUS = "sys:user_login_status"
 
+    const val PICTURESEDITED ="picturesedited"  //图片编辑页面点击下一步
+
 }
 

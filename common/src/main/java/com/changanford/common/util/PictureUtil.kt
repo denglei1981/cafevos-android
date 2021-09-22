@@ -15,12 +15,14 @@ import com.changanford.common.R
 import com.changanford.common.utilext.toast
 import com.dueeeke.videoplayer.util.PlayerUtils.getApplication
 import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.animators.AnimationType
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.config.PictureSelectionConfig
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.style.PictureWindowAnimationStyle
 import com.luck.picture.lib.tools.DoubleUtils
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -81,7 +83,7 @@ object PictureUtil {
 
     fun openGallery(activity:Activity,datas:ArrayList<LocalMedia>,onResultCallbackListener:OnResultCallbackListener<LocalMedia>,maxVideoTime:Int=4*60,minVideoTime:Int =3,maxNum:Int = 9 ){
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+            .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
             .imageEngine(GlideEngine.createGlideEngine())
             .setLanguage(LanguageConfig.JAPAN)
             .theme(R.style.picture_WeChat_style)

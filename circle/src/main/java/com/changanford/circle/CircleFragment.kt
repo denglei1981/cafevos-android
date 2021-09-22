@@ -74,6 +74,9 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
         binding.btnCircleList.setOnClickListener {
             startARouter(ARouterCirclePath.CircleListActivity)
         }
+        binding.btnPost.setOnClickListener {
+            startARouter(ARouterCirclePath.PostActivity)
+        }
     }
 
 
