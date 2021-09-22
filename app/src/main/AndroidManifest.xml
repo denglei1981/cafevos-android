@@ -44,6 +44,8 @@
         <activity android:name="com.changanford.shop.ui.order.OrderConfirmActivity"/>
         <!-- 确认支付-->
         <activity android:name="com.changanford.shop.ui.order.PayConfirmActivity"/>
+        <!-- 商品评价-->
+        <activity android:name="com.changanford.shop.ui.goods.GoodsEvaluateActivity"/>
         <!--================================= 商城 End-->
 
     </application>

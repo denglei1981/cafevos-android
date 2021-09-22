@@ -17,8 +17,10 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/about_fragment.xml" value="0.2635416666666667" />
         <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/comm_bar_title_view.xml" value="0.2635416666666667" />
         <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/testviewpager.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.109375" />
         <entry key="..\:/Project/HYProject/FT/FordProject/home/src/main/res/layout/fragment_first.xml" value="0.13541666666666666" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_01025c_2dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_ee_b_0d5dp.xml" value="0.109375" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_f4_10dp.xml" value="0.1125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_f4_t_10dp.xml" value="0.1125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/btn_selector.xml" value="0.190625" />
@@ -63,6 +65,7 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_white_5dp.xml" value="0.3398148148148148" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_white_radius_10dp.xml" value="0.30512820512820515" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_goods_details.xml" value="0.2046875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_goods_evaluate.xml" value="0.18" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_integral_details.xml" value="0.2046875" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_ordedr_confirm.xml" value="0.2046875" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_order_confirm.xml" value="0.15" />
@@ -93,6 +96,7 @@
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_shop_top.xml" value="0.25" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_community_tab.xml" value="0.29375" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods.xml" value="0.21" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_evaluate.xml" value="0.1" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_img.xml" value="0.28125" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_goods.xml" value="0.25" />
         <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_shop_exchange_footer.xml" value="0.17239583333333333" />

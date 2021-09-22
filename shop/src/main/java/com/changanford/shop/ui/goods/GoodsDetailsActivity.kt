@@ -73,9 +73,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
     fun onClick(v:View){
         when(v.id){
             //确认订单
-            R.id.btn_submit->{
-                OrderConfirmActivity.start(this,"goodsInfo")
-            }
+            R.id.btn_submit->OrderConfirmActivity.start(this,"goodsInfo")
+            //查看评价
+            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
             //返回
             R.id.img_back->this.finish()
         }

@@ -20,6 +20,7 @@
         <item name="android:progressDrawable">@drawable/layer_live_rating_bar</item>
         <!-- 根据自定义星星图片的大小,设置相应的值,否则可能显示不全 -->
         <item name="android:numColumns">5</item>
+        <item name="android:isIndicator">true</item>
     </style>
     <style name="style_cb_collection" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:gravity">center</item>

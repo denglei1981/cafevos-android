@@ -23,6 +23,7 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />
         <com.changanford.shop.view.TypefaceTextView
+            android:onClick="onClick"
             android:drawablePadding="@dimen/dp_10"
             android:drawableEnd="@mipmap/shop_right"
             android:id="@+id/tv_goodsCommentLookAll"

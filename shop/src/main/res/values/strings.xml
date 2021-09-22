@@ -51,4 +51,5 @@
     <string name="str_total">共计</string>
     <string name="str_payFailure">支付失败</string>
     <string name="str_orderDetails">订单详情</string>
+    <string name="str_commodityGrade">商品评分：</string>
 </resources>

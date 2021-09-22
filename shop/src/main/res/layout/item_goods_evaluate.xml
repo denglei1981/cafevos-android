@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/bord_ee_b_0d5dp"
+        android:paddingBottom="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="@dimen/dp_35"
+            android:layout_height="@dimen/dp_35"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_userName"
+            android:layout_marginStart="@dimen/dp_18"
+            app:layout_constraintStart_toEndOf="@id/img_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="E**9"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginTop="@dimen/dp_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_userName"
+            app:layout_constraintStart_toStartOf="@id/tv_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="刚刚"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_12" />
+        <androidx.appcompat.widget.AppCompatRatingBar
+            app:layout_constraintBottom_toBottomOf="@id/img_avatar"
+            app:layout_constraintTop_toTopOf="@id/img_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/ratingBar"
+            style="@style/RadingStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_12"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_evaluate_content"
+            android:layout_marginTop="@dimen/dp_18"
+            app:layout_constraintTop_toBottomOf="@id/img_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 最新版蓝牙耳机 降噪耳机"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
