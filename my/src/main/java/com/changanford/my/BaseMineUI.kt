@@ -30,7 +30,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
 
     protected var pageSize: Int = 1
     private var pageNum: Int = 10
-    val emptyBinding: ViewEmptyBinding by lazy {
+    protected val emptyBinding: ViewEmptyBinding by lazy {
         ViewEmptyBinding.inflate(layoutInflater)
     }
 

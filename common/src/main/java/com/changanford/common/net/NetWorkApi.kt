@@ -151,16 +151,35 @@ interface NetWorkApi {
 
 
     /**
+     * 佩戴徽章
+     */
+    @POST("user/medal/wear")
+    suspend fun wearMedal(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 获取用户徽章列表
+     */
+    @POST("user/medal/getUserMedalList")
+    suspend fun queryUserMedalList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MedalListBeanItem>>
+
+
+    /**
      * 获取车主认证状态
      */
     @POST("ser/carAuth/isAuthCrmAndIncall")
-    fun getAuthStatus(
+    suspend fun getAuthStatus(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>
 
     @POST("ser/carAuth/getCarAuthAndInCallList")
-    fun queryAuthCarAndIncallList(
+    suspend fun queryAuthCarAndIncallList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>

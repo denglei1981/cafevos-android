@@ -24,6 +24,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  修改描述：TODO
  */
 class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
+    var list: ArrayList<MedalListBeanItem> = ArrayList()
 
     companion object {
         fun newInstance(list: ArrayList<MedalListBeanItem>?): MedalFragment {
@@ -36,7 +37,6 @@ class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
     }
 
     override fun initView() {
-        var list: ArrayList<MedalListBeanItem> = ArrayList()
         arguments?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             list = it as ArrayList<MedalListBeanItem>
         }
@@ -71,7 +71,8 @@ class MedalFragment : BaseMineFM<FmMedalBinding, EmptyViewModel>() {
                         }
                     }
                     holder.itemView.setOnClickListener {
-                        RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+                        RouterManger.param(RouterManger.KEY_TO_OBJ, list)
+                            .param(RouterManger.KEY_TO_ID, holder.absoluteAdapterPosition)
                             .startARouter(ARouterMyPath.MedalDetailUI)
                     }
                 }

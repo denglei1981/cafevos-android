@@ -10,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -55,6 +56,10 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 initViewpager()
             }
         })
+
+        binding.mineMedal.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.MineMedalUI)
+        }
     }
 
     private fun initViewpager() {
