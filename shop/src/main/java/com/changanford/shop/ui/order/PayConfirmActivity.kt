@@ -14,13 +14,14 @@ import com.changanford.shop.listener.OnTimeCountListener
  * @Time : 2021/9/9 0009
  * @Description : 确认支付
  */
-class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding,OrderViewModel>() {
+class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding,OrderViewModel>(){
     companion object{
         fun start(context: Context, orderInfo:String) {
             context.startActivity(Intent(context, PayConfirmActivity::class.java).putExtra("orderInfo",orderInfo))
         }
     }
     override fun initView() {
+        binding.topBar.setActivity(this)
         PayTimeCountControl(1561615,binding.tvPayTime,object : OnTimeCountListener {
             override fun onFinish() {
 

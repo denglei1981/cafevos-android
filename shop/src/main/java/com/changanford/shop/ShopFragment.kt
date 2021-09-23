@@ -1,13 +1,14 @@
 package com.changanford.shop
 import android.graphics.Typeface
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
+import com.changanford.shop.ui.IntegralDetailsActivity
 import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.google.android.material.tabs.TabLayoutMediator
@@ -32,9 +33,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
 
         //秒杀列表
-        binding.inTop.recyclerView.layoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
         binding.inTop.recyclerView.adapter=adapter
+        adapter.setOnItemClickListener { _, _, position ->
+            GoodsDetailsActivity.start(requireContext(),"$position")
+        }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
+        binding.inTop.btnToIntegral.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
     }
     override fun initData() {
         val datas= arrayListOf<GoodsBean>()

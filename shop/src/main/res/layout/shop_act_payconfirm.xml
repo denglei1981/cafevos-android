@@ -63,7 +63,12 @@
             android:background="@drawable/btn_selector"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"/>
-        <include
-            layout="@layout/in_topbar"/>
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_payConfirm"
+            app:bg_color="@color/white"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +10,13 @@
         android:layout_height="match_parent"
         android:background="@color/color_F4"
         android:orientation="vertical">
-        <include layout="@layout/in_topbar"/>
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_orderConfirm"
+            app:bg_color="@color/white"/>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"

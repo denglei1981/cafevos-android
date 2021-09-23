@@ -6,13 +6,14 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.ShopViewModel
 import com.changanford.shop.adapter.IntegralDetailsAdapter
 import com.changanford.shop.databinding.ActIntegralDetailsBinding
+import com.changanford.shop.view.TopBar
 
 /**
  * @Author : wenke
  * @Time : 2021/9/9
  * @Description : 积分明细
  */
-class IntegralDetailsActivity:BaseActivity<ActIntegralDetailsBinding,ShopViewModel> (){
+class IntegralDetailsActivity:BaseActivity<ActIntegralDetailsBinding,ShopViewModel> (), TopBar.OnRightClickListener {
     companion object{
         fun start(context: Context) {
             context.startActivity(Intent(context, IntegralDetailsActivity::class.java))
@@ -21,9 +22,17 @@ class IntegralDetailsActivity:BaseActivity<ActIntegralDetailsBinding,ShopViewMod
     private val mAdapter by lazy { IntegralDetailsAdapter() }
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
+        binding.topBar.setActivity(this)
+        binding.topBar.setOnRightClickListener(this)
     }
 
     override fun initData() {
+        mAdapter.setList(arrayListOf("","","","","","","","",""))
+    }
+    /**
+     * 搜索点击
+    * */
+    override fun onRightClick() {
 
     }
 }

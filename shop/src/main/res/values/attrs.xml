@@ -37,16 +37,16 @@
         <attr name="rightBottom_angle" format="boolean"/>
         <attr name="corner_radius" format="dimension"/>
     </declare-styleable>
-    <declare-styleable name="TitleBar">
-        <attr name="enable_right" format="boolean" />
-        <attr name="title_color" format="reference" />
-        <attr name="back_icon" format="reference" />
-        <attr name="right_icon" format="reference" />
-        <attr name="title_text" format="string" />
-        <attr name="right_text" format="string" />
-        <attr name="background_res" format="reference" />
-        <attr name="resource_res" format="reference" />
-    </declare-styleable>
+<!--    <declare-styleable name="TitleBar">-->
+<!--        <attr name="enable_right" format="boolean" />-->
+<!--        <attr name="title_color" format="reference" />-->
+<!--        <attr name="back_icon" format="reference" />-->
+<!--        <attr name="right_icon" format="reference" />-->
+<!--        <attr name="title_text" format="string" />-->
+<!--        <attr name="right_text" format="string" />-->
+<!--        <attr name="background_res" format="reference" />-->
+<!--        <attr name="resource_res" format="reference" />-->
+<!--    </declare-styleable>-->
     <!--进度条样式-->
     <declare-styleable name="NumberProgressBar">
         <attr name="progress_unreached_color" format="color" />
@@ -93,7 +93,7 @@
         <attr name="btn_states" format="integer" />
     </declare-styleable>
     <declare-styleable name="TopBar">
-        <attr name="title_color" format="reference" />
+        <attr name="title_color" format="reference|color|integer" />
         <attr name="back_icon" format="reference" />
         <attr name="right_icon" format="reference" />
         <attr name="title_text" format="string" />

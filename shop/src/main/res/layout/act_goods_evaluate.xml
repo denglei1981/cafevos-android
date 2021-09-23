@@ -11,12 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
-        <include
-            android:id="@+id/in_topBar"
-            layout="@layout/in_topbar"/>
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_goodsEvaluation"
+            app:bg_color="@color/white"/>
         <View
             android:id="@+id/view_divider"
-            app:layout_constraintTop_toBottomOf="@id/in_topBar"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
             android:background="@color/color_ee"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>

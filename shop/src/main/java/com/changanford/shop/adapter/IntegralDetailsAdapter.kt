@@ -5,13 +5,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.shop.R
-import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ItemIntegralDetailBinding
 
 
-class IntegralDetailsAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemIntegralDetailBinding>>(R.layout.item_goods), LoadMoreModule {
+class IntegralDetailsAdapter: BaseQuickAdapter<String, BaseDataBindingHolder<ItemIntegralDetailBinding>>(R.layout.item_integral_detail), LoadMoreModule {
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemIntegralDetailBinding>, item: GoodsBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemIntegralDetailBinding>, item: String) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
 //            dataBinding.model=item

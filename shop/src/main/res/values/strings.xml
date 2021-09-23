@@ -69,4 +69,7 @@
     <string name="str_cancel">取消</string>
     <string name="str_toSetUp">去设置</string>
     <string name="str_myPoints">我的积分</string>
+    <string name="str_integralDetail">积分明细</string>
+    <string name="str_orderConfirm">确认订单</string>
+    <string name="str_goodsEvaluation">商品评价</string>
 </resources>

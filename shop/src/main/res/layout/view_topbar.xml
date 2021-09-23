@@ -6,13 +6,12 @@
     android:paddingBottom="@dimen/dp_10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:id="@+id/layout_topbar">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_back"
         android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16"
-        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+        android:paddingEnd="@dimen/dp_20"
+        android:src="@mipmap/back_xhdpi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_right"
-        android:paddingStart="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_16"
         tools:src="@mipmap/shop_search"
         app:layout_constraintEnd_toEndOf="parent"
