@@ -3,14 +3,12 @@ package com.changanford.common.web
 import android.Manifest
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import com.changanford.common.util.bus.*
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
@@ -21,7 +19,6 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
@@ -29,7 +26,6 @@ import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
 import com.just.agentweb.AgentWeb
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission

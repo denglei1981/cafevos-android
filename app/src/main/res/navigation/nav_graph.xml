@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/myFragment"
-        android:name="com.changanford.my.AboutFragment"
+        android:name="com.changanford.my.MineFragment"
         android:label="AboutFragment" />
     <fragment
         android:id="@+id/shopFragment"

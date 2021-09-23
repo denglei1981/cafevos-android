@@ -707,9 +707,9 @@ public class FileHelper {
         }
         //以时间命名
 
-             fileName = System.currentTimeMillis() + ".jpg";
+             fileName = "ft"+System.currentTimeMillis() + ".jpg";
 
-        File file = new File(appDir, fileName);
+        File file = new File(MConstant.INSTANCE.getRootPath(), fileName);
         try {
             FileOutputStream fos = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);

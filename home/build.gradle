@@ -41,6 +41,7 @@ dependencies {
 
     implementation(project(":common"))
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
+//    implementation  'com.androidkun:XTabLayout:1.1.5'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

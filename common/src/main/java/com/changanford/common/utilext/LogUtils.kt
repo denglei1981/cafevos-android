@@ -3,6 +3,7 @@ package com.changanford.common.utilext
 import android.util.Log
 import com.changanford.common.util.MConstant.isDebug
 
+
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
  * @FileName: com.changanford.common.util.Log

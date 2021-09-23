@@ -4,5 +4,17 @@
 
     <application>
         <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.LoginUI"
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.SettingUI" />
+        <activity android:name=".ui.TaskListUI" />
+        <activity android:name=".ui.JiFenList" />
+        <activity android:name=".ui.AllMedalListUI" />
+        <activity android:name=".ui.MedalDetailUI" />
+        <activity android:name=".ui.CarCrmAuthUI" />
+        <activity android:name=".ui.BindMobileUI" />
+        <activity android:name=".ui.GrowUpUI" />
+        <activity android:name=".ui.MineMedalUI" />
     </application>
 </manifest>

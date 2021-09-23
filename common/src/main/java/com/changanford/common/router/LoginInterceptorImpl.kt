@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.template.IInterceptor
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
 
+
 /**
  * @Des: ARouter登录拦截
  *  拦截器会按优先级顺序priority依次执行

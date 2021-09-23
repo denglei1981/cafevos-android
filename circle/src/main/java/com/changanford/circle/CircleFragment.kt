@@ -11,6 +11,8 @@ import com.changanford.circle.databinding.FragmentSecondBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.viewpager.Banner
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -63,6 +65,18 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
             val intent = Intent(activity, Banner::class.java)
             startActivity(intent)
         }
+        binding.permission.setOnClickListener {
+            startARouter(ARouterCirclePath.PostGraphicActivity)
+        }
+        binding.btnVideo.setOnClickListener {
+            startARouter(ARouterCirclePath.PostVideoDetailsActivity)
+        }
+        binding.btnCircleList.setOnClickListener {
+            startARouter(ARouterCirclePath.CircleListActivity)
+        }
+        binding.btnPost.setOnClickListener {
+            startARouter(ARouterCirclePath.PostActivity)
+        }
     }
 
 
@@ -89,7 +103,8 @@ class CircleFragment : BaseFragment<FragmentSecondBinding, EmptyViewModel>() {
             shareViewModel.share(requireActivity(), shareBean)
         }
         binding.web.setOnClickListener {
-            JumpUtils.instans?.jump(1, "https://www.baidu.com")
+//            JumpUtils.instans?.jump(1, "https://www.baidu.com")
+            startARouter(ARouterCirclePath.CircleDetailsActivity)
         }
     }
 

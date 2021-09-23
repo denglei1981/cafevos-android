@@ -19,4 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
+###如果开启了混淆，并且调用了BVP的setScrollDuration方法，则必须添加以下混淆配置：
+  -keep class androidx.recyclerview.widget.**{*;}
+    -keep class androidx.viewpager2.widget.**{*;}
+    ###如果开启了混淆，并且调用了BVP的setScrollDuration方法，则必须添加以下混淆配置：

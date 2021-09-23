@@ -17,6 +17,7 @@ import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
+
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow

@@ -21,10 +21,11 @@ object LiveDataBusKey {
     const val RJP_TYPE = "RJPTYPE"
 
     const val BUS_HIDE_BOTTOM_TAB = "HIDE_BOTTOM_TAB"
+
     /**
      * WebView传递
      */
-//分享
+    //分享
     const val WEB_SHARE = "agentWeb_shareTo"
 
     //设置头部
@@ -136,7 +137,6 @@ object LiveDataBusKey {
 
     const val MINE_IS_FOLLOW = "mine:is_follow" //是否发布
 
-    const val MINE_SIGN_WX_CODE = "mine:sign_wx_code"//登录微信code
 
     const val MINE_SIGN_OTHER_CODE = 18 //三方登录未绑定
 
@@ -222,4 +222,11 @@ object LiveDataBusKey {
     const val CHOOSELOCATIONNOTHING = "chooselocationnothing" //选择不显示定位poi返回时
     const val ColseCHOOSELOCATION = "colsechooselocation" //关闭一级页面
 
+    const val MINE_SIGN_WX_CODE = "mine:sign_wx_code"//登录微信code
+
+    const val USER_LOGIN_STATUS = "sys:user_login_status"
+
+    const val PICTURESEDITED ="picturesedited"  //图片编辑页面点击下一步
+
 }
+

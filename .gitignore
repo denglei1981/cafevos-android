@@ -15,3 +15,6 @@
 .cxx
 local.properties
 *.jks
+/.idea
+build
+/.idea/misc.xml

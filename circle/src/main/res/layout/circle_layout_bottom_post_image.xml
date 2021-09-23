@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/circle_FAFBFD"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_talk"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_weight="1"
+        android:background="@drawable/circle_white_17_bg"
+        android:drawableStart="@mipmap/circle_edit_pb"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:text="你可以说点什么哦"
+        android:textColor="@color/color_cc"
+        android:textSize="13sp"
+        tools:ignore="HardcodedText,RtlSymmetry" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/circle_talk_image"
+        android:drawablePadding="3dp"
+        android:text="255"
+        android:gravity="center"
+        android:textColor="@color/color_99"
+        android:textSize="@dimen/sp_10" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/circle_no_like_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:text="255"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/circle_no_collection_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:text="255"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_10" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/circle_share_image"
+        android:drawablePadding="3dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="19dp"
+        android:gravity="center"
+        android:text="255"
+        android:textColor="@color/color_99"
+        android:textSize="@dimen/sp_10" />
+
+</LinearLayout>

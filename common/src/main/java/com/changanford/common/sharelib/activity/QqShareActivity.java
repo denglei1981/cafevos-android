@@ -232,4 +232,9 @@ public class QqShareActivity extends AppCompatActivity implements IUiListener {
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK,Integer.class).postValue(ShareResultType.SHARE_SUCCESS);
         finish();
     }
+
+    @Override
+    public void onWarning(int i) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.changanford.evos
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.changanford.common.net.body
@@ -8,7 +9,9 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
+import kotlin.math.log
 
 class SplashViewModel : ViewModel() {
     var key: MutableLiveData<String> = MutableLiveData()
