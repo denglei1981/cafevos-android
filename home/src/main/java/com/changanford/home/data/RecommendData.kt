@@ -1,4 +1,7 @@
 package com.changanford.home.data
 
-class RecommendData() {
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
+class RecommendData(override val itemType: Int) :MultiItemEntity {
+
 }

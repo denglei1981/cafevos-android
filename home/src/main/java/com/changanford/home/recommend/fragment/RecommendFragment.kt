@@ -31,14 +31,14 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, EmptyViewMo
         binding.smartLayout.setEnableRefresh(false)
         binding.recyclerView.layoutManager=LinearLayoutManager(requireActivity(),LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter=RecommendAdapter().apply {
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
-            addData(RecommendData())
+            addData(RecommendData(1))
+            addData(RecommendData(1))
+            addData(RecommendData(2))
+            addData(RecommendData(1))
+            addData(RecommendData(2))
+            addData(RecommendData(1))
+            addData(RecommendData(2))
+            addData(RecommendData(1))
         }
 
     }
