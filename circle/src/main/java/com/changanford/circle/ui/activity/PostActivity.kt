@@ -12,7 +12,6 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
-import android.view.ViewTreeObserver.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -136,24 +135,35 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
 
 
         binding.bottom.ivPic.setOnClickListener {
-            PictureUtil.openGallery(
-                this,
-                selectList,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        result?.get(0)?.let { it ->
-                            PictureUtil.startUCrop(
-                                this@PostActivity,
-                                PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
-                            )
-                        }
+//            PictureUtil.openGallery(
+//                this,
+//                selectList,
+//                object : OnResultCallbackListener<LocalMedia> {
+//                    override fun onResult(result: MutableList<LocalMedia>?) {
+//                        result?.get(0)?.let { it ->
+//                            PictureUtil.startUCrop(
+//                                this@PostActivity,
+//                                PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
+//                            )
+//                        }
+//                    }
+//
+//                    override fun onCancel() {
+//
+//                    }
+//
+//                })
+            PictureUtil.openGalleryonepic(this,selectList,object :OnResultCallbackListener<LocalMedia>{
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    if (result != null) {
+                        selectList.addAll(result)
                     }
+                }
 
-                    override fun onCancel() {
+                override fun onCancel() {
+                }
 
-                    }
-
-                })
+            })
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)
