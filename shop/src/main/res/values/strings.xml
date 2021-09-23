@@ -72,4 +72,9 @@
     <string name="str_integralDetail">积分明细</string>
     <string name="str_orderConfirm">确认订单</string>
     <string name="str_goodsEvaluation">商品评价</string>
+    <string name="str_orderEvaluation">订单评价</string>
+    <string name="str_postEvaluation">发布评价</string>
+    <string name="str_orderScore">订单评分</string>
+    <string name="str_anonymousSubmissions">匿名提交</string>
+    <string name="prompt_order_evaluation">口味赞，包装好，推荐给大家</string>
 </resources>
