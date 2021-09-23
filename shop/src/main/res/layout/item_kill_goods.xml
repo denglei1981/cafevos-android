@@ -97,8 +97,10 @@
                 android:layout_marginTop="@dimen/dp_9"
                 android:layout_marginBottom="@dimen/dp_11"
                 android:paddingStart="@dimen/dp_11"
+                app:start_txt="@string/str_limited"
+                app:end_txt="@string/str_a"
                 android:textColor="@color/color_74889D"
-                android:text="@string/str_limitedXa"
+                tools:text="@string/str_limitedXa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </com.changanford.shop.view.shadow.ShadowLayout>

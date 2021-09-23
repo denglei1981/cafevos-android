@@ -64,10 +64,6 @@
         <item name="android:backgroundDimAmount">0.01</item>
     </style>
 
-    <style name="TabLayoutTextStyle">
-        <item name="android:textSize">@dimen/sp_16</item>
-    </style>
-
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/text_color</item>
     </style>

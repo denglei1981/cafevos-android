@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changanford.shop">
-
+    <application>
+        <!--================================ 商城 Start-->
+        <!--积分明细-->
+        <activity android:name="com.changanford.shop.ui.IntegralDetailsActivity"/>
+        <!-- 商品详情-->
+        <activity android:name="com.changanford.shop.ui.goods.GoodsDetailsActivity"/>
+        <!-- 订单确认-->
+        <activity android:name="com.changanford.shop.ui.order.OrderConfirmActivity"/>
+        <!-- 确认支付-->
+        <activity android:name="com.changanford.shop.ui.order.PayConfirmActivity"/>
+        <!-- 商品评价-->
+        <activity android:name="com.changanford.shop.ui.goods.GoodsEvaluateActivity"/>
+        <!-- 商品秒杀-->
+        <activity android:name="com.changanford.shop.ui.goods.GoodsKillAreaActivity"/>
+        <!--================================= 商城 End-->
+    </application>
 </manifest>
