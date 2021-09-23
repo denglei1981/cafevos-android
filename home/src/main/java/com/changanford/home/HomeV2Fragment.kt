@@ -2,7 +2,6 @@ package com.changanford.home
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
@@ -12,15 +11,13 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.util.DisplayUtil
-import com.changanford.common.utilext.logE
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.ResultData
-import com.changanford.home.databinding.FragmentHomeRecommendBinding
+import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.shot.fragment.BigShotFragment
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
@@ -28,8 +25,7 @@ import com.gyf.immersionbar.ImmersionBar
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-@Deprecated("使用HomeV2Fragment,布局也过时了")
-class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>() {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -53,7 +49,6 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_big_shot))
-
         pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
         binding.homeViewpager.adapter = pagerAdapter
 
@@ -86,13 +81,13 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
         binding.recommendContent.ivMore.setOnClickListener {
             showPublish(binding.recommendContent.ivMore)
         }
         binding.layoutTopBar.ivScan.setOnClickListener {
             showPublish(binding.layoutTopBar.ivScan)
         }
-
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -112,6 +107,10 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
 
     var itemPunchWhat: Int = 0
 
+    override fun onResume() {
+        super.onResume()
+
+    }
     //初始化tab
     private fun initTab() {
         for (i in 0 until binding.homeTab.tabCount) {
@@ -137,11 +136,6 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        setAppbarPercent()
-    }
-
     private fun showPublish(publishLocationView : ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
@@ -161,32 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>(
         publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED)
         publishPopup.showAsDropDown(publishLocationView)
     }
-    private fun setAppbarPercent() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            "verticalOffset=$verticalOffset".logE()
-//            if (verticalOffset <= -50) {
-//                binding.layoutTopBar.conContent.visibility = View.VISIBLE
-//            } else if (verticalOffset >= -600) {
-//                binding.layoutTopBar.conContent.visibility = View.GONE
-//            }
-            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
-            "percent=$percent".logE()
-            if (percent > 0.8) {
-                binding.layoutTopBar.conContent.visibility = View.VISIBLE
-//                    val alpha = 1 - (1 - percent) * 5 //渐变变换
-//                    binding.layoutTopBar.conContent.alpha = alpha
-                "conContent=visiable".logE()
 
-            } else {
-                binding.layoutTopBar.conContent.visibility = View.GONE
-                "conContent=gone".logE()
-
-            }
-
-
-        })
-
-    }
 
     override fun initData() {
 
