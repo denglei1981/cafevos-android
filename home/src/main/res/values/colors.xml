@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_tab">#01025C</color>
-
+    <color name="gray_e5e5ee">#E5E5EE</color>
+    <color name="color_3d3">#3d3d3d</color>
 </resources>
