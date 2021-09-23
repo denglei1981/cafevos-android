@@ -16,5 +16,6 @@
         <activity android:name=".ui.BindMobileUI" />
         <activity android:name=".ui.GrowUpUI" />
         <activity android:name=".ui.MineMedalUI" />
+        <activity android:name=".ui.LoveCarInfoUI" />
     </application>
 </manifest>
