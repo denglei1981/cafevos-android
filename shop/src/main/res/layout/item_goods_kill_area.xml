@@ -61,6 +61,7 @@
             <com.changanford.shop.view.TypefaceTextView
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="@id/progressBar"
+                app:layout_constraintBottom_toBottomOf="@id/progressBar"
                 app:layout_constraintStart_toEndOf="@id/progressBar"
                 android:textColor="@color/color_99"
                 android:layout_marginStart="@dimen/dp_4"

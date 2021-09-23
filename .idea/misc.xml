@@ -7,22 +7,132 @@
         <entry key="../sdk/platforms/android-30/data/res/layout/simple_list_item_2.xml" value="0.1328125" />
         <entry key="../sdk/platforms/android-30/data/res/layout/tab_content.xml" value="0.1328125" />
         <entry key="../sdk/platforms/android-30/data/res/layout/test_list_item.xml" value="0.1328125" />
-        <entry key="..\:/ford/app/src/main/res/layout/pay_result.xml" value="0.18958333333333333" />
-        <entry key="..\:/ford/common/src/main/res/drawable/next_btn_bg.xml" value="0.19427083333333334" />
-        <entry key="..\:/ford/common/src/main/res/layout/about_fragment.xml" value="0.178125" />
-        <entry key="..\:/ford/common/src/main/res/layout/comm_bar_title_view.xml" value="0.21666666666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/about_fragment.xml" value="0.17552083333333332" />
-        <entry key="..\:/ford/my/src/main/res/layout/activity_test.xml" value="0.13854166666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/item_menu.xml" value="0.22447916666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/item_task_title.xml" value="0.4" />
-        <entry key="..\:/ford/my/src/main/res/layout/item_title.xml" value="0.22447916666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/mine_fragment.xml" value="0.264" />
-        <entry key="..\:/ford/my/src/main/res/layout/playcaard.xml" value="0.14130434782608695" />
-        <entry key="..\:/ford/my/src/main/res/layout/ui_login.xml" value="0.264" />
-        <entry key="..\:/ford/my/src/main/res/layout/ui_seeting.xml" value="0.19791666666666666" />
-        <entry key="..\:/ford/my/src/main/res/layout/ui_task.xml" value="0.21666666666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/view_recycler.xml" value="0.21666666666666667" />
-        <entry key="..\:/ford/my/src/main/res/layout/view_toolbar.xml" value="0.21666666666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13333333333333333" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/activity_main.xml" value="0.13541666666666666" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/content_main.xml" value="0.2046875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/fragment_demo1.xml" value="0.14356884057971014" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/fragment_demo3.xml" value="0.13541666666666666" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/fragment_demo4.xml" value="0.18697916666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/app/src/main/res/layout/fragment_first.xml" value="0.1171875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/about_fragment.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/comm_bar_title_view.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/layout/testviewpager.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/common/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.109375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/home/src/main/res/drawable/shape_home_banner_normal.xml" value="0.12777777777777777" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/home/src/main/res/layout/fragment_first.xml" value="0.13541666666666666" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/my/src/main/res/drawable/shape_top_r_5_c_ff.xml" value="0.12777777777777777" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_01025c_2dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_ee_0d5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_ee_b_0d5dp.xml" value="0.109375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_f4_10dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/bord_f4_t_10dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/btn_selector.xml" value="0.190625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/cb_style_collection.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/cb_text_collection.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/garden_1a000000.xml" value="0.178125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/garden_f8f9f9.xml" value="0.178125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.3398148148148148" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/ic_baseline_search_24.xml" value="0.19479166666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.30512820512820515" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.3398148148148148" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/layer_live_rating_bar.xml" value="0.30925925925925923" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/line_0095b_ff.xml" value="0.12777777777777777" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/line_eb6067_f89b82.xml" value="0.3138888888888889" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/line_ff_0095b.xml" value="0.12777777777777777" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/progressbar_bg.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/progressbar_bg_0.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/progressbar_kill_bg.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_goods.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_kill.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_bt_kill_dot.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_text_goods.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/radiobutton_text_kill.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_00095b_12dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_00095b_w5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_01025c_l_2dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b3b89_20dp.xml" value="0.18229166666666666" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_10dp.xml" value="0.190625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_16dp.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_20dp.xml" value="0.190625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_5dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_t_16dp.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_t_5dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_1b51d9_w10dp.xml" value="0.178125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_297fff_16dp.xml" value="0.3398148148148148" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_297fff_t_16dp.xml" value="0.19479166666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_33black_1dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_4dblack_2dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_4dwhite_2dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_551b3b89_20dp.xml" value="0.178125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_551b51d9_20dp.xml" value="0.190625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_55black_1dp.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_7d00095b_20dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_cfd5e6_w5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_e8ebf3_16dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_e8ebf3_5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_ebe835_12dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_11dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_3dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_f9_5dp.xml" value="0.252233676975945" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_white_10dp.xml" value="0.190625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_white_16dp.xml" value="0.3398148148148148" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_white_3dp.xml" value="0.1125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_white_5dp.xml" value="0.115625" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shadow_white_t_5dp.xml" value="0.109375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_fe_radius_15dp.xml" value="0.19479166666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_white_10dp.xml" value="0.30512820512820515" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_white_5dp.xml" value="0.3398148148148148" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/drawable/shape_white_radius_10dp.xml" value="0.30512820512820515" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_goods_details.xml" value="0.2046875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_goods_evaluate.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_goods_kill_area.xml" value="0.234375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_integral_details.xml" value="0.2046875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_ordedr_confirm.xml" value="0.2046875" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/act_order_confirm.xml" value="0.15" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/activity_goods_details.xml" value="0.13269927536231885" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/dialog_goods_selectparameter.xml" value="0.15" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/fragment_circle.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/fragment_circle_list.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/fragment_shop.xml" value="0.2635416666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/fragment_shop_exchange.xml" value="0.29375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/fragment_shop_layout.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/header_goods_details.xml" value="0.22" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/header_shop.xml" value="0.25" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_addnumber.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_bottom.xml" value="0.17806484295845998" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_details_comment.xml" value="0.28125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_details_info.xml" value="0.28125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_details_item_top.xml" value="0.32382246376811596" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_details_kill.xml" value="0.37777777777777777" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_detsils_vip.xml" value="0.15" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_goods_vip.xml" value="0.1" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_header_layout.xml" value="0.17806484295845998" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_list.xml" value="0.18697916666666667" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_order_confirm_address.xml" value="0.15" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_order_confirm_bottom.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_order_confirm_goodsinfo.xml" value="0.12" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_oreder_confirm_orderinfo.xml" value="0.10173611111111111" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_oreder_confirm_pay.xml" value="0.10173611111111111" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_pay_results.xml" value="0.1" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/in_shop_top.xml" value="0.25" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_community_tab.xml" value="0.29375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods.xml" value="0.21" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_attribute.xml" value="0.24409722222222222" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_evaluate.xml" value="0.1" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_kill.xml" value="0.24409722222222222" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_goods_kill_area.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_img.xml" value="0.28125" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_date.xml" value="0.24409722222222222" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_goods.xml" value="0.25" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_kill_time.xml" value="0.25" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_rdb.xml" value="0.234375" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_shop_exchange_footer.xml" value="0.17239583333333333" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/item_shop_exchange_header.xml" value="0.33" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/pop_goods_selectattribute.xml" value="0.24409722222222222" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/shop_act_payconfirm.xml" value="0.18" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/title_bar.xml" value="0.17806484295845998" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/topbar_goods_details.xml" value="0.33" />
+        <entry key="..\:/Project/HYProject/FT/FordProject/shop/src/main/res/layout/view_addnumber.xml" value="0.24409722222222222" />
         <entry key="app/src/main/res/drawable/bt_car.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/drawable/bt_circle.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/drawable/bt_home.xml" value="0.18177083333333333" />
@@ -65,70 +175,15 @@
         <entry key="car/src/main/res/layout/detail_fragment.xml" value="0.20677083333333332" />
         <entry key="car/src/main/res/layout/fragment_circle.xml" value="0.20677083333333332" />
         <entry key="car/src/main/res/layout/fragment_circle2.xml" value="0.20677083333333332" />
-        <entry key="circle/src/main/res/drawable-v23/circle_tab_circle_lis.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable-v23/circle_tab_circle_list.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_33_17_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_819_12.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_app_color_20.xml" value="0.3138888888888889" />
-        <entry key="circle/src/main/res/drawable/circle_black_15_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_f2_15_bg.xml" value="0.3194444444444444" />
-        <entry key="circle/src/main/res/drawable/circle_f2_17.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_f4_.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_f4f4_5.xml" value="0.3138888888888889" />
-        <entry key="circle/src/main/res/drawable/circle_follow_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_tab_circle_list.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_talk_20_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_talk_20_v_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_top_white_5_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_white_0.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_white_17_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/drawable/circle_white_5_bg.xml" value="0.30666666666666664" />
-        <entry key="circle/src/main/res/layout/activity_all_reply.xml" value="0.23523879977400355" />
-        <entry key="circle/src/main/res/layout/activity_circle_details.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/activity_circle_list.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/activity_circle_list2.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/activity_personal.xml" value="0.19429347826086957" />
-        <entry key="circle/src/main/res/layout/activity_post_graphic.xml" value="0.30404525198699045" />
-        <entry key="circle/src/main/res/layout/activity_post_video_details.xml" value="0.20516304347826086" />
-        <entry key="circle/src/main/res/layout/circle_layout_bottom_post_image.xml" value="0.21051896019136568" />
-        <entry key="circle/src/main/res/layout/circle_layout_details_top.xml" value="0.2172759529773304" />
-        <entry key="circle/src/main/res/layout/circle_layout_title.xml" value="0.34565150996408395" />
-        <entry key="circle/src/main/res/layout/circle_line_10.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/circlr_layout_details_top.xml" value="0.15833333333333333" />
-        <entry key="circle/src/main/res/layout/dialog_application_circle_management.xml" value="0.2631979620341587" />
-        <entry key="circle/src/main/res/layout/dialog_circle_reply.xml" value="0.2679014463990048" />
-        <entry key="circle/src/main/res/layout/fragment_circle_details.xml" value="0.19429347826086957" />
-        <entry key="circle/src/main/res/layout/fragment_circle_list.xml" value="0.19610507246376813" />
         <entry key="circle/src/main/res/layout/fragment_second.xml" value="0.24322916666666666" />
-        <entry key="circle/src/main/res/layout/item_circle_details_bottom.xml" value="0.3781235237366909" />
-        <entry key="circle/src/main/res/layout/item_circle_details_personal.xml" value="0.19882246376811594" />
-        <entry key="circle/src/main/res/layout/item_circle_list.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/item_citcle_tab.xml" value="0.19610507246376813" />
-        <entry key="circle/src/main/res/layout/item_personal.xml" value="0.28614979719425954" />
-        <entry key="circle/src/main/res/layout/item_post_bar_banner.xml" value="0.11822916666666666" />
-        <entry key="circle/src/main/res/layout/item_post_details_comment.xml" value="0.3585728595404114" />
         <entry key="circle/src/main/res/layout/testviewpager.xml" value="0.14635416666666667" />
-        <entry key="common/src/main/res/drawable/bg_toast.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_layer_progress_bar.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_progress_loading.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_seekbar_thumb.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_seekbar_thumb_pressed.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_selector_full_screen_button.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/dkplayer_shape_stardard_controller_bottom_bg.xml" value="0.30666666666666664" />
-        <entry key="common/src/main/res/drawable/shape_fc_bg.xml" value="0.30666666666666664" />
         <entry key="common/src/main/res/layout/about_fragment.xml" value="0.24322916666666666" />
         <entry key="common/src/main/res/layout/activity_test.xml" value="0.335" />
         <entry key="common/src/main/res/layout/camerax_test.xml" value="0.184375" />
         <entry key="common/src/main/res/layout/comm_bar_title_view.xml" value="0.24322916666666666" />
         <entry key="common/src/main/res/layout/dialog_loading.xml" value="0.11828774062816616" />
-        <entry key="common/src/main/res/layout/dkplayer_layout_complete_view.xml" value="0.20516304347826086" />
-        <entry key="common/src/main/res/layout/dkplayer_layout_error_view.xml" value="0.20516304347826086" />
-        <entry key="common/src/main/res/layout/dkplayer_layout_prepare_view.xml" value="0.20516304347826086" />
-        <entry key="common/src/main/res/layout/dkplayer_layout_standard_controller.xml" value="0.20516304347826086" />
-        <entry key="common/src/main/res/layout/dkplayer_layout_vod_control_view.xml" value="0.20516304347826086" />
         <entry key="common/src/main/res/layout/playcaard.xml" value="0.1" />
         <entry key="common/src/main/res/layout/testviewpager.xml" value="0.14635416666666667" />
-        <entry key="common/src/main/res/layout/toast_view.xml" value="0.21331521739130435" />
         <entry key="home/src/main/res/layout/fragment_first.xml" value="0.24322916666666666" />
         <entry key="home/src/main/res/layout/fragment_homebanner.xml" value="0.24322916666666666" />
         <entry key="my/src/main/res/layout/about_fragment.xml" value="0.24322916666666666" />
@@ -138,6 +193,7 @@
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">

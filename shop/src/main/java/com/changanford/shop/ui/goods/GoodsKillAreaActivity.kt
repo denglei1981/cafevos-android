@@ -28,17 +28,20 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     override fun initView() {
         binding.rvDate.adapter=dateAdapter
         binding.rvTime.adapter=timeAdapter
-//        binding.rvTime.addItemDecoration(DividerItemDecoration(this))
         binding.rvList.adapter=mAdapter
 
     }
     override fun initData() {
+        val dates= arrayListOf<String>()
+        for(i in 10..30){
+            dates.add("9月${i}日")
+        }
+        dateAdapter.setList(dates)
         val datas= arrayListOf<GoodsBean>()
         for(i in 0..15){
             val item=GoodsBean(i,"Title$i")
             datas.add(item)
         }
-        dateAdapter.setList(arrayListOf("","","","","","","","","",""))
         mAdapter.setList(datas)
         timeAdapter.setList(datas)
     }

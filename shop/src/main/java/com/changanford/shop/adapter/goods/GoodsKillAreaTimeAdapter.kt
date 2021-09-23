@@ -37,11 +37,12 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<GoodsBean, B
                 dataBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 dataBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_99))
             }
-            dataBinding.root.setOnClickListener { switchItem(dataBinding) }
+            dataBinding.root.setOnClickListener { switchItem(dataBinding,position) }
         }
 
     }
-    private fun switchItem(itemBinding:ItemKillTimeBinding){
+    private fun switchItem(itemBinding:ItemKillTimeBinding,position:Int){
+        selectPos=position
         if(::lastBinding.isInitialized&&itemBinding!=lastBinding){
             itemBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
             itemBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))

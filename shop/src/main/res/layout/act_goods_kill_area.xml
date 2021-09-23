@@ -6,13 +6,33 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
-        <include layout="@layout/in_header_layout"/>
+        <include
+            android:id="@+id/topBar"
+            layout="@layout/in_header_layout"/>
+        <View
+            android:layout_marginBottom="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date"
+            android:background="@drawable/line_white_0095b_white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_5"
+            android:gravity="center_vertical">
+            <View
+                android:background="@drawable/line_white_0095b_white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/topBar"
             android:layout_marginTop="@dimen/dp_20"
             android:id="@+id/rv_date"
             android:layout_width="match_parent"
@@ -20,6 +40,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"/>
         <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/rv_date"
             android:id="@+id/rv_time"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
@@ -27,6 +48,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"/>
         <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/rv_time"
             android:layout_marginTop="@dimen/dp_10"
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
@@ -34,5 +56,5 @@
             android:paddingStart="@dimen/dp_10"
             android:paddingEnd="@dimen/dp_10"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
