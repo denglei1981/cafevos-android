@@ -32,6 +32,9 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * 定位
+ */
 @Route(path = ARouterCirclePath.ChooseLocationActivity)
 class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewModel>(),
     OnGetPoiSearchResultListener {

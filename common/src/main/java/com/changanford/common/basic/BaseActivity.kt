@@ -103,15 +103,15 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         }
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (ev.action == MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (isShouldHideKeyboard(v, ev)) {
-                hideKeyboard(v!!.windowToken)
-            }
-        }
-        return super.dispatchTouchEvent(ev)
-    }
+//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        if (ev.action == MotionEvent.ACTION_DOWN) {
+//            val v = currentFocus
+//            if (isShouldHideKeyboard(v, ev)) {
+//                hideKeyboard(v!!.windowToken)
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
 
       private fun isShouldHideKeyboard(v: View?, event: MotionEvent): Boolean {
         if (v != null && v is EditText) {

@@ -19,6 +19,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
     <application>
         <activity android:name=".ui.viewpager.Banner" />
         <activity android:name=".ui.CaptureActivity" />
@@ -29,9 +38,9 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="yDrzoBSH2Itl1PqXR5GMrbIrsfTLOLpb"/>
-        <meta-data
+<!--        <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="56913eab3a5c4f59dd961dbc1b1b909c" />
+            android:value="56913eab3a5c4f59dd961dbc1b1b909c" />-->
     </application>
 
 </manifest>

@@ -40,6 +40,9 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 
+/**
+ * 发图片帖子
+ */
 @Route(path = ARouterCirclePath.PostActivity)
 class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
     lateinit var postPicAdapter: PostPicAdapter
@@ -66,8 +69,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
         spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         binding.etBiaoti.hint = spannableString
-
-
     }
 
     override fun initData() {
