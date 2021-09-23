@@ -48,6 +48,8 @@
         android:layout_marginTop="18dp"
         android:scaleType="centerCrop"
         android:visibility="gone"
+        tools:visibility="visible"
+        tools:src="@drawable/image_recommed_default"
         app:layout_constraintDimensionRatio="335:150"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
