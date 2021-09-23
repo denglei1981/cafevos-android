@@ -83,7 +83,7 @@ object PictureUtil {
 
     fun openGallery(activity:Activity,datas:ArrayList<LocalMedia>,onResultCallbackListener:OnResultCallbackListener<LocalMedia>,maxVideoTime:Int=4*60,minVideoTime:Int =3,maxNum:Int = 9 ){
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+            .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
             .imageEngine(GlideEngine.createGlideEngine())
             .setLanguage(LanguageConfig.JAPAN)
             .theme(R.style.picture_WeChat_style)
