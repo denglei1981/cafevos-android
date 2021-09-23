@@ -79,8 +79,6 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
         }
     }
 
-
-
     /**
      * 设置指示器
      * */
@@ -95,9 +93,7 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
     }
 
     override fun initData() {
-
     }
-
     private fun getPicList(): MutableList<String> {
         mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
         mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
