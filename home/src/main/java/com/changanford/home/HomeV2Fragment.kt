@@ -21,6 +21,8 @@ import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import com.scwang.smart.refresh.layout.api.RefreshHeader
+import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -39,7 +41,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         //Tab+Fragment
         immersionBar = ImmersionBar.with(requireActivity())
         immersionBar?.fitsSystemWindows(true)
-
+        binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
@@ -53,6 +55,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.homeViewpager.adapter = pagerAdapter
 
         binding.homeViewpager.isSaveEnabled = false
+
 
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
@@ -88,6 +91,22 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.layoutTopBar.ivScan.setOnClickListener {
             showPublish(binding.layoutTopBar.ivScan)
         }
+        binding.refreshLayout.setOnMultiListener(object :SimpleMultiListener(){
+            override fun onHeaderMoving(
+                header: RefreshHeader?,
+                isDragging: Boolean,
+                percent: Float,
+                offset: Int,
+                headerHeight: Int,
+                maxDragHeight: Int
+            ) {
+               binding.llTabContent.alpha= 1 - percent.coerceAtMost(1f)
+               binding.layoutTopBar.conContent.alpha= 1 - percent.coerceAtMost(1f)
+               binding.homeTab.alpha= 1 - percent.coerceAtMost(1f)
+            }
+
+
+        })
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {

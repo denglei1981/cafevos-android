@@ -1,72 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="@color/white">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_header"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/roundedImageStyle"
-        tools:src="@mipmap/ic_launcher" />
+    <data>
 
-    <ImageView
-        android:id="@+id/iv_vip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/icon_home_auth_vip"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_header"
-        app:layout_constraintCircle="@id/iv_header"
-        app:layout_constraintCircleAngle="120"
-        app:layout_constraintCircleRadius="15dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_header" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_author_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_10"
-        android:textColor="#ff333333"
-        android:textSize="@dimen/sp_12"
-        app:layout_constraintStart_toEndOf="@+id/iv_header"
-        app:layout_constraintTop_toTopOf="@+id/iv_header"
-        tools:text="这里是兔子说" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white">
 
-    <TextView
-        android:id="@+id/tv_sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#ff00095b"
-        android:textSize="@dimen/sp_10"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_header"
-        app:layout_constraintStart_toStartOf="@+id/tv_author_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
-        tools:text="车迷级公民" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_header"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageStyle"
+            tools:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_home_auth_vip"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+            app:layout_constraintCircle="@id/iv_header"
+            app:layout_constraintCircleAngle="120"
+            app:layout_constraintCircleRadius="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_header" />
+
+        <TextView
+            android:id="@+id/tv_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textColor="#ff333333"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toEndOf="@+id/iv_header"
+            app:layout_constraintTop_toTopOf="@+id/iv_header"
+            tools:text="这里是兔子说" />
+
+        <TextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff00095b"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+            app:layout_constraintStart_toStartOf="@+id/tv_author_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
+            tools:text="车迷级公民" />
 
 
-    <TextView
-        android:id="@+id/tv_follow"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
-        android:background="@drawable/shape_home_unfollow_bg"
-        android:elevation="0dp"
-        android:gravity="center"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:textAllCaps="false"
-        android:textColor="@color/blue_tab"
-        android:textSize="@dimen/sp_12"
-        app:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="+关注" />
+        <TextView
+            android:id="@+id/tv_follow"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:background="@drawable/shape_home_unfollow_bg"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_tab"
+            android:textSize="@dimen/sp_12"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="+关注" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
