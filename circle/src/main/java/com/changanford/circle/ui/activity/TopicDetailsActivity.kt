@@ -2,7 +2,6 @@ package com.changanford.circle.ui.activity
 
 import android.content.Context
 import android.graphics.Color
-import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -12,20 +11,16 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
 import com.changanford.circle.config.CircleConfig
-import com.changanford.circle.databinding.ActivityCircleDetailsBinding
+import com.changanford.circle.databinding.ActivityTopicDetailsBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
-import com.changanford.circle.viewmodel.CircleDetailsViewModel
-import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
-import com.changanford.circle.widget.pop.CircleManagementPop
+import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -37,70 +32,31 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
-import razerdp.basepopup.BasePopupWindow
 import kotlin.math.abs
 
 /**
  *Author lcw
- *Time on 2021/9/18
- *Purpose 圈子详情
+ *Time on 2021/9/23
+ *Purpose 话题详情
  */
-@Route(path = ARouterCirclePath.CircleDetailsActivity)
-class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
+@Route(path = ARouterCirclePath.TopicDetailsActivity)
+class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDetailsViewModel>() {
 
     private var isWhite = true//是否是白色状态
-
-    private val personalAdapter by lazy {
-        CircleDetailsPersonalAdapter(this)
-    }
 
     override fun initView() {
         initMagicIndicator()
         binding.run {
-            backImg.setOnClickListener { finish() }
-            AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
-            AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
+//            AppUtils.setStatusBarPaddingTop(binding.topContent.ivIcon, this@TopicDetailsActivity)
+            AppUtils.setStatusBarPaddingTop(binding.toolbar, this@TopicDetailsActivity)
         }
         binding.topContent.run {
-
-            Glide.with(this@CircleDetailsActivity)
+            Glide.with(this@TopicDetailsActivity)
                 .load(CircleConfig.TestUrl)
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
                 .into(ivBg)
             ivIcon.setCircular(5)
             ivIcon.loadImage(CircleConfig.TestUrl)
-            ryPersonal.adapter = personalAdapter
-            tvPersonal.setOnClickListener {
-                startARouter(ARouterCirclePath.PersonalActivity)
-            }
-            tvJoin.setOnClickListener {
-                CircleManagementPop(this@CircleDetailsActivity,
-                    object : CircleManagementPop.ClickListener {
-                        override fun checkPosition(bean: String) {
-                            ApplicationCircleManagementDialog(this@CircleDetailsActivity, 1).show()
-                        }
-                    }).run {
-                    //pop背景对齐
-//                    setAlignBackground(true)
-                    //无透明背景
-//                    setBackgroundColor(Color.TRANSPARENT)
-                    //背景模糊false
-                    setBlurBackgroundEnable(false)
-                    //弹出位置 基于绑定的view 默认BOTTOM
-                    popupGravity = Gravity.BOTTOM and Gravity.END
-                    showPopupWindow(tvJoinText)
-                    setData(arrayListOf("星推官", "星推官助手"))
-                    onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                        override fun onDismiss() {
-
-                        }
-
-                    }
-                    setOnPopupWindowShowListener {
-
-                    }
-                }
-            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -127,8 +83,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 binding.barTitleTv.alpha = 1.0F
             }
         })
-
         initTabAndViewPager()
+    }
+
+    override fun initData() {
+
     }
 
     private fun initTabAndViewPager() {
@@ -153,13 +112,6 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     }
 
-    override fun initData() {
-        val personalList = arrayListOf("", "", "", "", "", "", "", "", "", "")
-        personalAdapter.setItems(personalList)
-        personalAdapter.notifyDataSetChanged()
-    }
-
-
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
@@ -177,9 +129,9 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_33)
+                    ContextCompat.getColor(this@TopicDetailsActivity, R.color.color_33)
                 simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.circle_app_color)
+                    ContextCompat.getColor(this@TopicDetailsActivity, R.color.circle_app_color)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return simplePagerTitleView
             }
@@ -197,7 +149,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 indicator.endInterpolator = DecelerateInterpolator(2.0f)
                 indicator.setColors(
                     ContextCompat.getColor(
-                        this@CircleDetailsActivity,
+                        this@TopicDetailsActivity,
                         R.color.circle_app_color
                     )
                 )
@@ -207,6 +159,4 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         magicIndicator.navigator = commonNavigator
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
-
-
 }

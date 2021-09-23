@@ -9,6 +9,7 @@ import com.changanford.circle.databinding.ItemCircleDetailsPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.utils.MUtils
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
@@ -20,7 +21,6 @@ class CircleDetailsPersonalAdapter(context: Context) :
     BaseAdapterOneLayout<String>(context, R.layout.item_circle_details_personal) {
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
         val binding = vdBinding as ItemCircleDetailsPersonalBinding
-
         val params = binding.ivPersonal.layoutParams as ViewGroup.MarginLayoutParams
         if (position == 0) {
             params.leftMargin =

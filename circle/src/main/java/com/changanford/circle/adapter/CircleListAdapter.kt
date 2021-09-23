@@ -7,6 +7,7 @@ import com.changanford.circle.R
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleListBinding
 import com.changanford.circle.ext.*
+import com.changanford.circle.utils.MUtils
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
@@ -18,12 +19,7 @@ class CircleListAdapter(context: Context) :
     BaseAdapterOneLayout<String>(context, R.layout.item_circle_list) {
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
         val binding = vdBinding as ItemCircleListBinding
-        //第一个item追加加一个margin
-        val params = binding.clItem.layoutParams as ViewGroup.MarginLayoutParams
-        if (position == 0) {
-            params.topMargin =
-                17.toIntPx()
-        } else params.topMargin = 0
+        MUtils.setTopMargin(binding.clItem, 17, position)
         binding.ivIcon.setCircular(5)
         binding.ivIcon.loadImage(CircleConfig.TestUrl)
         binding.bean = item
