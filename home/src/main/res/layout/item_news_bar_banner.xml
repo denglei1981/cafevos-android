@@ -8,17 +8,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_banner"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_second_floor"
+            app:layout_constraintDimensionRatio="335:175"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
