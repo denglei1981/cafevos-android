@@ -6,7 +6,7 @@ import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
-import com.changanford.shop.ui.goods.GoodsAttrsPop
+import com.changanford.shop.popupwindow.GoodsAttrsPop
 
 /**
  * @Author : wenke
@@ -33,7 +33,7 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
-        val pop=GoodsAttrsPop(activity)
+        val pop= GoodsAttrsPop(activity)
         pop.showPopupWindow()
     }
 

@@ -1,4 +1,4 @@
-package com.changanford.shop.ui.goods
+package com.changanford.shop.popupwindow
 
 import android.content.Context
 import android.view.animation.Animation

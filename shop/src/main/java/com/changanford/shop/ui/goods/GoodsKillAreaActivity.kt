@@ -40,6 +40,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         val datas= arrayListOf<GoodsBean>()
         for(i in 0..15){
             val item=GoodsBean(i,"Title$i")
+            if(i<5)item.states=i
             datas.add(item)
         }
         mAdapter.setList(datas)

@@ -1,12 +1,17 @@
 package com.changanford.shop.utils
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
+import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
+
 
 /**
  * @Author : wenke
@@ -42,4 +47,42 @@ object WCommonUtil {
             }
         })
     }
+    /**
+     * 是否开启通知
+    * */
+    fun isNotificationEnabled(context: Context): Boolean {
+        return try {
+            NotificationManagerCompat.from(context).areNotificationsEnabled()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+    /**
+     * 去系统开启通知
+    * */
+    fun toSetNotice(context:Context) {
+        val intent = Intent()
+        when {
+            Build.VERSION.SDK_INT >= 26 -> {
+                // android 8.0引导
+                intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+                intent.putExtra("android.provider.extra.APP_PACKAGE", context.packageName)
+            }
+            Build.VERSION.SDK_INT >= 21 -> {
+                // android 5.0-7.0
+                intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+                intent.putExtra("app_package", context.packageName)
+                intent.putExtra("app_uid", context.applicationInfo.uid)
+            }
+            else -> {
+                // 其他
+                intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+                intent.data = Uri.fromParts("package", context.packageName, null)
+            }
+        }
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+    }
+
 }

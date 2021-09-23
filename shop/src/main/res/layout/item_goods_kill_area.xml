@@ -103,14 +103,12 @@
                 tools:text="限量200件"
                 android:textColor="@color/color_99"
                 android:textSize="@dimen/sp_12" />
-            <androidx.appcompat.widget.AppCompatButton
+            <com.changanford.shop.view.btn.KillBtnView
+                android:id="@+id/btn_states"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/style_btn"
-                android:textSize="@dimen/sp_12"
-                android:text="@string/str_toSnapUp"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_30"/>
+                style="@style/style_btn_kill"
+                android:text="@string/str_toSnapUp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.changanford.shop.view.shadow.ShadowLayout>
 </layout>

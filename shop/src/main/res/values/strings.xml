@@ -61,5 +61,11 @@
     <string name="str_limited">限量</string>
     <string name="str_a">件</string>
     <string name="str_toSnapUp">去抢购</string>
+    <string name="str_hasGone">已抢光</string>
     <string name="str_hasEnded">已结束</string>
+    <string name="str_remindMe">提醒我</string>
+    <string name="str_cancelReminder">取消提醒</string>
+    <string name="prompt_setNotic">请在手机系统”设置-通知“中允许本App发送通知消息</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_toSetUp">去设置</string>
 </resources>

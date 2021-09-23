@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         tools:background="@color/color_55bebebe"
         tools:layout_height="match_parent"
-        android:gravity="top">
+        android:gravity="bottom"
+        android:layout_gravity="bottom">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/shadow_white_t_5dp"
             android:layout_width="match_parent"
