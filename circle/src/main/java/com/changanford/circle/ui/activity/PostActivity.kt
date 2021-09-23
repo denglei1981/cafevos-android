@@ -153,17 +153,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
 //                    }
 //
 //                })
-            PictureUtil.openGalleryonepic(this,selectList,object :OnResultCallbackListener<LocalMedia>{
-                override fun onResult(result: MutableList<LocalMedia>?) {
-                    if (result != null) {
-                        selectList.addAll(result)
-                    }
-                }
-
-                override fun onCancel() {
-                }
-
-            })
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)
