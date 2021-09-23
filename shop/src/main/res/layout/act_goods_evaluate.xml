@@ -13,7 +13,7 @@
         android:background="@color/white">
         <include
             android:id="@+id/in_topBar"
-            layout="@layout/in_header_layout"/>
+            layout="@layout/in_topbar"/>
         <View
             android:id="@+id/view_divider"
             app:layout_constraintTop_toBottomOf="@id/in_topBar"
