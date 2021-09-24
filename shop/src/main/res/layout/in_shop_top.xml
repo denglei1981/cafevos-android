@@ -97,5 +97,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_32"/>
             </com.changanford.shop.view.shadow.ShadowLayout>
+            <Button
+                android:layout_margin="@dimen/dp_20"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/btn_pj"
+                android:text="订单评价"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -77,4 +77,6 @@
     <string name="str_orderScore">订单评分</string>
     <string name="str_anonymousSubmissions">匿名提交</string>
     <string name="prompt_order_evaluation">口味赞，包装好，推荐给大家</string>
+    <string name="str_xeb">/200</string>
+    <string name="str_pleaseEnterComments">请输入评论内容</string>
 </resources>

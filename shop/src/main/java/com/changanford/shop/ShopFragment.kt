@@ -10,6 +10,7 @@ import com.changanford.shop.ui.IntegralDetailsActivity
 import com.changanford.shop.ui.exchange.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -39,6 +40,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
         binding.inTop.btnToIntegral.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
+
+        //test
+        binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
+
     }
     override fun initData() {
         val datas= arrayListOf<GoodsBean>()

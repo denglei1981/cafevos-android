@@ -5,11 +5,15 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.Gravity
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.changanford.shop.bean.EditTextBean
 import com.google.android.material.tabs.TabLayout
 
 
@@ -84,5 +88,16 @@ object WCommonUtil {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
-
+    /**
+     * 扩展函数简化了将afterTextChanged操作设置为EditText组件。
+     */
+    fun EditText.onTextChanged(onTextChanged: (EditTextBean) -> Unit) {
+        this.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                onTextChanged.invoke(EditTextBean(s,start,before,count))
+            }
+        })
+    }
 }
