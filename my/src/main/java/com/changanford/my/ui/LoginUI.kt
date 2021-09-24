@@ -87,7 +87,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun initView() {
-        StatusBarUtil.setTranslucentForImageView(this, null)
+//        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
+        StatusBarUtil.setAndroidNativeLightStatusBar(this,false)
         tencent = Tencent.createInstance(MConstant.QQAPPID, this)
 
         wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
@@ -249,6 +250,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     subscribe?.dispose()
                 }
             })
+    }
+
+    override fun isUseFullScreenMode(): Boolean {
+        return true
     }
 
     override fun onDestroy() {

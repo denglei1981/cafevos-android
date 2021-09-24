@@ -3,14 +3,12 @@ package com.changanford.my.adapter
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.os.Bundle
 import android.view.View
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
-import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.my.databinding.ItemCarAuthBinding
 
@@ -57,12 +55,13 @@ fun CarAuthHolder(
             }
         }
         holder.itemView.setOnClickListener { _ ->
-            if (isCrmSuccess(item)) {//成功跳详情
-                skipCrmCarInfo(item)
-            } else {//失败跳认证页面
-                item.reason = "${it.authReason.text}"
-                skipUniSubmitAuth(holder.itemView.context, item)
-            }
+            skipCrmCarInfo(item)
+//            if (isCrmSuccess(item)) {//成功跳详情
+//                skipCrmCarInfo(item)
+//            } else {//失败跳认证页面
+//                item.reason = "${it.authReason.text}"
+//                skipUniSubmitAuth(holder.itemView.context, item)
+//            }
         }
     }
 }
@@ -91,9 +90,8 @@ fun skipInCallCarInfo(item: CarItemBean) {
  * 跳转crm详情
  */
 fun skipCrmCarInfo(item: CarItemBean) {
-    var bundle = Bundle()
-    bundle.putSerializable(LiveDataBusKey.MINE_CAR_AUTH_ING, item)
-    RouterManger.startARouter(ARouterMyPath.MineLoveCarInfoUI, bundle)
+    RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+        .startARouter(ARouterMyPath.MineLoveCarInfoUI)
 }
 
 /**

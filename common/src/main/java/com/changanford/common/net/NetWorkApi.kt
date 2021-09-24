@@ -184,4 +184,84 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>
 
+
+    /*------------------粉丝 关注---------------------*/
+
+    @POST("userFans/getAllFansOrFollowsList")
+    suspend fun queryFansList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FansListBean>
+
+
+    @POST("userFans/userFollowOrCanaleFollow")
+    suspend fun cancelFans(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //user/getAccountBindList
+    @POST("user/getAccountBindList")
+    suspend fun queryBindMobileList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<BindAuthBeanItem>>
+
+    /**
+     * 绑定三方账号
+     */
+    @POST("login/bindOauth")
+    suspend fun bindOtherAuth(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 注销，验证注销条件
+     */
+    @POST("user/verifyCancel")
+    suspend fun verifyCancelAccount(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CancelVerifyBean>>
+
+
+    @POST("base/dict/getType")
+    suspend fun cancelAccountReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CancelReasonBeanItem>>
+
+
+    /**
+     * 获取全部区域
+     */
+    @POST("base/region/getAllProvinceAndCityRegion")
+    suspend fun getAllCity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CityBeanItem>>
+
+
+    /**
+     * 注销账户
+     */
+    @POST("user/cancel")
+    suspend fun cancelAccount(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 解除绑定
+     */
+    //login/removeOauth
+    @POST("login/removeOauth")
+    suspend fun unBindMobile(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
 }

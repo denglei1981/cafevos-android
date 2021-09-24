@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -54,6 +55,11 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
             it.setOnRefreshLoadMoreListener(this)
             initRefreshData(pageSize)
         }
+        bindToolbar()?.let {
+            it.setNavigationOnClickListener {
+                back()
+            }
+        }
     }
 
     protected fun showToast(message: String) {
@@ -72,6 +78,10 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
         return null
     }
 
+    open fun bindToolbar(): Toolbar? {
+        return null
+    }
+
     open fun <T, VH : BaseViewHolder> completeRefresh(
         newData: Collection<T>?,
         adapter: BaseQuickAdapter<T, VH>,
@@ -81,7 +91,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
             //列表为null且是刷新数据或者第一次加载数据，此时显示EmptyLayout
             if (newData.isNullOrEmpty() && pageSize == 1) {
                 //清数据
-                data.clear()
+                setNewInstance(arrayListOf())
                 //显示EmptyLayout
                 //需要加载到Adapter自己实现到showEmptyLayout
                 showEmpty()?.let {
@@ -117,14 +127,14 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         pageSize = 1
-        bindSmartLayout()?.finishRefresh(800)
         initRefreshData(pageSize)
+        bindSmartLayout()?.finishRefresh(800)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageSize++
-        bindSmartLayout()?.finishLoadMore(800)
         initRefreshData(pageSize)
+        bindSmartLayout()?.finishLoadMore(800)
     }
 
     open fun showEmpty(): View? {

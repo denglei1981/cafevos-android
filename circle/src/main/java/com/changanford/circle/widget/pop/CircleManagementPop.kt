@@ -27,7 +27,7 @@ class CircleManagementPop(context: Context,private val listener:ClickListener) :
         PopManagementAdapter(context)
     }
 
-    override fun onCreateContentView(): View {
+     fun onCreateContentView(): View {
         binding = DataBindingUtil.bind(createPopupById(R.layout.pop_circle_management))!!
         return binding.root
     }

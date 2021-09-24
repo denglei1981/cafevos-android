@@ -6,6 +6,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiBindMobileBinding
 import com.changanford.my.viewmodel.SignViewModel
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit
 class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
     override fun initView() {
+        StatusBarUtil.setTranslucentForImageView(this,null)
 
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
@@ -119,6 +121,10 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                     subscribe?.dispose()
                 }
             })
+    }
+
+    override fun isUseFullScreenMode(): Boolean {
+        return true
     }
 
     override fun onDestroy() {
