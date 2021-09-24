@@ -34,7 +34,7 @@ abstract class SingleAdapter<V : ViewBinding, T : Any>(
         val type = javaClass.genericSuperclass as ParameterizedType
         val aClass = type.actualTypeArguments[0] as Class<*>
         val method = aClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        binding = method.invoke(null, layoutInflater) as V
+        binding = method.invoke(parent, layoutInflater) as V
         holder = SingleViewHolder(binding, bind)
         edgeEffect(this)
         return holder

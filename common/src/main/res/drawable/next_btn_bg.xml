@@ -109,12 +109,12 @@
                 </shape>
             </item>
 
-            <item>
+            <item android:state_enabled="true">
                 <shape android:shape="rectangle">
                     <gradient
                         android:angle="270"
-                        android:endColor="#1B3B89"
-                        android:startColor="#1B3B89" />
+                        android:endColor="#01025C"
+                        android:startColor="#01025C" />
                     <corners android:radius="@dimen/dp_17" />
                 </shape>
             </item>

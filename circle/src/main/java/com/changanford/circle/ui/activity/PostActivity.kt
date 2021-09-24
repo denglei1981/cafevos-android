@@ -12,7 +12,6 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
-import android.view.ViewTreeObserver.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +39,9 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 
+/**
+ * 发图片帖子
+ */
 @Route(path = ARouterCirclePath.PostActivity)
 class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
     lateinit var postPicAdapter: PostPicAdapter
@@ -66,8 +68,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
         spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         binding.etBiaoti.hint = spannableString
-
-
     }
 
     override fun initData() {
@@ -135,24 +135,24 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
 
 
         binding.bottom.ivPic.setOnClickListener {
-            PictureUtil.openGallery(
-                this,
-                selectList,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        result?.get(0)?.let { it ->
-                            PictureUtil.startUCrop(
-                                this@PostActivity,
-                                PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
-                            )
-                        }
-                    }
-
-                    override fun onCancel() {
-
-                    }
-
-                })
+//            PictureUtil.openGallery(
+//                this,
+//                selectList,
+//                object : OnResultCallbackListener<LocalMedia> {
+//                    override fun onResult(result: MutableList<LocalMedia>?) {
+//                        result?.get(0)?.let { it ->
+//                            PictureUtil.startUCrop(
+//                                this@PostActivity,
+//                                PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
+//                            )
+//                        }
+//                    }
+//
+//                    override fun onCancel() {
+//
+//                    }
+//
+//                })
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)

@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.content.Context
 import android.graphics.Color
+import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -20,6 +21,7 @@ import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
+import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -35,12 +37,13 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import razerdp.basepopup.BasePopupWindow
 import kotlin.math.abs
 
 /**
  *Author lcw
  *Time on 2021/9/18
- *Purpose
+ *Purpose 圈子详情
  */
 @Route(path = ARouterCirclePath.CircleDetailsActivity)
 class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
@@ -54,10 +57,12 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun initView() {
         initMagicIndicator()
         binding.run {
+            backImg.setOnClickListener { finish() }
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
         }
         binding.topContent.run {
+
             Glide.with(this@CircleDetailsActivity)
                 .load(CircleConfig.TestUrl)
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
@@ -69,7 +74,32 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 startARouter(ARouterCirclePath.PersonalActivity)
             }
             tvJoin.setOnClickListener {
-                ApplicationCircleManagementDialog(this@CircleDetailsActivity).show()
+                CircleManagementPop(this@CircleDetailsActivity,
+                    object : CircleManagementPop.ClickListener {
+                        override fun checkPosition(bean: String) {
+                            ApplicationCircleManagementDialog(this@CircleDetailsActivity, 1).show()
+                        }
+                    }).run {
+                    //pop背景对齐
+//                    setAlignBackground(true)
+                    //无透明背景
+//                    setBackgroundColor(Color.TRANSPARENT)
+                    //背景模糊false
+                    setBlurBackgroundEnable(false)
+                    //弹出位置 基于绑定的view 默认BOTTOM
+                    popupGravity = Gravity.BOTTOM and Gravity.END
+                    showPopupWindow(tvJoinText)
+                    setData(arrayListOf("星推官", "星推官助手"))
+                    onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                        override fun onDismiss() {
+
+                        }
+
+                    }
+                    setOnPopupWindowShowListener {
+
+                    }
+                }
             }
         }
         //处理滑动顶部效果
@@ -145,7 +175,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.text = viewModel.tabList[index]
                 simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(15.toIntPx(),0,15.toIntPx(),0)
+                simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_33)
                 simplePagerTitleView.selectedColor =

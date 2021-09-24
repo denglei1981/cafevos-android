@@ -172,6 +172,13 @@ dependencies {
     api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
     api 'io.github.youth5201314:banner:2.2.2'
 
+    //pop
+    api 'io.github.razerdp:BasePopup:3.1.8'
+
+    api 'com.github.gzu-liyujiang.AndroidPicker:Common:4.0.0'
+    api 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:4.0.0'
+    api 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:4.0.0'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

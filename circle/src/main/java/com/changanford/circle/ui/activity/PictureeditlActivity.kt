@@ -18,6 +18,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.luck.picture.lib.entity.LocalMedia
 import com.yalantis.ucrop.UCrop
 
+/**
+ * 图片预览
+ */
 @Route(path = ARouterCirclePath.PictureeditlActivity)
 class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>() {
     var mediaList: List<LocalMedia>? = null //预览的所有图片集合:

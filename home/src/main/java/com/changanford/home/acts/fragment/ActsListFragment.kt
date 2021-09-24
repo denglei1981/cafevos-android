@@ -37,7 +37,6 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
             setAdapter(SimpleAdapter())
             setIndicatorView(binding.drIndicator)
             setRoundCorner(20)
-
             setOnPageClickListener(object : BannerViewPager.OnPageClickListener {
                 override fun onPageClick(position: Int) {
                 }
@@ -67,8 +66,6 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
         )
             .setIndicatorSize(dp6, dp6, resources.getDimensionPixelOffset(R.dimen.dp_20), dp6)
             .setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
-
-
     }
 
     private fun getPicList(count: Int): MutableList<String> {

@@ -1,7 +1,25 @@
 package com.changanford.common.bean
-
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.router.path.ARouterMyPath
+
+data class MenuBeanItem(
+    val createBy: Int,
+    val createTime: String,
+    val icon: String,
+    val jumpDataType: Int,
+    val jumpDataValue: String,
+    val menuId: Int,
+    val menuName: String,
+    val menuType: String,
+    val parentId: Int,
+    val remark: String,
+    val sort: Int,
+    val status: Int,
+    val topIconType: Int,
+    val topIconUrl: String,
+    val updateTime: String
+)
+
 
 /**
  *  文件名：Menu
@@ -20,8 +38,8 @@ var getMenus: ArrayList<MineMenuMultiEntity> = arrayListOf(
     MineMenuMultiEntity(MINE_ITEM_MENU, "所有勋章", ARouterMyPath.AllMedalUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的爱车", ARouterMyPath.MineLoveCarListUI),
     MineMenuMultiEntity(MINE_ITEM_MENU, "我的成长值", ARouterMyPath.MineGrowUpUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的日常任务"),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的日常任务"),
+    MineMenuMultiEntity(MINE_ITEM_MENU, "关注", ARouterMyPath.MineFansUI),
+    MineMenuMultiEntity(MINE_ITEM_MENU, "粉丝", ARouterMyPath.MineFansUI),
 )
 
 data class MineMenuMultiEntity(
@@ -39,5 +57,3 @@ data class MineMenuMultiEntity(
         routeUrl = routeUrl
     )
 }
-
-

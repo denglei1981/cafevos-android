@@ -23,7 +23,7 @@
 
 
     <!-- 应用启动页(StartingWindow)的theme -->
-    <style name="AppTheme.StartingWindowTheme" parent="AppTheme">
+    <style name="AppTheme.StartingWindowTheme" parent="Theme.EVOS">
         <!--        <item name="android:colorBackgroundCacheHint">@null</item>-->
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowNoTitle">true</item>

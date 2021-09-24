@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="car_recommend">推荐车型</string>
+    <string name="car_goAuth">去认证车主</string>
+    <string name="car_updateExperience">升级您的用车体验</string>
+    <string name="car_bindTips">绑定您的爱车，成为认证车主享受更多专属服务</string>
+    <string name="my_daySign">签到</string>
+    <string name="my_member">会员</string>
+    <string name="my_loginTips">你还未登录</string>
+    <string name="my_loginSubTips">登录享受更多服务</string>
+    <string name="my_fabu">发布</string>
+    <string name="my_guanzhu">关注</string>
+    <string name="my_fensi">粉丝</string>
+    <string name="my_shoucang">收藏</string>
+    <string name="my_memberlevel">会员等级</string>
+    <string name="my_memberupdate">立即升级</string>
+    <string name="my_authed">已经认证车主</string>
+    <string name="my_unauth">认证车主可以获得更多权益</string>
+    <string name="my_lovecar">我的爱车</string>
+</resources>

@@ -16,5 +16,11 @@
         <activity android:name=".ui.BindMobileUI" />
         <activity android:name=".ui.GrowUpUI" />
         <activity android:name=".ui.MineMedalUI" />
+        <activity android:name=".ui.LoveCarInfoUI" />
+        <activity android:name=".ui.FansUI" />
+        <activity android:name=".ui.AccountSafeUI" />
+        <activity android:name=".ui.ClearAccountUI" />
+        <activity android:name=".ui.ClearAccountConfirmUI" />
+        <activity android:name=".ui.EditAddressUI" />
     </application>
 </manifest>

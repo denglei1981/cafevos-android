@@ -10,6 +10,7 @@ import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.utils.MUtils
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
@@ -22,11 +23,7 @@ class PersonalAdapter(context: Context) :
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
         val binding = vdBinding as ItemPersonalBinding
 
-        val params = binding.clItem.layoutParams as ViewGroup.MarginLayoutParams
-        if (position == 0) {
-            params.topMargin =
-                27.toIntPx()
-        } else params.topMargin = 0
+        MUtils.setTopMargin(binding.clItem, 27, position)
 
         binding.ivIcon.loadImage(CircleConfig.TestUrl, ImageOptions().apply { circleCrop = true })
         if (position == 0) {

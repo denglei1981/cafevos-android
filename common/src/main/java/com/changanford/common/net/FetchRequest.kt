@@ -39,3 +39,24 @@ suspend fun <T> fetchRequest(
     }
     return response
 }
+
+/**
+ * 请求成功的处理
+ */
+fun <T> CommonResponse<T>.onSuccess(block: (T?) -> Unit): CommonResponse<T> {
+    if (this.code == 0) {//TODO 后面统一处理
+        block(this.data)
+    }
+    return this
+}
+
+/**
+ * 请求失败或异常的处理
+ */
+fun <T> CommonResponse<T>.onFailure(block: (T?) -> Unit): CommonResponse<T> {
+    if (this.code != 0) {
+        //TODO 做一些统一的处理
+        block(this.data)
+    }
+    return this
+}

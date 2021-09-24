@@ -28,6 +28,7 @@ import com.gyf.immersionbar.ImmersionBar
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@Deprecated("使用HomeV2Fragment,布局也过时了")
 class HomeFragment : BaseFragment<FragmentHomeRecommendBinding, EmptyViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null

@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_33"
-                android:text="绑定手机号码" />
+                android:text="登录" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_login_hint"
