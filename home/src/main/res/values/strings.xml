@@ -11,4 +11,6 @@
     <string name="home_publish_answer">问卷调查</string>
     <string name="home_publish_scan">扫一扫</string>
     <string name="home_more">更多</string>
+    <string name="home_hot_recommend">热门推荐</string>
+    <string name="home_say_something">你可以说点什么哦</string>
 </resources>

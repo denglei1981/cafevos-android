@@ -75,7 +75,6 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
                 it.bViewpager.setScrollDuration(5000)
             }
             setIndicator()
-
         }
     }
 
