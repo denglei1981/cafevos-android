@@ -27,18 +27,24 @@ object PictureUtil {
      * 获取最终地址
      */
     fun getFinallyPath(media: LocalMedia): String {
-        var path =""
-        return if (media.isCut&&!media.isCompressed){
+        var path = ""
+        return if (media.isCut && !media.isCompressed) {
             media.cutPath
-        }else if(media.isCompressed || media.isCut && media.isCompressed){
+        } else if (media.isCompressed || media.isCut && media.isCompressed) {
             media.compressPath
-        }else{
+        } else {
             media.realPath
         }
         return path
     }
 
-    fun startUCrop(activity: Activity,path:String,requestCode:Int,aspectRatioX:Float,aspectRatioY:Float){
+    fun startUCrop(
+        activity: Activity,
+        path: String,
+        requestCode: Int,
+        aspectRatioX: Float,
+        aspectRatioY: Float
+    ) {
         val sourceUri = Uri.fromFile(File(path))
         val outDir = MyApp.mContext.getExternalFilesDir("")?.absolutePath
         val outFile = File(outDir, System.currentTimeMillis().toString() + ".jpg")
@@ -73,7 +79,14 @@ object PictureUtil {
         uCrop.start(activity, requestCode)
     }
 
-    fun openGallery(activity:Activity,datas:ArrayList<LocalMedia>,onResultCallbackListener:OnResultCallbackListener<LocalMedia>,maxVideoTime:Int=4*60,minVideoTime:Int =3,maxNum:Int = 9 ){
+    fun openGallery(
+        activity: Activity,
+        datas: ArrayList<LocalMedia>,
+        onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
+        maxVideoTime: Int = 4 * 60,
+        minVideoTime: Int = 3,
+        maxNum: Int = 9
+    ) {
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
             .imageEngine(GlideEngine.createGlideEngine())
@@ -93,7 +106,8 @@ object PictureUtil {
             .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
             .isOriginalImageControl(false)
             .selectionMode(
-            PictureConfig.MULTIPLE)// 多选 or 单选
+                PictureConfig.MULTIPLE
+            )// 多选 or 单选
             .isSingleDirectReturn(true)
             .isPreviewImage(false)
             .isPreviewVideo(false)
@@ -131,7 +145,7 @@ object PictureUtil {
     /**
      * 单选图片
      */
-    fun openGalleryonepic(
+    fun openGalleryOnePic(
         activity:Activity,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>
     ){
@@ -175,7 +189,7 @@ object PictureUtil {
             //.isMultipleRecyclerAnimation(false)// 多图裁剪底部列表显示动画效果
             .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
             //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
-            .isEnableCrop(true)// 是否裁剪
+            .isEnableCrop(false)// 是否裁剪
             //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
             .isCompress(false)// 是否压缩
             .compressQuality(90)// 图片压缩后输出质量 0~ 100

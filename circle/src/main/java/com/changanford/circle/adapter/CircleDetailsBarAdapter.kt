@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.config.CircleConfig
@@ -9,6 +10,7 @@ import com.changanford.circle.databinding.ItemCircleDetailsBottomBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
+import com.changanford.circle.ext.toIntPx
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
@@ -21,6 +23,13 @@ class CircleDetailsBarAdapter(context: Context) :
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
         val binding = vdBinding as ItemCircleDetailsBottomBinding
         binding.ivBg.setCircular(10)
+
+        val params = binding.clContent.layoutParams as ViewGroup.MarginLayoutParams
+        if (position == 0 || position == 1) {
+            params.topMargin =
+                10.toIntPx()
+        } else params.topMargin = 0
+
         if (position == 4) {
             binding.ivPlay.visibility = View.VISIBLE
         } else {

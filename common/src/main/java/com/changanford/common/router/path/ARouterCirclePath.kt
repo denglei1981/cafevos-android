@@ -28,6 +28,8 @@ object ARouterCirclePath {
     const val SearchLocActivity = "/circle/SearchLocActivity"
     const val ChooseConversationActivity ="/circle/ChooseConversationActivity"
     const val PersonalActivity = "/circle/PersonalActivity"
+    const val HotTopicActivity = "/circle/HotTopicActivity"
+    const val TopicDetailsActivity = "/circle/TopicDetailsActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////
