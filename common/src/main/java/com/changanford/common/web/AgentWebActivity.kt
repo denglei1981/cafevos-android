@@ -1,5 +1,6 @@
 package com.changanford.common.web
 
+
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -32,6 +33,7 @@ import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
+
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.*
 import com.changanford.common.utilext.logE

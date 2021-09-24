@@ -1,0 +1,113 @@
+package com.changanford.circle.ui.activity
+
+import android.annotation.SuppressLint
+import android.view.View
+import androidx.viewpager2.widget.ViewPager2
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
+import com.changanford.circle.adapter.PostBarBannerAdapter
+import com.changanford.circle.adapter.PostDetailsCommentAdapter
+import com.changanford.circle.config.CircleConfig
+import com.changanford.circle.databinding.ActivityPostGraphicBinding
+import com.changanford.circle.ext.ImageOptions
+import com.changanford.circle.ext.loadImage
+import com.changanford.circle.utils.MUtils
+import com.changanford.circle.viewmodel.PostGraphicViewModel
+import com.changanford.circle.widget.dialog.ReplyDialog
+import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.toast
+import com.zhpan.bannerview.constants.IndicatorGravity
+
+/**
+ * 帖子图文
+ */
+@Route(path = ARouterCirclePath.PostGraphicActivity)
+class PostGraphicActivity : BaseActivity<ActivityPostGraphicBinding, PostGraphicViewModel>() {
+
+    private val commentAdapter by lazy {
+        PostDetailsCommentAdapter(this)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun initView() {
+
+        binding.run {
+            ryComment.adapter = commentAdapter
+            AppUtils.setStatusBarMarginTop(llTitle, this@PostGraphicActivity)
+            ivHead.loadImage(CircleConfig.TestUrl, ImageOptions().apply { circleCrop = true })
+            MUtils.postDetailsFrom(tvOneFrom, "重庆车友圈")
+            MUtils.postDetailsFrom(tvTwoFrom, "重庆车友圈")
+            MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
+            banner.run {
+                setAutoPlay(true)
+                setScrollDuration(500)
+                setCanLoop(true)
+                setIndicatorVisibility(View.GONE)
+                setIndicatorGravity(IndicatorGravity.CENTER)
+                setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
+                setAdapter(PostBarBannerAdapter())
+                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        tvPage.text = "${position + 1}/${getBannerList().size}"
+                    }
+                }).create()
+            }
+            banner.refreshData(getBannerList())
+            tvPage.text = "1/${getBannerList().size}"
+            webView.loadUrl("https://fanyi.baidu.com/?aldtype=16047#auto/zh")
+        }
+        initListener()
+    }
+
+    private fun initListener() {
+        binding.run {
+            ivBack.setOnClickListener {
+                finish()
+            }
+            bottomView.tvTalk.setOnClickListener {
+                ReplyDialog(this@PostGraphicActivity, object : ReplyDialog.ReplyListener {
+                    override fun getContent(content: String) {
+                        content.toast()
+                    }
+
+                }).show()
+            }
+            ivMenu.setOnClickListener {
+                if (clImageAndText.visibility == View.VISIBLE) {
+                    clImageAndText.visibility = View.GONE
+                    clImage.visibility = View.VISIBLE
+                } else {
+                    clImageAndText.visibility = View.VISIBLE
+                    clImage.visibility = View.GONE
+                }
+            }
+        }
+        commentAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                startARouter(ARouterCirclePath.AllReplyActivity)
+            }
+
+        })
+    }
+
+    override fun initData() {
+        val list = arrayListOf("", "", "", "", "", "", "", "")
+        commentAdapter.setItems(list)
+        commentAdapter.notifyDataSetChanged()
+    }
+
+    private fun getBannerList(): ArrayList<String> {
+        return arrayListOf(
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png",
+            "https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png"
+        )
+    }
+
+}

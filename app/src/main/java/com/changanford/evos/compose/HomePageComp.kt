@@ -1,5 +1,10 @@
 package com.changanford.evos.compose
 
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.room.util.TableInfo
+
 /**
  * Jetpack Compose
  */
@@ -17,8 +22,8 @@ package com.changanford.evos.compose
 //@Preview
 //@Composable
 //fun homePage(){
-//    Column {
-//        repeat(30){
+//    TableInfo.Column {
+//        repeat(30) {
 //            Text(text = "Hello World $it")
 //        }
 //    }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_r_5_c_ff"
+        android:gravity="center_horizontal"
+        android:minWidth="@dimen/dp_278"
+        android:minHeight="@dimen/dp_320"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_26"
+            android:text="恭喜你获得新的勋章"
+            android:textColor="#01025C"
+            android:textSize="@dimen/sp_15" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/im_medal_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_23"
+            android:src="@mipmap/ic_medal_ex" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_medal_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_23"
+            android:text="观星者"
+            android:textColor="#071726"
+            android:textSize="@dimen/sp_15" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_medal_ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_9"
+            android:text="勋章广告语，一句话slogan"
+            android:textColor="#71747B"
+            android:textSize="@dimen/sp_13" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_light"
+            style="@style/login_btn_style"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:text="立即点亮" />
+
+    </LinearLayout>
+
+</RelativeLayout>

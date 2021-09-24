@@ -2,6 +2,7 @@ package com.changanford.my
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.MedalAdapter
@@ -9,6 +10,7 @@ import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 
 class MyFragment : BaseFragment<FragmentMyBinding, MyViewModule>() {
+    lateinit var menuBean :ArrayList<MenuBeanItem>
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
@@ -34,8 +36,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModule>() {
     override fun initData() {
         viewModel.getMenuList()
         viewModel.menuBean.observe(this, {
-            menuAdapter.data = it
-            medalAdapter.data = it
+            menuBean = it
+            menuAdapter.data = menuBean
+            medalAdapter.data = menuBean
             menuAdapter.notifyDataSetChanged()
             medalAdapter.notifyDataSetChanged()
         })

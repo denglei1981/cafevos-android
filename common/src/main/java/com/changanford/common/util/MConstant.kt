@@ -1,4 +1,5 @@
 package com.changanford.common.util
+import com.changanford.common.MyApp
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -18,8 +19,16 @@ object MConstant {
     const val COOKIE = false
     const val isAppAlive = true
 
+    val rootPath = MyApp.mContext.getExternalFilesDir("")?.absolutePath
+
+
+    val H5_BASE_URL_CSCIR by lazy {
+        "https://cir.uni.changan.com.cn"
+    }
+
+
     var pubKey = ""
-    var token = ""
+    var token: String = ""
     var imgcdn = ""
     var userId = ""
 
@@ -29,8 +38,29 @@ object MConstant {
     var newApk = false//是否有新版本
     var newApkUrl = ""//新版本的链接
 
+    const val WXAPPID = "wx134a7f5ed01da769" //微信appid
+
+    const val QQAPPID = "1109690244" //QQ
+    var NUM = "" //
+
+
     //ARouter拦截登录
     const val LOGIN_INTERCEPT = "intercept_login"
+
     //ARouter登录拦截地址wifi
     const val LOGIN_INTERCEPT_PATH = "intercept_login_path"
+
+    const val PUSH_ID = "sys:pushid"
+
+    /**
+     * https://cscir.uniplanet.cn/quanzi/#/regTerms
+     * 引力域注册协议
+     */
+    var H5_REGISTER_AGREEMENT = "${H5_BASE_URL_CSCIR}/quanzi/#/regTerms"
+
+    /**
+     * 用户隐私
+     */
+    var H5_USER_AGREEMENT = "${H5_BASE_URL_CSCIR}/quanzi/#/privacy"
+
 }

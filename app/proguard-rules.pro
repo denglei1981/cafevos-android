@@ -111,6 +111,7 @@
 # If single-type injection is used, that is, no interface is defined to implement IProvider, the following rules need to be added to protect the implementation
 # -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
 
+
 #AgentWeb
 -keep class com.just.agentweb.** {
     *;
@@ -204,3 +205,13 @@
 # 魅族通道
 -keep class com.meizu.cloud.** {*;}
 -dontwarn com.meizu.cloud.**
+
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+

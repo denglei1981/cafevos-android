@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+  <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/iv_icon"
+      android:layout_width="86dp"
+      android:layout_marginEnd="9dp"
+      android:scaleType="center"
+      android:layout_height="123dp"/>
+</layout>

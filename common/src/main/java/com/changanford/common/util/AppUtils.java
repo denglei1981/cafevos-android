@@ -255,8 +255,6 @@ public class AppUtils {
 //            return false;
 //        }
 //    }
-
-
     private static boolean isFileExists(final File file) {
         return file != null && file.exists();
     }
@@ -310,7 +308,7 @@ public class AppUtils {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
-            marginParams.topMargin = marginParams.topMargin + height;
+            marginParams.topMargin = marginParams.topMargin + height + 10;
         }
     }
 
@@ -391,11 +389,10 @@ public class AppUtils {
 //            }
 //        });
 //    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean isIgnoringBatteryOptimizations() {
         boolean isIgnoring = false;
-        PowerManager powerManager = (PowerManager)BaseApplication.curActivity.getSystemService(Context.POWER_SERVICE);
+        PowerManager powerManager = (PowerManager) BaseApplication.curActivity.getSystemService(Context.POWER_SERVICE);
         if (powerManager != null) {
             isIgnoring = powerManager.isIgnoringBatteryOptimizations(getPackageName());
         }
@@ -436,7 +433,8 @@ public class AppUtils {
         } catch (Exception e) {
         }
     }
-    public static String getPackageName(){
+
+    public static String getPackageName() {
         return "com.changan.uni";
     }
 }

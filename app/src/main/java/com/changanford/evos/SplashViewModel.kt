@@ -1,6 +1,7 @@
 package com.changanford.evos
 
 import android.os.SystemClock
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +14,14 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.IMGURLTAG
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
+import kotlin.math.log
 
 class SplashViewModel : ViewModel() {
     private var time = SystemClock.elapsedRealtime() + 5 * 1000

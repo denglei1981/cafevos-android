@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_topic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="#驭见美好之旅#"
+        android:textColor="#ff74889d"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_one"
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="4dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+        android:src="@drawable/image_recommed_default"
+        app:layout_constraintEnd_toStartOf="@+id/iv_two"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_two"
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="9dp"
+        android:src="@drawable/image_recommed_default"
+        android:layout_marginEnd="4dp"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/iv_three"
+        app:layout_constraintStart_toEndOf="@+id/iv_one"
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_three"
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="9dp"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_recommed_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_two"
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.changanford.common.net
 import android.os.Bundle
 import com.changanford.common.MyApp
 import com.changanford.common.util.MConstant
+
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logE
 import com.google.gson.Gson

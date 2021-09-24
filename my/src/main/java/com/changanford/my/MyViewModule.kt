@@ -3,13 +3,13 @@ package com.changanford.my
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.MenuBean
+import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
 
 class MyViewModule : ViewModel() {
 
-    var menuBean = MutableLiveData<MenuBean>()
+    var menuBean = MutableLiveData<ArrayList<MenuBeanItem>>()
     fun getMenuList() {
         viewModelScope.launch {
             fetchRequest {
