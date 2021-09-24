@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/circle_f9_10_bg">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:scaleType="center"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="重庆站"
+            android:textColor="@color/color_33"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/iv_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="重庆车友圈"
+            android:textColor="@color/circle_74889D"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_title"
+            app:layout_constraintRight_toRightOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:drawableStart="@mipmap/circle_personal_mian_icon"
+            android:drawablePadding="2dp"
+            android:text="200成员"
+            android:textColor="@color/circle_74889D"
+            android:textSize="11sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

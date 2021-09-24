@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 
+import kotlin.jvm.JvmDefault;
+
 /**
  * @author：luck
  * @date：2017-5-24 16:21
@@ -183,6 +185,15 @@ public class LocalMedia implements Parcelable {
      */
     private long dateAddedTime;
 
+    private String contentDesc;
+    public String getContentDesc() {
+        return contentDesc;
+    }
+
+    public void setContentDesc(String contentDesc) {
+        this.contentDesc = contentDesc;
+    }
+
     public LocalMedia() {
 
     }
@@ -221,6 +232,7 @@ public class LocalMedia implements Parcelable {
         bucketId = in.readLong();
         isMaxSelectEnabledMask = in.readByte() != 0;
         isEditorImage = in.readByte() != 0;
+        contentDesc = in.readString();
         dateAddedTime = in.readLong();
     }
 
@@ -258,6 +270,7 @@ public class LocalMedia implements Parcelable {
         dest.writeLong(bucketId);
         dest.writeByte((byte) (isMaxSelectEnabledMask ? 1 : 0));
         dest.writeByte((byte) (isEditorImage ? 1 : 0));
+        dest.writeString(this.contentDesc);
         dest.writeLong(dateAddedTime);
     }
 

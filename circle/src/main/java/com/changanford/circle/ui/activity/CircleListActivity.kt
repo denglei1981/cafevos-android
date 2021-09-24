@@ -1,23 +1,29 @@
 package com.changanford.circle.ui.activity
 
-import android.graphics.Typeface
-import android.os.Build
-import android.widget.TextView
+import android.content.Context
+import android.graphics.Color
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.circle.CircleFragment
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCircleListBinding
-import com.changanford.circle.databinding.ItemCitcleTabBinding
+import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleListFragment
 import com.changanford.circle.viewmodel.CircleListViewModel
+import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
-import com.google.android.material.tabs.TabLayoutMediator
+import net.lucode.hackware.magicindicator.ViewPagerHelper
+import net.lucode.hackware.magicindicator.buildins.UIUtil
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 
 /**
  *Author lcw
@@ -27,38 +33,34 @@ import com.google.android.material.tabs.TabLayoutMediator
 @Route(path = ARouterCirclePath.CircleListActivity)
 class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListViewModel>() {
 
-    private var oldPosition = 0
 
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
         }
+        initMagicIndicator()
         initTabAndViewPager()
     }
 
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
-            adapter = object : FragmentStateAdapter(this@CircleListActivity) {
-                override fun getItemCount(): Int {
+
+            adapter = object : FragmentPagerAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
+                override fun getCount(): Int {
                     return viewModel.tabList.size
                 }
 
-                override fun createFragment(position: Int): Fragment {
+                override fun getItem(position: Int): Fragment {
                     return CircleListFragment.newInstance(position.toString())
-
                 }
 
             }
 
-//            registerOnPageChangeCallback(callback)
-
             offscreenPageLimit = 3
         }
-
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.text=viewModel.tabList[position]
-        }.attach()
-
 
     }
 
@@ -66,38 +68,52 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
 
     }
 
-    private val callback = object :
-        ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-
-            val oldTitle =
-                binding.tabs.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tv_tab)
-            if (oldTitle != null) {
-                oldTitle.setTextColor(
-                    ContextCompat.getColor(
-                        this@CircleListActivity,
-                        R.color.color_33
-                    )
-                )
-                oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+    private fun initMagicIndicator() {
+        val magicIndicator = binding.magicTab
+        magicIndicator.setBackgroundColor(Color.WHITE)
+        val commonNavigator = CommonNavigator(this)
+        commonNavigator.scrollPivotX = 0.8f
+        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+            override fun getCount(): Int {
+                return viewModel.tabList.size
             }
 
-            val title =
-                binding.tabs.getTabAt(position)?.view?.findViewById<TextView>(R.id.tv_tab)
-            if (title != null) {
-                title.setTextColor(
-                    ContextCompat.getColor(
-                        this@CircleListActivity,
-                        R.color.circle_00095b
-                    )
-                )
-                //加粗
-                title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+                val simplePagerTitleView =
+                    ScaleTransitionPagerTitleView(context)
+                simplePagerTitleView.minScale=1f
+                simplePagerTitleView.text = viewModel.tabList[index]
+                simplePagerTitleView.textSize = 15f
+                simplePagerTitleView.setPadding(30.toIntPx(), 0, 30.toIntPx(), 0)
+                simplePagerTitleView.normalColor =
+                    ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
+                simplePagerTitleView.selectedColor =
+                    ContextCompat.getColor(this@CircleListActivity, R.color.circle_app_color)
+                simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
+                return simplePagerTitleView
             }
 
-            oldPosition = position
+            override fun getIndicator(context: Context): IPagerIndicator {
+                val indicator = LinePagerIndicator(context)
+                indicator.mode = LinePagerIndicator.MODE_EXACTLY
+                indicator.lineHeight =
+                    UIUtil.dip2px(context, 3.0).toFloat()
+                indicator.lineWidth =
+                    UIUtil.dip2px(context, 22.0).toFloat()
+                indicator.roundRadius =
+                    UIUtil.dip2px(context, 1.5).toFloat()
+                indicator.startInterpolator = AccelerateInterpolator()
+                indicator.endInterpolator = DecelerateInterpolator(2.0f)
+                indicator.setColors(
+                    ContextCompat.getColor(
+                        this@CircleListActivity,
+                        R.color.circle_app_color
+                    )
+                )
+                return indicator
+            }
         }
-
+        magicIndicator.navigator = commonNavigator
+        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 }

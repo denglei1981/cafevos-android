@@ -6,6 +6,7 @@ import androidx.camera.core.CameraXConfig
 import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
 
 import com.luck.picture.lib.app.IApp
@@ -50,12 +51,14 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
                 layout.setReboundDuration(300)
                 return MyFooterView(context)
             })
+
         }
     }
 
     override fun onCreate() {
         super.onCreate()
         mContext = this
+        KeyboardVisibilityObserver.getInstance().init(this)
         UserManger.getSysUserInfo()?.let {
             MConstant.token = "${it.token}"
         }

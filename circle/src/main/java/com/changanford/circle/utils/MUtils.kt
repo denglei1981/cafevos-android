@@ -7,11 +7,13 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.changanford.circle.R
+import com.changanford.circle.ext.toIntPx
 
 object MUtils {
 
@@ -103,5 +105,16 @@ object MUtils {
                 textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+    }
+
+    /**
+     * 列表第一个item追加margin
+     */
+    fun setTopMargin(view: View,margin:Int,position:Int){
+        val params = view.layoutParams as ViewGroup.MarginLayoutParams
+        if (position == 0) {
+            params.topMargin =
+                margin.toIntPx()
+        } else params.topMargin = 0
     }
 }

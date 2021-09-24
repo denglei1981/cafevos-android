@@ -23,7 +23,7 @@
 
 
     <!-- 应用启动页(StartingWindow)的theme -->
-    <style name="AppTheme.StartingWindowTheme" parent="AppTheme.StartingWindowTheme">
+    <style name="AppTheme.StartingWindowTheme" parent="AppTheme">
         <!--        <item name="android:colorBackgroundCacheHint">@null</item>-->
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -43,4 +43,20 @@
     <style name="Theme.EVOS.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EVOS.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/textblack</item>
+        <item name="toolbarStyle">@style/CustomToolbar</item>
+    </style>
+
+    <style name="CustomToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item><!-- 设置该属性边距为0dp-->
+    </style>
 </resources>

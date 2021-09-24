@@ -13,9 +13,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_circle"
             android:layout_width="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_height="match_parent"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

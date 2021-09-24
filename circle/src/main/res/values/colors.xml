@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="circle_white">#FFFFFF</color>
-    <color name="circle_00095b">#00095B</color>
+    <color name="circle_app_color">#00095B</color>
     <color name="circle_FAFBFD">#FAFBFD</color>
     <color name="circle_1B3B89">#1B3B89</color>
     <color name="circle_8195C8">#8195C8</color>
     <color name="circle_a8f6">#A8F6F6F6</color>
     <color name="circle_666666">#666666</color>
     <color name="circle_74889D">#74889D</color>
+    <color name="circle_B0B8C0">#B0B8C0</color>
+    <color name="circle_F4F4F4">#F4F4F4</color>
+    <color name="circle_E53030">#E53030</color>
+    <color name="circle_F9F9F9">#F9F9F9</color>
 </resources>

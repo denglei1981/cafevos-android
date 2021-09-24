@@ -7,101 +7,103 @@
 
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="0dp"
+                app:layout_behavior="@string/circle_behavior_app_bar_layout">
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/appbar_layout"
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:elevation="0dp"
-                    app:layout_behavior="@string/circle_behavior_app_bar_layout">
+                    app:contentScrim="@color/transparent"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                    <include
+                        android:id="@+id/top_content"
+                        layout="@layout/circle_layout_details_top" />
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:contentScrim="@color/transparent"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                        android:background="@color/color_withe"
+                        app:layout_collapseMode="pin">
 
-                        <include
-                            android:id="@+id/top_content"
-                            layout="@layout/circle_layout_details_top" />
-
-                        <androidx.appcompat.widget.Toolbar
-                            android:id="@+id/toolbar"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/color_withe"
-                            app:layout_collapseMode="pin">
+                            android:layout_height="wrap_content">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/back_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="12dp"
+                                android:paddingTop="10dp"
+                                android:src="@mipmap/whit_left"
+                                tools:ignore="RtlSymmetry" />
 
-                                <ImageView
-                                    android:id="@+id/back_img"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="15dp"
-                                    android:padding="10dp"
-                                    android:src="@mipmap/whit_left" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/bar_title_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:ellipsize="end"
+                                android:maxWidth="200dp"
+                                android:maxLines="1"
+                                android:text="圈子详情"
+                                android:textColor="@color/color_00"
+                                android:textSize="16sp" />
 
-                                <TextView
-                                    android:id="@+id/bar_title_tv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:ellipsize="end"
-                                    android:maxWidth="200dp"
-                                    android:maxLines="1"
-                                    android:textColor="@color/color_00"
-                                    android:textSize="18sp" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/share_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="15dp"
+                                android:padding="10dp"
+                                android:src="@mipmap/circle_share_image_v" />
+                        </RelativeLayout>
 
-                                <ImageView
-                                    android:id="@+id/share_img"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="15dp"
-                                    android:padding="10dp" />
-                            </RelativeLayout>
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-                        </androidx.appcompat.widget.Toolbar>
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <net.lucode.hackware.magicindicator.MagicIndicator
+                    android:id="@+id/magic_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="2dp" />
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:background="@color/white"
-                        android:paddingBottom="2dp"
-                        app:tabIndicator="@drawable/circle_tab_circle_list"
-                        app:tabIndicatorColor="@color/circle_00095b"
-                        app:tabIndicatorFullWidth="false"
-                        app:tabIndicatorHeight="2dp"
-                        app:tabMaxWidth="150dp"
-                        app:tabMinWidth="20dp"
-                        app:tabGravity="center"
-                        app:tabPaddingEnd="8dp"
-                        app:tabPaddingStart="8dp"
-                        app:tabRippleColor="@color/transparent"
-                        app:tabSelectedTextColor="@color/circle_00095b"
-                        app:tabTextColor="@color/color_33" />
-                </com.google.android.material.appbar.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_post_bar"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginBottom="130dp"
+            android:layout_marginEnd="11dp"
+            android:src="@mipmap/circle_post_bar_icon"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

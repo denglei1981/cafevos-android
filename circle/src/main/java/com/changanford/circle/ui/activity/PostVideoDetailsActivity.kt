@@ -1,8 +1,6 @@
 package com.changanford.circle.ui.activity
 
 import android.view.View
-import android.widget.LinearLayout
-import androidx.core.view.marginEnd
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.config.CircleConfig
@@ -14,9 +12,7 @@ import com.changanford.circle.viewmodel.PostVideoDetailsViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
-import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.dk.DKPlayerHelper
-import com.changanford.common.util.dk.VodControlView
 
 /**
  * 帖子视频详情
@@ -44,7 +40,7 @@ class PostVideoDetailsActivity :
             1,
             "长安福特这一次给大家一个好大的惊喜，刚看到长安福特这一次给大家一个好大的惊喜，刚看到",
             "展开",
-            R.color.circle_00095b,
+            R.color.circle_app_color,
             false
         )
 

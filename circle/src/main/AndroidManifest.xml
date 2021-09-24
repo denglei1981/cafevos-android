@@ -5,8 +5,17 @@
     <application>
         <activity android:name=".ui.activity.PostGraphicActivity" />
         <activity android:name=".ui.activity.PostVideoDetailsActivity" />
+        <activity android:name=".ui.activity.PostActivity"/>
         <activity android:name=".ui.activity.CircleListActivity" />
         <activity android:name=".ui.activity.AllReplyActivity" />
         <activity android:name=".ui.activity.CircleDetailsActivity" />
+        <activity android:name=".ui.activity.PictureeditlActivity" />
+        <activity android:name=".ui.activity.ChooseLocationActivity" />
+        <activity android:name=".ui.activity.SearchLocActivity" />
+        <activity android:name=".ui.activity.ChooseConversationActivity" />
+
+        <activity android:name=".ui.activity.PersonalActivity" />
+        <activity android:name=".ui.activity.HotTopicActivity" />
+        <activity android:name=".ui.activity.TopicDetailsActivity" />
     </application>
 </manifest>
