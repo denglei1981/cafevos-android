@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F4"
+        android:orientation="vertical">
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_orderConfirm"
+            app:bg_color="@color/white"/>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+<!--                地址信息-->
+                <include
+                    android:id="@+id/in_address"
+                    layout="@layout/in_order_confirm_address"/>
+<!--                商品基本信息-->
+                <include
+                    android:id="@+id/in_goodsInfo"
+                    layout="@layout/in_order_confirm_goodsinfo"/>
+<!--                订单信息-->
+                <include
+                    android:id="@+id/in_orderInfo"
+                    layout="@layout/in_oreder_confirm_orderinfo"/>
+<!--                支付信息-->
+                <include
+                    android:id="@+id/in_payInfo"
+                    layout="@layout/in_oreder_confirm_pay"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/in_order_confirm_bottom"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

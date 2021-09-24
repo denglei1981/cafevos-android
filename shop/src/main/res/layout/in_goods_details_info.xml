@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="@dimen/dp_17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_withe"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:orientation="vertical">
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tv_consumption"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="已兑换141件"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_12"/>
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintTop_toBottomOf="@id/tv_consumption"
+            android:id="@+id/tv_goodsTitle"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 "
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15" />
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
+            android:id="@+id/tv_goodsDes"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="中强度运动，不受约束，前置拉链，一秒穿脱，美背设计，凸显蝴蝶谷"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_12" />
+        <View
+            android:id="@+id/view_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsDes"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@color/color_EC"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:onClick="onClick"
+            android:id="@+id/tv_goodsAttrs"
+            android:gravity="center_vertical"
+            android:drawableEnd="@mipmap/shop_right"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/str_goods_typeX"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freight"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsAttrs"
+            android:layout_marginTop="@dimen/dp_27"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/str_goods_freightX"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_parameter"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_freight"
+            android:layout_marginTop="@dimen/dp_27"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/str_goods_parameterX"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_14" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

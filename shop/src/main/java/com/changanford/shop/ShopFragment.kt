@@ -1,56 +1,59 @@
 package com.changanford.shop
-
-import androidx.lifecycle.lifecycleScope
+import android.graphics.Typeface
+import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.RecommendData
-import com.changanford.common.util.paging.PagingSingleAdapter
-import com.changanford.common.utilext.load
-import com.changanford.shop.databinding.FragmentCircleBinding
-import com.changanford.shop.databinding.FragmentCircleListBinding
-import kotlinx.coroutines.flow.collectLatest
+import com.changanford.shop.adapter.ViewPage2Adapter
+import com.changanford.shop.adapter.goods.GoodsKillAdapter
+import com.changanford.shop.bean.GoodsBean
+import com.changanford.shop.databinding.FragmentShopLayoutBinding
+import com.changanford.shop.ui.IntegralDetailsActivity
+import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
+import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.order.OrderEvaluationActivity
+import com.changanford.shop.utils.WCommonUtil
+import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * A fragment representing a list of Items.
  */
-class ShopFragment : BaseFragment<FragmentCircleListBinding, ShopViewModel>() {
-
-
-    //paging使用：begin
-    private var adapter = object :
-        PagingSingleAdapter<FragmentCircleBinding, RecommendData>(bind = { binding, data, position ->
-            binding.content.text = data.postsTitle
-            binding.img.load(data.postsPics)
-            //...
-        }) {}
-
-
+class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
+    private val adapter by lazy { GoodsKillAdapter() }
     override fun initView() {
-        binding.list.adapter = adapter
-//            .withLoadStateFooter(
-//            footer = PagingFooterAdapter()
-//        )
-        //可选，判断接口数据是否请求完
-//        adapter.addLoadStateListener {
-//            if (it.refresh is LoadState.NotLoading && it.refresh.endOfPaginationReached) {
-//                Toast.makeText(mContext, "没有数据", Toast.LENGTH_SHORT).show()
-//            }
-//            if (it.append is LoadState.NotLoading && it.append.endOfPaginationReached) {
-//                Toast.makeText(mContext, "加载完了", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-    }
-    ////paging使用！end
-
-    override fun initData() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.getRecommendList().collectLatest {
-                adapter.submitData(it)
-            }
+        val tabTitles= arrayListOf<String>()
+        val fragments= arrayListOf<Fragment>()
+        for(i in 0..20){
+            tabTitles.add("Tab$i")
+            fragments.add(ExchangeListFragment.newInstance("$i"))
         }
-    }
+        binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
+        binding.viewpager.isSaveEnabled = false
+        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
+            tab.text = tabTitles[tabPosition]
+        }.attach()
+        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
 
-    override fun onResume() {
-        super.onResume()
+        //秒杀列表
+        binding.inTop.recyclerView.adapter=adapter
+        adapter.setOnItemClickListener { _, _, position ->
+            GoodsDetailsActivity.start(requireContext(),"$position")
+        }
+        binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
+        binding.inTop.btnToIntegral.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
+
+        //test
+        binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
+
+    }
+    override fun initData() {
+        val datas= arrayListOf<GoodsBean>()
+        val title=StringBuffer("Title")
+        for (i in 0..4){
+            title.append("Title$i>>")
+            val item= GoodsBean(i,if(i%3>0)"Title$i" else "$title")
+            datas.add(item)
+        }
+        adapter.setList(datas)
     }
 }
 

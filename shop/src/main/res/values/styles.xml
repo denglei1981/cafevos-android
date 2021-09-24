@@ -1,0 +1,90 @@
+<resources>
+    <style name="tabLayout_style">
+        <item name="tabMode">auto</item>
+        <item name="tabMaxWidth">@dimen/dp_200</item>
+        <item name="tabMinWidth">@dimen/dp_20</item>
+        <item name="tabIndicator">@drawable/shadow_00095b_w10dp</item>
+        <item name="tabIndicatorColor">@color/color_00095B</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabTextAppearance">@style/style_indexTabItemStyle</item>
+        <item name="tabBackground">@color/transparent</item>
+        <item name="tabRippleColor">@color/transparent</item>
+        <item name="tabSelectedTextColor">@color/color_00095B</item>
+        <item name="tabTextColor">@color/color_33</item>
+    </style>
+    <style name="style_indexTabItemStyle" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_15</item>
+    </style>
+    <style name="RadingStyle" parent="@android:style/Widget.RatingBar">
+        <!-- 定义星星图片 -->
+        <item name="android:progressDrawable">@drawable/layer_live_rating_bar</item>
+        <!-- 根据自定义星星图片的大小,设置相应的值,否则可能显示不全 -->
+        <item name="android:numColumns">5</item>
+        <item name="android:isIndicator">true</item>
+    </style>
+    <style name="AndRatingBarStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- 定义星星图片 -->
+        <item name="bgDrawable">@mipmap/shop_start_0</item>
+        <item name="starDrawable">@mipmap/shop_start_1</item>
+        <item name="keepOriginColor">true</item>
+        <item name="android:numColumns">5</item>
+        <item name="android:isIndicator">true</item>
+        <item name="android:stepSize">1</item>
+    </style>
+    <style name="style_cb_collection" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@drawable/cb_text_collection</item>
+        <item name="android:textSize">@dimen/sp_10</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableTop">@drawable/cb_style_collection</item>
+    </style>
+    <style name="style_txt_ellipsize">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="style_btn">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:layout_height">@dimen/dp_40</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+<!-- radiobutton   商品属性-->
+    <style name="rb_goods">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/radiobutton_text_goods</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:background">@drawable/radiobutton_bt_goods</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">@dimen/dp_70</item>
+        <item name="android:minHeight">@dimen/dp_32</item>
+    </style>
+    <style name="rb_kill_date">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/radiobutton_text_kill</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:background">@drawable/radiobutton_bt_kill</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">@dimen/dp_70</item>
+        <item name="android:minHeight">@dimen/dp_24</item>
+    </style>
+    <style name="style_btn_kill">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/btn_selector_kill</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:layout_width">@dimen/dp_80</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

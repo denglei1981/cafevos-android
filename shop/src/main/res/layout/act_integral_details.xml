@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_withe">
+        <View
+            android:background="@drawable/line_00095b_222b80"
+            android:id="@+id/view_bopbg"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_230"/>
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:back_icon="@mipmap/whit_left"
+            app:title_text="@string/str_integralDetail"
+            app:title_color="@color/white"
+            tools:minHeight="@dimen/dp_60"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integral"
+            android:layout_marginTop="@dimen/dp_30"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="13550"
+            android:textColor="@color/color_withe"
+            android:textSize="@dimen/sp_23" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_myPoints"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/tv_integral"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_myPoints"
+            android:textColor="@color/color_withe"
+            android:textSize="@dimen/sp_14" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/dp_30"
+            app:layout_constraintTop_toBottomOf="@id/tv_myPoints"
+            android:background="@drawable/shadow_white_t_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_100"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

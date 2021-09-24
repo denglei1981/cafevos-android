@@ -7,6 +7,9 @@
         <item name="android:backgroundDimEnabled">false</item><!--背景虚化-->
         <item name="android:windowIsTranslucent">false</item><!--半透明-->
     </style>
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
 
     <!-- 自定义仿IOS的AlertDialog的样式 -->
     <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
@@ -59,10 +62,6 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.01</item>
-    </style>
-
-    <style name="TabLayoutTextStyle">
-        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">
