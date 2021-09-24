@@ -3,6 +3,7 @@ package com.changanford.circle.ui.fragment
 import android.os.Bundle
 import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.FragmentCircleListBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.common.basic.BaseFragment
 
@@ -28,6 +29,7 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     override fun initView() {
+        MUtils.scrollStopLoadImage(binding.ryCircle)
         binding.ryCircle.adapter = adapter
     }
 

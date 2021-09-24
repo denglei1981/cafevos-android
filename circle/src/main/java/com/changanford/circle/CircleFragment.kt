@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
@@ -40,6 +41,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, EmptyViewModel>() {
 
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
+        MUtils.scrollStopLoadImage(binding.ryCircle)
         binding.ivMenu.setOnClickListener {
             CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                 override fun checkLongBar() {

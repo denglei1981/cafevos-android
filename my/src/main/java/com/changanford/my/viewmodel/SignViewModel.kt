@@ -14,7 +14,6 @@ import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import kotlinx.coroutines.launch
-import kotlin.onSuccess
 
 /**
  *  文件名：SignViewModel

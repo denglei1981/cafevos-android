@@ -1,20 +1,28 @@
 package com.changanford.common.basic
 
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.fetchRequest
 import com.changanford.common.util.MConstant
+import kotlinx.coroutines.launch
 
+typealias Block<T> = suspend () -> T
 
-/**
- * @Author hpb
- * @Date 2020/4/2 23:52
- * @Des 父类ViewModel
- */
-open class BaseViewModel(val context: Context) : AndroidViewModel(BaseApplication.INSTANT){
+open class BaseViewModel : ViewModel() {
 
 
     /**
      * 是否登录，token不null:true登录，
      */
     fun isLogin(): Boolean = MConstant.token.isNotEmpty()
+
+    fun <T> launch(showLoading: Boolean = false,block: Block<CommonResponse<T>>) {
+        viewModelScope.launch {
+            fetchRequest(showLoading) {
+                block.invoke()
+            }
+        }
+    }
 }
