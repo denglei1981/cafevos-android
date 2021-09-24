@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.ui.dialog.UpdateAlertDialog
@@ -20,18 +20,20 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.room.Db
-import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.setupWithNavController
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
-import com.gyf.immersionbar.ImmersionBar
+import com.changanford.evos.utils.BottomNavigationUtils
+import com.changanford.evos.view.SpecialAnimaTab
 import kotlinx.coroutines.launch
+import me.majiajie.pagerbottomtabstrip.NavigationController
+import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var updateViewModel:UpdateViewModel
+    lateinit var navController:NavController
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -49,13 +51,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return currentNavController?.value?.navigateUp() ?: false
 
     }
-
+    private fun initBottomNavigation() {
+        val navigationController: NavigationController = binding.homeBottomNavi.custom()
+            .addItem(newItem(R.mipmap.icon_homeu, R.mipmap.icon_home_b, R.mipmap.icon_home_c, "发现", -5f))
+            .addItem(newItem(R.mipmap.icon_circleu, R.mipmap.icon_circle_b, R.mipmap.icon_circle_c, "社区", -7f))
+            .addItem(newItem(R.mipmap.icon_caru, R.mipmap.icon_car_b, R.mipmap.icon_car_c, "订车", -30f))
+            .addItem(newItem(R.mipmap.icon_shopu, R.mipmap.icon_shop_b, R.mipmap.icon_shop_c, "商城", -3f))
+            .addItem(newItem(R.mipmap.icon_myu, R.mipmap.icon_my_b, R.mipmap.icon_my_c, "我的", 8f, -10f))
+            .build()
+        BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
+    }
 
     override fun initView() {
 
         setSupportActionBar(binding.toolbar)
         //旧
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController = findNavController(R.id.nav_host_fragment_content_main)
+        initBottomNavigation()
 //        appBarConfiguration = AppBarConfiguration(navController.graph)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        binding.homeBottomNavi.setupWithNavController(navController)
@@ -68,25 +80,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
             if (it as Boolean) {
-                val badge = binding.homeBottomNavi.getOrCreateBadge(R.id.homeFragment)
-                badge.isVisible = true
-                badge.number += 1
-                val badge2 = binding.homeBottomNavi.getOrCreateBadge(R.id.circleFragment)
-                badge2.isVisible = true
+//                val badge = binding.homeBottomNavi.getOrCreateBadge(R.id.homeFragment)
+//                badge.isVisible = true
+//                badge.number += 1
+//                val badge2 = binding.homeBottomNavi.getOrCreateBadge(R.id.circleFragment)
+//                badge2.isVisible = true
             }
         })
-
-        lifecycleScope.launchWhenStarted {
-//            Db.myDb.getData("name")?.storeValue?.toast()
-        }
-
-        //权限
-        binding.fab.setOnClickListener {
-            //旧
-//            binding.homeBottomNavi.selectedItemId = R.id.carFragment
-            //新
-            binding.homeBottomNavi.selectedItemId = R.id.nav3
-        }
 
     }
 
@@ -166,7 +166,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var currentNavController: LiveData<NavController>
 
     private fun setupBottomNavigationBar() {
-        val navGraphIds = listOf(
+        /*val navGraphIds = listOf(
             R.navigation.nav1,
             R.navigation.nav2,
             R.navigation.nav3,
@@ -185,7 +185,38 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             setSupportActionBar(binding.toolbar)
         })
         currentNavController = controller
-        binding.homeBottomNavi.itemIconTintList = null
+        binding.homeBottomNavi.itemIconTintList = null*/
     }
 
+    /**
+     * 正常tab
+     */
+    private fun newItem(
+        drawable: Int,
+        checkedDrawable: Int,
+        yuanshu: Int,
+        text: String,
+        xfloat: Float = 0f,
+        yfloat: Float = 0f
+    ): BaseTabItem? {
+        val mainTab = SpecialAnimaTab(this)
+        if (text != "我的") {
+            mainTab.setmsgGone()
+        }
+        mainTab.setTextDefaultColor(resources.getColor(R.color.tab_nomarl))
+        mainTab.setTextCheckedColor(resources.getColor(R.color.black))
+        mainTab.setIvyuanshu(yuanshu)
+        mainTab.setYfloat(yfloat)
+        mainTab.setXfloat(xfloat)
+        mainTab.initialize(drawable, checkedDrawable, text)
+        return mainTab
+    }
+    private var PAGE_IDS = intArrayOf(
+        R.id.homeFragment,
+        R.id.circleFragment,
+        R.id.carFragment,
+        R.id.shopFragment,
+        R.id.myFragment
+    )
 }
+

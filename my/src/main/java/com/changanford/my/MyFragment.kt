@@ -8,8 +8,9 @@ import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
+import com.changanford.my.viewmodel.SignViewModel
 
-class MyFragment : BaseFragment<FragmentMyBinding, MyViewModule>() {
+class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     lateinit var menuBean :ArrayList<MenuBeanItem>
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()

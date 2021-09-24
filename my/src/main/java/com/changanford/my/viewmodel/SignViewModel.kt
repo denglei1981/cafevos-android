@@ -2,19 +2,19 @@ package com.changanford.my.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
+import kotlinx.coroutines.launch
+import kotlin.onSuccess
 
 /**
  *  文件名：SignViewModel
@@ -382,6 +382,23 @@ class SignViewModel : ViewModel() {
         MConstant.token = ""
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
+    }
+
+    /**
+     * 我的menu菜单
+     */
+    var menuBean = MutableLiveData<ArrayList<MenuBeanItem>>()
+    fun getMenuList() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMenuList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                menuBean.postValue(it)
+            }
+        }
+
     }
 
 }
