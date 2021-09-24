@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.shop.bean.OrderBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_10">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderNo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:start_txt="@string/str_orderNo"
+            tools:text="订单编号：DD202109110023"
+            android:textColor="@color/picture_color_66"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_order_states"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="待发货"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_12" />
+        <ImageView
+            android:layout_marginTop="@dimen/dp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_orderNo"
+            android:id="@+id/img_goods_cover"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:src="@drawable/shadow_1b51d9_5dp"
+            android:scaleType="fitXY" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goods_title"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintStart_toEndOf="@id/img_goods_cover"
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="无线蓝牙耳机 降噪耳机全新苹噪耳…"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            style="@style/style_txt_ellipsize"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_30"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goods_number"
+            app:layout_constraintTop_toTopOf="@id/recyclerView"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="×1"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integral"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/dp_5"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:end_txt="@string/str_integral"
+            tools:text="1300积分"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_totleIntegral"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/img_goods_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/font_aCombined"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <View
+            android:id="@+id/view_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_totleIntegral"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/color_ee"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_btn_confirm"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            android:minWidth="@dimen/dp_80"
+            android:background="@drawable/bord_00095b_15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            tools:text="立即支付"
+            android:textStyle="bold"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_btn_cancel"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@id/tv_btn_confirm"
+            app:layout_constraintEnd_toStartOf="@id/tv_btn_confirm"
+            android:minWidth="@dimen/dp_80"
+            android:background="@drawable/bord_99_15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            tools:text="取消订单"
+            android:textStyle="bold"
+            android:textColor="@color/picture_color_66"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintBottom_toBottomOf="@id/tv_btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/tv_btn_confirm"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="请在09月05日 15:09 前支付"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_10" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
