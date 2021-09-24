@@ -40,9 +40,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
             GoodsDetailsActivity.start(requireContext(),"$position")
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
-        binding.inTop.btnToIntegral.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
 
         //test
+        binding.inTop.btnJfmx.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
         binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
 
