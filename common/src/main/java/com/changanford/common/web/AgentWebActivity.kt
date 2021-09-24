@@ -460,7 +460,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .ready()
             .go(url)
         agentWeb.jsInterfaceHolder.addJavaObject(
-            "UNIApp",
+            "FORDApp",
             AgentWebInterface(agentWeb, this@AgentWebActivity)
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true

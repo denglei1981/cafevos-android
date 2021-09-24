@@ -54,5 +54,4 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 
     fun <T:ViewModel> createViewModel(claaz:Class<T>) =
         ViewModelProvider.AndroidViewModelFactory.getInstance(BaseApplication.INSTANT).create(claaz)
-
 }

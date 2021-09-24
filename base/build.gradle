@@ -59,6 +59,16 @@ dependencies {
     api "io.reactivex.rxjava2:rxandroid:2.1.1"
     //tencent
     api "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+"
+    //阿里云推送push
+    api "com.aliyun.ams:alicloud-android-push:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push-huawei:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push-meizu:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push-vivo:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push-xiaomi:3.4.0"
+    api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
+    //adapter
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.+'

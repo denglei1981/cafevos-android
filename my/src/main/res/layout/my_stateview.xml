@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/commonTextView.Small.LightBlue"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:text="发布"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/commonTextView.Small.LightBlue"
+
+        android:text="关注"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@id/textView4" />
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/commonTextView.Small.LightBlue"
+        android:text="粉丝"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@id/textView5" />
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/commonTextView.Small.LightBlue"
+        android:text="收藏"
+        android:layout_marginRight="@dimen/dp_30"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/my_state_fabu"
+        style="@style/commonTextView.Medium.Black"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        android:text="893"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/my_state_guanzhu"
+        style="@style/commonTextView.Medium.Black"
+        android:padding="@dimen/dp_10"
+        android:text="392"
+        app:layout_constraintBottom_toBottomOf="@+id/my_state_fabu"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/my_state_fensi"
+        style="@style/commonTextView.Medium.Black"
+        android:text="22"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintBottom_toBottomOf="@+id/my_state_guanzhu"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/my_state_shoucang"
+        android:padding="@dimen/dp_10"
+        style="@style/commonTextView.Medium.Black"
+        android:text="108"
+        app:layout_constraintBottom_toBottomOf="@+id/my_state_fensi"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7" />
+</androidx.constraintlayout.widget.ConstraintLayout>

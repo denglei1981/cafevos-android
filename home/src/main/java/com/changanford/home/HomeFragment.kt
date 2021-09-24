@@ -31,6 +31,9 @@ class HomeFragment : BaseFragment<FragmentFirstBinding, HomeViewModule>() {
                 badge.isVisible = true
             }
         }.attach()
+        binding.homeViewpager.setOnClickListener {
+//            NavController.
+        }
     }
 
     override fun initData() {

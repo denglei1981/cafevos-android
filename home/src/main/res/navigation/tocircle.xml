@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tocircle"
+    app:startDestination="@id/bannerFragment">
+
+    <fragment
+        android:id="@+id/bannerFragment"
+        android:name="com.changanford.common.ui.viewpager.BannerFragment"
+        android:label="BannerFragment" >
+        <action
+            android:id="@+id/action_bannerFragment_to_placeholder"
+            app:destination="@id/placeholder" />
+    </fragment>
+    <fragment android:id="@+id/placeholder"
+        android:name="com.changanford.circle.CircleFragment"
+        android:label="BannerFragment"
+        />
+</navigation>

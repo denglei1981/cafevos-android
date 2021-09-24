@@ -20,6 +20,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!-- 应用启动页(StartingWindow)的theme -->
+    <style name="AppTheme.StartingWindowTheme" parent="Theme.EVOS">
+        <item name="android:windowBackground">@mipmap/demoh1</item>
+        <!--也可以设置成一张图片 -->
+    </style>
 
     <style name="Theme.EVOS.NoActionBar">
         <item name="windowActionBar">false</item>

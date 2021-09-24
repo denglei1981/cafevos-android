@@ -110,7 +110,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 '74'|=>|汽车保险弹框
  */
 class JumpUtils {
-    fun jump(type: Int?, value: String?) {
+    fun jump(type: Int?, value: String? = "") {
         if (type == null) {
             "跳转类型不能为空".toast()
             return
@@ -300,7 +300,14 @@ class JumpUtils {
 //                startARouter(ARouterMyPath.MineOrderUI, bundle)
             }
             37 -> {//签到
+                when {
+                    MConstant.token.isNullOrEmpty() -> {
+                        startARouter(ARouterMyPath.SignUI)
+                    }
+                    else -> {
 //                mineDaySign()
+                    }
+                }
             }
             38 -> {//我的足迹
 //                startARouter(ARouterMyPath.MineFootprintUI, bundle)

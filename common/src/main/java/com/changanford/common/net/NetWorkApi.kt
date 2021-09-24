@@ -16,8 +16,26 @@ import retrofit2.http.POST
  * *********************************************************************************
  */
 interface NetWorkApi {
+    /**--------------------------------app---------------------------------------**/
     @POST("/appinit/getpk")
     suspend fun getKey(@Body requestBody: RequestBody): CommonResponse<String>
+    @POST("/base/app/getLastestAppVersion")
+    suspend fun getUpdateInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<UpdateInfo>
+    @POST("/con/ads/list")
+    suspend fun getHeadBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<AdBean>>
+    /**---**/
+    /**
+     * 常用功能列表
+     */
+    @POST("user/navigaMenu/getUserNavigaMenuList")
+    suspend fun queryMenuList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MenuBean>
+
     /**
      * 获取基本配置
      * 图片域名

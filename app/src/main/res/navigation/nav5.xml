@@ -6,7 +6,7 @@
     android:id="@+id/nav5"
     tools:ignore="UnusedNavigation">
     <fragment
-        android:name="com.changanford.my.AboutFragment"
+        android:name="com.changanford.my.MyFragment"
         android:id="@+id/fragment5"
         android:label="AboutFragment"/>
 
