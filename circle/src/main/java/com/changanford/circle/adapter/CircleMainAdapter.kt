@@ -14,7 +14,6 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
 import com.changanford.circle.ext.toIntPx
-import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
 import com.changanford.circle.ui.fragment.CircleMainFragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -72,6 +71,7 @@ class CircleMainAdapter(
                 binding.ryTopic.adapter = topicAdapter
 
                 setTopListener(binding)
+
             }
             1 -> {
                 val binding = vdBinding as ItemCircleMianBottomBinding
@@ -89,7 +89,7 @@ class CircleMainAdapter(
             tvTopicMore.setOnClickListener {
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
-            topicAdapter.setOnItemClickListener(object :OnRecyclerViewItemClickListener{
+            topicAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
                     startARouter(ARouterCirclePath.TopicDetailsActivity)
                 }

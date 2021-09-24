@@ -6,7 +6,7 @@
 
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.changanford.circle.widget.recy.ChildRecyclerView
         android:id="@+id/ry_circle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,4 +15,5 @@
         android:layout_marginEnd="10dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 </layout>
