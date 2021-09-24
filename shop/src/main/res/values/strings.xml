@@ -90,4 +90,8 @@
     <string name="str_toEvaluate">待评价</string>
     <string name="str_orderNo">订单编号：</string>
     <string name="font_aCombined">合计:<font color="#00095B">1300积分</font></string>
+    <string name="str_confirm">确认</string>
+    <string name="str_determine">确定</string>
+    <string name="prompt_cancelOrder">取消订单后，订单将不可恢复</string>
+    <string name="str_confirmReceiptGoods">是否确认收货</string>
 </resources>
