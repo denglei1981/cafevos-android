@@ -5,6 +5,7 @@
     <application>
         <activity android:name=".news.activity.SpecialListActivity"/>
         <activity android:name=".news.activity.NewsDetailActivity"/>
+        <activity android:name=".news.activity.SpecialDetailActivity"/>
 
 
     </application>

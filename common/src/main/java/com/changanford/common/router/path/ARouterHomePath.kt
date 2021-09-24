@@ -5,4 +5,5 @@ object ARouterHomePath {
     const val HomeActivity = "/home/CaafcActivity"
     const val AgentWebActivity = "/common/AgentWebActivity"
     const val SpecialListActivity="/home/SpecialListActivity"
+    const val  SpecialDetailActivity="/home/SpecialDetailActivity"
 }
