@@ -83,4 +83,9 @@
     <string name="str_mediumReview">中评</string>
     <string name="str_goodReview">好评</string>
     <string name="str_ordersGoods">商品订单</string>
+    <string name="str_all">全部</string>
+    <string name="str_toBePaid">待支付</string>
+    <string name="str_toSendGoods">待发货</string>
+    <string name="str_forGoods">待收货</string>
+    <string name="str_toEvaluate">待评价</string>
 </resources>
