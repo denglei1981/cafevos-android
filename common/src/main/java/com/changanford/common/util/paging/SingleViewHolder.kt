@@ -17,7 +17,7 @@ import androidx.viewbinding.ViewBinding
  */
 class SingleViewHolder<V : ViewBinding, T>(
     private val v: V,
-    private val bind: (V, Int) -> Unit
+    private val bind: (V, Int) -> Unit,
 ) :
     RecyclerView.ViewHolder(v.root) {
     fun bind(position: Int) {

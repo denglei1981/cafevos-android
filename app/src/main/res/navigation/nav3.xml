@@ -6,7 +6,7 @@
     android:id="@+id/nav3"
     tools:ignore="UnusedNavigation">
     <fragment
-        android:name="com.changanford.car.CarFragment"
+        android:name="com.changanford.car.CarFragmentNoCar"
         android:id="@+id/fragment3"
         android:label="car_fragment"/>
 

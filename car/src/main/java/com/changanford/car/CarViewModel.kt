@@ -1,18 +1,32 @@
 package com.changanford.car
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
+import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.paging.DataRepository
 import kotlinx.coroutines.flow.Flow
 
 class CarViewModel : ViewModel() {
+    var adsRepository: AdsRepository = AdsRepository(this)
+    var _ads: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
+
+    init {
+        _ads = adsRepository._ads
+    }
+
+    fun getTopAds() {
+        adsRepository.getAds("uni_topbanner")
+    }
+
     /**
      * 使用paging获取接口数据，默认每页10条
      */

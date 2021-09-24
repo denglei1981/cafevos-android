@@ -68,7 +68,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     fun <T:ViewModel> createViewModel(claaz:Class<T>) =
         ViewModelProvider.AndroidViewModelFactory.getInstance(BaseApplication.INSTANT).create(claaz)
 
-
     /**
      * 设置状态栏透明 SDK_INT >= 21
      * @param isLightMode 是否是浅色模式，true= 状态栏文字为灰色，false = 状态栏文字白色 SDK_INT >= 23

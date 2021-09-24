@@ -19,17 +19,14 @@ import razerdp.util.animation.TranslationConfig
  *Time on 2021/9/23
  *Purpose 圈子详情申请管理pop
  */
-class CircleManagementPop(context: Context,private val listener:ClickListener) : BasePopupWindow(context) {
+class CircleManagementPop(context: Context, private val listener: ClickListener) :
+    BasePopupWindow(context) {
 
-    private lateinit var binding: PopCircleManagementBinding
+    private var binding: PopCircleManagementBinding =
+        DataBindingUtil.bind(createPopupById(R.layout.pop_circle_management))!!
 
     private val adapter by lazy {
         PopManagementAdapter(context)
-    }
-
-     fun onCreateContentView(): View {
-        binding = DataBindingUtil.bind(createPopupById(R.layout.pop_circle_management))!!
-        return binding.root
     }
 
     override fun onCreateShowAnimation(): Animation {
@@ -51,7 +48,7 @@ class CircleManagementPop(context: Context,private val listener:ClickListener) :
     fun setData(list: ArrayList<String>) {
         adapter.setItems(list)
         binding.ryManagement.adapter = adapter
-        adapter.setOnItemClickListener(object :OnRecyclerViewItemClickListener{
+        adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 adapter.getItem(position)?.let { listener.checkPosition(it) }
                 dismiss()

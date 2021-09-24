@@ -1,12 +1,11 @@
 package com.changanford.common.pay
 
 import android.app.Activity
-import android.content.Context
 import android.os.Message
 import android.text.TextUtils
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.alipay.sdk.app.PayTask
-import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -26,7 +25,7 @@ import org.json.JSONObject
  * @Description: 支付模块，调用支付并处理结果
  * *********************************************************************************
  */
-open class PayViewModule(context: Context) : BaseViewModel(context) {
+open class PayViewModule : ViewModel() {
 
 
     fun goPay(activity: Activity, type: String, jsonStr: String) {

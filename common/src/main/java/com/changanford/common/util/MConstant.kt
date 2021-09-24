@@ -15,7 +15,9 @@ object MConstant {
     const val isDebug = true
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
+    const val IMGURLTAG = "image_url_tag"
     const val COOKIE = false
+    const val isAppAlive = true
 
     val rootPath = MyApp.mContext.getExternalFilesDir("")?.absolutePath
 
@@ -31,6 +33,10 @@ object MConstant {
     var userId = ""
 
     var totalWebNum = 0//AgentWebActivity的个数
+    //app更新
+    var isDownloading = false//是否下载
+    var newApk = false//是否有新版本
+    var newApkUrl = ""//新版本的链接
 
     const val WXAPPID = "wx134a7f5ed01da769" //微信appid
 

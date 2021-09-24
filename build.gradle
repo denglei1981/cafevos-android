@@ -17,7 +17,9 @@ buildscript {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
-        maven {url 'https://developer.huawei.com/repo/'}//华为扫码
+        maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}//阿里云推送
+        maven {url 'https://developer.huawei.com/repo/'}//华为扫码、华为推送
+        maven { url "https://jitpack.io" }//cymadapter
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0'
@@ -35,9 +37,11 @@ allprojects {
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
         maven {url 'https://developer.huawei.com/repo/'}//华为扫码
-        maven { url 'https://jitpack.io' }
         maven { url 'https://www.jitpack.io' }
         maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
+        maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}//阿里云推送
+        maven {url 'https://developer.huawei.com/repo/'}//华为扫码、华为推送
+        maven { url "https://jitpack.io" }//cymadapter
     }
 }
 

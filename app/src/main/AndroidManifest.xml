@@ -3,6 +3,20 @@
     package="com.changanford.evos">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 阿里云推送相关权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
+    <!-- 接收推送主要权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!--适配Android R包可见性 开始-->
     <queries package="${applicationId}">
@@ -27,6 +41,41 @@
         <meta-data
             android:name="CHANNEL_VALUE"
             android:value="${channel_value}" />
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="" /> <!-- 请填写你自己的- appKey -->
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="" /> <!-- 请填写你自己的appSecret -->
+        <!--阿里推送华为-->
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=" />
+        <!--阿里推送Vivo-->
+        <meta-data
+            android:name="com.vivo.push.api_key"
+            android:value="" />
+        <meta-data
+            android:name="com.vivo.push.app_id"
+            android:value="" />
+        <!-- 消息接收监听器 （用户可自主扩展） -->
+        <receiver
+            android:name="com.changanford.common.receiver.MyMessageReceiver"
+            android:exported="false"> <!-- 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 -->
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name="com.changanford.common.receiver.MyMessageHelpReceiver"
+            android:exported="true"></activity>
+
 <!--        <activity-->
 <!--            android:name=".PicActivity"-->
 <!--            android:exported="true"-->
