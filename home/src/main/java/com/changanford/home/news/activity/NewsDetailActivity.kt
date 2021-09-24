@@ -8,10 +8,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, EmptyViewMod
 
 
     override fun initView() {
-        TODO("Not yet implemented")
+
     }
 
     override fun initData() {
-        TODO("Not yet implemented")
+
     }
 }
