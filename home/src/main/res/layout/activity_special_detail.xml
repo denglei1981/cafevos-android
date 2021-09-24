@@ -10,7 +10,10 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         >
         <include layout="@layout/home_header_special" />
-
+        <include
+            android:id="@+id/layout_bar"
+            android:visibility="visible"
+            layout="@layout/home_base_top_bar"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
