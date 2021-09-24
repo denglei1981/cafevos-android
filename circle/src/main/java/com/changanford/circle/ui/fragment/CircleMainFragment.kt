@@ -40,6 +40,7 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
         val type = arguments?.getString("type")
         type?.let { initLayoutManage(it) }
         binding.ryCircle.layoutManager = layoutManager
+        binding.ryCircle.isSaveEnabled = false
     }
 
     override fun initData() {
@@ -50,7 +51,7 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
         adapter.setItems(list)
         adapter.notifyDataSetChanged()
 
-        addressAdapter.setOnItemClickListener(object :OnRecyclerViewItemClickListener{
+        addressAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 startARouter(ARouterCirclePath.CircleDetailsActivity)
             }

@@ -87,7 +87,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     //背景模糊false
                     setBlurBackgroundEnable(false)
                     //弹出位置 基于绑定的view 默认BOTTOM
-                    popupGravity = Gravity.BOTTOM and Gravity.END
+//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
                     showPopupWindow(tvJoinText)
                     setData(arrayListOf("星推官", "星推官助手"))
                     onDismissListener = object : BasePopupWindow.OnDismissListener() {

@@ -1,0 +1,25 @@
+package com.changanford.circle.adapter
+
+import android.content.Context
+import androidx.databinding.ViewDataBinding
+import com.changanford.circle.R
+import com.changanford.circle.bean.CircleMainMenuBean
+import com.changanford.circle.databinding.ItemCircleMainMenuBinding
+import com.changanford.circle.ext.loadImage
+import com.changanford.circle.utils.MUtils
+import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+
+/**
+ *Author lcw
+ *Time on 2021/9/24
+ *Purpose
+ */
+class CircleMainMenuAdapter(context: Context) :
+    BaseAdapterOneLayout<CircleMainMenuBean>(context, R.layout.item_circle_main_menu) {
+    override fun fillData(vdBinding: ViewDataBinding?, item: CircleMainMenuBean, position: Int) {
+        val binding =vdBinding as ItemCircleMainMenuBinding
+        MUtils.setTopMargin(binding.llContent,20,position)
+        binding.ivIcon.loadImage(item.pic)
+        binding.tvContent.text=item.content
+    }
+}
