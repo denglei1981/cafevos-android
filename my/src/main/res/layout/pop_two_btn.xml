@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_r_5_c_ff"
+    android:minWidth="@dimen/dp_285"
+    android:minHeight="@dimen/dp_155"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="是否确定取消关注"
+            android:textColor="#081725"
+            android:textSize="@dimen/sp_15" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_46"
+        android:background="@color/bg_color"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dp_1">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#71747B"
+            android:textSize="@dimen/sp_15" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_comfir"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="#01025C"
+            android:textSize="@dimen/sp_15" />
+
+    </LinearLayout>
+
+</LinearLayout>

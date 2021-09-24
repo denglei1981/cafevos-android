@@ -99,3 +99,41 @@ data class Imag(
     val jumpDataType: Int,
     val jumpDataValue: String
 )
+
+
+data class FansListBean(
+    val dataList: List<FansItemBean>?,
+    val pageNo: Int,
+    val pageSize: Int,
+    val total: Int,
+    val totalPage: Int
+)
+
+data class FansItemBean(
+    val authorId: String,
+    val avatar: String,
+    val isMutualAttention: Int,//是否互相关注 1 是，0 否
+    val nickname: String,
+    val isFollow: Int //他人的粉丝/关注是否被登录用户关注 1 是，0 否
+)
+
+data class BindAuthBeanItem(
+    val bind: Boolean,
+    val img: String,
+    val name: String,
+    val type: String
+)
+
+data class CancelVerifyBean(
+    val condition: String,
+    val conditionDesc: String,
+    val isFinish: Int,
+    val jumpDataType: Int,
+    val jumpDataValue: String
+)
+
+data class CancelReasonBeanItem(
+    val dictLabel: String,
+    var isCheck: Boolean = false,
+    var reasonId: Int = 0
+)

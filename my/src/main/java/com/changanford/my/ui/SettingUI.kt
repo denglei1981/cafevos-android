@@ -2,6 +2,7 @@ package com.changanford.my.ui
 
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
@@ -21,8 +22,14 @@ import com.changanford.my.viewmodel.SignViewModel
 class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
 
     override fun initView() {
+        binding.btnLoginOut.isEnabled = UserManger.isLogin()
+
         binding.btnLoginOut.setOnClickListener {
             viewModel.loginOut()
+        }
+
+        binding.setSafe.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.AccountSafeUI)
         }
 
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)

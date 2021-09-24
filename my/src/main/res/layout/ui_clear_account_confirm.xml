@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/mine_toolbar"
+                layout="@layout/view_toolbar" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/dp_28"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_25"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="@dimen/dp_25"
+                    android:text="请选择注销账号的原因"
+                    android:textColor="#757593"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/clear_cry"
+                    layout="@layout/view_recycler"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+
+                <EditText
+                    android:id="@+id/other_reason"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="#F4F4F4"
+                    android:gravity="top|left"
+                    android:hint="最多30个字"
+                    android:maxLength="30"
+                    android:minHeight="76dp"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_6"
+                    android:paddingEnd="@dimen/dp_8"
+                    android:paddingBottom="@dimen/dp_6"
+                    android:text=""
+                    android:textColor="#24292E"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/clear_cry" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
+                    android:background="#EBEBEB"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/other_reason"
+                    app:layout_goneMarginTop="@dimen/dp_2" />
+
+                <TextView
+                    android:id="@+id/hint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:text="账号一旦注销，U享卡将无法使用，且商城如果有正在进行中的订单，注销账号后无法产生售后服务！"
+                    android:textColor="#24292E"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/line" />
+
+                <TextView
+                    android:id="@+id/delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp"
+                    android:text="以下数据将被清除：以下数据将被清除：帖子数据、F币数据、圈子相关数据、经验等级数据、活动数据、勋章数据。"
+                    android:textColor="#24292E"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/hint" />
+
+
+                <TextView
+                    android:id="@+id/go_on_cancel_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="7dp"
+                    android:background="@drawable/shape_r_23_c_5c_"
+                    android:gravity="center"
+                    android:text="继续注销"
+                    android:textColor="#01025C"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/title"
+                    app:layout_constraintRight_toLeftOf="@+id/cancel_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/delete" />
+
+
+                <TextView
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="7dp"
+                    android:background="@drawable/shape_c_5c_r_23"
+                    android:gravity="center"
+                    android:text="我再想想"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/go_on_cancel_btn"
+                    app:layout_constraintLeft_toRightOf="@+id/go_on_cancel_btn"
+                    app:layout_constraintRight_toRightOf="@+id/title"
+                    app:layout_constraintTop_toTopOf="@+id/go_on_cancel_btn" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

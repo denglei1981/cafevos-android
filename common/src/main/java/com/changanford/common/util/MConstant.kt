@@ -57,4 +57,10 @@ object MConstant {
      */
     var H5_USER_AGREEMENT = "${H5_BASE_URL_CSCIR}/quanzi/#/privacy"
 
+    /**
+     * 注销协议
+     */
+    var H5_CANCEL_ACCOUNT = "${H5_BASE_URL_CSCIR}/quanzi/#/cancellation"
+
+
 }

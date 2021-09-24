@@ -199,6 +199,133 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    var fansLive: MutableLiveData<FansListBean> = MutableLiveData()
+
+    suspend fun queryFansList(pageNo: Int, type: Int, userId: String) {
+        var fans = fetchRequest {
+            var map = mapOf("type" to type, "userId" to userId)
+            var body = HashMap<String, Any>()
+            body["pageNo"] = pageNo
+            body["pageSize"] = 20
+            body["queryParams"] = map
+            var rkey = getRandomKey()
+            apiService.queryFansList(body.header(rkey), body.body(rkey))
+        }
+        if (fans.code == 0) {
+            fansLive.postValue(fans.data)
+        }
+    }
+
+    var cancelTip: MutableLiveData<String> = MutableLiveData()
+
+    suspend fun cancelFans(
+        followId: String,
+        type: String
+    ) {
+        var cancle = fetchRequest {
+            var body = HashMap<String, String>()
+            body["followId"] = followId
+            body["type"] = type
+            var rkey = getRandomKey()
+            apiService.cancelFans(body.header(rkey), body.body(rkey))
+        }
+        if (cancle.code == 0) {
+            cancelTip.postValue("true")
+        } else {
+            cancelTip.postValue(cancle.msg)
+        }
+    }
+
+    var bindAccount: MutableLiveData<ArrayList<BindAuthBeanItem>> = MutableLiveData()
+    suspend fun bindAccount() {
+        var account = fetchRequest {
+            var body = HashMap<String, String>()
+            var rKey = getRandomKey()
+            apiService.queryBindMobileList(body.header(rKey), body.body(rKey))
+        }
+        if (account.code == 0) {
+            bindAccount.postValue(account.data)
+        }
+    }
+
+
+    /**
+     * 三方登录
+     * 授权类型 min pub weixin qq weibo douyin apple
+     * 授权code， qq格式token,openid apple格式 code,userId,fullName
+     */
+    var bindOtherAccount: MutableLiveData<String> = MutableLiveData()
+
+    suspend fun bindOtherAuth(type: String, code: String) {
+        var otherAuth = fetchRequest {
+            var body = HashMap<String, String>()
+            body["type"] = type
+            body["code"] = code
+            var rkey = getRandomKey()
+            apiService.bindOtherAuth(body.header(rkey), body.body(rkey))
+        }
+        if (otherAuth.code == 0) {
+            bindOtherAccount.postValue("bindSuccess")
+        } else {
+            bindOtherAccount.postValue(otherAuth.msg)
+        }
+    }
+
+
+    /**
+     * 三方登录
+     * 授权类型 min pub weixin qq weibo douyin apple
+     * 授权code， qq格式token,openid apple格式 code,userId,fullName
+     */
+
+    suspend fun unBindOtherAuth(type: String) {
+        var unOtherAuth = fetchRequest {
+            var body = HashMap<String, String>()
+            body["type"] = type
+            var rkey = getRandomKey()
+            apiService.unBindMobile(body.header(rkey), body.body(rkey))
+        }
+        if (unOtherAuth.code == 0) {
+            bindOtherAccount.postValue("unBindSuccess")
+        } else {
+            bindOtherAccount.postValue(unOtherAuth.msg)
+        }
+    }
+
+
+    var clearBean: MutableLiveData<ArrayList<CancelVerifyBean>> = MutableLiveData()
+
+    suspend fun verifyCancelAccount() {
+        var clearAccount = fetchRequest {
+            var body = HashMap<String, String>()
+            var rkey = getRandomKey()
+            apiService.verifyCancelAccount(body.header(rkey), body.body(rkey))
+        }
+        if (clearAccount.code == 0) {
+            clearBean.postValue(clearAccount.data)
+        }
+    }
+
+    var clearAccountReason: MutableLiveData<ArrayList<CancelReasonBeanItem>> = MutableLiveData()
+    suspend fun cancelAccountReason() {
+        var clearReason = fetchRequest {
+            var body = HashMap<String, Any>()
+            body["dictType"] = "user_cancel_reason"
+            var rkey = getRandomKey()
+            apiService.cancelAccountReason(body.header(rkey), body.body(rkey))
+        }
+        if (clearReason.code == 0) {
+            clearAccountReason.postValue(clearReason.data)
+        }
+    }
+
+    suspend fun cancelAccount() {
+        var clearAccount = fetchRequest {
+            var body = HashMap<String, String>()
+            var rkey = getRandomKey()
+            apiService.cancelAccount(body.header(rkey), body.body(rkey))
+        }
+    }
 
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
         UserManger.updateUserInfo(userInfoBean)

@@ -1,6 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/car_toolbar"
+        layout="@layout/view_toolbar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/car_pic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginEnd="@dimen/dp_12"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:background="@color/white"
+                android:minHeight="@dimen/dp_165"
+                app:cardBackgroundColor="#01000000"
+                app:cardElevation="@dimen/dp_8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/car_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginEnd="@dimen/dp_6"
+                android:background="@drawable/shape_car_auth_status"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_70"
+                android:minHeight="@dimen/dp_27"
+                android:paddingStart="@dimen/dp_14"
+                android:paddingTop="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_14"
+                android:paddingBottom="@dimen/dp_6"
+                android:text="已认证"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintRight_toRightOf="@+id/car_pic_layout"
+                app:layout_constraintTop_toTopOf="@+id/car_pic_layout" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_num_title"
+                style="@style/text_car_info_lift_style"
+                android:layout_marginTop="@dimen/dp_28"
+                android:text="车牌号"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_pic_layout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_num"
+                style="@style/text_car_info_right_style"
+                android:layout_marginTop="@dimen/dp_28"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_num_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_pic_layout" />
+
+            <View
+                android:id="@+id/line"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_num_title" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_vin_title"
+                style="@style/text_car_info_lift_style"
+                android:text="车辆VIN码"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_vin"
+                style="@style/text_car_info_right_style"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_vin_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line" />
+
+            <View
+                android:id="@+id/line1"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_vin_title" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_model_title"
+                style="@style/text_car_info_lift_style"
+                android:text="车型"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_model"
+                style="@style/text_car_info_right_style"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_model_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_model_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_time_title"
+                style="@style/text_car_info_lift_style"
+                android:text="购车日期"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_time"
+                style="@style/text_car_info_right_style"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_time_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+            <View
+                android:id="@+id/line3"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_time_title" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_dealer_title"
+                style="@style/text_car_info_lift_style"
+                android:text="经销商名称"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_dealer"
+                style="@style/text_car_info_right_style"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_dealer_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+            <View
+                android:id="@+id/line4"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_dealer_title" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_dealer_phone_title"
+                style="@style/text_car_info_lift_style"
+                android:text="经销商电话"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_dealer_phone"
+                style="@style/text_car_info_right_style"
+                android:gravity="right"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/card_dealer_phone_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line4" />
+
+            <View
+                android:id="@+id/line5"
+                style="@style/line_car_info_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_dealer_phone_title" />
+
+
+            <View
+                android:id="@+id/line6"
+                style="@style/line_car_info_style"
+                android:layout_height="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_0"
+                android:layout_marginEnd="@dimen/dp_0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/car_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="车主权益"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line6" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/car_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_11"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:text="车主互动：车主可申请创建属于自己“圈内”的圈子，并可在长安福特发起专属活动。"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

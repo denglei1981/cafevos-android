@@ -86,7 +86,22 @@ class MineFragment : BaseFragment<MineFragmentBinding, SignViewModel>() {
                 MINE_ITEM_MENU -> {
                     holder.setText(R.id.tv_menu_text, item.menuName)
                     holder.itemView.setOnClickListener {
-                        if (item.routeUrl.isNotEmpty()) {
+                        if (item.menuName == "粉丝" || item.menuName == "关注") {
+
+                            RouterManger.param(
+                                RouterManger.KEY_TO_ID, when (item.menuName) {
+                                    "粉丝" -> {
+                                        1
+                                    }
+                                    "关注" -> {
+                                        2
+                                    }
+                                    else -> {
+                                        1
+                                    }
+                                }
+                            ).startARouter(item.routeUrl)
+                        } else if (item.routeUrl.isNotEmpty()) {
                             RouterManger.startARouter(item.routeUrl)
                         }
                     }
