@@ -6,5 +6,6 @@ package com.changanford.shop.bean
 data class OrderFormState(
     val content:String?=null,
     val contentLength:Int=0,
-    val isDataValid: Boolean = false
+    val isDataValid: Boolean = false,
+    val rating:Int=0
 )

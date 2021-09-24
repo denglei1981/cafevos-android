@@ -79,4 +79,7 @@
     <string name="prompt_order_evaluation">口味赞，包装好，推荐给大家</string>
     <string name="str_xeb">/200</string>
     <string name="str_pleaseEnterComments">请输入评论内容</string>
+    <string name="str_badReview">差评</string>
+    <string name="str_mediumReview">中评</string>
+    <string name="str_goodReview">好评</string>
 </resources>
