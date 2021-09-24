@@ -138,9 +138,6 @@ class ChildRecyclerView @JvmOverloads constructor(
                         // 这个tag会在ParentRecyclerView中用到
                         lastTraverseView.setTag(R.id.tag_saved_child_recycler_view, this)
                     }
-                    if (parentView.id == R.id.view_pager_top) {
-                        return
-                    }
                     // 碰到ViewPager，需要上报给ParentRecyclerView
                     viewPager = parentView
                 }
