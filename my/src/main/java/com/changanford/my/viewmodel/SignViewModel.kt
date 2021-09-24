@@ -327,6 +327,25 @@ class SignViewModel : ViewModel() {
         }
     }
 
+
+    /**
+     * 获取所以区域
+     */
+
+    var allCity: MutableLiveData<ArrayList<CityBeanItem>> = MutableLiveData()
+
+    suspend fun getAllCity() {
+        var city = fetchRequest {
+            var body = HashMap<String, String>()
+            body["district"] = "true"
+            var rkey = getRandomKey()
+            apiService.getAllCity(body.header(rkey), body.body(rkey))
+        }
+        if (city.code == 0) {
+            allCity.postValue(city.data)
+        }
+    }
+
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
         UserManger.updateUserInfo(userInfoBean)
     }

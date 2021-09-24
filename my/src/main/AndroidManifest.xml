@@ -21,5 +21,6 @@
         <activity android:name=".ui.AccountSafeUI" />
         <activity android:name=".ui.ClearAccountUI" />
         <activity android:name=".ui.ClearAccountConfirmUI" />
+        <activity android:name=".ui.EditAddressUI" />
     </application>
 </manifest>

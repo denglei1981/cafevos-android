@@ -235,6 +235,16 @@ interface NetWorkApi {
 
 
     /**
+     * 获取全部区域
+     */
+    @POST("base/region/getAllProvinceAndCityRegion")
+    suspend fun getAllCity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CityBeanItem>>
+
+
+    /**
      * 注销账户
      */
     @POST("user/cancel")

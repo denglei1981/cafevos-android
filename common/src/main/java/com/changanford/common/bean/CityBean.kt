@@ -1,4 +1,4 @@
-package com.hpb.mvvm.ccc.bean
+package com.changanford.common.bean
 
 /**
  *  文件名：CityBean
@@ -8,7 +8,6 @@ package com.hpb.mvvm.ccc.bean
  *  修改描述：TODO
  */
 
-class CityBean : ArrayList<CityBeanItem>()
 
 data class CityBeanItem(
     val citys: List<City>,
