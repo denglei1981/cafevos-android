@@ -42,15 +42,13 @@
             tools:text="刚刚"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />
-        <androidx.appcompat.widget.AppCompatRatingBar
+        <com.changanford.shop.view.ratingbar.AndRatingBar
             app:layout_constraintBottom_toBottomOf="@id/img_avatar"
             app:layout_constraintTop_toTopOf="@id/img_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/ratingBar"
-            style="@style/RadingStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_12"/>
+            android:minHeight="@dimen/dp_12"
+            style="@style/AndRatingBarStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_evaluate_content"
             android:layout_marginTop="@dimen/dp_18"

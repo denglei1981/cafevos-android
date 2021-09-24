@@ -58,18 +58,18 @@
                 android:background="@color/color_ee"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_5"/>
-            <androidx.appcompat.widget.AppCompatRatingBar
+            <com.changanford.shop.view.ratingbar.AndRatingBar
                 android:layout_marginTop="@dimen/dp_30"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_divider"
                 android:id="@+id/ratingBar"
-                style="@style/RadingStyle"
-                android:progressDrawable="@drawable/layer_live_rating_bar_order"
                 android:isIndicator="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/dp_24"/>
+                style="@style/AndRatingBarStyle"
+                android:minHeight="@dimen/dp_24"
+                app:bgDrawable="@mipmap/shop_order_star_0"
+                app:starDrawable="@mipmap/shop_order_star_1"
+                app:starSpacing="@dimen/dp_14" />
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_score"
                 android:layout_marginTop="@dimen/dp_15"

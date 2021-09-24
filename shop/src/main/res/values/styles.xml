@@ -22,6 +22,17 @@
         <item name="android:numColumns">5</item>
         <item name="android:isIndicator">true</item>
     </style>
+    <style name="AndRatingBarStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- 定义星星图片 -->
+        <item name="bgDrawable">@mipmap/shop_start_0</item>
+        <item name="starDrawable">@mipmap/shop_start_1</item>
+        <item name="keepOriginColor">true</item>
+        <item name="android:numColumns">5</item>
+        <item name="android:isIndicator">true</item>
+        <item name="android:stepSize">1</item>
+    </style>
     <style name="style_cb_collection" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>

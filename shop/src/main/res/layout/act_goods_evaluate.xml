@@ -36,16 +36,13 @@
             android:text="@string/str_commodityGrade"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14" />
-        <androidx.appcompat.widget.AppCompatRatingBar
+        <com.changanford.shop.view.ratingbar.AndRatingBar
             app:layout_constraintTop_toTopOf="@id/tv_commodityGrade"
             app:layout_constraintStart_toEndOf="@id/tv_commodityGrade"
             app:layout_constraintBottom_toBottomOf="@id/tv_commodityGrade"
             android:id="@+id/ratingBar"
-            style="@style/RadingStyle"
-            android:isIndicator="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_16"/>
+            android:minHeight="@dimen/dp_16"
+            style="@style/AndRatingBarStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_score"
             android:layout_marginStart="@dimen/dp_3"
