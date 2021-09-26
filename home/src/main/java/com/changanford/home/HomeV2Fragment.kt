@@ -43,6 +43,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         //Tab+Fragment
         immersionBar = ImmersionBar.with(requireActivity())
         immersionBar?.fitsSystemWindows(true)
+            ?.statusBarColor(R.color.transparent)
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
