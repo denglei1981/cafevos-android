@@ -1,15 +1,19 @@
 package com.changanford.circle
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.manger.RouterManger.startARouter
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
@@ -28,9 +32,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, EmptyViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.btnPost.setOnClickListener {
-//            startARouter(ARouterCirclePath.PostActivity)
-//        }
+
     }
 
 
@@ -49,11 +51,11 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, EmptyViewModel>() {
                 }
 
                 override fun checkPic() {
-
+                    startARouter(ARouterCirclePath.PostActivity)
                 }
 
                 override fun checkVideo() {
-
+                    startARouter(ARouterCirclePath.VideoPostActivity)
                 }
 
             }).run {

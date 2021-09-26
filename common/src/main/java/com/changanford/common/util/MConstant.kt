@@ -1,5 +1,6 @@
 package com.changanford.common.util
 import com.changanford.common.MyApp
+import java.io.File
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -19,8 +20,13 @@ object MConstant {
     const val COOKIE = false
     const val isAppAlive = true
 
-    val rootPath = MyApp.mContext.getExternalFilesDir("")?.absolutePath
+    val rootPath by lazy{
+        MyApp.mContext.getExternalFilesDir("")?.absolutePath
+    }
 
+    val ftFilesDir by lazy{
+        rootPath+ File.separator + "android" + File.separator + "ftfilesdir" + File.separator
+    }
 
     val H5_BASE_URL_CSCIR by lazy {
         "https://cir.uni.changan.com.cn"

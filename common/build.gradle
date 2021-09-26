@@ -80,6 +80,8 @@ dependencies {
     api(project(":base"))
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     api project(path: ':picture_library')
+    api project(path: ':videocompressor')
+    api project(path: ':lansong')
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //multidex
     api "androidx.multidex:multidex:$versions_multidex"
@@ -171,7 +173,7 @@ dependencies {
     api 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
     api 'io.github.youth5201314:banner:2.2.2'
-
+    api 'com.github.kui92:FFmpegLibrary:3.2'
     //pop
     api 'io.github.razerdp:BasePopup:3.1.8'
 
