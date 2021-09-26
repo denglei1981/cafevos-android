@@ -7,49 +7,45 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4">
-        <View
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/line_00095b_222b80"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_200"/>
+        android:background="@drawable/line_00095b_222b80"
+        android:orientation="vertical">
         <com.changanford.shop.view.TopBar
-            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:back_icon="@mipmap/whit_left"
             app:title_text="@string/str_orderDetails"
             app:title_color="@color/white"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_order_states"
-            android:layout_marginStart="@dimen/dp_20"
-            app:layout_constraintStart_toStartOf="parent"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="待支付"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_15" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_order_prompt"
-            app:layout_constraintBottom_toBottomOf="@id/tv_order_states"
-            app:layout_constraintTop_toTopOf="@id/tv_order_states"
-            app:layout_constraintStart_toEndOf="@id/tv_order_states"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/prompt_orderUpdateAddress"
-            android:textColor="@color/color_99white"
-            android:textSize="@dimen/sp_10" />
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_order_states"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="待支付"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_15" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_order_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/prompt_orderUpdateAddress"
+                android:textColor="@color/color_99white"
+                android:textSize="@dimen/sp_10" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_order_remainingTime"
             android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintStart_toStartOf="@id/tv_order_states"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_states"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_remainingTimePayment0"
@@ -60,11 +56,12 @@
             android:id="@+id/scrollView"
             android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/tv_order_remainingTime"
-            android:layout_marginBottom="@dimen/dp_100"
+            app:layout_constraintBottom_toTopOf="@id/in_bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dp_20"
-            android:background="@color/color_F4">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/color_F4"
+            android:paddingBottom="@dimen/dp_20">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,5 +83,5 @@
         <include
             android:id="@+id/in_bottom"
             layout="@layout/in_order_detail_bottom"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

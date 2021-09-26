@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
             android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            style="@style/style_txt_ellipsize"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_order_cancle"
             android:background="@drawable/bord_00095b_1dp"
@@ -43,7 +44,7 @@
             android:textStyle="bold"/>
         <com.changanford.shop.view.TypefaceTextView
             android:textStyle="bold"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_5"
             android:id="@+id/tv_order_confirm"
             android:background="@drawable/shadow_00095b_20dp"
             android:gravity="center"
