@@ -47,7 +47,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
     lateinit var postPicAdapter: PostPicAdapter
     private var selectList = ArrayList<LocalMedia>()
     private var type = 0
-    private lateinit var  animator:ObjectAnimator
     override fun initView() {
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
@@ -74,23 +73,10 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
                 it.location.latitude.toString().toast()
-//                binding.tvAddress.text = it.name
-//                hashMap["address"] = it.name
-//                hashMap["lat"] = it.location.latitude
-//                hashMap["lon"] = it.location.longitude
-//                hashMap["province"] = it.province?:it.name
-//                viewModel.getCityDetailBylngAndlat(it.location.latitude,it.location.longitude)
             })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java).observe(this,
             {
                 it.toString().toast()
-//                binding.tvAddress.text = ""
-//                hashMap.remove("address")
-//                hashMap.remove("lat")
-//                hashMap.remove("lon")
-//                hashMap.remove("city")
-//                hashMap.remove("province")
-//                hashMap.remove("cityCode")
             })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -108,8 +94,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
         binding.picsrec.adapter = postPicAdapter
 
         binding.title.barTvOther.setOnClickListener {
-            animator = ObjectAnimator.ofFloat(binding.mscr, "translationY", 0f, -50f)
-            animator.start()
         }
         binding.bottom.ivHuati.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseConversationActivity)
@@ -133,26 +117,34 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
 
         })
 
+        binding.bottom.ivQuanzi.setOnClickListener {
+            startARouter(ARouterCirclePath.ChoseCircleActivity)
+        }
+
 
         binding.bottom.ivPic.setOnClickListener {
-//            PictureUtil.openGallery(
-//                this,
-//                selectList,
-//                object : OnResultCallbackListener<LocalMedia> {
-//                    override fun onResult(result: MutableList<LocalMedia>?) {
-//                        result?.get(0)?.let { it ->
-//                            PictureUtil.startUCrop(
-//                                this@PostActivity,
-//                                PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
-//                            )
-//                        }
-//                    }
-//
-//                    override fun onCancel() {
-//
-//                    }
-//
-//                })
+            PictureUtil.openGallery(
+                this,
+                selectList,
+                object : OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        if (result != null) {
+                            selectList.clear()
+                            selectList.addAll(result)
+                        }
+                        var bundle = Bundle()
+                        bundle.putParcelableArrayList("picList",selectList)
+                        bundle.putInt("position",0)
+                        bundle.putInt("showEditType",-1)
+                        startARouter(ARouterCirclePath.PictureeditlActivity,bundle)
+
+                    }
+
+                    override fun onCancel() {
+
+                    }
+
+                })
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)
@@ -174,12 +166,7 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
                             bundle.putInt("position",0)
                             bundle.putInt("showEditType",-1)
                             startARouter(ARouterCirclePath.PictureeditlActivity,bundle)
-//                            result?.get(0)?.let { it ->
-//                                PictureUtil.startUCrop(
-//                                    this@PostActivity,
-//                                    PictureUtil.getFinallyPath(it), UCrop.REQUEST_CROP, 16f, 9f
-//                                )
-//                            }
+
                         }
 
                         override fun onCancel() {
@@ -190,7 +177,7 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
             }else{
                 var bundle = Bundle()
                 bundle.putParcelableArrayList("picList",selectList)
-                bundle.putInt("position",0)
+                bundle.putInt("position",position)
                 bundle.putInt("showEditType",-1)
                 startARouter(ARouterCirclePath.PictureeditlActivity,bundle)
             }
@@ -264,21 +251,6 @@ class PostActivity : BaseActivity<PostActivityBinding, EmptyViewModel>() {
         }
     }
 
-    fun getLocation(v: View): Int {
-        val loc = IntArray(4)
-        val location = IntArray(2)
-        v.getLocationOnScreen(location)
-        loc[0] = location[0]
-        loc[1] = location[1]
-        val w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        val h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        v.measure(w, h)
-        loc[2] = v.measuredWidth
-        loc[3] = v.measuredHeight
-
-        //base = computeWH();
-        return loc[3]
-    }
 
 
 }

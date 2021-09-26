@@ -3,17 +3,15 @@ package com.changanford.common
 import android.content.Context
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
-import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
 
-import com.luck.picture.lib.app.IApp
-import com.luck.picture.lib.app.PictureAppMaster
-import com.luck.picture.lib.engine.PictureSelectorEngine
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
+import com.lansosdk.videoeditor.LanSoEditor
+import com.lansosdk.videoeditor.LanSongFileUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 
@@ -59,6 +57,8 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         super.onCreate()
         mContext = this
         KeyboardVisibilityObserver.getInstance().init(this)
+        LanSoEditor.initSDK(this, "ft")
+        LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
         UserManger.getSysUserInfo()?.let {
             MConstant.token = "${it.token}"
         }

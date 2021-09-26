@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingStart="2dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="2dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+            <LinearLayout
+                android:id="@+id/ll_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:text="你是我的眼" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLength="12"
+                    android:maxLines="2"
+                    android:textColor="@color/color_99"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="2012.10.01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_follow"
+                android:layout_width="65dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/shape_home_unfollow_bg"
+                android:gravity="center"
+                android:textColor="@color/blue_tab"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="关注" />
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/wv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_relate_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="16dp"
+                android:text="@string/home_hot_recommend"
+                android:textColor="#ff333333"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:text="@string/home_more"
+                android:textColor="#ff74889d"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:drawablePadding="4dp"
+                android:textSize="14sp"
+                android:drawableEnd="@mipmap/icon_home_next" />
+
+        </FrameLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_relate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp">
+
+
+            <TextView
+                android:id="@+id/tv_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical|start"
+                android:textColor="#ff333333"
+                android:textSize="16sp"
+                tools:text="@string/app_name" />
+
+            <TextView
+                android:id="@+id/tv_star_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                tools:text="@string/app_name" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

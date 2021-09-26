@@ -141,7 +141,7 @@ class JumpUtils {
             }
             4 -> {//帖子详情
                 bundle.putString("postsId", value)
-//                startARouter(ARouterHomePath.CardDetailActivity, bundle)
+                startARouter(ARouterCirclePath.PostGraphicActivity, bundle)
             }
             5 -> {//商城订单详情
                 if (value != null) {
@@ -151,7 +151,7 @@ class JumpUtils {
             }
             6 -> {//圈子详情
                 bundle.putString("circleId", value)
-//                startARouter(ARouterHomePath.HomeCircleDetailActivity, bundle)
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
             7 -> {//专题列表
 //                startARouter(ARouterHomePath.SpecialListActivity, bundle)

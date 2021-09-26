@@ -17,5 +17,11 @@
         <activity android:name=".ui.activity.PersonalActivity" />
         <activity android:name=".ui.activity.HotTopicActivity" />
         <activity android:name=".ui.activity.TopicDetailsActivity" />
+        <activity android:name=".ui.activity.ChoseCircleActivity" />
+        <activity android:name=".ui.activity.VideoPostActivity" />
+        <activity android:name=".ui.activity.EditVideoActivity" />
+        <activity android:name=".ui.activity.PictureEditAudioActivity" />
+        <activity android:name=".ui.activity.VideoChoseFMActivity" />
+
     </application>
 </manifest>
