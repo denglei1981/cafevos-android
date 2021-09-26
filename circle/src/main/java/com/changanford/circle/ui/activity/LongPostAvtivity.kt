@@ -79,7 +79,7 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() 
                             longpostadapter.addData(LongPostBean("",it))
                             longpostadapter.addData(LongPostBean("",it))
                             longpostadapter.addData(LongPostBean("",it))
-                            binding.mscr.fullScroll(View.FOCUS_DOWN);//滚到底部
+
                         }
 
                     }
