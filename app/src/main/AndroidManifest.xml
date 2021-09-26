@@ -97,9 +97,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.EVOS.NoActionBar" />
+            android:name=".MainActivity"/>
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -140,8 +138,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
 
-        <activity android:name="com.changanford.evos.com.changanford.circle.viewpager.Banner" />
-        <activity android:name=".car.DetailActivity" />
         <activity android:name=".demo.DemoDetail" />
     </application>
 

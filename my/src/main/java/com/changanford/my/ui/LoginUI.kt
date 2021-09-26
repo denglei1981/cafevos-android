@@ -116,7 +116,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 lifecycleScope.launch {
-                    viewModel.getSmsCode(binding.etLoginMobile.text.toString())
+                    viewModel.smsCacLogin(binding.etLoginMobile.text.toString())
                 }
             }, {
 

@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
-import com.gyf.immersionbar.ImmersionBar
+import com.changanford.common.utilext.StatusBarUtil
 import java.lang.reflect.ParameterizedType
 
 /**********************************************************************************
@@ -41,9 +41,10 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         setContentView(binding.root)
         initViewModel()
         curActivity = this
-        makeStateBarTransparent(true)
+//        makeStateBarTransparent(true)
         initView()
-        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
+        StatusBarUtil.setLightStatusBar(this, true)
+//        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
         initData()
     }
 

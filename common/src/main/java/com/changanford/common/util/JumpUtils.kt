@@ -14,11 +14,16 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.SelectMapDialog
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.bus.LiveDataBusKey.MINE_FANS_TYPE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 
 
 /**
@@ -160,16 +165,16 @@ class JumpUtils {
 //                startARouter(ARouterHomePath.HomeTopicDetailActivity, bundle)
             }
             10 -> {//成长值详情
-//                startARouter(ARouterMyPath.MineTaskListUI)
+                startARouter(ARouterMyPath.MineTaskListUI)
             }
             11 -> {//填写意见反馈
-//                startARouter(ARouterMyPath.MineEditFeedbackUI)
+                startARouter(ARouterMyPath.MineEditFeedbackUI)
             }
             12 -> {//去发布调查
-//                startARouter(ARouterCirclePath.ReleaseUpActivity)
+                startARouter(ARouterCirclePath.ReleaseUpActivity,true)
             }
             13 -> {//去发布活动',
-//                startARouter(ARouterCirclePath.releasactivity)
+                startARouter(ARouterCirclePath.releasactivity,true)
             }
             14 -> {//去发帖',
 //                startARouter(ARouterHomePath.HomePostActivity, bundle)
@@ -178,29 +183,29 @@ class JumpUtils {
 
             }
             16 -> {//任务中心,
-//                startARouter(ARouterMyPath.MineTaskListUI)
+                startARouter(ARouterMyPath.MineTaskListUI,true)
             }
             17 -> {//车主认证',
                 when {
                     MConstant.token.isNullOrEmpty() -> {
-//                        startARouter(ARouterMyPath.SignUI)
+                        startARouter(ARouterMyPath.SignUI)
                     }
                     getBindMobileJumpDataType() -> {
 //                        BindingPhoneDialog(BaseApplication.curActivity).show()
 //                        startARouter(ARouterMyPath.MineBindMobileUI)
                     }
                     else -> {
-//                        startARouter(ARouterMyPath.UniCarAuthUI)
+                        startARouter(ARouterMyPath.UniCarAuthUI)
                     }
                 }
             }
             18 -> {//绑定手机号',
-//                startARouter(ARouterMyPath.MineBindMobileUI)
+                startARouter(ARouterMyPath.MineBindMobileUI,true)
 
             }
             19 -> {//小程序',
                 if (MConstant.token.isNullOrEmpty()) {
-//                    startARouter(ARouterMyPath.SignUI)
+                    startARouter(ARouterMyPath.SignUI)
                     return
                 }
                 if (!value.isNullOrEmpty()) {
@@ -216,13 +221,13 @@ class JumpUtils {
                             }
                         }
                         var version = json.getInteger("version") ?: 0
-//                        val api: IWXAPI =
-//                            WXAPIFactory.createWXAPI(BaseApplication.INSTANT, ConfigUtils.WXAPPID)
-//                        val req: WXLaunchMiniProgram.Req = WXLaunchMiniProgram.Req()
-//                        req.userName = userName
-//                        req.path = path
-//                        req.miniprogramType = version
-//                        api.sendReq(req)
+                        val api: IWXAPI =
+                            WXAPIFactory.createWXAPI(BaseApplication.INSTANT, ConfigUtils.WXAPPID)
+                        val req: WXLaunchMiniProgram.Req = WXLaunchMiniProgram.Req()
+                        req.userName = userName
+                        req.path = path
+                        req.miniprogramType = version
+                        api.sendReq(req)
                     } catch (e: java.lang.Exception) {
                         "参数错误".toast()
                     }
@@ -232,72 +237,72 @@ class JumpUtils {
             }
             20 -> {//地址管理',
                 if (value.isNullOrEmpty()) {
-//                    startARouter(ARouterMyPath.MineAddressListUI)
+                    startARouter(ARouterMyPath.MineAddressListUI,true)
                 } else {//选择地址，点击地址Item直接返回地址Json
                     value.toIntOrNull()?.let {
                         var b = Bundle()
                         b.putInt("isItemClickBack", it)
-//                        startARouter(ARouterMyPath.MineAddressListUI, b)
+                        startARouter(ARouterMyPath.MineAddressListUI, b,true)
                     }
                 }
 
             }
             21 -> {//设置',
-//                startARouter(ARouterMyPath.MineSettingUI)
+                startARouter(ARouterMyPath.MineSettingUI)
 
             }
             22 -> {//' |=>|会员身份,
-//                startARouter(ARouterMyPath.UniUserIdcardUI)
+                startARouter(ARouterMyPath.UniUserIdcardUI,true)
 
             }
             23 -> {//我的发布',
-//                startARouter(ARouterMyPath.MineFollowUI)
+                startARouter(ARouterMyPath.MineFollowUI,true)
 
             }
             24 -> {//我的消息',
-//                startARouter(ARouterMyPath.MineMessageUI)
+                startARouter(ARouterMyPath.MineMessageUI,true)
 
             }
             25 -> {//我的关注',
-//                bundle.putInt(LiveDataBusKey.MINE_FANS_TYPE, 2)
-//                startARouter(ARouterMyPath.MineFansUI, bundle)
+                bundle.putInt(LiveDataBusKey.MINE_FANS_TYPE, 2)
+                startARouter(ARouterMyPath.MineFansUI, bundle,true)
             }
             26 -> {//我的活动',
-//                startARouter(ARouterMyPath.MineJoinAcUI, bundle)
+                startARouter(ARouterMyPath.MineJoinAcUI, bundle,true)
 
             }
             27 -> {//我的收藏',
-//                startARouter(ARouterMyPath.MineCollectUI, bundle)
+                startARouter(ARouterMyPath.MineCollectUI, bundle,true)
 
             }
             28 -> {//我的圈子',
-//                startARouter(ARouterMyPath.MineCircleUI, bundle)
+                startARouter(ARouterMyPath.MineCircleUI, bundle,true)
 
             }
             29 -> {//我的勋章,
-//                startARouter(ARouterMyPath.AllMedalUI, bundle)
+                startARouter(ARouterMyPath.AllMedalUI, bundle,true)
 
             }
             30 -> {//积分纪录,
-//                startARouter(ARouterMyPath.MineIntegralUI, bundle)
+                startARouter(ARouterMyPath.MineIntegralUI, bundle,true)
 
             }
             31 -> {//‘云豆详情',
             }
             32 -> {//‘成长值',
-//                startARouter(ARouterMyPath.MineGrowUpUI)
+                startARouter(ARouterMyPath.MineGrowUpUI,true)
 
             }
             34 -> {//用户个人信息页面,
-//                startARouter(ARouterMyPath.MineEditInfoUI)
+                startARouter(ARouterMyPath.MineEditInfoUI,true)
 
             }
             35 -> {//他人主页
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                startARouter(ARouterMyPath.TaCentreInfoUI, bundle,true)
 
             }
             36 -> {//聚合订单列表页
-//                startARouter(ARouterMyPath.MineOrderUI, bundle)
+                startARouter(ARouterMyPath.MineOrderUI, bundle,true)
             }
             37 -> {//签到
                 when {
@@ -310,17 +315,17 @@ class JumpUtils {
                 }
             }
             38 -> {//我的足迹
-//                startARouter(ARouterMyPath.MineFootprintUI, bundle)
+                startARouter(ARouterMyPath.MineFootprintUI, bundle,true)
             }
             39 -> {//常见问题
-//                startARouter(ARouterMyPath.MineFeedbackUI)
+                startARouter(ARouterMyPath.MineFeedbackUI)
             }
             40 -> {//我的粉丝
-//                bundle.putInt(MINE_FANS_TYPE, 1)
-//                startARouter(ARouterMyPath.MineFansUI, bundle)
+                bundle.putInt(MINE_FANS_TYPE, 1)
+                startARouter(ARouterMyPath.MineFansUI, bundle,true)
             }
             41 -> {//我的爱车
-                startARouter(ARouterMyPath.MineLoveCarListUI)
+                startARouter(ARouterMyPath.MineLoveCarListUI,true)
             }
             42 -> {//意见反馈记录
                 startARouter(ARouterMyPath.MineFeedbackListUI)
@@ -644,27 +649,27 @@ class JumpUtils {
             101 -> {//' |=> |'发现'
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 1)
-//                startARouter(ARouterHomePath.MainActivity, bundle)
+                startARouter(ARouterHomePath.MainActivity, bundle)
             }
             102 -> {//' |=> |'活动',
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 2)
-//                startARouter(ARouterHomePath.MainActivity, bundle)
+                startARouter(ARouterHomePath.MainActivity, bundle)
             }
             103 -> {//' |=> |'Uni',
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 3)
-//                startARouter(ARouterHomePath.MainActivity, bundle)
+                startARouter(ARouterHomePath.MainActivity, bundle)
             }
             104 -> {//' |=> |'U享',
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 4)
-//                startARouter(ARouterHomePath.MainActivity, bundle)
+                startARouter(ARouterHomePath.MainActivity, bundle)
             }
             105 -> {//' |=> |'我的',
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 5)
-//                startARouter(ARouterHomePath.MainActivity, bundle)
+                startARouter(ARouterHomePath.MainActivity, bundle)
             }
             106 -> {//'H5页面'（需要登录）,
                 when {
@@ -672,7 +677,7 @@ class JumpUtils {
                         startARouter(ARouterMyPath.SignUI)
                     }
                     else -> {
-//                        startARouter(ARouterHomePath.AgentWebActivity, bundle)
+                        startARouter(ARouterHomePath.AgentWebActivity, bundle)
                     }
                 }
             }
@@ -687,7 +692,7 @@ class JumpUtils {
 //                        startARouter(ARouterMyPath.MineBindMobileUI)
 //                    }
                     else -> {
-//                        startARouter(ARouterHomePath.AgentWebActivity, bundle)
+                        startARouter(ARouterHomePath.AgentWebActivity, bundle)
                     }
                 }
             }
