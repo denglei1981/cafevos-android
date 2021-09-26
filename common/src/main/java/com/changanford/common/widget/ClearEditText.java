@@ -1,4 +1,4 @@
-package com.changanford.home.widget;
+package com.changanford.common.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -11,7 +11,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
-import com.changanford.home.R;
+import com.changanford.common.R;
 
 
 /**
@@ -40,7 +40,7 @@ public class ClearEditText extends AppCompatEditText implements View.OnFocusChan
         // 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片,获取图片的顺序是左上右下（0,1,2,3,）
         mClearDrawable = getCompoundDrawables()[2];
         if (mClearDrawable == null) {
-            mClearDrawable = getResources().getDrawable(R.drawable.ic_search_clear);
+            mClearDrawable = getResources().getDrawable(R.mipmap.ic_search_clear);
         }
 
         mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());

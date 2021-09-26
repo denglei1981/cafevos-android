@@ -10,8 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_title"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="@dimen/dp_44">
+        android:layout_height="@dimen/dp_44"
+        android:background="@color/white">
 
 
         <ImageView
@@ -26,18 +26,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-         <androidx.appcompat.widget.AppCompatTextView
-             android:id="@+id/tv_title"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             app:layout_constraintTop_toTopOf="parent"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             tools:text="@string/home_more"
-             android:textColor="@color/color_33"
-             android:textSize="18sp"
-             />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_33"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/home_more" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:visibility="gone"
+            android:src="@drawable/icon_home_special_share_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

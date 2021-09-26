@@ -8,4 +8,6 @@ object ARouterHomePath {
     const val AgentWebActivity = "/common/AgentWebActivity"
     const val SpecialListActivity="/home/SpecialListActivity"
     const val  SpecialDetailActivity="/home/SpecialDetailActivity"
+    const val PolySearchActivity="/home/PolySearchActivity"
+    const val PloySearchResultActivity="/home/PloySearchResultActivity"
 }
