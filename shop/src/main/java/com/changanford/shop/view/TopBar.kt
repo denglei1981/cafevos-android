@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.changanford.shop.R
+import com.luck.picture.lib.tools.ScreenUtils
 
 /**
  * @Author : wenke
@@ -44,6 +45,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         tvTitle=findViewById(R.id.tv_title)
         imgRight=findViewById(R.id.img_right)
 
+        layoutHeader.setPadding(0,ScreenUtils.getStatusBarHeight(context)+10,0,ScreenUtils.dip2px(context,10f))
         layoutHeader.setBackgroundResource(bgColor)
         imgBack.setImageResource(backIcon)
         imgRight.setImageResource(rightIcon)
