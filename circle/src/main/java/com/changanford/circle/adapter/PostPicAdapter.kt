@@ -1,14 +1,9 @@
 package com.changanford.circle.adapter
 
-import android.view.View
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.core.view.isGone
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.entity.LocalMedia
