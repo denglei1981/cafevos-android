@@ -6,7 +6,6 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
@@ -53,13 +52,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
-        binding.rvGoodsImg.layoutManager=LinearLayoutManager(this)
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
         control= GoodsDetailsControl(this,binding,headerBinding)
         control.initTimeCount(15613202365)
+        WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))

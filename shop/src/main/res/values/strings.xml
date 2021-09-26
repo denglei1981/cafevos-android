@@ -112,4 +112,6 @@
     <string name="str_orderType">订单类型</string>
     <string name="str_orderCar">购车订单</string>
     <string name="str_orderTestDrive">预约试驾订单</string>
+    <string name="str_hasChange">已兑换</string>
+    <string name="str_vipDiscount">会员折扣</string>
 </resources>
