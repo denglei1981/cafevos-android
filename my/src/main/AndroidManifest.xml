@@ -22,5 +22,6 @@
         <activity android:name=".ui.ClearAccountUI" />
         <activity android:name=".ui.ClearAccountConfirmUI" />
         <activity android:name=".ui.EditAddressUI" />
+        <activity android:name=".ui.AddressListUI" />
     </application>
 </manifest>

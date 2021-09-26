@@ -2,19 +2,18 @@ package com.changanford.my.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
+import kotlinx.coroutines.launch
 
 /**
  *  文件名：SignViewModel
@@ -31,37 +30,42 @@ class SignViewModel : ViewModel() {
         UserDatabase.getUniUserDatabase(MyApp.mContext)
     }
 
-    suspend fun getSmsCode(mobile: String) {
-        var sms = fetchRequest {
-            var body = HashMap<String, Any>()
-            body["phone"] = mobile
-            var rKey = getRandomKey()
-            apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+    fun getSmsCode(mobile: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["phone"] = mobile
+                var rKey = getRandomKey()
+                apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                smsSuccess.postValue(true)
+            }
         }
-        smsSuccess.postValue(sms.code == 0)
     }
 
-    suspend fun smsCacLogin(mobile: String) {
-        var sms = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = mobile
-            var rkey = getRandomKey()
-            apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+    fun smsCacLogin(mobile: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = mobile
+                var rkey = getRandomKey()
+                apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                smsSuccess.postValue(true)
+            }
         }
-        smsSuccess.postValue(sms.code == 0)
     }
 
-    suspend fun smsLogin(mobile: String, sms: String, pushId: String) {
-        var login = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = mobile
-            body["smsCode"] = sms
-            body["pushId"] = pushId
-            var rkey = getRandomKey()
-            apiService.smsCodeSign(body.header(rkey), body.body(rkey))
-        }
-        if (login.code == 0) {
-            login.data?.let {
+    fun smsLogin(mobile: String, sms: String, pushId: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = mobile
+                body["smsCode"] = sms
+                body["pushId"] = pushId
+                var rkey = getRandomKey()
+                apiService.smsCodeSign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
                 loginSuccess(it)
             }
         }
@@ -84,17 +88,18 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    suspend fun getUserInfo() {
+    fun getUserInfo() {
         if (UserManger.isLogin()) {
-            var user = fetchRequest {
-                var body = HashMap<String, String>()
-                var rkey = getRandomKey()
-                apiService.queryUserInfo(body.header(rkey), body.body(rkey))
-            }
-            if (user.code == 0) {
-                saveUserInfo(user.data)
-            } else {
-                saveUserInfo(null)
+            viewModelScope.launch {
+                fetchRequest {
+                    var body = HashMap<String, String>()
+                    var rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    saveUserInfo(it)
+                }.onFailure {
+                    saveUserInfo(null)
+                }
             }
         } else {
             saveUserInfo(null)
@@ -334,16 +339,31 @@ class SignViewModel : ViewModel() {
 
     var allCity: MutableLiveData<ArrayList<CityBeanItem>> = MutableLiveData()
 
-    suspend fun getAllCity() {
-        var city = fetchRequest {
-            var body = HashMap<String, String>()
-            body["district"] = "true"
-            var rkey = getRandomKey()
-            apiService.getAllCity(body.header(rkey), body.body(rkey))
+    fun getAllCity() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["district"] = "true"
+                var rkey = getRandomKey()
+                apiService.getAllCity(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                allCity.postValue(it)
+            }
         }
-        if (city.code == 0) {
-            allCity.postValue(city.data)
+    }
+
+    var menuBean = MutableLiveData<ArrayList<MenuBeanItem>>()
+    fun getMenuList() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMenuList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                menuBean.postValue(it)
+            }
         }
+
     }
 
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
@@ -353,7 +373,7 @@ class SignViewModel : ViewModel() {
     /**
      * 登录成功
      */
-    private suspend fun loginSuccess(loginBean: LoginBean) {
+    private fun loginSuccess(loginBean: LoginBean?) {
         loginBean?.let {
             UserManger.saveUserInfo(loginBean)
             MConstant.token = it.token
@@ -383,5 +403,4 @@ class SignViewModel : ViewModel() {
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
     }
-
 }

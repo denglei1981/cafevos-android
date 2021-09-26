@@ -3,14 +3,17 @@ package com.changanford.my
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
+import com.changanford.my.viewmodel.SignViewModel
 
-class MyFragment : BaseFragment<FragmentMyBinding, MyViewModule>() {
-    lateinit var menuBean :ArrayList<MenuBeanItem>
+class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
+    lateinit var menuBean: ArrayList<MenuBeanItem>
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
@@ -31,6 +34,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModule>() {
                 }
             }
         })
+
+        binding.daySign.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.MineAddressListUI)
+        }
+
     }
 
     override fun initData() {

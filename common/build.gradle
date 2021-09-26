@@ -177,7 +177,7 @@ dependencies {
 
     api 'com.github.gzu-liyujiang.AndroidPicker:Common:4.0.0'
     api 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:4.0.0'
-    api 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:4.0.0'
+//    api 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:4.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

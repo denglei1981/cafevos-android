@@ -19,8 +19,13 @@ interface NetWorkApi {
     /**--------------------------------app---------------------------------------**/
     @POST("/appinit/getpk")
     suspend fun getKey(@Body requestBody: RequestBody): CommonResponse<String>
+
     @POST("/base/app/getLastestAppVersion")
-    suspend fun getUpdateInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<UpdateInfo>
+    suspend fun getUpdateInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UpdateInfo>
+
     @POST("/con/ads/list")
     suspend fun getHeadBanner(
         @HeaderMap headMap: Map<String, String>,
@@ -259,6 +264,36 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CityBeanItem>>
+
+
+    /**
+     * 获取用户地址
+     */
+    @POST("user/shippingAddress/getUserShippingAddressList")
+    suspend fun getAddressList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<AddressBeanItem>>
+
+
+    /**
+     * 保存用户地址
+     */
+    @POST("user/shippingAddress/saveUserShippingAddress")
+    suspend fun saveAddress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 删除地址地址
+     */
+    @POST("user/shippingAddress/deleteUserShippingAddressById")
+    suspend fun deleteAddress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
 
     /**

@@ -110,6 +110,10 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 '74'|=>|汽车保险弹框
  */
 class JumpUtils {
+
+    fun jumpLogin(){
+
+    }
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
             "跳转类型不能为空".toast()

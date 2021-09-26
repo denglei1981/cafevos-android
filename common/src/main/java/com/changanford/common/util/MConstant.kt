@@ -43,6 +43,11 @@ object MConstant {
     const val QQAPPID = "1109690244" //QQ
     var NUM = "" //
 
+    /**
+     * 路由设置为100的，路由拦截登录
+     */
+    const val ROUTER_LOGIN_CODE: Int = 100
+
 
     //ARouter拦截登录
     const val LOGIN_INTERCEPT = "intercept_login"

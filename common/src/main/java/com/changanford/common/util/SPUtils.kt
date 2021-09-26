@@ -128,6 +128,7 @@ object SPUtils {
             }
         }
     }
+
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
      * @param context
@@ -174,6 +175,7 @@ object SPUtils {
         }
         return returnValue
     }
+
     private fun getPkey(type: String, key: String?): Preferences.Key<*> {
         return when (type) {
             "String" -> stringPreferencesKey(key ?: "")
@@ -208,9 +210,10 @@ object SPUtils {
         ) as String
     }
 
-    suspend fun putToken(token: String) {
+    fun putToken(token: String) {
         setParam(MyApp.mContext, LOGIN_TOKEN, token)
     }
+
     fun clearByKey(key: String) {
         runBlocking {
             MyApp.mContext.dataStore.edit {
@@ -218,6 +221,7 @@ object SPUtils {
             }
         }
     }
+
     /**
      * 清除所有数据
      * @param context

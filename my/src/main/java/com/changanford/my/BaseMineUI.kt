@@ -63,7 +63,8 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     }
 
     protected fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        if (!message.isNullOrEmpty())
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     open fun hasLoadMore(): Boolean {

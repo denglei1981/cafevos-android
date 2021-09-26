@@ -29,6 +29,11 @@ class LoginInterceptorImpl : IInterceptor {
                 startARouter(ARouterMyPath.SignUI, bundle)//跳转登录
                 return
             }
+        } else if (MConstant.token.isEmpty() && postcard.extra == MConstant.ROUTER_LOGIN_CODE) {//需要拦截的页面，extra 设置为100
+            bundle.putString(MConstant.LOGIN_INTERCEPT_PATH, postcard.path)
+            callback.onInterrupt(null)//中断路由流程
+            startARouter(ARouterMyPath.SignUI, bundle)//跳转登录
+            return
         }
         // 处理完成，交还控制权
         callback.onContinue(postcard)

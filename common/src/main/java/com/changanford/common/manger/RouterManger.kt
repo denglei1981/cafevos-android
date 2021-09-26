@@ -104,6 +104,7 @@ object RouterManger {
             }
         }
         //只有一个，多个已最后一个为准
+        paramMap.clear()
         return bundle
     }
 
