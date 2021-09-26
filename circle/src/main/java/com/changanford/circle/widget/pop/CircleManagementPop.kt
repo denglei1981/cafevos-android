@@ -1,6 +1,7 @@
 package com.changanford.circle.widget.pop
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
@@ -27,6 +28,11 @@ class CircleManagementPop(context: Context, private val listener: ClickListener)
 
     private val adapter by lazy {
         PopManagementAdapter(context)
+    }
+
+    init {
+        contentView = binding.root
+        popupGravity = Gravity.BOTTOM or Gravity.CENTER
     }
 
     override fun onCreateShowAnimation(): Animation {

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_100">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_payResults_state"
+            android:drawableTop="@mipmap/shop_pay_succes"
+            android:drawablePadding="@dimen/dp_15"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_paySucces"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_20" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_payResults_integral"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:start_txt="@string/str_total"
+            app:end_txt="@string/str_integral"
+            tools:text="共计1300积分"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+</layout>

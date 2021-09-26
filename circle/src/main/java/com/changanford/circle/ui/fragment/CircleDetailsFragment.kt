@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleDetailsBarAdapter
 import com.changanford.circle.databinding.FragmentCircleDetailsBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 
@@ -30,7 +31,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
     }
 
     override fun initView() {
-
+        MUtils.scrollStopLoadImage(binding.ryCircle)
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL

@@ -45,7 +45,7 @@
         style="@style/commonTextView.Medium.Black"
         android:layout_marginTop="@dimen/dp_10"
         android:padding="@dimen/dp_10"
-        android:text="893"
+        android:text="0"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="@+id/textView4"
@@ -55,7 +55,7 @@
         android:id="@+id/my_state_guanzhu"
         style="@style/commonTextView.Medium.Black"
         android:padding="@dimen/dp_10"
-        android:text="392"
+        android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/my_state_fabu"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/textView5" />
@@ -63,7 +63,7 @@
     <TextView
         android:id="@+id/my_state_fensi"
         style="@style/commonTextView.Medium.Black"
-        android:text="22"
+        android:text="0"
         android:padding="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="@+id/my_state_guanzhu"
         app:layout_constraintEnd_toEndOf="@+id/textView6"
@@ -73,7 +73,7 @@
         android:id="@+id/my_state_shoucang"
         android:padding="@dimen/dp_10"
         style="@style/commonTextView.Medium.Black"
-        android:text="108"
+        android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/my_state_fensi"
         app:layout_constraintEnd_toEndOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="@+id/textView7" />

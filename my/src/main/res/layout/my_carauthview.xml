@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
+        android:id="@+id/include2"
         layout="@layout/my_carauthviewbottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

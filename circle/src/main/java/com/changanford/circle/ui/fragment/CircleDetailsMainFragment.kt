@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleDetailsBarAdapter
+import com.changanford.circle.databinding.FragmentCircleDetailsMainBinding
 import com.changanford.circle.databinding.FragmentCircleMainBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
@@ -17,7 +18,8 @@ import com.changanford.common.router.startARouter
  *Time on 2021/9/22
  *Purpose
  */
-class CircleDetailsMainFragment : BaseFragment<FragmentCircleMainBinding, CircleDetailsViewModel>() {
+class CircleDetailsMainFragment :
+    BaseFragment<FragmentCircleDetailsMainBinding, CircleDetailsViewModel>() {
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
@@ -34,7 +36,6 @@ class CircleDetailsMainFragment : BaseFragment<FragmentCircleMainBinding, Circle
     }
 
     override fun initView() {
-
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL
@@ -50,7 +51,7 @@ class CircleDetailsMainFragment : BaseFragment<FragmentCircleMainBinding, Circle
 
         binding.ryCircle.adapter = adapter
 
-        adapter.setOnItemClickListener(object :OnRecyclerViewItemClickListener{
+        adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 startARouter(ARouterCirclePath.PostGraphicActivity)
             }

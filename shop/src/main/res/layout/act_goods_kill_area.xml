@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_limitedTimeSecondsKill"
+            app:right_icon="@mipmap/shop_search"
+            tools:minHeight="@dimen/dp_60"/>
+        <View
+            android:layout_marginBottom="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date"
+            android:background="@drawable/line_white_0095b_white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_5"
+            android:gravity="center_vertical">
+            <View
+                android:background="@drawable/line_white_0095b_white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            android:layout_marginTop="@dimen/dp_20"
+            android:id="@+id/rv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/rv_date"
+            android:id="@+id/rv_time"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/rv_time"
+            android:layout_marginTop="@dimen/dp_10"
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

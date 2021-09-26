@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_pay"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_100"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:end_txt="@string/str_integral"
+                tools:text="1300积分"
+                android:textColor="@color/color_00095B"
+                android:textSize="@dimen/sp_28" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_payTime"
+                android:gravity="center"
+                android:background="@drawable/shadow_f9_11dp"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_22"
+                app:start_txt="@string/str_remainingTimePayment"
+                tools:text="支付剩余时间：00:26:50"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_10" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_yourAccountPoints_font"
+                android:textColor="@color/text_colorv6"
+                android:textSize="@dimen/sp_12" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <include
+            android:visibility="gone"
+            layout="@layout/in_pay_results"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:id="@+id/btn_submit"
+            android:layout_marginTop="@dimen/dp_250"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/str_payConfirm"
+            android:gravity="center"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_selector"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"/>
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_payConfirm"
+            app:bg_color="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,7 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <fragment
+    <custom_fragment
         android:id="@+id/homeFragment"
         android:name="com.changanford.home.HomeV2Fragment"
         android:label="@string/first_fragment_label"
@@ -14,8 +14,8 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/myFragment" />
-    </fragment>
-    <fragment
+    </custom_fragment>
+    <custom_fragment
         android:id="@+id/circleFragment"
         android:name="com.changanford.circle.CircleFragment"
         android:label="@string/second_fragment_label"
@@ -23,15 +23,19 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/myFragment"
-        android:name="com.changanford.my.MineFragment"
-        android:label="AboutFragment" />
-    <fragment
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/carFragment"
+        android:name="com.changanford.car.CarFragmentNoCar"
+        android:label="CarFragment" />
+    <custom_fragment
         android:id="@+id/shopFragment"
         android:name="com.changanford.shop.ShopFragment"
         android:label="fragment_circle_list" />
+    <custom_fragment
+        android:id="@+id/myFragment"
+        android:name="com.changanford.my.MyFragment"
+        android:label="AboutFragment" />
     <include app:graph="@navigation/nav_circle" />
 
 </navigation>

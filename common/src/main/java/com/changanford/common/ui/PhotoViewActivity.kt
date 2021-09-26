@@ -102,7 +102,7 @@ class PhotoViewActivity :BaseActivity<PhotoviewActivityBinding,EmptyViewModel>()
                             GifUtils.saveGif(
                                 pics[currentPosition].img_url,
                                 this@PhotoViewActivity,
-                                MConstant.rootPath + "/" + System.currentTimeMillis() + ".gif"
+                                MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
                             )
                         } else {
                             PictureUtil.saveBitmapPhoto(pics[currentPosition].bitmap)

@@ -67,52 +67,10 @@
                 android:background="@color/line_default_color"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"/>
-            <TextView
-                android:text="我创建的"
-                android:layout_marginLeft="20dp"
-                android:textColor="#AFB3B6"
-                android:textSize="13sp"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <View
-                android:id="@+id/vline2"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nocy"
-                android:background="@color/line_default_color"
-                android:layout_width="match_parent"
-                android:layout_margin="20dp"
-                android:layout_height="1px"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reccread"
-                android:layout_marginLeft="20dp"
+                android:id="@+id/rec"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="我加入的"
-                android:layout_marginLeft="20dp"
-                android:textColor="#AFB3B6"
-                android:textSize="13sp"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:id="@+id/vline3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nocy"
-                android:background="@color/line_default_color"
-                android:layout_width="match_parent"
-                android:layout_margin="20dp"
-                android:layout_height="1px"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recinjoin"
-                android:layout_marginLeft="20dp"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 

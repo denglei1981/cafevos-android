@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.changanford.circle.adapter.CircleInterestAdapter
 import com.changanford.circle.adapter.CircleMainAddress
 import com.changanford.circle.databinding.FragmentCircleMainBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleMainViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
@@ -37,9 +38,11 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
     private val addressAdapter by lazy { CircleMainAddress(requireContext()) }
 
     override fun initView() {
+        MUtils.scrollStopLoadImage(binding.ryCircle)
         val type = arguments?.getString("type")
         type?.let { initLayoutManage(it) }
         binding.ryCircle.layoutManager = layoutManager
+        binding.ryCircle.isSaveEnabled = false
     }
 
     override fun initData() {
@@ -50,7 +53,7 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
         adapter.setItems(list)
         adapter.notifyDataSetChanged()
 
-        addressAdapter.setOnItemClickListener(object :OnRecyclerViewItemClickListener{
+        addressAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 startARouter(ARouterCirclePath.CircleDetailsActivity)
             }
