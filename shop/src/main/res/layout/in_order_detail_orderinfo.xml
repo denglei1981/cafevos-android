@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_16">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderNo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_orderNo0"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderNo_value"
+            app:layout_constraintTop_toTopOf="@id/tv_orderNo"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="DD73240911002"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderTime"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/tv_orderNo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_orderTime"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderTime_value"
+            app:layout_constraintTop_toTopOf="@id/tv_orderTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="2018-04-12 16:45:21"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_payment"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/tv_orderTime"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_payType"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_payment_value"
+            app:layout_constraintTop_toTopOf="@id/tv_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_integralPay"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_other"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/tv_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/str_leaveMessage"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:paddingStart="@dimen/dp_100"
+            android:id="@+id/tv_other_value"
+            app:layout_constraintTop_toTopOf="@id/tv_other"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="分司法局卡号房间爱可恢复公交卡合格考支付卡号房间爱可恢复公交卡合格考支付"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

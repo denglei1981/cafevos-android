@@ -24,6 +24,9 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding,OrderViewM
     private val mAdapter by lazy { OrderGoodsAdapter() }
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
+        mAdapter.setOnItemClickListener { _, _, position ->
+            OrderDetailsActivity.start(requireContext(),"$position")
+        }
     }
 
     override fun initData() {

@@ -19,6 +19,8 @@
         <activity android:name=".ui.order.OrderEvaluationActivity"/>
         <!-- 商品订单-->
         <activity android:name=".ui.order.OrdersGoodsActivity"/>
+        <!-- 商品订单-订单详情-->
+        <activity android:name=".ui.order.OrderDetailsActivity"/>
         <!--================================= 商城 End-->
     </application>
 </manifest>
