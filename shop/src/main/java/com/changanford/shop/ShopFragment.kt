@@ -10,6 +10,7 @@ import com.changanford.shop.ui.IntegralDetailsActivity
 import com.changanford.shop.ui.exchange.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.order.AllOrderActivity
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.ui.order.OrdersGoodsActivity
 import com.changanford.shop.utils.WCommonUtil
@@ -45,6 +46,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         binding.inTop.btnJfmx.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
         binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
+        binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
 
     }
     override fun initData() {

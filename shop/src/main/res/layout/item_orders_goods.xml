@@ -37,64 +37,18 @@
             tools:text="待发货"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12" />
-        <ImageView
+        <include
+            android:id="@+id/in_goodsInfo"
             android:layout_marginTop="@dimen/dp_13"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_orderNo"
-            android:id="@+id/img_goods_cover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
-            android:src="@drawable/shadow_1b51d9_5dp"
-            android:scaleType="fitXY" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_goods_title"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintStart_toEndOf="@id/img_goods_cover"
-            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="无线蓝牙耳机 降噪耳机全新苹噪耳…"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14"
-            style="@style/style_txt_ellipsize"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginEnd="@dimen/dp_30"
-            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
-            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_goods_number"
-            app:layout_constraintTop_toTopOf="@id/recyclerView"
-            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="×1"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_integral"
-            android:textStyle="bold"
-            android:layout_marginBottom="@dimen/dp_5"
-            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
-            app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:end_txt="@string/str_integral"
-            tools:text="1300积分"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
+            layout="@layout/in_item_order_goods"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_totleIntegral"
             android:layout_marginTop="@dimen/dp_20"
-            app:layout_constraintTop_toBottomOf="@id/img_goods_cover"
+            app:layout_constraintTop_toBottomOf="@id/in_goodsInfo"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,6 +91,7 @@
             android:textColor="@color/picture_color_66"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderType"
             app:layout_constraintBottom_toBottomOf="@id/tv_btn_confirm"
             app:layout_constraintTop_toTopOf="@id/tv_btn_confirm"
             app:layout_constraintStart_toStartOf="parent"

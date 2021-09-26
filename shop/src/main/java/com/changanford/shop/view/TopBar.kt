@@ -26,6 +26,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
     private lateinit var imgBack:ImageView
     private lateinit var tvTitle:TypefaceTextView
     private lateinit var imgRight:ImageView
+    private lateinit var rightTV:TypefaceTextView
     init {
         LayoutInflater.from(context).inflate(R.layout.view_topbar, this)
         initAttributes(context, attrs)
@@ -39,11 +40,13 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         val rightIcon=typedArray.getResourceId(R.styleable.TopBar_right_icon,0)
         val titleText=typedArray.getString(R.styleable.TopBar_title_text)
         val titleColor=typedArray.getResourceId(R.styleable.TopBar_title_color,R.color.color_33)
+        val rightTxt=typedArray.getString(R.styleable.TopBar_right_text)
 
         layoutHeader=findViewById(R.id.layout_topbar)
         imgBack=findViewById(R.id.img_back)
         tvTitle=findViewById(R.id.tv_title)
         imgRight=findViewById(R.id.img_right)
+        rightTV=findViewById(R.id.tv_right)
 
         layoutHeader.setPadding(0,ScreenUtils.getStatusBarHeight(context)+10,0,ScreenUtils.dip2px(context,10f))
         layoutHeader.setBackgroundResource(bgColor)
@@ -51,15 +54,19 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         imgRight.setImageResource(rightIcon)
         tvTitle.text=titleText
         tvTitle.setTextColor(ContextCompat.getColor(context,titleColor))
+        rightTV.text=rightTxt
     }
 
     private fun initView() {
         imgBack.setOnClickListener(this)
+        imgRight.setOnClickListener(this)
+        rightTV.setOnClickListener (this)
     }
     override fun onClick(v: View) {
         when(v.id){
             R.id.img_back->if(null==backListener)activity?.finish() else backListener?.onBackClick()
             R.id.img_right->rightListener?.onRightClick()
+            R.id.tv_right->rightListener?.onRightClick()
         }
     }
     fun setActivity(activity:Activity){

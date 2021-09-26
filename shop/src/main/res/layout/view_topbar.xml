@@ -34,4 +34,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <com.changanford.shop.view.TypefaceTextView
+        android:id="@+id/tv_right"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/color_33"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        tools:text="@string/str_screening"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
