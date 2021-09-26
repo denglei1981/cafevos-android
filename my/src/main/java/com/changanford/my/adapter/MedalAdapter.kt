@@ -8,7 +8,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.R
 
-class MedalAdapter: BaseQuickAdapter<MedalListBeanItem, BaseViewHolder>(R.layout.item_medal){
+class MedalAdapter: BaseQuickAdapter<MedalListBeanItem, BaseViewHolder>(R.layout.item_my_medal){
     override fun convert(holder: BaseViewHolder, item: MedalListBeanItem) {
         holder.setText(R.id.medalName,item.medalName)
         holder.getView<ImageView>(R.id.medalImg).apply {
