@@ -60,8 +60,12 @@ object ApiClient {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
+
     val apiService: NetWorkApi by lazy {
         retrofit.create(NetWorkApi::class.java)
     }
 
+    val circleService:CircleNetWork by lazy {
+        retrofit.create(CircleNetWork::class.java)
+    }
 }

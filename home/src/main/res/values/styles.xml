@@ -49,5 +49,5 @@
         <item name="android:minHeight">0dp</item>
         <item name="android:elevation">0dp</item>
     </style>
-
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>

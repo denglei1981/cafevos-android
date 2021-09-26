@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.load
 import com.changanford.home.R
@@ -39,15 +40,16 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<String>(itemView)
         val binding = DataBindingUtil.bind<ItemNewsBarBannerBinding>(itemView)
         binding?.ivBanner?.load(data)
         binding?.ivBanner?.setOnClickListener {
-            var pics = arrayListOf<MediaListBean>(MediaListBean().apply {
-                img_url = data
-            }, MediaListBean().apply {
-                img_url = data
-            })
-            var bundle = Bundle()
-            bundle.putSerializable("imgList", pics)
-            bundle.putInt("count", 0)
-            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+//            var pics = arrayListOf<MediaListBean>(MediaListBean().apply {
+//                img_url = data
+//            }, MediaListBean().apply {
+//                img_url = data
+//            })
+//            var bundle = Bundle()
+//            bundle.putSerializable("imgList", pics)
+//            bundle.putInt("count", 0)
+//            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+              startARouter(ARouterHomePath.SpecialListActivity)
         }
     }
 

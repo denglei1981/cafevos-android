@@ -25,13 +25,17 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myFragment"
-        android:name="com.changanford.my.MineFragment"
-        android:label="AboutFragment" />
+        android:id="@+id/carFragment"
+        android:name="com.changanford.car.CarFragmentNoCar"
+        android:label="CarFragment" />
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.changanford.shop.ShopFragment"
         android:label="fragment_circle_list" />
+    <fragment
+        android:id="@+id/myFragment"
+        android:name="com.changanford.my.MyFragment"
+        android:label="AboutFragment" />
     <include app:graph="@navigation/nav_circle" />
 
 </navigation>

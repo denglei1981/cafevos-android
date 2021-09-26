@@ -12,12 +12,14 @@ import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.changanford.circle.R
 import com.changanford.circle.ext.toIntPx
 
 object MUtils {
 
-    fun postDetailsFrom(textView: TextView,content:String) {
+    fun postDetailsFrom(textView: TextView, content: String) {
 
         val content1 = "来自"
 
@@ -41,7 +43,7 @@ object MUtils {
         textView.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    fun setDrawableStar(textView: TextView,@DrawableRes resource:Int){
+    fun setDrawableStar(textView: TextView, @DrawableRes resource: Int) {
         val drawable: Drawable = ContextCompat.getDrawable(textView.context, resource)!!
         drawable.setBounds(
             0, 0, drawable.minimumWidth,
@@ -110,11 +112,33 @@ object MUtils {
     /**
      * 列表第一个item追加margin
      */
-    fun setTopMargin(view: View,margin:Int,position:Int){
+    fun setTopMargin(view: View, margin: Int, position: Int) {
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
         if (position == 0) {
             params.topMargin =
                 margin.toIntPx()
         } else params.topMargin = 0
+    }
+
+    /**
+     * 列表滑动时停止加载图片
+     */
+    fun scrollStopLoadImage(recycler: RecyclerView) {
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var IsScrolling = false
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                //recyclerView在滑动
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    IsScrolling = true
+                    Glide.with(recycler.context).pauseRequests()
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (IsScrolling) {
+                        Glide.with(recycler.context).resumeRequests()
+                    }
+                    IsScrolling = false
+                }
+            }
+        })
     }
 }

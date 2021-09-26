@@ -24,7 +24,7 @@
 
     <include layout="@layout/content_main" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <me.majiajie.pagerbottomtabstrip.PageNavigationView
         android:id="@+id/home_bottom_navi"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
@@ -33,15 +33,7 @@
         app:itemTextColor="@color/menu_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_main">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:visibility="gone"
-            android:layout_width="@dimen/dp80"
-            android:layout_height="@dimen/dp80"
-            android:layout_gravity="center|bottom"
-            android:elevation="5dp" />
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </me.majiajie.pagerbottomtabstrip.PageNavigationView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
