@@ -109,4 +109,7 @@
     <string name="str_orderTime">下单时间</string>
     <string name="str_allOrders">所有订单</string>
     <string name="str_screening">筛选</string>
+    <string name="str_orderType">订单类型</string>
+    <string name="str_orderCar">购车订单</string>
+    <string name="str_orderTestDrive">预约试驾订单</string>
 </resources>

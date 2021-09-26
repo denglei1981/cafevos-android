@@ -22,6 +22,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
     private var activity:Activity?=null
     private var backListener:OnBackClickListener?=null
     private var rightListener:OnRightClickListener?=null
+    private var rightTvListener:OnRightTvClickListener?=null
     private lateinit var layoutHeader:ConstraintLayout
     private lateinit var imgBack:ImageView
     private lateinit var tvTitle:TypefaceTextView
@@ -66,7 +67,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         when(v.id){
             R.id.img_back->if(null==backListener)activity?.finish() else backListener?.onBackClick()
             R.id.img_right->rightListener?.onRightClick()
-            R.id.tv_right->rightListener?.onRightClick()
+            R.id.tv_right->rightTvListener?.onRightTvClick()
         }
     }
     fun setActivity(activity:Activity){
@@ -78,11 +79,17 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
     fun setOnRightClickListener(listener:OnRightClickListener?){
         this.rightListener=listener
     }
+    fun setOnRightTvClickListener(listener:OnRightTvClickListener?){
+        this.rightTvListener=listener
+    }
     interface OnBackClickListener {
         fun onBackClick()
     }
 
     interface OnRightClickListener {
         fun onRightClick()
+    }
+    interface OnRightTvClickListener {
+        fun onRightTvClick()
     }
 }
