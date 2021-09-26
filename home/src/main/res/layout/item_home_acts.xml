@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_home_acts_item_bg"
+    android:paddingBottom="@dimen/dp_18"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_acts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_recommend_test"
+        app:layout_constraintDimensionRatio="335:200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/home_btn_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/materialButton"
+        android:text="@string/home_more"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_acts"
+        android:backgroundTint="@color/white"
+        android:background="@color/white"
+        app:cornerRadius="@dimen/dp_12"
+        app:layout_constraintStart_toStartOf="@+id/iv_acts"
+        android:textColor="@color/black"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="14dp"
+        tools:text="进行中"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tips"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:text="长安福特 未来活动体验日，于2021年9月11日正式上市"
+        android:textColor="#ff0f1524"
+        app:layout_constraintTop_toBottomOf="@+id/iv_acts"
+        app:layout_constraintStart_toStartOf="@+id/iv_acts"
+        app:layout_constraintEnd_toEndOf="@+id/iv_acts"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textSize="15sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tag_one"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:minWidth="@dimen/dp_40"
+        android:text="官方"
+        android:textColor="#ff74889d"
+        android:textSize="11sp"
+        android:gravity="center"
+        android:paddingStart="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_8"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tips"
+        android:background="@drawable/shape_home_unfollow_bg"
+        app:layout_constraintStart_toStartOf="@+id/tv_tips"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tag_two"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:minWidth="@dimen/dp_40"
+        android:text="线上活动"
+        android:textColor="#ff74889d"
+        android:textSize="11sp"
+        android:gravity="center"
+        android:paddingStart="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_8"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tips"
+        android:background="@drawable/shape_home_unfollow_bg"
+        app:layout_constraintStart_toEndOf="@+id/tv_tag_one"
+        android:layout_marginStart="18dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_home_act_times"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="活动截止时间：2021.09.11 12:00"
+        android:textColor="#ff9fabb7"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tag_one"
+        app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
+        android:layout_marginTop="12dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_home_act_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="地点：重庆"
+        android:textColor="#ff9fabb7"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_act_times"
+        app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

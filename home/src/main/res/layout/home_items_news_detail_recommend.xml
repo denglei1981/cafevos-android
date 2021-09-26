@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/dp_100">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_shape"
+        android:layout_width="86dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_recommed_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="86:66"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="2"
+        android:text="人工智能发展迅猛，会摆脱人类码？"
+        android:textColor="#ff2d2d2d"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:gravity="center_vertical"
+        android:text="年轻人喜欢什么样的车"
+        android:textColor="#ff8195c8"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20万讨论 12亿阅读"
+        android:textColor="#ff74889d"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_shape"
+        app:layout_constraintStart_toStartOf="@+id/tv_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
