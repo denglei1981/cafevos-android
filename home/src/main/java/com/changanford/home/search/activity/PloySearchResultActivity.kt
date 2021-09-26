@@ -30,7 +30,9 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
 
 
     override fun initView() {
-        ImmersionBar.with(this).fitsSystemWindows(true)
+        ImmersionBar.with(this)
+            .fitsSystemWindows(true)
+            .statusBarColor(R.color.color_ee)
         fragmentList.add(SearchActsFragment.newInstance())
         fragmentList.add(SearchNewsFragment.newInstance())
         fragmentList.add(SearchPostFragment.newInstance())
@@ -73,7 +75,9 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
             }
         })
 
-
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
