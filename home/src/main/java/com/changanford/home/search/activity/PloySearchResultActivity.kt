@@ -38,8 +38,8 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
         fragmentList.add(SearchUserFragment.newInstance())
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
-        titleList.add(getString(R.string.home_search_shop))
         titleList.add(getString(R.string.home_search_post))
+        titleList.add(getString(R.string.home_search_shop))
         titleList.add(getString(R.string.home_search_user))
         pagerAdapter = SearchResultViewpagerAdapter(this, fragmentList)
         binding.viewpager.adapter = pagerAdapter
