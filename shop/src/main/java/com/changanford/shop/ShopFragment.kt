@@ -45,7 +45,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         //test
         binding.inTop.btnJfmx.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
         binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
-        binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
+        binding.inTop.btnOrdersGoods.setOnClickListener {
+            OrdersGoodsActivity.start(requireContext())
+        }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
 
     }

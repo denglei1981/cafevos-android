@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
@@ -23,6 +25,7 @@ import kotlin.math.roundToInt
  * @Time : 2021/9/9
  * @Description : 商品详情
  */
+@Route(path = ARouterShopPath.ShopGoodsActivity)
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewModel>(){
     companion object{
         fun start(context: Context,goodsId:String) {

@@ -3,7 +3,9 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderEvaluationBinding
@@ -14,6 +16,7 @@ import com.changanford.shop.utils.WCommonUtil.onTextChanged
  * @Time : 2021/9/23 0023
  * @Description : 订单评价
  */
+@Route(path = ARouterShopPath.OrderEvaluationActivity)
 class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding,OrderEvaluationViewModel>() {
     companion object{
         fun start(context: Context,orderId:String) {

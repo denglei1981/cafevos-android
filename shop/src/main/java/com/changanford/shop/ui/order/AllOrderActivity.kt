@@ -2,7 +2,9 @@ package com.changanford.shop.ui.order
 
 import android.content.Context
 import android.content.Intent
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.adapter.order.AllOrderAdapter
 import com.changanford.shop.bean.OrderBean
@@ -15,6 +17,7 @@ import com.changanford.shop.view.TopBar
  * @Time : 2021/9/26
  * @Description : 所有订单
  */
+@Route(path = ARouterShopPath.AllOrderActivity)
 class AllOrderActivity:BaseActivity<ActOrderAllBinding,OrderViewModel>(),
     OrderScreeningPop.OnSelectListener {
     companion object{

@@ -2,7 +2,9 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
 import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
@@ -15,6 +17,7 @@ import com.changanford.shop.view.TopBar
  * @Time : 2021/9/22
  * @Description : 秒杀专区
  */
+@Route(path = ARouterShopPath.GoodsKillAreaActivity)
 class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewModel>(),
     TopBar.OnBackClickListener {
     companion object{
