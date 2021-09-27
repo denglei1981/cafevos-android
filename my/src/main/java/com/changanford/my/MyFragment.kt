@@ -86,8 +86,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             viewModel.mineMedal()
         }
         viewModel.allMedal.observe(this, {
-            medalAdapter.data = it
-            medalAdapter.notifyDataSetChanged()
+//            medalAdapter.data = it
+//            medalAdapter.notifyDataSetChanged()
         })
     }
 
