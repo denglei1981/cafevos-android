@@ -17,10 +17,13 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.*
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.util.permission.PermissionUtil
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
@@ -266,6 +269,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         if (!checkPermissionFirst) {
             PermissionUtil.applyPermissions(this)
         }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this,{
+            LocationUtils.init()
+        })
+        LocationUtils.mLongitude.observe(this,{
+            "$it".logD()
+        })
     }
 }
 
