@@ -2,7 +2,6 @@ package com.changanford.my.ui
 
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -16,7 +15,6 @@ import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiGrowUpBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：GrowUpUI
@@ -35,9 +33,6 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
         }
 
         binding.mineToolbar.toolbarTitle.text = "成长值详情"
-        binding.mineToolbar.toolbar.setNavigationOnClickListener {
-            back()
-        }
 
         binding.mineToolbar.toolbarIcon.visibility = View.VISIBLE
         binding.mineToolbar.toolbarSave.visibility = View.GONE
@@ -92,9 +87,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
-        lifecycleScope.launch {
-            viewModel.mineGrowUp(pageSize, "2")
-        }
+        viewModel.mineGrowUp(pageSize, "2")
     }
 
     inner class GrowUpAdapter :

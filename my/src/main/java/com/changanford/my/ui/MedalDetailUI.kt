@@ -32,6 +32,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, EmptyViewModel>(),
     var medals: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
+        binding.medalToolbar.toolbarTitle.text = "勋章详情"
         intent?.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             var medal = (it as ArrayList<MedalListBeanItem>).apply {
                 medals.addAll(it)

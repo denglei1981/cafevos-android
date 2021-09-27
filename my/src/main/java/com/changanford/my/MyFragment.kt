@@ -100,6 +100,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(24) }
         binding.memberEnter.setOnClickListener { JumpUtils.instans?.jump(29) }
         binding.myHead.setOnClickListener { JumpUtils.instans?.jump(34) }
+        binding.myScore.setOnClickListener { JumpUtils.instans?.jump(30) }
+        binding.myScoreIc.setOnClickListener { JumpUtils.instans?.jump(30) }
         binding.myScoreLayout.setOnClickListener { JumpUtils.instans?.jump(30) }
         binding.myStateLayout.apply {
             myStateFabu.setOnClickListener { JumpUtils.instans?.jump(23) }

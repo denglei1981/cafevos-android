@@ -40,7 +40,6 @@ class ClearAccountConfirmUI :
 
     override fun initView() {
         binding.mineToolbar.toolbarTitle.text = "申请注销"
-        binding.mineToolbar.toolbar.setNavigationOnClickListener { back() }
 
 //        MineUtils.cancelAccountDeleteContent(binding.delete)
 

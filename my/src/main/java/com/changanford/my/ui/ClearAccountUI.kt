@@ -35,6 +35,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        binding.clearToolbar.toolbarTitle.text = "申请注销"
 
         binding.clearRcy.rcyCommonView.adapter = clearAdapter
 

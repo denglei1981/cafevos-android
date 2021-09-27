@@ -90,4 +90,10 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <!-- 圆角图片 -->
+    <style name="roundedCornerImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dp_5</item>
+    </style>
+
 </resources>

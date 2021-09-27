@@ -93,7 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="账号与安全"
+            android:text="清除缓存"
             android:textColor="#071726"
             android:textSize="@dimen/sp_15" />
 
@@ -127,6 +127,7 @@
         android:layout_marginTop="@dimen/dp_100"
         android:layout_marginEnd="@dimen/dp_20"
         android:background="@drawable/next_btn_bg"
+        android:gravity="center"
         android:text="退出登录"
         android:textColor="@color/white" />
 

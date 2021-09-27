@@ -70,8 +70,8 @@
             android:layout_width="@dimen/dp80"
             android:layout_height="@dimen/dp80"
             android:layout_marginTop="@dimen/dp_20"
-            android:src="@mipmap/my_headdefault"
             android:background="@drawable/bg_circle_eee"
+            android:src="@mipmap/my_headdefault"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daySign"
@@ -108,13 +108,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:gravity="center_horizontal|bottom"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_content">
 
             <ImageView
+                android:id="@+id/my_score_ic"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_20"
                 android:adjustViewBounds="true"
@@ -122,8 +123,9 @@
 
             <TextView
                 android:id="@+id/my_score"
-                android:layout_marginLeft="@dimen/dp_4"
                 style="@style/commonTextView.Medium"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp_4"
                 android:text="0"
                 android:textStyle="bold" />
 
@@ -138,9 +140,9 @@
         <include
             android:id="@+id/my_stateLayout"
             layout="@layout/my_stateview"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@id/my_score_layout" />
 
         <include
@@ -165,16 +167,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/menuRec"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_mymenus"
-            app:layout_constraintTop_toBottomOf="@+id/medalRec" />
-
-
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/medalRec"
+            tools:listitem="@layout/item_mymenus" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

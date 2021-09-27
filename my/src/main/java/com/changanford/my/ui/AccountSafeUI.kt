@@ -73,9 +73,6 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         wxApi.registerApp(ConfigUtils.WXAPPID)
 
         binding.accountToolbar.toolbarTitle.text = "账号与安全"
-        binding.accountToolbar.toolbar.setNavigationOnClickListener {
-            back()
-        }
 
         viewModel.bindAccount.observe(this, Observer {
             it?.forEach { bean ->
