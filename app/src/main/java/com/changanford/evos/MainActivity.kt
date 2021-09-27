@@ -16,10 +16,7 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
-import com.changanford.common.util.APKDownload
-import com.changanford.common.util.DeviceUtils
-import com.changanford.common.util.DownloadProgress
-import com.changanford.common.util.MConstant
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.room.Db
@@ -64,10 +61,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
+        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
+            showAppPrivacy(this)
+        }
 
         getNavigator()
         initBottomNavigation()
-
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
             if (it as Boolean) {
             }

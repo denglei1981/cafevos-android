@@ -70,6 +70,8 @@ dependencies {
     api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
     //底部导航
     api "me.majiajie:pager-bottom-tab-strip:2.4.0"
+    //bugly
+    api "com.tencent.bugly:crashreport:latest.release"
     //adapter
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
 

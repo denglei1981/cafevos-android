@@ -139,6 +139,7 @@
 
 
         <activity android:name=".demo.DemoDetail" />
+        <activity android:name=".ui.LandingActivity" />
     </application>
 
 </manifest>

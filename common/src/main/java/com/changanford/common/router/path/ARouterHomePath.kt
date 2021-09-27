@@ -5,6 +5,7 @@ object ARouterHomePath {
     const val CaptureActivity = "/common/CaptureActivity"
     const val HomeActivity = "/home/CaafcActivity"
     const val SplashActivity = "/home/SplashActivity"
+    const val LandingActivity = "/app/LandingActivity"
     const val AgentWebActivity = "/common/AgentWebActivity"
     const val SpecialListActivity="/home/SpecialListActivity"
     const val  SpecialDetailActivity="/home/SpecialDetailActivity"
