@@ -1,18 +1,26 @@
 package com.changanford.my.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
+import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toast
+import com.changanford.my.interf.UploadPicCallback
+import com.huawei.hms.common.ApiException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -392,6 +400,104 @@ class SignViewModel : ViewModel() {
                 }
             }
         }
+    }
+    /**
+     * 上传图片
+     */
+
+    fun uploadFile(cp:Context,upfiles: List<String>, callback: UploadPicCallback) {
+        GetOSS(cp, upfiles, 0, callback)
+    }
+    /**
+     * 获取上传图片得凭证
+     */
+    lateinit var upimgs: ArrayList<String>
+
+    fun GetOSS(
+        context: Context,
+        upfiles: List<String>,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        viewModelScope.launch {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            fetchRequest {
+                apiService.getOSS(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                initAliYunOss(context, it!!)//
+                upimgs = ArrayList()
+                uploadImgs(
+                    context,
+                    upfiles,
+                    it,
+                    count,
+                    callback
+                )
+            }.onFailure {
+                var msg = "上传失败"
+                msg.toast()
+                callback.onUploadFailed(msg)
+            }
+        }
+    }
+    /**
+     * 取文件后缀名 创建文件名
+     */
+    private fun createFileName(uploadFilePath: String, tempFilePath: String): String {
+        var type = uploadFilePath
+            .substring(uploadFilePath.lastIndexOf(".") + 1, uploadFilePath.length)
+        return tempFilePath + System.currentTimeMillis() + "." + type
+
+    }
+    /**
+     * 初始化oss上传
+     */
+    private fun initAliYunOss(context: Context, stsBean: STSBean) {
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+    }
+    private fun uploadImgs(
+        context: Context,
+        upfiles: List<String>,
+        stsBean: STSBean,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        val size = upfiles.size
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        var path = createFileName(upfiles[count], stsBean.tempFilePath)
+        upimgs.add(path)
+        AliYunOssUploadOrDownFileConfig.getInstance(context)
+            .uploadFile(stsBean.bucketName, path, upfiles[count], "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                val scount = count + 1
+                if (scount == size) {
+                    callback.onUploadSuccess(upimgs)
+
+                }
+                uploadImgs(context, upfiles, stsBean, scount, callback)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+                callback.onUploadFailed(errCode)
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+                //currentSize*100/totalSize
+            }
+        })
     }
 
     /**

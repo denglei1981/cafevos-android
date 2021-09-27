@@ -8,6 +8,7 @@ package com.changanford.common.bean
  *  修改描述：TODO
  */
 
+class CityBean : ArrayList<CityBeanItem>()
 
 data class CityBeanItem(
     val citys: List<City>,
