@@ -2,13 +2,13 @@ package com.changanford.shop
 import android.graphics.Typeface
 import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.IntegralDetailsActivity
 import com.changanford.shop.ui.exchange.ExchangeListFragment
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.order.AllOrderActivity
 import com.changanford.shop.ui.order.OrderEvaluationActivity
@@ -38,7 +38,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         //秒杀列表
         binding.inTop.recyclerView.adapter=adapter
         adapter.setOnItemClickListener { _, _, position ->
-            GoodsDetailsActivity.start(requireContext(),"$position")
+            JumpUtils.instans?.jump(3,"$position")
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
 
