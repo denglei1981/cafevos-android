@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.changanford.home.widget.RecyclerViewAtViewPager2
                     android:id="@+id/recycler_view_h"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
