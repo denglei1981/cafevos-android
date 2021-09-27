@@ -57,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <com.changanford.shop.view.TypefaceTextView
+                    android:inputType="number"
                     android:id="@+id/tv_orIntegral"
                     android:layout_marginStart="@dimen/dp_6"
                     android:layout_width="wrap_content"
@@ -84,6 +85,7 @@
                     android:layout_weight="1"
                     android:layout_height="@dimen/dp_6"/>
                 <com.changanford.shop.view.TypefaceTextView
+                    android:inputType="none"
                     android:textColor="@color/color_74889D"
                     android:layout_marginStart="@dimen/dp_4"
                     android:textSize="@dimen/sp_9"
