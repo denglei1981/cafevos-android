@@ -195,5 +195,4 @@ dependencies {
     //动态权限申请
     api "cn.hchstudio:kpermissions:1.0.8"
 
-    api "com.jeremyliao:live-event-bus-x:1.5.7"
 }

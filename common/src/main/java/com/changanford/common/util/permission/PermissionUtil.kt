@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.util.Log
 import cn.hchstudio.kpermissions.KPermission
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 
 object PermissionUtil {
 
@@ -45,11 +47,10 @@ object PermissionUtil {
             }
             if (it.name == Manifest.permission.ACCESS_COARSE_LOCATION) {
                 LOCATION = it.granted
-                Log.e("asdasd","1")
             }
             if (it.name == Manifest.permission.ACCESS_FINE_LOCATION) {
                 LOCATION = it.granted
-                Log.e("asdasd","2")
+                LiveDataBus.get().with(CircleLiveBusKey.LOCATION_RESULT).postValue(LOCATION)
             }
         })
     }

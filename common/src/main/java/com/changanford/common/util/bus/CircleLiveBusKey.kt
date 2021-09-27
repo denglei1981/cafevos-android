@@ -7,5 +7,5 @@ package com.changanford.common.util.bus
  */
 object CircleLiveBusKey {
     //定位权限
-    const val LOCATION_RESULT = "location_result"
+    const val LOCATION_RESULT = "locationResult"
 }
