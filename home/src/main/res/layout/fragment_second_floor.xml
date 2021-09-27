@@ -27,7 +27,7 @@
                 android:id="@+id/classics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_114" />
+                android:layout_marginTop="@dimen/dp_92" />
         </com.scwang.smart.refresh.header.TwoLevelHeader>
 
         <com.changanford.home.widget.LockableNestedScrollView
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/dp_114">
+                android:paddingTop="@dimen/dp_92">
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/home_viewpager"
                     android:layout_width="match_parent"

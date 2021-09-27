@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider;
 //import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.changanford.common.basic.BaseApplication;
 import com.gyf.immersionbar.ImmersionBar;
+import com.luck.picture.lib.entity.LocalMedia;
 //import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
@@ -327,25 +328,25 @@ public class AppUtils {
     /**
      * 获取最终地址
      */
-//    public static String getFinallyPath(LocalMedia media) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            return media.getAndroidQToPath();
-//        } else {
-//            String path;
-//            if (media.isCut() && !media.isCompressed()) {
-//                // 裁剪过
-//                path = media.getCutPath();
-//            } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
-//                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-//                path = media.getCompressPath();
-//            } else {
-//                // 原图
-//                path = media.getPath();
-//            }
-//            return path;
-//        }
-//
-//    }
+    public static String getFinallyPath(LocalMedia media) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return media.getAndroidQToPath();
+        } else {
+            String path;
+            if (media.isCut() && !media.isCompressed()) {
+                // 裁剪过
+                path = media.getCutPath();
+            } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
+                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                path = media.getCompressPath();
+            } else {
+                // 原图
+                path = media.getPath();
+            }
+            return path;
+        }
+
+    }
 //
 //    /**
 //     * 登录成功时调用

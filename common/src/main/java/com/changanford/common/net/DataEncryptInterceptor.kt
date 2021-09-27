@@ -88,7 +88,7 @@ class DataEncryptInterceptor : Interceptor {
                             SPUtils.getParam(
                                 MyApp.mContext,
                                 "isPopAgreement",
-                                false
+                                true
                             ) as Boolean
                         SPUtils.clear(MyApp.mContext)
                         SPUtils.setParam(MyApp.mContext, "isfirstin", isfirstin)

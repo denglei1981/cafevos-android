@@ -3,9 +3,11 @@
     package="com.changanford.home">
 
     <application>
-        <activity android:name=".news.activity.SpecialListActivity"/>
-        <activity android:name=".news.activity.NewsDetailActivity"/>
-        <activity android:name=".news.activity.SpecialDetailActivity"/>
+        <activity android:name=".news.activity.SpecialListActivity" />
+        <activity android:name=".news.activity.NewsDetailActivity" />
+        <activity android:name=".news.activity.SpecialDetailActivity" />
+        <activity android:name=".search.activity.PolySearchActivity" />
+        <activity android:name=".search.activity.PloySearchResultActivity" />
 
 
     </application>

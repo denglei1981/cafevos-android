@@ -7,12 +7,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.changanford.circle.R
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.load
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.tools.DoubleUtils
 import com.yalantis.ucrop.UCrop

@@ -12,7 +12,8 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    const val BASE_URL = "https://csapi.uniplanet.cn"
+//    const val BASE_URL = "https://csapi.uniplanet.cn"
+    const val BASE_URL = "https://evosapiqa.changanford.cn"
     const val isDebug = true
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
@@ -63,6 +64,8 @@ object MConstant {
 
     const val PUSH_ID = "sys:pushid"
 
+    var H5_privacy = "https://cir.uni.changan.com.cn/quanzi/#/privacy"//隐私协议
+    var H5_regTerms = "https://cir.uni.changan.com.cn/quanzi/#/regTerms" //注册协议
     /**
      * https://cscir.uniplanet.cn/quanzi/#/regTerms
      * 引力域注册协议

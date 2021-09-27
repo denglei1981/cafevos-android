@@ -75,12 +75,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     }
 
     override fun initData() {
-        if (MConstant.token.isNotEmpty()) {
-            getUserInfo()
-        } else {
-            loginState.postValue(false)
-            authState.postValue(false)
-        }
+        getUserInfo()
         viewModel.getMenuList()
         viewModel.menuBean.observe(this, {
             menuBean = it
@@ -126,6 +121,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     private fun setData(userInfoBean: UserInfoBean?) {
         if (userInfoBean == null) {
             loginState.postValue(false)
+            authState.postValue(false)
         } else {
             loginState.postValue(true)
         }
@@ -162,7 +158,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
             it?.toString()?.logE()
             if (null == it || it.userJson.isNullOrEmpty()) {
-                setData(null)
+                if (MConstant.token.isNotEmpty()){
+                    viewModel.getUserInfo()
+                }else {
+                    setData(null)
+                }
             } else {
                 var userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)

@@ -16,6 +16,7 @@ import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.NewsData
+import com.changanford.home.news.powerfulrecyclerview.DividerDecoration
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.zhpan.bannerview.BannerViewPager
 import java.util.ArrayList
@@ -53,6 +54,7 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
         }
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
+
     }
 
     var headNewBinding: HeaderNewsListBinding?=null

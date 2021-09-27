@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_20"
+    android:background="@drawable/shape_whit5_bg"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_header"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+    <ImageView
+        android:id="@+id/iv_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/icon_home_auth_vip"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+        app:layout_constraintCircle="@id/iv_header"
+        app:layout_constraintCircleAngle="120"
+        app:layout_constraintCircleRadius="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_header" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:textColor="#ff333333"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+        app:layout_constraintStart_toEndOf="@+id/iv_header"
+        app:layout_constraintTop_toTopOf="@+id/iv_header"
+        tools:text="这里是兔子说" />
+
+    <TextView
+        android:id="@+id/tv_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff00095b"
+        android:textSize="@dimen/sp_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+        app:layout_constraintStart_toStartOf="@+id/tv_author_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
+        tools:text="车迷级公民" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tv_follow"
+        style="@style/materialButton"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/gray_e5e5ee"
+        android:elevation="0dp"
+        android:gravity="center"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:stateListAnimator="@null"
+        android:text="+关注"
+        android:textAllCaps="false"
+        android:textColor="@color/blue_tab"
+        android:textSize="@dimen/sp_12"
+        app:cornerRadius="20dp"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_post"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_recommend_test"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_follow"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与..."
+        android:textColor="#ff2d2d2d"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_post"
+        app:layout_constraintStart_toStartOf="@+id/iv_header"
+        app:layout_constraintTop_toTopOf="@+id/iv_post" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="18dp"
+        android:text="2021-08-12 15:30 "
+        android:textColor="#ffcccccc"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_post"
+        app:layout_constraintStart_toStartOf="@+id/iv_header"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12评论     29阅读"
+        android:textColor="@color/color_99"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_header" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

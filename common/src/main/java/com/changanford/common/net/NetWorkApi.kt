@@ -31,7 +31,12 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
-    /**---**/
+    /**--------------------------------my---------------------------------------**/
+    @POST("/base/oss/getSTS")
+    suspend fun getOSS(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<STSBean>
     /**
      * 常用功能列表
      */

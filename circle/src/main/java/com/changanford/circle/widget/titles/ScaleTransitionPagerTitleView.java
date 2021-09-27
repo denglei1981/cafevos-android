@@ -2,6 +2,7 @@ package com.changanford.circle.widget.titles;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
 
@@ -22,6 +23,7 @@ public class ScaleTransitionPagerTitleView extends ColorTransitionPagerTitleView
         super.onEnter(index, totalCount, enterPercent, leftToRight);    // 实现颜色渐变
         setScaleX(mMinScale + (1.0f - mMinScale) * enterPercent);
         setScaleY(mMinScale + (1.0f - mMinScale) * enterPercent);
+        setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
     }
 
     @Override
@@ -29,6 +31,7 @@ public class ScaleTransitionPagerTitleView extends ColorTransitionPagerTitleView
         super.onLeave(index, totalCount, leavePercent, leftToRight);    // 实现颜色渐变
         setScaleX(1.0f + (mMinScale - 1.0f) * leavePercent);
         setScaleY(1.0f + (mMinScale - 1.0f) * leavePercent);
+        setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
     }
 
 

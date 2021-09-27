@@ -16,13 +16,14 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
-import com.changanford.common.util.APKDownload
-import com.changanford.common.util.DeviceUtils
-import com.changanford.common.util.DownloadProgress
-import com.changanford.common.util.MConstant
+import com.changanford.common.util.*
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.util.permission.PermissionUtil
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
@@ -37,8 +38,8 @@ import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 @Route(path = ARouterHomePath.MainActivity)
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
-    private lateinit var updateViewModel:UpdateViewModel
-    lateinit var navController:NavController
+    private lateinit var updateViewModel: UpdateViewModel
+    lateinit var navController: NavController
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -51,33 +52,78 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return currentNavController?.value?.navigateUp() ?: false
 
     }
+
     private fun initBottomNavigation() {
         val navigationController: NavigationController = binding.homeBottomNavi.custom()
-            .addItem(newItem(R.mipmap.icon_homeu, R.mipmap.icon_home_b, R.mipmap.icon_home_c, "发现", -5f))
-            .addItem(newItem(R.mipmap.icon_circleu, R.mipmap.icon_circle_b, R.mipmap.icon_circle_c, "社区", -7f))
-            .addItem(newItem(R.mipmap.icon_caru, R.mipmap.icon_car_b, R.mipmap.icon_car_c, "订车", -30f))
-            .addItem(newItem(R.mipmap.icon_shopu, R.mipmap.icon_shop_b, R.mipmap.icon_shop_c, "商城", -3f))
-            .addItem(newItem(R.mipmap.icon_myu, R.mipmap.icon_my_b, R.mipmap.icon_my_c, "我的", 8f, -10f))
+            .addItem(
+                newItem(
+                    R.mipmap.icon_homeu,
+                    R.mipmap.icon_home_b,
+                    R.mipmap.icon_home_c,
+                    "发现",
+                    -5f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_circleu,
+                    R.mipmap.icon_circle_b,
+                    R.mipmap.icon_circle_c,
+                    "社区",
+                    -7f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_caru,
+                    R.mipmap.icon_car_b,
+                    R.mipmap.icon_car_c,
+                    "订车",
+                    -30f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_shopu,
+                    R.mipmap.icon_shop_b,
+                    R.mipmap.icon_shop_c,
+                    "商城",
+                    -3f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_myu,
+                    R.mipmap.icon_my_b,
+                    R.mipmap.icon_my_c,
+                    "我的",
+                    8f,
+                    -10f
+                )
+            )
             .build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
     }
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
+        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
+            showAppPrivacy(this)
+        }
 
         getNavigator()
         initBottomNavigation()
-
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
             if (it as Boolean) {
             }
         })
-
+        checkPermission()
     }
 
-    private fun getNavigator(){
-        navController = Navigation.findNavController(this,R.id.nav_host_fragment_content_main)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
+    private fun getNavigator() {
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
         val navigator = CustomNavigator(
             this,
             navHostFragment.childFragmentManager,
@@ -96,10 +142,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
         updateViewModel = createViewModel(UpdateViewModel::class.java)
 //        updateViewModel.getUpdateInfo()
-        updateViewModel._updateInfo.observe(this,{info ->
+        updateViewModel._updateInfo.observe(this, { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
-                    Log.e("---------->", info.versionNumber?:"")
+                    Log.e("---------->", info.versionNumber ?: "")
                     Log.e("---------->", DeviceUtils.getVersionCode(this).toString())
                     return@observe
                 }
@@ -182,6 +228,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         return false
     }
+
     /**
      * 正常tab
      */
@@ -205,6 +252,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         mainTab.initialize(drawable, checkedDrawable, text)
         return mainTab
     }
+
     private var PAGE_IDS = intArrayOf(
         R.id.homeFragment,
         R.id.circleFragment,
@@ -212,5 +260,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         R.id.shopFragment,
         R.id.myFragment
     )
+
+    private fun checkPermission() {
+        //请求应用需要的所有权限
+        val checkPermissionFirst: Boolean = PermissionUtil.run {
+            ALBUM_READ && ALBUM_WRITE && CAMERA && LOCATION
+        }
+        if (!checkPermissionFirst) {
+            PermissionUtil.applyPermissions(this)
+        }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this,{
+            LocationUtils.init()
+        })
+        LocationUtils.mLongitude.observe(this,{
+            "$it".logD()
+        })
+    }
 }
 

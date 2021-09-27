@@ -205,6 +205,9 @@
 # 魅族通道
 -keep class com.meizu.cloud.** {*;}
 -dontwarn com.meizu.cloud.**
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
 
 -keep class com.chad.library.adapter.** {
 *;

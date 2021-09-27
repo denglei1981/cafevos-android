@@ -33,4 +33,17 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_content"
         app:layout_constraintWidth_percent="0.9" />
 
+    <View
+        android:id="@+id/home_v_line"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/color_ee"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

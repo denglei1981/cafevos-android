@@ -19,6 +19,8 @@ import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MyApplicationUtil
+import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
 
 
@@ -35,11 +37,12 @@ abstract class BaseApplication : MultiDexApplication() {
         //阿里云push初始化
         PushServiceFactory.init(this)
         // 获取隐私政策签署状态
-        val sign = false
-        if (sign) {
-            initCloudChannel(this)
-        } else {
+        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)){
             // 没签，等签署之后再调用registerPush()
+        }else{
+            MyApplicationUtil.init(this)
+            initCloudChannel(this)
+            initshare()
         }
     }
 
