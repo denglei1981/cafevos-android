@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/comm_bar_title_view" />
+    <FrameLayout
+        android:id="@+id/fl"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <VideoView
+            android:id="@+id/uVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="38dp"
+        app:layout_constraintBottom_toBottomOf="@id/fl" />
+
+    <TextView
+        android:id="@+id/tvtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:text="已选取333秒"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/recyclerview"
+        app:layout_constraintLeft_toLeftOf="@id/fl"
+        app:layout_constraintRight_toRightOf="@id/fl" />
+
+    <com.changanford.common.widget.RangeSlider
+        android:id="@+id/range_slider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_55"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:leftThumbDrawable="@mipmap/handle_right"
+        app:leftThumbIndex="0"
+        app:lineColor="#00095B"
+        app:lineHeight="0.5dp"
+        app:rightThumbDrawable="@mipmap/handle_left"
+        app:thumbWidth="12dp"
+        app:tickCount="180" />
+</androidx.constraintlayout.widget.ConstraintLayout>

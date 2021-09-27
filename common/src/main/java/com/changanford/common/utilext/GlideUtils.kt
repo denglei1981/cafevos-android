@@ -11,6 +11,10 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import android.R
+
+
+
 
 
 /**********************************************************************************
@@ -144,5 +148,17 @@ object GlideUtils {
                     .error(errorDefaultRes)
             }
         }.into(imageView)
+    }
+
+    fun loadCover(imageView: ImageView, url: String?,time:Long) {
+        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        Glide.with(imageView.context)
+            .setDefaultRequestOptions(
+                RequestOptions()
+                    .frame(time)
+                    .centerCrop()
+            )
+            .load(url)
+            .into(imageView)
     }
 }

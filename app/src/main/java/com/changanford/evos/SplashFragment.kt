@@ -6,8 +6,11 @@ import android.os.SystemClock
 import android.view.SurfaceHolder
 import android.view.View
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouterFinish
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.evos.databinding.FragmentSplashBinding
@@ -37,6 +40,17 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         showAds()
     }
 
+    /**
+     * 处理首次登录
+     */
+    private fun firstIn(){
+        if (SPUtils.getParam(requireContext(), "isfirstin", true) as Boolean) {
+            startARouterFinish(requireActivity(), ARouterHomePath.LandingActivity)
+            SPUtils.setParam(requireContext(), "isfirstin", false)
+            return
+        }
+    }
+
     private fun showCounter() {
         binding.chronometer.apply {
             base = SystemClock.elapsedRealtime() + 5 * 1000
@@ -48,6 +62,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
     private fun showAds() {
         viewModel.imgBean.observe(this, {
+            firstIn()
             var imgBean = it
             if (imgBean == null || imgBean.adImg.isNullOrEmpty() || !GlideUtils.handleImgUrl(imgBean.adImg)!!
                     .startsWith("http")

@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import java.io.Serializable
+
 /**
  *  文件名：UserData
  *  创建者: zcy
@@ -137,3 +139,20 @@ data class CancelReasonBeanItem(
     var isCheck: Boolean = false,
     var reasonId: Int = 0
 )
+
+
+data class AddressBeanItem(
+    val addressId: Int = 0,
+    val addressName: String,
+    val city: String,
+    val cityName: String,
+    val consignee: String,
+    val district: String,
+    val districtName: String,
+    var isDefault: Int,
+    val phone: String,
+    val province: String,
+    val provinceName: String,
+    val status: Int,
+    val userId: Int
+) : Serializable

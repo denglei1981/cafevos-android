@@ -7,9 +7,12 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.DisplayUtil
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.callback.ICallback
@@ -36,11 +39,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
     var titleList = mutableListOf<String>()
 
     var immersionBar: ImmersionBar? = null
+    val actsListFragment: ActsListFragment by lazy {
+        ActsListFragment.newInstance()
+    }
+    val recommendFragment: RecommendFragment by lazy {
+        RecommendFragment.newInstance()
+    }
 
     override fun initView() {
         //Tab+Fragment
-        immersionBar = ImmersionBar.with(requireActivity())
-        immersionBar?.fitsSystemWindows(true)
+
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
@@ -72,6 +80,21 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         }.attach().apply {
             initTab()
         }
+
+
+        binding.homeViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        binding.refreshLayout.setEnableRefresh(true)
+                    }
+                    else -> {
+                        binding.refreshLayout.setEnableRefresh(false)
+                    }
+                }
+            }
+        })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab, true)
@@ -91,7 +114,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.layoutTopBar.ivScan.setOnClickListener {
             showPublish(binding.layoutTopBar.ivScan)
         }
-        binding.refreshLayout.setOnMultiListener(object :SimpleMultiListener(){
+        binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
             override fun onHeaderMoving(
                 header: RefreshHeader?,
                 isDragging: Boolean,
@@ -100,13 +123,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 headerHeight: Int,
                 maxDragHeight: Int
             ) {
-               binding.llTabContent.alpha= 1 - percent.coerceAtMost(1f)
-               binding.layoutTopBar.conContent.alpha= 1 - percent.coerceAtMost(1f)
-               binding.homeTab.alpha= 1 - percent.coerceAtMost(1f)
+                binding.llTabContent.alpha = 1 - percent.coerceAtMost(1f)
+                binding.layoutTopBar.conContent.alpha = 1 - percent.coerceAtMost(1f)
+                binding.homeTab.alpha = 1 - percent.coerceAtMost(1f)
             }
-
-
         })
+        binding.layoutTopBar.ivSearch.setOnClickListener {
+            startARouter(ARouterHomePath.PolySearchActivity)
+        }
+
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -130,6 +155,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         super.onResume()
 
     }
+
     //初始化tab
     private fun initTab() {
         for (i in 0 until binding.homeTab.tabCount) {
@@ -155,7 +181,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         }
     }
 
-    private fun showPublish(publishLocationView : ImageView) {
+    private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
         publishLocationView.getLocationOnScreen(location)
@@ -166,12 +192,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             publishView,
             Constraints.LayoutParams.WRAP_CONTENT,
             Constraints.LayoutParams.WRAP_CONTENT,
-            object :ICallback{
+            object : ICallback {
                 override fun onResult(result: ResultData) {
                 }
             }
         )
-        publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED)
+        publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         publishPopup.showAsDropDown(publishLocationView)
     }
 

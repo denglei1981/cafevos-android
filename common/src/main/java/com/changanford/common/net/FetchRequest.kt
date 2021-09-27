@@ -60,3 +60,11 @@ fun <T> CommonResponse<T>.onFailure(block: (T?) -> Unit): CommonResponse<T> {
     }
     return this
 }
+
+fun <T> CommonResponse<T>.onWithMsgFailure(block: (msg: String?) -> Unit): CommonResponse<T> {
+    if (this.code != 0) {
+        //TODO 做一些统一的处理
+        block(this.msg)
+    }
+    return this
+}

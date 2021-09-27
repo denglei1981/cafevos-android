@@ -40,7 +40,6 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     }
 
     override fun initView() {
-        binding.fansToolbar.toolbar.setNavigationOnClickListener { back() }
         intent.extras?.getInt(RouterManger.KEY_TO_ID, 1)?.let {
             type = it
             binding.fansToolbar.toolbarTitle.text = if (type == 1) "粉丝" else "关注"

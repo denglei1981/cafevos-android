@@ -35,7 +35,7 @@
     </style>
 
     <!-- 单独的MaterialButton样式-->
-    <style name="materialButton" parent="Widget.MaterialComponents.Button">
+    <style name="materialButton">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:paddingTop">4dp</item>

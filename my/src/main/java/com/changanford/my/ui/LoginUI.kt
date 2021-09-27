@@ -88,13 +88,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
-        StatusBarUtil.setAndroidNativeLightStatusBar(this,false)
+        StatusBarUtil.setAndroidNativeLightStatusBar(this, false)
         tencent = Tencent.createInstance(MConstant.QQAPPID, this)
 
         wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
         wxApi.registerApp(MConstant.WXAPPID)
 
-        signAgreement(binding.signAgreement)
+        binding.signAgreement.signAgreement()
 
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
@@ -115,9 +115,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                lifecycleScope.launch {
-                    viewModel.getSmsCode(binding.etLoginMobile.text.toString())
-                }
+                viewModel.smsCacLogin(binding.etLoginMobile.text.toString())
             }, {
 
             })
@@ -125,13 +123,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnLogin.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                lifecycleScope.launch {
-                    viewModel.smsLogin(
-                        binding.etLoginMobile.text.toString(),
-                        binding.etLoginSmsCode.text.toString(),
-                        SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
-                    )
-                }
+                viewModel.smsLogin(
+                    binding.etLoginMobile.text.toString(),
+                    binding.etLoginSmsCode.text.toString(),
+                    SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
+                )
             }, {
 
             })

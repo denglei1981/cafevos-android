@@ -68,8 +68,13 @@ dependencies {
     api "com.aliyun.ams:alicloud-android-third-push-vivo:3.4.0"
     api "com.aliyun.ams:alicloud-android-third-push-xiaomi:3.4.0"
     api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
+    //阿里云oss
+    api "com.aliyun.dpa:oss-android-sdk:2.9.6"
+
     //底部导航
     api "me.majiajie:pager-bottom-tab-strip:2.4.0"
+    //bugly
+    api "com.tencent.bugly:crashreport:latest.release"
     //adapter
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
 

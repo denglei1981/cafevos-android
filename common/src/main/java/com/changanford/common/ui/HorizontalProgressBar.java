@@ -109,11 +109,11 @@ public class HorizontalProgressBar extends View {
     /**
      * 进度条背景颜色
      */
-    private int bgColor = 0xFFe1e5e8;
+    private int bgColor = 0xFFECECEC;
     /**
      * 进度条颜色
      */
-    private int progressColor = 0xFFf66b12;
+    private int progressColor = 0xFF01025C;
 
     /**
      * 绘制提示框的矩形
@@ -145,7 +145,7 @@ public class HorizontalProgressBar extends View {
      * 初始化画笔宽度及view大小
      */
     private void init() {
-        progressPaintWidth = dp2px(2);
+        progressPaintWidth = dp2px(8);
         tipHeight = dp2px(2);
         tipWidth = dp2px(30);
         tipPaintWidth = dp2px(1);

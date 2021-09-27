@@ -80,6 +80,8 @@ dependencies {
     api(project(":base"))
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     api project(path: ':picture_library')
+    api project(path: ':videocompressor')
+    api project(path: ':lansong')
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //multidex
     api "androidx.multidex:multidex:$versions_multidex"
@@ -171,13 +173,13 @@ dependencies {
     api 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
     api 'io.github.youth5201314:banner:2.2.2'
-
+    api 'com.github.kui92:FFmpegLibrary:3.2'
     //pop
     api 'io.github.razerdp:BasePopup:3.1.8'
 
     api 'com.github.gzu-liyujiang.AndroidPicker:Common:4.0.0'
     api 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:4.0.0'
-    api 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:4.0.0'
+//    api 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:4.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -186,4 +188,11 @@ dependencies {
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6"
     //banner
     api 'io.github.youth5201314:banner:2.2.2'
+
+    // recyclerview 流式布局
+    api 'com.google.android:flexbox:2.0.1'
+
+    //动态权限申请
+    api "cn.hchstudio:kpermissions:1.0.8"
+
 }

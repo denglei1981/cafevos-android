@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -19,7 +18,6 @@ import com.changanford.my.databinding.UiAllMedalBinding
 import com.changanford.my.ui.fragment.MedalFragment
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：AllMedalListUI
@@ -38,6 +36,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private var oldPosition = 0
 
     override fun initView() {
+        binding.medalToolbar.toolbarTitle.text = "会员勋章"
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->
@@ -147,8 +146,6 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
     override fun initData() {
         super.initData()
-        lifecycleScope.launch {
-            viewModel.mineMedal()
-        }
+        viewModel.mineMedal()
     }
 }

@@ -1,39 +1,45 @@
 package com.changanford.evos
 
+import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.Navigation
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
-import com.changanford.common.util.APKDownload
-import com.changanford.common.util.DeviceUtils
-import com.changanford.common.util.DownloadProgress
-import com.changanford.common.util.MConstant
+import com.changanford.common.util.*
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.util.permission.PermissionUtil
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
+import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.view.SpecialAnimaTab
+import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 
+@Route(path = ARouterHomePath.MainActivity)
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var updateViewModel:UpdateViewModel
-    lateinit var navController:NavController
+    private lateinit var updateViewModel: UpdateViewModel
+    lateinit var navController: NavController
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -43,53 +49,89 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        //旧
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        return navController.navigateUp(appBarConfiguration)
-//                || super.onSupportNavigateUp()
-        //新
         return currentNavController?.value?.navigateUp() ?: false
 
     }
+
     private fun initBottomNavigation() {
         val navigationController: NavigationController = binding.homeBottomNavi.custom()
-            .addItem(newItem(R.mipmap.icon_homeu, R.mipmap.icon_home_b, R.mipmap.icon_home_c, "发现", -5f))
-            .addItem(newItem(R.mipmap.icon_circleu, R.mipmap.icon_circle_b, R.mipmap.icon_circle_c, "社区", -7f))
-            .addItem(newItem(R.mipmap.icon_caru, R.mipmap.icon_car_b, R.mipmap.icon_car_c, "订车", -30f))
-            .addItem(newItem(R.mipmap.icon_shopu, R.mipmap.icon_shop_b, R.mipmap.icon_shop_c, "商城", -3f))
-            .addItem(newItem(R.mipmap.icon_myu, R.mipmap.icon_my_b, R.mipmap.icon_my_c, "我的", 8f, -10f))
+            .addItem(
+                newItem(
+                    R.mipmap.icon_homeu,
+                    R.mipmap.icon_home_b,
+                    R.mipmap.icon_home_c,
+                    "发现",
+                    -5f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_circleu,
+                    R.mipmap.icon_circle_b,
+                    R.mipmap.icon_circle_c,
+                    "社区",
+                    -7f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_caru,
+                    R.mipmap.icon_car_b,
+                    R.mipmap.icon_car_c,
+                    "订车",
+                    -30f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_shopu,
+                    R.mipmap.icon_shop_b,
+                    R.mipmap.icon_shop_c,
+                    "商城",
+                    -3f
+                )
+            )
+            .addItem(
+                newItem(
+                    R.mipmap.icon_myu,
+                    R.mipmap.icon_my_b,
+                    R.mipmap.icon_my_c,
+                    "我的",
+                    8f,
+                    -10f
+                )
+            )
             .build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
     }
 
     override fun initView() {
+//        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
+        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
+            showAppPrivacy(this)
+        }
 
-        setSupportActionBar(binding.toolbar)
-        //旧
-        navController = findNavController(R.id.nav_host_fragment_content_main)
+        getNavigator()
         initBottomNavigation()
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//        binding.homeBottomNavi.setupWithNavController(navController)
-//        binding.homeBottomNavi.setOnNavigationItemReselectedListener {
-//            "do nothing".toast()
-//        }
-        //新
-        setupBottomNavigationBar()
-
-
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
             if (it as Boolean) {
-//                val badge = binding.homeBottomNavi.getOrCreateBadge(R.id.homeFragment)
-//                badge.isVisible = true
-//                badge.number += 1
-//                val badge2 = binding.homeBottomNavi.getOrCreateBadge(R.id.circleFragment)
-//                badge2.isVisible = true
             }
         })
-
+        checkPermission()
     }
 
+    private fun getNavigator() {
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
+        val navigator = CustomNavigator(
+            this,
+            navHostFragment.childFragmentManager,
+            R.id.nav_host_fragment_content_main
+        )// 生成自定义Navigator对象
+        navController.navigatorProvider.addNavigator("custom_fragment", navigator) // 添加 key, value
+        navController.setGraph(R.navigation.nav_graph)  // 要在 CustomNavigator 类被加载之后添加graph，不然找不到 custom_fragment节点
+    }
 
     override fun initData() {
         viewModel.getUserData()
@@ -100,10 +142,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
         updateViewModel = createViewModel(UpdateViewModel::class.java)
 //        updateViewModel.getUpdateInfo()
-        updateViewModel._updateInfo.observe(this,{info ->
+        updateViewModel._updateInfo.observe(this, { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
-                    Log.e("---------->", info.versionNumber?:"")
+                    Log.e("---------->", info.versionNumber ?: "")
                     Log.e("---------->", DeviceUtils.getVersionCode(this).toString())
                     return@observe
                 }
@@ -165,27 +207,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private lateinit var currentNavController: LiveData<NavController>
 
-    private fun setupBottomNavigationBar() {
-        /*val navGraphIds = listOf(
-            R.navigation.nav1,
-            R.navigation.nav2,
-            R.navigation.nav3,
-            R.navigation.nav4,
-            R.navigation.nav5
-        )
-        val controller = binding.homeBottomNavi.setupWithNavController(
-            navGraphIds = navGraphIds,
-            fragmentManager = supportFragmentManager,
-            containerId = R.id.nav_host_fragment_content_main,
-            intent = intent
-        )
-        controller.observe(this, { navController ->
-            val appBarConfiguration = AppBarConfiguration(navGraphIds.toSet())
-            NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration)
-            setSupportActionBar(binding.toolbar)
-        })
-        currentNavController = controller
-        binding.homeBottomNavi.itemIconTintList = null*/
+    /**
+     * 连点退出
+     */
+    private var exitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtils.s(BaseApplication.INSTANT, "再按一次退出引力域")
+                exitTime = System.currentTimeMillis()
+            } else {
+                var intent = Intent()
+                intent.action = Intent.ACTION_MAIN;
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK; //如果是服务里调用，必须加入new task标识
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+        }
+
+        return false
     }
 
     /**
@@ -211,6 +252,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         mainTab.initialize(drawable, checkedDrawable, text)
         return mainTab
     }
+
     private var PAGE_IDS = intArrayOf(
         R.id.homeFragment,
         R.id.circleFragment,
@@ -218,5 +260,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         R.id.shopFragment,
         R.id.myFragment
     )
+
+    private fun checkPermission() {
+        //请求应用需要的所有权限
+        val checkPermissionFirst: Boolean = PermissionUtil.run {
+            ALBUM_READ && ALBUM_WRITE && CAMERA && LOCATION
+        }
+        if (!checkPermissionFirst) {
+            PermissionUtil.applyPermissions(this)
+        }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this,{
+            LocationUtils.init()
+        })
+        LocationUtils.mLongitude.observe(this,{
+            "$it".logD()
+        })
+    }
 }
 

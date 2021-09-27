@@ -1,18 +1,25 @@
 package com.changanford.my.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toast
+import com.changanford.my.interf.UploadPicCallback
+import com.huawei.hms.common.ApiException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -30,37 +37,42 @@ class SignViewModel : ViewModel() {
         UserDatabase.getUniUserDatabase(MyApp.mContext)
     }
 
-    suspend fun getSmsCode(mobile: String) {
-        var sms = fetchRequest {
-            var body = HashMap<String, Any>()
-            body["phone"] = mobile
-            var rKey = getRandomKey()
-            apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+    fun getSmsCode(mobile: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["phone"] = mobile
+                var rKey = getRandomKey()
+                apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                smsSuccess.postValue(true)
+            }
         }
-        smsSuccess.postValue(sms.code == 0)
     }
 
-    suspend fun smsCacLogin(mobile: String) {
-        var sms = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = mobile
-            var rkey = getRandomKey()
-            apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+    fun smsCacLogin(mobile: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = mobile
+                var rkey = getRandomKey()
+                apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                smsSuccess.postValue(true)
+            }
         }
-        smsSuccess.postValue(sms.code == 0)
     }
 
-    suspend fun smsLogin(mobile: String, sms: String, pushId: String) {
-        var login = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = mobile
-            body["smsCode"] = sms
-            body["pushId"] = pushId
-            var rkey = getRandomKey()
-            apiService.smsCodeSign(body.header(rkey), body.body(rkey))
-        }
-        if (login.code == 0) {
-            login.data?.let {
+    fun smsLogin(mobile: String, sms: String, pushId: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = mobile
+                body["smsCode"] = sms
+                body["pushId"] = pushId
+                var rkey = getRandomKey()
+                apiService.smsCodeSign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
                 loginSuccess(it)
             }
         }
@@ -83,17 +95,18 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    suspend fun getUserInfo() {
+    fun getUserInfo() {
         if (UserManger.isLogin()) {
-            var user = fetchRequest {
-                var body = HashMap<String, String>()
-                var rkey = getRandomKey()
-                apiService.queryUserInfo(body.header(rkey), body.body(rkey))
-            }
-            if (user.code == 0) {
-                saveUserInfo(user.data)
-            } else {
-                saveUserInfo(null)
+            viewModelScope.launch {
+                fetchRequest {
+                    var body = HashMap<String, String>()
+                    var rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    saveUserInfo(it)
+                }.onFailure {
+                    saveUserInfo(null)
+                }
             }
         } else {
             saveUserInfo(null)
@@ -117,32 +130,36 @@ class SignViewModel : ViewModel() {
     var jifenBean: MutableLiveData<GrowUpBean> = MutableLiveData()
 
     //成长值 2 积分 1
-    suspend fun mineGrowUp(pageNo: Int, type: String) {
-        var task = fetchRequest {
-            var body = HashMap<String, Any>()
-            body["pageNo"] = pageNo
-            body["pageSize"] = "20"
-            body["queryParams"] = mapOf("type" to type)
-            var rkey = getRandomKey()
-            apiService.mineGrowUp(body.header(rkey), body.body(rkey))
-        }
-        if (task.code == 0) {
-            jifenBean.postValue(task.data)
+    fun mineGrowUp(pageNo: Int, type: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
+                body["queryParams"] = mapOf("type" to type)
+                var rkey = getRandomKey()
+                apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                jifenBean.postValue(it)
+            }.onFailure {
+                jifenBean.postValue(null)
+            }
         }
     }
 
     val allMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
 
-    suspend fun mineMedal() {
-        var medal = fetchRequest {
-            var body = HashMap<String, String>()
-            var rkey = getRandomKey()
-            apiService.queryMedalList(body.header(rkey), body.body(rkey))
-        }
-        if (medal.code == 0) {
-            allMedal.postValue(medal.data)
-        } else {
-            medal.msg?.logE()
+    fun mineMedal() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMedalList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                allMedal.postValue(it)
+            }.onFailure {
+                allMedal.postValue(null)
+            }
         }
     }
 
@@ -333,16 +350,31 @@ class SignViewModel : ViewModel() {
 
     var allCity: MutableLiveData<ArrayList<CityBeanItem>> = MutableLiveData()
 
-    suspend fun getAllCity() {
-        var city = fetchRequest {
-            var body = HashMap<String, String>()
-            body["district"] = "true"
-            var rkey = getRandomKey()
-            apiService.getAllCity(body.header(rkey), body.body(rkey))
+    fun getAllCity() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["district"] = "true"
+                var rkey = getRandomKey()
+                apiService.getAllCity(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                allCity.postValue(it)
+            }
         }
-        if (city.code == 0) {
-            allCity.postValue(city.data)
+    }
+
+    var menuBean = MutableLiveData<ArrayList<MenuBeanItem>>()
+    fun getMenuList() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMenuList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                menuBean.postValue(it)
+            }
         }
+
     }
 
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
@@ -352,7 +384,7 @@ class SignViewModel : ViewModel() {
     /**
      * 登录成功
      */
-    private suspend fun loginSuccess(loginBean: LoginBean) {
+    private fun loginSuccess(loginBean: LoginBean?) {
         loginBean?.let {
             UserManger.saveUserInfo(loginBean)
             MConstant.token = it.token
@@ -372,6 +404,104 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+    /**
+     * 上传图片
+     */
+
+    fun uploadFile(cp:Context,upfiles: List<String>, callback: UploadPicCallback) {
+        GetOSS(cp, upfiles, 0, callback)
+    }
+    /**
+     * 获取上传图片得凭证
+     */
+    lateinit var upimgs: ArrayList<String>
+
+    fun GetOSS(
+        context: Context,
+        upfiles: List<String>,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        viewModelScope.launch {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            fetchRequest {
+                apiService.getOSS(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                initAliYunOss(context, it!!)//
+                upimgs = ArrayList()
+                uploadImgs(
+                    context,
+                    upfiles,
+                    it,
+                    count,
+                    callback
+                )
+            }.onFailure {
+                var msg = "上传失败"
+                msg.toast()
+                callback.onUploadFailed(msg)
+            }
+        }
+    }
+    /**
+     * 取文件后缀名 创建文件名
+     */
+    private fun createFileName(uploadFilePath: String, tempFilePath: String): String {
+        var type = uploadFilePath
+            .substring(uploadFilePath.lastIndexOf(".") + 1, uploadFilePath.length)
+        return tempFilePath + System.currentTimeMillis() + "." + type
+
+    }
+    /**
+     * 初始化oss上传
+     */
+    private fun initAliYunOss(context: Context, stsBean: STSBean) {
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+    }
+    private fun uploadImgs(
+        context: Context,
+        upfiles: List<String>,
+        stsBean: STSBean,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        val size = upfiles.size
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        var path = createFileName(upfiles[count], stsBean.tempFilePath)
+        upimgs.add(path)
+        AliYunOssUploadOrDownFileConfig.getInstance(context)
+            .uploadFile(stsBean.bucketName, path, upfiles[count], "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                val scount = count + 1
+                if (scount == size) {
+                    callback.onUploadSuccess(upimgs)
+
+                }
+                uploadImgs(context, upfiles, stsBean, scount, callback)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+                callback.onUploadFailed(errCode)
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+                //currentSize*100/totalSize
+            }
+        })
+    }
 
     /**
      * 退出登录
@@ -382,22 +512,4 @@ class SignViewModel : ViewModel() {
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
     }
-
-    /**
-     * 我的menu菜单
-     */
-    var menuBean = MutableLiveData<ArrayList<MenuBeanItem>>()
-    fun getMenuList() {
-        viewModelScope.launch {
-            fetchRequest {
-                var body = HashMap<String, String>()
-                var rkey = getRandomKey()
-                apiService.queryMenuList(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                menuBean.postValue(it)
-            }
-        }
-
-    }
-
 }

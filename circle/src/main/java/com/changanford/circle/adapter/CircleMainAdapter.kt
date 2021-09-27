@@ -45,7 +45,7 @@ class CircleMainAdapter(
 ) {
 
     private val tabList = listOf("推荐", "最新")
-    private val topTabList = listOf("区域", "兴趣")
+    private val topTabList = listOf("地域", "兴趣")
 
     private val circleAdapter by lazy {
         CircleMainCircleAdapter(context)

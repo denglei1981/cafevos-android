@@ -10,11 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
+        <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/carTopViewPager"
             android:layout_width="match_parent"
+            android:minHeight="@dimen/dp_200"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
+        <com.zhpan.indicator.DrawableIndicator
+            android:id="@+id/dr_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
 
         <include
             android:id="@+id/car_recommend_layout"

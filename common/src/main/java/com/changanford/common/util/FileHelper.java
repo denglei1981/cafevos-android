@@ -709,7 +709,7 @@ public class FileHelper {
 
              fileName = "ft"+System.currentTimeMillis() + ".jpg";
 
-        File file = new File(MConstant.INSTANCE.getRootPath(), fileName);
+        File file = new File(MConstant.INSTANCE.getFtFilesDir(), fileName);
         try {
             FileOutputStream fos = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);

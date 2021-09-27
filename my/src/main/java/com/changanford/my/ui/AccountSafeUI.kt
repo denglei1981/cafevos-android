@@ -2,10 +2,6 @@ package com.changanford.my.ui
 
 import android.content.Intent
 import android.graphics.Paint
-import android.view.Gravity
-import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,8 +10,8 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfigUtils
 import com.changanford.my.BaseMineUI
-import com.changanford.my.R
 import com.changanford.my.databinding.UiAccountSafeBinding
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -25,7 +21,6 @@ import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：AccountSafeUI
@@ -78,9 +73,6 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         wxApi.registerApp(ConfigUtils.WXAPPID)
 
         binding.accountToolbar.toolbarTitle.text = "账号与安全"
-        binding.accountToolbar.toolbar.setNavigationOnClickListener {
-            back()
-        }
 
         viewModel.bindAccount.observe(this, Observer {
             it?.forEach { bean ->
@@ -123,7 +115,7 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
             }
         })
 
-        var pop = ConfirmPop()
+        var pop = ConfirmTwoBtnPop(this)
         pop.contentText.text = "您确认取消绑定吗"
         pop.btnConfirm.setOnClickListener {
             pop.dismiss()
@@ -189,24 +181,6 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         lifecycleScope.launch { viewModel.bindAccount() }
     }
 
-    inner class ConfirmPop : BasePopupWindow(this) {
-        lateinit var contentText: AppCompatTextView
-        lateinit var btnCancel: AppCompatButton
-        lateinit var btnConfirm: AppCompatButton
-
-
-        init {
-            setContentView(R.layout.pop_two_btn)
-            popupGravity = Gravity.CENTER
-        }
-
-        override fun onViewCreated(contentView: View) {
-            super.onViewCreated(contentView)
-            contentText = contentView.findViewById(R.id.text_content)
-            btnCancel = contentView.findViewById(R.id.btn_cancel)
-            btnConfirm = contentView.findViewById(R.id.btn_comfir)
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

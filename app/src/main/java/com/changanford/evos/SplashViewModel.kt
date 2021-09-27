@@ -132,26 +132,30 @@ class SplashViewModel : ViewModel() {
     fun getDbAds() {
         viewModelScope.launch(Dispatchers.IO) {
             MConstant.pubKey?.let { it ->
-                Db.myDb.getData(IMGURLTAG)?.let { it ->
-                    it.storeValue?.let { its ->
-                        if (it.storeValue.isNullOrEmpty()) {
-                            imgBean.postValue(null)
-                        } else {
-                            try {
-                                val type: Type =
-                                    object : TypeToken<ArrayList<AdBean?>?>() {}.type
-                                var lists: ArrayList<AdBean> =
-                                    Gson().fromJson(its, type)
-                                var i =
-                                    SPUtils.getParam(
-                                        BaseApplication.curActivity,
-                                        "showImg",
-                                        0
-                                    ) as Int
-                                SPUtils.setParam(BaseApplication.curActivity, "showImg", i + 1)
-                                imgBean.postValue(lists[i % lists.size])
-                            } catch (e: Exception) {
+                if (Db.myDb.getData(IMGURLTAG) == null) {
+                    imgBean.postValue(null)
+                } else {
+                    Db.myDb.getData(IMGURLTAG)?.let { it ->
+                        it.storeValue?.let { its ->
+                            if (it.storeValue.isNullOrEmpty()) {
                                 imgBean.postValue(null)
+                            } else {
+                                try {
+                                    val type: Type =
+                                        object : TypeToken<ArrayList<AdBean?>?>() {}.type
+                                    var lists: ArrayList<AdBean> =
+                                        Gson().fromJson(its, type)
+                                    var i =
+                                        SPUtils.getParam(
+                                            BaseApplication.curActivity,
+                                            "showImg",
+                                            0
+                                        ) as Int
+                                    SPUtils.setParam(BaseApplication.curActivity, "showImg", i + 1)
+                                    imgBean.postValue(lists[i % lists.size])
+                                } catch (e: Exception) {
+                                    imgBean.postValue(null)
+                                }
                             }
                         }
                     }

@@ -1,16 +1,22 @@
 package com.changanford.my.utils
 
+import android.content.Context
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
+import com.changanford.my.R
+import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：CommonUtils
@@ -23,7 +29,7 @@ import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
 /**
  * 登录协议
  */
-fun signAgreement(textView: TextView?) {
+fun TextView.signAgreement() {
     val title = "我已阅读并同意"
     var content = "《用户隐私协议》"
     var content1 = "《引力域注册服务条款》"
@@ -63,6 +69,26 @@ fun signAgreement(textView: TextView?) {
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
-    textView!!.text = spannable
-    textView.movementMethod = LinkMovementMethod.getInstance()
+    this.text = spannable
+    this.movementMethod = LinkMovementMethod.getInstance()
+}
+
+
+class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
+
+    lateinit var contentText: AppCompatTextView
+    lateinit var btnCancel: AppCompatButton
+    lateinit var btnConfirm: AppCompatButton
+
+    init {
+        setContentView(R.layout.pop_two_btn)
+        popupGravity = Gravity.CENTER
+    }
+
+    override fun onViewCreated(contentView: View) {
+        super.onViewCreated(contentView)
+        contentText = contentView.findViewById(R.id.text_content)
+        btnCancel = contentView.findViewById(R.id.btn_cancel)
+        btnConfirm = contentView.findViewById(R.id.btn_comfir)
+    }
 }
