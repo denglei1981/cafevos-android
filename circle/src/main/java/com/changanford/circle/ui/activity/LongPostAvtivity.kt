@@ -52,13 +52,13 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() 
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        var bthinttxt  ="标题 (6-20字之间)"
-        var spannableString = SpannableString(bthinttxt)
-        var intstart =bthinttxt.indexOf('(')
-        var intend = bthinttxt.length
-        spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        binding.etBiaoti.hint = spannableString
+//        var bthinttxt  ="标题 (6-20字之间)"
+//        var spannableString = SpannableString(bthinttxt)
+//        var intstart =bthinttxt.indexOf('(')
+//        var intend = bthinttxt.length
+//        spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+//        spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+//        binding.etBiaoti.hint = spannableString
     }
 
     override fun initData() {
