@@ -66,6 +66,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
         if (!isNavigationViewInit) {
             initView()
             initData()
+            observe()
             isNavigationViewInit = true
         }
     }
@@ -79,6 +80,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
     fun navTo(id: Int) {
         findNavController().navigate(id)
     }
+
+  open  fun observe(){}
 
     fun navFinishActivityTo(id: Int) {
         findNavController().navigate(id)

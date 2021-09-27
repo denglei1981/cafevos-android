@@ -43,16 +43,16 @@ object ApiClient {
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .apply {
-                if (isDebug) {
-                    this.addInterceptor(HttpLoggingInterceptor().apply {
-                        this.level = HttpLoggingInterceptor.Level.BODY
-                    })
-                }
+//                if (isDebug) {
+//                    this.addInterceptor(HttpLoggingInterceptor().apply {
+//                        this.level = HttpLoggingInterceptor.Level.BODY
+//                    })
+//                }
                 this.addInterceptor(DataEncryptInterceptor())
             }.build()
 
     }
-    private val retrofit: Retrofit by lazy {
+    val retrofit: Retrofit by lazy {
         Retrofit
             .Builder()
             .baseUrl(BASE_URL)
@@ -65,7 +65,7 @@ object ApiClient {
         retrofit.create(NetWorkApi::class.java)
     }
 
-    val circleService:CircleNetWork by lazy {
-        retrofit.create(CircleNetWork::class.java)
+     inline fun < reified T> createApi(): T {
+       return retrofit.create(T::class.java)
     }
 }

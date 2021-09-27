@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.changanford.circle.adapter.CircleDetailsBarAdapter
+import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.databinding.FragmentCircleDetailsMainBinding
-import com.changanford.circle.databinding.FragmentCircleMainBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
@@ -23,7 +22,7 @@ class CircleDetailsMainFragment :
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
-    private val adapter by lazy { CircleDetailsBarAdapter(requireContext()) }
+    private val adapter by lazy { CircleMainBottomAdapter(requireContext()) }
 
     companion object {
         fun newInstance(type: String): CircleDetailsMainFragment {
@@ -40,13 +39,13 @@ class CircleDetailsMainFragment :
             2,
             StaggeredGridLayoutManager.VERTICAL
         )
-        staggeredGridLayoutManager.spanCount
-        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                staggeredGridLayoutManager.invalidateSpanAssignments()
-            }
-        })
+        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+//        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                staggeredGridLayoutManager.invalidateSpanAssignments()
+//            }
+//        })
         binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
         binding.ryCircle.adapter = adapter
@@ -60,18 +59,14 @@ class CircleDetailsMainFragment :
     }
 
     override fun initData() {
-        val list = arrayListOf(
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg"
-        )
-        adapter.setItems(list)
-        adapter.notifyDataSetChanged()
+        viewModel.getData()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.circleBean.observe(this,{
+            adapter.setItems(it.dataList)
+            adapter.notifyDataSetChanged()
+        })
     }
 }
