@@ -70,6 +70,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, EmptyViewModel>() {
     }
 
     override fun initData() {
+
+
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
                 it.location.latitude.toString().toast()

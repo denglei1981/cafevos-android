@@ -29,6 +29,10 @@ object MConstant {
         rootPath+ File.separator + "android" + File.separator + "ftfilesdir" + File.separator
     }
 
+    val saveIMGpath by lazy {
+        rootPath+ File.separator + "android" + File.separator + "ftfilesdir" + File.separator+System.currentTimeMillis()+".jpg"
+    }
+
     val H5_BASE_URL_CSCIR by lazy {
         "https://cir.uni.changan.com.cn"
     }

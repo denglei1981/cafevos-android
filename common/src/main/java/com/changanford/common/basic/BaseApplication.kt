@@ -15,6 +15,8 @@ import com.alibaba.sdk.android.push.huawei.HuaWeiRegister
 import com.alibaba.sdk.android.push.impl.*
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory
 import com.alibaba.sdk.android.push.register.*
+import com.baidu.mapapi.CoordType
+import com.baidu.mapapi.SDKInitializer
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.ConfigUtils
@@ -36,10 +38,14 @@ abstract class BaseApplication : MultiDexApplication() {
         ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
         //阿里云push初始化
         PushServiceFactory.init(this)
+        SDKInitializer.initialize(this);
+        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
         // 获取隐私政策签署状态
-        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)){
+        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()
-        }else{
+        } else {
             MyApplicationUtil.init(this)
             initCloudChannel(this)
             initshare()

@@ -1,26 +1,44 @@
 package com.changanford.circle.ui.activity
 
+import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.annotation.UiThread
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.ChoseVideoFMAdapter
+import com.changanford.circle.bean.LongPostBean
 import com.changanford.circle.databinding.VideochosefmBinding
 import com.changanford.circle.widget.view.ThumbnailSelTimeView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.FileHelper
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.lansosdk.videoeditor.VideoEditor
+import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import java.lang.ref.WeakReference
 import java.util.ArrayList
@@ -48,18 +66,26 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
     private val mSelCoverAdapter by lazy {
         ChoseVideoFMAdapter()
     }
+    private lateinit var picture: String
 
     companion object {
+        private const val Moved = 4
         private const val SEL_TIME = 0
         private const val SUBMIT = 1
         private const val SAVE_BITMAP = 2
     }
 
     override fun initView() {
+        AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
+        binding.title.barTvOther.visibility = View.VISIBLE
+        binding.title.barTvOther.text = "下一步"
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
+        binding.title.barTvOther.textSize = 12f
+        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         cutpath = intent.extras?.getString("cutpath").toString()
         myHandler = MyHandler(this)
         initThumbs()
-//        initSetParam()
+        initSetParam()
         binding.cutRecyclerView.layoutManager =
             object : LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false) {
                 override fun canScrollHorizontally(): Boolean {
@@ -71,10 +97,30 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
     }
 
     override fun initData() {
+        LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
+            finish()
+        })
+        binding.title.barTvOther.setOnClickListener {
+            bitmaptolocamedia()
+        }
+        binding.rbpicture.setOnClickListener {
+            binding.rbpicture.isChecked = true
+            binding.rbvcut.isChecked = false
+            openPicture()
+        }
+        binding.rbvcut.setOnClickListener {
+            binding.rbpicture.isChecked = false
+            binding.rbvcut.isChecked = true
 
+
+        }
         binding.thumbSelTimeView.setOnScrollBorderListener(object :
             ThumbnailSelTimeView.OnScrollBorderListener {
             override fun OnScrollBorder(start: Float, end: Float) {
+//                myHandler.removeMessages(SEL_TIME)
+//                val rectLeft: Float = binding.thumbSelTimeView.rectLeft
+//                mSelStartTime = mVideoDuration * rectLeft / 1000
+//                myHandler.sendEmptyMessage(Moved)
             }
 
             override fun onScrollStateChange() {
@@ -87,6 +133,50 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
             }
 
         })
+
+
+    }
+
+    private fun bitmaptolocamedia() {
+        var path = MConstant.saveIMGpath
+        var bitmap = mediaMetadata.getFrameAtTime(
+            (mSelStartTime * 1000000).toLong(),
+            MediaMetadataRetriever.OPTION_CLOSEST
+        )
+        FileHelper.saveBitmapToFile(bitmap, path)
+        var bundle = Bundle()
+        var selectList = arrayListOf(LocalMedia().apply {
+            this.path = path
+            this.realPath = path
+            this.chooseModel = PictureMimeType.ofImage()
+            this.mimeType = PictureMimeType.getImageMimeType(path)
+        })
+        bundle.putParcelableArrayList("picList", selectList)
+        bundle.putInt("position", 0)
+        bundle.putInt("showEditType", -1)
+        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+
+    }
+
+    private fun openPicture() {
+        PictureUtil.openGalleryOnePic(this,
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    val localMedia = result?.get(0)
+                    var bundle = Bundle()
+                    var selectList = arrayListOf(localMedia)
+                    bundle.putParcelableArrayList("picList", selectList)
+                    bundle.putInt("position", 0)
+                    bundle.putInt("showEditType", -1)
+                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+
+                }
+
+                override fun onCancel() {
+
+                }
+
+            })
     }
 
 
@@ -100,14 +190,17 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
                 when (msg.what) {
                     SEL_TIME -> {
 
-                        "${activity.mSelStartTime}".toast()
-                        var bitmap = activity.mediaMetadata.getFrameAtTime(
-                            (activity.mSelStartTime * 1000000).toLong(),
-                            MediaMetadataRetriever.OPTION_CLOSEST
-                        )
-                        activity.binding.ivImg.setImageBitmap(bitmap)
-//                        var str = VideoEditor().executeGetOneFrame(activity.cutpath,activity.mSelStartTime,ScreenUtils.getScreenWidth(activity),ScreenUtils.getScreenHeight(activity))
-//                        GlideUtils.loadBD(str,activity.binding.ivImg)
+//                        var bitmap = activity.mediaMetadata.getFrameAtTime(
+//                            (activity.mSelStartTime * 1000000).toLong(),
+//                            MediaMetadataRetriever.OPTION_CLOSEST
+//                        )
+                        activity.binding.ivImg.seekTo(activity.mSelStartTime.toInt() * 1000)
+                        activity.binding.ivImg.start()
+//                        sendEmptyMessageDelayed(
+//                            SEL_TIME,
+//                            1000
+//                        )
+
                     }
                     SAVE_BITMAP -> {
 
@@ -119,10 +212,15 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
 
                     SUBMIT -> {
                         activity.mSelCoverAdapter.addBitmapList(activity.mBitmapList)
+                        activity.binding.thumbSelTimeView.visibility = View.VISIBLE
                         sendEmptyMessageDelayed(
                             SEL_TIME,
                             1000
                         )
+                    }
+                    Moved -> {
+//                        activity.binding.ivImg.seekTo(activity.mSelStartTime.toInt() * 1000)
+//                        activity.binding.ivImg.start()
                     }
                 }
             }
@@ -169,5 +267,19 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         }.execute()
     }
 
+    private fun initSetParam() {
+        val layoutParams: ViewGroup.LayoutParams = binding.ivImg.layoutParams
+        if (mVideoRotation == "0" && mVideoWidth > mVideoHeight) { //本地视频横屏 0表示竖屏
+            layoutParams.width = 1120
+            layoutParams.height = 830
+        } else {
+            layoutParams.width = 880
+            layoutParams.height = 1220
+        }
+        binding.ivImg.layoutParams = layoutParams
+        binding.ivImg.setVideoPath(cutpath)
+        binding.ivImg.start()
+        binding.ivImg.duration
+    }
 
 }
