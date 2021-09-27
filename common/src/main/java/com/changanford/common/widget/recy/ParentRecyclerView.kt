@@ -1,4 +1,4 @@
-package com.changanford.circle.widget.recy
+package com.changanford.common.widget.recy
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.changanford.circle.R
+import com.changanford.common.R
 
 /**
  * 外层的RecylerView

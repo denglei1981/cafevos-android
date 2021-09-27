@@ -1,4 +1,4 @@
-package com.changanford.circle.widget.recy
+package com.changanford.common.widget.recy
 
 import android.content.Context
 import android.util.AttributeSet

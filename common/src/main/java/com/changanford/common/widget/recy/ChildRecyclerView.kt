@@ -1,4 +1,4 @@
-package com.changanford.circle.widget.recy
+package com.changanford.common.widget.recy
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.changanford.circle.R
-import java.lang.Error
+import com.changanford.common.R
 import kotlin.math.abs
 
 /**
@@ -137,9 +136,6 @@ class ChildRecyclerView @JvmOverloads constructor(
                     if (lastTraverseView != this) {
                         // 这个tag会在ParentRecyclerView中用到
                         lastTraverseView.setTag(R.id.tag_saved_child_recycler_view, this)
-                    }
-                    if (parentView.id == R.id.view_pager_top) {
-                        return
                     }
                     // 碰到ViewPager，需要上报给ParentRecyclerView
                     viewPager = parentView

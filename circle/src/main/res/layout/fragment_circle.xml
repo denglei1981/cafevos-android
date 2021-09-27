@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
-        <com.changanford.circle.widget.recy.ParentRecyclerView
+        <com.changanford.common.widget.recy.ParentRecyclerView
             android:id="@+id/ry_circle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
