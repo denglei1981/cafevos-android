@@ -18,3 +18,4 @@ local.properties
 /.idea
 build
 /.idea/misc.xml
+.idea/
