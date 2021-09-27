@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
@@ -11,6 +12,8 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_LIKE
+import com.changanford.common.utilext.GlideUtils.loadCircle
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -18,6 +21,7 @@ import com.changanford.my.databinding.UiMineEditInfoBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
 import com.github.gzuliyujiang.wheelpicker.DatePicker
+import com.google.gson.Gson
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -101,74 +105,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         binding.editEmail.setOnClickListener(this)
 
         //监听数据
-//        viewModel.uniUserInfo.observe(this, Observer { user ->
-//            user?.let {
-//                userInfoBean = user
-//                binding.editNickname.setRightDesc(user.nickname)
-//                body["nickname"] = user.nickname
-//
-//                binding.editAutograph.setRightDesc(user.brief)
-//
-//                var sex = "保密"
-//                when (user.sex) {
-//                    0 -> sex = "保密"
-//                    1 -> sex = "男"
-//                    2 -> sex = "女"
-//                }
-//                body["sex"] = user.sex.toString()
-//
-//                binding.editSex.setRightDesc(sex)
-//
-//                binding.editBirthday.setRightDesc(
-//                    "${
-//                        TimeUtils.MillisToDayStr(
-//                            user.birthday.toLongOrNull()
-//                        )
-//                    }"
-//                )
-//
-//                binding.editConstellation.setRightDesc(user.constellation)
-//
-//                binding.editEmail.setRightDesc(user.email)
-//                if (user.mobile.isNullOrEmpty()) {
-//                    binding.editContactContent.setText(user.phone)
-//                } else {
-//                    binding.editContactContent.setText(user.mobile)
-//                }
-//
-//                if (!user.provinceName.isNullOrEmpty()) {
-//                    binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
-//                }
-//
-//                if (!user.hobbyNames.isNullOrEmpty()) {
-//                    binding.editHobby.setRightDesc(user.hobbyNames)
-//                }
-//                body["hobbyIds"] = user.hobbyIds
-//                body["hobbyNames"] = user.hobbyNames
-//
-//                body["industryIds"] = ""
-//                if (user.industryIds.isNotEmpty()) {
-//                    var ids = user.industryIds.split(",")
-//                    body["industryIds"] = if (ids[0].isNotEmpty()) ids[0] else ""
-//                }
-//
-//                body["industryNames"] = ""
-//                if (user.industryNames.isNotEmpty()) {
-//                    var names = user.industryNames.split(",")
-//                    if (names[0].isNotEmpty()) {
-//                        body["industryNames"] = names[0]
-//                        binding.editIndustry.rightDesc = names[0]
-//                    }
-//                }
-//
-//                binding.editRegTime.rightDesc = TimeUtils.InputTimetamp(user.createTime.toString())
-//
-//                user.avatar?.let {
-//                    loadCircle(user.avatar, binding.editIcon, R.mipmap.mine_user_header)
-//                    headIconUrl = it
-//                }
-//            }
-//        })
+        getUserInfo()
 
         //监听城市列表
         viewModel.allCity.observe(this, Observer {
@@ -225,6 +162,74 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //        viewModel.getUniUserInfo()
     }
 
+    private fun full(user: UserInfoBean?){
+        user?.let {
+            userInfoBean = user
+            binding.editNickname.setRightDesc(user.nickname)
+            body["nickname"] = user.nickname
+
+            binding.editAutograph.setRightDesc(user.brief)
+
+            var sex = "保密"
+            when (user.sex) {
+                0 -> sex = "保密"
+                1 -> sex = "男"
+                2 -> sex = "女"
+            }
+            body["sex"] = user.sex.toString()
+
+            binding.editSex.setRightDesc(sex)
+
+            binding.editBirthday.setRightDesc(
+                "${
+                    TimeUtils.MillisToDayStr(
+                        user.birthday
+                    )
+                }"
+            )
+
+            binding.editConstellation.setRightDesc(user.constellation)
+
+            binding.editEmail.setRightDesc(user.email)
+            if (user.mobile.isNullOrEmpty()) {
+                binding.editContactContent.setText(user.phone)
+            } else {
+                binding.editContactContent.setText(user.mobile)
+            }
+
+            if (!user.provinceName.isNullOrEmpty()) {
+                binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
+            }
+
+            if (!user.hobbyNames.isNullOrEmpty()) {
+                binding.editHobby.setRightDesc(user.hobbyNames)
+            }
+            body["hobbyIds"] = user.hobbyIds
+            body["hobbyNames"] = user.hobbyNames
+
+            body["industryIds"] = ""
+            if (user.industryIds.isNotEmpty()) {
+                var ids = user.industryIds.split(",")
+                body["industryIds"] = if (ids[0].isNotEmpty()) ids[0] else ""
+            }
+
+            body["industryNames"] = ""
+            if (user.industryNames.isNotEmpty()) {
+                var names = user.industryNames.split(",")
+                if (names[0].isNotEmpty()) {
+                    body["industryNames"] = names[0]
+                    binding.editIndustry.rightDesc = names[0]
+                }
+            }
+
+            binding.editRegTime.rightDesc = TimeUtils.InputTimetamp(user.createTime.toString())
+
+            user.avatar?.let {
+                loadCircle(user.avatar, binding.editIcon, R.mipmap.my_headdefault)
+                headIconUrl = it
+            }
+        }
+    }
 
     /**
      * 保存信息
@@ -455,12 +460,12 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 编辑昵称
      */
     fun editNickname() {
-//        startActivity(
-//            Intent(this, EditNickNameUI::class.java).putExtra(
-//                "nickName",
-//                "${binding.editNickname.rightDesc}"
-//            )
-//        )
+        startActivity(
+            Intent(this, EditNickNameUI::class.java).putExtra(
+                "nickName",
+                "${binding.editNickname.rightDesc}"
+            )
+        )
     }
 
 
@@ -508,5 +513,25 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //
 //            binding.editAddress.setRightDesc("${province.areaName}${city.areaName}${county.areaName}")
 //        }
+    }
+
+    /**
+     * 获取用户信息
+     */
+    private fun getUserInfo() {
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
+            it?.toString()?.logE()
+            if (null == it || it.userJson.isNullOrEmpty()) {
+                if (MConstant.token.isNotEmpty()){
+                    viewModel.getUserInfo()
+                }else {
+                    full(null)
+                }
+            } else {
+                var userInfoBean: UserInfoBean =
+                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
+                full(userInfoBean)
+            }
+        })
     }
 }

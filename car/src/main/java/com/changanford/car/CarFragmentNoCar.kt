@@ -1,10 +1,12 @@
 package com.changanford.car
 
+import androidx.core.view.isVisible
 import com.changanford.car.adapter.CarAuthAdapter
 import com.changanford.car.adapter.CarRecommendAdapter
 import com.changanford.car.adapter.CarTopBannerAdapter
 import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.AdBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.logE
 
@@ -13,14 +15,9 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
     var carTopBanner = CarTopBannerAdapter()
     var carRecommendAdapter = CarRecommendAdapter()
     private var carAuthAdapter = CarAuthAdapter()
-    var topBannerList = ArrayList<String>()
+    var topBannerList = ArrayList<AdBean>()
 
     override fun initView() {
-
-        topBannerList.add("uni-stars-manager/2021/09/22/a07c2ee4aaec45a5a212211f1e9f79b7.png")
-        topBannerList.add("uni-stars-manager/2021/09/22/a07c2ee4aaec45a5a212211f1e9f79b7.png")
-        topBannerList.add("uni-stars-manager/2021/09/22/a07c2ee4aaec45a5a212211f1e9f79b7.png")
-
         binding.carTopViewPager.apply {
             setAutoPlay(true)
             setScrollDuration(500)
@@ -31,10 +28,10 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 //todo
             }
             setIndicatorView(binding.drIndicator)
-        }.create(topBannerList)
+        }
         binding.drIndicator
             .setIndicatorGap(20)
-            .setIndicatorDrawable(R.drawable.indicator_unchecked,R.drawable.indicator_checked)
+            .setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
 
         binding.carTopViewPager.isSaveEnabled = false
         binding.carAuthrec.isSaveEnabled = false
@@ -49,9 +46,35 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
 
     override fun initData() {
         viewModel.getTopAds()
+        viewModel.getMyCar()
         viewModel._ads.observe(this, {
             "中间页广告数量${it.size}".logE()
+            if (it==null|| it.size==0){
+                binding.carTopViewPager.isVisible = false
+                return@observe
+            }
+            binding.carTopViewPager.isVisible = false
+            topBannerList.clear()
+            topBannerList.addAll(it)
+            binding.carTopViewPager.create(topBannerList)
         })
-        carAuthAdapter.data = mutableListOf<Int>(4)
+        observeData()
+    }
+
+    private fun observeData() {
+        viewModel._middleInfo.observe(this, { it ->
+            if (it.carModels == null) {
+                binding.carRecommendLayout.root.isVisible = false
+            } else {
+                binding.carRecommendLayout.root.isVisible = true
+                carRecommendAdapter.data.clear()
+                carRecommendAdapter.data.add(it.carModels)
+            }
+
+            it.carInfos?.let { cars ->
+                carAuthAdapter.data.clear()
+                carAuthAdapter.data.add(cars)
+            }
+        })
     }
 }

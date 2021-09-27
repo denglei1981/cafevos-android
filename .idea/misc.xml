@@ -127,11 +127,13 @@
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.24322916666666666" />
         <entry key="car/src/main/res/layout/activity_detail.xml" value="0.14635416666666667" />
         <entry key="car/src/main/res/layout/car_fragment.xml" value="0.20677083333333332" />
+        <entry key="car/src/main/res/layout/car_fragment_nocar.xml" value="0.1" />
         <entry key="car/src/main/res/layout/detail_fragment.xml" value="0.20677083333333332" />
         <entry key="car/src/main/res/layout/fragment_circle.xml" value="0.20677083333333332" />
         <entry key="car/src/main/res/layout/fragment_circle2.xml" value="0.20677083333333332" />
         <entry key="circle/src/main/res/layout/fragment_second.xml" value="0.24322916666666666" />
         <entry key="circle/src/main/res/layout/testviewpager.xml" value="0.14635416666666667" />
+        <entry key="common/src/main/res/drawable/message_have_bg.xml" value="0.111328125" />
         <entry key="common/src/main/res/layout/about_fragment.xml" value="0.24322916666666666" />
         <entry key="common/src/main/res/layout/activity_test.xml" value="0.335" />
         <entry key="common/src/main/res/layout/camerax_test.xml" value="0.184375" />
@@ -141,8 +143,14 @@
         <entry key="common/src/main/res/layout/testviewpager.xml" value="0.14635416666666667" />
         <entry key="home/src/main/res/layout/fragment_first.xml" value="0.24322916666666666" />
         <entry key="home/src/main/res/layout/fragment_homebanner.xml" value="0.24322916666666666" />
+        <entry key="my/src/main/res/layout/_view_mine_item.xml" value="0.124609375" />
         <entry key="my/src/main/res/layout/about_fragment.xml" value="0.24322916666666666" />
         <entry key="my/src/main/res/layout/activity_test.xml" value="0.24322916666666666" />
+        <entry key="my/src/main/res/layout/fragment_my.xml" value="0.1" />
+        <entry key="my/src/main/res/layout/item_mymenus.xml" value="0.1" />
+        <entry key="my/src/main/res/layout/ui_edit_nickname.xml" value="0.375" />
+        <entry key="my/src/main/res/layout/ui_mine_edit_info.xml" value="0.25" />
+        <entry key="my/src/main/res/layout/view_toolbar.xml" value="0.17265625" />
         <entry key="shop/src/main/res/layout/fragment_circle.xml" value="0.24322916666666666" />
         <entry key="shop/src/main/res/layout/fragment_circle_list.xml" value="0.24322916666666666" />
       </map>

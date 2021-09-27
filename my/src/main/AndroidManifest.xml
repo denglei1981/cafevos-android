@@ -23,5 +23,6 @@
         <activity android:name=".ui.ClearAccountConfirmUI" />
         <activity android:name=".ui.EditAddressUI" />
         <activity android:name=".ui.AddressListUI" />
+        <activity android:name=".ui.MineEditInfoUI" />
     </application>
 </manifest>

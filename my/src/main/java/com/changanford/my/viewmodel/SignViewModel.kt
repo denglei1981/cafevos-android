@@ -9,7 +9,6 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
-import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
@@ -19,8 +18,6 @@ import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.interf.UploadPicCallback
-import com.huawei.hms.common.ApiException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -75,6 +72,20 @@ class SignViewModel : ViewModel() {
                 apiService.smsCodeSign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 loginSuccess(it)
+            }
+        }
+    }
+    fun nameNick(nameNick:String,callback:(String)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["nickname"] = nameNick
+                var rkey = getRandomKey()
+                apiService.nameNick(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                callback(it?:"")
+            }.onWithMsgFailure {
+                it?.toast()
             }
         }
     }

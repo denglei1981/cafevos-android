@@ -31,6 +31,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
+    /**--------------------------------car---------------------------------------**/
+
+    @POST("/ser/carAuth/getMyCar")
+    suspend fun getMiddlePageInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MiddlePageBean>
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(
@@ -45,6 +52,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MenuBeanItem>>
+    /**
+     * 昵称敏感词检查
+     */
+    @POST("user/vailString")
+    suspend fun nameNick(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     /**
      * 获取基本配置
