@@ -34,6 +34,7 @@ object ARouterCirclePath {
     const val VideoPostActivity = "/circle/VideoPostActivity"
     const val  PictureEditAudioActivity = "/circle/PictureEditAudioActivity"
     const val VideoChoseFMActivity = "/circle/VideoChoseFMActivity"
+    const val LongPostAvtivity = "/circle/LongPostAvtivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

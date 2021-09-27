@@ -47,7 +47,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, EmptyViewModel>() {
         binding.ivMenu.setOnClickListener {
             CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                 override fun checkLongBar() {
-
+                    startARouter(ARouterCirclePath.LongPostAvtivity)
                 }
 
                 override fun checkPic() {

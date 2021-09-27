@@ -1,12 +1,10 @@
 package com.changanford.evos
 
 import android.content.Intent
-import android.os.Build
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.logD
-import com.changanford.common.utilext.toastShow
 import com.changanford.evos.databinding.PictestBinding
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
