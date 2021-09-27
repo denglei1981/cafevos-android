@@ -3,6 +3,7 @@ package com.changanford.common.util.location
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.alibaba.fastjson.JSON
 import com.baidu.location.LocationClient
 import com.changanford.common.web.AgentWebViewModle
 import com.baidu.location.BDLocation
@@ -10,6 +11,7 @@ import com.baidu.location.BDLocation
 import com.baidu.location.BDAbstractLocationListener
 import com.changanford.common.MyApp
 import com.baidu.location.LocationClientOption
+import com.changanford.common.utilext.logD
 
 
 /**
@@ -24,7 +26,7 @@ object LocationUtils {
 
     var mLatitude = MutableLiveData(0.00)
     var mLongitude = MutableLiveData(0.00)
-
+    var mycity =MutableLiveData("")
     @SuppressLint("StaticFieldLeak")
     val mLocationClient = LocationClient(MyApp.mContext)
 
@@ -66,6 +68,7 @@ object LocationUtils {
         option.setEnableSimulateGps(false)
         //可选，设置是否需要过滤GPS仿真结果，默认需要，即参数为false
         option.setNeedNewVersionRgc(true)
+        option.setIsNeedAddress(true)
         //可选，设置是否需要最新版本的地址信息。默认需要，即参数为true
         mLocationClient.locOption = option
         //mLocationClient为第二步初始化过的LocationClient对象
@@ -87,6 +90,8 @@ object LocationUtils {
             val errorCode = location.locType
             mLatitude.value = latitude
             mLongitude.value = longitude
+            mycity.value = location.city
+            "${JSON.toJSONString(location)}".logD()
             //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
         }
     }

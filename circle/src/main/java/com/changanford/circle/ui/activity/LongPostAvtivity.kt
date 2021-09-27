@@ -32,6 +32,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
+import java.util.zip.Inflater
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() {
@@ -70,6 +71,8 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() 
         binding.longpostrec.layoutManager = LinearLayoutManager(this)
         longpostadapter.draggableModule.isDragEnabled=true
         binding.longpostrec.adapter = longpostadapter
+        var headerView = layoutInflater.inflate(R.layout.longposthead,null)
+        longpostadapter.addHeaderView(headerView)
         binding.bottom.ivPic.setOnClickListener {
             PictureUtil.openGalleryOnePic(this,
                 object : OnResultCallbackListener<LocalMedia> {

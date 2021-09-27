@@ -24,19 +24,14 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter
     init {
         addChildClickViewIds(R.id.iv_delete)
     }
-    var index = -1;
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
         var content = holder.getView<AppCompatEditText>(R.id.tv_tex)
         var pic = holder.getView<ImageView>(R.id.iv_img)
         var det = holder.getView<ImageView>(R.id.iv_delete)
         GlideUtils.loadBD(PictureUtil.getFinallyPath(item.localMedias),pic)
-        content.setOnTouchListener { p0, event ->
-            if (event?.action == MotionEvent.ACTION_UP) {
-                index = holder.layoutPosition
-            }
-            false
-        }
-        content.addTextChangedListener(object :TextWatcher{
+
+        content.setText(item.content)
+        var watcher = object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -44,18 +39,17 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
-                notifyDataSetChanged()  //在这里进行数据刷新  之后会发现焦点还在EditText上
+                if (content.hasFocus()){
+                    item.content = p0.toString()
+                }
             }
 
-        })
-        content.setOnClickListener {
-            "${holder.layoutPosition}".logD()
-            layoutManager.scrollToPosition(holder.layoutPosition)
         }
-        content.clearFocus();
-        if (index!=-1&&index == holder.layoutPosition){
-            content.requestFocus()
+        if (content.tag !=null){
+            content.removeTextChangedListener(watcher)
         }
+        content.addTextChangedListener(watcher)
+        content.tag = watcher
+
     }
 }
