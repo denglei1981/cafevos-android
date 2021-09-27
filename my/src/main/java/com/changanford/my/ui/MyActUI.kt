@@ -4,72 +4,45 @@ import android.graphics.Typeface
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.bean.MedalListBeanItem
-import com.changanford.common.manger.RouterManger
+import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
-import com.changanford.my.databinding.UiAllMedalBinding
-import com.changanford.my.ui.fragment.MedalFragment
-import com.changanford.my.viewmodel.SignViewModel
+import com.changanford.my.databinding.UiCollectBinding
+import com.changanford.my.ui.fragment.ActFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
- *  文件名：AllMedalListUI
+ *  文件名：MyCollectUI
  *  创建者: zcy
- *  创建日期：2021/9/14 14:32
+ *  创建日期：2021/9/26 16:54
  *  描述: TODO
  *  修改描述：TODO
  */
-@Route(path = ARouterMyPath.AllMedalUI)
-class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
+@Route(path = ARouterMyPath.MineJoinAcUI)
+class MyActUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
-    private var medalMap: HashMap<String, ArrayList<MedalListBeanItem>> = HashMap()
-
-    private val titles: ArrayList<String> = ArrayList()
-
+    private val titles = arrayListOf("我发布的", "我参与的")
     private var oldPosition = 0
 
     override fun initView() {
-        binding.medalToolbar.toolbarTitle.text = "会员勋章"
-        viewModel.allMedal.observe(this, Observer {
-            it?.let { l ->
-                l.forEach { item ->
-                    var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalTypeName]
-                    if (null == list) {
-                        list = ArrayList()
-                        list.add(item)
-                        medalMap[item.medalTypeName] = list
-                    } else {
-                        list.add(item)
-                    }
-                }
-                medalMap.filterKeys { key ->
-                    titles.add(key)
-                }
-                initViewpager()
-            }
-        })
-
-        binding.mineMedal.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.MineMedalUI)
-        }
+        binding.collectToolbar.toolbarTitle.text = "我的活动"
+        initViewpager()
     }
 
     private fun initViewpager() {
         binding.viewpager.run {
-            adapter = object : FragmentStateAdapter(this@AllMedalListUI) {
+            adapter = object : FragmentStateAdapter(this@MyActUI) {
                 override fun getItemCount(): Int {
                     return titles.size
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MedalFragment.newInstance(medalMap[titles[position]])
+                    return ActFragment.newInstance("$position")
                 }
             }
 
@@ -142,10 +115,5 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 tab.customView = itemHelpTabBinding.root
             }.attach()
         }
-    }
-
-    override fun initData() {
-        super.initData()
-        viewModel.mineMedal()
     }
 }

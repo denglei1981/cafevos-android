@@ -33,6 +33,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
     }
 
     override fun initView() {
+        binding.carToolbar.toolbarTitle.text = "我的爱车"
 
         var headView: ViewHeadCarAuthBinding = ViewHeadCarAuthBinding.inflate(layoutInflater)
         carAdapter.addHeaderView(headView.root)

@@ -50,6 +50,8 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
     }
 
     override fun initView() {
+        binding.addToolbar.toolbarTitle.text = "收货地址"
+
         intent.extras?.getBoolean(RouterManger.KEY_TO_ITEM)?.let { isChooseAdd = it }
         binding.cryAdd.rcyCommonView.adapter = addAdapter
 

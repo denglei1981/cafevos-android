@@ -8,68 +8,75 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.bean.CircleUserBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
+import com.changanford.my.bean.MangerCircleCheck
 import com.changanford.my.databinding.ItemMedalTabBinding
-import com.changanford.my.databinding.UiAllMedalBinding
-import com.changanford.my.ui.fragment.MedalFragment
-import com.changanford.my.viewmodel.SignViewModel
+import com.changanford.my.databinding.UiCollectBinding
+import com.changanford.my.ui.fragment.MangerCircleFragment
+import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
- *  文件名：AllMedalListUI
+ *  文件名：MyCollectUI
  *  创建者: zcy
- *  创建日期：2021/9/14 14:32
+ *  创建日期：2021/9/26 16:54
  *  描述: TODO
  *  修改描述：TODO
  */
-@Route(path = ARouterMyPath.AllMedalUI)
-class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
+@Route(path = ARouterMyPath.CircleMemberUI)
+class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
-    private var medalMap: HashMap<String, ArrayList<MedalListBeanItem>> = HashMap()
-
-    private val titles: ArrayList<String> = ArrayList()
-
+    private var titles = arrayListOf("全部", "待审核")
     private var oldPosition = 0
 
-    override fun initView() {
-        binding.medalToolbar.toolbarTitle.text = "会员勋章"
-        viewModel.allMedal.observe(this, Observer {
-            it?.let { l ->
-                l.forEach { item ->
-                    var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalTypeName]
-                    if (null == list) {
-                        list = ArrayList()
-                        list.add(item)
-                        medalMap[item.medalTypeName] = list
-                    } else {
-                        list.add(item)
-                    }
-                }
-                medalMap.filterKeys { key ->
-                    titles.add(key)
-                }
-                initViewpager()
-            }
-        })
+    var circleId: String = ""
+    var title: String = "我的圈子"
 
-        binding.mineMedal.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.MineMedalUI)
+    var isCheck: Boolean = true //点击管理按钮
+    var position: Int = 0 // 全部
+
+    override fun initView() {
+        intent.extras?.getString(RouterManger.KEY_TO_ITEM)?.let {
+            title = it
         }
+        intent?.extras?.getString(RouterManger.KEY_TO_ID)?.let {
+            circleId = it
+        }
+        binding.collectToolbar.toolbarTitle.text = title
+        binding.collectToolbar.toolbarSave.text = "管理"
+        binding.collectToolbar.toolbarSave.setOnClickListener {
+            click()
+        }
+
+        viewModel.circleNum.observe(this, Observer {
+            initViewpager(it)
+        })
     }
 
-    private fun initViewpager() {
+    override fun initData() {
+        viewModel.queryCircleCount(circleId)
+    }
+
+    private fun initViewpager(circle: CircleUserBean) {
+        circle?.let {
+            titles.clear()
+            titles = arrayListOf("全部(${it.userCount})", "待审核(${it.userApplyCount})")
+        }
+
         binding.viewpager.run {
-            adapter = object : FragmentStateAdapter(this@AllMedalListUI) {
+            adapter = object : FragmentStateAdapter(this@MyCircleMangerUI) {
                 override fun getItemCount(): Int {
                     return titles.size
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MedalFragment.newInstance(medalMap[titles[position]])
+                    return MangerCircleFragment.newInstance(position, circleId)
                 }
             }
 
@@ -108,8 +115,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                         title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                         newIn?.isSelected = true
                     }
-
                     oldPosition = position
+
+                    //重置
+                    isCheck = false
+                    this@MyCircleMangerUI.position = position
+                    click()
                 }
             })
 
@@ -144,8 +155,19 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         }
     }
 
-    override fun initData() {
-        super.initData()
-        viewModel.mineMedal()
+    /**
+     * 管理
+     */
+    private fun click() {
+        if (isCheck) { //管理
+            isCheck = false
+            binding.collectToolbar.toolbarSave.text = "取消"
+        } else {//取消
+            isCheck = true
+            binding.collectToolbar.toolbarSave.text = "管理"
+        }
+        LiveDataBus.get()
+            .with(LiveDataBusKey.MINE_DELETE_CIRCLE_USER, MangerCircleCheck::class.java)
+            .postValue(MangerCircleCheck(position, !isCheck))
     }
 }

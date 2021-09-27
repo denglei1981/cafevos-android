@@ -36,6 +36,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
     var addressBean: AddressBeanItem? = null
 
     override fun initView() {
+        binding.addressToolbar.toolbarTitle.text = "添加地址"
         body["addressId"] = "0"
         body["isDefault"] = 0
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {

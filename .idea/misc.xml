@@ -8,6 +8,7 @@
         <entry key="../sdk/platforms/android-30/data/res/layout/tab_content.xml" value="0.1328125" />
         <entry key="../sdk/platforms/android-30/data/res/layout/test_list_item.xml" value="0.1328125" />
         <entry key="..\:/ford/app/src/main/res/layout/pay_result.xml" value="0.18958333333333333" />
+        <entry key="..\:/ford/circle/src/main/res/layout/circle_layout_details_top.xml" value="0.21927083333333333" />
         <entry key="..\:/ford/circle/src/main/res/layout/pop_circle_management.xml" value="0.11503623188405797" />
         <entry key="..\:/ford/common/src/main/res/drawable/next_btn_bg.xml" value="0.19427083333333334" />
         <entry key="..\:/ford/common/src/main/res/layout/about_fragment.xml" value="0.178125" />
@@ -16,6 +17,8 @@
         <entry key="..\:/ford/common/src/main/res/layout/item_medal.xml" value="0.536" />
         <entry key="..\:/ford/common/src/main/res/layout/my_two_level_header.xml" value="0.15677083333333333" />
         <entry key="..\:/ford/common/src/main/res/layout/view_empty.xml" value="0.2046875" />
+        <entry key="..\:/ford/home/src/main/res/layout/include_home_item_header_info.xml" value="0.4" />
+        <entry key="..\:/ford/home/src/main/res/layout/item_home_recommend_items_one.xml" value="0.1403985507246377" />
         <entry key="..\:/ford/my/src/main/res/drawable/checkbox.xml" value="0.196875" />
         <entry key="..\:/ford/my/src/main/res/drawable/edittext_bg.xml" value="0.13986486486486485" />
         <entry key="..\:/ford/my/src/main/res/drawable/et_focused.xml" value="0.215625" />
@@ -32,7 +35,9 @@
         <entry key="..\:/ford/my/src/main/res/drawable/shape_car_auth_btn_bg.xml" value="0.2125" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_car_auth_status.xml" value="0.2125" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_car_num_btn_bg.xml" value="0.2125" />
+        <entry key="..\:/ford/my/src/main/res/drawable/shape_lift_top_r_16_c_00.xml" value="0.209375" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_login_sms_r_16_c_89.xml" value="0.21927083333333333" />
+        <entry key="..\:/ford/my/src/main/res/drawable/shape_login_sms_r_2_c_89.xml" value="0.209375" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_medal_bg_liner_a6_to_dc.xml" value="0.21145833333333333" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_r_13_c_ac.xml" value="0.21666666666666667" />
         <entry key="..\:/ford/my/src/main/res/drawable/shape_r_20_c_ff.xml" value="0.1925925925925926" />
@@ -47,7 +52,8 @@
         <entry key="..\:/ford/my/src/main/res/layout/about_fragment.xml" value="0.17552083333333332" />
         <entry key="..\:/ford/my/src/main/res/layout/activity_test.xml" value="0.13854166666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/fm_medal.xml" value="0.22135416666666666" />
-        <entry key="..\:/ford/my/src/main/res/layout/fragment_my.xml" value="0.12590579710144928" />
+        <entry key="..\:/ford/my/src/main/res/layout/fragment_collect.xml" value="0.2296875" />
+        <entry key="..\:/ford/my/src/main/res/layout/fragment_my.xml" value="0.1924726060028585" />
         <entry key="..\:/ford/my/src/main/res/layout/item_address.xml" value="0.536" />
         <entry key="..\:/ford/my/src/main/res/layout/item_auth_car_and_incall.xml" value="0.15625" />
         <entry key="..\:/ford/my/src/main/res/layout/item_car_auth.xml" value="0.264" />
@@ -55,15 +61,21 @@
         <entry key="..\:/ford/my/src/main/res/layout/item_clear_account_verify.xml" value="0.228125" />
         <entry key="..\:/ford/my/src/main/res/layout/item_grow_up.xml" value="0.1796875" />
         <entry key="..\:/ford/my/src/main/res/layout/item_jifen.xml" value="0.4" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_join_circle.xml" value="0.4" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_manger_circle.xml" value="0.4" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_medal.xml" value="0.4" />
         <entry key="..\:/ford/my/src/main/res/layout/item_medal_banner.xml" value="0.1953125" />
         <entry key="..\:/ford/my/src/main/res/layout/item_medal_tab.xml" value="0.22135416666666666" />
         <entry key="..\:/ford/my/src/main/res/layout/item_menu.xml" value="0.22447916666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/item_mine_medal.xml" value="0.264" />
+        <entry key="..\:/ford/my/src/main/res/layout/item_my_medal.xml" value="0.20729166666666668" />
         <entry key="..\:/ford/my/src/main/res/layout/item_sign_day.xml" value="0.6" />
         <entry key="..\:/ford/my/src/main/res/layout/item_task_content.xml" value="0.21064814814814814" />
         <entry key="..\:/ford/my/src/main/res/layout/item_task_title.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/item_title.xml" value="0.22447916666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/mine_fragment.xml" value="0.264" />
+        <entry key="..\:/ford/my/src/main/res/layout/my_carauthview.xml" value="0.21041666666666667" />
+        <entry key="..\:/ford/my/src/main/res/layout/my_carauthviewtop.xml" value="0.21041666666666667" />
         <entry key="..\:/ford/my/src/main/res/layout/playcaard.xml" value="0.14130434782608695" />
         <entry key="..\:/ford/my/src/main/res/layout/pop_take_medal.xml" value="0.14356884057971014" />
         <entry key="..\:/ford/my/src/main/res/layout/pop_two_btn.xml" value="0.4" />
@@ -74,6 +86,7 @@
         <entry key="..\:/ford/my/src/main/res/layout/ui_car_crm_auth.xml" value="0.264" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_clear_account_con.xml" value="0.2" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_clear_account_confirm.xml" value="0.2" />
+        <entry key="..\:/ford/my/src/main/res/layout/ui_collect.xml" value="0.19427083333333334" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_edit_address.xml" value="0.2" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_fans.xml" value="0.21197916666666666" />
         <entry key="..\:/ford/my/src/main/res/layout/ui_grow_up.xml" value="0.264" />

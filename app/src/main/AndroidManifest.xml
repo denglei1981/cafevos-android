@@ -139,6 +139,7 @@
 
 
         <activity android:name=".demo.DemoDetail" />
+        <activity android:name="com.changanford.my.ui.MyActUI" />
     </application>
 
 </manifest>

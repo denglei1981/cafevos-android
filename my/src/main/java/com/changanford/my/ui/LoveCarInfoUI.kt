@@ -19,7 +19,6 @@ import com.changanford.my.databinding.UiLoveCarInfoBinding
 class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, EmptyViewModel>() {
 
     override fun initView() {
-        binding.carToolbar.toolbar.setNavigationOnClickListener { back() }
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
         binding.tvAuth.isEnabled = true
