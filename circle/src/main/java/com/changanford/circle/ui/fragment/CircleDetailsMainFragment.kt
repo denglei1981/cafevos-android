@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.databinding.FragmentCircleDetailsMainBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import java.lang.reflect.Method
 
 /**
  *Author lcw
@@ -21,6 +24,7 @@ class CircleDetailsMainFragment :
     BaseFragment<FragmentCircleDetailsMainBinding, CircleDetailsViewModel>() {
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+    private lateinit var mCheckForGapMethod: Method
 
     private val adapter by lazy { CircleMainBottomAdapter(requireContext()) }
 
@@ -35,17 +39,25 @@ class CircleDetailsMainFragment :
     }
 
     override fun initView() {
+
+        MUtils.scrollStopLoadImage(binding.ryCircle)
+
+        mCheckForGapMethod =
+            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod.isAccessible=true
+
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL
         )
         staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-//        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
+        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                mCheckForGapMethod.invoke(binding.ryCircle.layoutManager) as Boolean
 //                staggeredGridLayoutManager.invalidateSpanAssignments()
-//            }
-//        })
+            }
+        })
         binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
         binding.ryCircle.adapter = adapter
@@ -64,7 +76,7 @@ class CircleDetailsMainFragment :
 
     override fun observe() {
         super.observe()
-        viewModel.circleBean.observe(this,{
+        viewModel.circleBean.observe(this, {
             adapter.setItems(it.dataList)
             adapter.notifyDataSetChanged()
         })
