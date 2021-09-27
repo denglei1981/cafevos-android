@@ -1,6 +1,5 @@
 package com.changanford.my
 
-import android.R
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,7 +16,6 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-
 
 /**
  *  文件名：BaseMineUI
@@ -39,7 +37,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
         super.onCreate(savedInstanceState)
         // 华为,OPPO机型在StatusBarUtil.setLightStatusBar后布局被顶到状态栏上去了
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val content = (findViewById<View>(R.id.content) as ViewGroup).getChildAt(0)
+            val content = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
             if (content != null && !isUseFullScreenMode()) {
                 content.fitsSystemWindows = true
             }
@@ -55,6 +53,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
             it.setOnRefreshLoadMoreListener(this)
             initRefreshData(pageSize)
         }
+
         bindToolbar()?.let {
             it.setNavigationOnClickListener {
                 back()
@@ -80,7 +79,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     }
 
     open fun bindToolbar(): Toolbar? {
-        return null
+        return binding.root.findViewById(R.id.toolbar)
     }
 
     open fun <T, VH : BaseViewHolder> completeRefresh(

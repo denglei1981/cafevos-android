@@ -13,7 +13,6 @@ import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
 import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
@@ -33,7 +32,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     }
 
     override fun initView() {
-        StatusBarUtil.setTranslucentForImageView(this, null)
+//        StatusBarUtil.setTranslucentForImageView(this, null)
 
         binding.taskRcy.rcyCommonView.adapter = taskAdapter
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()

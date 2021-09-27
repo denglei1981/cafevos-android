@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginRight="14dp"
-                android:textColor="#FC883B"
+                android:textColor="#01025C"
                 android:textSize="@dimen/text_size_mid" />
 
             <ImageView

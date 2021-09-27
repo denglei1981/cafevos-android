@@ -35,6 +35,7 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
     var medalId: String = ""
 
     override fun initView() {
+        binding.medalToolbar.toolbarTitle.text = "我的勋章"
 
         binding.rcyMedal.rcyCommonView.layoutManager = GridLayoutManager(this, 3)
         binding.rcyMedal.rcyCommonView.adapter = medalAdapter

@@ -9,7 +9,6 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
-import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
@@ -131,32 +130,36 @@ class SignViewModel : ViewModel() {
     var jifenBean: MutableLiveData<GrowUpBean> = MutableLiveData()
 
     //成长值 2 积分 1
-    suspend fun mineGrowUp(pageNo: Int, type: String) {
-        var task = fetchRequest {
-            var body = HashMap<String, Any>()
-            body["pageNo"] = pageNo
-            body["pageSize"] = "20"
-            body["queryParams"] = mapOf("type" to type)
-            var rkey = getRandomKey()
-            apiService.mineGrowUp(body.header(rkey), body.body(rkey))
-        }
-        if (task.code == 0) {
-            jifenBean.postValue(task.data)
+    fun mineGrowUp(pageNo: Int, type: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
+                body["queryParams"] = mapOf("type" to type)
+                var rkey = getRandomKey()
+                apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                jifenBean.postValue(it)
+            }.onFailure {
+                jifenBean.postValue(null)
+            }
         }
     }
 
     val allMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
 
-    suspend fun mineMedal() {
-        var medal = fetchRequest {
-            var body = HashMap<String, String>()
-            var rkey = getRandomKey()
-            apiService.queryMedalList(body.header(rkey), body.body(rkey))
-        }
-        if (medal.code == 0) {
-            allMedal.postValue(medal.data)
-        } else {
-            medal.msg?.logE()
+    fun mineMedal() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMedalList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                allMedal.postValue(it)
+            }.onFailure {
+                allMedal.postValue(null)
+            }
         }
     }
 

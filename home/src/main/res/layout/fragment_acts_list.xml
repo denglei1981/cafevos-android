@@ -6,32 +6,55 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        >
-
-        <com.zhpan.bannerview.BannerViewPager
-            android:id="@+id/b_viewpager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintDimensionRatio="335:310"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.89" />
-
-        <com.zhpan.indicator.DrawableIndicator
-            android:id="@+id/dr_indicator"
-            android:layout_width="wrap_content"
+        android:background="@color/white">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/b_viewpager" />
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp"
+            app:layout_behavior="@string/fix_behavior">
+            <com.changanford.home.widget.CollapsibleToolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/layout_viewpager"
+                    layout="@layout/include_acts_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     />
+
+            </com.changanford.home.widget.CollapsibleToolbar>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+               <com.google.android.material.tabs.TabItem
+                   android:id="@+id/tab_one"
+                   android:text="@string/app_name"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_two"
+                    android:text="中国"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_crv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -1,7 +1,6 @@
 package com.changanford.my.ui
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,7 +15,6 @@ import com.changanford.my.databinding.UiJifenBinding
 import com.changanford.my.databinding.ViewTaskHead1Binding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：JiFenList
@@ -33,6 +31,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        binding.toolbarJifen.toolbarTitle.text = "积分"
 
         var headView = ViewTaskHead1Binding.inflate(layoutInflater)
         jfAdapter.addHeaderView(headView.root)
@@ -56,12 +55,10 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
 
 
     override fun initRefreshData(pageSize: Int) {
-        lifecycleScope.launch {
-            task(pageSize)
-        }
+        task(pageSize)
     }
 
-    private suspend fun task(pageSize: Int) {
+    private fun task(pageSize: Int) {
         viewModel.mineGrowUp(pageSize, "1")
     }
 
