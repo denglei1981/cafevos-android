@@ -2,6 +2,7 @@ package com.changanford.common.utilext
 
 import android.util.Log
 import com.changanford.common.util.MConstant.isDebug
+import com.changanford.common.util.longLog
 
 
 /**********************************************************************************
@@ -17,6 +18,12 @@ import com.changanford.common.util.MConstant.isDebug
 fun String.logE() {
     if (isDebug) {
         Log.e("EVOSLog", this)
+    }
+}
+
+fun String.longE(){
+    if(isDebug){
+        longLog("EVOSLog",this)
     }
 }
 

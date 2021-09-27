@@ -6,6 +6,7 @@ import com.changanford.common.util.MConstant
 
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.longE
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -108,7 +109,7 @@ class DataEncryptInterceptor : Interceptor {
                     }
 
                 }
-                "result---->$decryptStr".logE()
+                "result---->$decryptStr".longE()
                 var jsonObject = JSONObject()
                 if (!decryptStr.isNullOrEmpty()) {
                     try {

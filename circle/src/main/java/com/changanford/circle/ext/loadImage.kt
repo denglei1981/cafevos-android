@@ -64,7 +64,7 @@ fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
 @SuppressLint("CheckResult")
 fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
-        .load(url)
+        .load(GlideUtils.handleImgUrl(url))
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
