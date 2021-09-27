@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_pic"
+        android:layout_marginTop="8dp"
         tools:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与荒无之地的寂静仅一步之遥。" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -52,8 +53,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_time"
         app:layout_constraintWidth_percent="0.9"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+        android:src="@drawable/image_recommend_test"
+       />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

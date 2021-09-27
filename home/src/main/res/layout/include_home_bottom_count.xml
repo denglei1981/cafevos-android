@@ -30,9 +30,10 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/icon_home_look_count"
             android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="1"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12"
-            tools:text="@string/app_name" />
+            android:textSize="@dimen/sp_12" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_msg"
@@ -42,9 +43,10 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/icon_home_look_msg_count"
             android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="1"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12"
-            tools:text="@string/app_name" />
+            android:textSize="@dimen/sp_12" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_like"
@@ -54,9 +56,10 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/icon_home_look_like_count"
             android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="1"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12"
-            tools:text="@string/app_name" />
+            android:textSize="@dimen/sp_12" />
 
 
     </LinearLayout>
