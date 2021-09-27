@@ -6,7 +6,7 @@
 
     </data>
 
-    <com.changanford.circle.widget.recy.ChildRecyclerView
+    <com.changanford.common.widget.recy.ChildRecyclerView
         android:id="@+id/ry_circle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

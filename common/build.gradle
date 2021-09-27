@@ -191,4 +191,9 @@ dependencies {
 
     // recyclerview 流式布局
     api 'com.google.android:flexbox:2.0.1'
+
+    //动态权限申请
+    api "cn.hchstudio:kpermissions:1.0.8"
+
+    api "com.jeremyliao:live-event-bus-x:1.5.7"
 }
