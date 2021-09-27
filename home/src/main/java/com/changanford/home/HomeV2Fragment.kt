@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
@@ -38,12 +39,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
     var titleList = mutableListOf<String>()
 
     var immersionBar: ImmersionBar? = null
+    val actsListFragment: ActsListFragment by lazy {
+        ActsListFragment.newInstance()
+    }
+    val recommendFragment: RecommendFragment by lazy {
+        RecommendFragment.newInstance()
+    }
 
     override fun initView() {
         //Tab+Fragment
-//        immersionBar = ImmersionBar.with(requireActivity())
-//        immersionBar?.fitsSystemWindows(true)
-//            ?.statusBarColor(R.color.transparent)
+
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(RecommendFragment.newInstance())
         fragmentList.add(ActsListFragment.newInstance())
@@ -75,6 +80,21 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         }.attach().apply {
             initTab()
         }
+
+
+        binding.homeViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        binding.refreshLayout.setEnableRefresh(true)
+                    }
+                    else -> {
+                        binding.refreshLayout.setEnableRefresh(false)
+                    }
+                }
+            }
+        })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab, true)
@@ -111,6 +131,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.layoutTopBar.ivSearch.setOnClickListener {
             startARouter(ARouterHomePath.PolySearchActivity)
         }
+
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
