@@ -123,7 +123,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ConfigBean>
-
+    /**
+     * 用户签到
+     */
+    @POST("user/signIn")
+    suspend fun daySign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<DaySignBean>
 
     @POST("/goods/getAttributeList")
     suspend fun getUserData(

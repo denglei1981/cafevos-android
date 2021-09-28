@@ -9,9 +9,9 @@ import com.changanford.common.bean.IndustryBeanItem
 import com.changanford.common.bean.IndustryItemBean
 import com.changanford.common.utilext.GlideUtils.loadRound
 import com.changanford.my.R
-import com.changanford.my.databinding.*
+import com.changanford.my.databinding.ItemHangyeBinding
+import com.changanford.my.databinding.ItemLikeOneBinding
 import com.donkingliang.labels.LabelsView
-import com.xiaomi.push.it
 
 object MineCommAdapter{
     /**

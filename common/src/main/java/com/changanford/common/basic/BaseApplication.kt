@@ -24,6 +24,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MyApplicationUtil
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
+import kotlinx.coroutines.CoroutineScope
 
 
 abstract class BaseApplication : MultiDexApplication() {
@@ -140,5 +141,7 @@ abstract class BaseApplication : MultiDexApplication() {
     companion object {
         lateinit var INSTANT: Application
         lateinit var curActivity: Activity
+        lateinit var currentViewModelScope  :CoroutineScope
+
     }
 }

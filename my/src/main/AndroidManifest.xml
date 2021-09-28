@@ -35,5 +35,7 @@
         <activity android:name=".ui.MineMessageUI" />
         <activity android:name=".ui.MineMessageSysInfoUI" />
         <activity android:name=".ui.MineMessageInfoUI" />
+        <activity android:name=".ui.SignTransparentUI"
+            android:theme="@style/Picture.Theme.Translucent"/>
     </application>
 </manifest>

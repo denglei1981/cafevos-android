@@ -13,9 +13,10 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
-import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
 
@@ -52,6 +53,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     override fun onResume() {
         super.onResume()
         curActivity = this
+        currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
     }
 
     private val bindings: VB by lazy {
