@@ -30,8 +30,6 @@ public class ScreenUtils {
         return localDisplayMetrics.heightPixels - getStatusBarHeight(context);
     }
 
-
-
     /**
      * 获取状态栏高度
      */
