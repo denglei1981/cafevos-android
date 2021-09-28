@@ -120,4 +120,45 @@ class CircleViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * 删除圈子成员
+     */
+    var deleteCircleStatus: MutableLiveData<String> = MutableLiveData()
+
+    fun deleteCircleUsers(circleId: String, userIds: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["circleId"] = circleId
+                body["userIds"] = arrayListOf(userIds)
+                var rkey = getRandomKey()
+                apiService.deleteCircleUsers(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                deleteCircleStatus.postValue("true")
+            }.onWithMsgFailure {
+                deleteCircleStatus.postValue(it)
+            }
+        }
+    }
+
+    /**
+     * 通过审核，不通过审核
+     */
+    var agreeStatus: MutableLiveData<String> = MutableLiveData()
+
+    fun agree(body: HashMap<String, Any>) {
+        viewModelScope.launch {
+            fetchRequest {
+                //状态 2 同意 3 拒绝
+                var rkey = getRandomKey()
+                apiService.agreeJoinCircle(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                agreeStatus.postValue("true")
+            }.onWithMsgFailure {
+                agreeStatus.postValue(it)
+            }
+        }
+    }
+
 }

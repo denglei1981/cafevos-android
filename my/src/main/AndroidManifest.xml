@@ -26,6 +26,8 @@
         <activity android:name="com.changanford.my.ui.MyCollectUI" />
         <activity android:name=".ui.MyFootUI" />
         <activity android:name=".ui.MyCircleUI" />
-        <activity android:name=".ui.MyCircleMangerUI" />
+        <activity
+            android:name=".ui.MyCircleMangerUI"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
     </application>
 </manifest>

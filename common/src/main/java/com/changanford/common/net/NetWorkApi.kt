@@ -31,12 +31,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
+
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<STSBean>
+
     /**
      * 常用功能列表
      */
@@ -373,6 +375,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleUserBean>
+
+    //圈子审核 删除
+    @POST("con/circle/deleteCircleUsers")
+    suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
 
     /**
