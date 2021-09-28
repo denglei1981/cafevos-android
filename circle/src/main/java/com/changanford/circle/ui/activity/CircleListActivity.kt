@@ -54,7 +54,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleListFragment.newInstance(position.toString())
+                    return CircleListFragment.newInstance(position)
                 }
 
             }
