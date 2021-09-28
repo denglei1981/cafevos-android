@@ -49,8 +49,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
             OrdersGoodsActivity.start(requireContext())
         }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
-
     }
+
     override fun initData() {
         val datas= arrayListOf<GoodsBean>()
         val title=StringBuffer("Title")

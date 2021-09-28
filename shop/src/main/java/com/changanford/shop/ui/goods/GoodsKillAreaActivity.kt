@@ -11,6 +11,7 @@ import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
 import com.changanford.shop.view.TopBar
+import com.changanford.shop.viewmodel.GoodsViewModel
 
 /**
  * @Author : wenke

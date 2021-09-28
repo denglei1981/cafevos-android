@@ -18,6 +18,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.viewmodel.GoodsViewModel
 import kotlin.math.roundToInt
 
 /**
@@ -26,7 +27,7 @@ import kotlin.math.roundToInt
  * @Description : 商品详情
  */
 @Route(path = ARouterShopPath.ShopGoodsActivity)
-class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewModel>(){
+class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     companion object{
         fun start(context: Context,goodsId:String) {
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
@@ -69,6 +70,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         tabClick()
     }
     override fun initData() {
+        viewModel.goodsItemData.observe(this,{
+            control.bindingData(it)
+        })
+        viewModel.queryGoodsDetails("123")
         val imgs= arrayListOf("","","","","","","","","","","","","","","","")
         mAdapter.setList(imgs)
     }

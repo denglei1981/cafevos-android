@@ -7,6 +7,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.adapter.goods.GoodsEvalutaeAdapter
 import com.changanford.shop.databinding.ActGoodsEvaluateBinding
+import com.changanford.shop.viewmodel.GoodsViewModel
 
 /**
  * @Author : wenke
@@ -14,7 +15,7 @@ import com.changanford.shop.databinding.ActGoodsEvaluateBinding
  * @Description : 商品评价
  */
 @Route(path = ARouterShopPath.GoodsEvaluateActivity)
-class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding,GoodsViewModel>(){
+class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel>(){
     companion object{
         fun start(context: Context, goodsId:String) {
             context.startActivity(Intent(context,GoodsEvaluateActivity::class.java).putExtra("goodsId",goodsId))
