@@ -87,7 +87,6 @@ object GlideUtils {
             preUrl
         )
 
-
     /**
      * 加载圆角
      */
@@ -142,7 +141,7 @@ object GlideUtils {
         imageView: ImageView,
         @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
     ) {
-        Glide.with(imageView.context).load(url).apply {
+        Glide.with(imageView.context).load(handleImgUrl(url)).apply {
             if (errorDefaultRes != null) {
                 placeholder(errorDefaultRes)
                     .fallback(errorDefaultRes)

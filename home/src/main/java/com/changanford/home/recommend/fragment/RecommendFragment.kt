@@ -4,16 +4,17 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.utilext.logD
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.recommend.request.RecommendViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 
 
 /**
  *  推荐列表
  * */
-class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendViewModel>() {
+class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendViewModel>(),OnLoadMoreListener {
 
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter()
@@ -29,7 +30,7 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendVi
     }
 
     override fun initView() {
-        viewModel.getRecommend(1, 10, false)
+        viewModel.getRecommend( 10, false)
         binding.smartLayout.setEnableRefresh(false)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -40,5 +41,9 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendVi
         viewModel.recommendLiveData.observe(this, Observer {
             recommendAdapter.addData(it.dataList)
         })
+    }
+
+    override fun onLoadMore(refreshLayout: RefreshLayout) {
+        viewModel.getRecommend(10,true)
     }
 }

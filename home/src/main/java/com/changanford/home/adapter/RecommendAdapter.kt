@@ -49,9 +49,20 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         }
-
-
         var picLists = item.getPicLists()
+        when(item.rtype){ // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
+            1->{
+
+            }
+            2->{
+
+            }
+            3->{
+
+            }
+
+        }
+
         when (item.itemType) {
             1 -> {//1张图
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)

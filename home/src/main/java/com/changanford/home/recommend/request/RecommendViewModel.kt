@@ -12,11 +12,11 @@ class RecommendViewModel : ViewModel() {
     var  recommendLiveData: MutableLiveData<RecommendListBean> = MutableLiveData()
 
 
-    fun getRecommend(pageNo:Int,pageSize:Int, isLoadMore: Boolean ){
+    fun getRecommend(pageSize:Int, isLoadMore: Boolean ){
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
-                paramMaps["pageNo"] = pageNo
+                paramMaps["pageNo"] = 1
                 val rKey = getRandomKey()
                 apiService.getRecommendList(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
