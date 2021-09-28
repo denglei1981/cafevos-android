@@ -56,8 +56,6 @@ class BigShotFragment : BaseFragment<FragmentBigShotBinding, EmptyViewModel>() {
         binding.recyclerViewH.adapter = bigShotUserListAdapter
         binding.recyclerViewH.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-
-
         bigShotPostListAdapter = BigShotPostListAdapter().apply {
 
             addData(SpecialData())

@@ -6,14 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.R
-import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.adapter.SimpleAdapter
+import com.changanford.home.acts.dialog.HomeActsScreenDialog
+import com.changanford.home.acts.dialog.HomeActsScreenPopup
 import com.changanford.home.databinding.FragmentActsListBinding
-import com.changanford.home.databinding.IncludeActsViewPagerBinding
 import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.home.search.data.SearchData
 import com.zhpan.bannerview.BannerViewPager
-import com.zhpan.indicator.enums.IndicatorSlideMode
 import java.util.*
 
 /**
@@ -46,7 +45,15 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
         initViewPager()
         setIndicator()
     }
+    var homeActsDialog: HomeActsScreenPopup?=null
     override fun initData() {
+        binding.layoutHomeScreen.tvSrceen.setOnClickListener {
+            if(homeActsDialog==null){
+                homeActsDialog =HomeActsScreenPopup(requireActivity())
+            }
+            homeActsDialog?.show()
+
+        }
 
     }
 

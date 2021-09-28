@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_whit15_bg">
+
+        <TextView
+            android:id="@+id/tv_publish_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="40dp"
+            android:text="发 布 方"
+            android:textColor="#ff081725"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_rv_publish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_publish_title" />
+
+        <TextView
+            android:id="@+id/tv_acts_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="活动类型"
+            android:textColor="#ff081725"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_rv_publish" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_rv_acts_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_acts_type" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_city_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:text="所属城市"
+            android:textColor="#ff081725"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_rv_acts_type" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_city_any"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:text="不限城市"
+            android:textColor="#ff081725"
+            app:layout_constraintBaseline_toBottomOf="@+id/tv_city_title"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_city_title"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_rest"
+            style="@style/materialButton"
+            android:layout_width="@dimen/dp_157"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_23"
+            android:backgroundTint="@color/color_f1"
+            android:text="@string/home_reset"
+            app:cornerRadius="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/home_btn_sure"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_city_title" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_btn_sure"
+            style="@style/materialButton"
+            android:layout_width="@dimen/dp_157"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_23"
+            android:layout_marginEnd="@dimen/dp_23"
+            android:backgroundTint="@color/blue_tab"
+            android:text="@string/home_sure"
+            android:textColor="@color/white"
+            app:cornerRadius="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_rest"
+            app:layout_constraintTop_toBottomOf="@+id/tv_city_title" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
