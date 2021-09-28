@@ -9,6 +9,7 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
+import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
@@ -139,7 +140,7 @@ object GlideUtils {
     fun loadBD(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int? = null
+        @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
     ) {
         Glide.with(imageView.context).load(url).apply {
             if (errorDefaultRes != null) {

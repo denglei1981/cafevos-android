@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import java.util.*
 
 /**
@@ -22,6 +24,7 @@ data class HomeExtendBean(
     val jumpDataType: Int,
     val jumpDataValue: String
 )
+
 data class RecommendData(
     val artCollectCount: Double,
     var artCommentCount: Int,
@@ -70,15 +73,37 @@ data class RecommendData(
     val postsVideoTime: String,
     val postsVideoUrl: Any,
     val postsViewsCount: Int,
-    val rtype: Int,
+    val rtype: Int, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
     val authors: HomeAuthorsBean?,
     val timeStr: String,
     val city: String,
     val artPicCount: Int,
     val postsTopicName: String,
     val title: String,
-    val pic: String
-)
+    val pic: String,
+    var pisList: List<String>? = null
+) : MultiItemEntity {
+
+    fun getItemTypeLocal(): Int {
+        if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
+            pisList = postsPics.split(",")
+        } else if (!TextUtils.isEmpty(artPics)) {
+            pisList = artPics.split(",")
+        }
+        if (pisList != null && pisList!!.size > 1) {
+            return 2
+        }
+        return 1
+    }
+
+    fun getPicLists() :List<String>?{
+        return pisList
+    }
+
+    override val itemType: Int
+        get() = getItemTypeLocal()
+}
+
 /**
  * @Author: hpb
  * @Date: 2020/5/18
@@ -96,6 +121,7 @@ data class HomeAuthorsBean(
     val userId: String,
     val headFrameImage: String
 )
+
 class LabelBean(
     var img: String,
     var jumpDataType: Int,
