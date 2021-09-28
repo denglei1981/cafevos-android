@@ -81,16 +81,6 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
             viewModel.nameNick(nickName) {
                     LiveDataBus.get().with("MineNickName").postValue(nickName)
                     finish()
-
-//                override fun onFail(e: ApiException) {
-//                    var pop = ConfirmNoCancelPop(this@EditNickNameUI)
-//                    pop.contentText.text = e.msg
-//                    pop.submitBtn.text = "确认"
-//                    pop.submitBtn.setOnClickListener {
-//                        pop.dismiss()
-//                    }
-//                    pop.showPopupWindow()
-//                }
             }
         }
     }

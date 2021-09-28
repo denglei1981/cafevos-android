@@ -8,8 +8,6 @@ package com.changanford.common.bean
  *  修改描述：TODO
  */
 
-class HobbyBean : ArrayList<HobbyBeanItem>()
-
 data class HobbyBeanItem(
     val hobbyIcon: String,
     val hobbyId: Int,

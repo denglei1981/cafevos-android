@@ -2,9 +2,13 @@ package com.changanford.my
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
@@ -80,6 +84,49 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
 
     open fun bindToolbar(): Toolbar? {
         return binding.root.findViewById(R.id.toolbar)
+    }
+    /**
+     * 显示空布局
+     * @param adapter recyclerView的适配器
+     */
+    open fun showEmptyView(
+        emptyMessage: String = getString(R.string.empty_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): View? {
+        return setAdapterView(emptyMessage, errorLayoutId);
+    }
+    var emptyView: View? = null
+    /**
+     * 设置适配器的空布局
+     * @param adapter 适配器
+     * @param msg 空布局文字提示
+     * @param ImgResId 空布局图片资源，若isLoad为true则不生效
+     * @param isLoad 是否是加载中
+     */
+    fun setAdapterView(
+        msg: String,
+        ImgResId: Int
+    ): View? {
+        if (emptyView == null) emptyView =
+            LayoutInflater.from(this).inflate(R.layout.view_status_ui, null)
+        emptyView?.let {
+            var icon: ImageView = it.findViewById(R.id.view_status_icon)
+            icon.setImageResource(ImgResId)
+            var messageText: TextView = it.findViewById(R.id.view_status_text)
+            messageText.text = msg
+        }
+        return emptyView
+    }
+    /**
+     * 显示错误布局
+     * @param adapter recyclerView的适配器
+     * @param msg 错误信息
+     */
+    fun showErrorView(
+        msg: String = getString(R.string.error_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): View? {
+        return setAdapterView(msg, errorLayoutId);
     }
 
     open fun <T, VH : BaseViewHolder> completeRefresh(

@@ -185,4 +185,20 @@ object GlideUtils {
         }
             .into(imageView)
     }
+    fun loadCircleFilePath(filePath: String?, imageView: ImageView) {
+        Glide.with(imageView.context).load(filePath).transform(CircleGlideTransform())
+            .into(imageView)
+    }
+    /**
+     * 加载圆角
+     */
+    @JvmOverloads
+    fun loadRound(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
+        loadTransform(
+            handleImgUrl(url),
+            RoundGlideTransform(isSquare = false),
+            imageView,
+            errorDefaultRes
+        )
+    }
 }

@@ -318,6 +318,24 @@ public class PictureSelectionModel {
         }
         return this;
     }
+    /**
+     * 新添加方法 只开启自定义相机拍照功能 注：默认情况为都开启
+     * @param paizhao
+     * @return
+     */
+    public PictureSelectionModel Paizhao(){
+        selectionConfig.buttonFeatures = CustomCameraView.BUTTON_STATE_ONLY_CAPTURE ;
+        return this;
+    }
+
+    /**
+     * 新添加方法 只开启自定义相机录制功能 注：默认情况为都开启
+     * @return
+     */
+    public PictureSelectionModel LuZhi(){
+        selectionConfig.buttonFeatures = CustomCameraView.BUTTON_STATE_ONLY_RECORDER ;
+        return this;
+    }
 
     /**
      * Set Custom Camera Photo Loading color

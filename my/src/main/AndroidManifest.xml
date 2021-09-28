@@ -28,5 +28,9 @@
         <activity android:name=".ui.MyFootUI" />
         <activity android:name=".ui.MyCircleUI" />
         <activity android:name=".ui.MyCircleMangerUI" />
+        <activity android:name=".ui.EditNickNameUI" />
+        <activity android:name=".ui.MineLikeUI" />
+        <activity android:name=".ui.MineIndustryUI" />
+        <activity android:name=".ui.InputUI" />
     </application>
 </manifest>

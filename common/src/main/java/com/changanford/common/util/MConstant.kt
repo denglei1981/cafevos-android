@@ -36,6 +36,10 @@ object MConstant {
     val H5_BASE_URL_CSCIR by lazy {
         "https://cir.uni.changan.com.cn"
     }
+    /**
+     * 刷新用户消息  true刷新
+     */
+    const val REFRESH_USER_INFO = "mine:refresh_user_info"  //
 
 
     var pubKey = ""

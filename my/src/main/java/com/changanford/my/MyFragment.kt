@@ -8,6 +8,7 @@ import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
@@ -16,6 +17,7 @@ import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
@@ -72,6 +74,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 
             }
         })
+        LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+            .observe(this,  {
+                if (it) {
+                    viewModel.getUserInfo()
+                }
+            })
     }
 
     override fun initData() {
@@ -86,8 +94,10 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             viewModel.mineMedal()
         }
         viewModel.allMedal.observe(this, {
-            medalAdapter.data = it
-            medalAdapter.notifyDataSetChanged()
+            it?.let {
+                medalAdapter.data = it
+                medalAdapter.notifyDataSetChanged()
+            }
         })
     }
 

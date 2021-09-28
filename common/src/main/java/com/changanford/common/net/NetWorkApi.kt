@@ -60,6 +60,31 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+    /**
+     * 保存用户信息
+     */
+    @POST("user/saveUserInfo")
+    suspend fun saveUniUserInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 获取兴趣爱好
+     */
+    @POST("user/hobby/getUserHobbyList")
+    suspend fun getHobbyList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<HobbyBeanItem>>
+
+    //行业
+    @POST("user/industry/getUserIndustryList")
+    suspend fun queryIndustryList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<IndustryBeanItem>>
+    /**--------------------------------base---------------------------------------**/
 
     /**
      * 获取基本配置
