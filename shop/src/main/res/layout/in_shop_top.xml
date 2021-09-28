@@ -12,7 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.youth.banner.Banner
-                android:layout_margin="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_20"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/banner"
                 android:background="@drawable/shadow_1b51d9_5dp"

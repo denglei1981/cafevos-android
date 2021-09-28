@@ -18,15 +18,15 @@
             app:title_text="@string/str_allOrders"
             app:right_text="@string/str_screening"
             android:background="@color/white"/>
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </LinearLayout>
 </layout>
