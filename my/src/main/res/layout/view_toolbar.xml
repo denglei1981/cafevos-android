@@ -31,7 +31,7 @@
                 android:layout_gravity="end"
                 android:layout_marginRight="14dp"
                 android:textColor="#01025C"
-                android:textSize="@dimen/text_size_mid" />
+                android:textSize="@dimen/text_size_big" />
 
             <ImageView
                 android:id="@+id/toolbar_icon"

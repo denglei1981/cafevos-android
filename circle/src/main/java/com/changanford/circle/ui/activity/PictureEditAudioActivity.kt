@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.animation.LinearInterpolator
 import android.widget.*
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -27,6 +28,8 @@ import com.changanford.common.ui.videoedit.*
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.FileSizeUtil
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.lansosdk.videoeditor.VideoEditor
 import com.luck.picture.lib.tools.ScreenUtils
@@ -136,6 +139,10 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.title.barTvOther.setOnClickListener {
             oncut()
         }
+
+        LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
+            finish()
+        })
     }
 
     fun oncut(){

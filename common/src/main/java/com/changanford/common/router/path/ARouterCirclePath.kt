@@ -11,7 +11,7 @@ object ARouterCirclePath {
     const val CirclePeopleActivity = "/circle/CirclePeopleActivity"
     const val PerfectQuessionActivity = "/circle/PerfectQuessionActivity"
     const val QuestionnaireActivity = "/circle/QuestionnaireActivity"
-    const val EditVideoActivity = "/circle/EditVideoActivity"
+    const val EditVideoActivity = "/circle/EditVideoActivity"  //废弃了
     const val PictureeditlActivity = "/circle/PictureeditlActivity"
     const val ReleaseUpActivity = "/circle/ReleaseUpActivity"
     const val AddCircleActivity = "/circle/AddCircleActivity"

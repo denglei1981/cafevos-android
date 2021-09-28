@@ -6,18 +6,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.MiddlePageBean
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.paging.DataRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class CarViewModel : ViewModel() {
     var adsRepository: AdsRepository = AdsRepository(this)
     var _ads: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
+    var _middleInfo: MutableLiveData<MiddlePageBean> = MutableLiveData<MiddlePageBean>()
 
     init {
         _ads = adsRepository._ads
@@ -48,5 +48,17 @@ class CarViewModel : ViewModel() {
         }, list = {
             it?.dataList
         }).cachedIn(viewModelScope)
+    }
+
+    fun getMyCar(){
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.getMiddlePageInfo(hashMap.header(rkey),hashMap.body(rkey))
+            }.onSuccess {
+                _middleInfo.postValue(it)
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@
         <activity android:name=".news.activity.SpecialDetailActivity" />
         <activity android:name=".search.activity.PolySearchActivity" />
         <activity android:name=".search.activity.PloySearchResultActivity" />
+        <activity android:name=".news.activity.NewsPicsActivity" />
 
 
     </application>

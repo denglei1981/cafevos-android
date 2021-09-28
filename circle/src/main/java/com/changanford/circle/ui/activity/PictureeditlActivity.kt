@@ -19,7 +19,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.yalantis.ucrop.UCrop
 
 /**
- * 图片预览
+ * 图片编辑
  */
 @Route(path = ARouterCirclePath.PictureeditlActivity)
 class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>() {

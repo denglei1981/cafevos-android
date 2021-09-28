@@ -32,6 +32,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
+import java.util.zip.Inflater
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() {
@@ -51,13 +52,13 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() 
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        var bthinttxt  ="标题 (6-20字之间)"
-        var spannableString = SpannableString(bthinttxt)
-        var intstart =bthinttxt.indexOf('(')
-        var intend = bthinttxt.length
-        spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        binding.etBiaoti.hint = spannableString
+//        var bthinttxt  ="标题 (6-20字之间)"
+//        var spannableString = SpannableString(bthinttxt)
+//        var intstart =bthinttxt.indexOf('(')
+//        var intend = bthinttxt.length
+//        spannableString.setSpan(AbsoluteSizeSpan(60),0,intstart, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+//        spannableString.setSpan(AbsoluteSizeSpan(40),intstart,intend, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+//        binding.etBiaoti.hint = spannableString
     }
 
     override fun initData() {
@@ -70,6 +71,8 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, EmptyViewModel>() 
         binding.longpostrec.layoutManager = LinearLayoutManager(this)
         longpostadapter.draggableModule.isDragEnabled=true
         binding.longpostrec.adapter = longpostadapter
+        var headerView = layoutInflater.inflate(R.layout.longposthead,null)
+        longpostadapter.addHeaderView(headerView)
         binding.bottom.ivPic.setOnClickListener {
             PictureUtil.openGalleryOnePic(this,
                 object : OnResultCallbackListener<LocalMedia> {

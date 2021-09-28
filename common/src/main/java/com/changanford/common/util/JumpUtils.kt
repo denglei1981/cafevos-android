@@ -10,7 +10,8 @@ import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.net.getRandomKey
+import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.SelectMapDialog
@@ -24,6 +25,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import kotlinx.coroutines.launch
 
 
 /**
@@ -314,7 +316,7 @@ class JumpUtils {
                         startARouter(ARouterMyPath.SignUI)
                     }
                     else -> {
-//                mineDaySign()
+                        mineDaySign()
                     }
                 }
             }
@@ -749,8 +751,27 @@ class JumpUtils {
      */
     private fun handleDownload(arid: String) {
     }
+    /**
+     * 每日签到
+     */
+    private fun mineDaySign() {
+        currentViewModelScope?.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.daySign(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    var bundle = Bundle()
+                    bundle.putString("signInfo", JSON.toJSONString(it))
+                    startARouter(ARouterMyPath.SignTransparentUI, bundle)
+                }
+            }.onWithMsgFailure {
+                it?.let { it1 -> toastShow(it1) }
+            }
+        }
 
-
+    }
 
 
     /**

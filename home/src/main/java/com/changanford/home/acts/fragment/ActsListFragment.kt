@@ -1,14 +1,25 @@
 package com.changanford.home.acts.fragment
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.R
 import com.changanford.home.acts.adapter.SimpleAdapter
+import com.changanford.home.acts.dialog.HomeActsScreenDialog
+import com.changanford.home.acts.dialog.UnitActsPop
+import com.changanford.home.callback.ICallback
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentActsListBinding
+import com.changanford.home.search.adapter.SearchActsResultAdapter
+import com.changanford.home.search.data.SearchData
 import com.zhpan.bannerview.BannerViewPager
-import com.zhpan.indicator.enums.IndicatorSlideMode
+import razerdp.basepopup.BasePopupWindow
 import java.util.*
 
 /**
@@ -16,8 +27,11 @@ import java.util.*
  * */
 class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>() {
 
-
-    private var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
+    var shopLists = mutableListOf<SearchData>()
+    val searchActsResultAdapter: SearchActsResultAdapter by lazy {
+        SearchActsResultAdapter(mutableListOf())
+    }
+    var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
 
     companion object {
         fun newInstance(): ActsListFragment {
@@ -29,30 +43,75 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
     }
 
     override fun initView() {
+        binding.homeCrv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        shopLists.add(SearchData())
+        shopLists.add(SearchData())
+        shopLists.add(SearchData())
+        shopLists.add(SearchData())
+        shopLists.add(SearchData())
+        binding.homeCrv.adapter = SearchActsResultAdapter(shopLists)
+        initViewPager()
         setIndicator()
-        binding.bViewpager.apply {
+    }
+
+    var homeActsDialog: HomeActsScreenDialog? = null
+    var unitActsPop: UnitActsPop? = null
+
+    override fun initData() {
+        binding.layoutHomeScreen.tvSrceen.setOnClickListener {
+            if (homeActsDialog == null) {
+                homeActsDialog = HomeActsScreenDialog(requireActivity(), object : ICallback {
+                    override fun onResult(result: ResultData) {
+
+                    }
+                })
+            }
+            homeActsDialog?.show()
+        }
+        binding.layoutHomeScreen.tvAllActs.setOnClickListener {
+            setPopu(it)
+        }
+        binding.layoutHomeScreen.tvDesc.setOnClickListener {
+
+            setPopu(it)
+        }
+
+    }
+
+    fun setPopu(view: View) {
+        if (unitActsPop == null) {
+            unitActsPop = UnitActsPop(this,
+                object : ICallback {
+                    override fun onResult(result: ResultData) {
+
+                    }
+                })
+        }
+        unitActsPop?.showPopupWindow(view)
+        unitActsPop?.setAlignBackground(true)
+        unitActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
+    }
+
+
+    private fun initViewPager() {
+        binding.layoutViewpager.bViewpager.apply {
             setAutoPlay(true)
             setScrollDuration(500)
             setCanLoop(true)
             setAdapter(SimpleAdapter())
-            setIndicatorView(binding.drIndicator)
+            setIndicatorView(binding.layoutViewpager.drIndicator)
             setRoundCorner(20)
             setOnPageClickListener(object : BannerViewPager.OnPageClickListener {
                 override fun onPageClick(position: Int) {
                 }
             })
             setIndicatorSliderColor(
-                ContextCompat.getColor(requireContext(), R.color.blue_tab),
-                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                ContextCompat.getColor(context, R.color.blue_tab),
+                ContextCompat.getColor(context, R.color.colorPrimary)
             )
-            setIndicatorView(binding.drIndicator)
+            setIndicatorView(binding.layoutViewpager.drIndicator)
         }.create(getPicList(4))
-
-
-    }
-
-    override fun initData() {
-
     }
 
     /**
@@ -60,11 +119,16 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
      * */
     private fun setIndicator() {
         val dp6 = resources.getDimensionPixelOffset(R.dimen.dp_6)
-        binding.drIndicator.setIndicatorDrawable(
+        binding.layoutViewpager.drIndicator.setIndicatorDrawable(
             R.drawable.shape_home_banner_normal,
             R.drawable.shape_home_banner_focus
         )
-            .setIndicatorSize(dp6, dp6, resources.getDimensionPixelOffset(R.dimen.dp_20), dp6)
+            .setIndicatorSize(
+                dp6,
+                dp6,
+                resources.getDimensionPixelOffset(R.dimen.dp_20),
+                dp6
+            )
             .setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
@@ -75,6 +139,5 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
         mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
         return mPictureList
     }
-
 
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+
+        <ImageView
+            android:id="@+id/icon_sys"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="14dp"
+            android:src="@mipmap/icon_msg_sys"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/message_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_have_bg"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="@+id/icon_sys"
+            app:layout_constraintTop_toTopOf="@+id/icon_sys" />
+
+        <TextView
+            android:id="@+id/title_sys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="系统消息"
+            android:textColor="#071726"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/icon_sys"
+            app:layout_constraintLeft_toRightOf="@+id/icon_sys"
+            app:layout_constraintTop_toTopOf="@+id/icon_sys" />
+
+        <TextView
+            android:id="@+id/des_sys"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="其余系统消息通知"
+            android:textColor="#AFB3B6"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/icon_sys"
+            app:layout_constraintLeft_toLeftOf="@+id/title_sys" />
+
+        <View
+            style="@style/line"
+            android:layout_width="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="@+id/title_sys"
+            app:layout_constraintTop_toBottomOf="@+id/icon_sys" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

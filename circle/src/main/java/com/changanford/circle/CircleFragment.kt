@@ -3,6 +3,7 @@ package com.changanford.circle
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.utils.MUtils
+import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
@@ -15,7 +16,7 @@ import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 /**
  * 社区
  */
-class CircleFragment : BaseFragment<FragmentCircleBinding, EmptyViewModel>() {
+class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     private val circleAdapter by lazy {
         CircleMainAdapter(requireContext(), childFragmentManager)

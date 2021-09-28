@@ -30,13 +30,10 @@ import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_privacy
 import com.changanford.common.util.MConstant.H5_regTerms
-import com.changanford.common.util.PictureUtil.getFinallyPath
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.luck.picture.lib.entity.LocalMedia
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import java.net.URLEncoder
 import java.text.DecimalFormat
 import java.util.regex.Pattern
 
@@ -558,11 +555,27 @@ object MineUtils {
         )
 
         //设置字体大小为1.3
-        var sizeSpannable = RelativeSizeSpan(0.6f)
+        var sizeSpannable = RelativeSizeSpan(0.8f)
         spannable.setSpan(
             sizeSpannable, num.length, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
+        textView!!.text = spannable
+    }
+    /**
+     * 每日签到 U币  成长值
+     */
+    fun signAcc(textView: TextView?, title1: String,num: String, title2: String) {
+        var spannable = SpannableString(title1+num + title2)
+
+        //设置颜色
+        var colorSpannable = ForegroundColorSpan(Color.parseColor("#01025C"))
+        spannable.setSpan(
+            colorSpannable,
+            title1.length,
+            title1.length+num.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         textView!!.text = spannable
     }
 

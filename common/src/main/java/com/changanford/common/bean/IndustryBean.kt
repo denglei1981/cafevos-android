@@ -8,7 +8,6 @@ package com.changanford.common.bean
  *  修改描述：TODO
  */
 
-class IndustryBean : ArrayList<IndustryBeanItem>()
 
 data class IndustryBeanItem(
     val industryIcon: String,

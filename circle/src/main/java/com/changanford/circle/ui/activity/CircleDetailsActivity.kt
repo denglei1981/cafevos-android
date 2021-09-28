@@ -143,7 +143,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(position.toString())
+                    return CircleDetailsFragment.newInstance(position.toString(),"")
                 }
 
             }
