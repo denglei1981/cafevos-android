@@ -197,7 +197,7 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MedalListBeanItem>>
 
-
+    /*-------------------车主认证---------------*/
     /**
      * 获取车主认证状态
      */
@@ -212,6 +212,15 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>
+
+    /**
+     * 车主认证更新手机号
+     */
+    @POST("ser/carAuth/crmPhoneUpdate")
+    suspend fun uniCarUpdatePhone(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
 
     /*------------------粉丝 关注---------------------*/

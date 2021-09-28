@@ -29,5 +29,6 @@
         <activity
             android:name=".ui.MyCircleMangerUI"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity android:name=".ui.CarAuthSubmitUI" />
     </application>
 </manifest>

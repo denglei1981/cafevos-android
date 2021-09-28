@@ -1,6 +1,5 @@
 package com.changanford.my.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
@@ -55,13 +54,15 @@ fun CarAuthHolder(
             }
         }
         holder.itemView.setOnClickListener { _ ->
-            skipCrmCarInfo(item)
-//            if (isCrmSuccess(item)) {//成功跳详情
-//                skipCrmCarInfo(item)
-//            } else {//失败跳认证页面
-//                item.reason = "${it.authReason.text}"
-//                skipUniSubmitAuth(holder.itemView.context, item)
-//            }
+            if (isCrmSuccess(item)) {//成功跳详情
+                skipCrmCarInfo(item)
+            } else {//失败跳认证页面
+                item.reason = "${it.authReason.text}"
+                if (holder.layoutPosition==3){
+                    item.msgCode="700001"
+                }
+                skipUniSubmitAuth(item)
+            }
         }
     }
 }
@@ -70,13 +71,9 @@ fun CarAuthHolder(
 /**
  * 跳转认证页面
  */
-fun skipUniSubmitAuth(context: Context, item: CarItemBean) {
-//    context.startActivity(
-//        Intent(
-//            context,
-//            UniSubmitAuthUI::class.java
-//        ).putExtra(LiveDataBusKey.MINE_CAR_AUTH_ING, item).putExtra("isFinishSubmit", true)
-//    )
+fun skipUniSubmitAuth(item: CarItemBean) {
+    RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+        .startARouter(ARouterMyPath.UniCarAuthUI)
 }
 
 /**

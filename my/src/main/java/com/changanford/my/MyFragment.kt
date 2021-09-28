@@ -6,6 +6,8 @@ import androidx.lifecycle.lifecycleScope
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.load
@@ -112,6 +114,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             include.textView10.setOnClickListener {
                 JumpUtils.instans?.jump(16)
             }
+            include2.myMylovecar.setOnClickListener {
+                RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
+            }
         }
     }
 
@@ -158,9 +163,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
             it?.toString()?.logE()
             if (null == it || it.userJson.isNullOrEmpty()) {
-                if (MConstant.token.isNotEmpty()){
+                if (MConstant.token.isNotEmpty()) {
                     viewModel.getUserInfo()
-                }else {
+                } else {
                     setData(null)
                 }
             } else {
