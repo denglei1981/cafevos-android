@@ -28,12 +28,18 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
     private var type = "4"
     private var page = 1
     private var topicId = ""
+    private var circleId = ""
 
     companion object {
-        fun newInstance(type: String, topicId: String): CircleDetailsFragment {
+        fun newInstance(
+            type: String,
+            topicId: String,
+            circleId: String = ""
+        ): CircleDetailsFragment {
             val bundle = Bundle()
             bundle.putString("type", type)
             bundle.putString("topicId", topicId)
+            bundle.putString("circleId", circleId)
             val fragment = CircleDetailsFragment()
             fragment.arguments = bundle
             return fragment
@@ -49,6 +55,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
 
         type = arguments?.getString("type", "4").toString()
         topicId = arguments?.getString("topicId", "").toString()
+        circleId = arguments?.getString("circleId", "").toString()
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
@@ -66,14 +73,14 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
 
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getListData(type.toInt(), topicId, page)
+            viewModel.getListData(type.toInt(), topicId, circleId, page)
         }
         binding.ryCircle.adapter = adapter
 
     }
 
     override fun initData() {
-        viewModel.getListData(type.toInt(), topicId, page)
+        viewModel.getListData(type.toInt(), topicId, circleId, page)
     }
 
     override fun observe() {

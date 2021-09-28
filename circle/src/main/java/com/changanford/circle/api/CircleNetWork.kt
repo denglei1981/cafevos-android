@@ -59,4 +59,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChoseCircleBean>>
+
+    /**
+     * 查询圈子详情
+     */
+    @POST("/con/circle/getCircleInfo")
+   suspend fun queryCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleDetailBean>
 }
