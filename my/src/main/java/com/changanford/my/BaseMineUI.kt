@@ -191,7 +191,51 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     open fun initRefreshData(pageSize: Int) {
 
     }
+    private var pageNo = 1
+    /**
+     * 计算是否有加载更多总数
+     *
+     * totalNum: 接口返回总条数  dataSize：获取的总条数
+     *
+     * @return true ： 加载数据
+     */
+    open fun <T, VH : BaseViewHolder> refreshAndLoadMore(
+        totalNum: Int,
+        dataSize: Int,
+        adapter: BaseQuickAdapter<T, VH>,
+        emptyMessage: String = getString(R.string.empty_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): Boolean {
+        if (dataSize == 0) {
+            //禁止加载更多
+            bindSmartLayout()?.setEnableLoadMore(false)
+            //设置Empty
+            showEmptyView(emptyMessage, errorLayoutId)?.let { adapter.setEmptyView(it) }
+            if (pageNo == 1) {
+                adapter.data.clear()
+                adapter.notifyDataSetChanged()
+            }
+            return false
+        } else {
+            //刷新数据 清除数据
+            if (pageNo == 1) {
+                adapter.data.clear()
+            }
+            if (totalNum == 0) {//不需要分页
+                bindSmartLayout()?.setEnableLoadMore(false)
+                return true
+            }
+            if (totalNum > dataSize + adapter.data.size) {//总数大于获取的数据
+                pageNo++ //页数+1
+                bindSmartLayout()?.setEnableLoadMore(true)
 
+            } else {
+                bindSmartLayout()?.setEnableLoadMore(false)
+//                refreshLayout()?.finishLoadMoreWithNoMoreData()
+            }
+            return true
+        }
+    }
     open fun back() {
         finish()
     }

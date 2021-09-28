@@ -32,5 +32,8 @@
         <activity android:name=".ui.MineLikeUI" />
         <activity android:name=".ui.MineIndustryUI" />
         <activity android:name=".ui.InputUI" />
+        <activity android:name=".ui.MineMessageUI" />
+        <activity android:name=".ui.MineMessageSysInfoUI" />
+        <activity android:name=".ui.MineMessageInfoUI" />
     </application>
 </manifest>

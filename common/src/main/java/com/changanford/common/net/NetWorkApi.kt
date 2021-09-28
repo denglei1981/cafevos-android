@@ -84,6 +84,34 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<IndustryBeanItem>>
+    //是否有未读消息
+    @POST("userMessage/getUserMessageStatus")
+    suspend fun queryMessageStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageStatusBean>
+    /**
+     * 标记消息已读
+     */
+    @POST("userMessage/changeAllToRead")
+    suspend fun changeAllToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("userMessage/changeUserMessageStatusList")
+    suspend fun changAllMessage(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //获取不同类型消息列表
+    @POST("userMessage/getAllUserMessages")
+    suspend fun queryMessageList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageListBean>
+
     /**--------------------------------base---------------------------------------**/
 
     /**
