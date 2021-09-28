@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.animation.AccelerateInterpolator
@@ -22,6 +23,7 @@ import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -43,21 +45,18 @@ import kotlin.math.abs
 class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDetailsViewModel>() {
 
     private var isWhite = true//是否是白色状态
+    private var topicId = ""
 
     override fun initView() {
         initMagicIndicator()
+
+        topicId = intent.getStringExtra("topicId").toString()
+
         binding.run {
-//            AppUtils.setStatusBarPaddingTop(binding.topContent.ivIcon, this@TopicDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@TopicDetailsActivity)
+            backImg.setOnClickListener { finish() }
         }
-        binding.topContent.run {
-            Glide.with(this@TopicDetailsActivity)
-                .load(CircleConfig.TestUrl)
-                .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
-                .into(ivBg)
-            ivIcon.setCircular(5)
-            ivIcon.loadImage(CircleConfig.TestUrl)
-        }
+
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
@@ -87,7 +86,26 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     }
 
     override fun initData() {
+        viewModel.getData(topicId)
+    }
 
+    @SuppressLint("SetTextI18n")
+    override fun observe() {
+        super.observe()
+        viewModel.topPicDetailsTopBean.observe(this, {
+            binding.topContent.run {
+                Glide.with(this@TopicDetailsActivity)
+                    .load(GlideUtils.handleImgUrl(it.pic))
+                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
+                    .into(ivBg)
+                ivIcon.setCircular(5)
+                ivIcon.loadImage(it.pic)
+                tvNum.text = "${it.postsCount}帖子       ${it.likesCount}热度"
+                tvType.text = it.name
+                tvContent.text = it.description
+            }
+            binding.barTitleTv.text = it.name
+        })
     }
 
     private fun initTabAndViewPager() {
@@ -102,7 +120,18 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(position.toString())
+                    val type = when (position) {
+                        0 -> {
+                            4
+                        }
+                        1 -> {
+                            2
+                        }
+                        else -> {
+                            3
+                        }
+                    }
+                    return CircleDetailsFragment.newInstance(type.toString(), topicId)
                 }
 
             }

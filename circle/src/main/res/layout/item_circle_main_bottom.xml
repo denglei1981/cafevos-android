@@ -26,6 +26,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_7"
+            android:background="@drawable/circle_location_bg"
+            android:drawableStart="@mipmap/circle_location_item_icon"
+            android:drawablePadding="2dp"
+            android:paddingStart="3dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="3dp"
+            android:paddingBottom="1dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_bg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_talk"
             android:layout_width="wrap_content"
             android:layout_height="19dp"
@@ -33,10 +52,10 @@
             android:background="@drawable/circle_talk_20_bg"
             android:drawableStart="@mipmap/circle_talk_hint"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:paddingEnd="5dp"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:maxLines="1"
+            android:paddingEnd="5dp"
             android:text="年轻人喜欢什么样的车"
             android:textColor="@color/circle_8195C8"
             android:textSize="13sp"
@@ -51,12 +70,12 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="长安福特全新SUV S202预告图解码"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_talk" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_talk"
+            tools:text="长安福特全新SUV S202预告图解码" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_head"
@@ -71,65 +90,67 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="JakeLee先生"
-            android:textColor="@color/circle_B0B8C0"
-            android:textSize="11sp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            app:layout_constraintRight_toLeftOf="@+id/iv_like"
+            tools:text="JakeLee先生"
+            android:text="@{bean.authorBaseVo.nickname}"
+            android:textColor="@color/circle_B0B8C0"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintLeft_toRightOf="@+id/iv_head"
+            app:layout_constraintRight_toLeftOf="@+id/iv_like"
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_like_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="99"
+            tools:text="99"
             android:textColor="@color/color_99"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_like"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_head" />
+            app:layout_constraintTop_toTopOf="@+id/iv_like" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_like"
             android:layout_width="13dp"
-            android:layout_height="12.5dp"
-            android:layout_marginEnd="2dp"
+            android:layout_height="13dp"
+            android:layout_marginEnd="3dp"
             android:src="@mipmap/circle_no_like_image"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_like_num"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintRight_toLeftOf="@+id/tv_like_num"
-            app:layout_constraintTop_toTopOf="@+id/tv_like_num" />
+            app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ry_label"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/iv_head"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
-            android:layout_height="wrap_content"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_very"
             android:layout_width="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@+id/iv_bg"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+            android:layout_height="wrap_content"
             android:src="@mipmap/circle_very_post"
-            android:layout_height="wrap_content"/>
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_play"
             android:layout_width="41dp"
+            android:layout_height="41dp"
+            android:src="@mipmap/circle_play_icon"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
             app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
             app:layout_constraintRight_toRightOf="@+id/iv_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_bg"
-            android:src="@mipmap/circle_play_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
-            android:layout_height="41dp"/>
+            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

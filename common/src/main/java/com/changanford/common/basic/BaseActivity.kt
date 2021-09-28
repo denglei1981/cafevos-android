@@ -48,6 +48,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 //        StatusBarUtil.setLightStatusBar(this, true)
         ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
         initData()
+        observe()
     }
 
     override fun onResume() {
@@ -55,6 +56,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         curActivity = this
         currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
     }
+
+    open fun observe(){}
 
     private val bindings: VB by lazy {
         val type = javaClass.genericSuperclass as ParameterizedType
