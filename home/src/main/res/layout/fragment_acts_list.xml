@@ -32,7 +32,9 @@
 
             </com.changanford.home.widget.CollapsibleToolbar>
 
-           <include layout="@layout/include_acts_srceen"/>
+           <include
+               android:id="@+id/layout_home_screen"
+               layout="@layout/include_acts_srceen"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,19 +1,25 @@
 package com.changanford.home.acts.fragment
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.R
-import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.adapter.SimpleAdapter
+import com.changanford.home.acts.dialog.HomeActsScreenDialog
+import com.changanford.home.acts.dialog.UnitActsPop
+import com.changanford.home.callback.ICallback
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentActsListBinding
-import com.changanford.home.databinding.IncludeActsViewPagerBinding
 import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.home.search.data.SearchData
 import com.zhpan.bannerview.BannerViewPager
-import com.zhpan.indicator.enums.IndicatorSlideMode
+import razerdp.basepopup.BasePopupWindow
 import java.util.*
 
 /**
@@ -21,11 +27,12 @@ import java.util.*
  * */
 class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>() {
 
-    var  shopLists = mutableListOf<SearchData>()
-    val searchActsResultAdapter : SearchActsResultAdapter by lazy {
+    var shopLists = mutableListOf<SearchData>()
+    val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter(mutableListOf())
     }
     var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
+
     companion object {
         fun newInstance(): ActsListFragment {
             val fg = ActsListFragment()
@@ -34,20 +41,56 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
             return fg
         }
     }
+
     override fun initView() {
-        binding.homeCrv.layoutManager=
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+        binding.homeCrv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         shopLists.add(SearchData())
         shopLists.add(SearchData())
         shopLists.add(SearchData())
         shopLists.add(SearchData())
         shopLists.add(SearchData())
-        binding.homeCrv.adapter= SearchActsResultAdapter(shopLists)
+        binding.homeCrv.adapter = SearchActsResultAdapter(shopLists)
         initViewPager()
         setIndicator()
     }
-    override fun initData() {
 
+    var homeActsDialog: HomeActsScreenDialog? = null
+    var unitActsPop: UnitActsPop? = null
+
+    override fun initData() {
+        binding.layoutHomeScreen.tvSrceen.setOnClickListener {
+            if (homeActsDialog == null) {
+                homeActsDialog = HomeActsScreenDialog(requireActivity(), object : ICallback {
+                    override fun onResult(result: ResultData) {
+
+                    }
+                })
+            }
+            homeActsDialog?.show()
+        }
+        binding.layoutHomeScreen.tvAllActs.setOnClickListener {
+            setPopu(it)
+        }
+        binding.layoutHomeScreen.tvDesc.setOnClickListener {
+
+            setPopu(it)
+        }
+
+    }
+
+    fun setPopu(view: View) {
+        if (unitActsPop == null) {
+            unitActsPop = UnitActsPop(this,
+                object : ICallback {
+                    override fun onResult(result: ResultData) {
+
+                    }
+                })
+        }
+        unitActsPop?.showPopupWindow(view)
+        unitActsPop?.setAlignBackground(true)
+        unitActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
 
 

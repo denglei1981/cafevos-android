@@ -133,7 +133,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 maxDragHeight: Int
             ) {
                 val alphaTest=1 - percent.coerceAtMost(1f)
-
                 binding.llTabContent.alpha = alphaTest
                 binding.layoutTopBar.conContent.alpha =alphaTest
                 binding.homeTab.alpha = alphaTest
@@ -150,6 +149,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.layoutTopBar.ivSearch.setOnClickListener {
             startARouter(ARouterHomePath.PolySearchActivity)
         }
+
+
 
     }
 
