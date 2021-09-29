@@ -10,6 +10,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderEvaluationBinding
 import com.changanford.shop.utils.WCommonUtil.onTextChanged
+import com.changanford.shop.viewmodel.OrderEvaluationViewModel
 
 /**
  * @Author : wenke
@@ -17,7 +18,7 @@ import com.changanford.shop.utils.WCommonUtil.onTextChanged
  * @Description : 订单评价
  */
 @Route(path = ARouterShopPath.OrderEvaluationActivity)
-class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding,OrderEvaluationViewModel>() {
+class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvaluationViewModel>() {
     companion object{
         fun start(context: Context,orderId:String) {
             context.startActivity(Intent(context, OrderEvaluationActivity::class.java).putExtra("orderId",orderId))

@@ -9,6 +9,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.databinding.ActGoodsOrderBinding
+import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -17,7 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
  * @Description : 商品订单
  */
 @Route(path = ARouterShopPath.OrderGoodsActivity)
-class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding,OrderViewModel>() {
+class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
     companion object{
         fun start(context: Context) {
             context.startActivity(Intent(context, OrdersGoodsActivity::class.java))

@@ -1,4 +1,4 @@
-package com.changanford.shop.ui.order
+package com.changanford.shop.viewmodel
 
 import android.text.TextUtils
 import androidx.lifecycle.LiveData

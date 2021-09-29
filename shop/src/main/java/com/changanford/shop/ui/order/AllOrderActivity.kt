@@ -11,6 +11,7 @@ import com.changanford.shop.bean.OrderBean
 import com.changanford.shop.databinding.ActOrderAllBinding
 import com.changanford.shop.popupwindow.OrderScreeningPop
 import com.changanford.shop.view.TopBar
+import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
@@ -18,7 +19,7 @@ import com.changanford.shop.view.TopBar
  * @Description : 所有订单
  */
 @Route(path = ARouterShopPath.AllOrderActivity)
-class AllOrderActivity:BaseActivity<ActOrderAllBinding,OrderViewModel>(),
+class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
     OrderScreeningPop.OnSelectListener {
     companion object{
         fun start(context: Context, orderType:Int) {

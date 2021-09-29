@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.shop.bean.GoodsBean" />
+            type="com.changanford.common.bean.GoodsItemBean" />
     </data>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_marginBottom="@dimen/dp_22"
@@ -46,7 +46,6 @@
             android:textStyle="bold"
             android:id="@+id/tv_goodsTitle"
             android:layout_marginTop="@dimen/dp_14"
-            android:text="@{model.title}"
             tools:text="TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle"
             android:ellipsize="end"
             android:maxLines="1"

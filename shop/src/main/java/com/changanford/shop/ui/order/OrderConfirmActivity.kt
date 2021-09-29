@@ -9,6 +9,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.view.TopBar
+import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
@@ -16,7 +17,7 @@ import com.changanford.shop.view.TopBar
  * @Description : 订单确认
  */
 @Route(path = ARouterShopPath.OrderConfirmActivity)
-class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding,OrderViewModel>(),
+class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(),
     TopBar.OnBackClickListener {
     companion object{
         fun start(context: Context, goodsInfo:String) {

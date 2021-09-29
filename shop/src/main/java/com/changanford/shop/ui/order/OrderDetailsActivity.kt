@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.databinding.ActOrderDetailsBinding
+import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
@@ -13,7 +14,7 @@ import com.changanford.shop.databinding.ActOrderDetailsBinding
  * @Description : 商品订单详情
  */
 @Route(path = ARouterShopPath.OrderDetailActivity)
-class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding,OrderViewModel>() {
+class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
     companion object{
         fun start(context: Context,orderId:String) {
             context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderId",orderId))

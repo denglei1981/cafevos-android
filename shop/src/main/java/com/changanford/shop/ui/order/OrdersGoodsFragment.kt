@@ -5,13 +5,14 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.order.OrderGoodsAdapter
 import com.changanford.shop.bean.OrderBean
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
+import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
  * @Time : 2021/9/24 0024
  * @Description : OrdersGoodsFragment
  */
-class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding,OrderViewModel>() {
+class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderViewModel>() {
     companion object{
         fun newInstance(statesId:String): OrdersGoodsFragment {
             val bundle = Bundle()

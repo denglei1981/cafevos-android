@@ -1,6 +1,5 @@
 package com.changanford.shop
 import android.graphics.Typeface
-import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
@@ -18,12 +17,15 @@ import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.ShopViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
 /**
  * A fragment representing a list of Items.
  */
-class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
+class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), OnRefreshListener {
+    private  val fragments= arrayListOf<ExchangeListFragment>()
     private val adapter by lazy { GoodsKillAdapter() }
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
@@ -34,6 +36,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         initKill()
         addObserve()
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
+        binding.smartRl.setOnRefreshListener(this)
         //test
         binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
@@ -41,10 +44,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
     }
     private fun initTab(){
         val tabTitles= arrayListOf<String>()
-        val fragments= arrayListOf<Fragment>()
         for(i in 0..20){
             tabTitles.add("Tab$i")
-            fragments.add(ExchangeListFragment.newInstance("$i"))
+            val fragment=ExchangeListFragment.newInstance("$i")
+            fragment.setParentSmartRefreshLayout(binding.smartRl)
+            fragments.add(fragment)
         }
         binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
         binding.viewpager.isSaveEnabled = false
@@ -71,11 +75,17 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
     }
     override fun initData() {
         viewModel.getBannerData()
+        viewModel.getShopHomeKillData()
+        viewModel.getGoodsTypeList()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
         })
+    }
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        val currentItem=binding.viewpager.currentItem
+        fragments[currentItem].startRefresh()
     }
 }
 
