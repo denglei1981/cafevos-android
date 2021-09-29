@@ -16,20 +16,40 @@ import com.changanford.common.util.AppUtils
 @Route(path = ARouterCirclePath.PersonalActivity)
 class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel>() {
 
-    private val adapter by lazy { PersonalAdapter(this) }
+    private var page = 1
+    private var circleId = ""
+    private val adapter by lazy { PersonalAdapter() }
 
     override fun initView() {
+        circleId = intent.getStringExtra("circleId").toString()
         binding.ryPersonal.adapter = adapter
         binding.title.run {
             AppUtils.setStatusBarMarginTop(binding.title.root, this@PersonalActivity)
             tvTitle.text = "成员"
             ivBack.setOnClickListener { finish() }
         }
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.getData(circleId, page)
+        }
     }
 
     override fun initData() {
-        val list = arrayListOf("", "", "", "", "", "", "", "", "", "", "", "")
-        adapter.setItems(list)
-        adapter.notifyDataSetChanged()
+        viewModel.getData(circleId, page)
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.personalBean.observe(this,{
+            if (page == 1) {
+                adapter.setList(it.dataList)
+            } else {
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+        })
     }
 }

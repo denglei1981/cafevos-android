@@ -147,7 +147,7 @@ class JumpUtils {
             }
             4 -> {//帖子详情
                 bundle.putString("postsId", value)
-                startARouter(ARouterCirclePath.PostGraphicActivity, bundle)
+                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             }
             5 -> {//商城订单详情
                 if (value != null) {

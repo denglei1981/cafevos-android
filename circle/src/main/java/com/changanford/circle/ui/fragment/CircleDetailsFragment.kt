@@ -46,7 +46,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
     }
 
     override fun initView() {
-        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
 
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")

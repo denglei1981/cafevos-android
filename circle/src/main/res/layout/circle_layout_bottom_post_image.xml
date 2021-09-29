@@ -25,14 +25,15 @@
         tools:ignore="HardcodedText,RtlSymmetry" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_comment_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableTop="@mipmap/circle_talk_image"
         android:drawablePadding="3dp"
-        android:text="255"
         android:gravity="center"
         android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_10"
+        tools:text="255" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -41,18 +42,20 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/circle_no_like_image" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_like_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="3dp"
-            android:text="255"
             android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_10"
+            tools:text="255" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,30 +65,33 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/circle_no_collection_image" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_collection_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="3dp"
-            android:text="255"
             android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_10"
+            tools:text="255" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_share_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/circle_share_image"
-        android:drawablePadding="3dp"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="19dp"
+        android:drawableTop="@mipmap/circle_share_image"
+        android:drawablePadding="3dp"
         android:gravity="center"
-        android:text="255"
         android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_10"
+        tools:text="255" />
 
 </LinearLayout>
