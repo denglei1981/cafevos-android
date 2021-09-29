@@ -31,7 +31,7 @@ import com.dueeeke.videoplayer.util.PlayerUtils;
 /**
  * 点播底部控制栏
  */
-public class VodControlView extends FrameLayout implements IControlComponent, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class VodControlViewBig extends FrameLayout implements IControlComponent, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     protected ControlWrapper mControlWrapper;
 
@@ -46,17 +46,15 @@ public class VodControlView extends FrameLayout implements IControlComponent, Vi
 
     private boolean mIsShowBottomProgress = true;
 
-
-    public VodControlView(@NonNull Context context) {
+    public VodControlViewBig(@NonNull Context context) {
         super(context);
     }
 
-
-    public VodControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public VodControlViewBig(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public VodControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public VodControlViewBig(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -82,7 +80,7 @@ public class VodControlView extends FrameLayout implements IControlComponent, Vi
     }
 
     protected int getLayoutId() {
-        return R.layout.dkplayer_layout_vod_control_view;
+        return R.layout.dkplayer_layout_vod_control_view_big;
     }
 
     /**

@@ -1,8 +1,8 @@
-package com.changanford.common.util.dk
+package com.changanford.common.util.dk.cache
 
 import android.app.Activity
 import android.widget.ImageView
-import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
+import com.changanford.common.util.dk.*
 import com.changanford.common.utilext.GlideUtils
 import com.dueeeke.videoplayer.player.VideoView
 
@@ -11,7 +11,7 @@ import com.dueeeke.videoplayer.player.VideoView
  * @Date: 2020/5/15
  * @Des: DK播放器辅助类
  */
-class DKPlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>) {
+class DKPlayerHelperBig(private val context: Activity, private val mVideoView: VideoView<*>) {
 
 
     /**
@@ -29,7 +29,7 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
     }
 
     private val controlView by lazy {
-        VodControlView(context)
+        VodControlViewBig(context)
     }
 
     init {
@@ -44,7 +44,7 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
         controlView.fullScreenGone()
     }
 
-    fun setMyOnVisibilityChanged(myOnVisibilityChanged: VodControlView.MyOnVisibilityChanged) {
+    fun setMyOnVisibilityChanged(myOnVisibilityChanged: VodControlViewBig.MyOnVisibilityChanged) {
         controlView.setMyOnVisibilityChanged(myOnVisibilityChanged)
     }
 
