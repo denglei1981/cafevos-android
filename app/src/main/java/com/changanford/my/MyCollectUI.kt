@@ -1,4 +1,4 @@
-package com.changanford.my.ui
+package com.changanford.my
 
 import android.graphics.Typeface
 import android.widget.TextView
@@ -9,8 +9,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.my.BaseMineUI
-import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.changanford.my.ui.fragment.ActFragment
@@ -42,7 +40,14 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return ActFragment.newInstance("$position")
+                    return when (position) {
+                        1 -> {
+                            PostFragment.newInstance("collectPost")
+                        }
+                        else -> {
+                            ActFragment.newInstance("$position")
+                        }
+                    }
                 }
             }
 

@@ -473,6 +473,110 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
+    /*---------------------资讯----------------------*/
+    //con/article/myColletArticle  我的收藏 资讯
+    @POST("con/article/myColletArticle")
+    suspend fun queryMineCollectList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    //我的足迹  资讯
+    @POST("con/article/myVisitArticle")
+    suspend fun queryMineFootprintList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+
+    //我发布的资讯
+    @POST("con/article/myArticles")
+    suspend fun queryMineSendInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    /*---------------------帖子-------------------*/
+
+    //我的足迹 con/posts/myVisits
+    @POST("con/posts/myVisits")
+    suspend fun queryMineFootprintInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我收藏得帖子
+    @POST("con/posts/myCollectList")
+    suspend fun queryMineCollectInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我发布的帖子
+    @POST("con/posts/myPostsList")
+    suspend fun queryMineSendPost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    /*------------------活动----------------------*/
+
+    //highlights/myPublishes 我的活动
+    @POST("highlights/myPublishes")
+    suspend fun queryMineSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //highlights/indexPage4User
+
+    @POST("highlights/indexPage4User")
+    suspend fun queryTaSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我收藏的活动  highlights/myCollect
+    @POST("highlights/myCollect")
+    suspend fun queryMineCollectAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我的足迹活动  highlights/myFootprint
+    @POST("highlights/myFootprint")
+    suspend fun queryMineFootAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //我参与的活动
+    @POST("highlights/myJoin")
+    suspend fun queryMineJoinAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //单个 批量 删除资讯
+    @POST("con/article/delete")
+    suspend fun deleteInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //单个 批量 删除资讯
+    @POST("con/posts/delete")
+    suspend fun deletePost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
 
     /**
      * 注销账户
