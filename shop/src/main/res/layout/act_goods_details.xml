@@ -21,7 +21,7 @@
                     layout="@layout/in_goods_details_item_top"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.changanford.shop.view.TypefaceTextView
             android:gravity="center"
             android:paddingTop="@dimen/dp_30"
             android:paddingStart="@dimen/dp_16"

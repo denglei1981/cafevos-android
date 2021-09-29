@@ -19,7 +19,16 @@
             android:id="@+id/inKill"
             layout="@layout/in_goods_details_kill"/>
         <!-- 会员专享/会员折扣       -->
-        <include layout="@layout/in_goods_detsils_vip"/>
+        <include
+            android:id="@+id/in_vip"
+            layout="@layout/in_goods_detsils_vip"/>
+        <include
+            android:id="@+id/in_vipDiscount"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/in_goods_vip"/>
         <!-- 商品基本信息           -->
         <include layout="@layout/in_goods_details_info"/>
         <View

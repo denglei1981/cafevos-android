@@ -2,6 +2,7 @@ package com.changanford.shop.control
 
 import android.app.Activity
 import android.os.CountDownTimer
+import com.changanford.common.bean.GoodsItemBean
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
@@ -16,6 +17,9 @@ import com.changanford.shop.popupwindow.GoodsAttrsPop
 class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding) {
     private var timeCount: CountDownTimer?=null
+    fun bindingData(data:GoodsItemBean?){
+
+    }
     /**
      * 秒杀倒计时
      * [remainingTime]剩余时间 毫秒

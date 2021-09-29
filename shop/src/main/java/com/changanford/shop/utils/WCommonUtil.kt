@@ -2,6 +2,9 @@ package com.changanford.shop.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
@@ -99,5 +102,15 @@ object WCommonUtil {
                 onTextChanged.invoke(EditTextBean(s,start,before,count))
             }
         })
+    }
+    /**
+     * 设置textview 的颜色渐变
+     * @param text
+     */
+    fun setTextViewStyles(text: TextView,startColor:String,endColor:String){
+        val mLinearGradient = LinearGradient(0f, 0f, 0f, text.paint.textSize, Color.parseColor(startColor), Color.parseColor(endColor),
+            Shader.TileMode.CLAMP)
+        text.paint.shader = mLinearGradient
+        text.invalidate()
     }
 }

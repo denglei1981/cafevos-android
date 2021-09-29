@@ -9,6 +9,7 @@ import androidx.core.widget.NestedScrollView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActGoodsDetailsBinding
+import com.changanford.shop.viewmodel.GoodsViewModel
 import kotlin.math.roundToInt
 
 /**
@@ -16,7 +17,7 @@ import kotlin.math.roundToInt
  * @Time : 2021/9/9
  * @Description : 商品详情
  */
-class GoodsDetailsActivity1:BaseActivity<ActGoodsDetailsBinding,GoodsViewModel>(){
+class GoodsDetailsActivity1:BaseActivity<ActGoodsDetailsBinding, GoodsViewModel>(){
     companion object{
         fun start(context: Context,goodsId:String) {
             context.startActivity(Intent(context,GoodsDetailsActivity1::class.java).putExtra("goodsId",goodsId))

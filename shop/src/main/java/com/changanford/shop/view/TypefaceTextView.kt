@@ -1,11 +1,12 @@
 package com.changanford.shop.view
 
 import android.content.Context
-import android.graphics.Typeface
+import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.shop.R
+import com.changanford.shop.utils.TypefaceUtils
 
 
 /**
@@ -28,12 +29,10 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         endText=typedArray.getString(R.styleable.TypefaceTextView_end_txt)
         val textFlag=typedArray.getInt(R.styleable.TypefaceTextView_text_flags,0)
         if(0!=textFlag)paint.flags= textFlag
-        //字体
-        val typeface: Typeface= when (val typefaceName = typedArray.getString(R.styleable.TypefaceTextView_typeface)) {
-            "ZenDots-Regular" -> Typeface.createFromAsset(context.assets, "$typefaceName.ttf")
-            else ->Typeface.DEFAULT
-        }
-        setTypeface(typeface)
+        val inputType= inputType
+        val typefaceValue=if(InputType.TYPE_CLASS_TEXT==inputType||InputType.TYPE_NULL==inputType) TypefaceUtils.getTypefaceTxt(context)
+        else TypefaceUtils.getTypefaceNumber(context)
+        typeface = typefaceValue
         //行高
         setLineSpacing(0f,1.5f)
         typedArray.recycle()

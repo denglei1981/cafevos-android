@@ -17,6 +17,8 @@
             android:layout_marginTop="@dimen/dp_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:start_txt="@string/str_hasChange"
+            app:end_txt="@string/str_a"
             tools:text="已兑换141件"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12"/>

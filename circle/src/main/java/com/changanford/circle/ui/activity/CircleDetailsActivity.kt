@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
@@ -27,6 +28,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -60,47 +62,6 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             backImg.setOnClickListener { finish() }
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
-        }
-        binding.topContent.run {
-
-            Glide.with(this@CircleDetailsActivity)
-                .load(CircleConfig.TestUrl)
-                .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
-                .into(ivBg)
-            ivIcon.setCircular(5)
-            ivIcon.loadImage(CircleConfig.TestUrl)
-            ryPersonal.adapter = personalAdapter
-            tvPersonal.setOnClickListener {
-                startARouter(ARouterCirclePath.PersonalActivity)
-            }
-            tvJoin.setOnClickListener {
-                CircleManagementPop(this@CircleDetailsActivity,
-                    object : CircleManagementPop.ClickListener {
-                        override fun checkPosition(bean: String) {
-                            ApplicationCircleManagementDialog(this@CircleDetailsActivity, 1).show()
-                        }
-                    }).run {
-                    //pop背景对齐
-//                    setAlignBackground(true)
-                    //无透明背景
-//                    setBackgroundColor(Color.TRANSPARENT)
-                    //背景模糊false
-                    setBlurBackgroundEnable(false)
-                    //弹出位置 基于绑定的view 默认BOTTOM
-//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                    showPopupWindow(tvJoinText)
-                    setData(arrayListOf("星推官", "星推官助手"))
-                    onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                        override fun onDismiss() {
-
-                        }
-
-                    }
-                    setOnPopupWindowShowListener {
-
-                    }
-                }
-            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -143,7 +104,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(position.toString(),"")
+                    return CircleDetailsFragment.newInstance(position.toString(), "","94")
                 }
 
             }
@@ -154,11 +115,65 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     override fun initData() {
-        val personalList = arrayListOf("", "", "", "", "", "", "", "", "", "")
-        personalAdapter.setItems(personalList)
-        personalAdapter.notifyDataSetChanged()
+        viewModel.getCircleDetails("94")
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun observe() {
+        super.observe()
+        viewModel.circleDetailsBean.observe(this, {
+            binding.topContent.run {
+
+                Glide.with(this@CircleDetailsActivity)
+                    .load(GlideUtils.handleImgUrl(it.pic))
+                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
+                    .into(ivBg)
+                ivIcon.setCircular(5)
+                ivIcon.loadImage(it.pic)
+                tvTitle.text = it.name
+                tvContent.text = it.description
+                tvNum.text = "${it.postsCount} 帖子"
+                ryPersonal.adapter = personalAdapter
+                tvPersonal.text = "${it.userCount}成员"
+                personalAdapter.setItems(it.users)
+                personalAdapter.notifyDataSetChanged()
+                tvPersonal.setOnClickListener {
+                    startARouter(ARouterCirclePath.PersonalActivity)
+                }
+                tvJoin.setOnClickListener {
+                    CircleManagementPop(this@CircleDetailsActivity,
+                        object : CircleManagementPop.ClickListener {
+                            override fun checkPosition(bean: String) {
+                                ApplicationCircleManagementDialog(
+                                    this@CircleDetailsActivity,
+                                    1
+                                ).show()
+                            }
+                        }).run {
+                        //pop背景对齐
+//                    setAlignBackground(true)
+                        //无透明背景
+//                    setBackgroundColor(Color.TRANSPARENT)
+                        //背景模糊false
+                        setBlurBackgroundEnable(false)
+                        //弹出位置 基于绑定的view 默认BOTTOM
+//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                        showPopupWindow(tvJoinText)
+                        setData(arrayListOf("星推官", "星推官助手"))
+                        onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                            override fun onDismiss() {
+
+                            }
+
+                        }
+                        setOnPopupWindowShowListener {
+
+                        }
+                    }
+                }
+            }
+        })
+    }
 
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
