@@ -50,8 +50,6 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
         newsListAdapter!!.setOnItemClickListener { adapter, view, position ->
-
-//            JumpUtils.instans?.jump()
             startARouter(ARouterHomePath.NewsPicsActivity)
         }
 
