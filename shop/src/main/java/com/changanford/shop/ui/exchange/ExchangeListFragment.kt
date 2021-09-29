@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.bean.GoodsBean
-import com.changanford.shop.databinding.InListBinding
+import com.changanford.shop.databinding.FragmentExchangeBinding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 
 /**
@@ -12,7 +12,7 @@ import com.changanford.shop.ui.goods.GoodsDetailsActivity
  * @Time : 2021/9/9
  * @Description : ExchangeListFragment
  */
-class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
+class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, ExchangeViewModel>() {
     companion object{
         fun newInstance(itemId:String): ExchangeListFragment {
             val bundle = Bundle()
@@ -30,7 +30,7 @@ class ExchangeListFragment: BaseFragment<InListBinding, ExchangeViewModel>() {
     }
     override fun initData() {
 //        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
-        binding.rvList.adapter=adapter
+        binding.recyclerView.adapter=adapter
         val datas= arrayListOf<GoodsBean>()
         val title=StringBuffer("Title")
         for (i in 0..30){
