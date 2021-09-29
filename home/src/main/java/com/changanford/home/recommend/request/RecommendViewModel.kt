@@ -5,28 +5,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.net.*
+import com.changanford.home.base.response.UpdateUiState
 import kotlinx.coroutines.launch
 
 class RecommendViewModel : ViewModel() {
 
-    var  recommendLiveData: MutableLiveData<RecommendListBean> = MutableLiveData()
+    var recommendLiveData: MutableLiveData<UpdateUiState<RecommendListBean>> = MutableLiveData()
 
+    var pageNo:Int=1
+    fun getRecommend( isLoadMore: Boolean) {
 
-    fun getRecommend(pageSize:Int, isLoadMore: Boolean ){
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
-                paramMaps["pageNo"] = 1
+                paramMaps["pageNo"] = pageNo
                 val rKey = getRandomKey()
                 apiService.getRecommendList(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
-                recommendLiveData.postValue(it)
-            }.onFailure { // 失败
-
+                pageNo+=1
+                val updateUiState = UpdateUiState<RecommendListBean>(it, true, isLoadMore, "")
+                recommendLiveData.postValue(updateUiState)
+            }.onWithMsgFailure { // 失败
+                val updateUiState = UpdateUiState<RecommendListBean>(false,it ,isLoadMore)
+                recommendLiveData.postValue(updateUiState)
             }
         }
     }
-
 
 
 }
