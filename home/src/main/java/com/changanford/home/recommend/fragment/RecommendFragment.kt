@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.databinding.FragmentRecommendListBinding
@@ -32,24 +34,31 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendVi
     }
 
     override fun initView() {
-        viewModel.getRecommend(10, false)
+        viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
+        recommendAdapter.setOnItemClickListener { adapter, view, position ->
+            startARouter(ARouterHomePath.NewsPicAdActivity)
+        }
     }
 
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
-            (parentFragment as HomeV2Fragment).stopRefresh()
-            recommendAdapter.addData(it.dataList)
+            if(it.isLoadMore){
+
+            }else{
+                (parentFragment as HomeV2Fragment).stopRefresh()
+            }
+            recommendAdapter.addData(it.data.dataList)
         })
     }
     open fun homeRefersh() {
-        viewModel.getRecommend(10, false)
+        viewModel.getRecommend(false)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
-        viewModel.getRecommend(10, true)
+        viewModel.getRecommend( true)
     }
 }
