@@ -155,8 +155,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             startARouter(ARouterHomePath.PolySearchActivity)
         }
 
-
-
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {

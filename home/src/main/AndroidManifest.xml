@@ -10,6 +10,7 @@
         <activity android:name=".search.activity.PloySearchResultActivity" />
         <activity android:name=".news.activity.NewsPicsActivity" />
         <activity android:name=".news.activity.NewsPicAdActivity"/>
+        <activity android:name=".news.activity.NewsVideoDetailActivity"/>
 
 
     </application>
