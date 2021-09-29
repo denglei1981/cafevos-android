@@ -23,15 +23,35 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
     override fun convert(holder: BaseViewHolder, item: RecommendData) {
 
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
-        var tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
-        var tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
+        val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
+        val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
 
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         tvAuthorName.text = item.authors?.nickname
         tvSubtitle.text = item.authors?.memberName
 
+        val tvContent = holder.getView<TextView>(R.id.tv_content)
+        val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
 
-        var btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+
+        val picLists = item.getPicLists()
+
+        tvContent.text = item.contentString
+
+        val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
+
+        val tvCommentCount =holder.getView<TextView>(R.id.tv_comment_count)
+
+        val tvTimeAndViewCount =holder.getView<TextView>(R.id.tv_time_look_count)
+
+
+
+        tvLikeCount.text = item.getLikeCount()
+        tvCommentCount.text=item.getCommentCount()
+        tvTimeAndViewCount.text=item.getTimeAdnViewCount()
+
+
+
         when (item.authors?.isFollow) {
             0 -> { // 未关注
                 btnFollow.text = "关注"
@@ -49,20 +69,6 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         }
-        var picLists = item.getPicLists()
-        when(item.rtype){ // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
-            1->{
-
-            }
-            2->{
-
-            }
-            3->{
-
-            }
-
-        }
-
         when (item.itemType) {
             1 -> {//1张图
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)

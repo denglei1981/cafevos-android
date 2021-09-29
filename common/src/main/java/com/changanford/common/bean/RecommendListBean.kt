@@ -2,6 +2,8 @@ package com.changanford.common.bean
 
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.changanford.common.util.CountUtils
+import com.changanford.common.util.TimeUtils
 import java.util.*
 
 /**
@@ -27,13 +29,13 @@ data class HomeExtendBean(
 
 data class RecommendData(
     val artCollectCount: Double,
-    var artCommentCount: Int,
+    var artCommentCount: Long,
     val artContent: String,
     val artCreateTime: Any,
     val artId: String,
     val artIsSpecialTopic: Int,
     val artKeyword: Any,
-    var artLikesCount: Int,
+    var artLikesCount: Long = 0,
     val artPics: String,
     val artPublishTime: Long,
     val artShareCount: Double,
@@ -45,13 +47,13 @@ data class RecommendData(
     val artType: Int,
     val artVideoTime: String,
     val artVideoUrl: Any,
-    val artViewsCount: Int,
+    val artViewsCount: Long,
     val artViewsCountBase: Double,
     val artViewsCount_mul: Double,
     var isLike: Int,
     val postsCircleId: Double,
     val postsCollectCount: Double,
-    var postsCommentCount: Int,
+    var postsCommentCount: Long,
     val postsContent: String,
     val postsCreateTime: String,
     val postsId: String,
@@ -62,7 +64,7 @@ data class RecommendData(
     val postsIsPublish: Double,
     val postsIsTop: Double,
     val postsKeywords: Any,
-    var postsLikesCount: Int,
+    var postsLikesCount: Long = 0,
     val postsPics: String,
     val postsPlate: Double,
     val postsPublishTime: Long,
@@ -72,7 +74,7 @@ data class RecommendData(
     val postsType: Int,
     val postsVideoTime: String,
     val postsVideoUrl: Any,
-    val postsViewsCount: Int,
+    val postsViewsCount: Long,
     val rtype: Int, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
     val authors: HomeAuthorsBean?,
     val timeStr: String,
@@ -83,6 +85,7 @@ data class RecommendData(
     val pic: String,
     var pisList: List<String>? = null
 ) : MultiItemEntity {
+
 
     fun getItemTypeLocal(): Int {
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
@@ -96,7 +99,91 @@ data class RecommendData(
         return 1
     }
 
-    fun getPicLists() :List<String>?{
+    var contentString: String = ""
+    fun getContent(): String { // 获取内容
+        when (rtype) {//1 资讯 2 帖子 3 活动
+            1 -> {
+                contentString = artContent
+            }
+            2 -> {
+                contentString = postsContent
+            }
+            3 -> {
+                contentString = artContent
+            }
+        }
+        return contentString
+    }
+
+    var likeCountResult: String = "" // 喜欢的数量。。
+    var likeCount: Long = 0
+    fun getLikeCount(): String { // 获取点赞数量
+        when (rtype) {
+            1 -> {
+                likeCount = artLikesCount
+
+            }
+            2 -> {
+                likeCount = postsLikesCount
+            }
+            3 -> {
+                likeCount = artLikesCount
+            }
+        }
+        if (likeCount == 0L) {
+            return "点赞"
+        }
+        likeCountResult = CountUtils.formatNum(likeCount.toString(), false).toString()
+        return likeCountResult
+    }
+    var commentCommentResult: String = ""
+    var commentCount: Long = 0
+    fun getCommentCount(): String {
+        when (rtype) {
+            1 -> {
+                commentCount = artCommentCount
+            }
+            2 -> {
+                commentCount = postsCommentCount
+            }
+            3 -> {
+                commentCount = artCommentCount
+            }
+        }
+        if (commentCount == 0L) {
+            return "评论"
+        }
+        commentCommentResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCommentResult
+    }
+
+    var  timeAndViewCountResult:String=""
+    fun getTimeAdnViewCount():String{
+        var  viewCount:Long=0
+         when(rtype){
+             1->{
+                 viewCount= artViewsCount
+
+             }
+             2->{
+                 viewCount =postsViewsCount
+
+             }
+             3->{
+                 viewCount=artViewsCount
+             }
+
+         }
+        var  viewCountStr = CountUtils.formatNum(viewCount.toString(), false).toString()
+
+
+        timeAndViewCountResult=timeStr.plus("  ").plus(viewCount).plus("浏览量")
+        return timeAndViewCountResult
+    }
+
+
+
+    fun getPicLists(): List<String>? {
         return pisList
     }
 
@@ -138,7 +225,7 @@ data class SpecialListBean(
     val avatar: Any,
     val catId: Int,
     val collectCount: Int,
-    val commentCount: Int,
+    val commentCount: Int = 0,
     val content: String,
     val createTime: String,
     val isFollow: Int,
@@ -146,7 +233,7 @@ data class SpecialListBean(
     val isRecommend: Int,
     val isSpecialTopic: Int,
     val keyword: Any,
-    val likesCount: Int,
+    val likesCount: Int = 0,
     val likesCountBase: Int,
     val likesCountMul: Int,
     val memberIcon: Any,
@@ -169,7 +256,7 @@ data class SpecialListBean(
     val userId: Int,
     val videoTime: Any,
     val videoUrl: Any,
-    val viewsCount: Int,
+    val viewsCount: Int = 0,
     val viewsCountBase: Int,
     val viewsCountMul: Int
 )

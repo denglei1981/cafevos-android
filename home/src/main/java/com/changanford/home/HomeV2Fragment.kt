@@ -133,17 +133,19 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 maxDragHeight: Int
             ) {
                 val alphaTest=1 - percent.coerceAtMost(1f)
-                binding.llTabContent.alpha = alphaTest
-                binding.layoutTopBar.conContent.alpha =alphaTest
-                binding.homeTab.alpha = alphaTest
-                when(alphaTest){
-                    0f->{
-                        StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
+
+                    binding.llTabContent.alpha = alphaTest
+                    binding.layoutTopBar.conContent.alpha =alphaTest
+                    binding.homeTab.alpha = alphaTest
+                    when(alphaTest){
+                        0f->{
+                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
+                        }
+                        1f->{
+                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
+                        }
                     }
-                    1f->{
-                        StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
-                    }
-                }
+
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
