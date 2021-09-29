@@ -35,7 +35,7 @@ object ARouterMyPath {
     const val TaCentreInfoUI = "/my/TaCentreInfoUI" //他们中心
     const val MineEditInfoUI = "/my/MineEditInfoUI" //编辑用户信息
     const val MineLoveCarInfoUI = "/my/MineLoveCarInfoUI"//爱车详情
-    const val MineFootprintUI = "/my/MineFootprintUI" // 我的足迹
+    const val MineFootprintUI = "/app/MineFootprintUI" // 我的足迹
     const val MineOrderUI = "/my/MineOrderUI" //我的订单
     const val MineFeedbackUI = "/my/MineFeedbackUI" // 反馈常见问题
     const val MineLoveCarListUI = "/my/MineLoveCarListUI" //我的爱车

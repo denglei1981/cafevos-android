@@ -1,4 +1,4 @@
-package com.changanford.my.ui
+package com.changanford.my
 
 import android.graphics.Typeface
 import android.widget.TextView
@@ -9,11 +9,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.my.BaseMineUI
-import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
-import com.changanford.my.ui.fragment.PostFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -42,7 +39,20 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return PostFragment.newInstance("$position")
+                    return when(position){
+                        0 -> {
+                            InformationFragment.newInstance("footInformation")
+                        }
+                        1 -> {
+                            PostFragment.newInstance("footPost")
+                        }
+                        2 -> {
+                            ActFragment.newInstance("footAct")
+                        }
+                        else->{
+                            PostFragment.newInstance("$position")
+                        }
+                    }
                 }
             }
 

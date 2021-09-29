@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.bean.ActDataBean
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.home.R
@@ -13,7 +14,6 @@ import com.changanford.home.databinding.FragmentNewsListBinding
 import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
-import com.changanford.home.news.data.NewsData
 import java.util.*
 
 /**
@@ -38,14 +38,14 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         newsListAdapter = NewsListAdapter().apply {
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
-            addData(NewsData())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
+            addData(ActDataBean())
         }
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter

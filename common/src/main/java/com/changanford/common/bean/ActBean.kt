@@ -10,50 +10,51 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
  *  修改描述：TODO
  */
 data class InfoBean(
-    val dataList: List<InfoData>?,
-    val pageNo: Int,
-    val pageSize: Int,
-    val total: Int,
-    val totalPage: Int
+    val dataList: List<InfoDataBean>? = arrayListOf(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
 )
 
-data class InfoData(
-    val artId: Int,
-    val authors: AuthorBaseVo?,
-    val catId: Int,
-    val collectCount: Int,
-    var commentCount: Long,
-    val content: Any,
-    val createTime: Long,
-    val isDeleted: Int,
-    var isLike: Int,
-    val isRecommend: Int,
-    val isSpecialTopic: Int,
-    val keyword: String,
-    var likesCount: Long,
-    val likesCountBase: Int,
-    val likesCountMul: Double,
-    val pics: String,
-    val publishTime: Long,
-    val shareCount: Int,
-    val sortOrder: Int,
-    val specialTopicId: Any,
-    val specialTopicTitle: Any,
-    val status: Int,
-    val summary: String,
-    val timeStr: String,
-    val title: String,
-    val type: Int,
-    val updateTime: Any,
-    val userId: Int,
-    val videoTime: String,
-    val videoUrl: String,
-    val viewsCount: Long,
-    val viewsCountBase: Int,
-    val viewsCountMul: Double,
-    val jumpVal: String,
-    val jumpType: Int
-)
+data class InfoDataBean(
+    override val itemType: Int,
+    val artId: Int = 0,
+    val authors: AuthorBaseVo? = AuthorBaseVo(),
+    val catId: Int = 0,
+    val collectCount: Int = 0,
+    var commentCount: Long = 0L,
+    val content: Any = Any(),
+    val createTime: Long = 0L,
+    val isDeleted: Int = 0,
+    var isLike: Int = 0,
+    val isRecommend: Int = 0,
+    val isSpecialTopic: Int = 0,
+    val keyword: String = "",
+    var likesCount: Long = 0L,
+    val likesCountBase: Int = 0,
+    val likesCountMul: Double = 0.0,
+    val pics: String = "",
+    val publishTime: Long = 0L,
+    val shareCount: Int = 0,
+    val sortOrder: Int = 0,
+    val specialTopicId: Any = Any(),
+    val specialTopicTitle: Any = Any(),
+    val status: Int = 0,
+    val summary: String = "",
+    val timeStr: String = "",
+    val title: String = "",
+    val type: Int = 0,
+    val updateTime: Any = Any(),
+    val userId: Int = 0,
+    val videoTime: String = "",
+    val videoUrl: String = "",
+    val viewsCount: Long = 0L,
+    val viewsCountBase: Int = 0,
+    val viewsCountMul: Double = 0.0,
+    val jumpVal: String = "",
+    val jumpType: Int = 0
+) : MultiItemEntity
 
 
 data class AuthorBaseVo(
@@ -133,32 +134,32 @@ data class AcBean(var title: String, var iconUrl: String, var type: Int) : Multi
 }
 
 data class AccBean(
-    val dataList: List<AcDataBean>?,
-    val pageNo: Int,
-    val pageSize: Int,
-    val total: Int,
-    val totalPage: Int
+    val dataList: List<ActDataBean>? = arrayListOf(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
 )
 
-data class AcDataBean(
-    val activityJoinCount: Int,
-    val activityTotalCount: Int,
-    val beginTime: String,
-    val cityName: String,
-    val coverImg: String,
-    val deadLineTime: Long,
-    val endTime: Long,
-    val jumpType: Int,
-    val jumpVal: String,
-    val official: Int,
-    val provinceName: String,
-    val reason: String,
-    val status: Int,
-    val title: String,
-    val townName: String,
-    val userId: Int,
-    val wonderfulId: Int,
-    val wonderfulType: Int,
-    var serverTime: Long,
-    val createTime: Long
+data class ActDataBean(
+    val activityJoinCount: Int = 0,
+    val activityTotalCount: Int = 0,
+    val beginTime: String = "",
+    val cityName: String = "",
+    val coverImg: String = "",
+    val deadLineTime: Long = 0L,
+    val endTime: Long = 0L,
+    val jumpType: Int = 0,
+    val jumpVal: String = "",
+    val official: Int = 0,
+    val provinceName: String = "",
+    val reason: String = "",
+    val status: Int = 0,
+    val title: String = "",
+    val townName: String = "",
+    val userId: Int = 0,
+    val wonderfulId: Int = 0,
+    val wonderfulType: Int = 0,
+    var serverTime: Long = 0L,
+    val createTime: Long = 0L
 )

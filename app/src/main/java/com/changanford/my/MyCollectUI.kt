@@ -11,7 +11,6 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
-import com.changanford.my.ui.fragment.ActFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -41,8 +40,14 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
+                        0 -> {
+                            InformationFragment.newInstance("collectInformation")
+                        }
                         1 -> {
                             PostFragment.newInstance("collectPost")
+                        }
+                        2 -> {
+                            ActFragment.newInstance("collectAct")
                         }
                         else -> {
                             ActFragment.newInstance("$position")

@@ -139,6 +139,7 @@
         <activity android:name="com.changanford.my.ui.MyActUI" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name="com.changanford.my.MyCollectUI" />
+        <activity android:name="com.changanford.my.MyFootUI" />
     </application>
 
 </manifest>
