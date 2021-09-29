@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.databinding.FragmentRecommendListBinding
@@ -46,17 +47,23 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendVi
 
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
-            if (it.isLoadMore) {
+            if (it.isSuccess) {
+                if (it.isLoadMore) {
 
+                } else {
+                    (parentFragment as HomeV2Fragment).stopRefresh()
+                }
+                recommendAdapter.addData(it.data.dataList)
             } else {
-                (parentFragment as HomeV2Fragment).stopRefresh()
+                ToastUtils.showShortToast(it.message, requireContext())
+
             }
-//            recommendAdapter.addData(it.data.dataList)
+
         })
     }
 
     open fun homeRefersh() {
-//        viewModel.getRecommend(false)
+        viewModel.getRecommend(false)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {

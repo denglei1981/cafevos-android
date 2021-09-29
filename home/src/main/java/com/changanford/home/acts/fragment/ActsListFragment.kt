@@ -7,8 +7,11 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.home.R
 import com.changanford.home.acts.adapter.SimpleAdapter
 import com.changanford.home.acts.dialog.HomeActsScreenDialog
@@ -50,9 +53,15 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
         shopLists.add(SearchData())
         shopLists.add(SearchData())
         shopLists.add(SearchData())
-        binding.homeCrv.adapter = SearchActsResultAdapter(shopLists)
+        binding.homeCrv.adapter = searchActsResultAdapter
+        searchActsResultAdapter.addData(shopLists)
         initViewPager()
         setIndicator()
+        searchActsResultAdapter.setOnItemClickListener { adapter, view, position ->
+
+            startARouter(ARouterHomePath.NewsVideoDetailActivity)
+
+        }
     }
 
     var homeActsDialog: HomeActsScreenDialog? = null
@@ -76,6 +85,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
 
             setPopu(it)
         }
+
 
     }
 
