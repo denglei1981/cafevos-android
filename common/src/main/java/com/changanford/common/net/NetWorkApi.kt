@@ -118,6 +118,89 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MessageListBean>
+    /**
+     * 获取反馈 常用问题
+     */
+    @POST("userFeedback/getCommonQuestions")
+    suspend fun getFeedbackQ(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackQBean>
+    /**
+     * 获取意见反馈 所以标签
+     */
+    @POST("userFeedback/getAllUserFeedbackTags")
+    suspend fun getFeedbackTag(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackTags>
+    /**
+     * 添加意见反馈 所以标签
+     */
+    @POST("userFeedback/insertFeedback")
+    suspend fun addFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 获取的我所以意见反馈
+     */
+    @POST("userFeedback/getAllUserFeedbacks")
+    suspend fun getMineFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMineListBean>
+    /**
+     * 删除一个意见反馈
+     */
+    @POST("userFeedback/deleteUserFeedback")
+    suspend fun deleteUserFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 用户已读
+     */
+    @POST("userFeedback/changeToRead")
+    suspend fun changeToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("base/config/getConfigValueByKey")
+    suspend fun queryMemberNickName(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMemberBean>
+    /**
+     * 意见反馈 获取内容
+     */
+
+    @POST("userFeedback/getAllConversation")
+    suspend fun queryFeedbackInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackInfoList>
+
+    /**
+     * 关闭意见反馈
+     */
+
+    @POST("userFeedback/closeFeedbackStatus")
+    suspend fun closeFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 添加一条数据意见反馈
+     */
+
+    @POST("userFeedback/addConversation")
+    suspend fun addFeedbackInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     /**--------------------------------base---------------------------------------**/
 

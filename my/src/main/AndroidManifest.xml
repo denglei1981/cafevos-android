@@ -28,7 +28,6 @@
         <activity
             android:name=".ui.MyCircleMangerUI"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".ui.CarAuthSubmitUI" />
         <activity android:name=".ui.EditNickNameUI" />
         <activity android:name=".ui.MineLikeUI" />
         <activity android:name=".ui.MineIndustryUI" />
@@ -36,8 +35,12 @@
         <activity android:name=".ui.MineMessageUI" />
         <activity android:name=".ui.MineMessageSysInfoUI" />
         <activity android:name=".ui.MineMessageInfoUI" />
-        <activity
-            android:name=".ui.SignTransparentUI"
-            android:theme="@style/Picture.Theme.Translucent" />
+        <activity android:name=".ui.SignTransparentUI"
+            android:theme="@style/Picture.Theme.Translucent"/>
+        <activity android:name=".ui.MineFeedbackUI" />
+        <activity android:name=".ui.MineEditFeedbackUI" />
+        <activity android:name=".ui.MineFeedbackRecordUI" />
+        <activity android:name=".ui.MineFeedbackInfoListUI" />
+        <activity android:name=".ui.MineCenterFeedbackUI" />
     </application>
 </manifest>

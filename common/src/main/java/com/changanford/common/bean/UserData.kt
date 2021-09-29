@@ -139,7 +139,24 @@ data class CancelReasonBeanItem(
     var isCheck: Boolean = false,
     var reasonId: Int = 0
 )
-
+data class UserIdCardBeanItem(
+    val actionIds: String,
+    val dataScope: String,
+    val fillCondition: String,
+    val interestsId: String,
+    val isAuth: String,
+    var isShow: String,
+    val keepCondition: String,
+    val keepConditionNo: String,
+    val memberDesc: String,
+    val memberIcon: String,
+    val memberId: Int,
+    val memberKey: String,
+    val memberName: String,
+    val sort: String,
+    val status: String,
+    val medalType: Int//勋章类型（1.身份 2.成长值 3社交互动 4每日动态 5节日）
+)
 
 data class AddressBeanItem(
     val addressId: Int = 0,

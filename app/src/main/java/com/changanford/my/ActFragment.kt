@@ -1,7 +1,12 @@
 package com.changanford.my
 
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.bean.ActDataBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.home.databinding.ItemHomeActsBinding
 import com.changanford.my.databinding.FragmentCollectBinding
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -17,6 +22,10 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 class ActFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
     var type: String = ""
 
+    val actAdapter: ActAdapter by lazy {
+        ActAdapter()
+    }
+
     companion object {
         fun newInstance(value: String): ActFragment {
             var bundle: Bundle = Bundle()
@@ -31,6 +40,8 @@ class ActFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
         }
+
+        binding.rcyCollect.rcyCommonView.adapter = actAdapter
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -47,7 +58,7 @@ class ActFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
                     reponse?.data?.total?.let {
                         total = it
                     }
-//                    completeRefresh()
+                    completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
             }
             "footAct" -> {
@@ -55,8 +66,17 @@ class ActFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
                     reponse?.data?.total?.let {
                         total = it
                     }
+                    completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
             }
+        }
+    }
+
+    inner class ActAdapter :
+        BaseQuickAdapter<ActDataBean, BaseViewHolder>(com.changanford.home.R.layout.item_home_acts) {
+        override fun convert(holder: BaseViewHolder, item: ActDataBean) {
+            var itemBinding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
+
         }
     }
 }
