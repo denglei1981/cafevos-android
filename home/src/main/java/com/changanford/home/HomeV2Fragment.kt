@@ -57,6 +57,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
     override fun initView() {
         //Tab+Fragment
         StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
+        ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent,requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore,requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)

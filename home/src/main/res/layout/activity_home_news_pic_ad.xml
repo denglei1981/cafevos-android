@@ -14,39 +14,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.zhpan.bannerview.BannerViewPager
-        android:id="@+id/banner"
-        android:layout_width="0dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_header"
-        app:layout_constraintWidth_percent="0.9" />
-
-    <include
-        android:id="@+id/layout_banner_tips"
-        layout="@layout/include_home_banner_tips"
-        app:layout_constraintBottom_toBottomOf="@+id/banner"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_35"
-        app:layout_constraintStart_toStartOf="@+id/banner"
-        app:layout_constraintEnd_toEndOf="@+id/banner"
-        />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_rv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="35dp"
-        android:background="@drawable/shape_whit5_bg"
+        android:layout_marginTop="@dimen/dp_35"
+        android:layout_marginBottom="@dimen/dp_25"
+        android:paddingBottom="@dimen/dp_10"
+        android:background="#1A2C43"
         app:layout_constraintBottom_toTopOf="@+id/layout_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner"
-        app:layout_constraintWidth_percent="0.9" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_header">
+
+        <com.zhpan.bannerview.BannerViewPager
+            android:id="@+id/banner"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
+
+        <include
+            android:id="@+id/layout_banner_tips"
+            layout="@layout/include_home_banner_tips"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            app:layout_constraintBottom_toBottomOf="@+id/banner"
+            app:layout_constraintEnd_toEndOf="@+id/banner"
+            app:layout_constraintStart_toStartOf="@+id/banner" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/shape_whit5_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/banner"
+            app:layout_constraintWidth_percent="0.9" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <include
         android:id="@+id/layout_comment"
         layout="@layout/include_home_comment_bg_blue"

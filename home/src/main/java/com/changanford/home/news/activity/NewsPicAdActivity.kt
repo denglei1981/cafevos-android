@@ -5,10 +5,13 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.home.R
 import com.changanford.home.databinding.ActivityHomeNewsPicAdBinding
 import com.changanford.home.news.adapter.NewsPicAdAdapter
 import com.changanford.home.news.adapter.NewsPicAdBannerAdapter
 import com.changanford.home.news.data.NewsData
+import com.gyf.immersionbar.ImmersionBar
 import java.util.ArrayList
 
 @Route(path = ARouterHomePath.NewsPicAdActivity)
@@ -21,6 +24,8 @@ class NewsPicAdActivity : BaseActivity<ActivityHomeNewsPicAdBinding, EmptyViewMo
     }
 
     override fun initView() {
+        ImmersionBar.with(this).statusBarColor(R.color.white)
+        StatusBarUtil.setStatusBarMarginTop(binding.layoutHeader.conHomeBar, this)
         binding.homeRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -36,6 +41,9 @@ class NewsPicAdActivity : BaseActivity<ActivityHomeNewsPicAdBinding, EmptyViewMo
             .setScrollDuration(500)
             .setIndicatorView(null)
             .create(getPicList())
+        binding.layoutHeader.ivBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun initData() {

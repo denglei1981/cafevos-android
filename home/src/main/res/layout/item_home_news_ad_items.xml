@@ -5,17 +5,17 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="18dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_home_news"
         android:layout_width="@dimen/dp_85"
         android:layout_height="@dimen/dp_65"
-        android:scaleType="centerCrop"
         android:layout_marginEnd="@dimen/dp_20"
+        android:scaleType="centerCrop"
         android:src="@drawable/image_recommend_test"
-        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
     <TextView
         android:id="@+id/tv_home_title"
