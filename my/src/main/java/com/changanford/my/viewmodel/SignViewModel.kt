@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
+import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
@@ -18,8 +20,6 @@ import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.interf.UploadPicCallback
-import com.huawei.hms.common.ApiException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -32,11 +32,90 @@ import kotlinx.coroutines.launch
 class SignViewModel : ViewModel() {
 
     var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
+    var _hobbyBean: MutableLiveData<ArrayList<HobbyBeanItem>> = MutableLiveData()
+    /**
+     * 标记消息已读
+     */
+    var changeAllToRead = MutableLiveData<Boolean>()
 
     val userDatabase: UserDatabase by lazy {
         UserDatabase.getUniUserDatabase(MyApp.mContext)
     }
 
+    fun queryMessageStatus(result: (CommonResponse<MessageStatusBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryMessageStatus(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    fun changeAllToRead(messageType:Int){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Int>()
+                body["messageType"] = messageType
+                var rkey = getRandomKey()
+                apiService.changeAllToRead(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                changeAllToRead.postValue(true)
+            }.onFailure {
+                changeAllToRead.postValue(false)
+            }
+        }
+    }
+
+    fun queryMessageList(
+        pageNo: Int,
+        messageType: Int, result: (CommonResponse<MessageListBean>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["queryParams"] = MessageQueryParams(messageType)
+                body["pageNo"] = pageNo
+                body["pageSize"] = 20
+                var rkey = getRandomKey()
+                apiService.queryMessageList(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+    fun changAllMessage(userMessageId: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userMessageIds"] = userMessageId
+                var rkey = getRandomKey()
+                apiService.changAllMessage(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+
+            }
+        }
+    }
+    fun getHobbyList(){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.getHobbyList(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                _hobbyBean.postValue(it)
+            }
+        }
+    }
+    fun queryIndustryList(function: (ArrayList<IndustryBeanItem>) -> Unit) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryIndustryList(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                function(it!!)
+            }
+        }
+    }
     fun getSmsCode(mobile: String) {
         viewModelScope.launch {
             fetchRequest {
@@ -62,6 +141,18 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+    fun saveUniUserInfo(body:HashMap<String, String>){
+        viewModelScope.launch {
+            fetchRequest {
+                var rkey = getRandomKey()
+                apiService.saveUniUserInfo(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                "保存成功".toast()
+                LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+                    .postValue(true)
+            }
+        }
+    }
 
     fun smsLogin(mobile: String, sms: String, pushId: String) {
         viewModelScope.launch {
@@ -74,6 +165,26 @@ class SignViewModel : ViewModel() {
                 apiService.smsCodeSign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 loginSuccess(it)
+            }
+        }
+    }
+    fun nameNick(nameNick:String,callback:(String)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["nickname"] = nameNick
+                var rkey = getRandomKey()
+                apiService.nameNick(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                callback(it?:"")
+            }.onWithMsgFailure {
+                var pop = ConfirmPop(BaseApplication.curActivity)
+                    pop.contentText.text = it
+                    pop.submitBtn.text = "确认"
+                    pop.submitBtn.setOnClickListener {
+                        pop.dismiss()
+                    }
+                    pop.showPopupWindow()
             }
         }
     }

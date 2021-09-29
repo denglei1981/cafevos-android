@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,43 +18,31 @@
             android:fitsSystemWindows="true"
             app:elevation="0dp"
             app:layout_behavior="@string/fix_behavior">
+
             <com.changanford.home.widget.CollapsibleToolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <include
                     android:id="@+id/layout_viewpager"
                     layout="@layout/include_acts_view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                     />
+                    android:layout_height="wrap_content" />
 
             </com.changanford.home.widget.CollapsibleToolbar>
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                >
-               <com.google.android.material.tabs.TabItem
-                   android:id="@+id/tab_one"
-                   android:text="@string/app_name"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tab_two"
-                    android:text="中国"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.tabs.TabLayout>
+           <include
+               android:id="@+id/layout_home_screen"
+               layout="@layout/include_acts_srceen"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_crv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="@dimen/dp_20"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

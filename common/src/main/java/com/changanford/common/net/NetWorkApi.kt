@@ -31,12 +31,22 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
+
+    /**--------------------------------car---------------------------------------**/
+
+    @POST("/ser/carAuth/getMyCar")
+    suspend fun getMiddlePageInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MiddlePageBean>
+
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<STSBean>
+
     /**
      * 常用功能列表
      */
@@ -45,6 +55,71 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MenuBeanItem>>
+
+    /**
+     * 昵称敏感词检查
+     */
+    @POST("user/vailString")
+    suspend fun nameNick(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 保存用户信息
+     */
+    @POST("user/saveUserInfo")
+    suspend fun saveUniUserInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 获取兴趣爱好
+     */
+    @POST("user/hobby/getUserHobbyList")
+    suspend fun getHobbyList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<HobbyBeanItem>>
+
+    //行业
+    @POST("user/industry/getUserIndustryList")
+    suspend fun queryIndustryList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<IndustryBeanItem>>
+
+    //是否有未读消息
+    @POST("userMessage/getUserMessageStatus")
+    suspend fun queryMessageStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageStatusBean>
+
+    /**
+     * 标记消息已读
+     */
+    @POST("userMessage/changeAllToRead")
+    suspend fun changeAllToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("userMessage/changeUserMessageStatusList")
+    suspend fun changAllMessage(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //获取不同类型消息列表
+    @POST("userMessage/getAllUserMessages")
+    suspend fun queryMessageList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageListBean>
+
+    /**--------------------------------base---------------------------------------**/
 
     /**
      * 获取基本配置
@@ -56,6 +131,14 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ConfigBean>
 
+    /**
+     * 用户签到
+     */
+    @POST("user/signIn")
+    suspend fun daySign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<DaySignBean>
 
     @POST("/goods/getAttributeList")
     suspend fun getUserData(
@@ -195,7 +278,7 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MedalListBeanItem>>
 
-
+    /*-------------------车主认证---------------*/
     /**
      * 获取车主认证状态
      */
@@ -210,6 +293,15 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>
+
+    /**
+     * 车主认证更新手机号
+     */
+    @POST("ser/carAuth/crmPhoneUpdate")
+    suspend fun uniCarUpdatePhone(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
 
     /*------------------粉丝 关注---------------------*/
@@ -373,6 +465,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleUserBean>
+
+    //圈子审核 删除
+    @POST("con/circle/deleteCircleUsers")
+    suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
 
     /**

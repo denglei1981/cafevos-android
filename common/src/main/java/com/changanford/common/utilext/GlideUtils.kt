@@ -9,12 +9,9 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
+import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
-import android.R
-
-
-
 
 
 /**********************************************************************************
@@ -163,5 +160,45 @@ object GlideUtils {
             )
             .load(url)
             .into(imageView)
+    }
+    /**
+     * 加载圆形
+     */
+    @JvmOverloads
+    fun loadCircle(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
+        loadTransform(url, CircleGlideTransform(), imageView, errorDefaultRes)
+    }
+    @JvmOverloads
+    fun loadTransform(
+        url: String?,
+        loadTransform: BitmapTransformation,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int? = null
+    ) {
+        Glide.with(imageView.context).load(handleImgUrl(url)).transform(loadTransform).apply {
+            if (errorDefaultRes != null) {
+                placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
+                    .error(errorDefaultRes)
+                    .thumbnail(getTransform(imageView.context, errorDefaultRes, loadTransform))
+            }
+        }
+            .into(imageView)
+    }
+    fun loadCircleFilePath(filePath: String?, imageView: ImageView) {
+        Glide.with(imageView.context).load(filePath).transform(CircleGlideTransform())
+            .into(imageView)
+    }
+    /**
+     * 加载圆角
+     */
+    @JvmOverloads
+    fun loadRound(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
+        loadTransform(
+            handleImgUrl(url),
+            RoundGlideTransform(isSquare = false),
+            imageView,
+            errorDefaultRes
+        )
     }
 }

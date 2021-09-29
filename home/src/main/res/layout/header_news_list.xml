@@ -25,6 +25,7 @@
             android:id="@+id/tv_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/icon_home_small_next"
             android:text="@string/home_more"
             android:textColor="#ff999999"
             android:textSize="12sp"
@@ -41,8 +42,7 @@
             app:layout_constraintDimensionRatio="335:175"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-          />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
         <com.zhpan.indicator.DrawableIndicator

@@ -7,7 +7,7 @@
 
 
     <ImageView
-        android:id="@+id/img1"
+        android:id="@+id/iv_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
@@ -39,6 +39,7 @@
         android:layout_width="148dp"
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
+
         android:src="@drawable/icon_home_ford_title"
         app:layout_constraintBottom_toBottomOf="@+id/iv_more"
         app:layout_constraintStart_toStartOf="parent"

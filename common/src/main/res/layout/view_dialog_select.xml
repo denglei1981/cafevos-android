@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/mTv_Title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/dialog_item_bg_only"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/text_color_08"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialog_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#DAD9DB"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/mBtn_Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dip"
+        android:background="@drawable/dialog_item_bg_only"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/text_color_08"
+        android:textSize="16sp" />
+
+</LinearLayout>

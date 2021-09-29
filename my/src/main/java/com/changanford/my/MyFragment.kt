@@ -6,8 +6,11 @@ import androidx.lifecycle.lifecycleScope
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
@@ -16,6 +19,7 @@ import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
@@ -72,6 +76,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 
             }
         })
+        LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+            .observe(this,  {
+                if (it) {
+                    viewModel.getUserInfo()
+                }
+            })
     }
 
     override fun initData() {
@@ -86,8 +96,10 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             viewModel.mineMedal()
         }
         viewModel.allMedal.observe(this, {
-//            medalAdapter.data = it
-//            medalAdapter.notifyDataSetChanged()
+            it?.let {
+                medalAdapter.data = it
+                medalAdapter.notifyDataSetChanged()
+            }
         })
     }
 
@@ -102,6 +114,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.myHead.setOnClickListener { JumpUtils.instans?.jump(34) }
         binding.myScore.setOnClickListener { JumpUtils.instans?.jump(30) }
         binding.myScoreIc.setOnClickListener { JumpUtils.instans?.jump(30) }
+        binding.myScoreLayout.setOnClickListener { JumpUtils.instans?.jump(30) }
         binding.myStateLayout.apply {
             myStateFabu.setOnClickListener { JumpUtils.instans?.jump(23) }
             myStateFensi.setOnClickListener { JumpUtils.instans?.jump(40) }
@@ -111,6 +124,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.myCarAuthLayout.apply {
             include.textView10.setOnClickListener {
                 JumpUtils.instans?.jump(16)
+            }
+            include2.myMylovecar.setOnClickListener {
+                RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
             }
         }
     }
@@ -158,9 +174,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
             it?.toString()?.logE()
             if (null == it || it.userJson.isNullOrEmpty()) {
-                if (MConstant.token.isNotEmpty()){
+                if (MConstant.token.isNotEmpty()) {
                     viewModel.getUserInfo()
-                }else {
+                } else {
                     setData(null)
                 }
             } else {

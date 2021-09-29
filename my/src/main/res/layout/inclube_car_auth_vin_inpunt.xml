@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vin_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_48"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIN码"
+        android:textColor="#666666"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/vin_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:gravity="right"
+        android:hint="请输入VIN码"
+        android:inputType="textVisiblePassword"
+        android:maxLines="1"
+        android:textSize="@dimen/sp_13"
+        android:textStyle="bold" />
+</LinearLayout>

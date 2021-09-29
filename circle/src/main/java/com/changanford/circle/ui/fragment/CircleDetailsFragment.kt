@@ -3,11 +3,14 @@ package com.changanford.circle.ui.fragment
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsBarAdapter
+import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.databinding.FragmentCircleDetailsBinding
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
+import java.lang.reflect.Method
 
 /**
  *Author lcw
@@ -17,13 +20,26 @@ import com.changanford.common.basic.BaseFragment
 class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleDetailsViewModel>() {
 
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+    private lateinit var mCheckForGapMethod: Method
 
-    private val adapter by lazy { CircleDetailsBarAdapter(requireContext()) }
+    //    private val adapter by lazy { CircleDetailsBarAdapter(requireContext()) }
+    private val adapter by lazy { CircleMainBottomAdapter(requireContext()) }
+
+    private var type = "4"
+    private var page = 1
+    private var topicId = ""
+    private var circleId = ""
 
     companion object {
-        fun newInstance(type: String): CircleDetailsFragment {
+        fun newInstance(
+            type: String,
+            topicId: String,
+            circleId: String = ""
+        ): CircleDetailsFragment {
             val bundle = Bundle()
             bundle.putString("type", type)
+            bundle.putString("topicId", topicId)
+            bundle.putString("circleId", circleId)
             val fragment = CircleDetailsFragment()
             fragment.arguments = bundle
             return fragment
@@ -32,6 +48,15 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
 
     override fun initView() {
         MUtils.scrollStopLoadImage(binding.ryCircle)
+
+        mCheckForGapMethod =
+            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod.isAccessible = true
+
+        type = arguments?.getString("type", "4").toString()
+        topicId = arguments?.getString("topicId", "").toString()
+        circleId = arguments?.getString("circleId", "").toString()
+
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL
@@ -40,27 +65,39 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                staggeredGridLayoutManager.invalidateSpanAssignments()
+                mCheckForGapMethod.invoke(binding.ryCircle.layoutManager) as Boolean
+//                staggeredGridLayoutManager.invalidateSpanAssignments()
             }
         })
         binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.getListData(type.toInt(), topicId, circleId, page)
+        }
         binding.ryCircle.adapter = adapter
+
     }
 
     override fun initData() {
-        val list = arrayListOf(
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182063471.jpg",
-            "http://139.186.199.89:8008/images/20210909/1631182101477.jpg",
-            "http://139.186.199.89:8008//images/20210909/1631182170004.jpg"
-        )
-        adapter.setItems(list)
-        adapter.notifyDataSetChanged()
+        viewModel.getListData(type.toInt(), topicId, circleId, page)
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.listBean.observe(this, {
+            if (page == 1) {
+                adapter.setList(it.dataList)
+                if (it.dataList.size == 0) {
+                    adapter.setEmptyView(R.layout.circle_empty_layout)
+                }
+            } else {
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+        })
     }
 }

@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
@@ -8,16 +9,30 @@ import com.changanford.common.bean.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
+import com.changanford.common.util.MineUtils.listPhoto
+import com.changanford.common.util.MineUtils.listSex
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_LIKE
+import com.changanford.common.utilext.GlideUtils.loadCircle
+import com.changanford.common.utilext.GlideUtils.loadCircleFilePath
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.SelectDialog
+import com.changanford.common.widget.picker.CityPicker
+import com.changanford.common.widget.picker.contract.OnAddressPickedListener
+import com.changanford.common.widget.picker.entity.CityEntity
+import com.changanford.common.widget.picker.entity.CountyEntity
+import com.changanford.common.widget.picker.entity.ProvinceEntity
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiMineEditInfoBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
 import com.github.gzuliyujiang.wheelpicker.DatePicker
+import com.google.gson.Gson
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -32,7 +47,7 @@ import kotlin.collections.HashMap
 
 @Route(path = ARouterMyPath.MineEditInfoUI)
 class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
-    View.OnClickListener {
+    View.OnClickListener, OnAddressPickedListener {
     var body = HashMap<String, String>()
 
     var userInfoBean: UserInfoBean? = null
@@ -40,7 +55,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     var headIconPath: String = ""//头像地址
     var headIconUrl: String = ""//头像Http地址
 
-    var cityBean: CityBean? = null
+    var cityBean: CityBean = CityBean()
 
     lateinit var dialog: LoadDialog
 
@@ -57,7 +72,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 save()
             } else {
                 dialog.show()
-                viewModel.uploadFile(this,arrayListOf(headIconPath), object : UploadPicCallback {
+                viewModel.uploadFile(this, arrayListOf(headIconPath), object : UploadPicCallback {
                     override fun onUploadSuccess(files: ArrayList<String>) {
                         dialog.dismiss()
                         println(files)
@@ -101,79 +116,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         binding.editEmail.setOnClickListener(this)
 
         //监听数据
-//        viewModel.uniUserInfo.observe(this, Observer { user ->
-//            user?.let {
-//                userInfoBean = user
-//                binding.editNickname.setRightDesc(user.nickname)
-//                body["nickname"] = user.nickname
-//
-//                binding.editAutograph.setRightDesc(user.brief)
-//
-//                var sex = "保密"
-//                when (user.sex) {
-//                    0 -> sex = "保密"
-//                    1 -> sex = "男"
-//                    2 -> sex = "女"
-//                }
-//                body["sex"] = user.sex.toString()
-//
-//                binding.editSex.setRightDesc(sex)
-//
-//                binding.editBirthday.setRightDesc(
-//                    "${
-//                        TimeUtils.MillisToDayStr(
-//                            user.birthday.toLongOrNull()
-//                        )
-//                    }"
-//                )
-//
-//                binding.editConstellation.setRightDesc(user.constellation)
-//
-//                binding.editEmail.setRightDesc(user.email)
-//                if (user.mobile.isNullOrEmpty()) {
-//                    binding.editContactContent.setText(user.phone)
-//                } else {
-//                    binding.editContactContent.setText(user.mobile)
-//                }
-//
-//                if (!user.provinceName.isNullOrEmpty()) {
-//                    binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
-//                }
-//
-//                if (!user.hobbyNames.isNullOrEmpty()) {
-//                    binding.editHobby.setRightDesc(user.hobbyNames)
-//                }
-//                body["hobbyIds"] = user.hobbyIds
-//                body["hobbyNames"] = user.hobbyNames
-//
-//                body["industryIds"] = ""
-//                if (user.industryIds.isNotEmpty()) {
-//                    var ids = user.industryIds.split(",")
-//                    body["industryIds"] = if (ids[0].isNotEmpty()) ids[0] else ""
-//                }
-//
-//                body["industryNames"] = ""
-//                if (user.industryNames.isNotEmpty()) {
-//                    var names = user.industryNames.split(",")
-//                    if (names[0].isNotEmpty()) {
-//                        body["industryNames"] = names[0]
-//                        binding.editIndustry.rightDesc = names[0]
-//                    }
-//                }
-//
-//                binding.editRegTime.rightDesc = TimeUtils.InputTimetamp(user.createTime.toString())
-//
-//                user.avatar?.let {
-//                    loadCircle(user.avatar, binding.editIcon, R.mipmap.mine_user_header)
-//                    headIconUrl = it
-//                }
-//            }
-//        })
+        getUserInfo()
 
         //监听城市列表
         viewModel.allCity.observe(this, Observer {
-//            cityBean = it
-//            cityList(it)
+            cityBean?.clear()
+            cityBean?.addAll(it)
+            cityList(cityBean)
         })
 
         LiveDataBus.get().with(MINE_LIKE, RetrunLike::class.java).observe(this, Observer {
@@ -225,6 +174,74 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //        viewModel.getUniUserInfo()
     }
 
+    private fun full(user: UserInfoBean?) {
+        user?.let {
+            userInfoBean = user
+            binding.editNickname.setRightDesc(user.nickname)
+            body["nickname"] = user.nickname
+
+            binding.editAutograph.setRightDesc(user.brief)
+
+            var sex = "保密"
+            when (user.sex) {
+                0 -> sex = "保密"
+                1 -> sex = "男"
+                2 -> sex = "女"
+            }
+            body["sex"] = user.sex.toString()
+
+            binding.editSex.setRightDesc(sex)
+
+            binding.editBirthday.setRightDesc(
+                "${
+                    TimeUtils.MillisToDayStr(
+                        user.birthday
+                    )
+                }"
+            )
+
+            binding.editConstellation.setRightDesc(user.constellation)
+
+            binding.editEmail.setRightDesc(user.email)
+            if (user.mobile.isNullOrEmpty()) {
+                binding.editContactContent.setText(user.phone)
+            } else {
+                binding.editContactContent.setText(user.mobile)
+            }
+
+            if (!user.provinceName.isNullOrEmpty()) {
+                binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
+            }
+
+            if (!user.hobbyNames.isNullOrEmpty()) {
+                binding.editHobby.setRightDesc(user.hobbyNames)
+            }
+            body["hobbyIds"] = user.hobbyIds
+            body["hobbyNames"] = user.hobbyNames
+
+            body["industryIds"] = ""
+            if (user.industryIds.isNotEmpty()) {
+                var ids = user.industryIds.split(",")
+                body["industryIds"] = if (ids[0].isNotEmpty()) ids[0] else ""
+            }
+
+            body["industryNames"] = ""
+            if (user?.industryNames?.isNotEmpty()) {
+                var names = user.industryNames.split(",")
+                if (names[0].isNotEmpty()) {
+                    body["industryNames"] = names[0]
+                    binding.editIndustry.rightDesc = names[0]
+                }
+            }
+
+            binding.editRegTime.rightDesc = TimeUtils.InputTimetamp(user.createTime.toString())
+
+            user.avatar?.let {
+                loadCircle(user.avatar, binding.editIcon, R.mipmap.my_headdefault)
+                headIconUrl = it
+            }
+        }
+    }
 
     /**
      * 保存信息
@@ -245,13 +262,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             return
         }
 
-//        viewModel.saveUniUserInfo(body)
+        viewModel.saveUniUserInfo(body)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-//            R.id.edit_icon -> selectIcon()
-//            R.id.edit_sex -> selectSex()
+            R.id.edit_icon -> selectIcon()
+            R.id.edit_sex -> selectSex()
             R.id.edit_birthday -> {
                 when {
                     datePicker != null -> {
@@ -263,43 +280,43 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 }
             }
             R.id.edit_nickname -> editNickname()
-//            R.id.edit_hobby -> startActivity(
-//                Intent(
-//                    this,
-//                    MineLikeUI::class.java
-//                ).putExtra("hobbyIds", body["hobbyIds"])
-//            )
+            R.id.edit_hobby -> startActivity(
+                Intent(
+                    this,
+                    MineLikeUI::class.java
+                ).putExtra("hobbyIds", body["hobbyIds"])
+            )
             R.id.edit_address -> {
                 when {
                     cityBean.isNullOrEmpty() -> {
                         "请稍后再试".toast()
                     }
                     else -> {
-//                        picker?.show()
+                        picker?.show()
                     }
                 }
             }
             R.id.edit_industry -> {
-//                startActivity(
-//                    Intent(this, MineIndustryUI::class.java).putExtra(
-//                        "industryIds",
-//                        body["industryIds"]
-//                    )
-//                )
+                startActivity(
+                    Intent(this, MineIndustryUI::class.java).putExtra(
+                        "industryIds",
+                        body["industryIds"]
+                    )
+                )
             }
             R.id.edit_autograph -> {
-//                startActivity(
-//                    Intent(this, InputUI::class.java)
-//                        .putExtra("type", 1)
-//                        .putExtra("content", binding.editAutograph.rightDesc.toString())
-//                )
+                startActivity(
+                    Intent(this, InputUI::class.java)
+                        .putExtra("type", 1)
+                        .putExtra("content", binding.editAutograph.rightDesc.toString())
+                )
             }
             R.id.edit_email -> {
-//                startActivity(
-//                    Intent(this, InputUI::class.java)
-//                        .putExtra("type", 2)
-//                        .putExtra("content", binding.editEmail.rightDesc.toString())
-//                )
+                startActivity(
+                    Intent(this, InputUI::class.java)
+                        .putExtra("type", 2)
+                        .putExtra("content", binding.editEmail.rightDesc.toString())
+                )
             }
         }
     }
@@ -319,90 +336,90 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     /**
      * 点击头像
      */
-//    fun selectIcon() {
-//        SelectDialog(
-//            this,
-//            R.style.transparentFrameWindowStyle,
-//            listPhoto,
-//            "",
-//            1,
-//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-//
-//                when (i) {
-//                    0 -> takePhoto()
-//                    1 -> pic()
-//                }
-//            }
-//        ).show()
-//    }
+    private fun selectIcon() {
+        SelectDialog(
+            this,
+            R.style.transparentFrameWindowStyle,
+            listPhoto,
+            "",
+            1,
+            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+
+                when (i) {
+                    0 -> takePhoto()
+                    1 -> pic()
+                }
+            }
+        ).show()
+    }
 
 
     /**
      * 选择图片
      */
-//    fun pic() {
-//        PictureUtil.openGarlly(this@MineEditInfoUI, object :
-//            OnResultCallbackListener<LocalMedia> {
-//            override fun onResult(result: List<LocalMedia>) {
-//                for (media in result) {
-//                    var path: String? = ""
-//                    path = AppUtils.getFinallyPath(media)
-//                    loadCircleFilePath(path, binding.editIcon)
-//                    headIconPath = path
-//                }
-//            }
-//
-//            override fun onCancel() {}
-//        })
-//    }
+    private fun pic() {
+        PictureUtils.openGarlly(this@MineEditInfoUI, object :
+            OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: List<LocalMedia>) {
+                for (media in result) {
+                    var path: String? = ""
+                    path = AppUtils.getFinallyPath(media)
+                    loadCircleFilePath(path, binding.editIcon)
+                    headIconPath = path
+                }
+            }
+
+            override fun onCancel() {}
+        })
+    }
 
     /**
      * 拍照
      */
-//    fun takePhoto() {
-//
-//        PictureUtil.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia> {
-//            override fun onResult(result: List<LocalMedia>) {
-//                // 结果回调
-//                if (result.size > 0) {
-//                    for (media in result) {
-//                        var path: String? = ""
-//                        path = if (media.isCut && !media.isCompressed) {
-//                            // 裁剪过
-//                            media.cutPath
-//                        } else if (media.isCompressed || media.isCut && media.isCompressed) {
-//                            // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-//                            media.compressPath
-//                        } else {
-//                            // 原图
-//                            media.path
-//                        }
-//                        loadCircleFilePath(path, binding.editIcon)
-//                        headIconPath = path
-//                    }
-//                }
-//            }
-//
-//            override fun onCancel() {
-//                // 取消
-//            }
-//        })
-//    }
+    private fun takePhoto() {
 
-//    fun selectSex() {
-//
-//        SelectDialog(
-//            this,
-//            R.style.transparentFrameWindowStyle,
-//            listSex,
-//            "",
-//            1,
-//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-//                binding.editSex.setRightDesc(dialogBottomBean.title)
-//                body["sex"] = dialogBottomBean.id.toString()
-//            }
-//        ).show()
-//    }
+        PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: List<LocalMedia>) {
+                // 结果回调
+                if (result.size > 0) {
+                    for (media in result) {
+                        var path: String? = ""
+                        path = if (media.isCut && !media.isCompressed) {
+                            // 裁剪过
+                            media.cutPath
+                        } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                            // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                            media.compressPath
+                        } else {
+                            // 原图
+                            media.path
+                        }
+                        loadCircleFilePath(path, binding.editIcon)
+                        headIconPath = path
+                    }
+                }
+            }
+
+            override fun onCancel() {
+                // 取消
+            }
+        })
+    }
+
+    private fun selectSex() {
+
+        SelectDialog(
+            this,
+            R.style.transparentFrameWindowStyle,
+            listSex,
+            "",
+            1,
+            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+                binding.editSex.setRightDesc(dialogBottomBean.title)
+                body["sex"] = dialogBottomBean.id.toString()
+            }
+        ).show()
+    }
 
     /**
      * 选择生日
@@ -441,57 +458,56 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //        datePicker?.setTitleTextColor(Color.parseColor("#071726"))
 //        datePicker?.setTextSize(16)
 //        datePicker?.setCycleDisable(false)
-//        datePicker?.setOnDatePickListener(DatePicker.OnYearMonthDayPickListener() { year: String, month: String, day: String ->
-//            binding.editBirthday.rightDesc = "$year-$month-$day"
-//            binding.editConstellation.rightDesc = Constellation.star(month.toInt(), day.toInt())
-//
-//            body["birthday"] = "$year-$month-$day"
-//            body["constellation"] = Constellation.star(month.toInt(), day.toInt())
-//        })
-//        datePicker?.show()
+        datePicker?.setOnDatePickedListener { year, month, day ->
+            binding.editBirthday.rightDesc = "$year-$month-$day"
+            binding.editConstellation.rightDesc = Constellation.star(month.toInt(), day.toInt())
+
+            body["birthday"] = "$year-$month-$day"
+            body["constellation"] = Constellation.star(month.toInt(), day.toInt())
+        }
+        datePicker?.show()
     }
 
     /**
      * 编辑昵称
      */
     fun editNickname() {
-//        startActivity(
-//            Intent(this, EditNickNameUI::class.java).putExtra(
-//                "nickName",
-//                "${binding.editNickname.rightDesc}"
-//            )
-//        )
+        startActivity(
+            Intent(this, EditNickNameUI::class.java).putExtra(
+                "nickName",
+                "${binding.editNickname.rightDesc}"
+            )
+        )
     }
 
 
-//    var picker: MineAddressPicker? = null
-    fun cityList(cityBean: CityBean) {
-        var provinces = ArrayList<Province>()
-
-        cityBean.forEach {
-//            var province = Province(it.province.regionId, it.province.regionName)
-            var citys = ArrayList<City>()
-            it.citys.forEach {
-//                var city = City(it.city.regionId, it.city.regionName)
-//                var countys = ArrayList<County>()
-//                it.district.forEach {
-//                    var county = County(it.regionId, it.regionName)
-//                    countys.add(county)
-//                }
-//                city.counties = countys
-//                citys.add(city)
+    var picker: CityPicker? = null
+    private fun cityList(cityBean: CityBean?) {
+        var provinces = ArrayList<ProvinceEntity>()
+        cityBean?.forEach { p ->
+            var province = ProvinceEntity(p.province.regionId, p.province.regionName)
+            var citys = ArrayList<CityEntity>()
+            p.citys.forEach { c ->
+                var city = CityEntity(c.city.regionId, c.city.regionName)
+                var countys = ArrayList<CountyEntity>()
+                c.district.forEach { d ->
+                    var county = CountyEntity(d.regionId, d.regionName)
+                    countys.add(county)
+                }
+                city.countyList = countys
+                citys.add(city)
             }
-//            province.cities = citys
-//            provinces.add(province)
+            province.cityList = citys
+            provinces.add(province)
         }
-//        picker = MineAddressPicker(this, provinces)
-//        userInfoBean?.let { user ->
-//            picker?.setSelectedItem(
-//                Province(user.province, user.provinceName),
-//                City(user.city, user.cityName), County
-//                    (user.district, user.districtName)
-//            )
-//        }
+
+        picker = CityPicker(this)
+            .apply {
+                setAddressMode(provinces)
+                setDefaultValue(userInfoBean?.provinceName?:"重庆市", userInfoBean?.cityName?:"重庆市", userInfoBean?.districtName?:"渝中区")
+                setOnAddressPickedListener(this@MineEditInfoUI)
+            }
+//        picker?.show()
 //        picker?.setTitleText("所选地区")
 //        picker?.setSubmitTextColor(Color.parseColor("#FC883B"))
 //        picker?.setCancelTextColor(Color.parseColor("#71747B"))
@@ -508,5 +524,49 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //
 //            binding.editAddress.setRightDesc("${province.areaName}${city.areaName}${county.areaName}")
 //        }
+    }
+
+    /**
+     * 获取用户信息
+     */
+    private fun getUserInfo() {
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
+            it?.toString()?.logE()
+            if (null == it || it.userJson.isNullOrEmpty()) {
+                if (MConstant.token.isNotEmpty()) {
+                    viewModel.getUserInfo()
+                } else {
+                    full(null)
+                }
+            } else {
+                var userInfoBean: UserInfoBean =
+                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
+                full(userInfoBean)
+            }
+        })
+    }
+
+    override fun onAddressPicked(
+        province: ProvinceEntity?,
+        city: CityEntity?,
+        county: CountyEntity?
+    ) {
+        var cityA: String = ""
+        province?.let {
+            body["province"] = it.code
+            body["provinceName"] = "${it.name}"
+            cityA = it.name
+        }
+        city?.let {
+            body["city"] = it.code
+            body["cityName"] = "${it.name}"
+            cityA += it.name
+        }
+        county?.let {
+            body["district"] = it.code
+            body["districtName"] = "${it.name}"
+            cityA += it.name
+        }
+        binding.editAddress.rightDesc = cityA
     }
 }

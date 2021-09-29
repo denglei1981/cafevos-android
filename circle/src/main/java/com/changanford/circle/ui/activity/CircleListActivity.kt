@@ -17,6 +17,7 @@ import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.xiaomi.push.iv
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -37,6 +38,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
+            ivBack.setOnClickListener { finish() }
         }
         initMagicIndicator()
         initTabAndViewPager()
@@ -54,7 +56,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleListFragment.newInstance(position.toString())
+                    return CircleListFragment.newInstance(position)
                 }
 
             }

@@ -61,7 +61,7 @@
                                 android:ellipsize="end"
                                 android:maxWidth="200dp"
                                 android:maxLines="1"
-                                android:text="话题详情"
+                                tools:text="话题详情"
                                 android:textColor="@color/color_00"
                                 android:textSize="16sp" />
 

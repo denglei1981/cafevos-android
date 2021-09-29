@@ -2,9 +2,13 @@ package com.changanford.my
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
@@ -81,6 +85,49 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     open fun bindToolbar(): Toolbar? {
         return binding.root.findViewById(R.id.toolbar)
     }
+    /**
+     * 显示空布局
+     * @param adapter recyclerView的适配器
+     */
+    open fun showEmptyView(
+        emptyMessage: String = getString(R.string.empty_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): View? {
+        return setAdapterView(emptyMessage, errorLayoutId);
+    }
+    var emptyView: View? = null
+    /**
+     * 设置适配器的空布局
+     * @param adapter 适配器
+     * @param msg 空布局文字提示
+     * @param ImgResId 空布局图片资源，若isLoad为true则不生效
+     * @param isLoad 是否是加载中
+     */
+    fun setAdapterView(
+        msg: String,
+        ImgResId: Int
+    ): View? {
+        if (emptyView == null) emptyView =
+            LayoutInflater.from(this).inflate(R.layout.view_status_ui, null)
+        emptyView?.let {
+            var icon: ImageView = it.findViewById(R.id.view_status_icon)
+            icon.setImageResource(ImgResId)
+            var messageText: TextView = it.findViewById(R.id.view_status_text)
+            messageText.text = msg
+        }
+        return emptyView
+    }
+    /**
+     * 显示错误布局
+     * @param adapter recyclerView的适配器
+     * @param msg 错误信息
+     */
+    fun showErrorView(
+        msg: String = getString(R.string.error_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): View? {
+        return setAdapterView(msg, errorLayoutId);
+    }
 
     open fun <T, VH : BaseViewHolder> completeRefresh(
         newData: Collection<T>?,
@@ -119,7 +166,13 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
                             bindSmartLayout()?.apply { setEnableLoadMore(false) }// 禁止加载更多
                         }
                     }
-                    addData(it)
+                    if (it.isEmpty() && pageSize == 1) {//传非null list 但list为0
+                        showEmpty()?.let {
+                            setEmptyView(it)
+                        }
+                    } else {
+                        addData(it)
+                    }
                 }
             }
         }
@@ -144,7 +197,51 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     open fun initRefreshData(pageSize: Int) {
 
     }
+    private var pageNo = 1
+    /**
+     * 计算是否有加载更多总数
+     *
+     * totalNum: 接口返回总条数  dataSize：获取的总条数
+     *
+     * @return true ： 加载数据
+     */
+    open fun <T, VH : BaseViewHolder> refreshAndLoadMore(
+        totalNum: Int,
+        dataSize: Int,
+        adapter: BaseQuickAdapter<T, VH>,
+        emptyMessage: String = getString(R.string.empty_msg),
+        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+    ): Boolean {
+        if (dataSize == 0) {
+            //禁止加载更多
+            bindSmartLayout()?.setEnableLoadMore(false)
+            //设置Empty
+            showEmptyView(emptyMessage, errorLayoutId)?.let { adapter.setEmptyView(it) }
+            if (pageNo == 1) {
+                adapter.data.clear()
+                adapter.notifyDataSetChanged()
+            }
+            return false
+        } else {
+            //刷新数据 清除数据
+            if (pageNo == 1) {
+                adapter.data.clear()
+            }
+            if (totalNum == 0) {//不需要分页
+                bindSmartLayout()?.setEnableLoadMore(false)
+                return true
+            }
+            if (totalNum > dataSize + adapter.data.size) {//总数大于获取的数据
+                pageNo++ //页数+1
+                bindSmartLayout()?.setEnableLoadMore(true)
 
+            } else {
+                bindSmartLayout()?.setEnableLoadMore(false)
+//                refreshLayout()?.finishLoadMoreWithNoMoreData()
+            }
+            return true
+        }
+    }
     open fun back() {
         finish()
     }

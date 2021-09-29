@@ -18,7 +18,6 @@ import com.changanford.circle.R;
  */
 
 public class ThumbnailSelTimeView extends View {
-
     private int mWidth;
     private int mHeight;
     private Paint mPaint;
@@ -44,8 +43,8 @@ public class ThumbnailSelTimeView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mDp2 = (int)getResources().getDimension(R.dimen.dp_2);
-        rectWidth = (int)getResources().getDimension(R.dimen.dp_48);
+        mDp2 = (int)getResources().getDimension(R.dimen.dp_3);
+        rectWidth = (int)getResources().getDimension(R.dimen.dp_30);
         mPaint.setStrokeWidth(mDp2);
     }
     public interface OnScrollBorderListener{
@@ -134,20 +133,20 @@ public class ThumbnailSelTimeView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(Color.parseColor("#1B3B89"));
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(rectF.left,rectF.top,rectF.left + rectWidth,rectF.bottom,mPaint);
-        mPaint.setColor(Color.parseColor("#99313133"));
+        mPaint.setColor(Color.parseColor("#90313133"));
         mPaint.setStyle(Paint.Style.FILL);
         RectF rectF3 = new RectF();
         rectF3.left = 0;
         rectF3.top = 0;
-        rectF3.right = rectF.left - mDp2;
+        rectF3.right = rectF.left - 1;
         rectF3.bottom = mHeight;
         canvas.drawRect(rectF3, mPaint);
 
         RectF rectF4 = new RectF();
-        rectF4.left = rectF.right + mDp2;
+        rectF4.left = rectF.right + 1;
         rectF4.top = 0;
         rectF4.right = mWidth;
         rectF4.bottom = mHeight;

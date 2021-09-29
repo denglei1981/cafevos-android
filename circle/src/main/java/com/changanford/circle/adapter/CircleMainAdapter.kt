@@ -163,7 +163,7 @@ class CircleMainAdapter(
 
             }
 
-            offscreenPageLimit = 3
+            offscreenPageLimit = 1
         }
 
     }
@@ -228,12 +228,12 @@ class CircleMainAdapter(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsMainFragment.newInstance(position.toString())
+                    return CircleDetailsMainFragment.newInstance(if (position == 0) 4 else 2)
                 }
 
             }
 
-            offscreenPageLimit = 3
+            offscreenPageLimit = 1
         }
 
     }

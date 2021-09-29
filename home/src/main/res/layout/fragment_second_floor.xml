@@ -29,8 +29,7 @@
             <com.changanford.common.widget.smart.MyTwoLevelHeader
                 android:id="@+id/classics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </com.scwang.smart.refresh.header.TwoLevelHeader>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -41,7 +40,9 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/home_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_94"
+                />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

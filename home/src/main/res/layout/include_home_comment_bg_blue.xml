@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:background="#192C43">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_to_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:drawableTop="@drawable/icon_home_comment_share_white"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_to_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:textColor="@color/white"
+            android:drawableTop="@drawable/icon_home_comment_collect_white"
+            android:gravity="center"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_news_to_share"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_to_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:drawableTop="@drawable/icon_home_comment_like_white"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_news_to_collect"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_to_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:drawableTop="@drawable/icon_home_comment_msg_white"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_news_to_like"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/shape_home_white_corners18"
+            android:drawableStart="@drawable/icon_home_comment_write_white"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical|start"
+            android:hint="@string/home_say_something"
+            android:paddingStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_news_to_msg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

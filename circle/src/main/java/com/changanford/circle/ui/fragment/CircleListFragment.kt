@@ -6,6 +6,7 @@ import com.changanford.circle.databinding.FragmentCircleListBinding
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.util.location.LocationUtils
 
 /**
  *Author lcw
@@ -15,14 +16,16 @@ import com.changanford.common.basic.BaseFragment
 class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListViewModel>() {
 
     companion object {
-        fun newInstance(type: String): CircleListFragment {
+        fun newInstance(type: Int): CircleListFragment {
             val bundle = Bundle()
-            bundle.putString("type", type)
+            bundle.putInt("type", type)
             val fragment = CircleListFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
+
+    private var type = 0
 
     private val adapter by lazy {
         CircleListAdapter(requireContext())
@@ -30,6 +33,11 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
 
     override fun initView() {
         MUtils.scrollStopLoadImage(binding.ryCircle)
+
+        arguments?.getInt("type", 0)?.let {
+            type = it
+        }
+
         binding.ryCircle.adapter = adapter
     }
 
@@ -38,5 +46,10 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
             arrayListOf("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
         adapter.setItems(list)
         adapter.notifyDataSetChanged()
+        viewModel.getData(
+            type,
+            LocationUtils.mLongitude.value.toString(),
+            LocationUtils.mLatitude.value.toString()
+        )
     }
 }

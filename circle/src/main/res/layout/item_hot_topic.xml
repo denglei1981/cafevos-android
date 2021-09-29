@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<variable
-    name="bean"
-    type="String" />
+
+        <variable
+            name="bean"
+            type="com.changanford.circle.bean.HotPicItemBean" />
     </data>
 
     <LinearLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content">
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:layout_height="40dp"
             android:background="@drawable/circle_66_f2_20"
-            android:layout_height="40dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
-                android:src="@mipmap/circle_talk_hint"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/circle_talk_hint" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
-                android:text="什么时候可以不带口罩"
-                android:textColor="@color/color_33"
-                android:maxEms="12"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:maxLines="1"
+                android:text="@{bean.name}"
+                tools:text="什么时候可以不带口罩"
+                android:textColor="@color/color_33"
                 android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
-                android:text="1233帖子     123热度"
-                android:textColor="@color/color_99"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="16dp"
-                android:textSize="@dimen/sp_10"
-                android:layout_height="wrap_content"/>
+                tools:text="1233帖子     123热度"
+                android:textColor="@color/color_99"
+                android:textSize="@dimen/sp_10" />
 
         </LinearLayout>
 

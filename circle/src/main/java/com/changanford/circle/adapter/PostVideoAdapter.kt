@@ -51,7 +51,6 @@ class PostVideoAdapter() :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.
                 5F,
                 R.mipmap.ic_def_square_img
             )
-            GlideUtils.loadCover(holder.getView(R.id.img),path,4000000)
         }
     }
 }

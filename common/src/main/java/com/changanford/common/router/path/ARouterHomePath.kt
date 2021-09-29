@@ -11,4 +11,5 @@ object ARouterHomePath {
     const val  SpecialDetailActivity="/home/SpecialDetailActivity"
     const val PolySearchActivity="/home/PolySearchActivity"
     const val PloySearchResultActivity="/home/PloySearchResultActivity"
+    const val NewsPicsActivity="/home/NewsPicsActivity"
 }
