@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/dp_20"
@@ -10,9 +11,22 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_vipExclusive"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:background="@drawable/shadow_00142e_2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_16"
+            android:minWidth="@dimen/dp_48"
+            android:gravity="center"
+            android:text="@string/str_vipDiscount"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+        <com.changanford.shop.view.TypefaceTextView
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:end_txt="@string/str_integral"
             tools:text="1300积分"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_18" />
@@ -22,16 +36,18 @@
             android:layout_marginEnd="@dimen/dp_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:text_flags="0x10"
             tools:text="1600"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />
-        <include layout="@layout/in_goods_vip"/>
+
         <com.changanford.shop.view.TypefaceTextView
             android:gravity="end|center_vertical"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="限量200件"
+            app:start_txt="@string/str_hasChange"
+            app:end_txt="@string/str_a"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_10" />
     </LinearLayout>

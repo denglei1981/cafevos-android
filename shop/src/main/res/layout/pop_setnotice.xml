@@ -10,6 +10,7 @@
         android:orientation="vertical"
         android:layout_gravity="center">
         <com.changanford.shop.view.TypefaceTextView
+            android:gravity="center_horizontal"
             android:layout_marginStart="@dimen/dp_38"
             android:layout_marginEnd="@dimen/dp_38"
             android:layout_width="match_parent"

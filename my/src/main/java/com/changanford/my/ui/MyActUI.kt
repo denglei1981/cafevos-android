@@ -13,7 +13,7 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
-import com.changanford.my.ui.fragment.ActFragment
+import com.changanford.my.ui.fragment.CircleFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -42,7 +42,7 @@ class MyActUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return ActFragment.newInstance("$position")
+                    return CircleFragment.newInstance(position)
                 }
             }
 

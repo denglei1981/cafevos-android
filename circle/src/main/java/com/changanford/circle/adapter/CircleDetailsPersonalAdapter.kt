@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
+import com.changanford.circle.bean.User
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleDetailsPersonalBinding
 import com.changanford.circle.ext.ImageOptions
@@ -18,8 +19,8 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Purpose
  */
 class CircleDetailsPersonalAdapter(context: Context) :
-    BaseAdapterOneLayout<String>(context, R.layout.item_circle_details_personal) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
+    BaseAdapterOneLayout<User>(context, R.layout.item_circle_details_personal) {
+    override fun fillData(vdBinding: ViewDataBinding?, item: User, position: Int) {
         val binding = vdBinding as ItemCircleDetailsPersonalBinding
         val params = binding.ivPersonal.layoutParams as ViewGroup.MarginLayoutParams
         if (position == 0) {
@@ -28,7 +29,7 @@ class CircleDetailsPersonalAdapter(context: Context) :
         } else params.leftMargin = -(6.toIntPx())
 
         binding.ivPersonal.loadImage(
-            CircleConfig.TestUrl,
+            item.avatar,
             ImageOptions().apply { circleCrop = true })
     }
 }

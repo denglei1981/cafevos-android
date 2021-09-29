@@ -25,19 +25,24 @@ import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshHeader
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>() {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>() ,OnRefreshListener {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
     var fragmentList: ArrayList<Fragment> = arrayListOf()
 
     var titleList = mutableListOf<String>()
+
+
 
     val immersionBar: ImmersionBar by lazy {
         ImmersionBar.with(this)
@@ -51,15 +56,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
     override fun initView() {
         //Tab+Fragment
-//        ImmersionBar.with(this)
-//        immersionBar.fitsSystemWindows(true)
-//            .statusBarColor(R.color.transparent)
-//            .init()
         StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
+        ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent,requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore,requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)
-        fragmentList.add(RecommendFragment.newInstance())
+        fragmentList.add(recommendFragment)
         fragmentList.add(ActsListFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(BigShotFragment.newInstance())
@@ -90,6 +92,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             initTab()
         }
 
+
+        binding.refreshLayout.setOnRefreshListener(this)
 
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -132,25 +136,24 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 headerHeight: Int,
                 maxDragHeight: Int
             ) {
-                val alphaTest=1 - percent.coerceAtMost(1f)
-                binding.llTabContent.alpha = alphaTest
-                binding.layoutTopBar.conContent.alpha =alphaTest
-                binding.homeTab.alpha = alphaTest
-                when(alphaTest){
-                    0f->{
-                        StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
+                   val alphaTest=1 - percent.coerceAtMost(1f)
+                    binding.llTabContent.alpha = alphaTest
+                    binding.layoutTopBar.conContent.alpha =alphaTest
+                    binding.homeTab.alpha = alphaTest
+                    when(alphaTest){
+                        0f->{
+                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
+                        }
+                        1f->{
+                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
+                        }
                     }
-                    1f->{
-                        StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
-                    }
-                }
+
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
             startARouter(ARouterHomePath.PolySearchActivity)
         }
-
-
 
     }
 
@@ -224,6 +227,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
     override fun initData() {
 
+    }
+
+    open  fun stopRefresh(){
+        binding.refreshLayout.finishRefresh()
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        recommendFragment.homeRefersh()
     }
 
 

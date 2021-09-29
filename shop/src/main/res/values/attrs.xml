@@ -101,6 +101,7 @@
         <attr name="right_icon" format="reference" />
         <attr name="title_text" format="string" />
         <attr name="bg_color" format="reference|color" />
+        <attr name="right_text" format="string" />
     </declare-styleable>
     <declare-styleable name="AndRatingBar">
         <!-- color of star -->

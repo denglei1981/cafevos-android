@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
 import com.changanford.shop.popupwindow.SetNoticPop
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.WCommonUtil
 
 
@@ -29,7 +29,7 @@ class GoodsKillAreaAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<It
     private fun clickBtn(dataBinding:ItemGoodsKillAreaBinding,item: GoodsBean){
         when(dataBinding.btnStates.getStates()){
             //去抢购
-            0-> GoodsDetailsActivity.start(context,"${item.id}")
+            0-> JumpUtils.instans?.jump(3,"0")
             //设置提醒
             3->{
                 if(!WCommonUtil.isNotificationEnabled(context))SetNoticPop(context).showPopupWindow()

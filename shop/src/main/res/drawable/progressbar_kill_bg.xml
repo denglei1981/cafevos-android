@@ -6,14 +6,7 @@
     </item>
     <!--  设置进度条颜色  -->
     <item android:id="@android:id/progress">
-        <clip>
-            <shape>
-                <corners
-                    android:radius="@dimen/dp_3"/>
-                <gradient
-                    android:endColor="@color/white"
-                    android:startColor="@color/white" />
-            </shape>
-        </clip>
+        <scale android:scaleWidth="100%"
+            android:drawable="@drawable/shadow_white_2dp"   />
     </item>
 </layer-list>

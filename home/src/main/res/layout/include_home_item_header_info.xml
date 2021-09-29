@@ -19,7 +19,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/roundedImageStyle"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
             tools:src="@mipmap/ic_launcher" />
 
         <ImageView
@@ -57,11 +57,10 @@
             tools:text="车迷级公民" />
 
 
-        <TextView
-            android:id="@+id/tv_follow"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_follow"
             android:layout_width="60dp"
             android:layout_height="25dp"
-            android:background="@drawable/shape_home_unfollow_bg"
             android:elevation="0dp"
             android:gravity="center"
             android:insetTop="0dp"
@@ -69,6 +68,7 @@
             android:textAllCaps="false"
             android:textColor="@color/blue_tab"
             android:textSize="@dimen/sp_12"
+            style="@style/followBtnStyle"
             app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

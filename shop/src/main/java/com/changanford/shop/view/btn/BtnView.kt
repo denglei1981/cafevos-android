@@ -2,6 +2,7 @@ package com.changanford.shop.view.btn
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import com.changanford.shop.R
@@ -19,6 +20,7 @@ class BtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(cont
     private fun initAttributes(context: Context, attrs: AttributeSet?) {
         //获取自定义属性
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomBtn)
+        typeface=Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
         setBtnEnabled(isEnabled)
     }
     fun setBtnEnabled(isBtnEnabled:Boolean){

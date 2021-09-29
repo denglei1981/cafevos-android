@@ -1,8 +1,8 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
+import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -31,7 +31,7 @@ interface CircleNetWork {
     suspend fun getPosts(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<CircleMainBottomBean>
+    ): CommonResponse<PostBean>
 
     /**
      * 获取话题列表
@@ -59,4 +59,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChoseCircleBean>>
+
+    /**
+     * 查询圈子详情
+     */
+    @POST("/con/circle/getCircleInfo")
+   suspend fun queryCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleDetailBean>
 }

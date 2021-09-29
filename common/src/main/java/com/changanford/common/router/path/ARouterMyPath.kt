@@ -29,13 +29,13 @@ object ARouterMyPath {
     const val MineFollowUI = "/my/MineFollowUI" //我的发布
     const val MineMessageUI = "/my/MineMessageUI" //消息
     const val MineFansUI = "/my/MineFansUI" //我的粉丝
-    const val MineCollectUI = "/my/MineCollectUI" //我的收藏
+    const val MineCollectUI = "/app/MineCollectUI" //我的收藏
     const val MineCircleUI = "/my/MineCircleUI" //我的圈子
     const val CircleMemberUI = "/my/CircleMemberUI" //圈子管理
     const val TaCentreInfoUI = "/my/TaCentreInfoUI" //他们中心
     const val MineEditInfoUI = "/my/MineEditInfoUI" //编辑用户信息
     const val MineLoveCarInfoUI = "/my/MineLoveCarInfoUI"//爱车详情
-    const val MineFootprintUI = "/my/MineFootprintUI" // 我的足迹
+    const val MineFootprintUI = "/app/MineFootprintUI" // 我的足迹
     const val MineOrderUI = "/my/MineOrderUI" //我的订单
     const val MineFeedbackUI = "/my/MineFeedbackUI" // 常见问题
     const val MineLoveCarListUI = "/my/MineLoveCarListUI" //我的爱车

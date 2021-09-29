@@ -166,7 +166,13 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
                             bindSmartLayout()?.apply { setEnableLoadMore(false) }// 禁止加载更多
                         }
                     }
-                    addData(it)
+                    if (it.isEmpty() && pageSize == 1) {//传非null list 但list为0
+                        showEmpty()?.let {
+                            setEmptyView(it)
+                        }
+                    } else {
+                        addData(it)
+                    }
                 }
             }
         }

@@ -3,10 +3,10 @@ package com.changanford.circle.adapter
 import android.content.Context
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
-import com.changanford.circle.bean.Imag
 import com.changanford.circle.databinding.ItemLabelCircleBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.bean.Imag
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 

@@ -64,7 +64,7 @@ data class CarItemBean(
     val policeCardImg: String,
     var reason: String,
     var invoiceImg: String, //发票
-    val msgCode: String, //msgCode =“700001”
+    var msgCode: String, //msgCode =“700001”
     val msgButton: String, //消息弹框内容
     val isIncall: Boolean,
     var isExceedThree: Boolean = false,
@@ -83,3 +83,21 @@ data class CarItemBean(
     val carName: String
 
 ) : Serializable
+
+
+/**
+ * Ocr识别提交数据
+ * imgExt:图片地址/base64
+ * imgType:  HTTP_URL(1, "网络地址"),     BASE64(2, "BASE64");
+ *  ocrSceneType: VIN(1, "车架号"),     ID_CARD(2, "身份证"),     DRIVER_LICENCE(3, "驾驶证"),     WALK_LICENCE(4, "行驶证");
+ *  INVOICE(4, "发票");
+ *  path : 上传图片地址（无前缀）
+ */
+
+data class OcrRequestBean(
+    var imgExt: String,
+    var ocrSceneType: String,
+    var path: String,
+    var imgType: String = "HTTP_URL"
+)
+

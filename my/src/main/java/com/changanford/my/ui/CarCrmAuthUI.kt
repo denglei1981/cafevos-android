@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.my.BaseMineUI
@@ -42,6 +43,10 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
         viewModel.carAuth.observe(this, Observer {
             completeRefresh(it, carAdapter, 0)
         })
+
+        binding.btnAddCar.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.UniCarAuthUI)
+        }
     }
 
     override fun initRefreshData(pageSize: Int) {

@@ -7,7 +7,6 @@ package com.changanford.circle.bean
  */
 data class HotPicBean(
     val dataList: ArrayList<HotPicItemBean> = arrayListOf(),
-    val extend: Extend = Extend(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,

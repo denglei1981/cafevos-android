@@ -3,7 +3,9 @@ package com.changanford.shop.ui.order
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.view.TopBar
@@ -13,6 +15,7 @@ import com.changanford.shop.view.TopBar
  * @Time : 2021/9/9 0009
  * @Description : 订单确认
  */
+@Route(path = ARouterShopPath.OrderConfirmActivity)
 class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding,OrderViewModel>(),
     TopBar.OnBackClickListener {
     companion object{

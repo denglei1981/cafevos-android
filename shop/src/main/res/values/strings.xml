@@ -83,4 +83,35 @@
     <string name="str_mediumReview">中评</string>
     <string name="str_goodReview">好评</string>
     <string name="str_ordersGoods">商品订单</string>
+    <string name="str_all">全部</string>
+    <string name="str_toBePaid">待支付</string>
+    <string name="str_toSendGoods">待发货</string>
+    <string name="str_forGoods">待收货</string>
+    <string name="str_toEvaluate">待评价</string>
+    <string name="str_orderNo">订单编号：</string>
+    <string name="font_aCombined">合计:<font color="#00095B">1300积分</font></string>
+    <string name="str_confirm">确认</string>
+    <string name="str_determine">确定</string>
+    <string name="prompt_cancelOrder">取消订单后，订单将不可恢复</string>
+    <string name="str_confirmReceiptGoods">是否确认收货</string>
+    <string name="prompt_orderUpdateAddress">（温馨提示：只能修改1次收货地址，请谨慎操作）</string>
+    <string name="str_remainingTimePayment0">支付剩余时间 </string>
+    <string name="str_copeWithTotalAmount">应付总额：</string>
+    <string name="str_cancelOrder">取消订单</string>
+    <string name="str_immediatePayment">立即支付</string>
+    <string name="str_logisticsInformation">物流信息</string>
+    <string name="str_copy">复制</string>
+    <string name="str_orderParticulars">订单明细</string>
+    <string name="str_common">共</string>
+    <string name="str_jsp">件商品</string>
+    <string name="str_rmb">￥</string>
+    <string name="str_orderNo0">订单编号</string>
+    <string name="str_orderTime">下单时间</string>
+    <string name="str_allOrders">所有订单</string>
+    <string name="str_screening">筛选</string>
+    <string name="str_orderType">订单类型</string>
+    <string name="str_orderCar">购车订单</string>
+    <string name="str_orderTestDrive">预约试驾订单</string>
+    <string name="str_hasChange">已兑换</string>
+    <string name="str_vipDiscount">会员折扣</string>
 </resources>

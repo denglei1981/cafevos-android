@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_16">
+        <com.changanford.shop.view.TypefaceTextView
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tv_orderParticulars"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_orderParticulars"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15" />
+        <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="共2件商品"
+            app:end_txt="@string/str_jsp"
+            app:start_txt="@string/str_common"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_12" />
+        <View
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/tv_orderParticulars"
+            android:id="@+id/view_divider"
+            android:background="@color/color_ee"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"/>
+        <include
+            android:id="@+id/in_goodsInfo"
+            android:layout_marginTop="@dimen/dp_12"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/in_item_order_goods"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

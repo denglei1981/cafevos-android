@@ -6,9 +6,10 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
@@ -17,6 +18,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.viewmodel.GoodsViewModel
 import kotlin.math.roundToInt
 
 /**
@@ -24,7 +26,8 @@ import kotlin.math.roundToInt
  * @Time : 2021/9/9
  * @Description : 商品详情
  */
-class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewModel>(){
+@Route(path = ARouterShopPath.ShopGoodsActivity)
+class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     companion object{
         fun start(context: Context,goodsId:String) {
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
@@ -53,13 +56,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
-        binding.rvGoodsImg.layoutManager=LinearLayoutManager(this)
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
         control= GoodsDetailsControl(this,binding,headerBinding)
         control.initTimeCount(15613202365)
+        WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
@@ -67,6 +70,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding,GoodsViewMod
         tabClick()
     }
     override fun initData() {
+        viewModel.goodsItemData.observe(this,{
+            control.bindingData(it)
+        })
+        viewModel.queryGoodsDetails("123")
         val imgs= arrayListOf("","","","","","","","","","","","","","","","")
         mAdapter.setList(imgs)
     }

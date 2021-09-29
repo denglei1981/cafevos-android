@@ -50,6 +50,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         }
         binding.collectToolbar.toolbarTitle.text = title
         binding.collectToolbar.toolbarSave.text = "管理"
+        binding.collectToolbar.toolbar.setNavigationOnClickListener { back() }
         binding.collectToolbar.toolbarSave.setOnClickListener {
             click()
         }

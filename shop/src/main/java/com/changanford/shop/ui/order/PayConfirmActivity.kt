@@ -3,7 +3,9 @@ package com.changanford.shop.ui.order
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
@@ -14,6 +16,7 @@ import com.changanford.shop.listener.OnTimeCountListener
  * @Time : 2021/9/9 0009
  * @Description : 确认支付
  */
+@Route(path = ARouterShopPath.PayConfirmActivity)
 class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding,OrderViewModel>(){
     companion object{
         fun start(context: Context, orderInfo:String) {

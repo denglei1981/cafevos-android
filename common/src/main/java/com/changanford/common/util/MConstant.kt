@@ -1,4 +1,5 @@
 package com.changanford.common.util
+
 import com.changanford.common.MyApp
 import java.io.File
 
@@ -21,21 +22,22 @@ object MConstant {
     const val COOKIE = false
     const val isAppAlive = true
 
-    val rootPath by lazy{
+    val rootPath by lazy {
         MyApp.mContext.getExternalFilesDir("")?.absolutePath
     }
 
-    val ftFilesDir by lazy{
-        rootPath+ File.separator + "android" + File.separator + "ftfilesdir" + File.separator
+    val ftFilesDir by lazy {
+        rootPath + File.separator + "android" + File.separator + "ftfilesdir" + File.separator
     }
 
     val saveIMGpath by lazy {
-        rootPath+ File.separator + "android" + File.separator + "ftfilesdir" + File.separator+System.currentTimeMillis()+".jpg"
+        rootPath + File.separator + "android" + File.separator + "ftfilesdir" + File.separator + System.currentTimeMillis() + ".jpg"
     }
 
     val H5_BASE_URL_CSCIR by lazy {
         "https://cir.uni.changan.com.cn"
     }
+
     /**
      * 刷新用户消息  true刷新
      */
@@ -48,6 +50,7 @@ object MConstant {
     var userId = ""
 
     var totalWebNum = 0//AgentWebActivity的个数
+
     //app更新
     var isDownloading = false//是否下载
     var newApk = false//是否有新版本
@@ -76,6 +79,7 @@ object MConstant {
 
     var H5_privacy = "https://cir.uni.changan.com.cn/quanzi/#/privacy"//隐私协议
     var H5_regTerms = "https://cir.uni.changan.com.cn/quanzi/#/regTerms" //注册协议
+
     /**
      * https://cscir.uniplanet.cn/quanzi/#/regTerms
      * 引力域注册协议

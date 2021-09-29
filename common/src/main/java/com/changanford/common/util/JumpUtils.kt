@@ -412,7 +412,7 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                startARouter(ARouterShopPath.GoodsListActivity)
+                startARouter(ARouterShopPath.OrderGoodsActivity)
             }
             53 -> {//AR说明书跳转类型
                 when {
