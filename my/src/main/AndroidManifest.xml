@@ -37,5 +37,10 @@
         <activity android:name=".ui.MineMessageInfoUI" />
         <activity android:name=".ui.SignTransparentUI"
             android:theme="@style/Picture.Theme.Translucent"/>
+        <activity android:name=".ui.MineFeedbackUI" />
+        <activity android:name=".ui.MineEditFeedbackUI" />
+        <activity android:name=".ui.MineFeedbackRecordUI" />
+        <activity android:name=".ui.MineFeedbackInfoListUI" />
+        <activity android:name=".ui.MineCenterFeedbackUI" />
     </application>
 </manifest>

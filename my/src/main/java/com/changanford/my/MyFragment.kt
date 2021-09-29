@@ -17,7 +17,6 @@ import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
@@ -105,9 +104,14 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 处理点击事件
      */
     private fun initClick() {
-        binding.daySign.setOnClickListener { JumpUtils.instans?.jump(37) }
-        binding.mySet.setOnClickListener { JumpUtils.instans?.jump(21) }
-        binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(24) }
+//        binding.daySign.setOnClickListener { JumpUtils.instans?.jump(37) }
+//        binding.mySet.setOnClickListener { JumpUtils.instans?.jump(21) }
+//        binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(24) }
+
+        binding.daySign.setOnClickListener { JumpUtils.instans?.jump(39) }
+        binding.mySet.setOnClickListener { JumpUtils.instans?.jump(42) }
+        binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(71) }
+
         binding.memberEnter.setOnClickListener { JumpUtils.instans?.jump(29) }
         binding.myHead.setOnClickListener { JumpUtils.instans?.jump(34) }
         binding.myScore.setOnClickListener { JumpUtils.instans?.jump(30) }
