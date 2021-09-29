@@ -6,14 +6,16 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.bean.GoodsBean
+import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
-import com.changanford.shop.ui.IntegralDetailsActivity
 import com.changanford.shop.ui.exchange.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.order.AllOrderActivity
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.ui.order.OrdersGoodsActivity
+import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.viewmodel.ShopViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -30,8 +32,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
         initTab()
         initKill()
+        addObserve()
+        binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
         //test
-        binding.inTop.btnJfmx.setOnClickListener { IntegralDetailsActivity.start(requireContext()) }
         binding.inTop.btnPj.setOnClickListener { OrderEvaluationActivity.start(requireContext(),"0") }
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
@@ -56,8 +59,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
             JumpUtils.instans?.jump(3,"$position")
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
-    }
-    override fun initData() {
+        //添加测试数据
         val datas= arrayListOf<GoodsBean>()
         val title=StringBuffer("Title")
         for (i in 0..4){
@@ -66,6 +68,14 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>() {
             datas.add(item)
         }
         adapter.setList(datas)
+    }
+    override fun initData() {
+        viewModel.getBannerData()
+    }
+    private fun addObserve(){
+        viewModel.advertisingList.observe(this,{
+            BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
+        })
     }
 }
 

@@ -43,11 +43,11 @@ object ApiClient {
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .apply {
-//                if (isDebug) {
-//                    this.addInterceptor(HttpLoggingInterceptor().apply {
-//                        this.level = HttpLoggingInterceptor.Level.BODY
-//                    })
-//                }
+                if (isDebug) {
+                    this.addInterceptor(HttpLoggingInterceptor().apply {
+                        this.level = HttpLoggingInterceptor.Level.BODY
+                    })
+                }
                 this.addInterceptor(DataEncryptInterceptor())
             }.build()
 
