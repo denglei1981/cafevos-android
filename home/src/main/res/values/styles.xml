@@ -74,6 +74,14 @@
         <item name="android:textColor">@color/color_blue_ff00695b</item>
         <item name="backgroundTint">@color/color_gray_f2f4f9</item>
         <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="homeGraLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_10</item>
+        <item name="android:background">@color/color_f6</item>
+
 
     </style>
+
 </resources>

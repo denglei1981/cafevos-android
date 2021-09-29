@@ -46,12 +46,17 @@ class RecommendFragment : BaseFragment<FragmentRecommendListBinding, RecommendVi
 
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
-            if(it.isLoadMore){
+            if(it.isSuccess){
+                if(it.isLoadMore){
 
+                }else{
+                    (parentFragment as HomeV2Fragment).stopRefresh()
+                }
+                recommendAdapter.addData(it.data.dataList)
             }else{
-                (parentFragment as HomeV2Fragment).stopRefresh()
+
             }
-            recommendAdapter.addData(it.data.dataList)
+
         })
     }
     open fun homeRefersh() {
