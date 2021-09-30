@@ -11,6 +11,7 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
@@ -270,7 +271,7 @@ class JumpUtils {
 
             }
             25 -> {//我的关注',
-                bundle.putInt(LiveDataBusKey.MINE_FANS_TYPE, 2)
+                bundle.putInt(RouterManger.KEY_TO_ID, 2)
                 startARouter(ARouterMyPath.MineFansUI, bundle,true)
             }
             26 -> {//我的活动',
@@ -327,7 +328,7 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineFeedbackUI)
             }
             40 -> {//我的粉丝
-                bundle.putInt(MINE_FANS_TYPE, 1)
+                bundle.putInt(RouterManger.KEY_TO_ID, 1)
                 startARouter(ARouterMyPath.MineFansUI, bundle,true)
             }
             41 -> {//我的爱车
