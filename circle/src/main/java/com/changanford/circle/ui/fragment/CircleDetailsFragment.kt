@@ -75,6 +75,10 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         })
         binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
+        binding.refreshLayout.setOnRefreshListener {
+            it.finishRefresh()
+        }
+
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
             viewModel.getListData(type.toInt(), topicId, circleId, page)

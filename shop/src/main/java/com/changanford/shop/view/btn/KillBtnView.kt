@@ -15,8 +15,8 @@ import com.changanford.shop.R
  */
 class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(context,attrs) {
     private var btnStates=0//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
-    private val statesTxt= arrayOf(context.getString(R.string.str_toSnapUp),context.getString(R.string.str_hasGone),context.getString(R.string.str_hasEnded),
-        context.getString(R.string.str_remindMe),context.getString(R.string.str_cancelReminder))
+    private val statesTxt= arrayOf(context.getString(R.string.str_toSnapUp),context.getString(R.string.str_hasGone),
+        context.getString(R.string.str_hasEnded), context.getString(R.string.str_remindMe),context.getString(R.string.str_cancelReminder))
     init {
         initAttributes(context, attrs)
     }

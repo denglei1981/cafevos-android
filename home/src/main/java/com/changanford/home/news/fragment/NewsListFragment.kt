@@ -1,29 +1,36 @@
 package com.changanford.home.news.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.bean.InfoDataBean
+import androidx.viewpager2.widget.ViewPager2
+import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.home.R
+import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.FragmentNewsListBinding
 import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
-import java.util.*
+import com.changanford.home.news.request.FindNewsListViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *  新闻列表
  * */
-class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>() {
+class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
+    OnRefreshListener {
 
-    private var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
 
-    var newsListAdapter: NewsListAdapter? = null
+    val newsListAdapter: NewsListAdapter by lazy {
+        NewsListAdapter()
+    }
 
     companion object {
         fun newInstance(): NewsListFragment {
@@ -35,23 +42,17 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
     }
 
     override fun initView() {
+
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        newsListAdapter = NewsListAdapter().apply {
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-        }
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
-        newsListAdapter!!.setOnItemClickListener { adapter, view, position ->
+        newsListAdapter.setOnItemClickListener { adapter, view, position ->
             startARouter(ARouterHomePath.NewsPicsActivity)
         }
+        binding.smartLayout.setOnRefreshListener(this)
+        onRefresh(binding.smartLayout)
+        setLoadSir(binding.smartLayout)
 
     }
 
@@ -65,18 +66,34 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
                 binding.recyclerView,
                 false
             )
+            var newsBannerAdapter = NewsBannerAdapter()
             headNewBinding?.let {
-                newsListAdapter?.addHeaderView(it.root, 0)
-                it.bViewpager.setAdapter(NewsBannerAdapter())
+                newsListAdapter.addHeaderView(it.root, 0)
+                it.bViewpager.setAdapter(newsBannerAdapter)
                 it.bViewpager.setCanLoop(true)
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
-                it.bViewpager.create(getPicList())
-                it.bViewpager.setScrollDuration(5000)
+                it.bViewpager.create()
+                it.bViewpager.setScrollDuration(500)
+                it.bViewpager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        var speical = it.bViewpager.data[position] as SpecialListBean
+                        if (TextUtils.isEmpty(speical.summary)) {
+                            it.tvSubTitle.text = "长安福特,yyds"
+                        } else {
+                            it.tvSubTitle.text = speical.summary
+                        }
+                    }
+                })
+                it.tvMore.setOnClickListener {
+                    startARouter(SpecialListActivity)
+                }
             }
             setIndicator()
         }
     }
+
 
     /**
      * 设置指示器
@@ -92,13 +109,51 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding, EmptyViewModel>()
     }
 
     override fun initData() {
+
     }
 
-    private fun getPicList(): MutableList<String> {
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        return mPictureList
+    override fun onRetryBtnClick() {
+
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.specialListLiveData.observe(this, {
+            if (it.isSuccess) {
+
+                headNewBinding?.bViewpager?.create(it.data.dataList)
+
+            } else {
+                ToastUtils.showShortToast(it.message, requireActivity())
+            }
+
+        })
+        viewModel.newsListLiveData.observe(this, {
+            if (it.isSuccess) {
+                val dataList = it.data.dataList
+                if (it.isLoadMore) {
+                    newsListAdapter.addData(dataList)
+                    binding.smartLayout.finishLoadMore()
+                } else {
+                    if (it.data == null || dataList.size == 0) {
+                        showEmpty()
+                    }
+                    showContent()
+                    newsListAdapter.setNewInstance(dataList)
+                    binding.smartLayout.finishRefresh()
+                }
+                if (dataList.size < it.data.pageSize) { // 没有请求的多, 不加载更多。
+                    binding.smartLayout.finishLoadMoreWithNoMoreData()
+                }
+            } else {
+                showFailure(it.message)
+                ToastUtils.showShortToast(it.message, requireContext())
+            }
+        })
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getSpecialList()
+        viewModel.getNewsList(false)
     }
 }

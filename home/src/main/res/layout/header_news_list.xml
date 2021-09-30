@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -83,8 +84,9 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="15dp"
                 android:maxLength="12"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:text="长安福特专题"
+                tools:text="长安福特专题"
                 android:textColor="#ffffffff"
                 android:textSize="15sp" />
 

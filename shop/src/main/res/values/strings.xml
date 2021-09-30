@@ -115,4 +115,8 @@
     <string name="str_hasChange">已兑换</string>
     <string name="str_vipDiscount">会员折扣</string>
     <string name="str_notStart">未开始</string>
+    <string name="prompt_set_setNotic">已设置提醒，将提前5分钟提醒您。</string>
+    <string name="prompt_cancel_setNotic">秒杀提醒已取消，您可能会错失秒杀良机哦～</string>
+    <string name="str_hasBeenRobbed">已抢</string>
+    <string name="str_percent">%</string>
 </resources>

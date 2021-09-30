@@ -1,5 +1,6 @@
 package com.changanford.home.adapter
 
+import android.text.TextUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -37,7 +38,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
 
         val picLists = item.getPicLists()
 
-        tvContent.text = item.contentString
+        tvContent.text = item.getContent()
 
         val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
 
@@ -51,8 +52,13 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
 
+        val tvTopic = holder.getView<TextView>(R.id.tv_topic)
 
-
+        if(TextUtils.isEmpty(item.getTopic())){
+            tvTopic.text =""
+        }else{
+            tvTopic.text = "#${item.getTopic()}#"
+        }
         when (item.authors?.isFollow) {
             0 -> { // 未关注
                 btnFollow.text = "关注"
