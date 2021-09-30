@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsList
+import com.changanford.common.bean.SeckillSessionsBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.base.BaseViewModel
@@ -21,6 +22,8 @@ class GoodsViewModel: BaseViewModel() {
     var goodsItemData: MutableLiveData<GoodsItemBean> = MutableLiveData()
     //商品列表
     var goodsListData =MutableLiveData<GoodsList?>()
+    //秒杀时段
+    var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
     private var pageSize=20
     /**
      * 获取商品列表
@@ -57,6 +60,20 @@ class GoodsViewModel: BaseViewModel() {
             }.onSuccess {
                 goodsItemData.postValue(it)
             }.onFailure {
+            }
+        }
+    }
+    /**
+     * 获取秒杀时段
+     * */
+    fun getSckills(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.getSckills(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                seckillSessionsData.postValue(it)
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.changanford.common.bean
 
-import java.util.*
-
 /**
  * @Author : wenke
  * @Time : 2021/9/28
@@ -67,4 +65,25 @@ data class GoodsItemBean(
     val spuDetail: Any? = null,
     val spuId: Int = 0,
     val spuName: String = ""
+)
+// 秒杀时段
+data class SeckillSessionsBean(
+    val now: Long? = null,
+    val seckillSessions: ArrayList<SeckillSession> = ArrayList()
+)
+
+data class SeckillSession(
+    val date: Long = 0,
+    val seckillTimeRanges: ArrayList<SeckillTimeRange> = ArrayList(),
+    val sessionId: Int = 0,
+    val sessionName: String = ""
+)
+
+data class SeckillTimeRange(
+    val timeBegin: Long = 0,
+    val timeEnd: Long = 0,
+    val timeRangeId: Int = 0,
+    var time:String?="",
+    var states:Int=0,//状态 0 已结束  1 进行中  2未开始
+    var statesTxt:String="已结束"
 )

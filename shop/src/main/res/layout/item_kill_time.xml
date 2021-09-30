@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.SeckillTimeRange" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +25,7 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{model.time}"
             tools:text="12:00"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_15" />
@@ -34,7 +37,7 @@
             android:layout_marginTop="@dimen/dp_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/str_hasEnded"
+            android:text="@{model.statesTxt}"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_10" />
     </androidx.constraintlayout.widget.ConstraintLayout>

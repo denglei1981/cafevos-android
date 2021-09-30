@@ -114,4 +114,5 @@
     <string name="str_orderTestDrive">预约试驾订单</string>
     <string name="str_hasChange">已兑换</string>
     <string name="str_vipDiscount">会员折扣</string>
+    <string name="str_notStart">未开始</string>
 </resources>

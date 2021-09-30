@@ -6,27 +6,30 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.shop.R
-import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ItemKillTimeBinding
 import com.changanford.shop.utils.ScreenUtils
+import java.text.SimpleDateFormat
+import com.changanford.common.bean.SeckillTimeRange as SeckillTimeRange1
 
 
-class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKillTimeBinding>>(R.layout.item_kill_time), LoadMoreModule {
+class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<SeckillTimeRange1, BaseDataBindingHolder<ItemKillTimeBinding>>(R.layout.item_kill_time), LoadMoreModule {
     private lateinit var lastBinding:ItemKillTimeBinding
+    @SuppressLint("SimpleDateFormat")
+    private val sf = SimpleDateFormat("HH:mm")
     private val dp10 by lazy { ScreenUtils.dp2px(context,10f) }
     private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemKillTimeBinding>, item: GoodsBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemKillTimeBinding>, item: SeckillTimeRange1) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
+            dataBinding.model=item
+            dataBinding.executePendingBindings()
             val position=holder.absoluteAdapterPosition
             when (position) {
                 0 -> ScreenUtils.setMargin(holder.itemView,dp20,0,dp10,0)
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp20,0)
                 else -> ScreenUtils.setMargin(holder.itemView,0,0,dp10,0)
             }
-//            dataBinding.model=item
-//            dataBinding.executePendingBindings()
             if(selectPos==position){
                 dataBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
                 dataBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
