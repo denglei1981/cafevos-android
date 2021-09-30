@@ -11,7 +11,7 @@
         android:layout_width="@dimen/dp_30"
         android:layout_height="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line2"
         app:layout_constraintTop_toBottomOf="@+id/date"
         app:layout_goneMarginTop="@dimen/dp_10"
         app:srcCompat="@mipmap/icon_sign_unreachday" />
@@ -28,6 +28,7 @@
         android:id="@+id/word"
         style="@style/commonTextView.Medium"
         android:text="补"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toEndOf="@+id/icon"
         app:layout_constraintStart_toStartOf="@+id/icon"
@@ -46,11 +47,19 @@
 
     <View
         android:id="@+id/line"
-        android:layout_width="@dimen/dp_20"
+        android:layout_width="@dimen/dp_10"
         android:layout_height="@dimen/dp_4"
         android:background="#EFEFEF"
         app:layout_constraintBottom_toBottomOf="@id/icon"
         app:layout_constraintEnd_toStartOf="@id/icon"
+        app:layout_constraintTop_toTopOf="@id/icon" />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_4"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

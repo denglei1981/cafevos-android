@@ -43,5 +43,6 @@
         <activity android:name=".ui.MineFeedbackInfoListUI" />
         <activity android:name=".ui.MineCenterFeedbackUI" />
         <activity android:name=".ui.SignMonthUI" />
+        <activity android:name=".ui.AboutFordUI" />
     </application>
 </manifest>

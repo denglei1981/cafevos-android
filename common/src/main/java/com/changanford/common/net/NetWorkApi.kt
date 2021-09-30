@@ -231,6 +231,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MonthSignBean>
+    /**
+     * 用户补签
+     */
+    @POST("/user/signReissue")
+    suspend fun signReissue(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     @POST("/goods/getAttributeList")
     suspend fun getUserData(

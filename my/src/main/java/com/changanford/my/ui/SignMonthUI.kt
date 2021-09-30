@@ -34,11 +34,12 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
     }
 
     override fun initData() {
+        super.initData()
         binding.signview.curTime.text = TimeUtils.getShowYearMonth(index)
         getData(TimeUtils.getRequestYearMonth(index))
     }
 
-    fun getData(date: String) {
+    private fun getData(date: String) {
         viewModel.monthSignDetail(date) { bean ->
             bean?.let {
                 dateList.clear()

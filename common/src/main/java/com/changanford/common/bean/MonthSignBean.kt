@@ -17,5 +17,5 @@ data class MonthSignBean(
 data class RoundBean(
     var date: String,//时间 格式yyyy-MM-dd
     var isSignIn: Int,//是否签到 1是0否
-    var integral: String,//签到可获得积分
+    var integral: Int,//签到可获得积分
 )

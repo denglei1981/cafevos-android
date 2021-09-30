@@ -7,13 +7,17 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.bean.*
+import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
@@ -24,9 +28,12 @@ import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
 import com.changanford.common.utilext.load
 import com.changanford.my.R
 import com.changanford.my.databinding.*
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia
+import com.xiaomi.push.it
+import kotlinx.coroutines.launch
 
 object MineCommAdapter{
     /**
@@ -416,18 +423,57 @@ object MineCommAdapter{
             item: RoundBean
         ) {
             holder.dataBinding?.apply {
-                date.text = MineUtils.listWeek[holder.layoutPosition/7].week
-                date.isVisible = holder.layoutPosition >= 7
-                line.isVisible = holder.layoutPosition/7 != 0
-                day.text = item.date
+                date.text = MineUtils.listWeek[holder.layoutPosition%7].week
+                date.isVisible = holder.layoutPosition < 7
+                line.isInvisible = holder.layoutPosition%7 == 0
+                line2.isInvisible = holder.layoutPosition%7 == 6
+                try {
+                    day.text = item.date?.subSequence(item.date.length-2,item.date.length)
+                }catch (e:Exception){
+                    day.text = item.date
+                }
                 if (TimeUtils.dayBefore(item.date)){//在之前
                     if (item.isSignIn == 0){//没有
                         icon.load(R.mipmap.icon_sign_bu)
+                        word.setOnClickListener {
+                            var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
+                            pop.contentText.text = "本次补签将消耗 ${item.integral} 积分"
+                            pop.btnConfirm.text = "立即补签"
+                            pop.btnConfirm.setOnClickListener {
+                                pop.dismiss()
+                                BaseApplication.currentViewModelScope.launch {
+                                    fetchRequest {
+                                        fetchRequest {
+                                            var body = HashMap<String,String>()
+                                            body["date"] = item.date
+                                            var rkey = getRandomKey()
+                                            apiService.signReissue(body.header(rkey),body.body(rkey))
+                                        }.onSuccess {
+                                            notifyItemChanged(holder.layoutPosition)
+                                        }
+                                    }
+                                }
+                            }
+                            pop.btnCancel.setOnClickListener {
+                                pop.dismiss()
+                            }
+                            pop.showPopupWindow()
+                        }
+                        word.text = "补"
+                        word.setTextColor(R.color.text_01025C)
                     }else{
+                        word.text = ""
                         icon.load(R.mipmap.checked)
                     }
                 }else{
                     icon.load(R.mipmap.icon_sign_unreachday)
+                    word.text = item.integral?.let {
+                        when(it >0){
+                            true -> "+${it}"
+                            else -> "$it"
+                        }
+                    }.toString()
+                    word.setTextColor(R.color.signunreach)
                 }
             }
         }
