@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.HotTopicAdapter
 import com.changanford.circle.databinding.ActivityHotTopicBinding
 import com.changanford.circle.viewmodel.HotTopicViewModel
@@ -21,7 +22,7 @@ import com.changanford.common.util.AppUtils
 class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel>() {
 
     private val adapter by lazy {
-        HotTopicAdapter(this)
+        HotTopicAdapter()
     }
 
     override fun initView() {
@@ -31,28 +32,19 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             ivBack.setOnClickListener { finish() }
         }
         binding.ryTopic.adapter = adapter
-
-        binding.refreshLayout.run {
-            setOnRefreshListener {
-                viewModel.page = 1
-                viewModel.getData()
-                finishRefresh()
-            }
-            setOnLoadMoreListener {
-                viewModel.page++
-                viewModel.getData()
-                finishLoadMore()
-            }
+        binding.tvSearch.setOnClickListener {
+            startARouter(ARouterCirclePath.SearchTopicActivity)
         }
 
-        adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                val bundle = Bundle()
-                bundle.putString("topicId", adapter.getItem(position)?.topicId.toString())
-                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
-            }
-
-        })
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.page++
+            viewModel.getData()
+        }
+        adapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            bundle.putString("topicId", adapter.getItem(position).topicId.toString())
+            startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+        }
 
     }
 
@@ -64,14 +56,17 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
         super.observe()
         viewModel.hotTopicBean.observe(this, {
             if (viewModel.page == 1) {
-                adapter.setItems(it.dataList)
-                adapter.notifyDataSetChanged()
+                if (it.dataList.size == 0) {
+                    adapter.setEmptyView(R.layout.circle_empty_layout)
+                }
+                adapter.setList(it.dataList)
             } else {
-                val oldCount = adapter.itemCount
-                adapter.getItems()?.addAll(it.dataList)
-                adapter.notifyItemRangeChanged(oldCount, adapter.itemCount)
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
             }
-            binding.refreshLayout.setEnableLoadMore(it.dataList.size == 20)
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
         })
     }
 }

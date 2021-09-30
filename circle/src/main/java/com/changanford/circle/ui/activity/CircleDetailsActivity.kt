@@ -23,6 +23,8 @@ import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
+import com.changanford.circle.widget.pop.CircleDetailsPop
+import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
@@ -54,6 +56,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     private var isWhite = true//是否是白色状态
 
     private var circleId = ""
+    private var isOpenMenuPop = false
 
     private val personalAdapter by lazy {
         CircleDetailsPersonalAdapter(this)
@@ -92,8 +95,47 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 binding.barTitleTv.alpha = 1.0F
             }
         })
-
+        initListener()
         initTabAndViewPager()
+    }
+
+    private fun initListener() {
+        binding.ivPostBar.setOnClickListener {
+            if (isOpenMenuPop) {
+                return@setOnClickListener
+            }
+            CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
+                override fun checkLongBar() {
+
+                }
+
+                override fun checkPic() {
+
+                }
+
+                override fun checkVideo() {
+
+                }
+
+            }).run {
+                //无透明背景
+                setBackgroundColor(Color.TRANSPARENT)
+                //背景模糊false
+                setBlurBackgroundEnable(false)
+                showPopupWindow(it)
+                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                    override fun onDismiss() {
+                        isOpenMenuPop = false
+                        binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+                    }
+
+                }
+                setOnPopupWindowShowListener {
+                    isOpenMenuPop = true
+                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
+                }
+            }
+        }
     }
 
     private fun initTabAndViewPager() {

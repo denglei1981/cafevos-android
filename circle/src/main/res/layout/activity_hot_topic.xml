@@ -47,11 +47,6 @@
                 android:background="@color/color_ee" />
         </LinearLayout>
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_topic"
                 android:layout_width="match_parent"
@@ -59,8 +54,6 @@
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_hot_topic" />
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
 
     </LinearLayout>
 </layout>

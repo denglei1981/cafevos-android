@@ -25,15 +25,17 @@ object ARouterCirclePath {
     const val CircleDetailsActivity = "/circle/CircleDetailsActivity"
     const val ChooseLocationActivity = "/circle/ChooseLocationActivity"
     const val SearchLocActivity = "/circle/SearchLocActivity"
-    const val ChooseConversationActivity ="/circle/ChooseConversationActivity"
+    const val ChooseConversationActivity = "/circle/ChooseConversationActivity"
     const val PersonalActivity = "/circle/PersonalActivity"
     const val HotTopicActivity = "/circle/HotTopicActivity"
     const val TopicDetailsActivity = "/circle/TopicDetailsActivity"
-    const val ChoseCircleActivity="/circle/ChoseCircleActivity"
+    const val ChoseCircleActivity = "/circle/ChoseCircleActivity"
     const val VideoPostActivity = "/circle/VideoPostActivity"
-    const val  PictureEditAudioActivity = "/circle/PictureEditAudioActivity"
+    const val PictureEditAudioActivity = "/circle/PictureEditAudioActivity"
     const val VideoChoseFMActivity = "/circle/VideoChoseFMActivity"
     const val LongPostAvtivity = "/circle/LongPostAvtivity"
+    const val SearchCircleActivity = "/circle/SearchCircleActivity"
+    const val SearchTopicActivity = "/circle/SearchTopicActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////
