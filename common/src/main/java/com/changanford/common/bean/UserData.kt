@@ -89,11 +89,17 @@ data class Ext(
     val medalId: Int,
     val memberIcon: String,
     val memberId: Int,
-    val multiple: Int,
+    val multiple: Double,
     val nextGrowSeriesName: String,
     val nextSeriesMinGrow: Int,
     val rulesDesc: String,
-    val userId: Int
+    val userId: Int,
+    val userMedalList: ArrayList<MedalListBeanItem>? = arrayListOf(),
+    val isAllTaskDone: Int,
+    val isNewTaskDone: Int,
+    val medalImage: String,
+    val medalName: String,
+    val memberName: String,
 )
 
 data class Imag(
@@ -139,6 +145,7 @@ data class CancelReasonBeanItem(
     var isCheck: Boolean = false,
     var reasonId: Int = 0
 )
+
 data class UserIdCardBeanItem(
     val actionIds: String,
     val dataScope: String,
