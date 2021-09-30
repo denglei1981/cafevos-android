@@ -55,12 +55,12 @@
                 android:id="@+id/tv_follow"
                 android:layout_width="60dp"
                 android:layout_height="25dp"
-                android:background="@drawable/circle_follow_white_bg"
+                android:background="@drawable/shap_e5_12"
                 android:gravity="center"
                 android:textColor="@color/circle_app_color"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                tools:text="+ 关注" />
+                tools:text="关注" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_menu"
@@ -79,6 +79,7 @@
             android:background="@color/color_ee" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nest_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">

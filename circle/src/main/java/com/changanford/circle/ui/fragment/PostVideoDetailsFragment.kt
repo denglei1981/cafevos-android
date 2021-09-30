@@ -63,7 +63,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"
             } else {
-                "+ 关注"
+                "关注"
             }
             tvTime.text = mData.timeStr
             tvTitle.text = mData.title

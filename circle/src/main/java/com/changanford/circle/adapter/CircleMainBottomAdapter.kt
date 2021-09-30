@@ -59,7 +59,7 @@ class CircleMainBottomAdapter(context: Context) :
                 binding.tvCity.text = item.city
             }
 
-            if (holder.layoutPosition == 2) {
+            if (item.isGood == 1) {
                 binding.ivVery.visibility = View.VISIBLE
             } else {
                 binding.ivVery.visibility = View.GONE

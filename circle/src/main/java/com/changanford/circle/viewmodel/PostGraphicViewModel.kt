@@ -26,4 +26,23 @@ class PostGraphicViewModel : BaseViewModel() {
         }
     }
 
+    fun getCommendList(bizId: String, page: Int) {
+        launch {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = page
+            body["pageSize"] = 20
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["bizId"] = bizId
+                it["type"] = "2"
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getCommentList(body.header(rKey), body.body(rKey))
+                .onSuccess {
+
+                }
+                .onFailure { }
+        }
+
+    }
 }
