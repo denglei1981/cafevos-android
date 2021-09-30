@@ -35,7 +35,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 @Route(path = ARouterCirclePath.CircleListActivity)
 class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListViewModel>() {
 
-
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
@@ -44,8 +43,17 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 startARouter(ARouterMyPath.MineCircleUI, true)
             }
         }
+        initListener()
         initMagicIndicator()
         initTabAndViewPager()
+    }
+
+    private fun initListener() {
+        binding.run {
+            tvSearch.setOnClickListener {
+                startARouter(ARouterCirclePath.SearchCircleActivity)
+            }
+        }
     }
 
     private fun initTabAndViewPager() {

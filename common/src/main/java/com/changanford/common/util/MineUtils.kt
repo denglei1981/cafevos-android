@@ -578,6 +578,45 @@ object MineUtils {
         )
         textView!!.text = spannable
     }
+    /**
+     * 每日签到 U币  成长值
+     */
+    fun signJfMonth(textView: TextView?, num: String, title: String) {
+        var spannable = SpannableString(num + "\n" + title)
+
+        //设置颜色
+        var colorSpannable = ForegroundColorSpan(Color.parseColor("#FFDE00"))
+        spannable.setSpan(
+            colorSpannable,
+            num.length,
+            spannable.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        //设置字体大小为1.3
+        var sizeSpannable = RelativeSizeSpan(0.8f)
+        spannable.setSpan(
+            sizeSpannable, num.length, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        textView!!.text = spannable
+    }
+    /**
+     * 每日签到 U币  成长值
+     */
+    fun signAccMonth(textView: TextView?, title1: String,num: String, title2: String) {
+        var spannable = SpannableString(title1+num + title2)
+
+        //设置颜色
+        var colorSpannable = ForegroundColorSpan(Color.parseColor("#FFDE00"))
+        spannable.setSpan(
+            colorSpannable,
+            title1.length,
+            title1.length+num.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        textView!!.text = spannable
+    }
 
 
     /**

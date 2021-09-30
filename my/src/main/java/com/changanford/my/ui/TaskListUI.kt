@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -36,6 +37,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
         binding.taskRcy.rcyCommonView.adapter = taskAdapter
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()
+        binding.signmonth.setOnClickListener { JumpUtils.instans?.jump(55) }
 
         viewModel.taskBean.observe(this, Observer {
             completeRefresh(it, taskAdapter, 0)

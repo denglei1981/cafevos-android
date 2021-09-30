@@ -202,7 +202,7 @@ object SPUtils {
     /**
      * 获取token
      */
-    suspend fun getToken(): String {
+    fun getToken(): String {
         return getParam(
             MyApp.mContext,
             LOGIN_TOKEN,

@@ -338,6 +338,17 @@ class SignViewModel : ViewModel() {
         }
 
     }
+    fun monthSignDetail(date:String,result: (CommonResponse<MonthSignBean>) -> Unit){
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["date"] = date
+                var rkey = getRandomKey()
+                apiService.monthSignDetail(body.header(rkey),body.body(rkey))
+            })
+        }
+    }
+
     /****------------------****/
     fun getSmsCode(mobile: String) {
         viewModelScope.launch {

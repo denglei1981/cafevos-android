@@ -14,10 +14,10 @@ public class UpdateUiState<T> {
         this.message = message;
     }
 
-    public UpdateUiState(T data, boolean isSuccess, boolean isNeedPost, String message) {
+    public UpdateUiState(T data, boolean isSuccess, boolean isLoadMore, String message) {
         this.data = data;
         this.isSuccess = isSuccess;
-        this.isLoadMore = isNeedPost;
+        this.isLoadMore = isLoadMore;
         this.message=message;
     }
 

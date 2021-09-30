@@ -37,6 +37,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
             }
         }
         binding.centerToolbar.toolbarTitle.text = "个人主页"
+        binding.centerToolbar.toolbar.setNavigationOnClickListener { back() }
         initViewpager()
     }
 

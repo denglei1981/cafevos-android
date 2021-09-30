@@ -24,6 +24,8 @@ object ARouterMyPath {
     const val MineSettingUI = "/my/MineSettingUI" //设置
     const val AllMedalUI = "/my/AllMedalUI" //所有勋章
     const val SignTransparentUI = "/my/SignTransparentUI" //签到
+    const val SignMonth = "/my/SignMonthUI" //签到
+    const val AboutUI = "/my/AboutUI" //签到
 
     const val UniUserIdcardUI = "/my/UniUserIdcardUI" //用户等级
     const val MineFollowUI = "/my/MineFollowUI" //我的发布

@@ -177,12 +177,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     private fun getUserInfo() {
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
             it?.toString()?.logE()
-            if (null == it || it.userJson.isNullOrEmpty()) {
-                if (MConstant.token.isNotEmpty()) {
-                    viewModel.getUserInfo()
-                } else {
-                    setData(null)
-                }
+            if (MConstant.token.isNullOrEmpty()||null == it || it.userJson.isNullOrEmpty()) {
+                setData(null)
             } else {
                 var userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)

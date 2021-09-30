@@ -22,6 +22,8 @@
         <activity android:name=".ui.activity.PictureEditAudioActivity" />
         <activity android:name=".ui.activity.VideoChoseFMActivity" />
         <activity android:name=".ui.activity.LongPostAvtivity" />
+        <activity android:name=".ui.activity.SearchCircleActivity" />
+        <activity android:name=".ui.activity.SearchTopicActivity" />
 
     </application>
 </manifest>

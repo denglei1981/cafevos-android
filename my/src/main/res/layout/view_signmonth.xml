@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start_end_signmonth">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingDefaultResource">
+
+        <TextView
+            android:id="@+id/sign_total"
+            style="@style/commonTextView.Medium.White"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="您已连续签到1天，累计签到3天"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sign_acc"
+            style="@style/commonTextView.Medium.White"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="left"
+            android:text="当前奖励：1倍奖励"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/sign_total"
+            app:layout_constraintStart_toStartOf="@+id/sign_total"
+            app:layout_constraintTop_toBottomOf="@id/sign_total" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/bg_white_corner10"
+            app:layout_constraintTop_toBottomOf="@id/sign_acc"
+            tools:layout_editor_absoluteX="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/dp_10"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/signDateRec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/curTime"
+                    app:spanCount="7"
+                    tools:ignore="MissingConstraints"
+                    tools:listitem="@layout/item_signmonthday" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/commonTextView.Normal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="连续签到记录"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/monthleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/textView2"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:srcCompat="@mipmap/ic_arrow_left_gray" />
+
+                <TextView
+                    android:id="@+id/curTime"
+                    style="@style/commonTextView.Medium.Black"
+                    android:text="2019年10月"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthleft"
+                    app:layout_constraintEnd_toStartOf="@+id/monthright"
+                    app:layout_constraintStart_toEndOf="@+id/monthleft"
+                    app:layout_constraintTop_toTopOf="@+id/monthleft" />
+
+                <ImageView
+                    android:id="@+id/monthright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthleft"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/monthleft"
+                    app:srcCompat="@mipmap/ic_arrow_right_gray" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView12"
+            style="@style/commonTextView.Normal.White"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="签到奖励"
+            app:layout_constraintStart_toStartOf="@+id/cardview"
+            app:layout_constraintTop_toBottomOf="@id/cardview" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/jiangli"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/bg_white_corner10"
+            app:layout_constraintTop_toBottomOf="@id/textView12">
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="@dimen/dp_1"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/dp_10"
+                android:background="#DCDCDC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/sm_czz"
+                style="@style/commonTextView.Bold"
+                android:text="3"
+                app:layout_constraintBottom_toTopOf="@+id/textView14"
+                app:layout_constraintEnd_toStartOf="@+id/line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/commonTextView.Small.Light"
+                android:text="成长值"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/sm_czz"
+                app:layout_constraintStart_toStartOf="@+id/sm_czz"
+                app:layout_constraintTop_toBottomOf="@id/sm_czz" />
+
+            <TextView
+                android:id="@+id/sm_jf"
+                style="@style/commonTextView.Bold"
+                android:text="4"
+                app:layout_constraintBottom_toTopOf="@id/textView16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/line"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView16"
+                style="@style/commonTextView.Small.Light"
+                android:text="积分"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/sm_jf"
+                app:layout_constraintStart_toStartOf="@+id/sm_jf"
+                app:layout_constraintTop_toBottomOf="@+id/sm_jf" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView17"
+            style="@style/commonTextView.Normal.White"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="签到规则"
+            app:layout_constraintStart_toStartOf="@+id/cardview"
+            app:layout_constraintTop_toBottomOf="@id/jiangli" />
+
+        <TextView
+            android:id="@+id/guize"
+            style="@style/commonTextView.Small"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="签到奖励签到奖励签到\n奖励签到奖励\n签到奖励签到奖励签到奖励签到奖励"
+            app:layout_constraintStart_toStartOf="@+id/cardview"
+            app:layout_constraintTop_toBottomOf="@id/textView17" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

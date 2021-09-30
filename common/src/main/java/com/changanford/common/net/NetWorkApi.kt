@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -222,6 +223,23 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<DaySignBean>
+
+    /**
+     * 本月签到详情
+     */
+    @POST("/user/monthSignDetail")
+    suspend fun monthSignDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MonthSignBean>
+    /**
+     * 用户补签
+     */
+    @POST("/user/signReissue")
+    suspend fun signReissue(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     @POST("/goods/getAttributeList")
     suspend fun getUserData(

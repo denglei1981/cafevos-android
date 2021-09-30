@@ -87,6 +87,11 @@ object GlideUtils {
             preUrl
         )
 
+    private fun defaultHandleImageUrl(preUrl: String?): String =
+        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
+            preUrl
+        )
+
     /**
      * 加载圆角
      */
@@ -141,7 +146,7 @@ object GlideUtils {
         imageView: ImageView,
         @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
     ) {
-        Glide.with(imageView.context).load(handleImgUrl(url)).apply {
+        Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
             if (errorDefaultRes != null) {
                 placeholder(errorDefaultRes)
                     .fallback(errorDefaultRes)
@@ -150,7 +155,7 @@ object GlideUtils {
         }.into(imageView)
     }
 
-    fun loadCover(imageView: ImageView, url: String?,time:Long) {
+    fun loadCover(imageView: ImageView, url: String?, time: Long) {
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         Glide.with(imageView.context)
             .setDefaultRequestOptions(
@@ -161,6 +166,7 @@ object GlideUtils {
             .load(url)
             .into(imageView)
     }
+
     /**
      * 加载圆形
      */
@@ -168,6 +174,7 @@ object GlideUtils {
     fun loadCircle(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
         loadTransform(url, CircleGlideTransform(), imageView, errorDefaultRes)
     }
+
     @JvmOverloads
     fun loadTransform(
         url: String?,
@@ -185,10 +192,12 @@ object GlideUtils {
         }
             .into(imageView)
     }
+
     fun loadCircleFilePath(filePath: String?, imageView: ImageView) {
         Glide.with(imageView.context).load(filePath).transform(CircleGlideTransform())
             .into(imageView)
     }
+
     /**
      * 加载圆角
      */
@@ -201,6 +210,7 @@ object GlideUtils {
             errorDefaultRes
         )
     }
+
     /**
      * 加载圆角
      */

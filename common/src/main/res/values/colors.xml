@@ -74,6 +74,7 @@
     <color name="tabselect">#303030</color>
     <color name="textgray">#72747B</color>
     <color name="textblack">#071726</color>
+    <color name="signunreach">#A7A9AA</color>
 
     <color name="linebg">#EEF1F6</color>
 

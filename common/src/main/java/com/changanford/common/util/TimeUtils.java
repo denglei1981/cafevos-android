@@ -84,6 +84,7 @@ public class TimeUtils {
     public static String FORMATE_DATE_STR1 = "yyyy-MM-dd HH:mm:ss";
     public static String FORMATE_DATE_YMDHM = "yyyy-MM-dd HH:mm";
     public static String FORMATE_DATE_HM = "mm:ss";
+
     public static String MillisToStr(Long timeMillis) {
         if (timeMillis == null) {
             return "";
@@ -398,4 +399,93 @@ public class TimeUtils {
         }
         return timeStr;
     }
+
+    public static String getYear() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        return sdf.format(new Date());
+    }
+
+    public static String getMonth() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM");
+        return sdf.format(new Date());
+    }
+
+    public static String getShowYearMonth(int index) {//相较于当前月份的年月：2020年08月，前一月 index -1,后一月+1
+        try {
+            int year = Integer.valueOf(getYear());
+            int month = Integer.valueOf(getMonth());
+            month = month + index;
+
+            if (index < 0) {
+                while (month < 0) {
+                    year -= 1;
+                    month += 12;
+                }
+            } else {
+                while (month > 12) {
+                    month -= 12;
+                    year += 1;
+                }
+            }
+            if (month<10){
+                return year + "年0" + month+"月";
+            }else {
+                return year + "年" + month+"月";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * yyyy-MM-dd
+     * @param index
+     * @return
+     */
+    public static String getRequestYearMonth(int index) {//相较于当前月份的年月：2020年08月，前一月 index -1,后一月+1
+        try {
+            int year = Integer.valueOf(getYear());
+            int month = Integer.valueOf(getMonth());
+            month = month + index;
+
+            if (index < 0) {
+                while (month < 0) {
+                    year -= 1;
+                    month += 12;
+                }
+            } else {
+                while (month > 12) {
+                    month -= 12;
+                    year += 1;
+                }
+            }
+            if (month<10){
+                return year + "-0" + month;
+            }else {
+                return year + "-" + month;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     *
+     * @param pastDay yyyy-MM-hh
+     * @return
+     */
+    public static boolean dayBefore(String pastDay){
+        String cur = MillisToDayStr(System.currentTimeMillis());
+        try{
+            cur = cur.replace("-","");
+            pastDay = pastDay.replace("-","");
+            return  Long.valueOf(cur)-Long.valueOf(pastDay)>=0L;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

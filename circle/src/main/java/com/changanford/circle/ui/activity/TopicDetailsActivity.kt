@@ -19,6 +19,8 @@ import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
+import com.changanford.circle.widget.pop.CircleDetailsPop
+import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -34,6 +36,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import razerdp.basepopup.BasePopupWindow
 import kotlin.math.abs
 
 /**
@@ -46,6 +49,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private var isWhite = true//是否是白色状态
     private var topicId = ""
+    private var isOpenMenuPop = false
 
     override fun initView() {
         initMagicIndicator()
@@ -82,11 +86,51 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 binding.barTitleTv.alpha = 1.0F
             }
         })
+        initListener()
         initTabAndViewPager()
     }
 
     override fun initData() {
         viewModel.getData(topicId)
+    }
+
+    private fun initListener() {
+        binding.ivPostBar.setOnClickListener {
+            if (isOpenMenuPop) {
+                return@setOnClickListener
+            }
+            CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
+                override fun checkLongBar() {
+
+                }
+
+                override fun checkPic() {
+
+                }
+
+                override fun checkVideo() {
+
+                }
+
+            }).run {
+                //无透明背景
+                setBackgroundColor(Color.TRANSPARENT)
+                //背景模糊false
+                setBlurBackgroundEnable(false)
+                showPopupWindow(it)
+                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                    override fun onDismiss() {
+                        isOpenMenuPop = false
+                        binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+                    }
+
+                }
+                setOnPopupWindowShowListener {
+                    isOpenMenuPop = true
+                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
+                }
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

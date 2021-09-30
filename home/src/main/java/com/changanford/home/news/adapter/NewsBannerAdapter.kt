@@ -6,15 +6,17 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.load
 import com.changanford.home.R
+import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemNewsBarBannerBinding
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
-class NewsBannerAdapter : BaseBannerAdapter<String, PostBarBannerViewHolder>() {
+class NewsBannerAdapter : BaseBannerAdapter<SpecialListBean, PostBarBannerViewHolder>() {
 
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_news_bar_banner
     }
+
 
     override fun createViewHolder(itemView: View?, viewType: Int): PostBarBannerViewHolder {
         return PostBarBannerViewHolder(itemView!!)
@@ -22,7 +24,7 @@ class NewsBannerAdapter : BaseBannerAdapter<String, PostBarBannerViewHolder>() {
 
     override fun onBind(
         holder: PostBarBannerViewHolder?,
-        data: String?,
+        data: SpecialListBean,
         position: Int,
         pageSize: Int
     ) {
@@ -31,22 +33,14 @@ class NewsBannerAdapter : BaseBannerAdapter<String, PostBarBannerViewHolder>() {
 }
 
 
-class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<String>(itemView) {
-    override fun bindData(data: String?, position: Int, pageSize: Int) {
+class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<SpecialListBean>(itemView) {
+    override fun bindData(data: SpecialListBean, position: Int, pageSize: Int) {
         val binding = DataBindingUtil.bind<ItemNewsBarBannerBinding>(itemView)
-        binding?.ivBanner?.load(data)
+        binding?.ivBanner?.load(data.pics)
         binding?.ivBanner?.setOnClickListener {
-//            var pics = arrayListOf<MediaListBean>(MediaListBean().apply {
-//                img_url = data
-//            }, MediaListBean().apply {
-//                img_url = data
-//            })
-//            var bundle = Bundle()
-//            bundle.putSerializable("imgList", pics)
-//            bundle.putInt("count", 0)
-//            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
-              startARouter(ARouterHomePath.SpecialListActivity)
+              startARouter(ARouterHomePath.SpecialDetailActivity)
         }
     }
+
 
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toStartOf="@id/line2"
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_goneMarginTop="@dimen/dp_10"
+        app:srcCompat="@mipmap/icon_sign_unreachday" />
+
+    <TextView
+        android:id="@+id/date"
+        style="@style/commonTextView.Small"
+        android:text="周一"
+        app:layout_constraintEnd_toEndOf="@id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/word"
+        style="@style/commonTextView.Medium"
+        android:text="补"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/icon"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="@+id/icon" />
+
+    <TextView
+        android:id="@+id/day"
+        style="@style/commonTextView.Small"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="8.17"
+        android:layout_marginBottom="@dimen/dp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_4"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toStartOf="@id/icon"
+        app:layout_constraintTop_toTopOf="@id/icon" />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_4"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icon" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

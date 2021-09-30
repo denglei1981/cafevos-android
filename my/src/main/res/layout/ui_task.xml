@@ -104,6 +104,7 @@
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
+                                android:id="@+id/signmonth"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dp_18"
                                 android:layout_marginEnd="@dimen/dp_16"

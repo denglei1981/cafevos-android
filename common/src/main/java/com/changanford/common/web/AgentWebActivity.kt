@@ -30,6 +30,7 @@ import com.changanford.common.pay.PayViewModule
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
@@ -98,6 +99,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
 
     override fun initView() {
+        AppUtils.setStatusBarPaddingTop(binding.titleBar.commTitleBar, this)
         SoftHideKeyBoardUtil.assistActivity(this)
         totalWebNum += 1
         localWebNum = totalWebNum

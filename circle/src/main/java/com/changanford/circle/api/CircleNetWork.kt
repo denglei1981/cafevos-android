@@ -97,4 +97,22 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<CommentListBean>>
+
+    /**
+     * 圈子搜索
+     */
+    @POST("con/circle/searchCircles")
+    suspend fun searchCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<ChoseCircleBean>>
+
+    /**
+     * 话题搜索
+     */
+    @POST("con/topic/searchTopics")
+    suspend fun searchTopics(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<HotPicItemBean>>
 }

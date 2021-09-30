@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
@@ -48,6 +49,9 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
 
         binding.setSafe.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.AccountSafeUI)
+        }
+        binding.setFord.setOnClickListener {
+            startARouter(ARouterMyPath.AboutUI)
         }
 
         var cache = CleanDataUtils.getTotalCacheSize(this)
