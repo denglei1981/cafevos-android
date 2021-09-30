@@ -29,7 +29,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
-        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
         binding.ivMenu.setOnClickListener {
             CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                 override fun checkLongBar() {
@@ -49,6 +49,9 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 showPopupWindow(it)
                 initData()
             }
+        }
+        binding.refreshLayout.setOnRefreshListener {
+            it.finishRefresh()
         }
     }
 

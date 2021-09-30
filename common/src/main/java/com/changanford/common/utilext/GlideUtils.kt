@@ -201,4 +201,30 @@ object GlideUtils {
             errorDefaultRes
         )
     }
+    /**
+     * 加载圆角
+     */
+    @JvmOverloads
+    fun loadRoundFilePath(
+        filePath: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int? = null
+    ) {
+        Glide.with(imageView.context).load(filePath)
+            .transform(RoundGlideTransform(isSquare = false)).apply {
+                if (errorDefaultRes != null) {
+                    placeholder(errorDefaultRes)
+                        .fallback(errorDefaultRes)
+                        .error(errorDefaultRes)
+                        .thumbnail(
+                            getTransform(
+                                imageView.context,
+                                errorDefaultRes,
+                                RoundGlideTransform(isSquare = false)
+                            )
+                        )
+                }
+            }
+            .into(imageView)
+    }
 }

@@ -16,8 +16,9 @@ import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
-import com.xiaomi.push.iv
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -29,7 +30,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 /**
  *Author lcw
  *Time on 2021/9/18
- *Purpose 圈子详情
+ *Purpose 全部圈子
  */
 @Route(path = ARouterCirclePath.CircleListActivity)
 class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListViewModel>() {
@@ -39,6 +40,9 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
             ivBack.setOnClickListener { finish() }
+            tvMyCircle.setOnClickListener {
+                startARouter(ARouterMyPath.MineCircleUI, true)
+            }
         }
         initMagicIndicator()
         initTabAndViewPager()
@@ -83,7 +87,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val simplePagerTitleView =
                     ScaleTransitionPagerTitleView(context)
-                simplePagerTitleView.minScale=1f
+                simplePagerTitleView.minScale = 1f
                 simplePagerTitleView.text = viewModel.tabList[index]
                 simplePagerTitleView.textSize = 15f
                 simplePagerTitleView.setPadding(30.toIntPx(), 0, 30.toIntPx(), 0)

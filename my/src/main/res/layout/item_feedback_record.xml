@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.FeedbackMineListItem" />
+    </data>
+
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <RelativeLayout
+            android:id="@+id/item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="14dp"
+            android:paddingTop="10dp"
+            android:paddingRight="14dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/item_head_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                tools:src="@mipmap/ic_launcher" />
+
+            <View
+                android:id="@+id/v_hint"
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:layout_marginStart="-10dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/item_head_icon"
+                android:background="@drawable/hint_feedback_bg" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/item_head_icon"
+                android:text="@{model.userName}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="德玛西亚" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_name"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/item_head_icon"
+                tools:text="[已回复]"
+                android:textColor="#FC883B"
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_name"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/tv_type"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{model.feedbackContent}"
+                android:textColor="#707376"
+                android:textSize="13sp"
+                tools:text="问题问题问题问题问题问题问题问题问题问题问题问题问题问题" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_feedback_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_type"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="11dp"
+                android:layout_toEndOf="@+id/item_head_icon"
+                android:background="@drawable/feedback_record_type_bg"
+                android:maxEms="8"
+                android:maxLength="8"
+                android:paddingLeft="9dp"
+                android:paddingTop="2dp"
+                android:paddingRight="9dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:text="@{model.tagName}"
+                android:textColor="#808387"
+                android:textSize="11sp"
+                tools:ignore="SmallSp"
+                tools:text="活动问题" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_type"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="3dp"
+                tools:text="20-09-14 13:23"
+                android:textColor="#BBBEC0"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_feedback_type"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="14dp"
+                android:layout_toEndOf="@+id/item_head_icon"
+                android:background="#EEEEEE" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+</layout>

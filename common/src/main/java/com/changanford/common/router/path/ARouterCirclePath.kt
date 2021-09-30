@@ -17,8 +17,7 @@ object ARouterCirclePath {
     const val AddCircleActivity = "/circle/AddCircleActivity"
 
     const val ReleaseEditActivity = "/circle/ReleaseEditActivity"
-    const val PostGraphicActivity = "/circle/PostGraphicActivity"
-    const val PostVideoDetailsActivity = "/circle/PostVideoDetailsActivity"
+    const val PostDetailsActivity = "/circle/PostGraphicActivity"
     const val PhotoViewActivity = "/common/PhotoViewActivity"
     const val PostActivity = "/circle/PostActivity"
     const val CircleListActivity = "/circle/CircleListActivity"

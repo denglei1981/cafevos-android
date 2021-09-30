@@ -21,10 +21,10 @@ class CircleListViewModel : BaseViewModel() {
 
     val circleListBean = MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
 
-    fun getData(type: Int, lng: String, lat: String) {
+    fun getData(type: Int, lng: String, lat: String,page:Int) {
         launch {
             val body = MyApp.mContext.createHashMap()
-            body["pageNo"] = 1
+            body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
                 it["lng"] = lng

@@ -82,7 +82,7 @@ class CircleMainBottomAdapter(context: Context) :
             binding.ivBg.layoutParams?.height = item.itemImgHeight
 
             binding.ivHead.loadImage(
-                CircleConfig.TestUrl,
+                item.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
 

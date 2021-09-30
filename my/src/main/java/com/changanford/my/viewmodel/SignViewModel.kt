@@ -11,15 +11,15 @@ import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.ui.ConfirmPop
-import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.SPUtils
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.interf.UploadPicCallback
+import com.luck.picture.lib.entity.LocalMedia
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -33,6 +33,18 @@ class SignViewModel : ViewModel() {
 
     var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var _hobbyBean: MutableLiveData<ArrayList<HobbyBeanItem>> = MutableLiveData()
+    var _feedBackBean: MutableLiveData<FeedbackQBean> = MutableLiveData()
+    var _lables :MutableLiveData<ArrayList<FeedbackTagsItem>> = MutableLiveData()
+    var _feedbackMineListBean :MutableLiveData<FeedbackMineListBean> = MutableLiveData()
+    /**
+     * 反馈意见内容列表
+     */
+    var feedbackInfo: MutableLiveData<FeedbackInfoList> = MutableLiveData()
+
+    /**
+     * 新增意见反馈项
+     */
+    var feedbackSetting: MutableLiveData<FeedbackSettingBean> = MutableLiveData()
 
     /**
      * 标记消息已读
@@ -120,7 +132,213 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+    fun getFeedbackQ(){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = "1"
+                body["pageSize"] = "20"
+                var rKey = getRandomKey()
+                apiService.getFeedbackQ(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                _feedBackBean.postValue(it)
+            }
+        }
+    }
+    fun uploadFileWithWH(upfiles: List<LocalMedia>, callback: UploadPicCallback) {
+        GetOSSWithWH(BaseApplication.curActivity, upfiles, 0, callback)
+    }
+    /**
+     * 地址带图片宽高
+     */
+    fun GetOSSWithWH(
+        context: Context,
+        upfiles: List<LocalMedia>,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        viewModelScope.launch {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            fetchRequest {
+                apiService.getOSS(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                initAliYunOss(context,it!!)//
+                upimgs = ArrayList()
+                uploadImgs(
+                    context,
+                    upfiles,
+                    it!!,
+                    count,
+                    callback
+                )
+            }.onWithMsgFailure {
+                it?.toast()
+                callback.onUploadFailed(it?:"")
+            }
+        }
 
+    }
+    /**
+     * 上传带宽高的图片
+     */
+    @JvmName("uploadImgs1")
+    private fun uploadImgs(
+        context: Context,
+        upfiles: List<LocalMedia>,
+        stsBean: STSBean,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        val size = upfiles.size
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        //重新设置图片地址
+        var path = MineUtils.imgWandH(stsBean, upfiles[count])
+        //保存地址
+        upimgs.add(path)
+        //上传地址初始化
+        AliYunOssUploadOrDownFileConfig.getInstance(context)
+            .uploadFile(stsBean.bucketName, path, AppUtils.getFinallyPath(upfiles[count]), "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                val scount = count + 1
+                if (scount == size) {
+                    callback.onUploadSuccess(upimgs)
+                }
+                uploadImgs(context, upfiles, stsBean, scount, callback)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+                callback.onUploadFailed(errCode)
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+                //currentSize*100/totalSize
+            }
+        })
+    }
+    fun getFeedbackTags(){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rKey = getRandomKey()
+                apiService.getFeedbackTag(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                _lables.postValue(it)
+            }
+        }
+    }
+
+    fun addFeedback(body: HashMap<String, Any>,result: (CommonResponse<String>) -> Unit){
+        viewModelScope.launch {
+            result(fetchRequest {
+                var rKey = getRandomKey()
+                apiService.addFeedback(body.header(rKey), body.body(rKey))
+            })
+        }
+    }
+    /**
+     * 获取意见常用问题
+     */
+    fun getMineFeedback(pageNo: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = 20
+                var rkey = getRandomKey()
+                apiService.getMineFeedback(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                _feedbackMineListBean.postValue(it)
+            }
+        }
+    }
+    fun deleteUserFeedback(userFeedbackId:Int){
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                body["userFeedbackId"] = userFeedbackId
+                val rKey = getRandomKey()
+                apiService.deleteUserFeedback(body.header(rKey),body.body(rKey))
+            }
+        }
+    }
+    fun changeToRead(userFeedbackId:Int){
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                body["userFeedbackId"] = userFeedbackId
+                val rKey = getRandomKey()
+                apiService.changeToRead(body.header(rKey),body.body(rKey))
+            }
+        }
+    }
+
+    /**
+     * 查询管理员昵称
+     */
+    fun queryMemberNickName(result: (CommonResponse<FeedbackMemberBean>) -> Unit) {
+
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["configKey"] = "feedback_reply_set"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.queryMemberNickName(body.header(rkey),body.body(rkey))
+            })
+        }
+    }
+    /**
+     * 获取用户反馈内容
+     */
+    fun queryFeedbackInfoList(pageNo: Int, userFeedbackId: String) {
+        viewModelScope.launch{
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userFeedbackId"] = userFeedbackId
+                body["pageNo"] = pageNo
+                body["pageSize"] = 20
+                var rkey = getRandomKey()
+                apiService.queryFeedbackInfoList(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                feedbackInfo.postValue(it)
+            }
+        }
+
+    }
+    fun closeFeedback(userFeedbackId: String, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userFeedbackId"] = userFeedbackId
+                var rkey = getRandomKey()
+                apiService.closeFeedback(body.header(rkey),body.body(rkey))
+            })
+        }
+
+    }
+    /**
+     * 新增一条反馈
+     */
+    fun addFeedbackInfo(param: HashMap<String, Any>, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var rkey = getRandomKey()
+                apiService.addFeedbackInfo(param.header(rkey),param.body(rkey))
+            })
+        }
+
+    }
+    /****------------------****/
     fun getSmsCode(mobile: String) {
         viewModelScope.launch {
             fetchRequest {
@@ -171,6 +389,8 @@ class SignViewModel : ViewModel() {
                 apiService.smsCodeSign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 loginSuccess(it)
+            }.onWithMsgFailure {
+                it?.toast()
             }
         }
     }

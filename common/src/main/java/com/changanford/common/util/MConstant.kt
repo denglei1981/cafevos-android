@@ -13,8 +13,8 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    //    const val BASE_URL = "https://csapi.uniplanet.cn"  "https://evosapiqa.changanford.cn"
     const val BASE_URL = "https://csapi.uniplanet.cn"
+//    const val BASE_URL = "https://evosapiqa.changanford.cn"
     const val isDebug = true
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
@@ -59,6 +59,8 @@ object MConstant {
     const val WXAPPID = "wx134a7f5ed01da769" //微信appid
 
     const val QQAPPID = "1109690244" //QQ
+    var mine_phone = ""
+
     var NUM = "" //
 
     /**

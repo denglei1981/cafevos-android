@@ -38,7 +38,7 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
     private val addressAdapter by lazy { CircleMainAddress(requireContext()) }
 
     override fun initView() {
-        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
         val type = arguments?.getString("type")
         type?.let { initLayoutManage(it) }
         binding.ryCircle.layoutManager = layoutManager
@@ -55,7 +55,9 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
 
         addressAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                startARouter(ARouterCirclePath.CircleDetailsActivity)
+                val bundle = Bundle()
+                bundle.putString("circleId", "94")
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
 
         })

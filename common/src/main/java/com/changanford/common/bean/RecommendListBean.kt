@@ -203,15 +203,9 @@ data class HomeAuthorsBean(
     val memberId: String,
     val memberName: String,
     val nickname: String,
-    val imags: List<LabelBean>,
+    val imags: List<Imag>,
     val userId: String,
     val headFrameImage: String
-)
-
-class LabelBean(
-    var img: String,
-    var jumpDataType: Int,
-    var jumpDataValue: String
 )
 
 /**

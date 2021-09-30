@@ -1,11 +1,17 @@
 package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
+import android.view.View
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.FragmentCircleListBinding
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.location.LocationUtils
 
 /**
@@ -26,30 +32,57 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     private var type = 0
+    private var page = 1
 
     private val adapter by lazy {
-        CircleListAdapter(requireContext())
+        CircleListAdapter()
     }
 
     override fun initView() {
-        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
 
         arguments?.getInt("type", 0)?.let {
             type = it
         }
 
         binding.ryCircle.adapter = adapter
+
+        adapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            bundle.putString("circleId", adapter.data[position].circleId)
+            startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+        }
+
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            initData()
+        }
     }
 
     override fun initData() {
-        val list =
-            arrayListOf("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
-        adapter.setItems(list)
-        adapter.notifyDataSetChanged()
         viewModel.getData(
             type,
             LocationUtils.mLongitude.value.toString(),
-            LocationUtils.mLatitude.value.toString()
+            LocationUtils.mLatitude.value.toString(),
+            page
         )
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.circleListBean.observe(this, {
+            if (page == 1) {
+                if (it.dataList.size == 0) {
+                    adapter.setEmptyView(R.layout.circle_empty_layout)
+                }
+                adapter.setList(it.dataList)
+            } else {
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+        })
     }
 }

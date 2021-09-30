@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <com.changanford.common.ui.RoundCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:button="@null"
+        android:drawableLeft="@drawable/checkbox"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:text="操作问题"
+        android:textColor="@drawable/checkbox_text_color"
+        android:textSize="@dimen/text_size_small"
+        android:theme="@style/mine_checkbox" />
+
+</layout>

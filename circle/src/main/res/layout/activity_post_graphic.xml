@@ -24,15 +24,16 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/dp_20"
+                android:paddingEnd="10dp"
                 android:src="@mipmap/back_xhdpi" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_head"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="17dp"
+                android:layout_marginStart="7dp"
                 android:src="@mipmap/ic_launcher" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -45,20 +46,21 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="萨瓦迪LALA"
                 android:textColor="@color/color_00"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="萨瓦迪LALA" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="46dp"
+                android:id="@+id/tv_follow"
+                android:layout_width="60dp"
                 android:layout_height="25dp"
-                android:background="@drawable/circle_follow_bg"
+                android:background="@drawable/circle_follow_white_bg"
                 android:gravity="center"
-                android:text="关注"
-                android:textColor="@color/white"
+                android:textColor="@color/circle_app_color"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="+ 关注" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_menu"
@@ -90,8 +92,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_image_and_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_one_title"
@@ -101,7 +102,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:drawablePadding="4dp"
-                        android:text="重庆长安福特EVOS华丽登场"
+                        tools:text="重庆长安福特EVOS华丽登场"
                         android:textColor="@color/color_33"
                         android:textSize="@dimen/sp_20"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -113,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="来自重庆车友圈"
+                        tools:text="来自重庆车友圈"
                         android:textColor="@color/color_33"
                         android:textSize="14sp"
                         app:layout_constraintLeft_toLeftOf="@+id/tv_one_title"
@@ -124,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
-                        android:text="2021.09.25  12:25"
+                        tools:text="2021.09.25  12:25"
                         android:textColor="@color/color_99"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_one_from"
@@ -143,7 +144,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <com.zhpan.bannerview.BannerViewPager
                         android:id="@+id/banner"
@@ -176,50 +178,50 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:drawablePadding="4dp"
-                        android:text="重庆长安福特EVOS华丽登场"
                         android:textColor="@color/color_33"
                         android:textSize="@dimen/sp_20"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/banner" />
+                        app:layout_constraintTop_toBottomOf="@+id/banner"
+                        tools:text="重庆长安福特EVOS华丽登场" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_two_from"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="来自重庆车友圈"
                         android:textColor="@color/color_33"
                         android:textSize="14sp"
                         app:layout_constraintLeft_toLeftOf="@+id/tv_two_title"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_two_title" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_two_title"
+                        tools:text="来自重庆车友圈" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_two_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
-                        android:text="2021.09.25  12:25"
                         android:textColor="@color/color_99"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_two_from"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_two_from" />
+                        app:layout_constraintTop_toTopOf="@+id/tv_two_from"
+                        tools:text="2021.09.25  12:25" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_content"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="17dp"
-                        android:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜。"
                         android:textColor="@color/color_33"
                         android:textSize="14sp"
                         app:layout_constraintLeft_toLeftOf="@+id/tv_two_from"
                         app:layout_constraintRight_toRightOf="@+id/tv_two_time"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_two_from" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_two_from"
+                        tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜。" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_talk"
+                        android:id="@+id/tv_talk_out"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginTop="19dp"
@@ -229,7 +231,7 @@
                         android:gravity="center"
                         android:paddingStart="10dp"
                         android:paddingEnd="14dp"
-                        android:text="年轻人喜欢什么样的车"
+                        tools:text="年轻人喜欢什么样的车"
                         android:textColor="@color/circle_8195C8"
                         android:textSize="13sp"
                         app:layout_constraintLeft_toLeftOf="@+id/tv_content"
@@ -239,15 +241,15 @@
 
                 <include
                     layout="@layout/circle_line_10"
-                    android:layout_marginTop="34dp"
+                    android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:layout_width="match_parent" />
+                    android:layout_marginTop="34dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ry_comment"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="27dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="27dp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

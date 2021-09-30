@@ -7,7 +7,7 @@
 
 
     <com.dueeeke.videoplayer.player.VideoView
-        android:id="@+id/homes_dk"
+        android:id="@+id/homes_dk_video"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_210"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ll_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homes_dk" />
+        app:layout_constraintTop_toBottomOf="@+id/homes_dk_video"/>
 
     <include
         android:id="@+id/ll_comment"
