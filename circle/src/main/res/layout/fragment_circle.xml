@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingBottom="50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="50dp">
 
         <RelativeLayout
             android:id="@+id/rl_title"
@@ -40,18 +40,26 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
-                android:layout_toStartOf="@+id/iv_menu"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="11dp"
-                android:src="@mipmap/circle_main_search"
-                android:layout_height="wrap_content"/>
+                android:layout_toStartOf="@+id/iv_menu"
+                android:src="@mipmap/circle_main_search" />
         </RelativeLayout>
 
-        <com.changanford.common.widget.recy.ParentRecyclerView
-            android:id="@+id/ry_circle"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:srlEnableLoadMore="false">
+
+            <com.changanford.common.widget.recy.ParentRecyclerView
+                android:id="@+id/ry_circle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
     </LinearLayout>
 </layout>

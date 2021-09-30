@@ -9,7 +9,6 @@ import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.utilext.toast
 import java.lang.reflect.Method
 
 /**
@@ -41,7 +40,6 @@ class CircleDetailsMainFragment :
     override fun initView() {
         type = arguments?.getInt("type", 4)!!
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
-
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
@@ -65,8 +63,10 @@ class CircleDetailsMainFragment :
             page++
             viewModel.getData(type, page)
         }
-        adapter.setOnItemClickListener { adapter, view, position ->
-            startARouter(ARouterCirclePath.PostGraphicActivity)
+        adapter.setOnItemClickListener { _, view, position ->
+            val bundle=Bundle()
+            bundle.putString("postsId",adapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity,bundle)
         }
     }
 

@@ -22,8 +22,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

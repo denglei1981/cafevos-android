@@ -3,8 +3,7 @@
     package="com.changanford.circle">
 
     <application>
-        <activity android:name=".ui.activity.PostGraphicActivity" />
-        <activity android:name=".ui.activity.PostVideoDetailsActivity" />
+        <activity android:name=".ui.activity.PostDetailsActivity" />
         <activity android:name=".ui.activity.PostActivity"/>
         <activity android:name=".ui.activity.CircleListActivity" />
         <activity android:name=".ui.activity.AllReplyActivity" />

@@ -9,6 +9,7 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
+import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
@@ -86,7 +87,6 @@ object GlideUtils {
             preUrl
         )
 
-
     /**
      * 加载圆角
      */
@@ -139,9 +139,9 @@ object GlideUtils {
     fun loadBD(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int? = null
+        @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
     ) {
-        Glide.with(imageView.context).load(url).apply {
+        Glide.with(imageView.context).load(handleImgUrl(url)).apply {
             if (errorDefaultRes != null) {
                 placeholder(errorDefaultRes)
                     .fallback(errorDefaultRes)
@@ -200,5 +200,31 @@ object GlideUtils {
             imageView,
             errorDefaultRes
         )
+    }
+    /**
+     * 加载圆角
+     */
+    @JvmOverloads
+    fun loadRoundFilePath(
+        filePath: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int? = null
+    ) {
+        Glide.with(imageView.context).load(filePath)
+            .transform(RoundGlideTransform(isSquare = false)).apply {
+                if (errorDefaultRes != null) {
+                    placeholder(errorDefaultRes)
+                        .fallback(errorDefaultRes)
+                        .error(errorDefaultRes)
+                        .thumbnail(
+                            getTransform(
+                                imageView.context,
+                                errorDefaultRes,
+                                RoundGlideTransform(isSquare = false)
+                            )
+                        )
+                }
+            }
+            .into(imageView)
     }
 }

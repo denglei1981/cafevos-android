@@ -118,6 +118,89 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MessageListBean>
+    /**
+     * 获取反馈 常用问题
+     */
+    @POST("userFeedback/getCommonQuestions")
+    suspend fun getFeedbackQ(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackQBean>
+    /**
+     * 获取意见反馈 所以标签
+     */
+    @POST("userFeedback/getAllUserFeedbackTags")
+    suspend fun getFeedbackTag(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackTags>
+    /**
+     * 添加意见反馈 所以标签
+     */
+    @POST("userFeedback/insertFeedback")
+    suspend fun addFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 获取的我所以意见反馈
+     */
+    @POST("userFeedback/getAllUserFeedbacks")
+    suspend fun getMineFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMineListBean>
+    /**
+     * 删除一个意见反馈
+     */
+    @POST("userFeedback/deleteUserFeedback")
+    suspend fun deleteUserFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 用户已读
+     */
+    @POST("userFeedback/changeToRead")
+    suspend fun changeToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("base/config/getConfigValueByKey")
+    suspend fun queryMemberNickName(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMemberBean>
+    /**
+     * 意见反馈 获取内容
+     */
+
+    @POST("userFeedback/getAllConversation")
+    suspend fun queryFeedbackInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackInfoList>
+
+    /**
+     * 关闭意见反馈
+     */
+
+    @POST("userFeedback/closeFeedbackStatus")
+    suspend fun closeFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 添加一条数据意见反馈
+     */
+
+    @POST("userFeedback/addConversation")
+    suspend fun addFeedbackInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     /**--------------------------------base---------------------------------------**/
 
@@ -469,6 +552,110 @@ interface NetWorkApi {
     //圈子审核 删除
     @POST("con/circle/deleteCircleUsers")
     suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /*---------------------资讯----------------------*/
+    //con/article/myColletArticle  我的收藏 资讯
+    @POST("con/article/myColletArticle")
+    suspend fun queryMineCollectList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    //我的足迹  资讯
+    @POST("con/article/myVisitArticle")
+    suspend fun queryMineFootprintList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+
+    //我发布的资讯
+    @POST("con/article/myArticles")
+    suspend fun queryMineSendInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    /*---------------------帖子-------------------*/
+
+    //我的足迹 con/posts/myVisits
+    @POST("con/posts/myVisits")
+    suspend fun queryMineFootprintInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我收藏得帖子
+    @POST("con/posts/myCollectList")
+    suspend fun queryMineCollectInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我发布的帖子
+    @POST("con/posts/myPostsList")
+    suspend fun queryMineSendPost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    /*------------------活动----------------------*/
+
+    //highlights/myPublishes 我的活动
+    @POST("highlights/myPublishes")
+    suspend fun queryMineSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //highlights/indexPage4User
+
+    @POST("highlights/indexPage4User")
+    suspend fun queryTaSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我收藏的活动  highlights/myCollect
+    @POST("highlights/myCollect")
+    suspend fun queryMineCollectAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我的足迹活动  highlights/myFootprint
+    @POST("highlights/myFootprint")
+    suspend fun queryMineFootAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //我参与的活动
+    @POST("highlights/myJoin")
+    suspend fun queryMineJoinAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //单个 批量 删除资讯
+    @POST("con/article/delete")
+    suspend fun deleteInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //单个 批量 删除资讯
+    @POST("con/posts/delete")
+    suspend fun deletePost(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>

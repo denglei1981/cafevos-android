@@ -1,14 +1,16 @@
 package com.changanford.circle.utils
 
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.changanford.circle.R
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
-import com.google.android.material.imageview.ShapeableImageView
+import com.changanford.common.utilext.GlideUtils
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 
@@ -21,14 +23,14 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 /**
  * 图片加载
  */
-@BindingAdapter(value = ["bindingUrl", "circleCrop"], requireAll = false)
-fun bindingUrl(imageView: ImageView, url: String, mCircleCrop: Boolean = false) {
+@BindingAdapter(value = ["bindingUrl", "circleCrop","placeholder"], requireAll = false)
+fun bindingUrl(imageView: ImageView, url: String, mCircleCrop: Boolean = false,@DrawableRes mPlaceHolder:Int) {
     imageView.loadImage(
-        url,
+        GlideUtils.handleImgUrl(url),
         ImageOptions().apply {
             circleCrop = mCircleCrop
-//                error = R.mipmap.ic_launcher
-//                placeholder = R.mipmap.ic_launcher
+            error = R.mipmap.ic_def_square_img
+            placeholder = mPlaceHolder
         })
 }
 

@@ -3,9 +3,9 @@ package com.changanford.circle.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleDetailBean
-import com.changanford.circle.bean.CircleMainBottomBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.PostBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 
@@ -18,9 +18,9 @@ class CircleDetailsViewModel : BaseViewModel() {
 
     val tabList = arrayListOf("推荐", "最新", "精华")
 
-    val circleBean = MutableLiveData<CircleMainBottomBean>()
+    val circleBean = MutableLiveData<PostBean>()
 
-    val listBean = MutableLiveData<CircleMainBottomBean>()
+    val listBean = MutableLiveData<PostBean>()
 
     val circleDetailsBean = MutableLiveData<CircleDetailBean>()
 

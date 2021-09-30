@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/msg_time_bg"
+        android:padding="2dp"
+        android:text="2020.10.13 17:12"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/msg_time"
+        app:layout_goneMarginTop="12dp">
+
+        <ImageView
+            android:id="@+id/msg_head_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@mipmap/ic_launcher_round"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/msg_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/msg_send_text_bg"
+            android:lineSpacingMultiplier="1.1"
+            android:padding="6dp"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/msg_head_icon"
+            app:layout_constraintTop_toTopOf="@+id/msg_head_icon" />
+
+        <ProgressBar
+            android:id="@+id/msg_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="8dp"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:minWidth="24dp"
+            android:minHeight="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/msg_text"
+            app:layout_constraintRight_toLeftOf="@+id/msg_text"
+            app:layout_constraintTop_toTopOf="@+id/msg_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

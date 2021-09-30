@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -52,11 +53,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private var isWhite = true//是否是白色状态
 
+    private var circleId = ""
+
     private val personalAdapter by lazy {
         CircleDetailsPersonalAdapter(this)
     }
 
     override fun initView() {
+        circleId = intent.getStringExtra("circleId").toString()
         initMagicIndicator()
         binding.run {
             backImg.setOnClickListener { finish() }
@@ -104,7 +108,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(position.toString(), "","94")
+                    return CircleDetailsFragment.newInstance(position.toString(), "", "94")
                 }
 
             }
@@ -115,7 +119,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     override fun initData() {
-        viewModel.getCircleDetails("94")
+        viewModel.getCircleDetails(circleId)
     }
 
     @SuppressLint("SetTextI18n")
@@ -138,7 +142,9 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 personalAdapter.setItems(it.users)
                 personalAdapter.notifyDataSetChanged()
                 tvPersonal.setOnClickListener {
-                    startARouter(ARouterCirclePath.PersonalActivity)
+                    val bundle = Bundle()
+                    bundle.putString("circleId", circleId)
+                    startARouter(ARouterCirclePath.PersonalActivity, bundle)
                 }
                 tvJoin.setOnClickListener {
                     CircleManagementPop(this@CircleDetailsActivity,

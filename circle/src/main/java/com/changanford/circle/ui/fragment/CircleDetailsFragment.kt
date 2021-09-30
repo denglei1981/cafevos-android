@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleDetailsBarAdapter
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.databinding.FragmentCircleDetailsBinding
 import com.changanford.circle.utils.MUtils
@@ -47,7 +46,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
     }
 
     override fun initView() {
-        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
 
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")

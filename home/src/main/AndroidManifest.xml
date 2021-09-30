@@ -9,6 +9,13 @@
         <activity android:name=".search.activity.PolySearchActivity" />
         <activity android:name=".search.activity.PloySearchResultActivity" />
         <activity android:name=".news.activity.NewsPicsActivity" />
+        <activity android:name=".news.activity.NewsPicAdActivity" />
+        <activity
+            android:name=".news.activity.NewsVideoDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
 
     </application>

@@ -147,7 +147,7 @@ class JumpUtils {
             }
             4 -> {//帖子详情
                 bundle.putString("postsId", value)
-                startARouter(ARouterCirclePath.PostGraphicActivity, bundle)
+                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             }
             5 -> {//商城订单详情
                 if (value != null) {
@@ -588,14 +588,14 @@ class JumpUtils {
                  * 需要参数，在线客服H5链接（string），是否有意见反馈（意见反馈 等于1 已提交意见反馈）
                  * {"hasFeedback":"1","onlineH5":"https://www.baidu.com"}
                  */
-                when {
-                    MConstant.token.isNullOrEmpty() -> {//登录页面
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                    else -> {
+//                when {
+//                    MConstant.token.isNullOrEmpty() -> {//登录页面
+//                        startARouter(ARouterMyPath.SignUI)
+//                    }
+//                    else -> {
                         startARouter(ARouterMyPath.MineCenterFeedbackUI, bundle)
-                    }
-                }
+//                    }
+//                }
             }
             72 -> {//备件查询功能（先调用车辆列表判断是否有车，无车-跳车主认证；有一个车直接跳订单列表；有多个车跳车辆列表页，点击列表某个车跳订单列表）
                 when {

@@ -7,7 +7,7 @@
 
         <variable
             name="bean"
-            type="String" />
+            type="com.changanford.circle.bean.CircleMemberBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,12 +47,12 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="萨瓦迪LaLa"
                 android:textColor="@color/color_0817"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="萨瓦迪LaLa" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_image"
@@ -69,17 +69,19 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_owner"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="15dp"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/circle_follow_bg"
                 android:gravity="center"
-                android:text="圈主"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_10"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="圈主" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_out"

@@ -4,24 +4,19 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.CircleMainBottomItemBean
 import com.changanford.circle.config.CircleConfig
-import com.changanford.circle.databinding.ItemCircleDetailsBottomBinding
 import com.changanford.circle.databinding.ItemCircleMainBottomBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
-import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.bean.PostDataBean
 import com.changanford.common.util.DensityUtils
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.toast
 import com.luck.picture.lib.tools.ScreenUtils
 
 /**
@@ -30,14 +25,14 @@ import com.luck.picture.lib.tools.ScreenUtils
  *Purpose
  */
 class CircleMainBottomAdapter(context: Context) :
-    BaseQuickAdapter<CircleMainBottomItemBean, BaseViewHolder>(R.layout.item_circle_main_bottom),
+    BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_main_bottom),
     LoadMoreModule {
 
     private val imgWidth by lazy {
         (ScreenUtils.getScreenWidth(context) - DensityUtils.dip2px(60F)) / 2
     }
 
-    override fun convert(holder: BaseViewHolder, item: CircleMainBottomItemBean) {
+    override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomBinding>(holder.itemView)
         binding?.let {
             binding.ivBg.setCircular(5)
@@ -87,7 +82,7 @@ class CircleMainBottomAdapter(context: Context) :
             binding.ivBg.layoutParams?.height = item.itemImgHeight
 
             binding.ivHead.loadImage(
-                CircleConfig.TestUrl,
+                item.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_14"
+    android:paddingBottom="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/quest_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/message_quest_off_bg"
+        android:drawableLeft="@mipmap/icon_message_q_good"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:paddingLeft="26dp"
+        android:paddingTop="14dp"
+        android:paddingRight="26dp"
+        android:paddingBottom="14dp"
+        android:text="问题已解决"
+        android:textColor="#646668"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/feedback_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="由于您长时间未回复，您的本轮反馈已结束"
+        android:textColor="#989A9C"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

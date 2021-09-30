@@ -74,6 +74,22 @@
         <item name="android:textColor">@color/color_blue_ff00695b</item>
         <item name="backgroundTint">@color/color_gray_f2f4f9</item>
         <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="homeGraLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_10</item>
+        <item name="android:background">@color/color_f6</item>
+
 
     </style>
+
+    <style name="BottomCloseActivityStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:windowIsTranslucent">false</item>-->
+        <!--        <item name="android:windowDisablePreview">true</item>-->
+    </style>
+
 </resources>

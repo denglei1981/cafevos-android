@@ -76,6 +76,8 @@ dependencies {
     api "me.majiajie:pager-bottom-tab-strip:2.4.0"
     //bugly
     api "com.tencent.bugly:crashreport:latest.release"
+    //侧滑删除
+    api "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0"
     //adapter
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
 

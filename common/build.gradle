@@ -195,4 +195,6 @@ dependencies {
     //动态权限申请
     api "cn.hchstudio:kpermissions:1.0.8"
 
+    api 'me.majiajie:pager-bottom-tab-strip:2.4.0'
+
 }
