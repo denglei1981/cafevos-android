@@ -29,13 +29,13 @@ class GoodsViewModel: BaseViewModel() {
      * 获取商品列表
      * [typeId]分类id
      * */
-    fun getGoodsList(typeId:String,page:Int,pageSize:Int=this.pageSize){
+    fun getGoodsList(typeId:String,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["page"]=page
+                body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-                body["tagId"]=typeId
+//                body["tagId"]=typeId
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
@@ -74,6 +74,23 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.getSckills(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 seckillSessionsData.postValue(it)
+            }
+        }
+    }
+
+    /**
+     * 秒杀提醒设置/取消
+     * [states]SET,CANCEL
+     * */
+    fun setKillNotices(states:String){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["setCancel"]=states
+                val randomKey = getRandomKey()
+                shopApiService.setKillNotices(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+
             }
         }
     }

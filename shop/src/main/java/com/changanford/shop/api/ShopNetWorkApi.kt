@@ -41,4 +41,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/spus/get")
     suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    /**
+     *秒杀提醒设置/取消
+    * */
+    @POST("/mall/seckills/spus/{mallMallSpuSeckillRangeId}/noticesSetting")
+    suspend fun setKillNotices(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
 }

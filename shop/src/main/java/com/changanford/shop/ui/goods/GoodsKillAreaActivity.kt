@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.goods
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -33,6 +34,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     private val dateAdapter by lazy { GoodsKillDateAdapter(0,this) }
     private val timeAdapter by lazy { GoodsKillAreaTimeAdapter(0) }
     private val mAdapter by lazy { GoodsKillAreaAdapter() }
+    @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("HH:mm")
     override fun initView() {
         binding.rvDate.adapter=dateAdapter
@@ -75,7 +77,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     }
     /**
      * 秒杀日期选择回调
-     * [index]下标
+     * [position]下标
      * */
 
     override fun onSelectBackListener(position: Int, seckillTimeRanges: ArrayList<SeckillTimeRange>) {
