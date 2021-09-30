@@ -710,4 +710,5 @@ interface NetWorkApi {
     ): CommonResponse<GoodsItemBean>
 
     /*-------------------商城 End---------------------*/
+
 }
