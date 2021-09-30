@@ -18,6 +18,9 @@ class RecommendViewModel : ViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
+                if(!isLoadMore){
+                    pageNo=1
+                }
                 paramMaps["pageNo"] = pageNo
                 val rKey = getRandomKey()
                 apiService.getRecommendList(paramMaps.header(rKey), paramMaps.body(rKey))
