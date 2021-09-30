@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.changanford.my">
+
+    <application>
+        <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.LoginUI"
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.SettingUI" />
+        <activity android:name=".ui.TaskListUI" />
+        <activity android:name=".ui.JiFenList" />
+        <activity android:name=".ui.AllMedalListUI" />
+        <activity android:name=".ui.MedalDetailUI" />
+        <activity android:name=".ui.CarCrmAuthUI" />
+        <activity android:name=".ui.BindMobileUI" />
+        <activity android:name=".ui.GrowUpUI" />
+        <activity android:name=".ui.MineMedalUI" />
+        <activity android:name=".ui.LoveCarInfoUI" />
+        <activity android:name=".ui.FansUI" />
+        <activity android:name=".ui.AccountSafeUI" />
+        <activity android:name=".ui.ClearAccountUI" />
+        <activity android:name=".ui.ClearAccountConfirmUI" />
+        <activity android:name=".ui.EditAddressUI" />
+        <activity android:name=".ui.AddressListUI" />
+        <activity android:name=".ui.MineEditInfoUI" />
+        <activity android:name=".ui.MyCircleUI" />
+        <activity
+            android:name=".ui.MyCircleMangerUI"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity android:name=".ui.EditNickNameUI" />
+        <activity android:name=".ui.MineLikeUI" />
+        <activity android:name=".ui.MineIndustryUI" />
+        <activity android:name=".ui.InputUI" />
+        <activity android:name=".ui.MineMessageUI" />
+        <activity android:name=".ui.MineMessageSysInfoUI" />
+        <activity android:name=".ui.MineMessageInfoUI" />
+        <activity android:name=".ui.SignTransparentUI"
+            android:theme="@style/Picture.Theme.Translucent"/>
+        <activity android:name=".ui.MineFeedbackUI" />
+        <activity android:name=".ui.MineEditFeedbackUI" />
+        <activity android:name=".ui.MineFeedbackRecordUI" />
+        <activity android:name=".ui.MineFeedbackInfoListUI" />
+        <activity android:name=".ui.MineCenterFeedbackUI" />
+        <activity android:name=".ui.SignMonthUI" />
+    </application>
+</manifest>

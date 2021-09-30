@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_recommend">推荐</string>
+    <string name="home_acts">活动</string>
+    <string name="home_news">资讯</string>
+    <string name="home_big_shot">大咖</string>
+    <string name="home_search_hint">请输入车型、商品、活动名称搜索</string>
+    <string name="evos_st_line">长安福特 EVOS ST-LINE</string>
+    <string name="surplus_tips">惊艳不止所见</string>
+    <string name="home_publish_acts">发布活动</string>
+    <string name="home_publish_answer">问卷调查</string>
+    <string name="home_publish_scan">扫一扫</string>
+    <string name="home_more">更多</string>
+    <string name="home_hot_recommend">热门推荐</string>
+    <string name="home_say_something">你可以说点什么哦</string>
+    <string name="fix_behavior">com.changanford.home.widget.FixAppBarLayoutBehavior</string>
+
+
+    <string name="home_search_shop">商品</string>
+    <string name="home_search_user">用户</string>
+    <string name="home_search_post">帖子</string>
+    <string name="home_sure">确定</string>
+    <string name="home_reset">重置</string>
+
+</resources>

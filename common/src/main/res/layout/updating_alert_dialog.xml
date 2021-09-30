@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_whit_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:textColor="#081725"
+        android:gravity="center"
+        android:textSize="15sp"
+        tools:text="新版本正在更新，请稍等"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txt_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="#081725"
+        android:textSize="16sp" />
+
+
+    <com.changanford.common.ui.DownLoadSeekBar
+        android:id="@+id/updateseekbar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dp_20"
+        android:layout_marginTop="29.5dp"
+        android:max="100"
+        android:maxHeight="@dimen/dp_5"
+        android:minHeight="@dimen/dp_40"
+        android:progressDrawable="@drawable/download_progressbar"
+        android:thumbOffset="0dp"
+        android:thumb="@null"
+        tools:progress="30" />
+<!--    android:thumb="@mipmap/progressicon"-->
+    <LinearLayout
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_neg"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_weight="1"
+            android:background="@drawable/alert_dialog_left_selector"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="#72747A"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/btn_pos"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/dp_86"
+            android:layout_height="43dp"
+            android:layout_weight="1"
+            tools:text="取消下载"
+            android:background="@drawable/orange_light_bg"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#FB873B"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

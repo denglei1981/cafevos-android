@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+        <com.changanford.shop.view.TypefaceTextView
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_53"
+            android:gravity="center"
+            android:text="@string/str_orderType"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_order_goods"
+            android:background="@drawable/bord_ed_t_0d5dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_53"
+            android:gravity="center"
+            android:text="@string/str_ordersGoods"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_order_car"
+            android:background="@drawable/bord_ed_t_0d5dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_53"
+            android:gravity="center"
+            android:text="@string/str_orderCar"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_order_testDrive"
+            android:background="@drawable/bord_ed_t_0d5dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_53"
+            android:gravity="center"
+            android:text="@string/str_orderTestDrive"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <View
+            android:background="@color/color_F4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_cancel"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_53"
+            android:gravity="center"
+            android:text="@string/str_cancel"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_15" />
+    </LinearLayout>
+</layout>

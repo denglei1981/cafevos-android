@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav1"
+    app:startDestination="@id/fragment1"
+    tools:ignore="UnusedNavigation">
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.changanford.home.HomeV2Fragment"
+        android:label="@string/first_fragment_label">
+        <action
+            android:id="@+id/action_fragment1_to_demoDetail"
+            app:destination="@id/demoDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoDetail"
+        android:name="com.changanford.evos.demo.DemoDetail"
+        android:label="DemoDetail" />
+
+
+</navigation><!--    android:name="com.changanford.evos.demo.DemoFragment1"-->

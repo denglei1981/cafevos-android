@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/pop_sign_bg"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="签到成功"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/total_sign_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="left"
+                android:text="您是今天第1位签到的用户"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_mid"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/sign_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="您已连续签到1天，累计签到3天"
+                android:textColor="#71747B"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="@+id/sign_jf"
+                app:layout_constraintTop_toBottomOf="@+id/sign_jf" />
+            <TextView
+                android:id="@+id/sign_acc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:gravity="left"
+                android:text="当前奖励：1倍奖励"
+                android:textColor="#71747B"
+                android:textSize="@dimen/text_size_small"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:minWidth="310dp"
+                android:minHeight="200dp">
+
+                <View
+                    android:id="@+id/bg1"
+                    android:layout_width="126dp"
+                    android:layout_height="66dp"
+                    android:layout_marginTop="18dp"
+                    android:gravity="center"
+                    android:background="@drawable/sign_send_sms_btn_bg"
+                    android:text="F币"
+                    android:textColor="#01025C"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/bg2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight="1" />
+
+                <View
+                    android:id="@+id/bg2"
+                    android:layout_width="126dp"
+                    android:layout_height="66dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/sign_send_sms_btn_bg"
+                    android:gravity="center"
+                    android:text="成长值"
+                    android:textColor="#01025C"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toRightOf="@+id/bg1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/bg1"
+                    app:layout_constraintVertical_weight="1" />
+                <TextView
+                    android:id="@+id/sign_jf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_4"
+                    android:gravity="center"
+                    android:text="F币"
+                    android:textColor="#01025C"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toRightOf="@id/imageView"
+                    app:layout_constraintTop_toTopOf="@id/imageView"
+                    app:layout_constraintBottom_toBottomOf="@id/imageView"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/sign_czz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_4"
+                    android:gravity="center"
+                    android:text="成长值"
+                    android:textColor="#01025C"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="@id/imageView"
+                    app:layout_constraintBottom_toBottomOf="@id/imageView"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/sign_know"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_bt_blue_corner39"
+                    android:gravity="center"
+                    android:text="我知道了"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_mid"
+                    app:layout_constraintBottom_toTopOf="@+id/sign_to"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <TextView
+                    android:id="@+id/sign_to"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:text="明日签到可得20U币, 20成长值"
+                    android:textColor="#B9B9B9"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    app:layout_constraintBottom_toBottomOf="@+id/bg1"
+                    app:layout_constraintStart_toStartOf="@+id/bg1"
+                    app:layout_constraintTop_toTopOf="@+id/bg1"
+                    app:srcCompat="@mipmap/icon_sign_ub" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="@+id/bg2"
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                    app:srcCompat="@mipmap/icon_sign_grow" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.changanford.base.view.MyTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="你好啊"
+        android:textStyle="normal"
+        android:fontFamily="@font/fontface"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="你好啊"
+        android:textSize="30sp" />
+
+</LinearLayout>

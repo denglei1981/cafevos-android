@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!--
+        adjustViewBounds="true"
+        设置maxWidth和maxHeight设置才会有效果
+        -->
+        <ImageView
+            android:id="@+id/view_status_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:maxWidth="120dp"
+            android:maxHeight="120dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/emptyimg" />
+
+        <TextView
+            android:id="@+id/view_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="要啥啥没有"
+            android:textColor="#666666"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</layout>

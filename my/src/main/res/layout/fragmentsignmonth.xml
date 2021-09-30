@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+    <include
+        android:id="@+id/title"
+        layout="@layout/view_toolbar"/>
+    <include
+        android:id="@+id/signview"
+        layout="@layout/view_signmonth"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

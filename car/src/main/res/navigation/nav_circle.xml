@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_circle">
+    <fragment
+        android:id="@+id/carFragment"
+        android:name="com.changanford.car.CarFragment"
+        android:label="car_fragment"
+        tools:layout="@layout/car_fragment" >
+        <action
+            android:id="@+id/cartodetail"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.changanford.car.DetailFragment"
+        android:label="detail_fragment"
+        tools:layout="@layout/detail_fragment" >
+        <argument
+            android:name="topicId"
+            app:argType="string"/>
+    </fragment>
+
+</navigation>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F4"
+        android:orientation="vertical">
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title_text="@string/str_orderEvaluation"
+            app:bg_color="@color/white"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            tools:minHeight="@dimen/dp_350"
+            android:paddingTop="@dimen/dp_16"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_40">
+            <com.changanford.shop.view.TypefaceTextView
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_orderScore"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_15" />
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBox"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/text_colorv6"
+                android:text="@string/str_anonymousSubmissions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawablePadding="@dimen/dp_3"
+                android:drawableEnd="@drawable/cb_order"
+                android:gravity="center_vertical"/>
+            <View
+                android:id="@+id/view_divider"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/checkBox"
+                android:background="@color/color_ee"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"/>
+            <com.changanford.shop.view.ratingbar.AndRatingBar
+                android:layout_marginTop="@dimen/dp_30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_divider"
+                android:id="@+id/ratingBar"
+                android:isIndicator="false"
+                style="@style/AndRatingBarStyle"
+                android:minHeight="@dimen/dp_24"
+                app:bgDrawable="@mipmap/shop_order_star_0"
+                app:starDrawable="@mipmap/shop_order_star_1"
+                app:starSpacing="@dimen/dp_14" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_score"
+                android:layout_marginTop="@dimen/dp_15"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="5.0好评"
+                android:textColor="@color/color_00095B"
+                android:textSize="@dimen/sp_14" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_170"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shadow_f9_5dp"
+                android:gravity="start|top"
+                android:text="@string/prompt_order_evaluation"
+                android:hint="@string/str_pleaseEnterComments"
+                android:textColorHint="@color/color_99"
+                android:maxLength="200"
+                android:padding="@dimen/dp_16"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintTop_toBottomOf="@id/tv_score"
+                tools:layout_editor_absoluteX="20dp" />
+
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_contentLength"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:layout_marginBottom="@dimen/dp_12"
+                app:layout_constraintEnd_toEndOf="@id/edt_content"
+                app:layout_constraintBottom_toBottomOf="@id/edt_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="13/200"
+                app:end_txt="@string/str_xeb"
+                android:textColor="@color/color_cc"
+                android:textSize="@dimen/sp_10" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.changanford.shop.view.btn.BtnView
+            android:enabled="false"
+            android:id="@+id/btn_submit"
+            android:layout_margin="@dimen/dp_20"
+            style="@style/style_btn"
+            android:text="@string/str_postEvaluation" />
+    </LinearLayout>
+</layout>

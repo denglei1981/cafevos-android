@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <ImageView
+        android:id="@+id/iv_home"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/image_recommed_default"
+        app:layout_constraintDimensionRatio="2250:4866"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="18dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/icon_home_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+       />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_ford_title"
+        android:layout_width="148dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+
+        android:src="@drawable/icon_home_ford_title"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_more" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/et_search_content"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_44"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@null"
+        android:drawableStart="@drawable/icon_home_gray_search"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:hint="@string/home_search_hint"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:paddingStart="4dp"
+        android:paddingEnd="10dp"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textColorHint="#E2E2E2"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ford_title"
+        app:layout_constraintWidth_percent="0.72" />
+
+    <View
+        android:id="@+id/v_white_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/et_search_content"
+        app:layout_constraintStart_toStartOf="@+id/et_search_content"
+        app:layout_constraintTop_toBottomOf="@+id/et_search_content" />
+
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:maxLines="1"
+        android:text="@string/evos_st_line"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_24"
+        app:layout_constraintStart_toStartOf="@+id/v_white_line"
+        app:layout_constraintTop_toBottomOf="@+id/v_white_line" />
+
+    <TextView
+        android:id="@+id/tv_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/surplus_tips"
+        android:textColor="#40ffffff"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintStart_toStartOf="@+id/tv_tips"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

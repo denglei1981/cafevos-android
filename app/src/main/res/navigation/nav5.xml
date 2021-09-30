@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment5"
+    android:id="@+id/nav5"
+    tools:ignore="UnusedNavigation">
+    <fragment
+        android:name="com.changanford.my.MyFragment"
+        android:id="@+id/fragment5"
+        android:label="AboutFragment"/>
+
+</navigation>
+<!--    android:name="com.changanford.evos.demo.DemoFragment5"-->
+

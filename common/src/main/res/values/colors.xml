@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF0000FF</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray">#9FA5B0</color>
+    <color name="indicator">#1B3B89</color>
+    <color name="mine_close">#BEBDBD</color>
+    <color name="mine_other">#FC883B</color>
+
+    <color name="color_withe">#FFFFFF</color>
+    <color name="color_withe_a50">#80FFFFFF</color>
+    <color name="color_withe_a30">#4DFFFFFF</color>
+    <color name="color_cc">#CCCCCC</color>
+    <color name="color_ee">#EEEEEE</color>
+    <color name="color_e9">#E9E9E9</color>
+    <color name="color_33">#333333</color>
+    <color name="color_009c">#009CFF</color>
+    <color name="color_00_a50">#80000000</color>
+    <color name="color_00">#000000</color>
+    <color name="waiyuan">#6E6C69</color>
+    <color name="color_99">#999999</color>
+    <color name="uc_dark_maincolor">#3B414D</color>
+    <color name="uc_light_maincolor">#FFFFFF</color>
+    <color name="uc_bt">#B7835D</color>
+
+    <color name="color_c9">#C9C9C9</color>
+    <color name="color_ca_a20">#CCCACACA</color>
+    <!--    UI最黑-->
+    <color name="text_color_08">#081725</color>
+    <color name="text_color_bo">#B0B3B5</color>
+
+    <color name="mine_toolbar_bg_color">@color/colorAccent</color>
+    <color name="color_56">#565656</color>
+    <color name="color_56_a30">#4D565656</color>
+    <color name="title_bg">@color/white</color>  <!--#ffF4F4F4-->
+    <color name="text_color">#333333</color>
+    <color name="alertdialog_line">#EEEEEE</color>
+    <color name="bgaline">#fff6f6f6</color>
+    <color name="actionsheet_blue">#2ca5da</color>
+    <color name="actionsheet_red">#FD4A2E</color>
+    <color name="orange">#FF7635</color>
+    <color name="color_AF">#AFB3B6</color>
+    <color name="color_FF">#FFFFFF</color>
+    <color name="color_27">#272727</color>
+    <color name="color_7174">#71747B</color>
+    <color name="color_fa87">#FA873B</color>
+    <color name="color_3ba9">#3BA97A</color>
+    <color name="color_ac">#ACACAC</color>
+    <color name="color_f1">#f1f1f1</color>
+    <color name="color_f2">#f2f2f2</color>
+    <color name="color_f2_66">#66f2f2f2</color>
+    <color name="color_f6">#F6F6F6</color>
+    <color name="appblue">#FC883B</color>
+    <color name="text_colorv6">#666666</color>
+    <color name="text_6b">#6B635D</color>
+    <color name="text_gray_ac">#ACACAC</color>
+    <color name="bg_color">#F7F7F7</color>
+    <color name="tab_nomarl">#B0B3B5</color>
+    <color name="tab_selector">#515151</color>
+    <color name="tv_comment_name">#081725</color>
+    <color name="color_blur">#66303030</color>
+    <color name="tabnomal">#656565</color>
+    <color name="tabselect">#303030</color>
+    <color name="textgray">#72747B</color>
+    <color name="textblack">#071726</color>
+
+    <color name="linebg">#EEF1F6</color>
+
+    <color name="indctornomarl">#F7F9FC</color>
+
+
+    <color name="line_default_color">#EEEEEE</color>
+
+    <color name="list_view_item_org">#f8f8f8</color>
+    <color name="list_view_item_white">#ffffff</color>
+    <color name="background_tab_pressed">#e5e5e5</color>
+    <color name="action_sheet_blue">#037BFF</color>
+    <color name="color_0817">#081725</color>
+    <color name="color_00_a10">#1A000000</color>
+
+    <color name="drop_down_selected">#7B1FA2</color>
+    <color name="drop_down_unselected">#111111</color>
+    <color name="beijianyellow">#FC883B</color>
+    <color name="beijiangray">#282E35</color>
+    <color name="color_CECECE">#CECECE</color>
+
+    <color name="text_01025C">#01025C</color>
+
+    <color name="color_1b51d9">#1b51d9</color>
+    <color name="color_55bebebe">#55bebebe</color>
+    <color name="color_EC">#ECECEC</color>
+    <color name="color_F9E4E6">#F9E4E6</color>
+    <color name="color_F6664D">#F6664D</color>
+    <color name="color_F4">#F4F4F4</color>
+    <color name="color_00095B">#00095B</color>
+    <color name="color_7D00095B">#7D00095B</color>
+    <color name="color_F8F9F9">#F8F9F9</color>
+    <color name="color_1A000000">#1A000000</color>
+    <color name="color_0F1524">#0F1524</color>
+    <color name="color_74889D">#74889D</color>
+    <color name="color_01025C">#01025C</color>
+    <color name="color_9394A0">#9394A0</color>
+    <color name="color_BDC7D2">#BDC7D2</color>
+    <color name="color_122D384C">#122D384C</color>
+    <color name="color_0A0A0C">#0A0A0C</color>
+    <color name="color_cf">#CFCFCF</color>
+    <color name="color_E94A52">#E94A52</color>
+    <color name="color_f9">#F9F9F9</color>
+    <color name="color_ED">#EDEDED</color>
+    <color name="color_E8EBF3">#E8EBF3</color>
+    <color name="color_CFD5E6">#CFD5E6</color>
+    <color name="color_37AA74">#37AA74</color>
+    <color name="color_DFF6E9">#DFF6E9</color>
+    <color name="color_DD">#DDDDDD</color>
+    <color name="color_99white">#99ffffff</color>
+    <color name="color_00142E">#00142E</color>
+    <color name="color_F5F6F8">#F5F6F8</color>
+</resources>

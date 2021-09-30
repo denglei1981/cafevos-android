@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:background="@color/color_99"
+            android:layout_width="match_parent"
+            android:layout_height="375dp"/>
+        <!-- 商品秒杀信息           -->
+        <include
+            android:id="@+id/inKill"
+            layout="@layout/in_goods_details_kill"/>
+        <!-- 会员专享/会员折扣       -->
+        <include
+            android:id="@+id/in_vip"
+            layout="@layout/in_goods_detsils_vip"/>
+        <include
+            android:id="@+id/in_vipDiscount"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/in_goods_vip"/>
+        <!-- 商品基本信息           -->
+        <include layout="@layout/in_goods_details_info"/>
+        <View
+            android:background="@color/color_F4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"/>
+        <!-- 商品评价           -->
+        <include
+            android:id="@+id/inComment"
+            layout="@layout/in_goods_details_comment"/>
+        <View
+            android:background="@color/color_F4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"/>
+        <!-- 商品详情           -->
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goodsDetails_title"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_17"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_goodsDetails"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

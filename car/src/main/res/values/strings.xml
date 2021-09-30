@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="car_recommend">推荐车型</string>
+    <string name="car_goAuth">去认证车主</string>
+    <string name="car_updateExperience">升级您的用车体验</string>
+    <string name="car_bindTips">绑定您的爱车，成为认证车主享受更多专属服务</string>
+</resources>

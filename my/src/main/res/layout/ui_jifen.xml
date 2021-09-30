@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/statusbar_view_height">
+
+        <include
+            android:id="@+id/toolbar_jifen"
+            layout="@layout/view_toolbar" />
+
+        <include
+            android:id="@+id/rcy_jifen"
+            layout="@layout/view_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_17" />
+
+    </LinearLayout>
+</layout>

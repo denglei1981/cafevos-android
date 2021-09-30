@@ -1,0 +1,708 @@
+package com.changanford.common.net
+
+import com.changanford.common.bean.*
+import okhttp3.RequestBody
+import retrofit2.http.Body
+import retrofit2.http.HeaderMap
+import retrofit2.http.POST
+
+/**********************************************************************************
+ * @Copyright (C), 2020-2021.
+ * @FileName: com.changanford.common.net.NetWorkApi
+ * @Author:　 　
+ * @Version : V1.0
+ * @Date: 2021/6/21 14:16
+ * @Description: 　
+ * *********************************************************************************
+ */
+interface NetWorkApi {
+    /**--------------------------------app---------------------------------------**/
+    @POST("/appinit/getpk")
+    suspend fun getKey(@Body requestBody: RequestBody): CommonResponse<String>
+
+    @POST("/base/app/getLastestAppVersion")
+    suspend fun getUpdateInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UpdateInfo>
+
+    @POST("/con/ads/list")
+    suspend fun getHeadBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<AdBean>>
+
+    /**--------------------------------car---------------------------------------**/
+
+    @POST("/ser/carAuth/getMyCar")
+    suspend fun getMiddlePageInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MiddlePageBean>
+
+    /**--------------------------------my---------------------------------------**/
+    @POST("/base/oss/getSTS")
+    suspend fun getOSS(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<STSBean>
+
+    /**
+     * 常用功能列表
+     */
+    @POST("user/navigaMenu/getUserNavigaMenuList")
+    suspend fun queryMenuList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MenuBeanItem>>
+
+    /**
+     * 昵称敏感词检查
+     */
+    @POST("user/vailString")
+    suspend fun nameNick(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 保存用户信息
+     */
+    @POST("user/saveUserInfo")
+    suspend fun saveUniUserInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 获取兴趣爱好
+     */
+    @POST("user/hobby/getUserHobbyList")
+    suspend fun getHobbyList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<HobbyBeanItem>>
+
+    //行业
+    @POST("user/industry/getUserIndustryList")
+    suspend fun queryIndustryList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<IndustryBeanItem>>
+
+    //是否有未读消息
+    @POST("userMessage/getUserMessageStatus")
+    suspend fun queryMessageStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageStatusBean>
+
+    /**
+     * 标记消息已读
+     */
+    @POST("userMessage/changeAllToRead")
+    suspend fun changeAllToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("userMessage/changeUserMessageStatusList")
+    suspend fun changAllMessage(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //获取不同类型消息列表
+    @POST("userMessage/getAllUserMessages")
+    suspend fun queryMessageList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MessageListBean>
+    /**
+     * 获取反馈 常用问题
+     */
+    @POST("userFeedback/getCommonQuestions")
+    suspend fun getFeedbackQ(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackQBean>
+    /**
+     * 获取意见反馈 所以标签
+     */
+    @POST("userFeedback/getAllUserFeedbackTags")
+    suspend fun getFeedbackTag(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackTags>
+    /**
+     * 添加意见反馈 所以标签
+     */
+    @POST("userFeedback/insertFeedback")
+    suspend fun addFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 获取的我所以意见反馈
+     */
+    @POST("userFeedback/getAllUserFeedbacks")
+    suspend fun getMineFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMineListBean>
+    /**
+     * 删除一个意见反馈
+     */
+    @POST("userFeedback/deleteUserFeedback")
+    suspend fun deleteUserFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 用户已读
+     */
+    @POST("userFeedback/changeToRead")
+    suspend fun changeToRead(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("base/config/getConfigValueByKey")
+    suspend fun queryMemberNickName(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackMemberBean>
+    /**
+     * 意见反馈 获取内容
+     */
+
+    @POST("userFeedback/getAllConversation")
+    suspend fun queryFeedbackInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FeedbackInfoList>
+
+    /**
+     * 关闭意见反馈
+     */
+
+    @POST("userFeedback/closeFeedbackStatus")
+    suspend fun closeFeedback(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+    /**
+     * 添加一条数据意见反馈
+     */
+
+    @POST("userFeedback/addConversation")
+    suspend fun addFeedbackInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**--------------------------------base---------------------------------------**/
+
+    /**
+     * 获取基本配置
+     * 图片域名
+     */
+    @POST("/base/config/getConfigValueByKey")
+    suspend fun getConfigByKey(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ConfigBean>
+
+    /**
+     * 用户签到
+     */
+    @POST("user/signIn")
+    suspend fun daySign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<DaySignBean>
+
+    /**
+     * 本月签到详情
+     */
+    @POST("/user/monthSignDetail")
+    suspend fun monthSignDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MonthSignBean>
+
+    @POST("/goods/getAttributeList")
+    suspend fun getUserData(
+        @HeaderMap map: HashMap<String, String>?,
+        @Body request: RequestBody
+    ): CommonResponse<List<User>>
+
+    @POST("con/recommend/list")
+    suspend fun getRecommendList(
+        @HeaderMap map: HashMap<String, String>?,
+        @Body request: RequestBody
+    ): CommonResponse<RecommendListBean>
+
+    @POST("/con/ads/list")
+    suspend fun getAdList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<AdBean>>
+
+    //扫描二维码 扫一扫
+    @POST("base/app/scan")
+    fun scan(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommonResponse<JumpDataBean>>
+
+    /**
+     * 获取验证码
+     */
+    @POST("login/getUNISmsCode")
+    suspend fun sendFordSmsCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 获取CAC验证码
+     */
+    @POST("login/getSmsCode")
+    suspend fun sendCacSmsCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 手机验证码登录
+     */
+    @POST("login/loginBySmsCode")
+    suspend fun smsCodeSign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<LoginBean>
+
+    /**
+     * 绑定手机
+     */
+    @POST("login/bindPhone")
+    fun bindMobile(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<LoginBean>
+
+    /**
+     * qq 微信 抖音
+     */
+    @POST("login/oauth")
+    suspend fun otherOauthSign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<LoginBean>
+
+    /**
+     * 获取个人信息
+     */
+    @POST("user/myInfo")
+    suspend fun queryUserInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
+    /**
+     * 任务列表
+     */
+    @POST("userTask/getAllTasks")
+    suspend fun queryTasksList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<RootTaskBean>>
+
+
+    //user/accountLog/getUserAccountLogList 成长值
+    //
+    @POST("user/accountLog/getUserAccountLogList")
+    suspend fun mineGrowUp(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GrowUpBean>
+
+    //user/accountLog/getIntegralLogList
+    @POST("user/accountLog/getIntegralLogList")
+    suspend fun mineGrowUpNew(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GrowUpBean>
+
+
+    /*---------徽章-----------------*/
+
+    /**
+     * 获取徽章列表
+     */
+
+    @POST("user/medal/getAllMedalList")
+    suspend fun queryMedalList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MedalListBeanItem>>
+
+
+    /**
+     * 佩戴徽章
+     */
+    @POST("user/medal/wear")
+    suspend fun wearMedal(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 获取用户徽章列表
+     */
+    @POST("user/medal/getUserMedalList")
+    suspend fun queryUserMedalList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MedalListBeanItem>>
+
+    /*-------------------车主认证---------------*/
+    /**
+     * 获取车主认证状态
+     */
+    @POST("ser/carAuth/isAuthCrmAndIncall")
+    suspend fun getAuthStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CarItemBean>>
+
+    @POST("ser/carAuth/getCarAuthAndInCallList")
+    suspend fun queryAuthCarAndIncallList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CarItemBean>>
+
+    /**
+     * 车主认证更新手机号
+     */
+    @POST("ser/carAuth/crmPhoneUpdate")
+    suspend fun uniCarUpdatePhone(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /*------------------粉丝 关注---------------------*/
+
+    @POST("userFans/getAllFansOrFollowsList")
+    suspend fun queryFansList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FansListBean>
+
+
+    @POST("userFans/userFollowOrCanaleFollow")
+    suspend fun cancelFans(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //user/getAccountBindList
+    @POST("user/getAccountBindList")
+    suspend fun queryBindMobileList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<BindAuthBeanItem>>
+
+    /**
+     * 绑定三方账号
+     */
+    @POST("login/bindOauth")
+    suspend fun bindOtherAuth(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 注销，验证注销条件
+     */
+    @POST("user/verifyCancel")
+    suspend fun verifyCancelAccount(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CancelVerifyBean>>
+
+
+    @POST("base/dict/getType")
+    suspend fun cancelAccountReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CancelReasonBeanItem>>
+
+
+    /**
+     * 获取全部区域
+     */
+    @POST("base/region/getAllProvinceAndCityRegion")
+    suspend fun getAllCity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CityBeanItem>>
+
+
+    /**
+     * 获取用户地址
+     */
+    @POST("user/shippingAddress/getUserShippingAddressList")
+    suspend fun getAddressList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<AddressBeanItem>>
+
+
+    /**
+     * 保存用户地址
+     */
+    @POST("user/shippingAddress/saveUserShippingAddress")
+    suspend fun saveAddress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 删除地址地址
+     */
+    @POST("user/shippingAddress/deleteUserShippingAddressById")
+    suspend fun deleteAddress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /*-------------------圈子---------------------*/
+
+    //con/circle/getJoinCircles 我参与的圈子
+    @POST("con/circle/getJoinCircles")
+    suspend fun queryMineJoinCircleList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleListBean>
+
+
+    //我创建的圈子
+    @POST("con/circle/getCreateCircles")
+    suspend fun queryMineCreateCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleListBean>
+
+
+    //我管理的圈子
+    @POST("con/circle/getMyCircles")
+    suspend fun queryMineMangerCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CircleMangerBean>>
+
+
+    //我的圈子 其他状态
+    @POST("con/circle/getMyOrtherCircles")
+    suspend fun queryMineMangerOtherCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleListBean>
+
+
+    //查询申请圈子的人
+    @POST("con/circle/getCircleApplyers")
+    suspend fun queryJoinCreateCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMemberBean>
+
+    //已加入圈子的成员
+    @POST("con/circle/getCircleUsers")
+    suspend fun queryJoinCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMemberBean>
+
+
+    //审核加入圈子的人
+    @POST("con/circle/auditApplyers")
+    suspend fun agreeJoinCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    ///base/config/getConfigByKey    configKey=circle.refuse
+    //查询 圈子成员审核失败得标签
+    @POST("base/config/getConfigValueByKey")
+    suspend fun agreeJoinTags(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleTagBean>
+
+
+    //圈子审核 人数查询
+    @POST("con/circle/getUserCount")
+    suspend fun queryCircleCount(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleUserBean>
+
+    //圈子审核 删除
+    @POST("con/circle/deleteCircleUsers")
+    suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /*---------------------资讯----------------------*/
+    //con/article/myColletArticle  我的收藏 资讯
+    @POST("con/article/myColletArticle")
+    suspend fun queryMineCollectList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    //我的足迹  资讯
+    @POST("con/article/myVisitArticle")
+    suspend fun queryMineFootprintList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+
+    //我发布的资讯
+    @POST("con/article/myArticles")
+    suspend fun queryMineSendInfoList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InfoBean>
+
+    /*---------------------帖子-------------------*/
+
+    //我的足迹 con/posts/myVisits
+    @POST("con/posts/myVisits")
+    suspend fun queryMineFootprintInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我收藏得帖子
+    @POST("con/posts/myCollectList")
+    suspend fun queryMineCollectInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    //我发布的帖子
+    @POST("con/posts/myPostsList")
+    suspend fun queryMineSendPost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
+    /*------------------活动----------------------*/
+
+    //highlights/myPublishes 我的活动
+    @POST("highlights/myPublishes")
+    suspend fun queryMineSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //highlights/indexPage4User
+
+    @POST("highlights/indexPage4User")
+    suspend fun queryTaSendAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我收藏的活动  highlights/myCollect
+    @POST("highlights/myCollect")
+    suspend fun queryMineCollectAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //我的足迹活动  highlights/myFootprint
+    @POST("highlights/myFootprint")
+    suspend fun queryMineFootAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+    //我参与的活动
+    @POST("highlights/myJoin")
+    suspend fun queryMineJoinAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AccBean>
+
+
+    //单个 批量 删除资讯
+    @POST("con/article/delete")
+    suspend fun deleteInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //单个 批量 删除资讯
+    @POST("con/posts/delete")
+    suspend fun deletePost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    //获取他人的用户信息
+    @POST("user/otherInfo")
+    suspend fun queryOtherInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
+
+    //结束活动
+    @POST("highlights/endedActivity")
+    suspend fun endAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
+
+    /**
+     * 注销账户
+     */
+    @POST("user/cancel")
+    suspend fun cancelAccount(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 解除绑定
+     */
+    //login/removeOauth
+    @POST("login/removeOauth")
+    suspend fun unBindMobile(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+}
