@@ -1,4 +1,4 @@
-package com.changanford.home.api
+package com.changanford.home.news.api
 
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.NewsListMainBean
