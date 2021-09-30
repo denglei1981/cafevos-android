@@ -1,5 +1,6 @@
 package com.changanford.shop.base
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.net.ApiClient
@@ -21,6 +22,7 @@ open class BaseViewModel : ViewModel() {
     val shopApiService: ShopNetWorkApi by lazy {
         ApiClient.retrofit.create(ShopNetWorkApi::class.java)
     }
+    val responseData: MutableLiveData<ResponseBean> = MutableLiveData()
     /**
      * 是否登录，token不null:true登录，
      */

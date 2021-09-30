@@ -44,7 +44,7 @@ object ApiClient {
             .apply {
                 if (isDebug) {
                     this.addInterceptor(HttpLoggingInterceptor().apply {
-                        this.level = HttpLoggingInterceptor.Level.HEADERS
+                        this.level = HttpLoggingInterceptor.Level.BODY
                     })
                 }
                 this.addInterceptor(DataEncryptInterceptor())
