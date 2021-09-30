@@ -115,6 +115,10 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                             }
                         }
                 }
+                it.itemFansIcon.setOnClickListener {
+                    RouterManger.param("value", item.authorId)
+                        .startARouter(ARouterMyPath.TaCentreInfoUI)
+                }
             }
         }
     }

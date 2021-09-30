@@ -2,8 +2,11 @@ package com.changanford.my
 
 import android.os.Bundle
 import com.changanford.common.manger.RouterManger
-import com.changanford.my.databinding.FragmentCollectBinding
+import com.changanford.common.manger.UserManger
+import com.changanford.home.news.adapter.NewsListAdapter
+import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.viewmodel.ActViewModel
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
  *  文件名：InformationFragment
@@ -12,13 +15,19 @@ import com.changanford.my.viewmodel.ActViewModel
  *  描述: TODO
  *  修改描述：TODO
  */
-class InformationFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
+class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var type: String = ""
+    var userId: String = ""
+
+    val infoAdapter: NewsListAdapter by lazy {
+        NewsListAdapter()
+    }
 
     companion object {
-        fun newInstance(value: String): InformationFragment {
+        fun newInstance(value: String, userId: String = ""): InformationFragment {
             var bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
+            bundle.putString(RouterManger.KEY_TO_ID, userId)
             var medalFragment = InformationFragment()
             medalFragment.arguments = bundle
             return medalFragment
@@ -29,6 +38,15 @@ class InformationFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
         }
+        userId = UserManger.getSysUserInfo().uid
+        arguments?.getString(RouterManger.KEY_TO_ID)?.let {
+            userId = it
+        }
+        binding.rcyAct.rcyCommonView.adapter = infoAdapter
+    }
+
+    override fun bindSmartLayout(): SmartRefreshLayout? {
+        return binding.rcyAct.smartCommonLayout
     }
 
     override fun initRefreshData(pageSize: Int) {
@@ -37,18 +55,27 @@ class InformationFragment : BaseMineFM<FragmentCollectBinding, ActViewModel>() {
 
         when (type) {
             "collectInformation" -> {
-                viewModel.queryMineCollectAc(pageSize) { reponse ->
+                viewModel.queryMineCollectInfo(pageSize) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
                     }
-//                    completeRefresh()
+                    completeRefresh(reponse?.data?.dataList, infoAdapter, total)
                 }
             }
             "footInformation" -> {
-                viewModel.queryMineFootAc(pageSize) { reponse ->
+                viewModel.queryMineFootInfo(pageSize) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
                     }
+                    completeRefresh(reponse?.data?.dataList, infoAdapter, total)
+                }
+            }
+            "centerInformation" -> {
+                viewModel.queryMineSendInfoList(userId, pageSize) { reponse ->
+                    reponse?.data?.total?.let {
+                        total = it
+                    }
+                    completeRefresh(reponse?.data?.dataList, infoAdapter, total)
                 }
             }
         }

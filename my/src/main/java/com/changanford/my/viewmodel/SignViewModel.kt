@@ -33,6 +33,7 @@ class SignViewModel : ViewModel() {
 
     var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var _hobbyBean: MutableLiveData<ArrayList<HobbyBeanItem>> = MutableLiveData()
+
     /**
      * 标记消息已读
      */
@@ -52,13 +53,13 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun changeAllToRead(messageType:Int){
+    fun changeAllToRead(messageType: Int) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Int>()
                 body["messageType"] = messageType
                 var rkey = getRandomKey()
-                apiService.changeAllToRead(body.header(rkey),body.body(rkey))
+                apiService.changeAllToRead(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 changeAllToRead.postValue(true)
             }.onFailure {
@@ -82,40 +83,44 @@ class SignViewModel : ViewModel() {
             })
         }
     }
+
     fun changAllMessage(userMessageId: String) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["userMessageIds"] = userMessageId
                 var rkey = getRandomKey()
-                apiService.changAllMessage(body.header(rkey),body.body(rkey))
+                apiService.changAllMessage(body.header(rkey), body.body(rkey))
             }.onSuccess {
 
             }
         }
     }
-    fun getHobbyList(){
+
+    fun getHobbyList() {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 var rkey = getRandomKey()
-                apiService.getHobbyList(body.header(rkey),body.body(rkey))
+                apiService.getHobbyList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 _hobbyBean.postValue(it)
             }
         }
     }
+
     fun queryIndustryList(function: (ArrayList<IndustryBeanItem>) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 var rkey = getRandomKey()
-                apiService.queryIndustryList(body.header(rkey),body.body(rkey))
+                apiService.queryIndustryList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 function(it!!)
             }
         }
     }
+
     fun getSmsCode(mobile: String) {
         viewModelScope.launch {
             fetchRequest {
@@ -141,11 +146,12 @@ class SignViewModel : ViewModel() {
             }
         }
     }
-    fun saveUniUserInfo(body:HashMap<String, String>){
+
+    fun saveUniUserInfo(body: HashMap<String, String>) {
         viewModelScope.launch {
             fetchRequest {
                 var rkey = getRandomKey()
-                apiService.saveUniUserInfo(body.header(rkey),body.body(rkey))
+                apiService.saveUniUserInfo(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 "保存成功".toast()
                 LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
@@ -168,23 +174,24 @@ class SignViewModel : ViewModel() {
             }
         }
     }
-    fun nameNick(nameNick:String,callback:(String)->Unit){
+
+    fun nameNick(nameNick: String, callback: (String) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 body["nickname"] = nameNick
                 var rkey = getRandomKey()
-                apiService.nameNick(body.header(rkey),body.body(rkey))
+                apiService.nameNick(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                callback(it?:"")
+                callback(it ?: "")
             }.onWithMsgFailure {
                 var pop = ConfirmPop(BaseApplication.curActivity)
-                    pop.contentText.text = it
-                    pop.submitBtn.text = "确认"
-                    pop.submitBtn.setOnClickListener {
-                        pop.dismiss()
-                    }
-                    pop.showPopupWindow()
+                pop.contentText.text = it
+                pop.submitBtn.text = "确认"
+                pop.submitBtn.setOnClickListener {
+                    pop.dismiss()
+                }
+                pop.showPopupWindow()
             }
         }
     }
@@ -493,6 +500,20 @@ class SignViewModel : ViewModel() {
     }
 
     /**
+     * 获取其他用户信息
+     */
+    fun queryOtherInfo(userId: String, result: (CommonResponse<UserInfoBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userId"] = userId
+                var rkey = getRandomKey()
+                apiService.queryOtherInfo(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    /**
      * 登录成功
      */
     private fun loginSuccess(loginBean: LoginBean?) {
@@ -515,13 +536,15 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 上传图片
      */
 
-    fun uploadFile(cp:Context,upfiles: List<String>, callback: UploadPicCallback) {
+    fun uploadFile(cp: Context, upfiles: List<String>, callback: UploadPicCallback) {
         GetOSS(cp, upfiles, 0, callback)
     }
+
     /**
      * 获取上传图片得凭证
      */
@@ -537,7 +560,7 @@ class SignViewModel : ViewModel() {
             var body = HashMap<String, Any>()
             var rkey = getRandomKey()
             fetchRequest {
-                apiService.getOSS(body.header(rkey),body.body(rkey))
+                apiService.getOSS(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 initAliYunOss(context, it!!)//
                 upimgs = ArrayList()
@@ -555,6 +578,7 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 取文件后缀名 创建文件名
      */
@@ -564,6 +588,7 @@ class SignViewModel : ViewModel() {
         return tempFilePath + System.currentTimeMillis() + "." + type
 
     }
+
     /**
      * 初始化oss上传
      */
@@ -573,6 +598,7 @@ class SignViewModel : ViewModel() {
             stsBean.accessKeySecret, stsBean.securityToken
         )
     }
+
     private fun uploadImgs(
         context: Context,
         upfiles: List<String>,
