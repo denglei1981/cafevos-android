@@ -60,6 +60,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent,requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore,requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.homeTab,requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
         fragmentList.add(ActsListFragment.newInstance())
@@ -137,9 +138,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 maxDragHeight: Int
             ) {
                    val alphaTest=1 - percent.coerceAtMost(1f)
-                    binding.llTabContent.alpha = alphaTest
-                    binding.layoutTopBar.conContent.alpha =alphaTest
-                    binding.homeTab.alpha = alphaTest
+//                    binding.llTabContent.alpha = alphaTest
+//                    binding.layoutTopBar.conContent.alpha =alphaTest
+//                    binding.homeTab.alpha = alphaTest
                     when(alphaTest){
                         0f->{
                             StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
