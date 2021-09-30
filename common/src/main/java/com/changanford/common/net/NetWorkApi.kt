@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.

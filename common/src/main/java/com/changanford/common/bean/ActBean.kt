@@ -24,7 +24,7 @@ data class InfoDataBean(
     val catId: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
-    val content: Any = Any(),
+    val content: String="",
     val createTime: Long = 0L,
     val isDeleted: Int = 0,
     var isLike: Int = 0,
