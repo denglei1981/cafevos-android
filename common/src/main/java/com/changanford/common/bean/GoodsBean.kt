@@ -5,9 +5,6 @@ package com.changanford.common.bean
  * @Time : 2021/9/28
  * @Description : 商城
  */
-data class GoodsBean(val id:Int=0,var title:String){
-    var states:Int=0
-}
 data class GoodsTypesBean(
     val dataList: ArrayList<GoodsTypesItemBean> = ArrayList(),
     val extend: Extend = Extend(),
@@ -97,4 +94,61 @@ data class SeckillTimeRange(
     var time:String?="",
     var states:Int=0,//状态 0 已结束  1 进行中  2未开始
     var statesTxt:String="已结束"
+)
+/**
+ * 商品详情
+* */
+data class GoodsDetailBean(
+    val attributes: List<Attribute> = listOf(),
+    val detailsHtml: String = "",
+    val fbLine: Int = 0,
+    val fbPrice: Int = 0,
+    val imgs: List<String> = ArrayList(),
+    val limitBuy: String = "",
+    val limitBuyNum: Int = 0,
+    val now: String = "",
+    val purchasedNum: Int = 0,
+    val salesCount: Int = 0,
+    val secKillInfo: SecKillInfo = SecKillInfo(),
+    val secondName: String = "",
+    val shareBeanVO: ShareBeanVO = ShareBeanVO(),
+    val skuCodeRule: String = "",
+    val skuVos: List<SkuVo> = listOf(),
+    val spuPageType: String = "",
+    val stock: Int = 0
+)
+
+data class Attribute(
+    val attributeId: Int = 0,
+    val attributeName: String = "",
+    val optionVos: List<OptionVo> = listOf()
+)
+
+data class SecKillInfo(
+    val timeBegin: String = "",
+    val timeEnd: String = ""
+)
+
+data class ShareBeanVO(
+    val bizId: Int = 0,
+    val shareDesc: String = "",
+    val shareImg: String = "",
+    val shareTitle: String = "",
+    val shareUrl: String = "",
+    val sign: String = "",
+    val type: Int = 0,
+    val wxminiprogramCode: String = ""
+)
+
+data class SkuVo(
+    val fbPrice: Int = 0,
+    val skuCode: String = "",
+    val skuId: Int = 0,
+    val skuImg: String = "",
+    val stock: Int = 0
+)
+
+data class OptionVo(
+    val optionId: Int = 0,
+    val optionName: String = ""
 )

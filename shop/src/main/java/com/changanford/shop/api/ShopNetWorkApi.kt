@@ -1,9 +1,6 @@
 package com.changanford.shop.api
 
-import com.changanford.common.bean.GoodsItemBean
-import com.changanford.common.bean.GoodsList
-import com.changanford.common.bean.GoodsTypesBean
-import com.changanford.common.bean.SeckillSessionsBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -20,8 +17,8 @@ interface ShopNetWorkApi {
     /**
      * 商品详情
      * */
-    @POST("/shop/goodsDetail")
-    suspend fun queryGoodsDetails(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsItemBean>
+    @POST("/mall/spus/{spuId}/get")
+    suspend fun queryGoodsDetails(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsDetailBean>
     /**
      * 首页点击更多秒杀接口
      * */

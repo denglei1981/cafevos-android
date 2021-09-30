@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.GoodsList
 import com.changanford.common.bean.SeckillSessionsBean
 import com.changanford.common.net.*
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class GoodsViewModel: BaseViewModel() {
     private val body = MyApp.mContext.createHashMap()
-    var goodsItemData: MutableLiveData<GoodsItemBean> = MutableLiveData()
+    var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
     //商品列表
     var goodsListData =MutableLiveData<GoodsList?>()
     //秒杀时段
@@ -51,16 +51,17 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 获取商品详情数据
+     * [spuPageType] 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     * */
-    fun queryGoodsDetails(goodsId:String){
+    fun queryGoodsDetails(spuId:String,spuPageType:String="NOMROL"){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["goodsId"] = goodsId
+                body["spuPageType"] = spuPageType
                 val rkey = getRandomKey()
-                shopApiService.queryGoodsDetails(body.header(rkey), body.body(rkey))
+                shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
             }.onSuccess {
-                goodsItemData.postValue(it)
+                goodsDetailData.postValue(it)
             }.onFailure {
             }
         }

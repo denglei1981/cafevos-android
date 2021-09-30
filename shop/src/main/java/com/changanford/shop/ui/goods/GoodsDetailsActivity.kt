@@ -3,6 +3,7 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -33,6 +34,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
         }
     }
+    private var spuId=0
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
@@ -56,6 +58,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
+        Log.e("wenke","spuId:${intent.getIntExtra("spuId",-1)}")
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
@@ -70,12 +73,12 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         tabClick()
     }
     override fun initData() {
-        viewModel.goodsItemData.observe(this,{
+        viewModel.goodsDetailData.observe(this,{
+            mAdapter.setList(it.imgs)
             control.bindingData(it)
         })
-        viewModel.queryGoodsDetails("123")
-        val imgs= arrayListOf("","","","","","","","","","","","","","","","")
-        mAdapter.setList(imgs)
+        viewModel.queryGoodsDetails("$spuId")
+
     }
     fun onClick(v:View){
         when(v.id){

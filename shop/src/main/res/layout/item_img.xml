@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_10"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_20">
-        <ImageView
-            android:background="@color/red"
-            android:id="@+id/img"
+        <com.google.android.material.imageview.ShapeableImageView
+            tools:src="@drawable/shadow_1b51d9_5dp"
+            android:id="@+id/img_cover"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_200"/>
+            android:layout_height="wrap_content"
+            tools:layout_height="@dimen/dp_200"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
