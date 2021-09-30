@@ -1,4 +1,4 @@
-package com.changanford.home.news.bean
+package com.changanford.home.bean
 
 import com.changanford.common.bean.HomeExtendBean
 import com.changanford.common.bean.InfoDataBean

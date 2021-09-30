@@ -16,7 +16,6 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import java.util.*
 
 /**
  *  新闻列表
@@ -24,7 +23,6 @@ import java.util.*
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
     OnRefreshListener {
 
-    private var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
 
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter()
@@ -40,18 +38,19 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     }
 
     override fun initView() {
-        viewModel.getNewsList(false)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
         newsListAdapter.setOnItemClickListener { adapter, view, position ->
             startARouter(ARouterHomePath.NewsPicsActivity)
         }
         binding.smartLayout.setOnRefreshListener(this)
+        onRefresh(binding.smartLayout)
         setLoadSir(binding.smartLayout)
 
     }
+
     var headNewBinding: HeaderNewsListBinding? = null
 
     private fun addHeadView() {
@@ -68,8 +67,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 it.bViewpager.setCanLoop(true)
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
-                it.bViewpager.create(getPicList())
-                it.bViewpager.setScrollDuration(5000)
+                it.bViewpager.create()
+                it.bViewpager.setScrollDuration(500)
             }
             setIndicator()
         }
@@ -92,28 +91,24 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     override fun initData() {
 
     }
-    private fun getPicList(): MutableList<String> {
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        return mPictureList
-    }
+
     override fun onRetryBtnClick() {
 
     }
 
     override fun observe() {
         super.observe()
-        viewModel.specialListLiveData.observe(this,  {
+        viewModel.specialListLiveData.observe(this, {
             if (it.isSuccess) {
+
+                headNewBinding?.bViewpager?.create(it.data.dataList)
 
             } else {
                 ToastUtils.showShortToast(it.message, requireActivity())
             }
 
         })
-        viewModel.newsListLiveData.observe(this,  {
+        viewModel.newsListLiveData.observe(this, {
             if (it.isSuccess) {
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {
@@ -136,7 +131,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
         })
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getSpecialList()
         viewModel.getNewsList(false)
     }
 }

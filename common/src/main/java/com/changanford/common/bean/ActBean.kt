@@ -1,6 +1,7 @@
 package com.changanford.common.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.changanford.common.util.CountUtils
 
 /**
  *  文件名：ActBean
@@ -39,13 +40,13 @@ data class InfoDataBean(
     val shareCount: Int = 0,
     val sortOrder: Int = 0,
     val specialTopicId: Any = Any(),
-    val specialTopicTitle: Any = Any(),
+    val specialTopicTitle:String="",
     val status: Int = 0,
     val summary: String = "",
     val timeStr: String = "",
     val title: String = "",
     val type: Int = 0,
-    val updateTime: Any = Any(),
+    val updateTime: String = "",
     val userId: Int = 0,
     val videoTime: String = "",
     val videoUrl: String = "",
@@ -54,7 +55,21 @@ data class InfoDataBean(
     val viewsCountMul: Double = 0.0,
     val jumpVal: String = "",
     val jumpType: Int = 0
-) : MultiItemEntity
+) : MultiItemEntity{
+
+    fun getCommentCountResult():String{
+        var commentCountResult:String=""
+        if (commentCount == 0L) {
+            return "评论"
+        }
+        commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+
+
+
+}
 
 
 data class AuthorBaseVo(

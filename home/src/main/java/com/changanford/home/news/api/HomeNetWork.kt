@@ -1,7 +1,7 @@
 package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
-import com.changanford.home.news.bean.NewsListMainBean
+import com.changanford.home.bean.NewsListMainBean
 import com.changanford.home.bean.SpecialListMainBean
 
 import okhttp3.RequestBody

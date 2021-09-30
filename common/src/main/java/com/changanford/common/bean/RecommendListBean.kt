@@ -62,7 +62,7 @@ data class RecommendData(
     val postsIsPrivate: Double,
     val postsIsPublish: Double,
     val postsIsTop: Double,
-    val postsKeywords: Any,
+    val postsKeywords: String,
     var postsLikesCount: Long = 0,
     val postsPics: String,
     val postsPlate: Double,
@@ -98,17 +98,18 @@ data class RecommendData(
         return 1
     }
 
-    var contentString: String = ""
+
     fun getContent(): String { // 获取内容
+        var contentString: String = ""
         when (rtype) {//1 资讯 2 帖子 3 活动
             1 -> {
-                contentString = artContent
+                contentString = artSummary
             }
             2 -> {
-                contentString = postsContent
+                contentString = postsTopicName
             }
             3 -> {
-                contentString = artContent
+                contentString = artTitle
             }
         }
         return contentString
@@ -120,7 +121,6 @@ data class RecommendData(
         when (rtype) {
             1 -> {
                 likeCount = artLikesCount
-
             }
             2 -> {
                 likeCount = postsLikesCount
@@ -177,13 +177,29 @@ data class RecommendData(
         var viewCountStr = CountUtils.formatNum(viewCount.toString(), false).toString()
 
 
-        timeAndViewCountResult = timeStr.plus("  ").plus(viewCount).plus("浏览量")
+        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览量")
         return timeAndViewCountResult
     }
 
 
     fun getPicLists(): List<String>? {
         return pisList
+    }
+
+    fun getTopic(): String {
+        var topicStr: String = ""
+        when (rtype) {
+            1 -> {
+                topicStr = artSpecialTopicTitle
+            }
+            2 -> {
+                topicStr = postsKeywords
+            }
+            3 -> {
+                topicStr = artSpecialTopicTitle
+            }
+        }
+        return topicStr
     }
 
     override val itemType: Int
