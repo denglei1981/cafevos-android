@@ -12,7 +12,7 @@ import com.changanford.shop.utils.ScreenUtils
 import java.text.SimpleDateFormat
 
 
-class GoodsKillDateAdapter(var selectPos:Int,val listener:selectBackListener): BaseQuickAdapter<SeckillSession, BaseDataBindingHolder<ItemKillDateBinding>>(R.layout.item_kill_date), LoadMoreModule {
+class GoodsKillDateAdapter(var selectPos:Int,val listener:SelectBackListener): BaseQuickAdapter<SeckillSession, BaseDataBindingHolder<ItemKillDateBinding>>(R.layout.item_kill_date), LoadMoreModule {
     private lateinit var lastBinding:ItemKillDateBinding
     private val sf = SimpleDateFormat("MM月dd日")
     private val dp9 by lazy { ScreenUtils.dp2px(context,9f) }
@@ -50,7 +50,7 @@ class GoodsKillDateAdapter(var selectPos:Int,val listener:selectBackListener): B
             listener.onSelectBackListener(position,item.seckillTimeRanges)
         }
     }
-    interface selectBackListener{
+    interface SelectBackListener{
         fun onSelectBackListener(position:Int,seckillTimeRanges: ArrayList<SeckillTimeRange>)
     }
 }

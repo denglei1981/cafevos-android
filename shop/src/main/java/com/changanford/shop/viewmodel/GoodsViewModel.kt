@@ -10,6 +10,7 @@ import com.changanford.common.bean.SeckillSessionsBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.base.BaseViewModel
+import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
 
 /**
@@ -24,6 +25,7 @@ class GoodsViewModel: BaseViewModel() {
     var goodsListData =MutableLiveData<GoodsList?>()
     //秒杀时段
     var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
+    var killGoodsListData =MutableLiveData<GoodsList?>()
     private var pageSize=20
     /**
      * 获取商品列表
@@ -77,20 +79,41 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
-
+    /**
+     * 获取秒杀列表
+     * [seckillRangeId]时段id
+     * */
+    fun getGoodsKillList(seckillRangeId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+//                body["tagId"]=typeId
+                val randomKey = getRandomKey()
+                shopApiService.getGoodsKillList(seckillRangeId,body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                killGoodsListData.postValue(it)
+            }.onFailure {
+                killGoodsListData.postValue(it)
+            }
+        }
+    }
     /**
      * 秒杀提醒设置/取消
      * [states]SET,CANCEL
      * */
-    fun setKillNotices(states:String){
+    fun setKillNotices(states:String,rangeId:String,listener: OnPerformListener){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 body["setCancel"]=states
                 val randomKey = getRandomKey()
-                shopApiService.setKillNotices(body.header(randomKey), body.body(randomKey))
+                shopApiService.setKillNotices(rangeId,body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-
+                listener.onFinish(0)
+            }.onFailure {
+                listener.onFinish(-1)
             }
         }
     }

@@ -8,14 +8,11 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemKillTimeBinding
 import com.changanford.shop.utils.ScreenUtils
-import java.text.SimpleDateFormat
 import com.changanford.common.bean.SeckillTimeRange as SeckillTimeRange1
 
 
-class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<SeckillTimeRange1, BaseDataBindingHolder<ItemKillTimeBinding>>(R.layout.item_kill_time), LoadMoreModule {
+class GoodsKillAreaTimeAdapter(var selectPos:Int,val listener:SelectTimeBackListener): BaseQuickAdapter<SeckillTimeRange1, BaseDataBindingHolder<ItemKillTimeBinding>>(R.layout.item_kill_time), LoadMoreModule {
     private lateinit var lastBinding:ItemKillTimeBinding
-    @SuppressLint("SimpleDateFormat")
-    private val sf = SimpleDateFormat("HH:mm")
     private val dp10 by lazy { ScreenUtils.dp2px(context,10f) }
     private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
     @SuppressLint("SetTextI18n")
@@ -40,11 +37,11 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<SeckillTimeR
                 dataBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 dataBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_99))
             }
-            dataBinding.root.setOnClickListener { switchItem(dataBinding,position) }
+            dataBinding.root.setOnClickListener { switchItem(dataBinding,position,item) }
         }
 
     }
-    private fun switchItem(itemBinding:ItemKillTimeBinding,position:Int){
+    private fun switchItem(itemBinding:ItemKillTimeBinding,position:Int,item: SeckillTimeRange1){
         selectPos=position
         if(::lastBinding.isInitialized&&itemBinding!=lastBinding){
             itemBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
@@ -55,6 +52,10 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int): BaseQuickAdapter<SeckillTimeR
             lastBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_99))
             lastBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_99))
             lastBinding=itemBinding
+            listener.onSelectTimeBackListener(position,item)
         }
+    }
+    interface SelectTimeBackListener{
+        fun onSelectTimeBackListener(position:Int,seckillTimeRanges: SeckillTimeRange1)
     }
 }
