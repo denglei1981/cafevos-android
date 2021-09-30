@@ -17,6 +17,7 @@ class NewsBannerAdapter : BaseBannerAdapter<SpecialListBean, PostBarBannerViewHo
         return R.layout.item_news_bar_banner
     }
 
+
     override fun createViewHolder(itemView: View?, viewType: Int): PostBarBannerViewHolder {
         return PostBarBannerViewHolder(itemView!!)
     }
@@ -37,8 +38,9 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<SpecialListBean>(
         val binding = DataBindingUtil.bind<ItemNewsBarBannerBinding>(itemView)
         binding?.ivBanner?.load(data.pics)
         binding?.ivBanner?.setOnClickListener {
-              startARouter(ARouterHomePath.SpecialListActivity)
+              startARouter(ARouterHomePath.SpecialDetailActivity)
         }
     }
+
 
 }

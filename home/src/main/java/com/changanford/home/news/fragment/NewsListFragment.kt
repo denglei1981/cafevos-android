@@ -1,14 +1,18 @@
 package com.changanford.home.news.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.home.R
+import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.FragmentNewsListBinding
 import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
@@ -39,7 +43,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
     override fun initView() {
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
         newsListAdapter.setOnItemClickListener { adapter, view, position ->
@@ -61,14 +66,29 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 binding.recyclerView,
                 false
             )
+            var newsBannerAdapter = NewsBannerAdapter()
             headNewBinding?.let {
                 newsListAdapter.addHeaderView(it.root, 0)
-                it.bViewpager.setAdapter(NewsBannerAdapter())
+                it.bViewpager.setAdapter(newsBannerAdapter)
                 it.bViewpager.setCanLoop(true)
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
                 it.bViewpager.create()
                 it.bViewpager.setScrollDuration(500)
+                it.bViewpager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        var speical = it.bViewpager.data[position] as SpecialListBean
+                        if (TextUtils.isEmpty(speical.specialTopicTitle)) {
+                            it.tvSubTitle.text = "长安福特,yyds"
+                        } else {
+                            it.tvSubTitle.text = speical.specialTopicTitle
+                        }
+                    }
+                })
+                it.tvMore.setOnClickListener {
+                    startARouter(SpecialListActivity)
+                }
             }
             setIndicator()
         }

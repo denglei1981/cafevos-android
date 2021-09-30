@@ -41,7 +41,7 @@ data class SpecialListBean(
     var shares: Any,
     var sortOrder: Int,
     var specialTopicId: Any,
-    var specialTopicTitle: Any,
+    var specialTopicTitle: String,
     var status: Int,
     var summary: String,
     var timeStr: String,
