@@ -23,14 +23,7 @@ class SpecialDetailActivity : BaseActivity<ActivitySpecialDetailBinding, EmptyVi
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         newsListAdapter = NewsListAdapter().apply {
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
-            addData(InfoDataBean(1))
+
         }
 
         binding.recyclerView.adapter = newsListAdapter
