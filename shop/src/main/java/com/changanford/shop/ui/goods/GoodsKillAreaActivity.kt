@@ -99,11 +99,13 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         pageNo=1
-        onSelectBackListener(dateAdapter.selectPos, dateAdapter.data[dateAdapter.selectPos].seckillTimeRanges)
+        if(dateAdapter.data.size>0)onSelectBackListener(dateAdapter.selectPos, dateAdapter.data[dateAdapter.selectPos].seckillTimeRanges)
+        else binding.smartRl.finishRefresh()
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageNo++
-        viewModel.getGoodsKillList(timeAdapter.data[timeAdapter.selectPos].timeRangeId,pageNo)
+        if(timeAdapter.data.size>0)viewModel.getGoodsKillList(timeAdapter.data[timeAdapter.selectPos].timeRangeId,pageNo)
+        else binding.smartRl.finishLoadMore()
     }
 }
