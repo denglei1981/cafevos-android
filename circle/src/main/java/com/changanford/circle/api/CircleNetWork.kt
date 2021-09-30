@@ -88,4 +88,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<CircleMemberBean>>
+
+    /**
+     *  一级评论列表
+     */
+    @POST("con/comment/commentList")
+    suspend fun getCommentList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<CommentListBean>>
 }

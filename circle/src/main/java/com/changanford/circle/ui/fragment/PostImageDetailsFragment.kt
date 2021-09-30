@@ -2,6 +2,7 @@ package com.changanford.circle.ui.fragment
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostBarBannerAdapter
@@ -51,7 +52,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"
             } else {
-                "+ 关注"
+                "关注"
             }
             bottomView.run {
                 tvCommentNum.text = "${if (mData.commentCount > 0) mData.commentCount else "0"}"
@@ -156,6 +157,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
                 }).show()
             }
+            bottomView.tvCommentNum.setOnClickListener {
+                nestScroll.smoothScrollTo(0, ryComment.top - 20)
+            }
             ivMenu.setOnClickListener {
                 CircleShareModel.shareDialog(
                     activity,
@@ -182,6 +186,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     override fun initData() {
+        viewModel.getCommendList(mData.circleId.toString(), 1)
         val list = arrayListOf("", "", "", "", "", "", "", "")
         commentAdapter.setItems(list)
         commentAdapter.notifyDataSetChanged()

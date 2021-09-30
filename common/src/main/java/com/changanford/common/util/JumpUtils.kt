@@ -168,7 +168,7 @@ class JumpUtils {
             }
             9 -> {//话题详情
                 bundle.putString("topicId", value)
-//                startARouter(ARouterHomePath.HomeTopicDetailActivity, bundle)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             10 -> {//成长值详情
                 startARouter(ARouterMyPath.MineTaskListUI)

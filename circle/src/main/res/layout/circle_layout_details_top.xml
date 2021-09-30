@@ -86,8 +86,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:ellipsize="end"
-                android:maxLines="2"
                 tools:text="自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="13sp"
@@ -101,8 +99,9 @@
                 android:layout_height="wrap_content"
                 tools:text="1233 帖子"
                 android:textColor="@color/color_33"
+                android:layout_marginTop="15dp"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_title" />
 
             <LinearLayout

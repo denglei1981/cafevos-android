@@ -16,7 +16,6 @@ import com.gyf.immersionbar.ImmersionBar
 @Route(path = ARouterCirclePath.PostDetailsActivity)
 class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphicViewModel>() {
 
-
     private var postsId = ""
 
     override fun initView() {
