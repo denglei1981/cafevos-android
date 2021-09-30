@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.my.databinding.FragmentPostBinding
 import com.changanford.my.viewmodel.ActViewModel
@@ -23,15 +24,17 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     private lateinit var mCheckForGapMethod: Method
 
     var type: String = ""
+    var userId: String = ""
 
     val postAdapter: CircleMainBottomAdapter by lazy {
         CircleMainBottomAdapter(requireContext())
     }
 
     companion object {
-        fun newInstance(value: String): PostFragment {
+        fun newInstance(value: String, userId: String = ""): PostFragment {
             var bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
+            bundle.putString(RouterManger.KEY_TO_ID, userId)
             var medalFragment = PostFragment()
             medalFragment.arguments = bundle
             return medalFragment
@@ -43,6 +46,10 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             type = it
         }
 
+        userId = UserManger.getSysUserInfo().uid
+        arguments?.getString(RouterManger.KEY_TO_ID)?.let {
+            userId = it
+        }
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
@@ -77,6 +84,16 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             }
             "footPost" -> {
                 viewModel.queryMineFootPost(pageSize) { response ->
+                    response?.data?.total?.let {
+                        total = it
+                    }
+                    response.onSuccess {
+                        completeRefresh(it?.dataList, postAdapter, total)
+                    }
+                }
+            }
+            "centerPost" -> {
+                viewModel.queryMineSendPost(userId, pageSize) { response ->
                     response?.data?.total?.let {
                         total = it
                     }

@@ -16,7 +16,7 @@ object ARouterMyPath {
     const val EditAddressUI = "/my/EditAddressUI" // 编辑地址
     const val MineTaskListUI = "/my/MineTaskListUI"  //任务列表
     const val UniCarAuthUI = "/my/UniCarAuthUI"  //车主认证
-    const val MineJoinAcUI = "/my/MineJoinAcUI"  //我的活动
+    const val MineJoinAcUI = "/app/MineJoinAcUI"  //我的活动
     const val MineGrowUpUI = "/my/MineGrowUpUI" //成长值
     const val MineEditFeedbackUI = "/my/MineEditFeedbackUI" //填写反馈
     const val MineCenterFeedbackUI = "/my/MineCenterFeedbackUI" // 新增意见反馈过渡页面
@@ -32,7 +32,7 @@ object ARouterMyPath {
     const val MineCollectUI = "/app/MineCollectUI" //我的收藏
     const val MineCircleUI = "/my/MineCircleUI" //我的圈子
     const val CircleMemberUI = "/my/CircleMemberUI" //圈子管理
-    const val TaCentreInfoUI = "/my/TaCentreInfoUI" //他们中心
+    const val TaCentreInfoUI = "/app/TaCentreInfoUI" //他们中心
     const val MineEditInfoUI = "/my/MineEditInfoUI" //编辑用户信息
     const val MineLoveCarInfoUI = "/my/MineLoveCarInfoUI"//爱车详情
     const val MineFootprintUI = "/app/MineFootprintUI" // 我的足迹

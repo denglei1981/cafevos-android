@@ -136,10 +136,11 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity android:name=".demo.DemoDetail" />
-        <activity android:name="com.changanford.my.ui.MyActUI" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name="com.changanford.my.MyCollectUI" />
         <activity android:name="com.changanford.my.MyFootUI" />
+        <activity android:name="com.changanford.my.MyActUI" />
+        <activity android:name="com.changanford.my.PersonCenterUI" />
     </application>
 
 </manifest>

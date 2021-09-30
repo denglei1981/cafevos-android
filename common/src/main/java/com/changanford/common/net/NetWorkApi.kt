@@ -661,6 +661,22 @@ interface NetWorkApi {
     ): CommonResponse<String>
 
 
+    //获取他人的用户信息
+    @POST("user/otherInfo")
+    suspend fun queryOtherInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
+
+    //结束活动
+    @POST("highlights/endedActivity")
+    suspend fun endAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UserInfoBean>
+
+
     /**
      * 注销账户
      */

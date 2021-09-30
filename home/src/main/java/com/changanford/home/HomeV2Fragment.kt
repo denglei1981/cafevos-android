@@ -233,6 +233,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.refreshLayout.finishRefresh()
     }
 
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         recommendFragment.homeRefersh()
     }

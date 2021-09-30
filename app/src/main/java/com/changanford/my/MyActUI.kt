@@ -1,4 +1,4 @@
-package com.changanford.my.ui
+package com.changanford.my
 
 import android.graphics.Typeface
 import android.widget.TextView
@@ -9,22 +9,19 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.my.BaseMineUI
-import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
-import com.changanford.my.databinding.UiCollectBinding
-import com.changanford.my.ui.fragment.CircleFragment
+import com.changanford.my.databinding.UiMyActBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
- *  文件名：MyCollectUI
+ *  文件名：MyActUI
  *  创建者: zcy
- *  创建日期：2021/9/26 16:54
+ *  创建日期：2021/9/29 16:45
  *  描述: TODO
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineJoinAcUI)
-class MyActUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
+class MyActUI : BaseMineUI<UiMyActBinding, EmptyViewModel>() {
 
     private val titles = arrayListOf("我发布的", "我参与的")
     private var oldPosition = 0
@@ -42,7 +39,17 @@ class MyActUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return CircleFragment.newInstance(position)
+                    return when (position) {
+                        0 -> {
+                            ActFragment.newInstance("actMyCreate")
+                        }
+                        1 -> {
+                            ActFragment.newInstance("actMyJoin")
+                        }
+                        else -> {
+                            ActFragment.newInstance("$position")
+                        }
+                    }
                 }
             }
 

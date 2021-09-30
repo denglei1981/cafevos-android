@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.bean.ActDataBean
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.utilext.logE
 import com.changanford.home.databinding.ActivitySpecialDetailBinding
@@ -16,22 +16,21 @@ import com.google.android.material.appbar.AppBarLayout
 class SpecialDetailActivity : BaseActivity<ActivitySpecialDetailBinding, EmptyViewModel>() {
 
 
-
-    var newsListAdapter: NewsListAdapter?=null
+    var newsListAdapter: NewsListAdapter? = null
 
 
     override fun initView() {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        newsListAdapter=NewsListAdapter().apply {
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
-            addData(ActDataBean())
+        newsListAdapter = NewsListAdapter().apply {
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
+            addData(InfoDataBean(1))
         }
 
         binding.recyclerView.adapter = newsListAdapter
