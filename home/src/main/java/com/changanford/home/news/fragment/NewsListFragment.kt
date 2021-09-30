@@ -79,10 +79,10 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         var speical = it.bViewpager.data[position] as SpecialListBean
-                        if (TextUtils.isEmpty(speical.specialTopicTitle)) {
+                        if (TextUtils.isEmpty(speical.summary)) {
                             it.tvSubTitle.text = "长安福特,yyds"
                         } else {
-                            it.tvSubTitle.text = speical.specialTopicTitle
+                            it.tvSubTitle.text = speical.summary
                         }
                     }
                 })
