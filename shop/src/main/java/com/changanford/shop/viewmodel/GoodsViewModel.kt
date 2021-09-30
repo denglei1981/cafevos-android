@@ -2,11 +2,13 @@ package com.changanford.shop.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.MyApp
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsList
 import com.changanford.common.net.*
+import com.changanford.common.utilext.createHashMap
+import com.changanford.shop.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -14,8 +16,8 @@ import kotlinx.coroutines.launch
  * @Time : 2021/9/9 0009
  * @Description : GoodsViewModel
  */
-class GoodsViewModel:ViewModel() {
-    private val body = HashMap<String, Any>()
+class GoodsViewModel: BaseViewModel() {
+    private val body = MyApp.mContext.createHashMap()
     var goodsItemData: MutableLiveData<GoodsItemBean> = MutableLiveData()
     //商品列表
     var goodsListData =MutableLiveData<GoodsList?>()
@@ -32,7 +34,7 @@ class GoodsViewModel:ViewModel() {
                 body["pageSize"]=pageSize
                 body["tagId"]=typeId
                 val randomKey = getRandomKey()
-                apiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
+                shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 Log.e("wenke","onSuccess:$it")
                 goodsListData.postValue(it)
@@ -51,7 +53,7 @@ class GoodsViewModel:ViewModel() {
                 body.clear()
                 body["goodsId"] = goodsId
                 val rkey = getRandomKey()
-                apiService.queryGoodsDetails(body.header(rkey), body.body(rkey))
+                shopApiService.queryGoodsDetails(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 goodsItemData.postValue(it)
             }.onFailure {

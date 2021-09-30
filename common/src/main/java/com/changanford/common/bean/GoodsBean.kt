@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import java.util.*
+
 /**
  * @Author : wenke
  * @Time : 2021/9/28
@@ -8,8 +10,23 @@ package com.changanford.common.bean
 data class GoodsBean(val id:Int=0,var title:String){
     var states:Int=0
 }
-data class GoodsTypesBean(val typeId:Int)
+data class GoodsTypesBean(
+    val dataList: ArrayList<GoodsTypesItemBean> = ArrayList(),
+    val extend: Extend = Extend(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
+)
 
+data class GoodsTypesItemBean(
+    val img: Any? = null,
+    val imgSelected: Any? = null,
+    val typeId: String = "0",
+    val typeName: String = ""
+)
+
+class Extend
 data class GoodsList(
     val dataList: List<GoodsItemBean> = listOf(),
     val pageNo: Int = 0,

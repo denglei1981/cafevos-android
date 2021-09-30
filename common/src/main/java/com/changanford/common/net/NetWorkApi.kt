@@ -680,31 +680,4 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
-
-
-    /*-------------------商城 Start---------------------*/
-
-    /**
-     * 商品详情
-    * */
-    @POST("/shop/goodsDetail")
-    suspend fun queryGoodsDetails(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsItemBean>
-
-    /**
-     * 秒杀列表
-     * */
-    @POST("/mall/index")
-    suspend fun queryGoodsKillData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
-    /**
-     * 商品分类
-     * */
-    @POST("/points/typeList")
-    suspend fun queryGoodsClassification(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsTypesBean>>
-    /**
-     * 商城列表
-     * */
-    @POST("/mall/spus/get")
-    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
-
-    /*-------------------商城 End---------------------*/
 }

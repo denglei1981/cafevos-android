@@ -1,6 +1,7 @@
 package com.changanford.shop
 import android.graphics.Typeface
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
@@ -32,9 +33,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
             binding.smartRl.isEnabled = i >= 0
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
-        initTab()
-        initKill()
         addObserve()
+        initKill()
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
         binding.smartRl.setOnRefreshListener(this)
         //test
@@ -42,18 +42,16 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
     }
-    private fun initTab(){
-        val tabTitles= arrayListOf<String>()
-        for(i in 0..20){
-            tabTitles.add("Tab$i")
-            val fragment=ExchangeListFragment.newInstance("$i")
+    private fun bindingTab(tabsData:MutableList<GoodsTypesItemBean>){
+        for(it in tabsData){
+            val fragment=ExchangeListFragment.newInstance(it.typeId)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
         binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
         binding.viewpager.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-            tab.text = tabTitles[tabPosition]
+            tab.text = tabsData[tabPosition].typeName
         }.attach()
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
     }
@@ -81,6 +79,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
+        })
+        viewModel.goodsClassificationData.observe(this,{
+            bindingTab(it)
         })
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {

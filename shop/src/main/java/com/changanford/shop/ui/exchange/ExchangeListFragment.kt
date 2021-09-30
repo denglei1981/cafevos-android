@@ -58,7 +58,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         if(1==pageNo){
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
-        } else if(it?.dataList != null)mAdapter.addData(it.dataList!!)
+        } else if(it?.dataList != null)mAdapter.addData(it.dataList)
         binding.smartRl.finishLoadMore()
     }
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
