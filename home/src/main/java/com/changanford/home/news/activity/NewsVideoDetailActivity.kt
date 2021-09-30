@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.basic.adapter.LoadSirBaseActivityBaseActivity
 import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.util.dk.DKPlayerHelper
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.R
@@ -18,7 +18,7 @@ import com.gyf.immersionbar.ImmersionBar
 
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
-class NewsVideoDetailActivity : BaseActivity<ActivityHomeNewsVideoDetailBinding, EmptyViewModel>() {
+class NewsVideoDetailActivity : LoadSirBaseActivityBaseActivity<ActivityHomeNewsVideoDetailBinding, EmptyViewModel>() {
     private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
     val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)
@@ -92,6 +92,14 @@ class NewsVideoDetailActivity : BaseActivity<ActivityHomeNewsVideoDetailBinding,
     override fun onBackPressed() {
         backPressed { super.onBackPressed() }
 
+
+    }
+
+    /**
+     *  有重试 重写此方法
+     * */
+
+    override fun onRetryBtnClick() {
 
     }
 }

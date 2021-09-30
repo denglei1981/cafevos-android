@@ -691,4 +691,5 @@ interface NetWorkApi {
     suspend fun queryGoodsDetails(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsItemBean>
 
     /*-------------------商城 End---------------------*/
+
 }

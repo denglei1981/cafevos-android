@@ -4,12 +4,17 @@ import android.content.Context
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.loadsir.EmptyCallback
+import com.changanford.common.loadsir.ErrorCallback
+import com.changanford.common.loadsir.LoadingCallback
+import com.changanford.common.loadsir.TimeoutCallback
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
 
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
+import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -62,11 +67,21 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         UserManger.getSysUserInfo()?.let {
             MConstant.token = "${it.token}"
         }
+        initLoadSir()// 初始化界面管理类。
     }
 
     override fun getCameraXConfig(): CameraXConfig {
       return  Camera2Config.defaultConfig()
     }
 
+    private fun initLoadSir() {
+        LoadSir.beginBuilder()
+            .addCallback(ErrorCallback()) //添加各种状态页
+            .addCallback(EmptyCallback())
+            .addCallback(LoadingCallback())
+            .addCallback(TimeoutCallback())
+            .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
+            .commit()
+    }
 
 }
