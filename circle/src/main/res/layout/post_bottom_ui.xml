@@ -161,7 +161,7 @@
             android:id="@+id/iv_loc"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@id/iv_quanzi"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_emoj"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_bq"
             android:layout_width="0dp"
@@ -180,6 +180,34 @@
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
                 app:layout_constraintTop_toTopOf="@id/iv_pic"
                 android:text="定位"
+                android:layout_marginLeft="5dp"
+                android:textSize="13sp"
+                android:textColor="@color/text_color"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/iv_emoj"
+            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintStart_toEndOf="@id/iv_loc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_bq"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/c_bq"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/iv_pic"
+                app:layout_constraintRight_toRightOf="@id/iv_pic"
+                app:layout_constraintTop_toTopOf="@id/iv_pic"
+                android:text="表情"
                 android:layout_marginLeft="5dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_color"/>

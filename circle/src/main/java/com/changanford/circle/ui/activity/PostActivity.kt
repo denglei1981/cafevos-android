@@ -160,7 +160,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun onclick() {
+        binding.bottom.ivEmoj.setOnClickListener {
+            "表情未开发".toast()
+        }
         binding.title.barTvOther.setOnClickListener {
+            "发帖".toast()
         }
         binding.bottom.ivHuati.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseConversationActivity)
