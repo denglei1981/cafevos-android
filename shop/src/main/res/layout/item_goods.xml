@@ -49,6 +49,7 @@
             tools:text="TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="@{model.spuName}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
@@ -56,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="抽绳双肩包"
+            android:text="@{model.secondName}"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_13" />
         <include
@@ -73,13 +75,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="12600积分"
+                app:end_txt="@string/str_integral"
+                android:text="@{model.normalFb}"
                 android:textColor="@color/color_01025C"
                 android:textSize="@dimen/sp_13" />
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_orIntegral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="12600积分"
+                tools:text="12600"
+                android:text="@{model.lineFb}"
+                app:text_flags="0x10"
                 android:textColor="@color/color_cf"
                 android:textSize="@dimen/sp_11" />
         </androidx.appcompat.widget.LinearLayoutCompat>

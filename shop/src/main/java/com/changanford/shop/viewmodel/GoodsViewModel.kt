@@ -3,10 +3,11 @@ package com.changanford.shop.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.GoodsDetailBean
-import com.changanford.common.bean.GoodsList
-import com.changanford.common.bean.SeckillSessionsBean
+import com.changanford.common.MyApp
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
+import com.changanford.common.repository.AdsRepository
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
@@ -17,18 +18,50 @@ import kotlinx.coroutines.launch
  * @Description : GoodsViewModel
  */
 class GoodsViewModel: BaseViewModel() {
+    private var pageSize=20
+    private var adsRepository: AdsRepository = AdsRepository(this)
+    //广告
+    var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
+    //秒杀
+    var KillListData =MutableLiveData<MutableList<GoodsItemBean>>()
+
     var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
     //商品列表
     var goodsListData =MutableLiveData<GoodsList?>()
     //秒杀时段
     var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
+    //秒杀列表
     var killGoodsListData =MutableLiveData<GoodsList?>()
-    private var pageSize=20
+    //商城首页
+    var shopHomeData =MutableLiveData<GoodsHomeBean>()
+    /**
+     * 获取banner
+     * */
+    fun getBannerData(){
+        adsRepository.getAds("商城广告位")
+    }
+    /**
+     * 获取 商城首页
+     * */
+    fun getShopHomeData(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                KillListData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it?:"", MyApp.mContext)
+            }
+        }
+    }
     /**
      * 获取商品列表
      * [typeId]分类id
      * */
     fun getGoodsList(typeId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        Log.e("okhttp","typeId:$typeId")
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -38,11 +71,12 @@ class GoodsViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                Log.e("wenke","onSuccess:$it")
-                goodsListData.postValue(it)
+                shopHomeData.postValue(it)
+                goodsListData.postValue(it?.responsePageBean)
             }.onFailure {
-                goodsListData.postValue(it)
-                Log.e("wenke","onFailure:$it")
+                shopHomeData.postValue(it)
+            }.onWithMsgFailure {
+                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
             }
         }
     }

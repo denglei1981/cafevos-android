@@ -5,20 +5,9 @@ package com.changanford.common.bean
  * @Time : 2021/9/28
  * @Description : 商城
  */
-data class GoodsTypesBean(
-    val dataList: ArrayList<GoodsTypesItemBean> = ArrayList(),
-    val extend: Extend = Extend(),
-    val pageNo: Int = 0,
-    val pageSize: Int = 0,
-    val total: Int = 0,
-    val totalPage: Int = 0
-)
-
 data class GoodsTypesItemBean(
-    val img: Any? = null,
-    val imgSelected: Any? = null,
-    val typeId: String = "0",
-    var typeName: String = "全部"
+    val mallMallTagId: String = "0",
+    val tagName: String = "全部",
 )
 
 class Extend
@@ -71,9 +60,47 @@ data class GoodsItemBean(
     val stockNow: Int = 0,
     val stockPlusSalesCount: Int? = 0,
     var timeState: String = "",
+    val createBy: Any? = null,
+    val createTime: Long = 0,
+    val dataState: String = "",
+    val detailsHtml: String = "",
+    val evalCount: Any? = null,
+    val evalScoreSum: Any? = null,
+    val hot: Any? = null,
+    val isRecommend: String = "",
+    val limitBuyNum: Any? = null,
+    val limitIdentity: Any? = null,
+    val limitPhone: Any? = null,
+    val limitSeckill: Any? = null,
+    val lineFb: String? = null,
+    val mallMallBrandId: Int = 0,
+    val mallMallCategoryId: Int = 0,
+    val mallMallSpuId: Int = 0,
+    val memo: Any? = null,
+    val normalFb: String = "0",
+    val onShelveTime: Any? = null,
+    val `operator`: String = "",
+    val orderNum: Any? = null,
+    val params: Params = Params(),
+    val remark: Any? = null,
+    val searchValue: Any? = null,
+    val secondName: String = "",
+    val seeLimit: String = "",
+    val skuCodeRule: Any? = null,
+    val skuJson: String = "",
+    val specJson: String = "",
+    val spuImgs: String = "",
+    val spuNew: Any? = null,
+    val spuPageTagType: String = "",
+    val spuStatus: String = "",
+    val stock: Int = 0,
+    val updateBy: Any? = null,
+    val updateTime: Long = 0,
+    val vipFb: Any? = null,
     var stockProportion:String="0",//库存百分比 0-100
     var killStates:Int=0//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
 )
+class Params
 // 秒杀时段
 data class SeckillSessionsBean(
     val now: Long? = null,
@@ -151,4 +178,11 @@ data class SkuVo(
 data class OptionVo(
     val optionId: Int = 0,
     val optionName: String = ""
+)
+/**
+ * 商城首页列表
+* */
+data class GoodsHomeBean(
+    val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
+    val responsePageBean: GoodsList? = null,
 )

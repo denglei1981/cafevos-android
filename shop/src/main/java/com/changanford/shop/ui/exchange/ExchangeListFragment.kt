@@ -29,10 +29,14 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
     private var typeId="0"
+    private var allGoodsData:GoodsList?=null
+    fun setAllData(allGoodsData:GoodsList?){
+        this.allGoodsData=allGoodsData
+    }
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!
-            viewModel.getGoodsList(typeId,pageNo)
+            if(null==allGoodsData)viewModel.getGoodsList(typeId,pageNo)
         }
         viewModel.goodsListData.observe(this,{bindingData(it)})
         binding.smartRl.setOnLoadMoreListener {
@@ -43,15 +47,6 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     override fun initData() {
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty)
-//        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
-//        val datas= arrayListOf<GoodsItemBean>()
-//        val title=StringBuffer("Title")
-//        for (i in 0..30){
-//            title.append("Title$i>>")
-//            val item=GoodsItemBean(goodsId = "$i",title = if(i%3>0)"Title$i" else "$title")
-//            datas.add(item)
-//        }
-//        mAdapter.setList(datas)
         mAdapter.setOnItemClickListener { _, _, position ->
             GoodsDetailsActivity.start(requireContext(),"$position")
         }

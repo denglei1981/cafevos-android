@@ -10,7 +10,6 @@ import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
-import com.tencent.mm.opensdk.utils.Log
 import kotlinx.coroutines.launch
 
 class ShopViewModel : BaseViewModel() {
@@ -40,26 +39,6 @@ class ShopViewModel : BaseViewModel() {
                 KillListData.postValue(it)
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it?:"",MyApp.mContext)
-            }
-        }
-    }
-    /**
-     * 一级分类列表
-     * */
-    fun getGoodsTypeList(){
-        val typeList=ArrayList<GoodsTypesItemBean>()
-        typeList.add(GoodsTypesItemBean())
-        viewModelScope.launch {
-            fetchRequest {
-                body.clear()
-                val randomKey = getRandomKey()
-                shopApiService.queryGoodsClassification(body.header(randomKey), body.body(randomKey))
-            }.onSuccess {
-                Log.e("okhttp","onSuccess>>>>:$it")
-                goodsClassificationData.postValue(it?.dataList)
-            }.onFailure {
-                Log.e("okhttp","onFailure>>>>:$it")
-                goodsClassificationData.postValue(typeList)
             }
         }
     }

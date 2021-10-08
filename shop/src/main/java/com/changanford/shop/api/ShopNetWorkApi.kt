@@ -25,15 +25,10 @@ interface ShopNetWorkApi {
     @POST("/mall/sckills/get")
     suspend fun getSckills(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<SeckillSessionsBean>
     /**
-     * 商品分类
-     * */
-    @POST("/points/typeList")
-    suspend fun queryGoodsClassification(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsTypesBean>
-    /**
      * 商城列表
      * */
     @POST("/mall/spus/get")
-    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsHomeBean>
     /**
      * 首页
      * */

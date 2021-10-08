@@ -1,6 +1,7 @@
 package com.changanford.shop
 import android.graphics.Typeface
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.GoodsHomeBean
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
@@ -15,7 +16,7 @@ import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.ui.order.OrdersGoodsActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
-import com.changanford.shop.viewmodel.ShopViewModel
+import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -25,7 +26,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 /**
  * A fragment representing a list of Items.
  */
-class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), OnRefreshListener {
+class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), OnRefreshListener {
     private  val fragments= arrayListOf<ExchangeListFragment>()
     private val adapter by lazy { GoodsKillAdapter() }
     override fun initView() {
@@ -42,16 +43,21 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
     }
-    private fun bindingTab(tabsData:MutableList<GoodsTypesItemBean>){
-        for(it in tabsData){
-            val fragment=ExchangeListFragment.newInstance(it.typeId)
+    private fun bindingTab(homeData:GoodsHomeBean){
+        val tabs=ArrayList<GoodsTypesItemBean>().apply {
+            add(GoodsTypesItemBean("0","全部"))
+            addAll(homeData.list)
+        }
+        for(it in tabs){
+            val fragment=ExchangeListFragment.newInstance(it.mallMallTagId)
+            if("0"==it.mallMallTagId)fragment.setAllData(homeData.responsePageBean)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
         binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
         binding.viewpager.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-            tab.text = tabsData[tabPosition].typeName
+            tab.text = tabs[tabPosition].tagName
         }.attach()
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
     }
@@ -74,13 +80,13 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-        viewModel.getGoodsTypeList()
+        viewModel.getGoodsList("0",1)
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
         })
-        viewModel.goodsClassificationData.observe(this,{
+        viewModel.shopHomeData.observe(this,{
             bindingTab(it)
         })
     }
