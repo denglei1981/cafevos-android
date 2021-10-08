@@ -188,8 +188,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
                         HomeBottomDialog.OnClickItemListener {
                         override fun onClickItem(position: Int, str: String) {
-                            buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                            buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
                             str.toast()
                         }
                     }).show()
