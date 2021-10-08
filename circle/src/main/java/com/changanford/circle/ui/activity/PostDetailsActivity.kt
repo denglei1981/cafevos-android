@@ -8,6 +8,8 @@ import com.changanford.circle.ui.fragment.PostVideoDetailsFragment
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.gyf.immersionbar.ImmersionBar
 
 /**
@@ -20,6 +22,7 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
 
     override fun initView() {
         postsId = intent.getStringExtra("postsId").toString()
+        bus()
     }
 
     override fun initData() {
@@ -49,4 +52,9 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
         })
     }
 
+    private fun bus() {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.CLOSE_POST_DETAILS).observe(this, {
+            finish()
+        })
+    }
 }

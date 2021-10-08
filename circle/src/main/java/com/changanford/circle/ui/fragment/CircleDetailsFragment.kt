@@ -76,6 +76,8 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
         binding.refreshLayout.setOnRefreshListener {
+            page = 1
+            initData()
             it.finishRefresh()
         }
 
@@ -86,9 +88,9 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         binding.ryCircle.adapter = adapter
 
         adapter.setOnItemClickListener { _, view, position ->
-            val bundle=Bundle()
-            bundle.putString("postsId",adapter.getItem(position).postsId.toString())
-            startARouter(ARouterCirclePath.PostDetailsActivity,bundle)
+            val bundle = Bundle()
+            bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
         }
     }
 
