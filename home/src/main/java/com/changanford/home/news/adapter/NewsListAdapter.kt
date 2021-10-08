@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
+import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -32,17 +33,15 @@ class NewsListAdapter : BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.
 
         tvContent.text = item.title
 
-        val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
-        val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
-        val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
-
+        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
+        val tvCommentCount = holder.getView<DrawCenterTextView>(R.id.tv_comment_count)
+        val tvLookCount = holder.getView<DrawCenterTextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
 
+        tvLikeCount.setPageTitleText(item.likesCount.toString())
+        tvCommentCount.setPageTitleText(item.getCommentCountResult())
+        tvLookCount.setPageTitleText(item.viewsCount.toString())
 
-
-        tvLikeCount.text = item.likesCount.toString()
-        tvCommentCount.text = item.getCommentCountResult()
-        tvLookCount.text = item.viewsCount.toString()
         tvTime.text = item.timeStr
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.specialTopicTitle)) {
@@ -53,7 +52,6 @@ class NewsListAdapter : BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.
             tvTopic.text = "#${item.specialTopicTitle}#"
         }
     }
-
     /**
      *  设置关注状态。
      * */

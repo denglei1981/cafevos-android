@@ -1,14 +1,18 @@
 package com.changanford.home.bean
 
+import com.changanford.common.util.CountUtils
+import com.changanford.common.util.TimeFromUtils
+import com.changanford.common.util.TimeUtils
+
 data class BigShotPostBean(
     var address: String,
-    var authorBaseVo: AuthorBaseVo,
+    var authorBaseVo: AuthorBaseVo?,
     var circleId: Int,
     var city: String,
     var cityCode: Any,
     var collectCount: Int,
-    var commentCount: Int,
-    var content: Any,
+    var commentCount: Long,
+    var content: String,
     var contentLike: Any,
     var createBy: Any,
     var createTime: Long,
@@ -25,7 +29,7 @@ data class BigShotPostBean(
     var isTop: Int,
     var keywords: Any,
     var lat: Double,
-    var likesCount: Int,
+    var likesCount: Long,
     var likesCountBase: Int,
     var likesCountMul: Int,
     var lon: Double,
@@ -36,7 +40,7 @@ data class BigShotPostBean(
     var postsId: Int,
     var province: String,
     var provinceCode: Any,
-    var publishTime: Any,
+    var publishTime: String,
     var rejectReason: Any,
     var remark: Any,
     var searchValue: Any,
@@ -52,9 +56,39 @@ data class BigShotPostBean(
     var updateBy: Any,
     var updateTime: Long,
     var userId: Int,
-    var videoTime: Any,
-    var videoUrl: Any,
-    var viewsCount: Int,
+    var videoTime: String,
+    var videoUrl: String,
+    var viewsCount: Long,
     var viewsCountBase: Int,
     var viewsCountMul: Int
-)
+) {
+
+    fun getLikeCount(): String {
+        if (likesCount == 0L) {
+            return "0"
+        }
+        return CountUtils.formatNum(likesCount.toString(), false).toString()
+    }
+
+
+    fun getViewCount(): String {
+        if (viewsCount == 0L) {
+            return "0"
+        }
+        return CountUtils.formatNum(viewsCount.toString(), false).toString()
+    }
+
+    fun getCommentCount(): String {
+        if (commentCount == 0L) {
+            return "评论"
+        }
+        return CountUtils.formatNum(commentCount.toString(), false).toString()
+    }
+
+
+    fun getTimeShow():String{
+        return TimeFromUtils.format(TimeUtils.MillisToStr(createTime))
+    }
+
+
+}

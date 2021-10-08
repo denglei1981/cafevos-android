@@ -12,6 +12,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
+import com.changanford.home.HomeV2Fragment
 import com.changanford.home.R
 import com.changanford.home.acts.adapter.SimpleAdapter
 import com.changanford.home.acts.dialog.HomeActsScreenDialog
@@ -21,6 +22,7 @@ import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentActsListBinding
 import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.home.search.data.SearchData
+import com.google.android.material.appbar.AppBarLayout
 import com.zhpan.bannerview.BannerViewPager
 import razerdp.basepopup.BasePopupWindow
 import java.util.*
@@ -85,7 +87,21 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, EmptyViewModel>()
 
             setPopu(it)
         }
+        appBarState()
 
+
+    }
+
+    fun appBarState() {
+        binding.homeAppBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val percent: Float =
+                Math.abs(verticalOffset * 1.0f) / appBarLayout.totalScrollRange //滑动比例
+            if (percent > 0.8) {
+                (parentFragment as HomeV2Fragment).exBand(false)
+            } else {
+                (parentFragment as HomeV2Fragment).exBand(true)
+            }
+        })
 
     }
 

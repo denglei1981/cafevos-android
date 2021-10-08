@@ -27,7 +27,6 @@ import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -240,8 +239,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
     }
 
-    open fun stopRefresh() {
+     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
+    }
+    fun exBand(isExpand:Boolean){
+        binding.appbarLayout.setExpanded(isExpand)
     }
 
 
