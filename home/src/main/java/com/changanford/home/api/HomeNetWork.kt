@@ -2,6 +2,7 @@ package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
+import com.changanford.home.news.data.SpecialDetailData
 
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -27,12 +28,13 @@ interface HomeNetWork {
 
     /**
      * /con/specialTopic/detail 专题详情。。
+     * con/specialTopic/detail
      * */
     @POST("con/specialTopic/detail")
     suspend fun getSpecialTopicList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<SpecialListMainBean>
+    ): CommonResponse<SpecialDetailData>
 
     /**
      *  发现资讯首页。。

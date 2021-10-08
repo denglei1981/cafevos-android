@@ -11,6 +11,7 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
@@ -161,11 +162,11 @@ class JumpUtils {
                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
             7 -> {//专题列表
-//                startARouter(ARouterHomePath.SpecialListActivity, bundle)
+                startARouter(ARouterHomePath.SpecialListActivity, bundle)
             }
             8 -> {//专题详情
-                bundle.putString("specialTopicId", value)
-//                startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
+                bundle.putString(JumpConstant.SPECIAL_TOPIC_ID, value)
+                startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
             }
             9 -> {//话题详情
                 bundle.putString("topicId", value)
