@@ -88,7 +88,6 @@ class CircleDetailsViewModel : BaseViewModel() {
                 .also {
                     joinBean.value = it
                 }
-
         })
     }
 }
