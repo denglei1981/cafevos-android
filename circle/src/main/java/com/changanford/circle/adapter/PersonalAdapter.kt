@@ -1,22 +1,16 @@
 package com.changanford.circle.adapter
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleMemberBean
-import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.utils.MUtils
-import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
  *Author lcw
@@ -51,4 +45,5 @@ class PersonalAdapter :
             binding.bean = item
         }
     }
+
 }

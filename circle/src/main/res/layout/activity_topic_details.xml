@@ -50,6 +50,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="12dp"
                                 android:paddingTop="10dp"
+                                android:paddingEnd="10dp"
                                 android:src="@mipmap/whit_left"
                                 tools:ignore="RtlSymmetry" />
 

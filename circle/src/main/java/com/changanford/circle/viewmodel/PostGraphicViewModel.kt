@@ -13,7 +13,7 @@ class PostGraphicViewModel : BaseViewModel() {
     val postDetailsBean = MutableLiveData<PostsDetailBean>()
 
     fun getData(postsId: String) {
-        launch {
+        launch (block ={
             val body = MyApp.mContext.createHashMap()
             body["postsId"] = postsId
             val rKey = getRandomKey()
@@ -23,11 +23,11 @@ class PostGraphicViewModel : BaseViewModel() {
                     postDetailsBean.value = it
                 }
                 .onFailure { }
-        }
+        } )
     }
 
     fun getCommendList(bizId: String, page: Int) {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -42,7 +42,7 @@ class PostGraphicViewModel : BaseViewModel() {
 
                 }
                 .onFailure { }
-        }
+        })
 
     }
 }

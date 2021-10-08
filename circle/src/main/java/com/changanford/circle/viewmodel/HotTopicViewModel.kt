@@ -20,7 +20,7 @@ class HotTopicViewModel : BaseViewModel() {
     val hotTopicBean = MutableLiveData<HotPicBean>()
 
     fun getData() {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -31,7 +31,7 @@ class HotTopicViewModel : BaseViewModel() {
                     hotTopicBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 
 }
