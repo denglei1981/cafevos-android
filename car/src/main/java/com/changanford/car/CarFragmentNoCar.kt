@@ -42,6 +42,10 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         binding.carNoauthLayout.button.setOnClickListener {
             JumpUtils.instans?.jump(17, "")
         }
+        binding.refreshLayout.setOnRefreshListener {
+            initData()
+            it.finishRefresh()
+        }
     }
 
     override fun initData() {
@@ -63,7 +67,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
 
     private fun observeData() {
         viewModel._middleInfo.observe(this, { it ->
-            if (it.carModels == null) {
+            if (it?.carModels == null) {
                 binding.carRecommendLayout.root.isVisible = false
             } else {
                 binding.carRecommendLayout.root.isVisible = true
@@ -71,7 +75,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 carRecommendAdapter.data.add(it.carModels)
             }
 
-            it.carInfos?.let { cars ->
+            it?.carInfos?.let { cars ->
                 carAuthAdapter.data.clear()
                 carAuthAdapter.data.add(cars)
             }

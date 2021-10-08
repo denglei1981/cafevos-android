@@ -184,6 +184,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_gravity="right"
+                            android:id="@+id/taskRule"
                             android:layout_marginEnd="@dimen/dp_27"
                             android:text="任务说明"
                             android:textColor="@color/white"

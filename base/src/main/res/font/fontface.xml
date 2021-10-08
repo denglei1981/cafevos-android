@@ -4,7 +4,8 @@
     <font
         android:font="@font/mheiprcmedium"
         android:fontStyle="normal" />
+
     <font
-        android:font="@font/mheiprcbold"
+        android:font="@font/mheiprcmedium"
         android:fontStyle="italic" />
 </font-family>

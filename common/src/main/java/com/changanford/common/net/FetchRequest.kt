@@ -25,8 +25,7 @@ suspend fun <T> fetchRequest(
             dialog?.show()
         }
     }
-    var response: CommonResponse<T> = CommonResponse(data = null, msg = "初始化", code = 0)
-    response = try {
+    return try {
         request(ApiClient)
     } catch (e: Exception) {
         CommonResponse(data = null, msg = e.message ?: "报错", code = 1)
@@ -37,7 +36,6 @@ suspend fun <T> fetchRequest(
             }
         }
     }
-    return response
 }
 
 /**
