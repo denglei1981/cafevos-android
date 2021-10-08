@@ -48,6 +48,7 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 获取商品详情数据
+     * [spuId]商品id
      * [spuPageType] 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     * */
     fun queryGoodsDetails(spuId:String,spuPageType:String="NOMROL"){

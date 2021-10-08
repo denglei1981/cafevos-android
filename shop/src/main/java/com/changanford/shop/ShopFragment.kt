@@ -73,7 +73,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
     }
     override fun initData() {
         viewModel.getBannerData()
-        viewModel.getShopHomeKillData()
+        viewModel.getShopHomeData()
         viewModel.getGoodsTypeList()
     }
     private fun addObserve(){

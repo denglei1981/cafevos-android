@@ -38,7 +38,7 @@ interface ShopNetWorkApi {
      * 首页
      * */
     @POST("/mall/index")
-    suspend fun queryGoodsKillData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
+    suspend fun queryShopHomeData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
     /**
      * 秒杀列表
      * */
