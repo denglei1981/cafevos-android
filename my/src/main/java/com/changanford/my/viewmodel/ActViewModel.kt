@@ -248,4 +248,23 @@ class ActViewModel : ViewModel() {
             })
         }
     }
+
+    /**
+     * 申请加精
+     */
+    fun postSetGood(
+        postsId: String?,
+        result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                fetchRequest {
+                    val hashMap = HashMap<String, String>()
+                    hashMap["postsId"] = postsId ?: ""
+                    var rkey = getRandomKey()
+                    apiService.postSetGood(hashMap.header(rkey), hashMap.body(rkey))
+                }
+            })
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -119,6 +120,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MessageListBean>
+
     /**
      * 获取反馈 常用问题
      */
@@ -127,6 +129,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<FeedbackQBean>
+
     /**
      * 获取意见反馈 所以标签
      */
@@ -135,6 +138,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<FeedbackTags>
+
     /**
      * 添加意见反馈 所以标签
      */
@@ -143,6 +147,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
     /**
      * 获取的我所以意见反馈
      */
@@ -151,6 +156,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<FeedbackMineListBean>
+
     /**
      * 删除一个意见反馈
      */
@@ -174,6 +180,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<FeedbackMemberBean>
+
     /**
      * 意见反馈 获取内容
      */
@@ -193,6 +200,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
     /**
      * 添加一条数据意见反馈
      */
@@ -232,6 +240,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MonthSignBean>
+
     /**
      * 用户补签
      */
@@ -714,4 +723,39 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
+
+    /**
+     * 查询会员身份
+     */
+
+    @POST("user/member/getUserMemberInfo")
+    suspend fun getUserIdCard(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AuthBean>
+
+
+    /**
+     * 提交会员身份
+     */
+
+    @POST("user/member/apply")
+    fun submitUserIdCard(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 申请加精
+     */
+    @POST("con/posts/setGood")
+    suspend fun postSetGood(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+
 }
