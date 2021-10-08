@@ -55,5 +55,10 @@ interface ShopNetWorkApi {
     @POST("/mall/eval/create")
     suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
+    /**
+     *订单创建
+     * */
+    @POST("/mall/order/create")
+    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
 }

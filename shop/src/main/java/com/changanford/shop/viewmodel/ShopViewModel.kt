@@ -2,11 +2,13 @@ package com.changanford.shop.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.MyApp
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.tencent.mm.opensdk.utils.Log
 import kotlinx.coroutines.launch
@@ -30,12 +32,14 @@ class ShopViewModel : BaseViewModel() {
      * */
     fun getShopHomeData(){
         viewModelScope.launch {
-            fetchRequest {
+            val response=fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 KillListData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it?:"",MyApp.mContext)
             }
         }
     }
@@ -43,6 +47,8 @@ class ShopViewModel : BaseViewModel() {
      * 一级分类列表
      * */
     fun getGoodsTypeList(){
+        val typeList=ArrayList<GoodsTypesItemBean>()
+        typeList.add(GoodsTypesItemBean())
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -53,6 +59,7 @@ class ShopViewModel : BaseViewModel() {
                 goodsClassificationData.postValue(it?.dataList)
             }.onFailure {
                 Log.e("okhttp","onFailure>>>>:$it")
+                goodsClassificationData.postValue(typeList)
             }
         }
     }

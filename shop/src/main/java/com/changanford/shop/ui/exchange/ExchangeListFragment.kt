@@ -3,6 +3,7 @@ package com.changanford.shop.ui.exchange
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsList
+import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.FragmentExchangeBinding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
@@ -41,6 +42,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     }
     override fun initData() {
         binding.recyclerView.adapter=mAdapter
+        mAdapter.setEmptyView(R.layout.view_empty)
 //        adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
 //        val datas= arrayListOf<GoodsItemBean>()
 //        val title=StringBuffer("Title")

@@ -47,7 +47,7 @@ class OrderEvaluationViewModel: BaseViewModel(){
             }.onSuccess {
                 responseData.postValue(ResponseBean(true))
             }.onFailure {
-                responseData.postValue(ResponseBean(false))
+
             }
         }
     }

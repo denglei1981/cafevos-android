@@ -18,7 +18,7 @@ data class GoodsTypesItemBean(
     val img: Any? = null,
     val imgSelected: Any? = null,
     val typeId: String = "0",
-    val typeName: String = ""
+    var typeName: String = "全部"
 )
 
 class Extend
