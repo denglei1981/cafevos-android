@@ -1,8 +1,7 @@
-package com.changanford.home.news.api
+package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
-import com.changanford.home.bean.NewsListMainBean
-import com.changanford.home.bean.SpecialListMainBean
+import com.changanford.home.bean.*
 
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -43,5 +42,40 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<NewsListMainBean>
+
+
+    /**
+     *
+     * 随机推荐10个大咖
+     * /user/member/recommendBigCoffee
+     * */
+    @POST("/user/member/recommendBigCoffee")
+    suspend fun getRecommendBigShot(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<BigShotRecommendBean>>
+
+
+    /**
+     * /user/toggleFocus
+     *  关注用户/取消。
+     * */
+//    @POST("/userFans/userFollowOrCanaleFollow")
+//    suspend fun getToggleFocus(
+//        @HeaderMap headMap: Map<String, String>,
+//        @Body requestBody: RequestBody
+//    ):CommonResponse
+
+    /**
+     * /con/posts/postsList
+     *
+     * 大咖: 帖子列表
+     * */
+
+    @POST("/con/posts/postsList")
+    suspend fun getBigShotPostsList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<BigShotPostBean>>
 
 }

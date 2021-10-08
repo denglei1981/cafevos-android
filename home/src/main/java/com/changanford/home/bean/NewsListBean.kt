@@ -12,6 +12,14 @@ class NewsListMainBean(
     val total: Int,
     val totalPage: Int
 )
-
+// listdata 泛型
+class ListMainBean<T>(
+    var dataList: ArrayList<T>,
+    val extend: HomeExtendBean,
+    val pageNo: Int,
+    val pageSize: Int,
+    val total: Int,
+    val totalPage: Int
+)
 
 

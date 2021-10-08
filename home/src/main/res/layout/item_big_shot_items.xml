@@ -14,7 +14,8 @@
             android:id="@+id/layout_header"
             layout="@layout/include_home_item_header_info"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,11 +34,20 @@
             layout="@layout/include_home_bottom_count"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_content"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+        <View
+            android:id="@+id/home_v_line"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:background="@color/color_ee"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

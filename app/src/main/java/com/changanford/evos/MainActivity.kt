@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.navigation.Navigation
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
@@ -20,6 +22,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.util.permission.PermissionUtil
 import com.changanford.common.util.room.Db
@@ -274,6 +277,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
         LocationUtils.mLongitude.observe(this,{
             "$it".logD()
+        })
+    }
+    // 设置底部导航显示或者隐藏
+    private fun setHomBottomNavi(visibleState:Int){
+        binding.homeBottomNavi.visibility=visibleState
+    }
+
+    override fun observe() {
+        super.observe()
+        LiveDataBus.get().with(LIVE_OPEN_TWO_LEVEL,Boolean::class.java).observe(this, Observer {
+              if(it){
+                  setHomBottomNavi(View.GONE)
+              }else{
+                  setHomBottomNavi(View.VISIBLE)
+              }
         })
     }
 }

@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.basic.adapter.LoadSirBaseActivityBaseActivity
+import com.changanford.common.basic.LoadSirBaseActivityBaseActivity
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.utilext.StatusBarUtil
