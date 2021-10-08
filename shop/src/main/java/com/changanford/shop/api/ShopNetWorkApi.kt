@@ -48,5 +48,12 @@ interface ShopNetWorkApi {
      *秒杀提醒设置/取消
     * */
     @POST("/mall/seckills/spus/{rangeId}/noticesSetting")
-    suspend fun setKillNotices(@Path("rangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    suspend fun setKillNotices(@Path("rangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *秒订单评价
+     * */
+    @POST("/mall/eval/create")
+    suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+
+
 }

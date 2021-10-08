@@ -6,7 +6,6 @@ import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderEvaluationBinding
 import com.changanford.shop.utils.WCommonUtil.onTextChanged
@@ -24,6 +23,7 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             context.startActivity(Intent(context, OrderEvaluationActivity::class.java).putExtra("orderId",orderId))
         }
     }
+    private var orderId=""
     private val btnSubmit by lazy { binding.btnSubmit }
     @SuppressLint("SetTextI18n")
     override fun initView() {
@@ -34,9 +34,9 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             contentLength.setText("${it.contentLength}")
             btnSubmit.setBtnEnabled(it.isDataValid)
         })
-        viewModel.evalutionDataChanged(evaluationContent.text.toString(),0)
+        viewModel.evalDataChanged(evaluationContent.text.toString(),0)
         evaluationContent.onTextChanged {
-            viewModel.evalutionDataChanged(it.s.toString(),binding.ratingBar.rating.toInt())
+            viewModel.evalDataChanged(it.s.toString(),binding.ratingBar.rating.toInt())
         }
         binding.ratingBar.setOnRatingChangeListener { _, rating, _ ->
             val ratingStr= when {
@@ -45,10 +45,14 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
                 else -> getString(R.string.str_mediumReview)
             }
             binding.tvScore.text="$rating$ratingStr"
-            viewModel.evalutionDataChanged(evaluationContent.text.toString(),rating.toInt())
+            viewModel.evalDataChanged(evaluationContent.text.toString(),rating.toInt())
         }
+        viewModel.responseData.observe(this,{
+            this.finish()
+        })
         btnSubmit.setOnClickListener {
-           ToastUtils.showLongToast("是否匿名：${binding.checkBox.isChecked}>>>评分等级：${binding.ratingBar.rating}>>>评论内容：${binding.edtContent.text}",this)
+            val anonymous=if(binding.checkBox.isChecked)"YesNoNumInDBEnum.YES" else "YesNoNumInDBEnum.NO"
+            viewModel.orderEval(orderId,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
         }
     }
 

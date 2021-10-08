@@ -3,12 +3,10 @@ package com.changanford.shop.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.MyApp
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.GoodsList
 import com.changanford.common.bean.SeckillSessionsBean
 import com.changanford.common.net.*
-import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
@@ -19,7 +17,6 @@ import kotlinx.coroutines.launch
  * @Description : GoodsViewModel
  */
 class GoodsViewModel: BaseViewModel() {
-    private val body = MyApp.mContext.createHashMap()
     var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
     //商品列表
     var goodsListData =MutableLiveData<GoodsList?>()

@@ -3,10 +3,12 @@ package com.changanford.shop.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.CommonResponse
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.util.MConstant
+import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.api.ShopNetWorkApi
 import kotlinx.coroutines.launch
 
@@ -18,7 +20,7 @@ import kotlinx.coroutines.launch
 typealias Block<T> = suspend () -> T
 
 open class BaseViewModel : ViewModel() {
-
+    protected val body = MyApp.mContext.createHashMap()
     val shopApiService: ShopNetWorkApi by lazy {
         ApiClient.retrofit.create(ShopNetWorkApi::class.java)
     }
