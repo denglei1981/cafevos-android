@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/word"
-        style="@style/commonTextView.Medium"
+        style="@style/commonTextView.Normal"
         android:text="补"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
