@@ -117,6 +117,20 @@ interface CircleNetWork {
     ): CommonResponse<HomeDataListBean<HotPicItemBean>>
 
     /**
+     * 发布图片帖子
+     */
+    @POST("con/posts/addPosts")
+    suspend fun postEdit(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<String>
+    @POST("con/posts/getPlate")
+    suspend fun getPlate(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<PlateBean>
+
+    /**
      * 帖子点赞
      */
     @POST("con/posts/actionLike")

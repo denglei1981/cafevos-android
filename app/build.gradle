@@ -36,16 +36,17 @@ android {
             abiFilters "armeabi-v7a"
         }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.keyconfig
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.keyconfig
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.keyconfig
 //            minifyEnabled true
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
