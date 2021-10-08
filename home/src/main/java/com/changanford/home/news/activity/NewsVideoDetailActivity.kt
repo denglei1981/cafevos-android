@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.basic.LoadSirBaseActivityBaseActivity
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.utilext.StatusBarUtil
@@ -17,7 +17,7 @@ import com.gyf.immersionbar.ImmersionBar
 
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
-class NewsVideoDetailActivity : LoadSirBaseActivityBaseActivity<ActivityHomeNewsVideoDetailBinding, EmptyViewModel>() {
+class NewsVideoDetailActivity : BaseLoadSirActivity<ActivityHomeNewsVideoDetailBinding, EmptyViewModel>() {
     private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
     val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)

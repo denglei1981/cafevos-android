@@ -22,7 +22,7 @@ class BigShotListViewModel : BaseViewModel() {
      *  推荐的大咖
      * */
     fun getRecommendList() {
-        launch {
+        launch(false,{
             val requestBody = HashMap<String, Any>()
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
@@ -34,7 +34,7 @@ class BigShotListViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<List<BigShotRecommendBean>>(false, "")
                     bigShotsLiveData.postValue(updateUiState)
                 }
-        }
+        })
     }
 
     /**
@@ -44,7 +44,7 @@ class BigShotListViewModel : BaseViewModel() {
         if (!isLoadMore) {
             pageNo = 1
         }
-        launch {
+        launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["pageNo"] = 1
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
@@ -61,7 +61,7 @@ class BigShotListViewModel : BaseViewModel() {
                         UpdateUiState<ListMainBean<BigShotPostBean>>(false, "", isLoadMore)
                     bigShotPostLiveData.value = updateUiState
                 }
-        }
+        })
     }
 
 }

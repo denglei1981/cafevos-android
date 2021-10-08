@@ -24,7 +24,7 @@ class SpecialListViewModel : BaseViewModel() {
         if (!isLoadMore) {
             pageNo = 1
         }
-        launch {
+        launch(false,{
             val requestBody = HashMap<String, Any>()
             requestBody["pageNo"] = pageNo
             requestBody["pageSize"] =  PageConstant.DEFAULT_PAGE_SIZE_THIRTY
@@ -39,7 +39,7 @@ class SpecialListViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<SpecialListMainBean>(false, "")
                     specialListLiveData.postValue(updateUiState)
                 }
-        }
+        })
     }
 
 
