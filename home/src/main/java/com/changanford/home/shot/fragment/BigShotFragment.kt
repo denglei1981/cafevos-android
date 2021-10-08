@@ -2,6 +2,7 @@ package com.changanford.home.shot.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -11,14 +12,17 @@ import com.changanford.home.databinding.FragmentBigShotBinding
 import com.changanford.home.news.data.SpecialData
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
+import com.changanford.home.shot.request.BigShotListViewModel
 
 /**
  *  大咖
  * */
-class BigShotFragment : BaseFragment<FragmentBigShotBinding, EmptyViewModel>() {
+class BigShotFragment : BaseFragment<FragmentBigShotBinding, BigShotListViewModel>() {
 
 
-    var bigShotUserListAdapter: BigShotUserListAdapter? = null
+    val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
+          BigShotUserListAdapter()
+    }
 
 
     var bigShotPostListAdapter: BigShotPostListAdapter? = null
@@ -35,29 +39,10 @@ class BigShotFragment : BaseFragment<FragmentBigShotBinding, EmptyViewModel>() {
 
     override fun initView() {
 
-        bigShotUserListAdapter = BigShotUserListAdapter().apply {
-            addData(SpecialData())
-            addData(SpecialData())
-            addData(SpecialData())
-            addData(SpecialData())
-            addData(SpecialData())
-            addData(SpecialData())
-            addData(SpecialData())
-            setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(
-                    adapter: BaseQuickAdapter<*, *>,
-                    view: View,
-                    position: Int
-                ) {
-
-                }
-            })
-        }
         binding.recyclerViewH.adapter = bigShotUserListAdapter
         binding.recyclerViewH.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         bigShotPostListAdapter = BigShotPostListAdapter().apply {
-
             addData(SpecialData())
             addData(SpecialData())
             addData(SpecialData())
@@ -69,10 +54,26 @@ class BigShotFragment : BaseFragment<FragmentBigShotBinding, EmptyViewModel>() {
         binding.recyclerViewV.adapter = bigShotPostListAdapter
         binding.recyclerViewV.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        viewModel.getRecommendList()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.bigShotsLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                bigShotUserListAdapter.addData(it.data)
+
+
+            } else {
+
+            }
+
+        })
 
     }
 
     override fun initData() {
+
 
     }
 }

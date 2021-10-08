@@ -1,6 +1,7 @@
-package com.changanford.home.news.api
+package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
+import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.bean.NewsListMainBean
 import com.changanford.home.bean.SpecialListMainBean
 
@@ -43,5 +44,18 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<NewsListMainBean>
+
+
+    /**
+     *
+     * 随机推荐10个大咖
+     * /user/member/recommendBigCoffee
+     * */
+    @POST("/user/member/recommendBigCoffee")
+    suspend fun getRecommendBigShot(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<BigShotRecommendBean>>
+
 
 }
