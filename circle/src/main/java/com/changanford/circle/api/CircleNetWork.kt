@@ -115,4 +115,58 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<HotPicItemBean>>
+
+    /**
+     * 帖子点赞
+     */
+    @POST("con/posts/actionLike")
+    suspend fun actionLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 帖子收藏
+     */
+    @POST("con/collection/post")
+    suspend fun collectionApi(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 评论点赞
+     */
+    @POST("con/comment/actionLike")
+    suspend fun commentLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 关注或者取消关注
+     */
+    @POST("userFans/userFollowOrCanaleFollow")
+    suspend fun userFollowOrCancelFollow(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *  帖子评论
+     */
+    @POST("con/posts/addComment")
+    suspend fun addPostsComment(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 加入圈子
+     */
+    @POST("con/circle/joinCircle")
+    suspend fun joinCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

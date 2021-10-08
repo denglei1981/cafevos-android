@@ -19,6 +19,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.google.android.material.appbar.AppBarLayout
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -26,6 +27,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import kotlin.math.abs
 
 /**
  *Author lcw
@@ -54,6 +56,16 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 startARouter(ARouterCirclePath.SearchCircleActivity)
             }
         }
+        //处理滑动顶部效果
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val absOffset = abs(verticalOffset).toFloat() * 2.5F
+            //改变透明度
+            if (absOffset <= appBarLayout.height) {
+                binding.vLine.alpha = 0.5F
+            } else {
+                binding.vLine.alpha = 0F
+            }
+        })
     }
 
     private fun initTabAndViewPager() {
