@@ -152,7 +152,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             bottomView.tvTalk.setOnClickListener {
                 ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
-                        content.toast()
+                        viewModel.addPostsComment(mData.postsId, null, "0", content)
                     }
 
                 }).show()
@@ -177,6 +177,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
         }
+        binding.bottomView.run {
+            llLike.setOnClickListener {
+                viewModel.likePosts(mData.postsId)
+            }
+            llCollection.setOnClickListener {
+                viewModel.collectionApi(mData.postsId)
+            }
+        }
         commentAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 startARouter(ARouterCirclePath.AllReplyActivity)
@@ -190,6 +198,19 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         val list = arrayListOf("", "", "", "", "", "", "", "")
         commentAdapter.setItems(list)
         commentAdapter.notifyDataSetChanged()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.likePostsBean.observe(this, {
+            it.msg?.toast()
+        })
+        viewModel.collectionPostsBean.observe(this, {
+            it.msg?.toast()
+        })
+        viewModel.addCommendBean.observe(this, {
+            it.msg?.toast()
+        })
     }
 
 }
