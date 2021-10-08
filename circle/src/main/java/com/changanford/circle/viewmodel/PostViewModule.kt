@@ -14,7 +14,7 @@ class PostViewModule :BaseViewModel(){
     var postsuccess = MutableLiveData<String>()
     val plateBean = MutableLiveData<PlateBean>()
       fun postEdit(params: HashMap<String,Any>){
-          launch {
+         launch (block = {
               val body = params
 
               val rKey = getRandomKey()
@@ -25,14 +25,14 @@ class PostViewModule :BaseViewModel(){
                   .onFailure {
 
                   }
-          }
+          })
       }
 
     /**
      * 获取发帖模块
      */
     fun getPlate(){
-        launch {
+        launch(block =  {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getPlate(body.header(rKey),body.body(rKey))
@@ -42,6 +42,6 @@ class PostViewModule :BaseViewModel(){
                 .onFailure {
 
                 }
-        }
+        })
     }
 }

@@ -104,21 +104,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
             .observe(this,
                 Observer {
-                    if (buttomTypeAdapter.data.size > 1 && buttomTypeAdapter.getItem(1).itemType == 2) {
-                        buttomTypeAdapter.getItem(1).apply {
-                            content = it.name
-                            visibility = 1
-                            itemType = 2
-                        }
-                        buttomTypeAdapter.notifyItemChanged(1)
-                    } else {
-                        if (buttomTypeAdapter.data.size > 1) {
-                            buttomTypeAdapter.addData(1, ButtomTypeBean(it.name, 1, 2))
-                        } else {
-                            buttomTypeAdapter.addData(ButtomTypeBean(it.name, 1, 2))
-                        }
-                    }
-
+                    buttomTypeAdapter.setData(2,ButtomTypeBean(it.name, 1, 2))
                 })
     }
 
@@ -129,21 +115,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CIRCLECHOOSE, String::class.java)
             .observe(this, Observer {
-                if (buttomTypeAdapter.data.size > 2 && buttomTypeAdapter.getItem(2).itemType == 3) {
-                    buttomTypeAdapter.getItem(2).apply {
-                        content = it
-                        itemType = 3
-                        visibility = 1
-                    }
-                    buttomTypeAdapter.notifyItemChanged(2)
-                } else {
-                    if (buttomTypeAdapter.data.size > 2) {
-
-                        buttomTypeAdapter.addData(2, ButtomTypeBean(it, 1, 3))
-                    } else {
-                        buttomTypeAdapter.addData(ButtomTypeBean(it, 1, 3))
-                    }
-                }
+                buttomTypeAdapter.setData(3,ButtomTypeBean(it, 1, 3))
             })
 
         viewModel.plateBean.observe(this, Observer {
@@ -160,15 +132,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
                 it.location.latitude.toString().toast()
-                if (buttomTypeAdapter.data.size > 4 && buttomTypeAdapter.getItem(4).itemType == 4) {
-                    buttomTypeAdapter.getItem(4).apply {
-                        content = it.name
-                        itemType = 4
-                        visibility = 1
-                    }
-                } else {
-                    buttomTypeAdapter.addData(ButtomTypeBean(it.name, 1, 4))
-                }
+                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
+
             })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
@@ -202,7 +167,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
         buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.buttom_iv_close) {
-                buttomTypeAdapter.remove(position)
+                buttomTypeAdapter.setData(
+                    position,
+                    ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
+                )
             }
 
         }
@@ -220,7 +188,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
                         HomeBottomDialog.OnClickItemListener {
                         override fun onClickItem(position: Int, str: String) {
-                            buttomTypeAdapter.setData(0, ButtomTypeBean(str, 1, 1))
+                            buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
+                            buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                             str.toast()
                         }
                     }).show()
@@ -371,7 +340,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         binding.bottom.typerec.adapter = buttomTypeAdapter
-        buttomTypeAdapter.addData(ButtomTypeBean("选择模块", 1, 0))
+        buttomTypeAdapter.addData(
+            arrayListOf(
+                ButtomTypeBean("选择模块", 1, 0),
+                ButtomTypeBean("", 0, 1),
+                ButtomTypeBean("", 0, 2),
+                ButtomTypeBean("", 0, 3),
+                ButtomTypeBean("", 0, 4)
+            )
+        )
         binding.bottom.labelrec.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }

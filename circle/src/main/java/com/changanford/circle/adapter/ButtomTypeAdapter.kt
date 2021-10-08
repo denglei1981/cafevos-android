@@ -1,6 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -18,7 +19,15 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
         addChildClickViewIds(R.id.buttom_iv_close)
     }
     override fun convert(holder: BaseViewHolder, item: ButtomTypeBean) {
-
+        if (item.visibility==0){
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams.width = 0
+            holder.itemView.layoutParams.height=0
+        }else{
+            var params = ViewGroup.LayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT))
+            holder.itemView.layoutParams =params
+            holder.itemView.visibility = View.VISIBLE
+        }
         when (holder.itemViewType) {
             0 -> {
                 holder.getView<TextView>(R.id.tv_nomal).text=item.content
@@ -30,11 +39,8 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
                 holder.getView<TextView>(R.id.tv_other).text=item.content
             }
         }
-        if (item.visibility==0){
-            holder.itemView.visibility = View.GONE
-        }else{
-            holder.itemView.visibility = View.VISIBLE
-        }
+
+
 
     }
 
