@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.databinding.FragmentBigShotBinding
 import com.changanford.home.news.data.SpecialData
@@ -17,7 +18,7 @@ import com.changanford.home.shot.request.BigShotListViewModel
 /**
  *  大咖
  * */
-class BigShotFragment : BaseFragment<FragmentBigShotBinding, BigShotListViewModel>() {
+class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListViewModel>() {
 
 
     val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
@@ -39,6 +40,7 @@ class BigShotFragment : BaseFragment<FragmentBigShotBinding, BigShotListViewMode
 
     override fun initView() {
 
+        setLoadSir(binding.refreshLayout)
         binding.recyclerViewH.adapter = bigShotUserListAdapter
         binding.recyclerViewH.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
@@ -74,6 +76,10 @@ class BigShotFragment : BaseFragment<FragmentBigShotBinding, BigShotListViewMode
 
     override fun initData() {
 
+
+    }
+
+    override fun onRetryBtnClick() {
 
     }
 }

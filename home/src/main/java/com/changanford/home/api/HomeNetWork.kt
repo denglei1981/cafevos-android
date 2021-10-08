@@ -58,4 +58,14 @@ interface HomeNetWork {
     ): CommonResponse<List<BigShotRecommendBean>>
 
 
+    /**
+     * /user/toggleFocus
+     *  关注用户/取消。
+     * */
+//    @POST("/userFans/userFollowOrCanaleFollow")
+//    suspend fun getToggleFocus(
+//        @HeaderMap headMap: Map<String, String>,
+//        @Body requestBody: RequestBody
+//    ):CommonResponse
+
 }
