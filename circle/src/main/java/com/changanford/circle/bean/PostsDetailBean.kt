@@ -1,6 +1,7 @@
 package com.changanford.circle.bean
 
 import com.changanford.common.bean.HomeAuthorsBean
+import com.changanford.common.bean.Imag
 
 /**
  * @Author: hpb
@@ -14,7 +15,7 @@ data class PostsDetailBean(
     var commentCount: Int,
     val content: String?,
     val createTime: Long,
-    val imageList: List<String>?,
+    val imageList: List<ImageList>?,
     val isCheck: Int,
     var isCollection: Int,
     val isDeleted: Int,
@@ -61,4 +62,8 @@ data class PostsDetailBean(
     val province: String,
     val cityCode: String,
     val city: String
+)
+
+data class ImageList(
+    val imgUrl:String?=""
 )

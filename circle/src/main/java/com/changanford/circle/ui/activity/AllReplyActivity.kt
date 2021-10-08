@@ -20,7 +20,7 @@ import com.changanford.common.util.AppUtils
 class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel>() {
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(this)
+        PostDetailsCommentAdapter()
     }
 
     override fun initView() {
@@ -37,8 +37,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
     }
 
     override fun initData() {
-        val list = arrayListOf("", "", "", "", "", "", "", "")
-        commentAdapter.setItems(list)
-        commentAdapter.notifyDataSetChanged()
+//        val list = arrayListOf("", "", "", "", "", "", "", "")
+//        commentAdapter.setItems(list)
+//        commentAdapter.notifyDataSetChanged()
     }
 }

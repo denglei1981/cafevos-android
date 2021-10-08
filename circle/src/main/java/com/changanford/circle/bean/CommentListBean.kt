@@ -17,7 +17,7 @@ data class CommentListBean(
     val id: String,
     var isLike: Int,
     val headFrameImage: String,
-    var likesCount: Int,
+    var likesCount: String,
     val nickname: String,
     val phoneModel: String,
     val role: String,

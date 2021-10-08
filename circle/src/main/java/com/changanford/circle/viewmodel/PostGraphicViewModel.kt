@@ -3,6 +3,8 @@ package com.changanford.circle.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.baidu.mapapi.search.core.BusInfo
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.CommentListBean
+import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
@@ -21,6 +23,7 @@ class PostGraphicViewModel : BaseViewModel() {
     val commentLikeBean = MutableLiveData<CommonResponse<Any>>()
     val followBean = MutableLiveData<CommonResponse<Any>>()
     val addCommendBean = MutableLiveData<CommonResponse<Any>>()
+    val commendBean = MutableLiveData<HomeDataListBean<CommentListBean>>()
 
     fun getData(postsId: String) {
         launch(block = {
@@ -36,7 +39,7 @@ class PostGraphicViewModel : BaseViewModel() {
                     it?.toast()
                     LiveDataBus.get().with(CircleLiveBusKey.CLOSE_POST_DETAILS).postValue(false)
                 }
-        },error = {
+        }, error = {
             it.message?.toast()
         })
     }
@@ -54,7 +57,7 @@ class PostGraphicViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>()
                 .getCommentList(body.header(rKey), body.body(rKey))
                 .onSuccess {
-
+                    commendBean.value = it
                 }
                 .onFailure { }
         })
