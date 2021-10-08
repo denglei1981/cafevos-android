@@ -16,8 +16,6 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.SelectMapDialog
-import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.bus.LiveDataBusKey.MINE_FANS_TYPE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
@@ -140,11 +138,12 @@ class JumpUtils {
 //                startARouter(ARouterHomePath.InfoDetailActivity, bundle)
             }
             3 -> {//商品详情
-
                 if (value != null) {
-                    bundle.putInt("spuId", value.toIntOrNull() ?: 0)
+                    val json = JSON.parseObject(value)
+                    bundle.putString("spuId", json.getString("spuId"))
+                    bundle.putString("spuPageType", json.getString("spuPageType"))
+                    startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
                 }
-                startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
             }
             4 -> {//帖子详情
                 bundle.putString("postsId", value)

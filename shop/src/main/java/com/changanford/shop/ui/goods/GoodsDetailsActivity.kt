@@ -1,16 +1,17 @@
 package com.changanford.shop.ui.goods
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
@@ -30,11 +31,14 @@ import kotlin.math.roundToInt
 @Route(path = ARouterShopPath.ShopGoodsActivity)
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     companion object{
-        fun start(context: Context,goodsId:String) {
-            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("goodsId",goodsId))
+        fun start(context: Context?=MyApp.mContext, spuId:String, spuPageType:String?="NOMROL") {
+            JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
+//            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("spuId",spuId)
+//                .putExtra("spuPageType",spuPageType))
         }
     }
-    private var spuId=0
+    private var spuId:String?="0"//商品ID
+    private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
@@ -47,6 +51,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
     private var isCollection=false //是否收藏
+
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.inComment.layoutComment.y-topBarH
@@ -58,7 +63,12 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
-        Log.e("wenke","spuId:${intent.getIntExtra("spuId",-1)}")
+        spuId=intent.getStringExtra("spuId")
+        if(null==spuId){
+            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
+            this.finish()
+        }
+        spuPageType=intent.getStringExtra("spuPageType")?:"NOMROL"
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
@@ -77,7 +87,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             mAdapter.setList(it.imgs)
             control.bindingData(it)
         })
-        viewModel.queryGoodsDetails("$spuId")
+        viewModel.queryGoodsDetails(spuId!!,spuPageType)
 
     }
     fun onClick(v:View){
