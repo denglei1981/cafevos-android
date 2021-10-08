@@ -308,7 +308,7 @@ interface NetWorkApi {
      * 绑定手机
      */
     @POST("login/bindPhone")
-    fun bindMobile(
+    suspend fun bindMobile(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<LoginBean>
@@ -755,7 +755,6 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
-
 
 
 }

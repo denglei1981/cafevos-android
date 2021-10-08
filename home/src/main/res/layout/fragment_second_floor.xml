@@ -75,9 +75,21 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/home_tab"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabTextColor="@color/color_0817" />
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    app:tabBackground="@color/white"
+                    app:tabIndicator="@drawable/shape_home_tab_indicator"
+                    app:tabIndicatorHeight="8dp"
+                    app:tabMode="scrollable"
+                    app:tabPadding="0dp"
+                    app:tabPaddingBottom="0dp"
+                    app:tabPaddingEnd="0dp"
+                    app:tabPaddingStart="0dp"
+                    app:tabPaddingTop="0dp"
+                    app:tabRippleColor="@color/transparent"
+                    app:tabSelectedTextColor="@color/blue_tab"
+                    app:tabTextColor="@color/black"
+                    />
 
             </com.google.android.material.appbar.AppBarLayout>
 

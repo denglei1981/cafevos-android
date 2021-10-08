@@ -17,8 +17,10 @@ import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
 import com.luck.picture.lib.entity.LocalMedia
+import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -562,17 +564,20 @@ class SignViewModel : ViewModel() {
     }
 
 
-    suspend fun bindMobile(phone: String, smsCode: String) {
-        var smsbind = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = phone
-            body["smsCode"] = smsCode
-            var rkey = getRandomKey()
-            apiService.bindMobile(body.header(rkey), body.body(rkey))
-        }
-        if (smsbind.code == 0) {
-            smsbind.data?.let {
+    fun bindMobile(phone: String, smsCode: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = phone
+                body["smsCode"] = smsCode
+                var rkey = getRandomKey()
+                apiService.bindMobile(body.header(rkey), body.body(rkey))
+            }.onSuccess {
                 loginSuccess(it)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
             }
         }
     }
@@ -615,14 +620,16 @@ class SignViewModel : ViewModel() {
     }
 
     var bindAccount: MutableLiveData<ArrayList<BindAuthBeanItem>> = MutableLiveData()
-    suspend fun bindAccount() {
-        var account = fetchRequest {
-            var body = HashMap<String, String>()
-            var rKey = getRandomKey()
-            apiService.queryBindMobileList(body.header(rKey), body.body(rKey))
-        }
-        if (account.code == 0) {
-            bindAccount.postValue(account.data)
+    fun bindAccount() {
+        viewModelScope.launch {
+            var account = fetchRequest {
+                var body = HashMap<String, String>()
+                var rKey = getRandomKey()
+                apiService.queryBindMobileList(body.header(rKey), body.body(rKey))
+            }
+            if (account.code == 0) {
+                bindAccount.postValue(account.data)
+            }
         }
     }
 
@@ -634,18 +641,20 @@ class SignViewModel : ViewModel() {
      */
     var bindOtherAccount: MutableLiveData<String> = MutableLiveData()
 
-    suspend fun bindOtherAuth(type: String, code: String) {
-        var otherAuth = fetchRequest {
-            var body = HashMap<String, String>()
-            body["type"] = type
-            body["code"] = code
-            var rkey = getRandomKey()
-            apiService.bindOtherAuth(body.header(rkey), body.body(rkey))
-        }
-        if (otherAuth.code == 0) {
-            bindOtherAccount.postValue("bindSuccess")
-        } else {
-            bindOtherAccount.postValue(otherAuth.msg)
+    fun bindOtherAuth(type: String, code: String) {
+        viewModelScope.launch {
+            var otherAuth = fetchRequest {
+                var body = HashMap<String, String>()
+                body["type"] = type
+                body["code"] = code
+                var rkey = getRandomKey()
+                apiService.bindOtherAuth(body.header(rkey), body.body(rkey))
+            }
+            if (otherAuth.code == 0) {
+                bindOtherAccount.postValue("bindSuccess")
+            } else {
+                bindOtherAccount.postValue(otherAuth.msg)
+            }
         }
     }
 

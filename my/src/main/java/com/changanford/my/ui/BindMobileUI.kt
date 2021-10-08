@@ -3,15 +3,19 @@ package com.changanford.my.ui
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.UserManger
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiBindMobileBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
+import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -31,7 +35,8 @@ import java.util.concurrent.TimeUnit
 class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
     override fun initView() {
-        StatusBarUtil.setTranslucentForImageView(this,null)
+//        StatusBarUtil.setTranslucentForImageView(this,null)
+        StatusBarUtil.setAndroidNativeLightStatusBar(this, false)
 
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
@@ -50,9 +55,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                lifecycleScope.launch {
-                    viewModel.getSmsCode(binding.etLoginMobile.text.toString())
-                }
+                viewModel.smsCacLogin(binding.etLoginMobile.text.toString())
             }, {
 
             })
@@ -60,14 +63,12 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnLogin.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                lifecycleScope.launch {
-                    viewModel.bindMobile(
-                        binding.etLoginMobile.text.toString(),
-                        binding.etLoginSmsCode.text.toString(),
-                    )
-                }
+                viewModel.bindMobile(
+                    binding.etLoginMobile.text.toString(),
+                    binding.etLoginSmsCode.text.toString(),
+                )
             }, {
-
+                it?.message?.logE()
             })
 
         viewModel.smsSuccess.observe(this, androidx.lifecycle.Observer {
@@ -84,6 +85,17 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                     }
                 }
             })
+        binding.btnNoBind.setOnClickListener {
+            back()
+        }
+    }
+
+
+    override fun back() {
+        super.back()
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .postValue(UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE)
     }
 
 

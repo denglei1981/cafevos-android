@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_pic"
         android:layout_marginTop="8dp"
-        android:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与荒无之地的寂静仅一步之遥。" />
+        tools:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与荒无之地的寂静仅一步之遥。" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_time"
@@ -46,7 +46,7 @@
         android:id="@+id/iv_pic"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="335:150"
         app:layout_constraintEnd_toEndOf="parent"

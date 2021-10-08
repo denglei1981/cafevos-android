@@ -37,10 +37,10 @@
 
             <ImageView
                 android:id="@+id/iv_vip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/icon_home_big_vip"
+                tools:src="@drawable/icon_home_big_vip"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_head"
                 app:layout_constraintCircle="@id/iv_head"
                 app:layout_constraintCircleAngle="120"
