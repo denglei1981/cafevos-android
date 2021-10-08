@@ -85,6 +85,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, ShopViewModel>(), O
         })
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getShopHomeData()
         val currentItem=binding.viewpager.currentItem
         fragments[currentItem].startRefresh()
     }

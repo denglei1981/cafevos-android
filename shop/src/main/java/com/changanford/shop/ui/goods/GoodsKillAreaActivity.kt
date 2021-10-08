@@ -58,7 +58,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             onSelectBackListener(0,it.seckillSessions[0].seckillTimeRanges)
         })
         viewModel.killGoodsListData.observe(this,{
-            mAdapter.setList(it?.dataList)
+            val dataList=it?.dataList
+            if(1==pageNo)mAdapter.setList(dataList)
+            else if(dataList!=null)mAdapter.addData(dataList)
             binding.smartRl.finishRefresh()
             binding.smartRl.finishLoadMore()
         })

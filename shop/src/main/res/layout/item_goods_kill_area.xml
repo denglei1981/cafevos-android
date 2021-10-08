@@ -105,6 +105,7 @@
                 android:layout_height="wrap_content"
                 app:start_txt="@string/str_limited"
                 app:end_txt="@string/str_a"
+                android:text="@{model.stockPlusSalesCount}"
                 tools:text="限量200件"
                 android:textColor="@color/color_99"
                 android:textSize="@dimen/sp_12" />

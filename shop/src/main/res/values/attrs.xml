@@ -83,6 +83,7 @@
         <attr name="typeface" format="string" />
         <attr name="start_txt" format="string" />
         <attr name="end_txt" format="string" />
+        <attr name="set_int_txt" format="integer" />
         <!--        0x10 中划线-->
         <attr name="text_flags" format="integer" />
     </declare-styleable>

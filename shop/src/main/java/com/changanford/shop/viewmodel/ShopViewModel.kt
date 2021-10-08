@@ -32,7 +32,7 @@ class ShopViewModel : BaseViewModel() {
      * */
     fun getShopHomeData(){
         viewModelScope.launch {
-            val response=fetchRequest {
+            fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))

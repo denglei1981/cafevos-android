@@ -40,6 +40,12 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun initView(){
         if(TextUtils.isEmpty(text))setText(context.getString(R.string.str_text))
     }
+    fun setText(str:Int?){
+        setText("$str")
+    }
+    fun setText(str:Any?){
+        setText("$str")
+    }
     fun setText(str:String?){
         if(str==null)return
         text=if(startText!=null&&endText!=null) "$startText$str$endText"

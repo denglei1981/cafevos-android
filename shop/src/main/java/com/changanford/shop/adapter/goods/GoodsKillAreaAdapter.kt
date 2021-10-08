@@ -1,6 +1,7 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
+import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -25,6 +26,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             dataBinding.model=item
             dataBinding.executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),dataBinding.imgCover)
+            dataBinding.tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
             dataBinding.btnStates.setStates(getKillStates(item))
             dataBinding.btnStates.setOnClickListener {
                 clickBtn(dataBinding,item)
@@ -38,10 +40,10 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
         return "${sales/stockNow*100}"
     }
     /**
-     * isSettedNotice 是否已提醒,可用值:YesNoCodeEnum.NO,YesNoCodeEnum.YES
-     * timeState 秒杀状态,可用值:TimeStateEnum.NOT_BEGIN(code=NOT_BEGIN, dbCode=0, message=未开始),
-     *                          TimeStateEnum.ON_GOING(code=ON_GOING, dbCode=1, message=进行中),
-     *                          TimeStateEnum.ENDED(code=ENDED, dbCode=2, message=已结束)
+     * isSettedNotice 是否已提醒,可用值:NO,YES
+     * timeState 秒杀状态,可用值:NOT_BEGIN(code=NOT_BEGIN, dbCode=0, message=未开始),
+     *                          ON_GOING(code=ON_GOING, dbCode=1, message=进行中),
+     *                          ENDED(code=ENDED, dbCode=2, message=已结束)
     * */
     //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
     private fun getKillStates(item: GoodsItemBean):Int{
@@ -49,10 +51,10 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
         val timeState=item.timeState
         //库存
         val stockNow=item.stockNow
-        if("TimeStateEnum.ON_GOING"==timeState){
+        if("ON_GOING"==timeState){
             killStates=if(stockNow<1)1 else 0
-        }else if("TimeStateEnum.NOT_BEGIN"==timeState){
-            killStates=if(item.isSettedNotice=="YesNoCodeEnum.NO")3 else 4
+        }else if("NOT_BEGIN"==timeState){
+            killStates=if(item.isSettedNotice=="NO")3 else 4
         }
         item.killStates=killStates
         return killStates
@@ -67,7 +69,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
                 else viewModel.setKillNotices("SET",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
                     override fun onFinish(code: Int) {
                         if(0==code){
-                            item.isSettedNotice="YesNoCodeEnum.YES"
+                            item.isSettedNotice="YES"
                             dataBinding.btnStates.setStates(getKillStates(item))
                             ToastUtils.showLongToast(context.getString(R.string.prompt_set_setNotic),context)
                         }
@@ -78,7 +80,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             4->viewModel.setKillNotices("CANCEL",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
                 override fun onFinish(code: Int) {
                     if(0==code){
-                        item.isSettedNotice="YesNoCodeEnum.NO"
+                        item.isSettedNotice="NO"
                         dataBinding.btnStates.setStates(getKillStates(item))
                         ToastUtils.showLongToast(context.getString(R.string.prompt_cancel_setNotic),context)
                     }

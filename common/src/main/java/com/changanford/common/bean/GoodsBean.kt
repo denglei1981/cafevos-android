@@ -62,14 +62,14 @@ data class GoodsItemBean(
     val spuDetail: Any? = null,
     val spuId: String = "0",
     val spuName: String = "",
-    val fb: Int = 0,
-    val fbOfLine: Int = 0,
+    val fb: Int? = 0,
+    val fbOfLine: Int? = 0,
     val imgUrl: String = "",
     var isSettedNotice: String = "",
     val mallMallSpuSeckillRangeId: String = "0",
     val salesCount: Int = 0,
     val stockNow: Int = 0,
-    val stockPlusSalesCount: Int = 0,
+    val stockPlusSalesCount: Int? = 0,
     var timeState: String = "",
     var stockProportion:String="0",//库存百分比 0-100
     var killStates:Int=0//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒

@@ -46,7 +46,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private var oldScrollY=0
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
-    private var isCoolection=false //是否收藏
+    private var isCollection=false //是否收藏
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.inComment.layoutComment.y-topBarH
@@ -153,7 +153,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
 
                 binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back)
                 binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share)
-                binding.inHeader.imgCollection.setImageResource(if(isCoolection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_0)
+                binding.inHeader.imgCollection.setImageResource(if(isCollection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_0)
             }else{
                 topBarBg.alpha=255
                 tabLayout.alpha=1f
@@ -170,7 +170,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share_black)
 
                 binding.inHeader.imgCollection.background.alpha=0
-                binding.inHeader.imgCollection.setImageResource(if(isCoolection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_00)
+                binding.inHeader.imgCollection.setImageResource(if(isCollection)R.mipmap.shop_collect_1 else R.mipmap.shop_collect_00)
             }
         }
     }
