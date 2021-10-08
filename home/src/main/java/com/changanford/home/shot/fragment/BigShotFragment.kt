@@ -1,20 +1,13 @@
 package com.changanford.home.shot.fragment
-
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.databinding.FragmentBigShotBinding
 import com.changanford.home.news.data.SpecialData
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
 import com.changanford.home.shot.request.BigShotListViewModel
-
 /**
  *  大咖
  * */
@@ -22,7 +15,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
 
 
     val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
-          BigShotUserListAdapter()
+        BigShotUserListAdapter()
     }
 
 
@@ -67,9 +60,9 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
 
 
             } else {
-
+                binding.refreshLayout.finishRefresh()
+                showFailure(it.message)
             }
-
         })
 
     }

@@ -6,14 +6,16 @@ import com.changanford.common.net.*
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.bean.BigShotRecommendBean
+import com.changanford.home.bean.ListMainBean
 import com.changanford.home.bean.NewsListMainBean
 
 
 class BigShotListViewModel : BaseViewModel() {
     val bigShotsLiveData = MutableLiveData<UpdateUiState<List<BigShotRecommendBean>>>() // 推荐的大咖
 
-    val newsListLiveData = MutableLiveData<UpdateUiState<NewsListMainBean>>() // 专题列表 轮播图。
+    val bigShotPostLiveData = MutableLiveData<UpdateUiState<ListMainBean<BigShotPostBean>>>() //
     var pageNo: Int = 1
 
     /**
@@ -36,10 +38,9 @@ class BigShotListViewModel : BaseViewModel() {
     }
 
     /**
-     *  新闻列表
+     * 获取 大咖帖子列表
      * */
-
-    fun getNewsList(isLoadMore: Boolean) {
+    fun getBigShotPost(isLoadMore: Boolean) {
         if (!isLoadMore) {
             pageNo = 1
         }
@@ -49,14 +50,16 @@ class BigShotListViewModel : BaseViewModel() {
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
-                .getFindNews(requestBody.header(rkey), requestBody.body(rkey))
+                .getBigShotPostsList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<NewsListMainBean>(it, true, isLoadMore, "")
-                    newsListLiveData.value = updateUiState
+                    val updateUiState =
+                        UpdateUiState<ListMainBean<BigShotPostBean>>(it, true, isLoadMore, "")
+                    bigShotPostLiveData.value = updateUiState
                     pageNo += 1
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<NewsListMainBean>(false, "", isLoadMore)
-                    newsListLiveData.value = updateUiState
+                    val updateUiState =
+                        UpdateUiState<ListMainBean<BigShotPostBean>>(false, "", isLoadMore)
+                    bigShotPostLiveData.value = updateUiState
                 }
         }
     }
