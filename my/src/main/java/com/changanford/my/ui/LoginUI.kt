@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
@@ -14,6 +15,7 @@ import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
+import com.changanford.my.R
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement
 import com.changanford.my.viewmodel.SignViewModel
@@ -184,7 +186,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this, androidx.lifecycle.Observer {
                 when (it) {
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS,
+                    UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
                         finish()
                     }
                     UserManger.UserLoginStatus.USE_UNBIND_MOBILE -> {

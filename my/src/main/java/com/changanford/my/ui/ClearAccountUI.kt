@@ -16,7 +16,9 @@ import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountVerifyBinding
 import com.changanford.my.databinding.UiClearAccountConBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.jakewharton.rxbinding4.widget.textChanges
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import io.reactivex.Observable
 import kotlinx.coroutines.launch
 
 /**
@@ -29,6 +31,7 @@ import kotlinx.coroutines.launch
 @Route(path = ARouterMyPath.MineCancelAccountUI)
 class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
     var isCondition = true //是否满足全部条件
+    var isChecked: Boolean = false
 
     val clearAdapter: ClearAccountAdapter by lazy {
         ClearAccountAdapter()
@@ -47,6 +50,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
                     return@forEach
                 }
             }
+            binding.btnClearAccount.isEnabled = isChecked && isCondition
         })
 
         binding.protocol.setOnClickListener {
@@ -54,6 +58,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
         }
 
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
+            this.isChecked = isChecked
             binding.btnClearAccount.isEnabled = isChecked && isCondition
         }
 

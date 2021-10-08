@@ -21,7 +21,7 @@ object UserManger {
      * 用户登录状态
      */
     public enum class UserLoginStatus {
-        USER_LOGIN_SUCCESS, USER_LOGIN_OUT, USE_LOGIN_FAIL, USE_UNBIND_MOBILE
+        USER_LOGIN_SUCCESS, USER_LOGIN_OUT, USE_UNBIND_MOBILE, USE_CANCEL_BIND_MOBILE
     }
 
     fun isLogin(): Boolean = MConstant.token.isNotEmpty()
@@ -30,7 +30,11 @@ object UserManger {
         //把用户基本信息写入数据库
         loginBean?.let {
             var sysUserInfoBean =
-                SysUserInfoBean(loginBean.userId, loginBean.phone, loginBean.token)
+                SysUserInfoBean(
+                    it.userId,
+                    if (it.phone?.isNullOrEmpty()) "" else it.phone,
+                    it.token
+                )
             UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
                 .insert(sysUserInfoBean)
         }

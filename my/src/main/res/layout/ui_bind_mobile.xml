@@ -100,12 +100,13 @@
                     android:layout_marginStart="@dimen/dp_47"
                     android:layout_marginTop="@dimen/dp_20"
                     android:layout_marginEnd="@dimen/dp_47"
-                    android:text="登录/注册"
+                    android:text="立即绑定"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_login_sms_code" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_no_bind"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_48"
                     android:layout_marginStart="@dimen/dp_47"

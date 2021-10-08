@@ -19,6 +19,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -31,6 +32,8 @@ import org.json.JSONObject
  */
 @Route(path = ARouterMyPath.AccountSafeUI)
 class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
+
+    private var bindNum: HashMap<String, Boolean> = HashMap() //绑定数量
 
     var qqCallback = object : IUiListener {
         override fun onComplete(p0: Any?) {
@@ -76,6 +79,7 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
 
         viewModel.bindAccount.observe(this, Observer {
             it?.forEach { bean ->
+                bindNum[bean.type] = bean.bind
                 when (bean.type) {
                     "weixin" -> {
                         binding.safeWxNum.text = if (bean.bind) "已绑定" else "未绑定"
@@ -93,8 +97,8 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
             }
         })
 
-        UserManger.getSysUserInfo()?.let {
-            binding.safeIdNum.text = it.uid
+        binding.setMobile.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
         }
 
         binding.clearAccount.paint.flags = Paint.UNDERLINE_TEXT_FLAG
@@ -132,8 +136,13 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         binding.safeQq.setOnClickListener {
             type = 1
             if (binding.safeQqNum.isSelected) {
-                bindType = "qq"
-                pop.showPopupWindow()
+                if (isCancelBind()) {
+                    showToast("未满足解绑条件")
+                } else {
+                    bindType = "qq"
+                    pop.showPopupWindow()
+                }
+
             } else {
                 tencent.login(this, "all", qqCallback)
             }
@@ -143,8 +152,12 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         binding.safeWx.setOnClickListener {
             type = 2
             if (binding.safeWxNum.isSelected) {
-                bindType = "weixin"
-                pop.showPopupWindow()
+                if (isCancelBind()) {
+                    showToast("未满足解绑条件")
+                } else {
+                    bindType = "weixin"
+                    pop.showPopupWindow()
+                }
             } else {
                 //产生6位数随机数为例
                 ConfigUtils.NUM = ((Math.random() * 9 + 1) * 100000).toString()
@@ -158,8 +171,12 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         //apple
         binding.safeApple.setOnClickListener {
             if (binding.safeAppleNum.isSelected) {
-                bindType = "apple"
-                pop.showPopupWindow()
+                if (isCancelBind()) {
+                    showToast("未满足解绑条件")
+                } else {
+                    bindType = "apple"
+                    pop.showPopupWindow()
+                }
             } else {
                 binding.safeAppleNum.isSelected = false
                 showToast("当前系统版本暂不支持绑定苹果账号")
@@ -172,13 +189,32 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
     }
 
     fun bindMobile(type: String, code: String) {
-        lifecycleScope.launch {
-            viewModel.bindOtherAuth(type, code)
+        viewModel.bindOtherAuth(type, code)
+    }
+
+    private fun isCancelBind(): Boolean {
+        var num: Int = 0
+        bindNum.forEach {
+            if (it.value) {
+                num++
+            }
         }
+        //只有一个绑定，而且手机号未绑定
+        return num == 1 && binding.setMobile.isEnabled
     }
 
     override fun initData() {
-        lifecycleScope.launch { viewModel.bindAccount() }
+        viewModel.bindAccount()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        UserManger.getSysUserInfo()?.let {
+            binding.safeIdNum.text = it.uid
+            var mobile = it.mobile
+            binding.safeMobileNum.text = if (mobile.isNullOrEmpty()) "未绑定" else mobile
+            binding.setMobile.isEnabled = mobile.isNullOrEmpty()
+        }
     }
 
 
