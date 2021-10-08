@@ -19,7 +19,7 @@ class SearchTopicViewModel:BaseViewModel() {
     val topicBean = MutableLiveData<HomeDataListBean<HotPicItemBean>>()
 
     fun getData(searchKey:String,page:Int ){
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -32,6 +32,6 @@ class SearchTopicViewModel:BaseViewModel() {
                     topicBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 }

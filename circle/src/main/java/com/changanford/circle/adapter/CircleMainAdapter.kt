@@ -47,11 +47,13 @@ class CircleMainAdapter(
     private val tabList = listOf("推荐", "最新")
     private val topTabList = listOf("地域", "兴趣")
 
-    private val circleAdapter by lazy {
+    lateinit var topBinding: ItemCircleMainTopBinding
+
+    val circleAdapter by lazy {
         CircleMainCircleAdapter(context)
     }
 
-    private val topicAdapter by lazy {
+    val topicAdapter by lazy {
         CircleMainTopicAdapter(context)
     }
 
@@ -59,6 +61,7 @@ class CircleMainAdapter(
         when (viewType) {
             0 -> {
                 val binding = vdBinding as ItemCircleMainTopBinding
+                topBinding = binding
                 val circleList = arrayListOf("", "", "", "", "", "", "", "", "", "")
                 circleAdapter.setItems(circleList)
                 binding.ryCircle.adapter = circleAdapter

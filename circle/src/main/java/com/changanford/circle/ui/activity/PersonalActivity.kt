@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.PersonalAdapter
 import com.changanford.circle.databinding.ActivityPersonalBinding
 import com.changanford.circle.viewmodel.PersonalViewModel
@@ -11,7 +12,7 @@ import com.changanford.common.util.AppUtils
 /**
  *Author lcw
  *Time on 2021/9/22
- *Purpose
+ *Purpose 成员列表
  */
 @Route(path = ARouterCirclePath.PersonalActivity)
 class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel>() {

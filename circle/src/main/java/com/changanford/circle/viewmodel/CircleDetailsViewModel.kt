@@ -25,7 +25,7 @@ class CircleDetailsViewModel : BaseViewModel() {
     val circleDetailsBean = MutableLiveData<CircleDetailBean>()
 
     fun getData(viewType: Int, page: Int) {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -38,11 +38,11 @@ class CircleDetailsViewModel : BaseViewModel() {
                     circleBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 
     fun getListData(viewType: Int, topicId: String, circleId: String,page: Int) {
-        launch {
+        launch (block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -61,11 +61,11 @@ class CircleDetailsViewModel : BaseViewModel() {
                     listBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 
     fun getCircleDetails(circleId: String) {
-        launch {
+        launch(block ={
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId
             val rKey = getRandomKey()
@@ -74,6 +74,6 @@ class CircleDetailsViewModel : BaseViewModel() {
                     circleDetailsBean.value = it
                 }
                 .onFailure { }
-        }
+        } )
     }
 }

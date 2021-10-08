@@ -21,8 +21,8 @@ class CircleListViewModel : BaseViewModel() {
 
     val circleListBean = MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
 
-    fun getData(type: Int, lng: String, lat: String,page:Int) {
-        launch {
+    fun getData(type: Int, lng: String, lat: String, page: Int) {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -37,9 +37,8 @@ class CircleListViewModel : BaseViewModel() {
                 .onSuccess {
                     circleListBean.value = it
                 }
-                .onWithMsgFailure {
-                    it?.toast()
-                }
-        }
+        },error ={
+            it.message?.toast()
+        })
     }
 }

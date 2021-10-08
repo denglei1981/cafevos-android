@@ -168,8 +168,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this, {
+            binding.barTitleTv.text = it.name
             binding.topContent.run {
-
                 Glide.with(this@CircleDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
