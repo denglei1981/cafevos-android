@@ -7,7 +7,7 @@
 
         <variable
             name="bean"
-            type="com.changanford.circle.bean.CommentListBean" />
+            type="com.changanford.circle.bean.ChildCommentListBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,10 +82,10 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
-            android:text="@{bean.content}"
             android:textColor="@color/color_33"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_name"

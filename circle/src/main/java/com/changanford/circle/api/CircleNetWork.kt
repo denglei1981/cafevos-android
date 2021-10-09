@@ -123,12 +123,13 @@ interface CircleNetWork {
     suspend fun postEdit(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<String>
+    ): CommonResponse<String>
+
     @POST("con/posts/getPlate")
     suspend fun getPlate(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<PlateBean>
+    ): CommonResponse<PlateBean>
 
     /**
      * 帖子点赞
@@ -183,4 +184,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     *  一级评论回复列表
+     */
+    @POST("con/comment/childCommentList")
+    suspend fun getChildCommentList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
 }
