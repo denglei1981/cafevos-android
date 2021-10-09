@@ -55,6 +55,9 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             tvSearch.setOnClickListener {
                 startARouter(ARouterCirclePath.SearchCircleActivity)
             }
+            tvMyCircle.setOnClickListener {
+                startARouter(ARouterMyPath.MineCircleUI, true)
+            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->

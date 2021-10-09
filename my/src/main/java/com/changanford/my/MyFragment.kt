@@ -36,6 +36,10 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.medalRec.adapter = medalAdapter
         observeLoginAndAuthState()
         initClick()
+        binding.refreshLayout.setOnRefreshListener {
+            initData()
+            it.finishRefresh()
+        }
     }
 
     /**

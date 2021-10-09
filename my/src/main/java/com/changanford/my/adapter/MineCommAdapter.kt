@@ -530,8 +530,8 @@ object MineCommAdapter {
                             pop.showPopupWindow()
                         }
                         word.text = "补"
-                        word.setTextColor(R.color.text_01025C)
-                    } else {
+                        word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.text_01025C))
+                    }else{
                         word.text = ""
                         icon.load(R.mipmap.checked)
                     }
@@ -543,7 +543,7 @@ object MineCommAdapter {
                             else -> "$it"
                         }
                     }.toString()
-                    word.setTextColor(R.color.signunreach)
+                    word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.signunreach))
                 }
             }
         }

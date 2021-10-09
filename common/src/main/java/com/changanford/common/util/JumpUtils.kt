@@ -11,6 +11,8 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.bean.NewsValueData
+import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
@@ -20,6 +22,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_FANS_TYPE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -36,9 +39,9 @@ import kotlinx.coroutines.launch
 '99不跳转',
 '100' |=> |'登录页面',
 '101' |=> |'发现',
-'102' |=> |'活动',
-'103' |=> |'Uni',
-'104' |=> |'U享',
+'102' |=> |'社区',
+'103' |=> |'爱车',
+'104' |=> |'商城',
 '105' |=> |'我的',
 '106'  |h5链接带参数 |'H5页面'（需要登录）,
 '107'  |h5链接带参数 |'H5页面'（不仅登录需要绑定手机号）,
@@ -73,7 +76,7 @@ import kotlinx.coroutines.launch
 '28我的圈子',
 '29我的勋章,
 '30积分纪录,
-'31‘云豆详情',
+'31‘积分详情',
 '32‘成长值',
 '34用户个人信息页面,
 '35他人主页',
@@ -119,9 +122,10 @@ import kotlinx.coroutines.launch
  */
 class JumpUtils {
 
-    fun jumpLogin(){
+    fun jumpLogin() {
 
     }
+
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
             "跳转类型不能为空".toast()
@@ -131,12 +135,16 @@ class JumpUtils {
         bundle.putString("value", value)
         when (type) {
             1 -> {//H5页面
-                    Log.i("h5", value ?: "")
-                    startARouter(ARouterHomePath.AgentWebActivity, bundle)
+                Log.i("h5", value ?: "")
+                startARouter(ARouterHomePath.AgentWebActivity, bundle)
             }
 
             2 -> {//资讯详情
-                bundle.putString("artId", value)
+
+                var gson = Gson()
+                var newsValueData = gson.fromJson(value, NewsValueData::class.java)
+                gotoNewsDetails(newsValueData)
+//                bundle.putString("artId", value)
 //                startARouter(ARouterHomePath.InfoDetailActivity, bundle)
             }
             3 -> {//商品详情
@@ -161,11 +169,11 @@ class JumpUtils {
                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
             7 -> {//专题列表
-//                startARouter(ARouterHomePath.SpecialListActivity, bundle)
+                startARouter(ARouterHomePath.SpecialListActivity, bundle)
             }
             8 -> {//专题详情
-                bundle.putString("specialTopicId", value)
-//                startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
+                bundle.putString(JumpConstant.SPECIAL_TOPIC_ID, value)
+                startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
             }
             9 -> {//话题详情
                 bundle.putString("topicId", value)
@@ -178,10 +186,10 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineEditFeedbackUI)
             }
             12 -> {//去发布调查
-                startARouter(ARouterCirclePath.ReleaseUpActivity,true)
+                startARouter(ARouterCirclePath.ReleaseUpActivity, true)
             }
             13 -> {//去发布活动',
-                startARouter(ARouterCirclePath.releasactivity,true)
+                startARouter(ARouterCirclePath.releasactivity, true)
             }
             14 -> {//去发帖',
 //                startARouter(ARouterHomePath.HomePostActivity, bundle)
@@ -190,7 +198,7 @@ class JumpUtils {
 
             }
             16 -> {//任务中心,
-                startARouter(ARouterMyPath.MineTaskListUI,true)
+                startARouter(ARouterMyPath.MineTaskListUI, true)
             }
             17 -> {//车主认证',
                 when {
@@ -207,7 +215,7 @@ class JumpUtils {
                 }
             }
             18 -> {//绑定手机号',
-                startARouter(ARouterMyPath.MineBindMobileUI,true)
+                startARouter(ARouterMyPath.MineBindMobileUI, true)
 
             }
             19 -> {//小程序',
@@ -244,12 +252,12 @@ class JumpUtils {
             }
             20 -> {//地址管理',
                 if (value.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.MineAddressListUI,true)
+                    startARouter(ARouterMyPath.MineAddressListUI, true)
                 } else {//选择地址，点击地址Item直接返回地址Json
                     value.toIntOrNull()?.let {
                         var b = Bundle()
                         b.putInt("isItemClickBack", it)
-                        startARouter(ARouterMyPath.MineAddressListUI, b,true)
+                        startARouter(ARouterMyPath.MineAddressListUI, b, true)
                     }
                 }
 
@@ -259,57 +267,57 @@ class JumpUtils {
 
             }
             22 -> {//' |=>|会员身份,
-                startARouter(ARouterMyPath.UniUserIdcardUI,true)
+                startARouter(ARouterMyPath.UniUserIdcardUI, true)
 
             }
             23 -> {//我的发布',
-                startARouter(ARouterMyPath.MineFollowUI,true)
+                startARouter(ARouterMyPath.MineFollowUI, true)
 
             }
             24 -> {//我的消息',
-                startARouter(ARouterMyPath.MineMessageUI,true)
+                startARouter(ARouterMyPath.MineMessageUI, true)
 
             }
             25 -> {//我的关注',
                 bundle.putInt(RouterManger.KEY_TO_ID, 2)
-                startARouter(ARouterMyPath.MineFansUI, bundle,true)
+                startARouter(ARouterMyPath.MineFansUI, bundle, true)
             }
             26 -> {//我的活动',
-                startARouter(ARouterMyPath.MineJoinAcUI, bundle,true)
+                startARouter(ARouterMyPath.MineJoinAcUI, bundle, true)
 
             }
             27 -> {//我的收藏',
-                startARouter(ARouterMyPath.MineCollectUI, bundle,true)
+                startARouter(ARouterMyPath.MineCollectUI, bundle, true)
 
             }
             28 -> {//我的圈子',
-                startARouter(ARouterMyPath.MineCircleUI, bundle,true)
+                startARouter(ARouterMyPath.MineCircleUI, bundle, true)
 
             }
             29 -> {//我的勋章,
-                startARouter(ARouterMyPath.AllMedalUI, bundle,true)
+                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
 
             }
             30 -> {//积分纪录,
-                startARouter(ARouterMyPath.MineIntegralUI, bundle,true)
+                startARouter(ARouterMyPath.MineIntegralUI, bundle, true)
 
             }
             31 -> {//‘云豆详情',
             }
             32 -> {//‘成长值',
-                startARouter(ARouterMyPath.MineGrowUpUI,true)
+                startARouter(ARouterMyPath.MineGrowUpUI, true)
 
             }
             34 -> {//用户个人信息页面,
-                startARouter(ARouterMyPath.MineEditInfoUI,true)
+                startARouter(ARouterMyPath.MineEditInfoUI, true)
 
             }
             35 -> {//他人主页
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle,true)
+                startARouter(ARouterMyPath.TaCentreInfoUI, bundle, true)
 
             }
             36 -> {//聚合订单列表页
-                startARouter(ARouterMyPath.MineOrderUI, bundle,true)
+                startARouter(ARouterMyPath.MineOrderUI, bundle, true)
             }
             37 -> {//签到
                 when {
@@ -322,17 +330,17 @@ class JumpUtils {
                 }
             }
             38 -> {//我的足迹
-                startARouter(ARouterMyPath.MineFootprintUI, bundle,true)
+                startARouter(ARouterMyPath.MineFootprintUI, bundle, true)
             }
             39 -> {//常见问题
                 startARouter(ARouterMyPath.MineFeedbackUI)
             }
             40 -> {//我的粉丝
                 bundle.putInt(RouterManger.KEY_TO_ID, 1)
-                startARouter(ARouterMyPath.MineFansUI, bundle,true)
+                startARouter(ARouterMyPath.MineFansUI, bundle, true)
             }
             41 -> {//我的爱车
-                startARouter(ARouterMyPath.MineLoveCarListUI,true)
+                startARouter(ARouterMyPath.MineLoveCarListUI, true)
             }
             42 -> {//意见反馈记录
                 startARouter(ARouterMyPath.MineFeedbackListUI)
@@ -594,7 +602,7 @@ class JumpUtils {
 //                        startARouter(ARouterMyPath.SignUI)
 //                    }
 //                    else -> {
-                        startARouter(ARouterMyPath.MineCenterFeedbackUI, bundle)
+                startARouter(ARouterMyPath.MineCenterFeedbackUI, bundle)
 //                    }
 //                }
             }
@@ -752,6 +760,7 @@ class JumpUtils {
      */
     private fun handleDownload(arid: String) {
     }
+
     /**
      * 每日签到
      */
@@ -760,7 +769,7 @@ class JumpUtils {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 var rkey = getRandomKey()
-                apiService.daySign(body.header(rkey),body.body(rkey))
+                apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
                     var bundle = Bundle()
@@ -806,9 +815,6 @@ class JumpUtils {
 //
 //            })
     }
-
-
-
 
 
     /**
@@ -862,7 +868,6 @@ class JumpUtils {
     }
 
 
-
     fun getTopActivity(): String? {
         var className: String? = null
         val mActivityManager =
@@ -882,6 +887,22 @@ class JumpUtils {
         // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
 //        val network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         return gps
+    }
+
+    fun gotoNewsDetails(newsValueData: NewsValueData) {////资讯类型 1图文 2 图片 3 视频
+        val bundle = Bundle()
+        bundle.putString(JumpConstant.NEWS_ART_ID, newsValueData.artId)
+        when (newsValueData.type) {
+            1 -> {
+                startARouter(ARouterHomePath.NewsDetailActivity, bundle)
+            }
+            2 -> {
+                startARouter(ARouterHomePath.NewsPicsActivity, bundle)
+            }
+            3 -> {
+                startARouter(ARouterHomePath.NewsVideoDetailActivity, bundle)
+            }
+        }
     }
 
 }

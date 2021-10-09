@@ -70,12 +70,17 @@ dependencies {
     api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
     //阿里云oss
     api "com.aliyun.dpa:oss-android-sdk:2.9.6"
+    //友盟统计
+    api  'com.umeng.umsdk:common:9.4.2'// 必选
+    api  'com.umeng.umsdk:asms:1.4.0'// 必选
     //兴趣爱好标签
     api "com.github.donkingliang:LabelsView:1.6.1"
     //底部导航
     api "me.majiajie:pager-bottom-tab-strip:2.4.0"
     //bugly
     api "com.tencent.bugly:crashreport:latest.release"
+    //网络
+    api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
     //侧滑删除
     api "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0"
     //adapter

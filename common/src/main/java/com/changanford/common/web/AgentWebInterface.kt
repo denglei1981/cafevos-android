@@ -9,6 +9,7 @@ import android.os.Environment
 import com.changanford.common.util.bus.*
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
@@ -19,6 +20,8 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
@@ -548,7 +551,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         bundle.putSerializable("imgList", mediaListBeans as Serializable?)
         bundle.putString("curImageUrl", img)
         bundle.putInt("count", count)
-//        ARouter.getInstance().build(ARouterHomePath.OSPhotoViewActivity).with(bundle).navigation()
+        ARouter.getInstance().build(ARouterCirclePath.PhotoViewActivity).with(bundle).navigation()
     }
 
     /**

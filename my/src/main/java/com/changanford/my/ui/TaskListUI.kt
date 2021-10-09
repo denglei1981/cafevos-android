@@ -15,6 +15,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.MConstant
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -51,7 +52,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             back()
         }
         binding.tvTaskExplain.setOnClickListener { //任务说明
-
+            JumpUtils.instans?.jump(1, MConstant.H5_TASK_RULE)
         }
 
         binding.taskRcy.rcyCommonView.adapter = taskAdapter

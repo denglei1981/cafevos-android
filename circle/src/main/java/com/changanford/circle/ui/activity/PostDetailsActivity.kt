@@ -8,6 +8,7 @@ import com.changanford.circle.ui.fragment.PostVideoDetailsFragment
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.gyf.immersionbar.ImmersionBar
@@ -19,9 +20,12 @@ import com.gyf.immersionbar.ImmersionBar
 class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphicViewModel>() {
 
     private var postsId = ""
+    private lateinit var loadingDialog: LoadingDialog
 
     override fun initView() {
         postsId = intent.getStringExtra("postsId").toString()
+        loadingDialog = LoadingDialog(this)
+        loadingDialog.show()
         bus()
     }
 
@@ -33,6 +37,7 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
         super.observe()
         viewModel.postDetailsBean.observe(this, {
             val trans = supportFragmentManager.beginTransaction()
+            loadingDialog.dismiss()
             when (it.type) {
                 3 -> {//视频
                     ImmersionBar.with(this).statusBarDarkFont(false).init()

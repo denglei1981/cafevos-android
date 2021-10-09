@@ -8,8 +8,10 @@ import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityPostVideoDetailsBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
+import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
+import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.viewmodel.PostVideoDetailsViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
@@ -24,7 +26,7 @@ import com.changanford.common.utilext.toast
  *Purpose
  */
 class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
-    BaseFragment<ActivityPostVideoDetailsBinding, PostVideoDetailsViewModel>() {
+    BaseFragment<ActivityPostVideoDetailsBinding, PostGraphicViewModel>() {
 
     private lateinit var playerHelper: DKPlayerHelper //播放器帮助类
 
@@ -57,7 +59,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             )
             tvShareNum.text = mData.shareCount.toString()
             ivHead.loadImage(
-                mData.authorBaseVo?.memberIcon,
+                mData.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             tvName.text = mData.authorBaseVo?.nickname
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
@@ -70,7 +72,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (mData.circleName.isNullOrEmpty()) {
                 tvFrom.visibility = View.GONE
             } else {
-                MUtils.postDetailsFrom(tvFrom, mData.circleName)
+                MUtils.postDetailsFrom(tvFrom, mData.circleName, mData.circleId.toString())
             }
             if (!mData.content.isNullOrEmpty()) {
                 MUtils.toggleEllipsize(
@@ -83,6 +85,12 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     false
                 )
             }
+
+            if (!mData.city.isNullOrEmpty()) {
+                tvTwoCity.visibility = View.VISIBLE
+                tvTwoCity.text = mData.city
+            }
+
             if (mData.topicName.isNullOrEmpty()) {
                 tvTalkType.visibility = View.GONE
             }
@@ -126,10 +134,68 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
         }
+        binding.run {
+            llLike.setOnClickListener {
+                viewModel.likePosts(mData.postsId)
+            }
+            llCollection.setOnClickListener {
+                viewModel.collectionApi(mData.postsId)
+            }
+            tvShareNum.setOnClickListener {
+                CircleShareModel.shareDialog(
+                    activity,
+                    0,
+                    mData.shares,
+                    null,
+                    null,
+                    mData.authorBaseVo?.nickname,
+                    mData.topicName
+                )
+            }
+        }
     }
 
     override fun initData() {
 
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.likePostsBean.observe(this, {
+            it.msg.toast()
+            if (it.code == 0) {
+                if (mData.isLike == 0) {
+                    mData.isLike = 1
+                    binding.ivLike.setImageResource(R.mipmap.circle_like_image)
+                    mData.likesCount++
+                    AnimScaleInUtil.animScaleIn(binding.ivLike)
+                } else {
+                    mData.isLike = 0
+                    mData.likesCount--
+                    binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                }
+                binding.tvLikeNum.text =
+                    "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+            }
+        })
+        viewModel.collectionPostsBean.observe(this, {
+            it.msg.toast()
+            if (it.code == 0) {
+                if (mData.isCollection == 0) {
+                    mData.isCollection = 1
+                } else {
+                    mData.isCollection = 0
+                }
+                binding.ivCollection.setImageResource(
+                    if (mData.isCollection == 1) {
+                        AnimScaleInUtil.animScaleIn(binding.ivCollection)
+                        R.mipmap.circle_collection_image
+                    } else {
+                        R.mipmap.circle_no_collection_image
+                    }
+                )
+            }
+        })
     }
 
     override fun onResume() {

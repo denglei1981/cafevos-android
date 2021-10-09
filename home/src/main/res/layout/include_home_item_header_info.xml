@@ -16,6 +16,7 @@
             android:id="@+id/iv_header"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -24,15 +25,15 @@
 
         <ImageView
             android:id="@+id/iv_vip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_home_auth_vip"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintCircle="@id/iv_header"
             app:layout_constraintCircleAngle="120"
             app:layout_constraintCircleRadius="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_header" />
+            app:layout_constraintEnd_toEndOf="@+id/iv_header"
+            tools:src="@drawable/icon_home_auth_vip" />
 
         <TextView
             android:id="@+id/tv_author_name"
@@ -59,6 +60,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_follow"
+            style="@style/followBtnStyle"
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:elevation="0dp"
@@ -68,7 +70,6 @@
             android:textAllCaps="false"
             android:textColor="@color/blue_tab"
             android:textSize="@dimen/sp_12"
-            style="@style/followBtnStyle"
             app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

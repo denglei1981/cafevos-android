@@ -65,8 +65,8 @@ object MyApplicationUtil {
         if (MConstant.isDebug) {
             versionName += ":Test"
         }
-//        CrashReport.setAppVersion(context, versionName)
-//        CrashReport.initCrashReport(context, "xxxxxxxx", false)
+        CrashReport.setAppVersion(context, versionName)
+        CrashReport.initCrashReport(context, "xxxxxxxx", false)
         val token: String = MConstant.token
         if (!TextUtils.isEmpty(token)) {
             CrashReport.setUserId(token)

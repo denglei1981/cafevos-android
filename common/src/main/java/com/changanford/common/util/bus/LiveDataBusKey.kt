@@ -231,5 +231,11 @@ object LiveDataBusKey {
 
     const val PICTURESEDITED ="picturesedited"  //图片编辑页面点击下一步
 
+
+    const val LIVE_OPEN_TWO_LEVEL = "LIVE_OPEN_TWO_LEVEL" // 二楼打开
+
+    const val CIRCLECHOOSE = "CIRCLECHOOSEED" //选择圈子回调
+    const val Conversation= "Conversation" //选择话题回调
+
 }
 

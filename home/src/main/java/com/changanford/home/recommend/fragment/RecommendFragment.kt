@@ -3,7 +3,6 @@ package com.changanford.home.recommend.fragment
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
@@ -45,6 +44,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
             startARouter(ARouterHomePath.NewsPicAdActivity)
         }
         setLoadSir(binding.smartLayout)
+
     }
 
     override fun initData() {
@@ -67,6 +67,8 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                 }
             } else {
                 showFailure(it.message)
+                // 刷新也得停
+                (parentFragment as HomeV2Fragment).stopRefresh()
                 ToastUtils.showShortToast(it.message, requireContext())
             }
 

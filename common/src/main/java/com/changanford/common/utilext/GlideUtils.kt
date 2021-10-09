@@ -80,14 +80,14 @@ object GlideUtils {
      * 图片地址没有前缀时加上
      */
     fun handleImgUrl(preUrl: String?): String =
-//        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
-//            preUrl
-//        )
-        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else "https://img.uni.changan.com.cn/".plus(
+        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
+//        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else "https://img.uni.changan.com.cn/".plus(
+//            preUrl
+//        )
 
-    private fun defaultHandleImageUrl(preUrl: String?): String =
+     fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )

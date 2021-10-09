@@ -63,6 +63,7 @@ class CircleDetailsViewModel : BaseViewModel() {
                     listBean.value = it
                 }
                 .onFailure { }
+
         })
     }
 
@@ -88,7 +89,6 @@ class CircleDetailsViewModel : BaseViewModel() {
                 .also {
                     joinBean.value = it
                 }
-
         })
     }
 }

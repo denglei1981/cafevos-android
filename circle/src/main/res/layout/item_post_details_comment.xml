@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="bean"
-            type="String" />
+            type="com.changanford.circle.bean.CommentListBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,8 +18,9 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_head"
             android:layout_width="30dp"
-            android:layout_marginStart="21dp"
             android:layout_height="30dp"
+            android:layout_marginStart="21dp"
+            android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,56 +29,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="萨瓦迪LALA"
+            android:gravity="center"
+            android:text="@{bean.nickname}"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintLeft_toRightOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head" />
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:text="萨瓦迪LALA" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="5分钟前"
+            android:text="@{bean.timeStr}"
             android:textColor="@color/color_99"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="5分钟前" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_like"
+        <LinearLayout
+            android:id="@+id/ll_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="21dp"
-            android:src="@mipmap/circle_comment_no_like"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_name" />
+            app:layout_constraintTop_toTopOf="@+id/tv_name">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/iv_like"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_like"
-            app:layout_constraintRight_toRightOf="@+id/iv_like"
-            android:textSize="@dimen/sp_10"
-            android:textColor="@color/color_33"
-            android:text="2131"
-            android:layout_marginTop="3dp"
-            android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/circle_comment_no_like" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_like"
+                app:layout_constraintRight_toRightOf="@+id/iv_like"
+                app:layout_constraintTop_toBottomOf="@+id/iv_like"
+                tools:text="2131" />
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="0dp"
-            android:textSize="14sp"
-            android:textColor="@color/color_33"
-            android:text="期待！我们一起冲冲冲！"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-            app:layout_constraintRight_toRightOf="@+id/iv_like"
-            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
-            android:layout_height="wrap_content"/>
+            android:text="@{bean.content}"
+            android:textColor="@color/color_33"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_name"
+            app:layout_constraintRight_toRightOf="@+id/ll_like"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            tools:text="期待！我们一起冲冲冲！" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

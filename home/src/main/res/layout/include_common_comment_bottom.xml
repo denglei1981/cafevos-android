@@ -65,6 +65,7 @@
             tools:text="12" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_speak_something"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="@dimen/dp_20"

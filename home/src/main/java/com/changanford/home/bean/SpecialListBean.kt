@@ -1,6 +1,8 @@
 package com.changanford.home.bean
 
+import android.text.TextUtils
 import com.changanford.common.bean.HomeExtendBean
+import com.changanford.common.util.CountUtils
 
 
 class SpecialListMainBean(
@@ -13,8 +15,8 @@ class SpecialListMainBean(
 )
 
 data class SpecialListBean(
-    var artCount: Int=0,
-    var artId: Int,
+    var artCount: Int = 0,
+    var artId: String,
     var articles: Any,
     var authors: Any,
     var catId: Any,
@@ -47,14 +49,34 @@ data class SpecialListBean(
     var timeStr: String,
     var title: String,
     var titleLike: Any,
-    var totalCount: Int,
+    var totalCount: Long,
     var type: Any,
     var updateBy: Any,
     var updateTime: String,
-    var userId: Long=-1,
+    var userId: Long = -1,
     var videoTime: Long,
-    var videoUrl: String="",
+    var videoUrl: String = "",
     var viewsCount: Int,
     var viewsCountBase: Int,
     var viewsCountMul: Int
-)
+) {
+    fun getPicUrl(): String {
+        if (!TextUtils.isEmpty(pics)) { // 不为空时逗号，分隔。
+            val pisList = pics.split(",")
+            return pisList[0]
+        }
+        return ""
+    }
+
+    fun getCount(): String {
+
+        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯 ${
+            CountUtils.formatNum(
+                viewsCount.toString(),
+                false
+            )
+        }阅读量"
+
+        return countStr;
+    }
+}

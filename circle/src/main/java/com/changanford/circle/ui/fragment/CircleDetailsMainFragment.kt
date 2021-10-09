@@ -64,9 +64,9 @@ class CircleDetailsMainFragment :
             viewModel.getData(type, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
-            val bundle=Bundle()
-            bundle.putString("postsId",adapter.getItem(position).postsId.toString())
-            startARouter(ARouterCirclePath.PostDetailsActivity,bundle)
+            val bundle = Bundle()
+            bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
         }
     }
 

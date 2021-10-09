@@ -3,13 +3,16 @@ package com.changanford.home.news.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.home.R
 import com.changanford.home.bean.SpecialListBean
@@ -17,7 +20,9 @@ import com.changanford.home.databinding.FragmentNewsListBinding
 import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
+import com.changanford.common.bean.NewsValueData
 import com.changanford.home.news.request.FindNewsListViewModel
+import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
@@ -47,9 +52,30 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
-        newsListAdapter.setOnItemClickListener { adapter, view, position ->
-            startARouter(ARouterHomePath.NewsPicsActivity)
-        }
+
+
+        newsListAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
+            override fun onItemChildClick(
+                adapter: BaseQuickAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                var item = newsListAdapter.getItem(position)
+                when (view.id) {
+                    R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
+
+                    }
+                    R.id.layout_content -> {// 去资讯详情。
+                        var newsValueData = NewsValueData(item.artId, item.type)
+                        var values=Gson().toJson(newsValueData)
+                        JumpUtils.instans?.jump(2, values)
+                    }
+                    R.id.btn_follow -> {// 是否去关注用户
+                    }
+                }
+            }
+        })
+
         binding.smartLayout.setOnRefreshListener(this)
         onRefresh(binding.smartLayout)
         setLoadSir(binding.smartLayout)

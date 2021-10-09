@@ -46,11 +46,12 @@
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity android:name=".web.AgentWebActivity" />
         <activity android:name=".ui.PhotoViewActivity" />
+        <activity android:name=".ui.NothingActivity" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="gwuTZYK647CVUpGD7pWF3Zt3VLNd7nZ6"/>
-<!--        <meta-data
+        <!--<meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="56913eab3a5c4f59dd961dbc1b1b909c" />-->
     </application>
