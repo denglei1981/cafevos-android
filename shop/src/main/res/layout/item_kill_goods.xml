@@ -24,13 +24,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_cover"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_135"
-                android:background="@drawable/shadow_1b51d9_t_5dp"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/shadow_1b51d9_t_5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/rounded5TopImageStyle" />
 
             <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginTop="@dimen/dp_10"
                 android:textSize="@dimen/sp_14"
                 android:id="@+id/tvGoodsItemTitle"
                 android:paddingStart="@dimen/dp_11"
@@ -53,7 +56,8 @@
                     android:id="@+id/tv_integral"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12"
-                    tools:text="1200积分"
+                    android:text="@{model.seckillFb}"
+                    app:end_txt="@string/str_integral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <com.changanford.shop.view.TypefaceTextView
@@ -63,6 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="1600"
+                    android:text="@{model.lineFb}"
+                    app:text_flags="0x10"
                     android:textColor="@color/color_BDC7D2"
                     android:textSize="@dimen/sp_10" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -77,9 +83,9 @@
                 <ProgressBar
                     android:id="@+id/pb_task"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:max="100"
+                    android:max="@{model.seckillStock}"
                     tools:progress="10"
-                    android:progress="0"
+                    android:progress="@{model.sekillCount}"
                     android:progressDrawable="@drawable/progressbar_bg"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -89,7 +95,7 @@
                     android:textColor="@color/color_74889D"
                     android:layout_marginStart="@dimen/dp_4"
                     android:textSize="@dimen/sp_9"
-                    android:text="@string/str_zeroPercent"
+                    android:text="@{model.robbedPercentage}"
                     tools:text="10%"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -101,19 +107,20 @@
                 android:paddingStart="@dimen/dp_11"
                 app:start_txt="@string/str_limited"
                 app:end_txt="@string/str_a"
+                android:text="@{model.seckillNumLimit}"
                 android:textColor="@color/color_74889D"
-                tools:text="@string/str_limitedXa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </com.changanford.shop.view.shadow.ShadowLayout>
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_seckillStatus"
             android:gravity="center"
             android:background="@drawable/shadow_33black_2dp"
             android:paddingEnd="@dimen/dp_3"
             android:paddingStart="@dimen/dp_3"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/white"
-            android:text="@string/str_ongoing"
+            android:text="@{model.seckillStatus}"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginStart="@dimen/dp_13"
             app:layout_constraintStart_toStartOf="parent"

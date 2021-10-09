@@ -2,8 +2,10 @@ package com.changanford.shop.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.MyApp
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -63,6 +65,8 @@ class OrderViewModel: BaseViewModel() {
                 shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 shopOrderData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
             }
         }
     }

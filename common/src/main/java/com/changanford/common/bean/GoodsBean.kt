@@ -97,7 +97,17 @@ data class GoodsItemBean(
     val updateTime: Long = 0,
     val vipFb: Any? = null,
     var stockProportion:String="0",//库存百分比 0-100
-    var killStates:Int=0//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
+    var killStates:Int=0,//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
+    val beginTime: Long = 0,
+    val mallMallSeckillRangeId: Int = 0,
+    val mallMallSeckillSessionId: Int = 0,
+    val recommend: String = "",
+    val robbedPercentage: String = "",
+    val seckillFb: String = "0",
+    var seckillNumLimit: Any? = null,
+    var seckillStatus: String = "",
+    val seckillStock: Int = 0,
+    val sekillCount: Int = 0,
 )
 class Params
 // 秒杀时段

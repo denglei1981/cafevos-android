@@ -28,7 +28,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  */
 class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), OnRefreshListener {
     private  val fragments= arrayListOf<ExchangeListFragment>()
-    private val adapter by lazy { GoodsKillAdapter() }
+    private val mAdapter by lazy { GoodsKillAdapter() }
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -63,9 +63,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
     }
     private fun initKill(){
-        binding.inTop.recyclerView.adapter=adapter
-        adapter.setOnItemClickListener { _, _, position ->
-            GoodsDetailsActivity.start(adapter.data[position].spuId,adapter.data[position].spuPageTagType)
+        binding.inTop.recyclerView.adapter=mAdapter
+        mAdapter.setOnItemClickListener { _, _, position ->
+            GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId,"SECKILL")
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
     }
@@ -79,7 +79,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
         })
         viewModel.shopHomeData.observe(this,{
-            adapter.setList(it.indexSeckillDtoList)
+            mAdapter.setList(it.indexSeckillDtoList)
         })
         viewModel.shopHomeGoodsData.observe(this,{
             bindingTab(it)
