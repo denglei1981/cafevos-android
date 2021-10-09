@@ -66,24 +66,15 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
                     }
                     R.id.layout_content -> {// 去资讯详情。
-
-
                         var newsValueData = NewsValueData(item.artId, item.type)
                         var values=Gson().toJson(newsValueData)
                         JumpUtils.instans?.jump(2, values)
                     }
                     R.id.btn_follow -> {// 是否去关注用户
-
                     }
                 }
             }
-
         })
-
-
-
-
-
 
         binding.smartLayout.setOnRefreshListener(this)
         onRefresh(binding.smartLayout)
