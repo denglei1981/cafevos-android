@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.graphics.Typeface
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -8,12 +9,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.changanford.my.ui.fragment.CircleFragment
+import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -24,13 +30,27 @@ import com.google.android.material.tabs.TabLayoutMediator
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineCircleUI)
-class MyCircleUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
+class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
     private val titles = arrayListOf("我参与的", "我管理的")
     private var oldPosition = 0
 
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
+        binding.collectToolbar.toolbarSave.text = "创建圈子"
+        binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
+        binding.collectToolbar.toolbarSave.setOnClickListener {
+            viewModel.createCircle {
+                it.onSuccess {
+                    RouterManger.startARouter(ARouterCirclePath.AddCircleActivity)
+                }
+                it.onWithMsgFailure {
+                    it?.let {
+                        showToast(it)
+                    }
+                }
+            }
+        }
         initViewpager()
     }
 

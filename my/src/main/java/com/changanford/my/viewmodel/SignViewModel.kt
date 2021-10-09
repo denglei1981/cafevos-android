@@ -364,6 +364,16 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    fun weekSignDetail( result: (CommonResponse<MonthSignBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.weekSignDetail(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
     /****------------------****/
     fun getSmsCode(mobile: String) {
         viewModelScope.launch {
@@ -480,14 +490,16 @@ class SignViewModel : ViewModel() {
 
     var taskBean: MutableLiveData<List<RootTaskBean>> = MutableLiveData()
 
-    suspend fun queryTasksList() {
-        var task = fetchRequest {
-            var body = HashMap<String, Any>()
-            var rkey = getRandomKey()
-            apiService.queryTasksList(body.header(rkey), body.body(rkey))
-        }
-        if (task.code == 0) {
-            taskBean.postValue(task.data)
+    fun queryTasksList() {
+        viewModelScope.launch {
+            var task = fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.queryTasksList(body.header(rkey), body.body(rkey))
+            }
+            if (task.code == 0) {
+                taskBean.postValue(task.data)
+            }
         }
     }
 

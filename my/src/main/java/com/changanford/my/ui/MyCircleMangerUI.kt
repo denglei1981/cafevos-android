@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CircleUserBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -18,9 +19,11 @@ import com.changanford.my.R
 import com.changanford.my.bean.MangerCircleCheck
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
+import com.changanford.my.ui.fragment.AllMangerCircleFragment
 import com.changanford.my.ui.fragment.MangerCircleFragment
 import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import com.xiaomi.push.it
 
 /**
  *  文件名：MyCollectUI
@@ -77,7 +80,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MangerCircleFragment.newInstance(position, circleId)
+                    return AllMangerCircleFragment.newInstance(position, circleId)
                 }
             }
 

@@ -42,19 +42,19 @@ object UserManger {
 
     fun updateUserInfo(userInfoBean: UserInfoBean?) {
         userInfoBean?.let {
-            var userDatabase = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
-            userDatabase.updateMobile(
-                it.userId, when {
-                    it.phone.isNotEmpty() -> {
-                        it.phone
-                    }
-                    else -> {
-                        it.mobile
-                    }
+            var database = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
+            var sysUserInfoBean = database.getNoLiveDataUser()
+            sysUserInfoBean.mobile = when {
+                it.phone.isNotEmpty() -> {
+                    it.phone
                 }
-            )
-            userDatabase.updateIntegral(it.userId, "${it.integralDecimal}")
-            userDatabase.updateUserJson(it.userId, JSON.toJSONString(it))
+                else -> {
+                    it.mobile
+                }
+            }
+            sysUserInfoBean.integral = it.ext?.integralDecimal.toDouble()
+            sysUserInfoBean.userJson = JSON.toJSONString(it)
+            database.insert(sysUserInfoBean)
         }
     }
 

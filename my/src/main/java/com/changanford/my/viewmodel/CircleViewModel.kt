@@ -3,10 +3,7 @@ package com.changanford.my.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.CircleListBean
-import com.changanford.common.bean.CircleMangerBean
-import com.changanford.common.bean.CircleMemberBean
-import com.changanford.common.bean.CircleUserBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
 
@@ -23,9 +20,10 @@ class CircleViewModel : ViewModel() {
     /**
      * 我管理的圈子
      */
-    var mMangerCircle: MutableLiveData<CircleMangerBean> = MutableLiveData()
+    var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
 
     fun myMangerCircle() {
+        var circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
@@ -33,10 +31,28 @@ class CircleViewModel : ViewModel() {
                 apiService.queryMineMangerCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 if (null != it && it.size > 0) {
-                    mMangerCircle.postValue(it[0])
+                    it.forEach {
+                        it.circles?.let { items ->
+                            items[0].typeStr = it.typeStr
+                            items[0].isShowTitle = true
+                            circleItemBeans.addAll(items)
+                        }
+                    }
                 }
+            }
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    it[0].typeStr = "处理中"
+                    it[0].isShowTitle = true
+                    circleItemBeans.addAll(it)
+                }
+                mMangerCircle.postValue(circleItemBeans)
             }.onFailure {
-                mMangerCircle.postValue(null)
+                mMangerCircle.postValue(circleItemBeans)
             }
         }
     }
@@ -116,7 +132,6 @@ class CircleViewModel : ViewModel() {
                 circleMember.postValue(it)
             }.onFailure {
                 circleMember.postValue(it)
-
             }
         }
     }
@@ -126,12 +141,12 @@ class CircleViewModel : ViewModel() {
      */
     var deleteCircleStatus: MutableLiveData<String> = MutableLiveData()
 
-    fun deleteCircleUsers(circleId: String, userIds: String) {
+    fun deleteCircleUsers(circleId: String, userIds: ArrayList<String>) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["circleId"] = circleId
-                body["userIds"] = arrayListOf(userIds)
+                body["userIds"] = userIds
                 var rkey = getRandomKey()
                 apiService.deleteCircleUsers(body.header(rkey), body.body(rkey))
             }.onSuccess {
@@ -161,4 +176,37 @@ class CircleViewModel : ViewModel() {
         }
     }
 
+
+    fun createCircle(result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.createCircle(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    fun queryCircleStatus(
+        circleId: String,
+        result: (CommonResponse<ArrayList<CircleStatusItemBean>>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["circleId"] = circleId
+                var rkey = getRandomKey()
+                apiService.queryCircleStatus(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    fun setCircleStatus(body: HashMap<String, Any>, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var rkey = getRandomKey()
+                apiService.setCircleStatus(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 }

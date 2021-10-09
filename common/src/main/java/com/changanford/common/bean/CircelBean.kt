@@ -18,7 +18,7 @@ data class CircleListBean(
 )
 
 data class CircleMangerBean(
-    val circles: List<CircleItemBean>?,
+    val circles: List<CircleItemBean>? = arrayListOf(),
     val type: Int,
     val typeStr: String,
     val isAudit: String,
@@ -26,23 +26,26 @@ data class CircleMangerBean(
 
 
 data class CircleItemBean(
-    override var itemType: Int,
-    val circleId: Int,
-    val description: String,
-    val userId: Int,
-    val name: String,
-    val nameColor: String?,
-    val hotIcon: String,
-    val isHot: String,//是否热门 1 是 0 不是
-    val isRecommend: String,//是否推荐 1是 0 不是
-    val pic: String,
-    val checkStatus: String,//状态 1 审核通过 2 待审核  3认证失败
-    val checkPassTime: String,
-    val createTime: String,
-    val userCount: Int,
-    val postsCount: String,
-    val applyerCount: Int, //申请人数
-    val checkNoReason: String //审核不通过原因
+    override var itemType: Int = 0,
+    val circleId: Int = 0,
+    val description: String = "",
+    val userId: Int = 0,
+    val name: String = "",
+    val nameColor: String? = "",
+    val hotIcon: String = "",
+    val isHot: String = "",//是否热门 1 是 0 不是
+    val isRecommend: String = "",//是否推荐 1是 0 不是
+    val pic: String = "",
+    val checkStatus: String = "",//状态 1 审核通过 2 待审核  3认证失败
+    val checkPassTime: String = "",
+    val createTime: String = "",
+    val userCount: Int = 0,
+    val postsCount: String = "",
+    val applyerCount: Int = 0, //申请人数
+    val checkNoReason: String = "", //审核不通过原因
+    var typeStr: String,//圈子角色名称
+    var isShowTitle: Boolean = false,//是否为圈子角色
+
 ) : MultiItemEntity
 
 
@@ -51,8 +54,13 @@ data class CircleMemberBean(
     val pageNo: Int,
     val pageSize: Int,
     val total: Int,
-    val totalPage: Int
+    val totalPage: Int,
+    val extend: CircleExtendBean
 )
+
+//1 显示设置按钮  0 不显示	 isStarRole
+//是否圈主 1是 0否	isCircler
+data class CircleExtendBean(val isCircler: Int, val isStarRole: String)
 
 data class CircleMemberData(
     override var itemType: Int,
@@ -70,7 +78,10 @@ data class CircleMemberData(
     val checkStatus: Int,
     val description: String,
     val postsCount: Int,
-    val userCount: Int
+    val userCount: Int,
+    val starOrderNumStr: String,
+    val starOrderNum: String,
+    val level: Int
 ) : MultiItemEntity
 
 
@@ -85,4 +96,20 @@ data class Refuse(
 data class CircleUserBean(
     val userApplyCount: Int,
     val userCount: Int
+)
+
+//管理员身份
+data class CircleStatusItemBean(
+    val circleStarRoleId: Int,
+    val createTime: Long,
+    val memo: String,
+    val operatorName: String,
+    val orderNum: Int,
+    val starAuthority: String,
+    val starImgUrl: String,
+    val starName: String,
+    val starNum: Int,
+    val status: Int,
+    val surplusNum: Int,
+    val updateTime: Long
 )

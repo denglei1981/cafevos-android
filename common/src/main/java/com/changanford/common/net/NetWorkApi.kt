@@ -242,6 +242,15 @@ interface NetWorkApi {
     ): CommonResponse<MonthSignBean>
 
     /**
+     * 本周签到详情
+     */
+    @POST("/user/weekSignDetail")
+    suspend fun weekSignDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MonthSignBean>
+
+    /**
      * 用户补签
      */
     @POST("/user/signReissue")
@@ -534,7 +543,7 @@ interface NetWorkApi {
     suspend fun queryMineMangerOtherCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<CircleListBean>
+    ): CommonResponse<ArrayList<CircleItemBean>>
 
 
     //查询申请圈子的人
@@ -579,6 +588,31 @@ interface NetWorkApi {
     //圈子审核 删除
     @POST("con/circle/deleteCircleUsers")
     suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /*创建圈子 体验优化 */
+    @POST("con/circle/preCreateCircle")
+    suspend fun createCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 查询圈子
+     */
+    @POST("con/circle/getStarsRole")
+    suspend fun queryCircleStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CircleStatusItemBean>>
+
+    /**
+     * 设置圈子身份
+     */
+    @POST("con/circle/setStarsRole")
+    suspend fun setCircleStatus(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
