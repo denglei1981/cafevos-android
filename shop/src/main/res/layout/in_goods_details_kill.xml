@@ -2,12 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_kill"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_20"
         android:background="@drawable/line_eb6067_f89b82"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_54">
+        android:layout_height="@dimen/dp_54"
+        tools:visibility="visible"
+        android:visibility="gone">
        <ImageView
            android:id="@+id/img_logoKill"
            android:src="@mipmap/shop_kill"
@@ -23,16 +31,20 @@
             app:layout_constraintTop_toTopOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1300积分"
+            android:text="@{model.fbPrice}"
+            app:end_txt="@string/str_integral"
             android:textColor="@color/color_withe"
             android:textSize="@dimen/sp_18" />
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_fbLine"
             android:layout_marginStart="@dimen/dp_4"
             app:layout_constraintBottom_toBottomOf="@id/tv_goods_integral"
             app:layout_constraintStart_toEndOf="@id/tv_goods_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1600积分"
+            tools:text="1600"
+            android:text="@{model.fbLine}"
+            app:text_flags="0x10"
             android:textColor="@color/color_F9E4E6"
             android:textSize="@dimen/sp_10" />
         <com.changanford.shop.view.TypefaceTextView
@@ -40,7 +52,10 @@
             app:layout_constraintBottom_toBottomOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:start_txt="@string/str_limited"
+            app:end_txt="@string/str_a"
             tools:text="限量20件"
+            android:text="@{model.limitBuyNum}"
             android:textColor="@color/color_withe"
             android:textSize="@dimen/sp_10" />
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -122,18 +137,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_stockProportion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="已抢30%"
+                app:start_txt="@string/str_hasBeenRobbed"
+                app:end_txt="@string/str_percent"
+                android:text="@{model.stockProportion}"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_10" />
             <ProgressBar
                 android:layout_marginStart="@dimen/dp_8"
                 android:id="@+id/pb_task"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:max="100"
+                android:max="@{model.stock}"
                 tools:progress="10"
-                android:progress="0"
+                android:progress="@{model.purchasedNum}"
                 android:progressDrawable="@drawable/progressbar_kill_bg"
                 android:layout_width="@dimen/dp_67"
                 android:layout_height="@dimen/dp_4"/>

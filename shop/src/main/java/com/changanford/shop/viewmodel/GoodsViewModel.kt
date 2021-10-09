@@ -89,14 +89,15 @@ class GoodsViewModel: BaseViewModel() {
     * */
     fun queryGoodsDetails(spuId:String,spuPageType:String="NOMROL"){
         viewModelScope.launch {
-            fetchRequest {
+            val response=fetchRequest {
                 body.clear()
                 body["spuPageType"] = spuPageType
                 val rkey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
-            }.onSuccess {
+            }
+            response.onSuccess {
+                it?.timestamp=response.timestamp?.toLong()
                 goodsDetailData.postValue(it)
-            }.onFailure {
             }
         }
     }

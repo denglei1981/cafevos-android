@@ -68,10 +68,10 @@ data class GoodsItemBean(
     val evalScoreSum: Any? = null,
     val hot: Any? = null,
     val isRecommend: String = "",
-    val limitBuyNum: Any? = null,
-    val limitIdentity: Any? = null,
-    val limitPhone: Any? = null,
-    val limitSeckill: Any? = null,
+    val limitBuyNum: String? = "0",
+    val limitIdentity: String? = null,
+    val limitPhone: String? = null,
+    val limitSeckill: String? = null,
     val lineFb: String? = null,
     val mallMallBrandId: Int = 0,
     val mallMallCategoryId: Int = 0,
@@ -137,21 +137,23 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    val fbLine: Int = 0,
-    val fbPrice: Int = 0,
+    val fbLine: String? = "0",
+    val fbPrice: String? = "0",
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
-    val limitBuyNum: Int = 0,
+    val limitBuyNum: String = "0",
     val now: String = "",
-    val purchasedNum: Int = 0,
+    val purchasedNum: Int? = 0,
     val salesCount: Int = 0,
-    val secKillInfo: SecKillInfo = SecKillInfo(),
+    val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
     val shareBeanVO: ShareBeanVO = ShareBeanVO(),
     val skuCodeRule: String = "",
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",
-    val stock: Int = 0
+    val stock: Int = 0,
+    var stockProportion:String="0",//库存百分比 0-100
+    var timestamp:Long?=0//服务器时间
 )
 
 data class Attribute(
@@ -162,7 +164,7 @@ data class Attribute(
 
 data class SecKillInfo(
     val timeBegin: String = "",
-    val timeEnd: String = ""
+    val timeEnd: Long =0
 )
 
 data class ShareBeanVO(

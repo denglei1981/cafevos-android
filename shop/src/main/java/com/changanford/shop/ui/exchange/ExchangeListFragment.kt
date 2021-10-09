@@ -59,8 +59,11 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
         } else if(it?.dataList != null)mAdapter.addData(it.dataList)
-        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.finishRefreshWithNoMoreData()
-        else  binding.smartRl.finishLoadMore()
+        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+        else {
+            binding.smartRl.finishLoadMore()
+            binding.smartRl.setEnableLoadMore(true)
+        }
     }
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
         this.parentSmartRefreshLayout=parentSmartRefreshLayout

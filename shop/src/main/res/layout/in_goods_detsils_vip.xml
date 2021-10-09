@@ -2,7 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
+    </data>
     <LinearLayout
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:id="@+id/layout_vip"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/dp_20"
         android:paddingStart="@dimen/dp_20"
@@ -28,6 +36,7 @@
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
             tools:text="1300积分"
+            android:text="@{model.fbPrice}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_18" />
         <com.changanford.shop.view.TypefaceTextView
@@ -38,6 +47,7 @@
             android:layout_height="wrap_content"
             app:text_flags="0x10"
             tools:text="1600"
+            android:text="@{model.fbLine}"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />
 
@@ -47,6 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_hasChange"
+            android:text="@{model.purchasedNum}"
             app:end_txt="@string/str_a"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_10" />

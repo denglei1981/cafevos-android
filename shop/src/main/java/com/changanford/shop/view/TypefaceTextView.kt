@@ -27,6 +27,8 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         //开头字体
         startText=typedArray.getString(R.styleable.TypefaceTextView_start_txt)
         endText=typedArray.getString(R.styleable.TypefaceTextView_end_txt)
+        val intTxt=typedArray.getInt(R.styleable.TypefaceTextView_set_int_txt,-999999)
+        if(intTxt!=-999999)setText("$intTxt")
         val textFlag=typedArray.getInt(R.styleable.TypefaceTextView_text_flags,0)
         if(0!=textFlag)paint.flags= textFlag
         val inputType= inputType
@@ -41,9 +43,12 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         if(TextUtils.isEmpty(text))setText(context.getString(R.string.str_text))
     }
     fun setText(str:Int?){
-        setText("$str")
+        setText(str?:"0")
     }
     fun setText(str:Any?){
+        if(str!=null)setText("$str")
+    }
+    fun setIntTxt(str:Int){
         setText("$str")
     }
     fun setText(str:String?){
