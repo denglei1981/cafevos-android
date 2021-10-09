@@ -10,3 +10,5 @@ data class Shares(
     var type: Int,
     var wxminiprogramCode: Any
 )
+
+data class ReportDislikeBody(val type: Int, val linkId: String)

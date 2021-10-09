@@ -19,15 +19,16 @@ import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableTop
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
@@ -61,6 +62,7 @@ class NewsVideoDetailActivity :
         }
         addHeaderView()
         binding.llComment.tvSpeakSomething.setOnClickListener(this)
+        binding.ivMore.setOnClickListener(this)
     }
 
     override fun initData() {
@@ -122,7 +124,9 @@ class NewsVideoDetailActivity :
 
     }
 
+    var newsDetailData: NewsDetailData? = null
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
+        this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         inflateHeader.tvAuthor.text = author.nickname
@@ -220,7 +224,17 @@ class NewsVideoDetailActivity :
             R.id.tv_news_to_msg -> {
 
             }
-            R.id.tv_news_to_share -> {
+            R.id.tv_news_to_share, R.id.iv_more -> {
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        this,
+                        1,
+                        it.shares,
+                        ReportDislikeBody(1, it.artId.toString()),
+                        null,
+                        it.authors.nickname
+                    )
+                }
 
             }
 
