@@ -89,4 +89,21 @@ interface HomeNetWork {
     suspend fun  getArticleDetails(@HeaderMap headMap: Map<String, String>,
                                    @Body requestBody: RequestBody):CommonResponse<NewsDetailData>
 
+
+    /**
+     *  获取评论
+     *
+     *  /con/artAdditional/get
+     * */
+
+    @POST("/con/comment/commentList")
+    suspend fun  getComment(@HeaderMap headMap: Map<String, String>,
+                            @Body requestBody: RequestBody){
+
+    }
+
+
+
+
+
 }
