@@ -32,11 +32,11 @@ class SpecialListViewModel : BaseViewModel() {
             ApiClient.createApi<HomeNetWork>()
                 .getSpecialList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<SpecialListMainBean>(it, true, "")
+                    val updateUiState = UpdateUiState<SpecialListMainBean>(it, true, isLoadMore,"")
                     specialListLiveData.postValue(updateUiState)
                     pageNo+=1
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<SpecialListMainBean>(false, "")
+                    val updateUiState = UpdateUiState<SpecialListMainBean>(false, "",isLoadMore)
                     specialListLiveData.postValue(updateUiState)
                 }
         })

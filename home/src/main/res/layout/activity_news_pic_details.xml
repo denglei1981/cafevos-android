@@ -1,98 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00142E">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-        android:id="@+id/layout_header"
-        layout="@layout/home_news_pics_header"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_48"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+    <variable
+        name="newsDetailData"
+        type="com.changanford.home.news.data.NewsDetailData" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_home_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_18"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="重庆长安福特EVOS即将在今年华丽登场啊啦啦啦啦啦啦"
-        android:textColor="#ffffffff"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_header"
-        app:layout_constraintWidth_percent="0.9" />
-
-    <com.zhpan.bannerview.BannerViewPager
-        android:id="@+id/banner"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="335dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="#00142E">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/home_tv_content"
-        android:layout_width="0dp"
-        android:layout_height="38dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示..."
-        android:textColor="#ffffffff"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner"
-        app:layout_constraintWidth_percent="0.9" />
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/home_news_pics_header"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_48"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_30"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/shape_home_di_blue"
-        app:layout_constraintBottom_toTopOf="@+id/layout_comment"
-        app:layout_constraintStart_toStartOf="@+id/home_tv_content"
-        app:layout_constraintTop_toBottomOf="@+id/home_tv_content"
-        app:layout_constraintWidth_percent="0.62">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:background="@drawable/shape_blue_819_bg"
-            android:gravity="center"
-            android:text="专题"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_topic_name"
+        <TextView
+            android:id="@+id/tv_home_title"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:drawableEnd="@drawable/icon_home_next"
-            android:gravity="center_vertical|start"
-            android:text="@string/app_name"
-            android:textColor="#FEFEFE" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_18"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{newsDetailData.title}"
+            android:textColor="#ffffffff"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintWidth_percent="0.9" />
 
-    </LinearLayout>
+        <com.zhpan.bannerview.BannerViewPager
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="335dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/layout_comment"
-        layout="@layout/include_home_comment_bg_blue"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_60"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_tv_content"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{newsDetailData.title}"
+            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示..."
+            android:textColor="#ffffffff"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/banner"
+            app:layout_constraintWidth_percent="0.9" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_home_di_blue"
+            app:layout_constraintBottom_toTopOf="@+id/layout_comment"
+            app:layout_constraintStart_toStartOf="@+id/home_tv_content"
+            app:layout_constraintTop_toBottomOf="@+id/home_tv_content"
+            app:layout_constraintWidth_percent="0.62">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:background="@drawable/shape_blue_819_bg"
+                android:gravity="center"
+                android:text="专题"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_topic_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/icon_home_next"
+                android:gravity="center_vertical|start"
+                android:text="@string/app_name"
+                android:textColor="#FEFEFE" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_comment"
+            layout="@layout/include_home_comment_bg_blue"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

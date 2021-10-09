@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_behavior="@string/fix_behavior">
+    <data>
 
-        <include
-            android:id="@+id/layout_coll_bar"
-            layout="@layout/home_header_special" />
+        <variable
+            name="specialDetailData"
+            type="com.changanford.home.news.data.SpecialDetailData" />
+    </data>
 
-        <include
-            android:id="@+id/layout_bar"
-            layout="@layout/home_base_top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:visibility="gone" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_behavior="@string/fix_behavior">
+
+            <include
+                android:id="@+id/layout_coll_bar"
+                layout="@layout/home_header_special"
+                app:specialDetailData="@{specialDetailData}" />
+
+            <include
+                android:id="@+id/layout_bar"
+                layout="@layout/home_base_top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                android:visibility="gone" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include
+            android:id="@+id/layout_empty"
+            layout="@layout/base_layout_empty_up"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:visibility="gone" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

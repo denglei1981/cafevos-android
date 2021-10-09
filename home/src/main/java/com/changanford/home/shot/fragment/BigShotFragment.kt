@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.databinding.FragmentBigShotBinding
-import com.changanford.home.news.data.SpecialData
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
 import com.changanford.home.shot.request.BigShotListViewModel
