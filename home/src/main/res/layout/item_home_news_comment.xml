@@ -14,9 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_head"
             android:layout_width="30dp"
+            style="@style/circleImageStyle"
             android:layout_marginStart="21dp"
             android:layout_height="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -57,6 +58,7 @@
             app:layout_constraintTop_toTopOf="@+id/tv_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_comment_content"
             android:layout_width="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/iv_like"
             app:layout_constraintLeft_toLeftOf="@+id/iv_like"

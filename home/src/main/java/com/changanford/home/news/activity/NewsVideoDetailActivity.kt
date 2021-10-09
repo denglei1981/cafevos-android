@@ -23,6 +23,7 @@ import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.request.NewsDetailViewModel
+import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
 
@@ -31,7 +32,8 @@ import com.gyf.immersionbar.ImmersionBar
 class NewsVideoDetailActivity :
     BaseLoadSirActivity<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>() {
     private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
-    val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
+    private lateinit var artId: String
+    private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)
     }
 
@@ -40,31 +42,33 @@ class NewsVideoDetailActivity :
         StatusBarUtil.setStatusBarMarginTop(binding.homesDkVideo, this)
         StatusBarUtil.setStatusBarMarginTop(binding.ivBack, this)
         StatusBarUtil.setStatusBarMarginTop(binding.ivMore, this)
-
         ImmersionBar.with(this)
             .statusBarColor(R.color.black)
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-
         binding.homeRvContent.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.adapter = homeNewsCommentAdapter
-        var list = arrayListOf<String>()
-        list.add("12")
-        list.add("12")
-        list.add("12")
-        list.add("12")
-        list.add("12")
-        homeNewsCommentAdapter.addData(list)
         playerHelper = DKPlayerHelperBig(this, binding.homesDkVideo)
         addHeaderView()
+
+        binding.llComment.tvSpeakSomething.setOnClickListener {
+            // 检查是否有登录。
+            var replyDialog = ReplyDialog(this, object : ReplyDialog.ReplyListener {
+                override fun getContent(content: String) {
+                    viewModel.addNewsComment(artId, content)
+                }
+            })
+            replyDialog.show()
+        }
     }
 
     override fun initData() {
-        var artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID)
+        artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             viewModel.getNewsDetail(artId!!)
+            viewModel.getNewsCommentList(artId, false)
         } else {
             ToastUtils.showShortToast("没有该资讯类型", this)
         }
@@ -97,6 +101,26 @@ class NewsVideoDetailActivity :
                 ToastUtils.showShortToast(it.message, this)
             }
         })
+        viewModel.commentsLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.isLoadMore) {
+                    homeNewsCommentAdapter.addData(it.data.dataList)
+                } else {
+                    homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                }
+            } else {
+                ToastUtils.showShortToast(it.message, this)
+            }
+        })
+        viewModel.commentSateLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                ToastUtils.showShortToast("评论成功", this)
+            } else {
+                ToastUtils.showShortToast(it.message, this)
+            }
+
+        })
+
     }
 
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
@@ -104,7 +128,7 @@ class NewsVideoDetailActivity :
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
-        inflateHeader.tvContent.text =Html.fromHtml(newsDetailData.content)
+        inflateHeader.tvContent.text = Html.fromHtml(newsDetailData.content)
         if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
             GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
             inflateHeader.ivPic.visibility = View.VISIBLE
@@ -151,8 +175,6 @@ class NewsVideoDetailActivity :
 
     override fun onBackPressed() {
         backPressed { super.onBackPressed() }
-
-
     }
 
     /**

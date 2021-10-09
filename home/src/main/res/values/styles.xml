@@ -99,4 +99,8 @@
 
         <attr name="image" format="reference|integer"/>
     </declare-styleable>
+
+    <style name="StyleCommonDialog" parent="DialogThemeStyle">
+        <item name="android:windowSoftInputMode">stateVisible</item>
+    </style>
 </resources>

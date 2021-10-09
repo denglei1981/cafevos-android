@@ -97,11 +97,17 @@ interface HomeNetWork {
      * */
 
     @POST("/con/comment/commentList")
-    suspend fun  getComment(@HeaderMap headMap: Map<String, String>,
-                            @Body requestBody: RequestBody){
+    suspend fun  getCommentList(@HeaderMap headMap: Map<String, String>,
+                            @Body requestBody: RequestBody):CommonResponse<ListMainBean<CommentListBean>>
 
-    }
 
+
+    /**
+     *  添加评论
+     * */
+    @POST("/con/article/addComment")
+    suspend fun  addCommentNews(@HeaderMap headMap: Map<String, String>,
+                                @Body requestBody: RequestBody):CommonResponse<Any>
 
 
 
