@@ -1,5 +1,6 @@
 package com.changanford.shop.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -8,8 +9,8 @@ import android.graphics.Shader
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.*
+import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.EditText
@@ -112,5 +113,26 @@ object WCommonUtil {
             Shader.TileMode.CLAMP)
         text.paint.shader = mLinearGradient
         text.invalidate()
+    }
+    /**
+     * 将html转为str
+     * */
+    fun htmlToString(str: String): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(str)
+        }
+    }
+    /**
+     * 将图文混合html转为str
+     * */
+    fun htmlToImgStr(mActivity: Activity, textView: TextView, str: String?){
+        textView.movementMethod = LinkMovementMethod.getInstance()//可点击
+        textView.text= when {
+            TextUtils.isEmpty(str) -> ""
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
+            else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
+        }
     }
 }

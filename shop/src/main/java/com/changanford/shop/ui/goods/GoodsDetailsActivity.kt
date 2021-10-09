@@ -1,13 +1,11 @@
 package com.changanford.shop.ui.goods
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
@@ -30,13 +28,16 @@ import kotlin.math.roundToInt
  */
 @Route(path = ARouterShopPath.ShopGoodsActivity)
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
+    //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
-        fun start(context: Context?=MyApp.mContext, spuId:String, spuPageType:String?="NOMROL") {
+
+        fun start(spuId:String, spuPageType:String?="NOMROL") {
             JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
 //            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("spuId",spuId)
 //                .putExtra("spuPageType",spuPageType))
         }
     }
+    private val spuPageTypes= arrayListOf("NOMROL","SECKILL","MEMBER_EXCLUSIVE","MEMBER_DISCOUNT")
     private var spuId:String?="0"//商品ID
     private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
@@ -68,7 +69,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
         }
-        spuPageType=intent.getStringExtra("spuPageType")?:"NOMROL"
+        spuPageType=spuPageTypes.lastOrNull { it==intent.getStringExtra("spuPageType") }?:"NOMROL"
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
@@ -84,7 +85,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
-            mAdapter.setList(it.imgs)
+//            mAdapter.setList(it.imgs)
             control.bindingData(it)
         })
         viewModel.queryGoodsDetails(spuId!!,spuPageType)

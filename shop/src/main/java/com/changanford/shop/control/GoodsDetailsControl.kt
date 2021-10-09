@@ -8,6 +8,7 @@ import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
+import com.changanford.shop.utils.WCommonUtil
 
 /**
  * @Author : wenke
@@ -17,8 +18,9 @@ import com.changanford.shop.popupwindow.GoodsAttrsPop
 class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding) {
     private var timeCount: CountDownTimer?=null
-    fun bindingData(data:GoodsDetailBean?){
-
+    fun bindingData(datas:GoodsDetailBean){
+        BannerControl.bindingBannerFromDetail(headerBinding.banner,datas.imgs,0)
+        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,datas.detailsHtml)
     }
     /**
      * 秒杀倒计时

@@ -50,7 +50,8 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
-            GoodsDetailsActivity.start(requireContext(),"$position")
+            val itemData=mAdapter.data[position]
+            GoodsDetailsActivity.start(itemData.mallMallSpuId,itemData.spuPageTagType)
         }
     }
     private fun bindingData(it:GoodsList?){

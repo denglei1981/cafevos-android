@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,11 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/white">
-        <com.youth.banner.Banner
+        <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner"
-            android:background="@color/color_99"
             android:layout_width="match_parent"
-            android:layout_height="375dp"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="@dimen/dp_20"
+            style="@style/BannerDefaultStyle"
+            tools:background="@drawable/shadow_1b51d9_5dp"
+            app:banner_pointDrawable="@null"
+            app:banner_aspectRatio="1"/>
         <!-- 商品秒杀信息           -->
         <include
             android:id="@+id/inKill"
@@ -55,5 +61,11 @@
             android:text="@string/str_goodsDetails"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_details"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

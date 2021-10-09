@@ -44,6 +44,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
     }
     private fun bindingTab(homeData:GoodsHomeBean?){
+        if(fragments.size>1)return
         val tabs=ArrayList<GoodsTypesItemBean>().apply {
             add(GoodsTypesItemBean("0","全部"))
             if(homeData!=null)addAll(homeData.list)

@@ -61,8 +61,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             val dataList=it?.dataList
             if(1==pageNo)mAdapter.setList(dataList)
             else if(dataList!=null)mAdapter.addData(dataList)
+            if(null==it||mAdapter.data.size>=it.total)binding.smartRl.finishRefreshWithNoMoreData()
+            else  binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
-            binding.smartRl.finishLoadMore()
         })
     }
     /**

@@ -32,6 +32,25 @@ object BannerControl {
         banner.setData(advertList,null)
         banner.setDelegate { _, _, _, position ->advJumpTo(advertList[position])}
     }
+
+    fun bindingBannerFromDetail(banner: BGABanner, advertList:MutableList<String>?, round:Int) {
+        if(null==advertList||advertList.size<1){
+//            banner.visibility= View.GONE
+            return
+        }
+        banner.visibility= View.VISIBLE
+        val isAutoPlayAbles=advertList.size>1
+        banner.setAutoPlayAble(isAutoPlayAbles)
+        banner.setAdapter(BGABanner.Adapter<ImageView, String> { _, imageView, item, _ ->
+            if (item != null) {
+                GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(item), imageView, round.toFloat(),R.mipmap.ic_def_square_img)
+            }
+        })
+        banner.setData(advertList,null)
+        banner.setDelegate { _, _, _, position ->
+
+        }
+    }
     private fun advJumpTo(itemData:AdBean){
 
     }

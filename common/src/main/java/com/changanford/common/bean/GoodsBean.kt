@@ -75,7 +75,7 @@ data class GoodsItemBean(
     val lineFb: String? = null,
     val mallMallBrandId: Int = 0,
     val mallMallCategoryId: Int = 0,
-    val mallMallSpuId: Int = 0,
+    val mallMallSpuId: String = "0",
     val memo: Any? = null,
     val normalFb: String = "0",
     val onShelveTime: Any? = null,
@@ -122,6 +122,15 @@ data class SeckillTimeRange(
     var states:Int=0,//状态 0 已结束  1 进行中  2未开始
     var statesTxt:String="已结束"
 )
+
+
+/**
+ * 商城首页列表
+* */
+data class GoodsHomeBean(
+    val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
+    val responsePageBean: GoodsList? = null,
+)
 /**
  * 商品详情
 * */
@@ -130,7 +139,7 @@ data class GoodsDetailBean(
     val detailsHtml: String = "",
     val fbLine: Int = 0,
     val fbPrice: Int = 0,
-    val imgs: List<String> = ArrayList(),
+    val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
     val limitBuyNum: Int = 0,
     val now: String = "",
@@ -178,11 +187,4 @@ data class SkuVo(
 data class OptionVo(
     val optionId: Int = 0,
     val optionName: String = ""
-)
-/**
- * 商城首页列表
-* */
-data class GoodsHomeBean(
-    val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
-    val responsePageBean: GoodsList? = null,
 )
