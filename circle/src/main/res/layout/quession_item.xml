@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_num"
+            tools:text="11."
+            android:textColor="#71747B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_toRightOf="@id/tv_num"
+            android:id="@+id/tv_quession"
+            android:textSize="15sp"
+            android:textColor="#71747B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="问题问题问题问题"/>
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/quessionicon"/>
+    </RelativeLayout>
+</layout>

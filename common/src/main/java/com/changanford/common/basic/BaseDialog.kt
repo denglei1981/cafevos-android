@@ -21,6 +21,9 @@ abstract class BaseDialog<VB : ViewBinding>(context: Context) :
     AlertDialog(context, R.style.DialogStyle),
     BaseInterface {
 
+    override fun initView(savedInstanceState: Bundle?) {
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

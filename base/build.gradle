@@ -73,6 +73,8 @@ dependencies {
     //友盟统计
     api  'com.umeng.umsdk:common:9.4.2'// 必选
     api  'com.umeng.umsdk:asms:1.4.0'// 必选
+    //发布问卷选择器
+    api 'com.contrarywind:Android-PickerView:4.1.6'
     //兴趣爱好标签
     api "com.github.donkingliang:LabelsView:1.6.1"
     //底部导航

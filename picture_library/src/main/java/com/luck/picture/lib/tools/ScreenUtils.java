@@ -10,6 +10,13 @@ import android.util.DisplayMetrics;
  * @describe：ScreenUtils
  */
 public class ScreenUtils {
+    public static int getWindowWidth(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
+
+
     /**
      * dp2px
      */

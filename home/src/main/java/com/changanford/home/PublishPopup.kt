@@ -37,7 +37,7 @@ class PublishPopup(
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = homeViewPagerAdapter
         homeViewPagerAdapter?.setOnItemClickListener { adapter, view, position ->
-            callback.onResult(ResultData(1, adapter.getItem(position)))
+            callback.onResult(ResultData(1, list[position]))
 
         }
     }

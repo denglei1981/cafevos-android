@@ -29,6 +29,9 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
     var isNavigationViewInit = false
     lateinit var rootView: View
 
+    override fun initView(savedInstanceState: Bundle?) {
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
