@@ -15,10 +15,8 @@ import com.changanford.common.sharelib.util.PlamForm;
 import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.utilext.ToastUtilsKt;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.functions.BiFunction;
 

@@ -86,8 +86,10 @@ interface HomeNetWork {
      *  资讯详情。
      * */
     @POST("/con/article/details")
-    suspend fun  getArticleDetails(@HeaderMap headMap: Map<String, String>,
-                                   @Body requestBody: RequestBody):CommonResponse<NewsDetailData>
+    suspend fun getArticleDetails(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewsDetailData>
 
 
     /**
@@ -97,19 +99,31 @@ interface HomeNetWork {
      * */
 
     @POST("/con/comment/commentList")
-    suspend fun  getCommentList(@HeaderMap headMap: Map<String, String>,
-                            @Body requestBody: RequestBody):CommonResponse<ListMainBean<CommentListBean>>
-
+    suspend fun getCommentList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<CommentListBean>>
 
 
     /**
      *  添加评论
      * */
     @POST("/con/article/addComment")
-    suspend fun  addCommentNews(@HeaderMap headMap: Map<String, String>,
-                                @Body requestBody: RequestBody):CommonResponse<Any>
+    suspend fun addCommentNews(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
 
+    /**
+     *   点赞资讯？
+     *  /con/article/actionLike
+     * */
+    @POST("/con/article/actionLike")
+    suspend fun actionLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
 
 }

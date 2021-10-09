@@ -11,26 +11,33 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.setDrawableTop
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
 
-
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
 class NewsVideoDetailActivity :
-    BaseLoadSirActivity<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>() {
+    BaseLoadSirActivity<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>(),
+    View.OnClickListener {
     private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
     private lateinit var artId: String
     private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
@@ -38,7 +45,6 @@ class NewsVideoDetailActivity :
     }
 
     override fun initView() {
-
         StatusBarUtil.setStatusBarMarginTop(binding.homesDkVideo, this)
         StatusBarUtil.setStatusBarMarginTop(binding.ivBack, this)
         StatusBarUtil.setStatusBarMarginTop(binding.ivMore, this)
@@ -51,17 +57,12 @@ class NewsVideoDetailActivity :
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.adapter = homeNewsCommentAdapter
         playerHelper = DKPlayerHelperBig(this, binding.homesDkVideo)
-        addHeaderView()
-
-        binding.llComment.tvSpeakSomething.setOnClickListener {
-            // 检查是否有登录。
-            var replyDialog = ReplyDialog(this, object : ReplyDialog.ReplyListener {
-                override fun getContent(content: String) {
-                    viewModel.addNewsComment(artId, content)
-                }
-            })
-            replyDialog.show()
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
         }
+        addHeaderView()
+        binding.llComment.tvSpeakSomething.setOnClickListener(this)
+        binding.ivMore.setOnClickListener(this)
     }
 
     override fun initData() {
@@ -123,7 +124,9 @@ class NewsVideoDetailActivity :
 
     }
 
+    var newsDetailData: NewsDetailData? = null
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
+        this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         inflateHeader.tvAuthor.text = author.nickname
@@ -136,7 +139,21 @@ class NewsVideoDetailActivity :
             inflateHeader.ivPic.visibility = View.GONE
         }
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
+        inflateHeader.llSpecial.setOnClickListener {// 跳转到专题详情。
+            JumpUtils.instans?.jump(8, newsDetailData.specialTopicId.toString())
+        }
         setFollowState(inflateHeader.btFollow, author)
+        binding.llComment.tvNewsToLike.text = newsDetailData.getLikeCount()
+        binding.llComment.tvNewsToShare.text = newsDetailData.getShareCount()
+        binding.llComment.tvNewsToMsg.text = newsDetailData.getCommentCount()
+        binding.llComment.tvNewsToLike.setOnClickListener(this)
+        binding.llComment.tvNewsToShare.setOnClickListener(this)
+        binding.llComment.tvNewsToMsg.setOnClickListener(this)
+        if (newsDetailData.isLike == 0) {
+            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_unlike)
+        } else {
+            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_like)
+        }
     }
 
     /**
@@ -159,7 +176,6 @@ class NewsVideoDetailActivity :
 
 
     override fun onDestroy() {
-
 //        if (isNotifyBack)//需要刷新上一个页面的数据
 //            LiveDataBus.get().with("info_detail_bean").postValue(bean)
         super.onDestroy()
@@ -183,5 +199,46 @@ class NewsVideoDetailActivity :
 
     override fun onRetryBtnClick() {
 
+    }
+
+    override fun onClick(v: View) {
+
+        if (MConstant.token.isEmpty()) {
+            startARouter(ARouterMyPath.SignUI)
+        }
+        when (v.id) {
+            R.id.tv_speak_something -> {
+                val replyDialog = ReplyDialog(this, object : ReplyDialog.ReplyListener {
+                    override fun getContent(content: String) {
+                        viewModel.addNewsComment(artId, content)
+                    }
+                })
+                replyDialog.show()
+
+            }
+            R.id.tv_news_to_like -> {
+                // 这里要防抖？
+                viewModel.actionLike(artId)
+
+            }
+            R.id.tv_news_to_msg -> {
+
+            }
+            R.id.tv_news_to_share, R.id.iv_more -> {
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        this,
+                        1,
+                        it.shares,
+                        ReportDislikeBody(1, it.artId.toString()),
+                        null,
+                        it.authors.nickname
+                    )
+                }
+
+            }
+
+
+        }
     }
 }

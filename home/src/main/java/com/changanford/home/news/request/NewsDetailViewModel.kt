@@ -21,7 +21,7 @@ class NewsDetailViewModel : BaseViewModel() {
 
     val commentSateLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
 
-
+    val actionLikeLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
     var pageNo:Int =1
     /**
      *  资讯详情。
@@ -38,7 +38,7 @@ class NewsDetailViewModel : BaseViewModel() {
                     newsDetailLiveData.postValue(updateUiState)
 
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<NewsDetailData>(false, "")
+                    val updateUiState = UpdateUiState<NewsDetailData>(false, it)
                     newsDetailLiveData.postValue(updateUiState)
                 }
         })
@@ -67,7 +67,7 @@ class NewsDetailViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore,"")
                     commentsLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, "",isLoadMore)
+                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, it,isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
         })
@@ -90,11 +90,26 @@ class NewsDetailViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<Any>(it, true, "")
                     commentSateLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<Any>(false, "")
+                    val updateUiState = UpdateUiState<Any>(false, it)
                     commentSateLiveData.postValue(updateUiState)
                 }
         })
     }
 
-
+    fun actionLike(artId:String){
+        launch(true, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["artId"] = artId
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .actionLike(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    actionLikeLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    actionLikeLiveData.postValue(updateUiState)
+                }
+        })
+    }
 }

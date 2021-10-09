@@ -1,6 +1,7 @@
 package com.changanford.home.news.data
 
 import android.text.TextUtils
+import com.changanford.common.util.CountUtils
 
 /**
  *  资讯详情。。。。
@@ -11,7 +12,7 @@ data class NewsDetailData(
     var authors: Authors,
     var catId: Any,
     var collectCount: Int,
-    var commentCount: Int,
+    var commentCount: Long,
     var content: String,
     var createBy: Any,
     var createTime: Long,
@@ -51,7 +52,7 @@ data class NewsDetailData(
     var viewsCount: Int,
     var viewsCountBase: Int,
     var viewsCountMul: Int
-){
+) {
     fun getPicUrl(): String {
         if (!TextUtils.isEmpty(pics)) { // 不为空时逗号，分隔。
             val pisList = pics.split(",")
@@ -59,4 +60,16 @@ data class NewsDetailData(
         }
         return ""
     }
+
+    fun getCommentCount(): String { // 获取评论数量
+        return CountUtils.formatNum(commentCount.toString(), false).toString()
+    }
+
+    fun getLikeCount():String{
+        return CountUtils.formatNum(likesCount.toString(), false).toString()
+    }
+    fun getShareCount():String{
+        return CountUtils.formatNum(shareCount.toString(), false).toString()
+    }
+
 }

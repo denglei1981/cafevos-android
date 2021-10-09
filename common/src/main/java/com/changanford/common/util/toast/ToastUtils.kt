@@ -106,4 +106,18 @@ object ToastUtils {
         mToastGravity = -1
         mToast = null
     }
+
+    /**
+     * 显示
+     */
+    fun showToastCenter(context:Context,msg: String) {
+        if (mToast == null) {
+            mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+        } else {
+            mToast?.duration = Toast.LENGTH_SHORT
+            mToastView?.setText(msg)
+        }
+        mToast?.setGravity(Gravity.CENTER, 0, 0)
+        mToast?.show()
+    }
 }
