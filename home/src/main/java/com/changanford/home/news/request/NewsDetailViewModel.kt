@@ -21,7 +21,7 @@ class NewsDetailViewModel : BaseViewModel() {
 
     val commentSateLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
 
-
+    val actionLikeLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
     var pageNo:Int =1
     /**
      *  资讯详情。
@@ -96,5 +96,20 @@ class NewsDetailViewModel : BaseViewModel() {
         })
     }
 
-
+    fun actionLike(artId:String){
+        launch(true, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["artId"] = artId
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .actionLike(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    actionLikeLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    actionLikeLiveData.postValue(updateUiState)
+                }
+        })
+    }
 }

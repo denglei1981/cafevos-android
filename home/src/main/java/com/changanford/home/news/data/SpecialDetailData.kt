@@ -54,14 +54,12 @@ data class SpecialDetailData(
     var viewsCountMul: Int
 ){
     fun getCount(): String {
-
         var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯 ${
             CountUtils.formatNum(
                 viewsCount.toString(),
                 false
             )
         }阅读量"
-
         return countStr;
     }
 
