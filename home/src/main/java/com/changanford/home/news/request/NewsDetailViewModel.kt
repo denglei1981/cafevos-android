@@ -54,10 +54,21 @@ class NewsDetailViewModel : BaseViewModel() {
         }
         launch(false, block = {
             val requestBody = HashMap<String, Any>()
+
+
+
             requestBody["bizId"] = bizId
             requestBody["type"] = 1//类型 1 资讯 2 帖子
+
+
+            requestBody["queryParams"]="{}"
+
+
+
             requestBody["pageNo"]=pageNo
             requestBody["pageSize"]=PageConstant.DEFAULT_PAGE_SIZE_THIRTY
+
+
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getCommentList(requestBody.header(rkey), requestBody.body(rkey))
