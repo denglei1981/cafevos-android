@@ -43,14 +43,14 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.btnOrdersGoods.setOnClickListener { OrdersGoodsActivity.start(requireContext()) }
         binding.inTop.btnAllOrder.setOnClickListener { AllOrderActivity.start(requireContext(),0) }
     }
-    private fun bindingTab(homeData:GoodsHomeBean){
+    private fun bindingTab(homeData:GoodsHomeBean?){
         val tabs=ArrayList<GoodsTypesItemBean>().apply {
             add(GoodsTypesItemBean("0","全部"))
-            addAll(homeData.list)
+            if(homeData!=null)addAll(homeData.list)
         }
         for(it in tabs){
             val fragment=ExchangeListFragment.newInstance(it.mallMallTagId)
-            if("0"==it.mallMallTagId)fragment.setAllData(homeData.responsePageBean)
+            if("0"==it.mallMallTagId)fragment.setAllData(homeData?.responsePageBean)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }

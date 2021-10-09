@@ -27,6 +27,7 @@
                 android:layout_height="match_parent"
                 app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
             <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_tagType"
                 android:background="@drawable/shadow_4dblack_2dp"
                 android:layout_margin="@dimen/dp_6"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/dp_21"
-                android:text="@string/str_vipExclusive"
+                tools:text="@string/str_vipExclusive"
+                android:text="@{model.spuPageTagType}"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_14" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -61,6 +63,7 @@
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_13" />
         <include
+            android:id="@+id/in_vip"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/dp_10"

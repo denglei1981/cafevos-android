@@ -36,9 +36,11 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!
-            if(null==allGoodsData)viewModel.getGoodsList(typeId,pageNo)
+            viewModel.getGoodsList(typeId,pageNo)
         }
-        viewModel.goodsListData.observe(this,{bindingData(it)})
+        viewModel.goodsListData.observe(this,{
+            bindingData(it)
+        })
         binding.smartRl.setOnLoadMoreListener {
             pageNo++
             viewModel.getGoodsList(typeId,pageNo)
@@ -56,7 +58,8 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
         } else if(it?.dataList != null)mAdapter.addData(it.dataList)
-        binding.smartRl.finishLoadMore()
+        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.finishRefreshWithNoMoreData()
+        else  binding.smartRl.finishLoadMore()
     }
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
         this.parentSmartRefreshLayout=parentSmartRefreshLayout
