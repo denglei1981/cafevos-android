@@ -2,6 +2,7 @@ package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
+import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.SpecialDetailData
 
 import okhttp3.RequestBody
@@ -79,5 +80,13 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<BigShotPostBean>>
+
+    /**
+     *  /con/article/details
+     *  资讯详情。
+     * */
+    @POST("/con/article/details")
+    suspend fun  getArticleDetails(@HeaderMap headMap: Map<String, String>,
+                                   @Body requestBody: RequestBody):CommonResponse<NewsDetailData>
 
 }

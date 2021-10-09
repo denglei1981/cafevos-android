@@ -9,6 +9,8 @@ import com.changanford.home.R
 import com.changanford.home.databinding.ItemHomeNewsCommentBinding
 
 class HomeNewsCommentAdapter(context: Context) :BaseQuickAdapter<String,BaseViewHolder>(R.layout.item_home_news_comment){
+
+
     override fun convert(holder: BaseViewHolder, item: String) {
 
     }

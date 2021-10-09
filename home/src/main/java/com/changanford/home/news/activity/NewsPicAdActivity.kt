@@ -11,11 +11,15 @@ import com.changanford.home.R
 import com.changanford.home.databinding.ActivityHomeNewsPicAdBinding
 import com.changanford.home.news.adapter.NewsPicAdAdapter
 import com.changanford.home.news.adapter.NewsPicAdBannerAdapter
+import com.changanford.home.news.request.NewsDetailViewModel
 import com.gyf.immersionbar.ImmersionBar
 import java.util.ArrayList
 
+/**
+ *  广告。
+ * */
 @Route(path = ARouterHomePath.NewsPicAdActivity)
-class NewsPicAdActivity : BaseActivity<ActivityHomeNewsPicAdBinding, EmptyViewModel>() {
+class NewsPicAdActivity : BaseActivity<ActivityHomeNewsPicAdBinding, NewsDetailViewModel>() {
 
     private var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
 

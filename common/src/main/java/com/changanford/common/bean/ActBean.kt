@@ -20,7 +20,7 @@ data class InfoBean(
 
 data class InfoDataBean(
     override val itemType: Int,
-    val artId: Int = 0,
+    val artId: String = "",
     val authors: AuthorBaseVo? = AuthorBaseVo(),
     val catId: Int = 0,
     val collectCount: Int = 0,
@@ -45,7 +45,7 @@ data class InfoDataBean(
     val summary: String = "",
     val timeStr: String = "",
     val title: String = "",
-    val type: Int = 0,
+    val type: Int = 0,//资讯类型 1图文 2 图片 3 视频
     val updateTime: String = "",
     val userId: Int = 0,
     val videoTime: String = "",
