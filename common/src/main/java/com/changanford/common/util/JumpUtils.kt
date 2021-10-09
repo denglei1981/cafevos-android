@@ -153,7 +153,7 @@ class JumpUtils {
                 if (value != null) {
                     bundle.putString("orderNo", value)
                 }
-                startARouter(ARouterShopPath.OrderDetailActivity, bundle)
+                startARouter(ARouterShopPath.OrderDetailActivity, bundle,true)
             }
             6 -> {//圈子详情
                 bundle.putString("circleId", value)
@@ -308,7 +308,7 @@ class JumpUtils {
 
             }
             36 -> {//聚合订单列表页
-                startARouter(ARouterMyPath.MineOrderUI, bundle,true)
+                startARouter(ARouterShopPath.AllOrderActivity, bundle,true)
             }
             37 -> {//签到
                 when {
@@ -412,7 +412,7 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                startARouter(ARouterShopPath.OrderGoodsActivity)
+                startARouter(ARouterShopPath.OrderGoodsActivity,true)
             }
             53 -> {//AR说明书跳转类型
                 when {
