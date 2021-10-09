@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
  * @Description : GoodsViewModel
  */
 class GoodsViewModel: BaseViewModel() {
-    private var pageSize=20
     private var adsRepository: AdsRepository = AdsRepository(this)
     //广告
     var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads

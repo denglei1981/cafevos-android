@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.adapter.order.AllOrderAdapter
-import com.changanford.shop.bean.OrderBean
 import com.changanford.shop.databinding.ActOrderAllBinding
 import com.changanford.shop.popupwindow.OrderScreeningPop
 import com.changanford.shop.view.TopBar
@@ -40,9 +40,9 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         }
     }
     override fun initData() {
-        val datas= arrayListOf<OrderBean>()
+        val datas= arrayListOf<OrderItemBean>()
         for (i in 0..15){
-            val item= OrderBean(i,"Title$i")
+            val item= OrderItemBean(i,"Title$i")
             datas.add(item)
         }
         mAdapter.setList(datas)

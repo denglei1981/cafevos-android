@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 typealias Block<T> = suspend () -> T
 
 open class BaseViewModel : ViewModel() {
+    protected var pageSize=20
     protected val body = MyApp.mContext.createHashMap()
     val shopApiService: ShopNetWorkApi by lazy {
         ApiClient.retrofit.create(ShopNetWorkApi::class.java)

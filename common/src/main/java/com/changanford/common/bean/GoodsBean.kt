@@ -243,3 +243,69 @@ data class ShopHomeBean(
     val mallIndexDto: MallIndexDto = MallIndexDto()
 )
 class MallIndexDto
+/**
+ * 订单列表
+* */
+data class ShopOrderBean(
+    val dataList: List<OrderItemBean> = listOf(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
+)
+
+data class OrderItemBean(
+    val addressId: Int = 0,
+    val addressInfo: String = "",
+    val addressName: String = "",
+    val buyNum: Int = 0,
+    val consignee: String = "",
+    val consumerMsg: String = "",
+    val courierCompany: String = "",
+    val courierNo: String = "",
+    val createBy: String = "",
+    val createTime: String = "",
+    val dataState: String = "",
+    val discount: Int = 0,
+    val discountScale: Int = 0,
+    val evalStatus: String = "",
+    val fbCost: Int = 0,
+    val fbOfOrderPrice: Int = 0,
+    val fbOfUnitPrice: Int = 0,
+    val haggleOrder: String = "",
+    val mallMallDiscountScaleId: Int = 0,
+    val mallMallHaggleActivityId: Int = 0,
+    val mallMallHaggleSkuId: Int = 0,
+    val mallMallHaggleSpuId: Int = 0,
+    val mallMallHaggleUserGoodsId: Int = 0,
+    val mallMallOrderId: String ="0",
+    val mallMallSeckillRangeId: Int = 0,
+    val mallMallSeckillSessionId: Int = 0,
+    val mallMallSkuId: Int = 0,
+    val mallMallSkuSpuSeckillRangeId: Int = 0,
+    val mallMallSpuId: Int = 0,
+    val mallMallSpuSeckillRangeId: Int = 0,
+    val memo: String = "",
+    val nickName: String = "",
+    val `operator`: String = "",
+    val orderNo: String = "",
+    val orderStatus: String = "",
+    val orderTime: String = "",
+    val params: Params = Params(),
+    val payType: String = "",
+    val phone: String = "",
+    val preferentialFb: Int = 0,
+    val remark: String = "",
+    val searchValue: String = "",
+    val seckill: String = "",
+    val seckillFb: Int = 0,
+    val skuCode: String = "",
+    val skuImg: String = "",
+    val snapshotOfAttrOption: String = "",
+    val specifications: String = "",
+    val spuName: String = "",
+    val spuSecondName: String = "",
+    val updateBy: String = "",
+    val updateTime: String = "",
+    val userId: Int = 0
+)

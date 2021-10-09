@@ -1,6 +1,8 @@
 package com.changanford.shop.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.shop.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -11,7 +13,8 @@ import kotlinx.coroutines.launch
  * @Description : OrderViewModel
  */
 class OrderViewModel: BaseViewModel() {
-
+    //首页
+    var shopOrderData = MutableLiveData<ShopOrderBean>()
     /**
      * 下单
      * [addressId]收货地址id
@@ -38,6 +41,28 @@ class OrderViewModel: BaseViewModel() {
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
 
+            }
+        }
+    }
+    /**
+     * 商品订单列表
+     * [orderStatus] 0待付款,1待发货,2待收货,3已完成
+     * evalStatus 0待评价
+     * */
+    fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
+                    else if(3==orderStatus)it["evalStatus"] =0
+                }
+                val randomKey = getRandomKey()
+                shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                shopOrderData.postValue(it)
             }
         }
     }

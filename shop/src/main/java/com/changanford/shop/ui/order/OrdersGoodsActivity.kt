@@ -35,8 +35,8 @@ class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
     private fun initTab(){
         val tabTitles= arrayListOf(getString(R.string.str_all),getString(R.string.str_toBePaid),getString(R.string.str_toSendGoods),getString(R.string.str_forGoods),getString(R.string.str_toEvaluate))
         val fragments= arrayListOf<Fragment>()
-        for(i in tabTitles.withIndex()){
-            fragments.add(OrdersGoodsFragment.newInstance("$i"))
+        for(i in 0 until tabTitles.size){
+            fragments.add(OrdersGoodsFragment.newInstance(i-1))
         }
         binding.viewPager2.adapter= ViewPage2Adapter(this,fragments)
         binding.viewPager2.isSaveEnabled = false
