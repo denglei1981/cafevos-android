@@ -166,9 +166,11 @@ class GoodsViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["spuId"]=spuId
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    it["spuId"] = spuId
+                }
                 val randomKey = getRandomKey()
                 shopApiService.orderEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {

@@ -57,12 +57,12 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
     }
     @SuppressLint("SetTextI18n")
     fun bindingComment(commentBean: CommentBean?){
-        if(commentBean!=null&& commentBean.totalEvalNum>0){
+        if(commentBean?.pageList?.dataList != null && commentBean.totalEvalNum>0){
             headerBinding.inComment.layoutComment.visibility=View.VISIBLE
-            val itemData=commentBean.pageList.dataList[0]
+            val itemData= commentBean.pageList?.dataList!![0]
             headerBinding.inComment.model=itemData
             GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),headerBinding.inComment.imgGoodsCommentAvatar)
-            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX,commentBean.pageList.total)
+            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, commentBean.pageList!!.total)
         }
     }
     /**

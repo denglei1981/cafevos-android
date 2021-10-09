@@ -193,13 +193,13 @@ data class OptionVo(
  * 评价
 * */
 data class CommentBean(
-    val pageList: PageList = PageList(),
+    val pageList: PageList?,
     val totalEvalNum: Int = 0,
     val totalEvalScore: Int = 0
 )
 
 data class PageList(
-    val dataList: List<CommentItem> = listOf(),
+    val dataList: List<CommentItem>?,
     val extend: Extend = Extend(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,
