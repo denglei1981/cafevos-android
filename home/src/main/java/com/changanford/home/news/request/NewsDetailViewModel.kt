@@ -54,33 +54,22 @@ class NewsDetailViewModel : BaseViewModel() {
         }
         launch(false, block = {
             val requestBody = HashMap<String, Any>()
-
-
-
-            requestBody["bizId"] = bizId
-            requestBody["type"] = 1//类型 1 资讯 2 帖子
-
-
-            requestBody["queryParams"]="{}"
-
-
-
+            requestBody["queryParams"] = HashMap<String, Any>().also {
+                it["bizId"] = bizId
+                it["type"] = "1"
+            }
             requestBody["pageNo"]=pageNo
             requestBody["pageSize"]=PageConstant.DEFAULT_PAGE_SIZE_THIRTY
-
-
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getCommentList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
                     val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore,"")
                     commentsLiveData.postValue(updateUiState)
-
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, "",isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
-
         })
     }
     fun addNewsComment(bizId:String,content:String,pid:String="",phoneModel:String=""){
@@ -100,7 +89,6 @@ class NewsDetailViewModel : BaseViewModel() {
                 .onSuccess {
                     val updateUiState = UpdateUiState<Any>(it, true, "")
                     commentSateLiveData.postValue(updateUiState)
-
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<Any>(false, "")
                     commentSateLiveData.postValue(updateUiState)

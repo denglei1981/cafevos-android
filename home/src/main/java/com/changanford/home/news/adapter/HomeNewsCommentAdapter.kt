@@ -6,6 +6,7 @@ import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.CountUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.bean.CommentListBean
@@ -20,8 +21,9 @@ class HomeNewsCommentAdapter(context: Context) :
 //            binding.bean = item
             GlideUtils.loadBD(item.avatar, it.ivHead)
             it.tvName.text = item.nickname
-            it.tvCommentContent.text = item.content
+            it.tvContent.text = item.content
             it.tvTime.text = item.timeStr
+            it.tvCommentCount.text=CountUtils.formatNum(item.likesCount,false)
         }
     }
 
