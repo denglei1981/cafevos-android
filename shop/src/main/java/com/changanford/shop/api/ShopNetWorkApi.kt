@@ -33,7 +33,7 @@ interface ShopNetWorkApi {
      * 首页
      * */
     @POST("/mall/index")
-    suspend fun queryShopHomeData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
+    suspend fun queryShopHomeData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopHomeBean>
     /**
      * 秒杀列表
      * */
@@ -50,6 +50,11 @@ interface ShopNetWorkApi {
     @POST("/mall/eval/create")
     suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
+    /**
+     *评价列表
+     * */
+    @POST("/mall/eval/list")
+    suspend fun orderEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
     /**
      *订单创建
      * */

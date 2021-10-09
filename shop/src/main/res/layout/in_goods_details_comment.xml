@@ -5,10 +5,12 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.common.bean.GoodsDetailBean" />
+            type="com.changanford.common.bean.CommentItem" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_comment"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_17"
@@ -46,14 +48,15 @@
             android:background="@color/color_EC"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"/>
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:layout_marginTop="@dimen/dp_15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
             android:id="@+id/img_goodsComment_avatar"
             android:src="@mipmap/ic_launcher_round"
             android:layout_width="@dimen/dp_35"
-            android:layout_height="@dimen/dp_35"/>
+            android:layout_height="@dimen/dp_35"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
         <com.changanford.shop.view.TypefaceTextView
             android:layout_marginStart="@dimen/dp_16"
             app:layout_constraintStart_toEndOf="@id/img_goodsComment_avatar"
@@ -62,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="E**9"
+            android:text="@{model.nickName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
@@ -71,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2021-09-10"
+            android:text="@{model.evalTime}"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />
         <androidx.appcompat.widget.AppCompatRatingBar
@@ -80,9 +85,11 @@
             android:id="@+id/ratingBar"
             style="@style/RadingStyle"
             android:isIndicator="true"
+            android:rating="@{model.evalScore}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_10"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:text="@{model.evalText}"
             android:layout_marginTop="@dimen/dp_12"
             app:layout_constraintTop_toBottomOf="@id/img_goodsComment_avatar"
             android:layout_width="match_parent"

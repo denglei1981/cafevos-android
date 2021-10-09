@@ -22,8 +22,8 @@ class GoodsViewModel: BaseViewModel() {
     private var adsRepository: AdsRepository = AdsRepository(this)
     //广告
     var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
-    //秒杀
-    var KillListData =MutableLiveData<MutableList<GoodsItemBean>>()
+    //首页
+    var shopHomeData =MutableLiveData<ShopHomeBean>()
 
     var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
     //商品列表
@@ -33,7 +33,9 @@ class GoodsViewModel: BaseViewModel() {
     //秒杀列表
     var killGoodsListData =MutableLiveData<GoodsList?>()
     //商城首页
-    var shopHomeData =MutableLiveData<GoodsHomeBean>()
+    var shopHomeGoodsData =MutableLiveData<GoodsHomeBean>()
+    //评价列表
+    var commentData =MutableLiveData<CommentBean?>()
     /**
      * 获取banner
      * */
@@ -50,7 +52,7 @@ class GoodsViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                KillListData.postValue(it)
+                shopHomeData.postValue(it)
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it?:"", MyApp.mContext)
             }
@@ -73,10 +75,10 @@ class GoodsViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                shopHomeData.postValue(it)
+                shopHomeGoodsData.postValue(it)
                 goodsListData.postValue(it?.responsePageBean)
             }.onFailure {
-                shopHomeData.postValue(it)
+                shopHomeGoodsData.postValue(it)
             }.onWithMsgFailure {
                 if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
             }
@@ -91,9 +93,14 @@ class GoodsViewModel: BaseViewModel() {
         viewModelScope.launch {
             val response=fetchRequest {
                 body.clear()
+//                body["paramDto"]=HashMap<String,Any>().also {
+//                    it["spuPageType"] = spuPageType
+//                }
                 body["spuPageType"] = spuPageType
                 val rkey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
             }
             response.onSuccess {
                 it?.timestamp=response.timestamp?.toLong()
@@ -125,7 +132,6 @@ class GoodsViewModel: BaseViewModel() {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-//                body["tagId"]=typeId
                 val randomKey = getRandomKey()
                 shopApiService.getGoodsKillList(seckillRangeId,body.header(randomKey), body.body(randomKey))
             }.onSuccess {
@@ -150,6 +156,23 @@ class GoodsViewModel: BaseViewModel() {
                 listener.onFinish(0)
             }.onFailure {
                 listener.onFinish(-1)
+            }
+        }
+    }
+    /**
+     * 评价列表
+     * */
+    fun getOrderEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["spuId"]=spuId
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                val randomKey = getRandomKey()
+                shopApiService.orderEvalList(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                commentData.postValue(it)
             }
         }
     }

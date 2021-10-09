@@ -79,9 +79,10 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             it.statesTxt=statesTxt[it.states]
             it.time=sf.format(it.timeBegin)
         }
+        timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)
         //默认选中第一个
-        onSelectTimeBackListener(timeAdapter.selectPos,seckillTimeRange[timeAdapter.selectPos])
+        onSelectTimeBackListener(0,seckillTimeRange[0])
     }
     /**
      * 秒杀日期选择回调

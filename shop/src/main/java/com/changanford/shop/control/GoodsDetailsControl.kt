@@ -1,9 +1,13 @@
 package com.changanford.shop.control
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.CountDownTimer
 import android.view.View
+import com.changanford.common.bean.CommentBean
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.shop.R
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
@@ -50,6 +54,16 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
             }
         }
 
+    }
+    @SuppressLint("SetTextI18n")
+    fun bindingComment(commentBean: CommentBean?){
+        if(commentBean!=null&& commentBean.totalEvalNum>0){
+            headerBinding.inComment.layoutComment.visibility=View.VISIBLE
+            val itemData=commentBean.pageList.dataList[0]
+            headerBinding.inComment.model=itemData
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),headerBinding.inComment.imgGoodsCommentAvatar)
+            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX,commentBean.pageList.total)
+        }
     }
     /**
      * 秒杀倒计时

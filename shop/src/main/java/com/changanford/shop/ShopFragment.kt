@@ -6,10 +6,10 @@ import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
-import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.order.AllOrderActivity
 import com.changanford.shop.ui.order.OrderEvaluationActivity
@@ -65,18 +65,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private fun initKill(){
         binding.inTop.recyclerView.adapter=adapter
         adapter.setOnItemClickListener { _, _, position ->
-            JumpUtils.instans?.jump(3,"$position")
+            GoodsDetailsActivity.start(adapter.data[position].spuId,adapter.data[position].spuPageTagType)
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
-        //添加测试数据
-        val datas= arrayListOf<GoodsBean>()
-        val title=StringBuffer("Title")
-        for (i in 0..4){
-            title.append("Title$i>>")
-            val item= GoodsBean(i,if(i%3>0)"Title$i" else "$title")
-            datas.add(item)
-        }
-        adapter.setList(datas)
     }
     override fun initData() {
         viewModel.getBannerData()
@@ -88,6 +79,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
         })
         viewModel.shopHomeData.observe(this,{
+            adapter.setList(it.indexSeckillDtoList)
+        })
+        viewModel.shopHomeGoodsData.observe(this,{
             bindingTab(it)
         })
     }

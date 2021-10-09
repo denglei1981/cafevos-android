@@ -69,8 +69,8 @@ object ToastUtils {
      * 弹出长时间提示
      * @param msg  提示信息
      */
-    fun showLongToast(msg: String, context: Context?) {
-        showToast(msg, Toast.LENGTH_LONG, context)
+    fun showLongToast(msg: String?, context: Context?) {
+        if(null!=msg)showToast(msg, Toast.LENGTH_LONG, context)
     }
 
     /**

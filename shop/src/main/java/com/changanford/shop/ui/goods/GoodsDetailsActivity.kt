@@ -30,7 +30,6 @@ import kotlin.math.roundToInt
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
-
         fun start(spuId:String, spuPageType:String?="NOMROL") {
             JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
 //            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("spuId",spuId)
@@ -84,10 +83,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
-//            mAdapter.setList(it.imgs)
             control.bindingData(it)
         })
+        viewModel.commentData.observe(this,{
+            control.bindingComment(it)
+        })
         viewModel.queryGoodsDetails(spuId!!,spuPageType)
+        viewModel.getOrderEvalList(spuId!!,1,1)
 
     }
     fun onClick(v:View){

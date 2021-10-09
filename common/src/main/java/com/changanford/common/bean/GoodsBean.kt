@@ -5,12 +5,11 @@ package com.changanford.common.bean
  * @Time : 2021/9/28
  * @Description : 商城
  */
+class Extend
 data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
 )
-
-class Extend
 data class GoodsList(
     val dataList: List<GoodsItemBean> = listOf(),
     val pageNo: Int = 0,
@@ -125,7 +124,7 @@ data class SeckillTimeRange(
 
 
 /**
- * 商城首页列表
+ * 商城首页商品列表
 * */
 data class GoodsHomeBean(
     val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
@@ -190,3 +189,57 @@ data class OptionVo(
     val optionId: Int = 0,
     val optionName: String = ""
 )
+/**
+ * 评价
+* */
+data class CommentBean(
+    val pageList: PageList = PageList(),
+    val totalEvalNum: Int = 0,
+    val totalEvalScore: Int = 0
+)
+
+data class PageList(
+    val dataList: List<CommentItem> = listOf(),
+    val extend: Extend = Extend(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
+)
+
+data class CommentItem(
+    val anonymous: String = "",
+    val avater: String = "",
+    val createBy: String = "",
+    val createTime: String = "",
+    val dataState: String = "",
+    val evalScore: Int = 0,
+    val evalStatus: String = "",
+    val evalText: String = "",
+    val evalTime: String = "",
+    val evalType: String = "",
+    val mallMallOrderEvalId: Int = 0,
+    val mallMallOrderId: Int = 0,
+    val mallMallSkuId: Int = 0,
+    val mallMallSpuId: Int = 0,
+    val memo: String = "",
+    val nickName: String = "",
+    val `operator`: String = "",
+    val orderNo: String = "",
+    val params: Params = Params(),
+    val remark: String = "",
+    val searchValue: String = "",
+    val skuCode: String = "",
+    val spuName: String = "",
+    val updateBy: String = "",
+    val updateTime: String = "",
+    val userId: Int = 0
+)
+/**
+ * 商品首页
+* */
+data class ShopHomeBean(
+    val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
+    val mallIndexDto: MallIndexDto = MallIndexDto()
+)
+class MallIndexDto

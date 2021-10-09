@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.GoodsItemBean
 import com.changanford.shop.R
-import com.changanford.shop.bean.GoodsBean
 import com.changanford.shop.databinding.ItemKillGoodsBinding
 import com.changanford.shop.utils.ScreenUtils
 
 
-class GoodsKillAdapter: BaseQuickAdapter<GoodsBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
+class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
     private val dp15 by lazy { ScreenUtils.dp2px(context,15f) }
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemKillGoodsBinding>, item: GoodsBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemKillGoodsBinding>, item: GoodsItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition

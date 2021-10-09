@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.shop.bean.GoodsBean" />
+            type="com.changanford.common.bean.GoodsItemBean" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/dp_145"
@@ -35,7 +35,7 @@
                 android:id="@+id/tvGoodsItemTitle"
                 android:paddingStart="@dimen/dp_11"
                 android:paddingEnd="@dimen/dp_11"
-                android:text="@{model.title}"
+                android:text="@{model.spuName}"
                 tools:text="@string/str_text"
                 android:textColor="@color/black"
                 android:ellipsize="end"
