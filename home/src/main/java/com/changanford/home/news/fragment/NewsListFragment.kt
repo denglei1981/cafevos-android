@@ -31,8 +31,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
     OnRefreshListener {
-
-
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter()
     }

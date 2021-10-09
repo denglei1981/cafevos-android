@@ -38,7 +38,7 @@ class NewsDetailViewModel : BaseViewModel() {
                     newsDetailLiveData.postValue(updateUiState)
 
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<NewsDetailData>(false, "")
+                    val updateUiState = UpdateUiState<NewsDetailData>(false, it)
                     newsDetailLiveData.postValue(updateUiState)
                 }
         })
@@ -67,7 +67,7 @@ class NewsDetailViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore,"")
                     commentsLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, "",isLoadMore)
+                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, it,isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
         })
@@ -90,7 +90,7 @@ class NewsDetailViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<Any>(it, true, "")
                     commentSateLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<Any>(false, "")
+                    val updateUiState = UpdateUiState<Any>(false, it)
                     commentSateLiveData.postValue(updateUiState)
                 }
         })
