@@ -92,4 +92,11 @@
         <!--        <item name="android:windowDisablePreview">true</item>-->
     </style>
 
+    <declare-styleable name="TopBottomText">
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="titleText" format="string"/>
+
+        <attr name="image" format="reference|integer"/>
+    </declare-styleable>
 </resources>

@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.HotTopicAdapter
+import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.databinding.ActivitySearchTopicBinding
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.viewmodel.SearchTopicViewModel
@@ -12,6 +13,8 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 
 /**
@@ -20,21 +23,25 @@ import com.changanford.common.utilext.toast
  *Purpose 话题搜索
  */
 @Route(path = ARouterCirclePath.SearchTopicActivity)
-class SearchTopicActivity:BaseActivity<ActivitySearchTopicBinding,SearchTopicViewModel>() {
+class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopicViewModel>() {
 
-    private var page=1
-
+    private var page = 1
+    private var needCallback:Boolean =false
     private val adapter by lazy {
         HotTopicAdapter()
     }
 
+
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.llTitle, this)
         binding.ryTopic.adapter = adapter
+        intent.extras?.getBoolean(ChooseConversationActivity.needCallback)?.let {
+            needCallback =it
+        }
         initListener()
     }
 
-    private fun initListener(){
+    private fun initListener() {
         binding.run {
             tvCancel.setOnClickListener { finish() }
             tvSearch.setOnEditorActionListener { v, actionId, event ->
@@ -57,14 +64,21 @@ class SearchTopicActivity:BaseActivity<ActivitySearchTopicBinding,SearchTopicVie
             viewModel.getData(content, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
-            val bundle = Bundle()
-            bundle.putString("topicId", adapter.getItem(position).topicId.toString())
-            startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            if (needCallback){
+                LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
+                    .postValue(adapter.getItem(position))
+                finish()
+            }else{
+                val bundle = Bundle()
+                bundle.putString("topicId", adapter.getItem(position).topicId.toString())
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+
         }
     }
 
     override fun initData() {
-        viewModel.topicBean.observe(this,{
+        viewModel.topicBean.observe(this, {
             if (page == 1) {
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)

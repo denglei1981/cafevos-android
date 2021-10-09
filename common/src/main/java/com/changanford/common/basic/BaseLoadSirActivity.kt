@@ -1,9 +1,8 @@
-package com.changanford.common.basic.adapter
+package com.changanford.common.basic
 
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.loadsir.EmptyCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
@@ -15,7 +14,7 @@ import com.kingja.loadsir.core.LoadSir
  *  界面 加载状态 管理。。。。
  *   @author nw
  * */
-abstract class LoadSirBaseActivityBaseActivity<VB : ViewBinding, VM : ViewModel> :
+abstract class BaseLoadSirActivity<VB : ViewBinding, VM : ViewModel> :
     BaseActivity<VB, VM>(){
 
   //界面状态管理者

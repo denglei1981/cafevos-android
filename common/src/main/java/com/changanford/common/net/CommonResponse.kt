@@ -12,7 +12,7 @@ package com.changanford.common.net
 class CommonResponse<T>(
     var code: Int = 0,
     val message: String? = "",
-    var msg: String? = null,
+    var msg: String = "",
     var data: T? = null,
     var timestamp: String? = null,
     val msgId: String? = "",

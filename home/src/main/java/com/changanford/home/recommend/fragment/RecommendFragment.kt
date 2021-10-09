@@ -45,6 +45,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
             startARouter(ARouterHomePath.NewsPicAdActivity)
         }
         setLoadSir(binding.smartLayout)
+
     }
 
     override fun initData() {
@@ -67,6 +68,8 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                 }
             } else {
                 showFailure(it.message)
+                // 刷新也得停
+                (parentFragment as HomeV2Fragment).stopRefresh()
                 ToastUtils.showShortToast(it.message, requireContext())
             }
 

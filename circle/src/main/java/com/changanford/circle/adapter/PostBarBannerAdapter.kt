@@ -1,11 +1,10 @@
 package com.changanford.circle.adapter
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.circle.R
+import com.changanford.circle.bean.ImageList
 import com.changanford.circle.databinding.ItemPostBarBannerBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.common.bean.MediaListBean
@@ -16,7 +15,7 @@ import com.zhpan.bannerview.BaseViewHolder
 
 
 class PostBarBannerAdapter :
-    BaseBannerAdapter<String, PostBarBannerViewHolder>() {
+    BaseBannerAdapter<ImageList, PostBarBannerViewHolder>() {
 
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_post_bar_banner
@@ -28,7 +27,7 @@ class PostBarBannerAdapter :
 
     override fun onBind(
         holder: PostBarBannerViewHolder?,
-        data: String?,
+        data: ImageList?,
         position: Int,
         pageSize: Int
     ) {
@@ -37,20 +36,20 @@ class PostBarBannerAdapter :
 
 }
 
-class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<String>(itemView) {
-    override fun bindData(data: String?, position: Int, pageSize: Int) {
+class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<ImageList>(itemView) {
+    override fun bindData(data: ImageList?, position: Int, pageSize: Int) {
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(itemView)
-        binding?.ivBanner?.loadImage(data)
+        binding?.ivBanner?.loadImage(data?.imgUrl)
         binding?.ivBanner?.setOnClickListener {
-            var pics = arrayListOf<MediaListBean>(MediaListBean().apply {
-                img_url =data
-            },MediaListBean().apply {
-                img_url =data
+            val pics = arrayListOf(MediaListBean().apply {
+                img_url = data?.imgUrl
+            }, MediaListBean().apply {
+                img_url = data?.imgUrl
             })
-            var bundle = Bundle()
-            bundle.putSerializable("imgList",pics);
-            bundle.putInt("count",0)
-            startARouter(ARouterCirclePath.PhotoViewActivity,bundle)
+            val bundle = Bundle()
+            bundle.putSerializable("imgList", pics)
+            bundle.putInt("count", 0)
+            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
         }
     }
 

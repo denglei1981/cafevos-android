@@ -13,8 +13,8 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-//    const val BASE_URL = "https://csapi.uniplanet.cn"
-    const val BASE_URL = "https://evosapiqa.changanford.cn"
+    const val BASE_URL = "https://csapi.uniplanet.cn"
+//    const val BASE_URL = "https://evosapiqa.changanford.cn"
     const val isDebug = true
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
@@ -35,7 +35,7 @@ object MConstant {
     }
 
     val H5_BASE_URL_CSCIR by lazy {
-        "https://cir.uni.changan.com.cn"
+        "https://evosh5qa.changanford.cn/common/#"
     }
 
     /**
@@ -76,25 +76,30 @@ object MConstant {
     const val LOGIN_INTERCEPT_PATH = "intercept_login_path"
 
     const val PUSH_ID = "sys:pushid"
+    const val UmengKey = "615fea28ac9567566e8c9d48"
 
-    var H5_privacy = "https://cir.uni.changan.com.cn/quanzi/#/privacy"//隐私协议
-    var H5_regTerms = "https://cir.uni.changan.com.cn/quanzi/#/regTerms" //注册协议
+    var H5_privacy = "${H5_BASE_URL_CSCIR}/privacy"//隐私协议
+    var H5_regTerms = "${H5_BASE_URL_CSCIR}/regTerms" //注册协议
 
+    /**
+     * 任务说明
+     */
+    var H5_TASK_RULE = "${H5_BASE_URL_CSCIR}/taskExplain"
     /**
      * https://cscir.uniplanet.cn/quanzi/#/regTerms
      * 引力域注册协议
      */
-    var H5_REGISTER_AGREEMENT = "${H5_BASE_URL_CSCIR}/quanzi/#/regTerms"
+    var H5_REGISTER_AGREEMENT = H5_regTerms
 
     /**
      * 用户隐私
      */
-    var H5_USER_AGREEMENT = "${H5_BASE_URL_CSCIR}/quanzi/#/privacy"
+    var H5_USER_AGREEMENT = H5_privacy
 
     /**
      * 注销协议
      */
-    var H5_CANCEL_ACCOUNT = "${H5_BASE_URL_CSCIR}/quanzi/#/cancellation"
+    var H5_CANCEL_ACCOUNT = "${H5_BASE_URL_CSCIR}/cancellation"
 
 
 }

@@ -20,7 +20,7 @@ class TopicDetailsViewModel : BaseViewModel() {
     val topPicDetailsTopBean = MutableLiveData<SugesstionTopicDetailBean>()
 
     fun getData(topicId: String) {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["topicId"] = topicId
             val rKey = getRandomKey()
@@ -30,6 +30,6 @@ class TopicDetailsViewModel : BaseViewModel() {
                     topPicDetailsTopBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 }

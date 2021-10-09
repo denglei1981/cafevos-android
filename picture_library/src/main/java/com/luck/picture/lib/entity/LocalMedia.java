@@ -194,10 +194,71 @@ public class LocalMedia implements Parcelable {
         this.contentDesc = contentDesc;
     }
 
+    private int isHttpUrl;//是否是服务端返回的path
+
+    public boolean hasHttpUrl() {
+        return isHttpUrl == 1;
+    }
+
+    public void setHttpUrl(int httpUrl) {
+        isHttpUrl = httpUrl;
+    }
+
     public LocalMedia() {
 
     }
 
+    public LocalMedia(String path, int isHttpUrl) {
+        this.path = path;
+        this.isHttpUrl = isHttpUrl;
+    }
+
+    public LocalMedia(String path, long duration, int chooseModel, String mimeType) {
+        this.path = path;
+        this.duration = duration;
+        this.chooseModel = chooseModel;
+        this.mimeType = mimeType;
+    }
+
+    public LocalMedia(long id, String path, String fileName, String parentFolderName, long duration, int chooseModel,
+                      String mimeType, int width, int height, long size) {
+        this.id = id;
+        this.path = path;
+        this.fileName = fileName;
+        this.parentFolderName = parentFolderName;
+        this.duration = duration;
+        this.chooseModel = chooseModel;
+        this.mimeType = mimeType;
+        this.width = width;
+        this.height = height;
+        this.size = size;
+    }
+
+    public LocalMedia(long id, String path, String absolutePath, String fileName, String parentFolderName, long duration, int chooseModel,
+                      String mimeType, int width, int height, long size, long bucketId) {
+        this.id = id;
+        this.path = path;
+        this.realPath = absolutePath;
+        this.fileName = fileName;
+        this.parentFolderName = parentFolderName;
+        this.duration = duration;
+        this.chooseModel = chooseModel;
+        this.mimeType = mimeType;
+        this.width = width;
+        this.height = height;
+        this.size = size;
+        this.bucketId = bucketId;
+    }
+
+    public LocalMedia(String path, long duration,
+                      boolean isChecked, int position, int num, int chooseModel) {
+        this.path = path;
+        this.duration = duration;
+        this.isChecked = isChecked;
+        this.position = position;
+        this.num = num;
+        this.chooseModel = chooseModel;
+    }
 
     protected LocalMedia(Parcel in) {
         id = in.readLong();
@@ -234,6 +295,7 @@ public class LocalMedia implements Parcelable {
         isEditorImage = in.readByte() != 0;
         contentDesc = in.readString();
         dateAddedTime = in.readLong();
+        this.isHttpUrl = in.readInt();
     }
 
     @Override
@@ -272,6 +334,7 @@ public class LocalMedia implements Parcelable {
         dest.writeByte((byte) (isEditorImage ? 1 : 0));
         dest.writeString(this.contentDesc);
         dest.writeLong(dateAddedTime);
+        dest.writeInt(this.isHttpUrl);
     }
 
     @Override

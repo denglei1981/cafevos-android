@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -34,8 +35,10 @@ import com.zhpan.bannerview.constants.IndicatorGravity
 class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     BaseFragment<ActivityPostGraphicBinding, PostGraphicViewModel>() {
 
+    private var page = 1
+
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(requireContext())
+        PostDetailsCommentAdapter()
     }
 
     private var webHelper: CustomWebHelper? = null
@@ -152,7 +155,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             bottomView.tvTalk.setOnClickListener {
                 ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
-                        content.toast()
+                        viewModel.addPostsComment(mData.postsId, null, "0", content)
                     }
 
                 }).show()
@@ -177,19 +180,59 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
         }
-        commentAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                startARouter(ARouterCirclePath.AllReplyActivity)
+        binding.bottomView.run {
+            llLike.setOnClickListener {
+                viewModel.likePosts(mData.postsId)
             }
+            llCollection.setOnClickListener {
+                viewModel.collectionApi(mData.postsId)
+            }
+        }
+        commentAdapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.getCommendList(mData.postsId, page)
+        }
 
-        })
+        commentAdapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            startARouter(ARouterCirclePath.AllReplyActivity)
+//            bundle.putString("postsId", commentAdapter.getItem(position).postsId.toString())
+//            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+        }
     }
 
     override fun initData() {
-        viewModel.getCommendList(mData.circleId.toString(), 1)
-        val list = arrayListOf("", "", "", "", "", "", "", "")
-        commentAdapter.setItems(list)
-        commentAdapter.notifyDataSetChanged()
+        viewModel.getCommendList(mData.postsId, page)
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.commendBean.observe(this, {
+            if (page == 1) {
+                commentAdapter.setList(it.dataList)
+                if (it.dataList.size == 0) {
+                    commentAdapter.setEmptyView(R.layout.circle_comment_empty_layout)
+                }
+            } else {
+                commentAdapter.addData(it.dataList)
+                commentAdapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                commentAdapter.loadMoreModule.loadMoreEnd()
+            }
+        })
+        viewModel.likePostsBean.observe(this, {
+            it.msg?.toast()
+        })
+        viewModel.collectionPostsBean.observe(this, {
+            it.msg?.toast()
+        })
+        viewModel.addCommendBean.observe(this, {
+            it.msg?.toast()
+            page = 1
+            initData()
+//            binding. nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
+        })
     }
 
 }

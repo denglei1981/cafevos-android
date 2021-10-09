@@ -137,6 +137,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     override fun observe() {
         super.observe()
         viewModel.topPicDetailsTopBean.observe(this, {
+            binding.barTitleTv.text = it.name
             binding.topContent.run {
                 Glide.with(this@TopicDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))

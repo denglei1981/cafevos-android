@@ -36,6 +36,10 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.medalRec.adapter = medalAdapter
         observeLoginAndAuthState()
         initClick()
+        binding.refreshLayout.setOnRefreshListener {
+            initData()
+            it.finishRefresh()
+        }
     }
 
     /**
@@ -76,7 +80,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             }
         })
         LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
-            .observe(this,  {
+            .observe(this, {
                 if (it) {
                     viewModel.getUserInfo()
                 }
@@ -177,7 +181,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     private fun getUserInfo() {
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
             it?.toString()?.logE()
-            if (MConstant.token.isNullOrEmpty()||null == it || it.userJson.isNullOrEmpty()) {
+            if (MConstant.token.isNullOrEmpty() || null == it || it.userJson.isNullOrEmpty()) {
                 setData(null)
             } else {
                 var userInfoBean: UserInfoBean =
@@ -187,5 +191,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUserInfo()
+    }
 }
 

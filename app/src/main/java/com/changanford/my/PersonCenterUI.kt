@@ -1,14 +1,26 @@
 package com.changanford.my
 
 import android.graphics.Typeface
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.databinding.ItemMedalBinding
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.utilext.load
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiPersonCenterBinding
 import com.changanford.my.viewmodel.SignViewModel
@@ -31,9 +43,6 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
         intent.extras?.let { bundle ->
             bundle.getString("value")?.let {
                 userId = it
-                if (it == MConstant.userId) {
-//                    binding.fans.visibility = View.GONE
-                }
             }
         }
         binding.centerToolbar.toolbarTitle.text = "个人主页"
@@ -43,7 +52,52 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
 
     override fun initData() {
         viewModel.queryOtherInfo(userId) {
+            it.onSuccess { user ->
+                user?.let {
+                    if (user.userId == userId) {
+                        binding.btnFollow.visibility = View.GONE
+                    }
+                    binding.headIcon.load(user.avatar, R.mipmap.my_headdefault)
+                    binding.nickName.text = user.nickname
+                    binding.userGrade.text = user.ext?.growSeriesName
+                    binding.followLayout.apply {
+                        followNum.text = "${MineUtils.num(user.count?.follows.toLong())}"
+                        fansNum.text = "${MineUtils.num(user.count?.fans.toLong())}"
+                        goodNum.text = "${MineUtils.num(user.count?.likeds.toLong())}"
+                    }
+                    binding.userDesc.text = user.brief
+                    binding.btnFollow.text = if (user.isFollow == 0) "关注" else "已关注"
 
+                    binding.userVip.text = user.ext?.memberName
+
+                    binding.personRcy.layoutManager = LinearLayoutManager(this).apply {
+                        orientation = RecyclerView.HORIZONTAL
+                    }
+                    binding.personRcy.adapter =
+                        object :
+                            BaseQuickAdapter<MedalListBeanItem, BaseDataBindingHolder<ItemMedalBinding>>(
+                                R.layout.item_medal
+                            ) {
+                            override fun convert(
+                                holder: BaseDataBindingHolder<ItemMedalBinding>,
+                                item: MedalListBeanItem
+                            ) {
+                                holder.dataBinding?.let {
+                                    it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
+                                    it.tvMedalName.text = item.medalName
+                                    it.btnGetMedal.visibility = View.GONE
+                                    it.tvMedalDes.visibility = View.VISIBLE
+                                    it.tvMedalDes.text = "2021.08.31点亮\n车迷级勋章"
+                                }
+
+                            }
+                        }.apply {
+                            user.ext?.userMedalList?.let {
+                                addData(it)
+                            }
+                        }
+                }
+            }
         }
     }
 

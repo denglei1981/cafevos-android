@@ -51,6 +51,9 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.refreshLayout.setOnRefreshListener {
+//            circleAdapter.topBinding.tvCircleMore.text="asd"
+//            circleAdapter.circleAdapter.setItems(arrayListOf("",""))
+//            circleAdapter.circleAdapter.notifyDataSetChanged()
             it.finishRefresh()
         }
     }

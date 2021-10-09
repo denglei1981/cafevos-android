@@ -58,6 +58,8 @@ class CarViewModel : ViewModel() {
                 apiService.getMiddlePageInfo(hashMap.header(rkey),hashMap.body(rkey))
             }.onSuccess {
                 _middleInfo.postValue(it)
+            }.onFailure {
+                _middleInfo.postValue(null)
             }
         }
     }

@@ -12,6 +12,7 @@
         android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/home_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -24,17 +25,32 @@
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <include
-                    android:id="@+id/layout_viewpager"
-                    layout="@layout/include_acts_view_pager"
+
+                <LinearLayout
+                    android:id="@+id/ll_tab_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.8">
+
+                    <include
+                        android:id="@+id/layout_viewpager"
+                        layout="@layout/include_acts_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                </LinearLayout>
+
 
             </com.changanford.home.widget.CollapsibleToolbar>
 
-           <include
-               android:id="@+id/layout_home_screen"
-               layout="@layout/include_acts_srceen"/>
+            <include
+                android:id="@+id/layout_home_screen"
+                layout="@layout/include_acts_srceen" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView

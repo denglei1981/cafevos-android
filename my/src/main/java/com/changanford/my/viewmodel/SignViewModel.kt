@@ -17,8 +17,10 @@ import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
 import com.luck.picture.lib.entity.LocalMedia
+import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -34,8 +36,9 @@ class SignViewModel : ViewModel() {
     var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var _hobbyBean: MutableLiveData<ArrayList<HobbyBeanItem>> = MutableLiveData()
     var _feedBackBean: MutableLiveData<FeedbackQBean> = MutableLiveData()
-    var _lables :MutableLiveData<ArrayList<FeedbackTagsItem>> = MutableLiveData()
-    var _feedbackMineListBean :MutableLiveData<FeedbackMineListBean> = MutableLiveData()
+    var _lables: MutableLiveData<ArrayList<FeedbackTagsItem>> = MutableLiveData()
+    var _feedbackMineListBean: MutableLiveData<FeedbackMineListBean> = MutableLiveData()
+
     /**
      * 反馈意见内容列表
      */
@@ -132,7 +135,8 @@ class SignViewModel : ViewModel() {
             }
         }
     }
-    fun getFeedbackQ(){
+
+    fun getFeedbackQ() {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
@@ -145,9 +149,11 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+
     fun uploadFileWithWH(upfiles: List<LocalMedia>, callback: UploadPicCallback) {
         GetOSSWithWH(BaseApplication.curActivity, upfiles, 0, callback)
     }
+
     /**
      * 地址带图片宽高
      */
@@ -161,9 +167,9 @@ class SignViewModel : ViewModel() {
             var body = HashMap<String, Any>()
             var rkey = getRandomKey()
             fetchRequest {
-                apiService.getOSS(body.header(rkey),body.body(rkey))
+                apiService.getOSS(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                initAliYunOss(context,it!!)//
+                initAliYunOss(context, it!!)//
                 upimgs = ArrayList()
                 uploadImgs(
                     context,
@@ -174,11 +180,12 @@ class SignViewModel : ViewModel() {
                 )
             }.onWithMsgFailure {
                 it?.toast()
-                callback.onUploadFailed(it?:"")
+                callback.onUploadFailed(it ?: "")
             }
         }
 
     }
+
     /**
      * 上传带宽高的图片
      */
@@ -225,7 +232,8 @@ class SignViewModel : ViewModel() {
             }
         })
     }
-    fun getFeedbackTags(){
+
+    fun getFeedbackTags() {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
@@ -237,7 +245,7 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun addFeedback(body: HashMap<String, Any>,result: (CommonResponse<String>) -> Unit){
+    fun addFeedback(body: HashMap<String, Any>, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var rKey = getRandomKey()
@@ -245,6 +253,7 @@ class SignViewModel : ViewModel() {
             })
         }
     }
+
     /**
      * 获取意见常用问题
      */
@@ -255,29 +264,31 @@ class SignViewModel : ViewModel() {
                 body["pageNo"] = pageNo
                 body["pageSize"] = 20
                 var rkey = getRandomKey()
-                apiService.getMineFeedback(body.header(rkey),body.body(rkey))
+                apiService.getMineFeedback(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 _feedbackMineListBean.postValue(it)
             }
         }
     }
-    fun deleteUserFeedback(userFeedbackId:Int){
+
+    fun deleteUserFeedback(userFeedbackId: Int) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 body["userFeedbackId"] = userFeedbackId
                 val rKey = getRandomKey()
-                apiService.deleteUserFeedback(body.header(rKey),body.body(rKey))
+                apiService.deleteUserFeedback(body.header(rKey), body.body(rKey))
             }
         }
     }
-    fun changeToRead(userFeedbackId:Int){
+
+    fun changeToRead(userFeedbackId: Int) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 body["userFeedbackId"] = userFeedbackId
                 val rKey = getRandomKey()
-                apiService.changeToRead(body.header(rKey),body.body(rKey))
+                apiService.changeToRead(body.header(rKey), body.body(rKey))
             }
         }
     }
@@ -293,39 +304,42 @@ class SignViewModel : ViewModel() {
                 body["configKey"] = "feedback_reply_set"
                 body["obj"] = true
                 var rkey = getRandomKey()
-                apiService.queryMemberNickName(body.header(rkey),body.body(rkey))
+                apiService.queryMemberNickName(body.header(rkey), body.body(rkey))
             })
         }
     }
+
     /**
      * 获取用户反馈内容
      */
     fun queryFeedbackInfoList(pageNo: Int, userFeedbackId: String) {
-        viewModelScope.launch{
+        viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["userFeedbackId"] = userFeedbackId
                 body["pageNo"] = pageNo
                 body["pageSize"] = 20
                 var rkey = getRandomKey()
-                apiService.queryFeedbackInfoList(body.header(rkey),body.body(rkey))
+                apiService.queryFeedbackInfoList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 feedbackInfo.postValue(it)
             }
         }
 
     }
+
     fun closeFeedback(userFeedbackId: String, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["userFeedbackId"] = userFeedbackId
                 var rkey = getRandomKey()
-                apiService.closeFeedback(body.header(rkey),body.body(rkey))
+                apiService.closeFeedback(body.header(rkey), body.body(rkey))
             })
         }
 
     }
+
     /**
      * 新增一条反馈
      */
@@ -333,18 +347,19 @@ class SignViewModel : ViewModel() {
         viewModelScope.launch {
             result(fetchRequest {
                 var rkey = getRandomKey()
-                apiService.addFeedbackInfo(param.header(rkey),param.body(rkey))
+                apiService.addFeedbackInfo(param.header(rkey), param.body(rkey))
             })
         }
 
     }
-    fun monthSignDetail(date:String,result: (CommonResponse<MonthSignBean>) -> Unit){
+
+    fun monthSignDetail(date: String, result: (CommonResponse<MonthSignBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["date"] = date
                 var rkey = getRandomKey()
-                apiService.monthSignDetail(body.header(rkey),body.body(rkey))
+                apiService.monthSignDetail(body.header(rkey), body.body(rkey))
             })
         }
     }
@@ -549,17 +564,20 @@ class SignViewModel : ViewModel() {
     }
 
 
-    suspend fun bindMobile(phone: String, smsCode: String) {
-        var smsbind = fetchRequest {
-            var body = HashMap<String, String>()
-            body["phone"] = phone
-            body["smsCode"] = smsCode
-            var rkey = getRandomKey()
-            apiService.bindMobile(body.header(rkey), body.body(rkey))
-        }
-        if (smsbind.code == 0) {
-            smsbind.data?.let {
+    fun bindMobile(phone: String, smsCode: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, String>()
+                body["phone"] = phone
+                body["smsCode"] = smsCode
+                var rkey = getRandomKey()
+                apiService.bindMobile(body.header(rkey), body.body(rkey))
+            }.onSuccess {
                 loginSuccess(it)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
             }
         }
     }
@@ -602,14 +620,16 @@ class SignViewModel : ViewModel() {
     }
 
     var bindAccount: MutableLiveData<ArrayList<BindAuthBeanItem>> = MutableLiveData()
-    suspend fun bindAccount() {
-        var account = fetchRequest {
-            var body = HashMap<String, String>()
-            var rKey = getRandomKey()
-            apiService.queryBindMobileList(body.header(rKey), body.body(rKey))
-        }
-        if (account.code == 0) {
-            bindAccount.postValue(account.data)
+    fun bindAccount() {
+        viewModelScope.launch {
+            var account = fetchRequest {
+                var body = HashMap<String, String>()
+                var rKey = getRandomKey()
+                apiService.queryBindMobileList(body.header(rKey), body.body(rKey))
+            }
+            if (account.code == 0) {
+                bindAccount.postValue(account.data)
+            }
         }
     }
 
@@ -621,18 +641,20 @@ class SignViewModel : ViewModel() {
      */
     var bindOtherAccount: MutableLiveData<String> = MutableLiveData()
 
-    suspend fun bindOtherAuth(type: String, code: String) {
-        var otherAuth = fetchRequest {
-            var body = HashMap<String, String>()
-            body["type"] = type
-            body["code"] = code
-            var rkey = getRandomKey()
-            apiService.bindOtherAuth(body.header(rkey), body.body(rkey))
-        }
-        if (otherAuth.code == 0) {
-            bindOtherAccount.postValue("bindSuccess")
-        } else {
-            bindOtherAccount.postValue(otherAuth.msg)
+    fun bindOtherAuth(type: String, code: String) {
+        viewModelScope.launch {
+            var otherAuth = fetchRequest {
+                var body = HashMap<String, String>()
+                body["type"] = type
+                body["code"] = code
+                var rkey = getRandomKey()
+                apiService.bindOtherAuth(body.header(rkey), body.body(rkey))
+            }
+            if (otherAuth.code == 0) {
+                bindOtherAccount.postValue("bindSuccess")
+            } else {
+                bindOtherAccount.postValue(otherAuth.msg)
+            }
         }
     }
 
@@ -869,6 +891,43 @@ class SignViewModel : ViewModel() {
                 //currentSize*100/totalSize
             }
         })
+    }
+
+
+    /**
+     * 获取用户会员
+     * memberType 申请类型 1车迷 2领袖 3大咖
+     */
+    fun getUserIdCard(
+        memberId: Int,
+        memberType: String,
+        result: (CommonResponse<AuthBean>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["memberId"] = memberId.toString()
+                body["memberKey"] = memberType
+                var rkey = getRandomKey()
+                apiService.getUserIdCard(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+
+    /**
+     * 提交会员身份
+     */
+    fun submitUserIdCard(
+        body: HashMap<String, Any>,
+        result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var rkey = getRandomKey()
+                apiService.submitUserIdCard(body.header(rkey), body.body(rkey))
+            })
+        }
     }
 
     /**

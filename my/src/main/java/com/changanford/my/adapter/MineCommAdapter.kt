@@ -1,6 +1,7 @@
 package com.changanford.my.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -17,17 +18,21 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.bean.*
+import com.changanford.common.databinding.ItemUniAuthConditionBinding
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils.loadRound
 import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
 import com.changanford.common.utilext.load
 import com.changanford.my.R
 import com.changanford.my.databinding.*
+import com.changanford.my.ui.UserAuthUI
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
@@ -35,7 +40,47 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
-object MineCommAdapter{
+object MineCommAdapter {
+
+    open class ConditionAdapter :
+        BaseQuickAdapter<Condition, BaseDataBindingHolder<ItemUniAuthConditionBinding>>(R.layout.item_uni_auth_condition) {
+
+        override fun convert(
+            holder: BaseDataBindingHolder<ItemUniAuthConditionBinding>,
+            item: Condition
+        ) {
+            holder.dataBinding?.let {
+                it.title.text = item.conditionName
+
+                when (item.isFinish) {
+                    "", "0" -> {
+                        if (item.jumpDataType == 99) {
+                            it.des.text = "未满足"
+                            it.des.setTextColor(Color.parseColor("#AFB3B6"))
+                            it.des.setOnClickListener(null)
+                        } else {
+                            it.des.text = "${item.noConditionName}  >"
+                            it.des.setTextColor(Color.parseColor("#FC883B"))
+                            it.des.setOnClickListener {
+                                if (context is UserAuthUI) {
+                                    (context as UserAuthUI).isRequest = true
+                                }
+                                JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
+                            }
+                        }
+                        LiveDataBus.get().with("isCondition", Boolean::class.java).postValue(false)
+                    }
+                    "1" -> {
+                        it.des.text = "已满足"
+                        it.des.setTextColor(Color.parseColor("#AFB3B6"))
+                        it.des.setOnClickListener(null)
+                    }
+                }
+            }
+        }
+    }
+
+
     /**
      * 兴趣爱好
      */
@@ -173,6 +218,7 @@ object MineCommAdapter{
             this.industryIds = industryIds
         }
     }
+
     /**
      * 意见反馈 列表
      */
@@ -238,6 +284,7 @@ object MineCommAdapter{
             }
         }
     }
+
     /**
      * 上传图片点击
      */
@@ -303,12 +350,12 @@ object MineCommAdapter{
 //                            it.delete.visibility = View.VISIBLE
 //                        }
 //                    } else {
-                        it.delete.visibility = View.VISIBLE
+                    it.delete.visibility = View.VISIBLE
 //                    }
 //                    if (item.hasHttpUrl()) {
 //                        loadRound(item.path, it.itemIcon)
 //                    } else {
-                        loadRoundFilePath(item.path, it.itemIcon)
+                    loadRoundFilePath(item.path, it.itemIcon)
 //                    }
                     it.itemIcon.setOnClickListener(null)
                     it.delete.setOnClickListener {
@@ -329,7 +376,7 @@ object MineCommAdapter{
 //                        addData(LocalMedia())
 //                    }
 //                } else {
-                    addData(LocalMedia())
+                addData(LocalMedia())
 //                }
             }
         }
@@ -339,15 +386,17 @@ object MineCommAdapter{
         }
 
     }
+
     /**
      * @Author: lcw
      * @Date: 2020/9/1
      * @Des:
      */
-    open class MineFeedbackRecordAdapter(context: Context, var viewModel: SignViewModel) : BaseAdapterOneLayout<FeedbackMineListItem>(
-        context,
-        R.layout.item_feedback_record
-    ) {
+    open class MineFeedbackRecordAdapter(context: Context, var viewModel: SignViewModel) :
+        BaseAdapterOneLayout<FeedbackMineListItem>(
+            context,
+            R.layout.item_feedback_record
+        ) {
         private val mContext = context
         override fun fillData(
             vdBinding: ViewDataBinding?,
@@ -359,7 +408,8 @@ object MineCommAdapter{
                 AlertThreeFilletDialog(mContext).builder().setMsg("确定是否要删除该内容吗？")
                     .setNegativeButton(
                         "暂不删除", R.color.color_7174
-                    ) { binding.swipeLayout.quickClose() }.setPositiveButton("确认删除", R.color.black) {
+                    ) { binding.swipeLayout.quickClose() }
+                    .setPositiveButton("确认删除", R.color.black) {
                         deleteUserFeedback(item.userFeedbackId.toInt())
                         getItems()?.remove(item)
                         notifyItemRemoved(position)
@@ -385,15 +435,30 @@ object MineCommAdapter{
             when (item.isReply) {
                 0 -> {
                     binding.tvType.text = "[待回复]"
-                    binding.tvType.setTextColor(ContextCompat.getColor(mContext, R.color.mine_other))
+                    binding.tvType.setTextColor(
+                        ContextCompat.getColor(
+                            mContext,
+                            R.color.mine_other
+                        )
+                    )
                 }
                 1 -> {
                     binding.tvType.text = "[已回复]"
-                    binding.tvType.setTextColor(ContextCompat.getColor(mContext, R.color.mine_other))
+                    binding.tvType.setTextColor(
+                        ContextCompat.getColor(
+                            mContext,
+                            R.color.mine_other
+                        )
+                    )
                 }
                 2 -> {
                     binding.tvType.text = "[已关闭]"
-                    binding.tvType.setTextColor(ContextCompat.getColor(mContext, R.color.mine_close))
+                    binding.tvType.setTextColor(
+                        ContextCompat.getColor(
+                            mContext,
+                            R.color.mine_close
+                        )
+                    )
                 }
                 else -> {
 
@@ -417,23 +482,25 @@ object MineCommAdapter{
             viewModel.changeToRead(userFeedbackId)
         }
     }
-    class MonthSignAdapter:BaseQuickAdapter<RoundBean,BaseDataBindingHolder<ItemSignmonthdayBinding>>(R.layout.item_signmonthday){
+
+    class MonthSignAdapter :
+        BaseQuickAdapter<RoundBean, BaseDataBindingHolder<ItemSignmonthdayBinding>>(R.layout.item_signmonthday) {
         override fun convert(
             holder: BaseDataBindingHolder<ItemSignmonthdayBinding>,
             item: RoundBean
         ) {
             holder.dataBinding?.apply {
-                date.text = MineUtils.listWeek[holder.layoutPosition%7].week
+                date.text = MineUtils.listWeek[holder.layoutPosition % 7].week
                 date.isVisible = holder.layoutPosition < 7
-                line.isInvisible = holder.layoutPosition%7 == 0
-                line2.isInvisible = holder.layoutPosition%7 == 6
+                line.isInvisible = holder.layoutPosition % 7 == 0
+                line2.isInvisible = holder.layoutPosition % 7 == 6
                 try {
-                    day.text = item.date?.subSequence(item.date.length-2,item.date.length)
-                }catch (e:Exception){
+                    day.text = item.date?.subSequence(item.date.length - 2, item.date.length)
+                } catch (e: Exception) {
                     day.text = item.date
                 }
-                if (TimeUtils.dayBefore(item.date)){//在之前
-                    if (item.isSignIn == 0){//没有
+                if (TimeUtils.dayBefore(item.date)) {//在之前
+                    if (item.isSignIn == 0) {//没有
                         icon.load(R.mipmap.icon_sign_bu)
                         word.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
@@ -444,10 +511,13 @@ object MineCommAdapter{
                                 BaseApplication.currentViewModelScope.launch {
                                     fetchRequest {
                                         fetchRequest {
-                                            var body = HashMap<String,String>()
+                                            var body = HashMap<String, String>()
                                             body["date"] = item.date
                                             var rkey = getRandomKey()
-                                            apiService.signReissue(body.header(rkey),body.body(rkey))
+                                            apiService.signReissue(
+                                                body.header(rkey),
+                                                body.body(rkey)
+                                            )
                                         }.onSuccess {
                                             notifyItemChanged(holder.layoutPosition)
                                         }
@@ -460,20 +530,20 @@ object MineCommAdapter{
                             pop.showPopupWindow()
                         }
                         word.text = "补"
-                        word.setTextColor(R.color.text_01025C)
+                        word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.text_01025C))
                     }else{
                         word.text = ""
                         icon.load(R.mipmap.checked)
                     }
-                }else{
+                } else {
                     icon.load(R.mipmap.icon_sign_unreachday)
                     word.text = item.integral?.let {
-                        when(it >0){
+                        when (it > 0) {
                             true -> "+${it}"
                             else -> "$it"
                         }
                     }.toString()
-                    word.setTextColor(R.color.signunreach)
+                    word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.signunreach))
                 }
             }
         }

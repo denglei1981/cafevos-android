@@ -28,7 +28,7 @@ object ARouterMyPath {
     const val AboutUI = "/my/AboutUI" //签到
 
     const val UniUserIdcardUI = "/my/UniUserIdcardUI" //用户等级
-    const val MineFollowUI = "/my/MineFollowUI" //我的发布
+    const val MineFollowUI = "/app/MineFollowUI" //我的发布
     const val MineMessageUI = "/my/MineMessageUI" //消息
     const val MineFansUI = "/my/MineFansUI" //我的粉丝
     const val MineCollectUI = "/app/MineCollectUI" //我的收藏

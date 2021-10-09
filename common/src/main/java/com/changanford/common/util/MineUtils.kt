@@ -159,7 +159,7 @@ object MineUtils {
         val decimalFormat = DecimalFormat(".00") //构造方法的字符格式这里如果小数不足2位,会以0补足.
 
         //大于1k的单位k
-        if (num >= 1000 && num < 10000) {
+        if (num in 1000..9999) {
             numB = decimalFormat.format(num.toFloat() / 1000).toString() + "K"
         } else if (num >= 10000) {
             numB = decimalFormat.format(num.toFloat() / 10000).toString() + "万"
@@ -185,6 +185,19 @@ object MineUtils {
         var styleSpan = StyleSpan(Typeface.BOLD)
         spannable.setSpan(styleSpan, 0, numB.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         textView!!.text = spannable
+    }
+
+    fun num(num: Long): String {
+        var numB: String = num.toString()
+        val decimalFormat = DecimalFormat(".00") //构造方法的字符格式这里如果小数不足2位,会以0补足.
+
+        //大于1k的单位k
+        if (num in 1000..9999) {
+            numB = decimalFormat.format(num.toFloat() / 1000).toString() + "K"
+        } else if (num >= 10000) {
+            numB = decimalFormat.format(num.toFloat() / 10000).toString() + "万"
+        }
+        return numB
     }
 
     /**
@@ -562,22 +575,24 @@ object MineUtils {
 
         textView!!.text = spannable
     }
+
     /**
      * 每日签到 U币  成长值
      */
-    fun signAcc(textView: TextView?, title1: String,num: String, title2: String) {
-        var spannable = SpannableString(title1+num + title2)
+    fun signAcc(textView: TextView?, title1: String, num: String, title2: String) {
+        var spannable = SpannableString(title1 + num + title2)
 
         //设置颜色
         var colorSpannable = ForegroundColorSpan(Color.parseColor("#01025C"))
         spannable.setSpan(
             colorSpannable,
             title1.length,
-            title1.length+num.length,
+            title1.length + num.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         textView!!.text = spannable
     }
+
     /**
      * 每日签到 U币  成长值
      */
@@ -601,18 +616,19 @@ object MineUtils {
 
         textView!!.text = spannable
     }
+
     /**
      * 每日签到 U币  成长值
      */
-    fun signAccMonth(textView: TextView?, title1: String,num: String, title2: String) {
-        var spannable = SpannableString(title1+num + title2)
+    fun signAccMonth(textView: TextView?, title1: String, num: String, title2: String) {
+        var spannable = SpannableString(title1 + num + title2)
 
         //设置颜色
         var colorSpannable = ForegroundColorSpan(Color.parseColor("#FFDE00"))
         spannable.setSpan(
             colorSpannable,
             title1.length,
-            title1.length+num.length,
+            title1.length + num.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         textView!!.text = spannable

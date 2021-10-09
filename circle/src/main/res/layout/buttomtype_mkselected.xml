@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shap_fafbfd"
+    android:id="@+id/llcon"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/tv_mkselected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/red"
+        tools:text="选择模块"/>
+    <ImageView
+        android:layout_width="5dp"
+        android:layout_height="9dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_mkselected"
+        app:layout_constraintTop_toTopOf="@id/tv_mkselected"
+        app:layout_constraintBottom_toBottomOf="@id/tv_mkselected"
+        android:src="@mipmap/right_arrow_black"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

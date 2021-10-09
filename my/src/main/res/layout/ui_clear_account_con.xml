@@ -47,6 +47,10 @@
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableLeft="@drawable/checkbox"
+                android:drawablePadding="@dimen/dp_4"
+                android:gravity="center_vertical"
                 android:text="我已阅读并同意"
                 android:textColor="#878B8F"
                 android:textSize="@dimen/sp_13" />

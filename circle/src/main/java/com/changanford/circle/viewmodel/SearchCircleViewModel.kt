@@ -19,7 +19,7 @@ class SearchCircleViewModel : BaseViewModel() {
     val circleBean =MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
 
     fun getData(searchKey:String,page:Int ){
-        launch {
+        launch(block ={
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -32,7 +32,7 @@ class SearchCircleViewModel : BaseViewModel() {
                     circleBean.value = it
                 }
                 .onFailure { }
-        }
+        } )
     }
 
 }

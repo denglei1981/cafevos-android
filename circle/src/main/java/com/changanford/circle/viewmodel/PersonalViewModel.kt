@@ -19,7 +19,7 @@ class PersonalViewModel : BaseViewModel() {
     val personalBean = MutableLiveData<HomeDataListBean<CircleMemberBean>>()
 
     fun getData(circleId: String, page: Int) {
-        launch {
+        launch(block ={
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -32,7 +32,7 @@ class PersonalViewModel : BaseViewModel() {
                     personalBean.value = it
                 }
                 .onFailure { }
-        }
+        } )
     }
 
 }

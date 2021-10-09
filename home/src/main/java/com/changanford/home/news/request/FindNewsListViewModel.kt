@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
 import com.changanford.home.PageConstant
-import com.changanford.home.news.api.HomeNetWork
+import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.NewsListMainBean
 import com.changanford.home.bean.SpecialListMainBean
@@ -20,7 +20,7 @@ class FindNewsListViewModel : BaseViewModel() {
      *  专题列表顶部
      * */
     fun getSpecialList() {
-        launch {
+        launch(block = {
             val requestBody = HashMap<String, Any>()
             requestBody["pageNo"] = 1
             requestBody["pageSize"] = 5
@@ -34,7 +34,7 @@ class FindNewsListViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<SpecialListMainBean>(false, "")
                     specialListLiveData.postValue(updateUiState)
                 }
-        }
+        })
     }
 
     /**
@@ -45,9 +45,9 @@ class FindNewsListViewModel : BaseViewModel() {
         if (!isLoadMore) {
             pageNo = 1
         }
-        launch {
+        launch(block = {
             val requestBody = HashMap<String, Any>()
-            requestBody["pageNo"]=1
+            requestBody["pageNo"] = 1
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
@@ -60,7 +60,7 @@ class FindNewsListViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<NewsListMainBean>(false, "", isLoadMore)
                     newsListLiveData.value = updateUiState
                 }
-        }
+        })
     }
 
 }

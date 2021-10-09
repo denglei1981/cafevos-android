@@ -22,9 +22,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
+import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.databinding.ActivityWebveiwBinding
 import com.changanford.common.pay.PayViewModule
 import com.changanford.common.router.path.ARouterHomePath
@@ -37,8 +39,10 @@ import com.changanford.common.util.MConstant.totalWebNum
 
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.*
+import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
+import com.google.gson.Gson
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
@@ -319,6 +323,15 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this,
             Observer {
                 getMyInfoCallback = it
+                UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser().observe(this,{
+                    it?.toString()?.logE()
+                    var user = if (MConstant.token.isNullOrEmpty()|| it.userJson.isNullOrEmpty()) {
+                        ""
+                    } else {
+                        it.userJson
+                    }
+                    agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, user)
+                })
 //                mineSignViewModel.getUserInfo()
             })
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_UNICARDS_LIST, String::class.java)

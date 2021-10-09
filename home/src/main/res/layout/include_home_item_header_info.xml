@@ -24,10 +24,10 @@
 
         <ImageView
             android:id="@+id/iv_vip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_home_auth_vip"
+            tools:src="@drawable/icon_home_auth_vip"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintCircle="@id/iv_header"
             app:layout_constraintCircleAngle="120"

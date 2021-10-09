@@ -14,6 +14,8 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.DisplayUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.callback.ICallback
@@ -25,7 +27,6 @@ import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -34,14 +35,14 @@ import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>() ,OnRefreshListener {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(),
+    OnRefreshListener {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
     var fragmentList: ArrayList<Fragment> = arrayListOf()
 
     var titleList = mutableListOf<String>()
-
 
 
     val immersionBar: ImmersionBar by lazy {
@@ -56,10 +57,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
     override fun initView() {
         //Tab+Fragment
-        StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
+        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
         ImmersionBar.with(this).statusBarColor(R.color.white)
-        StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent,requireActivity())
-        StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore,requireActivity())
+        StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent, requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
         fragmentList.add(ActsListFragment.newInstance())
@@ -74,7 +76,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.homeViewpager.adapter = pagerAdapter
 
         binding.homeViewpager.isSaveEnabled = false
-
+        binding.recommendContent.tvGoBack.setOnClickListener {
+            binding.header.finishTwoLevel()
+        }
 
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
@@ -136,18 +140,24 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
                 headerHeight: Int,
                 maxDragHeight: Int
             ) {
-                   val alphaTest=1 - percent.coerceAtMost(1f)
-                    binding.llTabContent.alpha = alphaTest
-                    binding.layoutTopBar.conContent.alpha =alphaTest
-                    binding.homeTab.alpha = alphaTest
-                    when(alphaTest){
-                        0f->{
-                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.transparent)
-                        }
-                        1f->{
-                            StatusBarUtil.setStatusBarColor(requireActivity(),R.color.white)
-                        }
+                val alphaTest = 1 - percent.coerceAtMost(1f)
+//                    binding.llTabContent.alpha = alphaTest
+//                    binding.layoutTopBar.conContent.alpha =alphaTest
+//                    binding.homeTab.alpha = alphaTest
+                when (alphaTest) {
+                    0f -> {
+                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
+                        LiveDataBus.get()
+                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
+                            .postValue(true)
                     }
+                    1f -> {
+                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
+                        LiveDataBus.get()
+                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
+                            .postValue(false)
+                    }
+                }
 
             }
         })
@@ -229,8 +239,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
     }
 
-    open  fun stopRefresh(){
+     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
+    }
+    fun exBand(isExpand:Boolean){
+        binding.appbarLayout.setExpanded(isExpand)
     }
 
 

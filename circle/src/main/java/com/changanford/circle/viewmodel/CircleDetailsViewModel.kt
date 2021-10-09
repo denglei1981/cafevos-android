@@ -22,10 +22,12 @@ class CircleDetailsViewModel : BaseViewModel() {
 
     val listBean = MutableLiveData<PostBean>()
 
+    val joinBean = MutableLiveData<CommonResponse<Any>>()
+
     val circleDetailsBean = MutableLiveData<CircleDetailBean>()
 
     fun getData(viewType: Int, page: Int) {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -38,20 +40,20 @@ class CircleDetailsViewModel : BaseViewModel() {
                     circleBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 
-    fun getListData(viewType: Int, topicId: String, circleId: String,page: Int) {
-        launch {
+    fun getListData(viewType: Int, topicId: String, circleId: String, page: Int) {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
                 it["viewType"] = viewType
-                if(topicId.isNotEmpty()){
+                if (topicId.isNotEmpty()) {
                     it["topicId"] = topicId
                 }
-                if(circleId.isNotEmpty()){
+                if (circleId.isNotEmpty()) {
                     it["circleId"] = circleId
                 }
             }
@@ -61,11 +63,11 @@ class CircleDetailsViewModel : BaseViewModel() {
                     listBean.value = it
                 }
                 .onFailure { }
-        }
+        })
     }
 
     fun getCircleDetails(circleId: String) {
-        launch {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId
             val rKey = getRandomKey()
@@ -74,6 +76,18 @@ class CircleDetailsViewModel : BaseViewModel() {
                     circleDetailsBean.value = it
                 }
                 .onFailure { }
-        }
+        })
+    }
+
+    fun joinCircle(circleId: String) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["circleId"] = circleId
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().joinCircle(body.header(rKey), body.body(rKey))
+                .also {
+                    joinBean.value = it
+                }
+        })
     }
 }

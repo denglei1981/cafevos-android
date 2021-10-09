@@ -89,11 +89,17 @@ data class Ext(
     val medalId: Int,
     val memberIcon: String,
     val memberId: Int,
-    val multiple: Int,
+    val multiple: Double,
     val nextGrowSeriesName: String,
     val nextSeriesMinGrow: Int,
     val rulesDesc: String,
-    val userId: Int
+    val userId: Int,
+    val userMedalList: ArrayList<MedalListBeanItem>? = arrayListOf(),
+    val isAllTaskDone: Int,
+    val isNewTaskDone: Int,
+    val medalImage: String,
+    val medalName: String,
+    val memberName: String,
 )
 
 data class Imag(
@@ -139,6 +145,7 @@ data class CancelReasonBeanItem(
     var isCheck: Boolean = false,
     var reasonId: Int = 0
 )
+
 data class UserIdCardBeanItem(
     val actionIds: String,
     val dataScope: String,
@@ -173,3 +180,54 @@ data class AddressBeanItem(
     val status: Int,
     val userId: Int
 ) : Serializable
+
+data class AuthBean(
+    val conditionList: List<Condition>? = arrayListOf(),
+    val fillCondition: String = "",
+    val images: ArrayList<AuthImagesItem>? = arrayListOf(),
+    val interestsId: String = "",
+    val interestsList: List<Interests> = arrayListOf(),
+    val keepCondition: String = "",
+    val keepConditionNo: String = "",
+    val memberDesc: String = "",
+    val memberIcon: String = "",
+    val memberId: Int = 0,
+    val memberKey: String = "",
+    val memberName: String = "",
+    val auditStatus: String = ""// 0 待审 1 审核通过 2 审核不通过
+)
+
+data class Condition(
+    val conditionId: Int = 0,
+    val conditionKey: String = "",
+    val conditionName: String = "",
+    val createTime: String = "",
+    val isFinish: String = "",
+    val jumpDataType: Int = 0,
+    val jumpDataValue: String = "",
+    val noConditionName: String = "",
+    val num: Int = 0,
+    val sort: Int = 0,
+    val status: Int = 0
+)
+
+data class Interests(
+    val createBy: String = "",
+    val createTime: String = "",
+    val desc: String = "",
+    val icon: String = "",
+    val interestsId: Int = 0,
+    val interestsName: String = "",
+    val interestsType: Int = 0,
+    val remark: String = "",
+    val searchValue: String = "",
+    val status: Int = 0,
+    val updateBy: String = "",
+    val updateTime: String = ""
+)
+
+
+data class AuthImagesItem(
+    val imgPosition: Int = 0,//图片位置（1名称资料证明 2个人展示照片）
+    val imgUrls: List<String> = arrayListOf()
+)

@@ -32,6 +32,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -136,6 +137,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
             }
         }
+        binding.topContent.run {
+            tvJoinText.setOnClickListener {
+                viewModel.joinCircle(circleId)
+            }
+        }
     }
 
     private fun initTabAndViewPager() {
@@ -168,8 +174,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this, {
+            binding.barTitleTv.text = it.name
             binding.topContent.run {
-
                 Glide.with(this@CircleDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
@@ -220,6 +226,9 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     }
                 }
             }
+        })
+        viewModel.joinBean.observe(this, {
+            it.msg?.toast()
         })
     }
 
