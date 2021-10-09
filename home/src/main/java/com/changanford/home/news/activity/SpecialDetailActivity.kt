@@ -4,9 +4,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseLoadSirActivity
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
@@ -23,16 +21,15 @@ class SpecialDetailActivity :
     BaseLoadSirActivity<ActivitySpecialDetailBinding, SpecialDetailViewModel>() {
 
 
-    var newsListAdapter: NewsListAdapter? = null
+    val newsListAdapter: NewsListAdapter by lazy {
+        NewsListAdapter()
+    }
 
 
     override fun initView() {
-
+        binding.layoutEmpty.llEmpty.visibility=View.GONE
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        newsListAdapter = NewsListAdapter().apply {
-
-        }
 
         binding.recyclerView.adapter = newsListAdapter
 
@@ -41,11 +38,8 @@ class SpecialDetailActivity :
 
     override fun initData() {
         var topicId = intent.getStringExtra(JumpConstant.SPECIAL_TOPIC_ID) // 跳过来的详情。
-
-
         StatusBarUtil.setStatusBarMarginTop(binding.layoutBar.conTitle, this)
         setAppbarPercent()
-        binding.layoutBar.tvTitle.text = "年轻人喜欢什么车"
         binding.layoutBar.ivMenu.visibility = View.VISIBLE
         binding.layoutBar.ivBack.setOnClickListener {
             onBackPressed()
@@ -65,16 +59,22 @@ class SpecialDetailActivity :
             if (it.isSuccess) {
                 showContent()
                 binding.specialDetailData = it.data
-                GlideUtils.loadBD(it.data.getPicUrl(),binding.layoutCollBar.ivHeader)
-                GlideUtils.loadBD(it.data.getPicUrl(),binding.layoutCollBar.ivTopBg)
-
+                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
+                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivTopBg)
+                binding.layoutBar.tvTitle.text = it.data.title
+                if (it.data.articles != null&& it.data.articles!!.isNotEmpty()) {
+                    newsListAdapter.setNewInstance(it.data.articles as? MutableList<InfoDataBean>?)
+                } else {
+//                    showEmpty()
+                    binding.recyclerView.visibility=View.GONE
+                    binding.layoutEmpty.llEmpty.visibility=View.VISIBLE
+                }
             } else {
                 showFailure(it.message)
             }
         })
 
     }
-
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             "verticalOffset=$verticalOffset".logE()

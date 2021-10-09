@@ -1,6 +1,7 @@
 package com.changanford.home.news.data
 
 import android.text.TextUtils
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.util.CountUtils
 
 /**
@@ -9,7 +10,7 @@ import com.changanford.common.util.CountUtils
 data class SpecialDetailData(
     var artCount: Any,
     var artId: Int,
-    var articles: List<Article>,
+    var articles: List<InfoDataBean>?= arrayListOf(),
     var authors: Any,
     var catId: Any,
     var collectCount: Int,

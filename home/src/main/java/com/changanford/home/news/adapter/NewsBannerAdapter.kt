@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.home.R
 import com.changanford.home.bean.SpecialListBean
@@ -38,7 +39,8 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<SpecialListBean>(
         val binding = DataBindingUtil.bind<ItemNewsBarBannerBinding>(itemView)
         binding?.ivBanner?.load(data.pics)
         binding?.ivBanner?.setOnClickListener {
-              startARouter(ARouterHomePath.SpecialDetailActivity)
+//              startARouter(ARouterHomePath.SpecialDetailActivity)
+            JumpUtils.instans?.jump(8,data.artId)
         }
     }
 
