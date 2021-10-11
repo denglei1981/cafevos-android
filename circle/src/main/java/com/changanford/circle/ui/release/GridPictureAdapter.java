@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.changanford.common.util.AppUtils;
+import com.changanford.common.util.PictureUtil;
 import com.changanford.common.utilext.GlideUtils;
 import com.changanford.circle.R;
 import com.changanford.circle.ui.release.utils.OnItemLongClickListener;
@@ -199,7 +200,7 @@ public class GridPictureAdapter extends
             if (chooseModel == PictureMimeType.ofAudio()) {
                 viewHolder.mImg.setImageResource(R.drawable.picture_audio_placeholder);
             } else {
-                GlideUtils.INSTANCE.loadRoundLocal(AppUtils.getFinallyPath(media), viewHolder.mImg, 5,R.mipmap.ic_def_square_img);
+                GlideUtils.INSTANCE.loadRoundLocal(PictureUtil.INSTANCE.getFinallyPath(media), viewHolder.mImg, 5,R.mipmap.ic_def_square_img);
             }
             //itemView 的点击事件
             if (mItemClickListener != null) {
