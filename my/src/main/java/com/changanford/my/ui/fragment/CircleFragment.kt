@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -51,12 +52,12 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         binding.rcyCollect.rcyCommonView.adapter = circleAdapter
 
         viewModel.mMangerCircle.observe(this, Observer {
-            it?.circles?.let { list ->
+            it?.let { list ->
                 list.forEach {
                     it.itemType = index
                 }
-                completeRefresh(list, circleAdapter)
             }
+            completeRefresh(it, circleAdapter)
         })
 
         viewModel.mJoinCircle.observe(this, Observer {
@@ -64,8 +65,8 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                 list.forEach {
                     it.itemType = index
                 }
-                completeRefresh(list, circleAdapter, it.total)
             }
+            completeRefresh(it?.dataList, circleAdapter, it?.total ?: 0)
         })
     }
 
@@ -113,6 +114,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     }
                 }
                 1 -> {
+                    var title: AppCompatTextView = holder.getView(R.id.circle_user)
+                    title.text = item.typeStr
+                    title.visibility = if (item.isShowTitle) View.VISIBLE else View.GONE
+
                     var icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)

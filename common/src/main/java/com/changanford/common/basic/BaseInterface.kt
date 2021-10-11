@@ -1,5 +1,7 @@
 package com.changanford.common.basic
 
+import android.os.Bundle
+
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
  * @FileName: com.changanford.common.basic.BaseInterface
@@ -10,6 +12,7 @@ package com.changanford.common.basic
  * *********************************************************************************
  */
 interface BaseInterface {
+    fun initView(savedInstanceState:Bundle? = null)
     fun initView()
     fun initData()
 }

@@ -59,6 +59,7 @@
             android:text="圈主"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/sp_10"
+            android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/item_name"
             app:layout_constraintTop_toTopOf="@+id/item_name" />
 

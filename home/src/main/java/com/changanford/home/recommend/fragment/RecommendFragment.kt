@@ -3,7 +3,6 @@ package com.changanford.home.recommend.fragment
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter

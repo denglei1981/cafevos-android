@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/title"
+            layout="@layout/circle_title_view"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+            <LinearLayout
+                android:background="@drawable/shape_whit_bg"
+                android:layout_margin="25dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="57dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/dingw"
+                    android:layout_marginLeft="15dp"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:layout_gravity="center|left"
+                    android:id="@+id/tv_address"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/transparent"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:hint="请输入要搜索的地址"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:background="@drawable/shape_whit_bg"
+                android:id="@+id/poirec"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"/>
+            <ImageView
+                android:id="@+id/iv_dingwei"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@mipmap/dingweiicon"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

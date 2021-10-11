@@ -18,7 +18,7 @@ import com.changanford.my.R
 import com.changanford.my.bean.MangerCircleCheck
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
-import com.changanford.my.ui.fragment.MangerCircleFragment
+import com.changanford.my.ui.fragment.AllMangerCircleFragment
 import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -77,7 +77,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MangerCircleFragment.newInstance(position, circleId)
+                    return AllMangerCircleFragment.newInstance(position, circleId)
                 }
             }
 

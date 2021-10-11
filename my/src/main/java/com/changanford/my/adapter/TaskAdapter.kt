@@ -22,7 +22,7 @@ import com.changanford.my.databinding.ItemTaskTitleBinding
  *  修改描述：TODO
  */
 
-class TaskTitleAdapter :
+class TaskTitleAdapter() :
     BaseQuickAdapter<RootTaskBean, BaseDataBindingHolder<ItemTaskTitleBinding>>(
         R.layout.item_task_title
     ) {
@@ -37,7 +37,7 @@ class TaskTitleAdapter :
     }
 }
 
-class TaskContentAdapter :
+class TaskContentAdapter() :
     BaseQuickAdapter<ItemTaskBean, BaseDataBindingHolder<ItemTaskContentBinding>>(
         R.layout.item_task_content
     ) {
@@ -80,6 +80,9 @@ class TaskContentAdapter :
                             e.printStackTrace()
                         }
                     } else {
+                        LiveDataBus.get()
+                            .with("SEND_POST", Boolean::class.java)
+                            .postValue(false)
                         JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
                     }
                 })
@@ -119,7 +122,4 @@ fun GrowUpAndJifenViewHolder(
         }
     }
 }
-
-
-
 

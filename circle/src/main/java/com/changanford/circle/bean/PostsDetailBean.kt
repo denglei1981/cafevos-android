@@ -11,7 +11,7 @@ import com.changanford.common.bean.Imag
 data class PostsDetailBean(
     val authorBaseVo: HomeAuthorsBean?,
     val circleId: Int,
-    val collectCount: Int,
+    var collectCount: Int,
     var commentCount: Int,
     val content: String?,
     val createTime: Long,

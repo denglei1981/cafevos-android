@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/circle_title_view" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <FrameLayout
+                    android:id="@+id/rl_fmimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <ImageView
+                        android:id="@+id/iv_fengmian"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/add_image" />
+
+                    <TextView
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_4"
+                        android:background="@drawable/circle_shape_blacksolid"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="封面"
+                        android:textColor="@color/white"
+                        android:textSize="9sp" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="* "
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
+                    <TextView
+                        style="@style/commonTextView.Normal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="25dp"
+                        android:text="问卷标题"
+                        android:textStyle="bold"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/et_biaoti"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:hint="请填写问卷标题"
+                    android:textColorHint="#CCCCCC"
+                    android:singleLine="true"
+                    android:minEms="4"
+                    android:maxLength="20"
+                    android:textColor="@color/textblack"
+                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:textSize="13sp"
+                        android:text="0/20"
+                        android:gravity="bottom"
+                        android:textColor="#AFB3B6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/alertdialog_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/commonTextView.Normal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="25dp"
+                        android:text="问卷说明"
+                        android:textStyle="bold"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_shuoming"
+                            android:layout_width="match_parent"
+                            android:gravity="top"
+                            android:padding="@dimen/dp_10"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:hint="请输入问卷说明"
+                            android:textColorHint="#CCCCCC"
+                            android:minEms="4"
+                            android:maxLength="1000"
+                            android:minLines="10"
+                            android:lines="10"
+                            android:textColor="@color/textblack"
+                            android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/tv_numshuoming"
+                            android:textSize="13sp"
+                            android:text="0/1000"
+                            android:layout_gravity="bottom|right"
+                            android:textColor="#AFB3B6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/alertdialog_line" />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="问题"
+                    android:visibility="gone"
+                    android:textColor="@color/textblack"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/alertdialog_line" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/quessionrec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="长按可以进行排序"
+                    android:textColor="#71747B"
+                    android:textSize="12sp" />
+
+
+                <View
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/alertdialog_line"/>
+                <RelativeLayout
+                    android:id="@+id/rltime"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="报名截止时间"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_baomingtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        tools:text="ssssssss"
+                        android:background="@color/transparent"
+                        android:drawableRight="@mipmap/rightarrow"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/textblack"
+                        android:textColorHint="#AFB3B6"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+                <View
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/alertdialog_line"/>
+                <RelativeLayout
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="用户是否可查看结果"
+
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_canseeresult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/checkbox_wenti_selector"
+                        android:button="@null"
+                        android:checked="false" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/circle_shape_xuxian">
+
+                    <TextView
+                        android:id="@+id/text"
+                        style="@style/commonTextView.Normal.Bold"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:paddingTop="18dp"
+                        android:paddingBottom="18dp"
+                        android:text="添加问题" />
+
+                    <TextView
+                        style="@style/commonTextView.Bold"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toLeftOf="@id/text"
+                        android:gravity="center"
+                        android:paddingTop="18dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="18dp"
+                        android:text="+"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

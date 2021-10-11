@@ -19,6 +19,8 @@ object MConstant {
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
     const val IMGURLTAG = "image_url_tag"
+    const val LOCATION_BD = "location_bd"
+
     const val COOKIE = false
     const val isAppAlive = true
 

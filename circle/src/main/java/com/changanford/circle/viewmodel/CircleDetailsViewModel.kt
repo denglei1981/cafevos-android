@@ -63,6 +63,7 @@ class CircleDetailsViewModel : BaseViewModel() {
                     listBean.value = it
                 }
                 .onFailure { }
+
         })
     }
 

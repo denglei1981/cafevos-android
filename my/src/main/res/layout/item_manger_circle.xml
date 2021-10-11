@@ -13,14 +13,26 @@
         android:paddingTop="@dimen/dp_10"
         android:paddingRight="@dimen/dp_20">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/circle_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="圈主"
+            android:textColor="#01025C"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_icon"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_13"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circle_user"
+            app:layout_goneMarginTop="@dimen/dp_0"
             app:shapeAppearanceOverlay="@style/roundedCornerImageStyle" />
 
         <TextView

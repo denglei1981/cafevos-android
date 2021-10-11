@@ -14,11 +14,13 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.DisplayUtil
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.callback.ICallback
+import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
@@ -227,6 +229,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             Constraints.LayoutParams.WRAP_CONTENT,
             object : ICallback {
                 override fun onResult(result: ResultData) {
+                    when((result.data as PublishData).code){
+                        1->{//发布活动
+                            JumpUtils.instans?.jump(13)
+                        }
+                        2->{//问卷调查
+                            JumpUtils.instans?.jump(12)
+                        }
+                        3->{//扫一扫
+                            JumpUtils.instans?.jump(61)
+                        }
+                    }
                 }
             }
         )

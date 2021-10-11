@@ -15,7 +15,7 @@
             android:id="@+id/ll_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -64,18 +64,20 @@
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tv_follow"
-                android:layout_width="65dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/shape_home_unfollow_bg"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_follow"
+                style="@style/followBtnStyle"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="20dp"
+                android:elevation="0dp"
                 android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:textAllCaps="false"
                 android:textColor="@color/blue_tab"
-                android:textSize="12sp"
-
-                android:textStyle="bold"
+                android:textSize="@dimen/sp_12"
+                app:elevation="0dp"
                 tools:text="关注" />
         </LinearLayout>
 
@@ -139,8 +141,9 @@
                 android:layout_weight="1"
                 android:drawableEnd="@drawable/icon_home_next"
                 android:gravity="center_vertical|start"
-                android:text="@string/app_name"
-                android:textColor="#999999" />
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_12"
+                tools:text="@string/app_name" />
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView

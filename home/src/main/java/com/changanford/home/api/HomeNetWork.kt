@@ -2,6 +2,8 @@ package com.changanford.home.api
 
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
+import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.SpecialDetailData
 
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -27,12 +29,13 @@ interface HomeNetWork {
 
     /**
      * /con/specialTopic/detail 专题详情。。
+     * con/specialTopic/detail
      * */
     @POST("con/specialTopic/detail")
     suspend fun getSpecialTopicList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<SpecialListMainBean>
+    ): CommonResponse<SpecialDetailData>
 
     /**
      *  发现资讯首页。。
@@ -77,5 +80,50 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<BigShotPostBean>>
+
+    /**
+     *  /con/article/details
+     *  资讯详情。
+     * */
+    @POST("/con/article/details")
+    suspend fun getArticleDetails(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewsDetailData>
+
+
+    /**
+     *  获取评论
+     *
+     *  /con/artAdditional/get
+     * */
+
+    @POST("/con/comment/commentList")
+    suspend fun getCommentList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<CommentListBean>>
+
+
+    /**
+     *  添加评论
+     * */
+    @POST("/con/article/addComment")
+    suspend fun addCommentNews(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+
+    /**
+     *   点赞资讯？
+     *  /con/article/actionLike
+     * */
+    @POST("/con/article/actionLike")
+    suspend fun actionLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
 
 }

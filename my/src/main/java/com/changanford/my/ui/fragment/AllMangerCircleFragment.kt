@@ -5,14 +5,15 @@ import android.view.Gravity
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.CircleMemberData
+import com.changanford.common.bean.CircleStatusItemBean
 import com.changanford.common.bean.CircleTagBean
 import com.changanford.common.bean.Refuse
 import com.changanford.common.manger.RouterManger
@@ -25,10 +26,7 @@ import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
 import com.changanford.my.bean.MangerCircleCheck
-import com.changanford.my.databinding.FragmentMemberCircleBinding
-import com.changanford.my.databinding.ItemLabelBinding
-import com.changanford.my.databinding.PopCircleBinding
-import com.changanford.my.databinding.PopMemberPartBinding
+import com.changanford.my.databinding.*
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -43,7 +41,7 @@ import razerdp.basepopup.BasePopupWindow
  *  描述: TODO
  *  修改描述：TODO
  */
-class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewModel>() {
+class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewModel>() {
 
     val circleAdapter: CircleAdapter by lazy {
         CircleAdapter()
@@ -54,14 +52,18 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
     var circleCheck: MangerCircleCheck = MangerCircleCheck(0, false) //显示选择
     private var checkMap = HashMap<String, Boolean>()
 
+    var checkUserNum: Int = 0 //选择用户数量
+
     var circleTag: CircleTagBean? = null
 
+    var circleStatus: ArrayList<CircleStatusItemBean> = ArrayList<CircleStatusItemBean>()
+
     companion object {
-        fun newInstance(value: Int, circleId: String): MangerCircleFragment {
+        fun newInstance(value: Int, circleId: String): AllMangerCircleFragment {
             var bundle: Bundle = Bundle()
             bundle.putInt(RouterManger.KEY_TO_ID, value)
             bundle.putString(RouterManger.KEY_TO_ITEM, circleId)
-            var medalFragment = MangerCircleFragment()
+            var medalFragment = AllMangerCircleFragment()
             medalFragment.arguments = bundle
             return medalFragment
         }
@@ -80,8 +82,26 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                 RouterManger.param("circleId", getItem(position).circleId)
 //                    .startARouter(ARouterHomePath.HomeCircleDetailActivity)
             }
-            setOnItemLongClickListener { adapter, view, position ->
-                delete(getItem(position).circleId, getItem(position).userId)
+            setOnItemLongClickListener { _, _, position ->
+//                delete(getItem(position).circleId, getItem(position).userId)
+                var item = circleAdapter.getItem(position)
+                MemberPartPop().apply {
+                    binding.group.visibility = View.VISIBLE
+                    binding.tvCheckNum.visibility = View.GONE
+                    binding.itemIcon.load(item.avatar)
+                    binding.itemName.text = item.nickname
+                    binding.itemTag.visibility =
+                        if (item.starOrderNumStr.isNullOrEmpty()) View.GONE else View.VISIBLE
+                    binding.itemTag.text = item.starOrderNumStr
+                    binding.submit.setOnClickListener {
+                        if (circleStarRoleId == -1) {
+                            showToast("请先选择设置身份")
+                            return@setOnClickListener
+                        }
+                        dismiss()
+                        checkCircleMember(circleStarRoleId, arrayListOf(item.userId))
+                    }
+                }.showPopupWindow()
                 true
             }
         }
@@ -89,11 +109,17 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
         viewModel.circleMember.observe(this, Observer {
             it?.dataList?.let { list ->
                 list.forEach {
-                    it.itemType = index
+//                    it.itemType = index
                     checkMap["${it.userId}"] = false
                 }
             }
-            completeRefresh(it?.dataList, circleAdapter)
+            if (index == 1) {
+                it?.dataList?.let {
+                    circleAdapter.addData(it)
+                }
+            } else {
+                completeRefresh(it?.dataList, circleAdapter)
+            }
         })
 
         LiveDataBus.get()
@@ -103,6 +129,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                     circleCheck = c
                     binding.bottomLayout.visibility = if (c.isShow) View.VISIBLE else View.GONE
                     binding.btnCheckId.visibility = if (c.index == 0) View.VISIBLE else View.GONE
+                    binding.btnDelete.visibility = if (c.index == 0) View.VISIBLE else View.GONE
                     binding.btnApply.visibility = if (c.index == 1) View.VISIBLE else View.GONE
                     binding.btnCheckNotApply.visibility =
                         if (c.index == 1) View.VISIBLE else View.GONE
@@ -110,7 +137,34 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                         0 -> {
                             //设置身份
                             binding.btnCheckId.setOnClickListener {
-                                MemberPartPop().showPopupWindow()
+                                if (checkUserNum == 0) {
+                                    showToast("未选择人员")
+                                    return@setOnClickListener
+                                }
+                                MemberPartPop().apply {
+                                    binding.group.visibility = View.GONE
+                                    binding.tvCheckNum.visibility = View.VISIBLE
+                                    binding.tvCheckNum.text = "已选${checkUserNum}人"
+                                    binding.submit.setOnClickListener {
+                                        if (circleStarRoleId == -1) {
+                                            showToast("未选择设置身份")
+                                            return@setOnClickListener
+                                        }
+                                        dismiss()
+                                        checkCircleMember(
+                                            circleStarRoleId,
+                                            circleAdapter.getUserId()
+                                        )
+                                    }
+                                }.showPopupWindow()
+                            }
+                            //删除
+                            binding.btnDelete.setOnClickListener {
+                                if (checkUserNum == 0) {
+                                    showToast("未选择圈子人员")
+                                    return@setOnClickListener
+                                }
+                                delete(circleId, circleAdapter.getUserId())
                             }
                         }
                         1 -> {
@@ -123,7 +177,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                             }
                         }
                     }
-                    circleAdapter.notifyItemRangeChanged(0, circleAdapter.itemCount)
+//                    circleAdapter.notifyItemRangeChanged(0, circleAdapter.itemCount)
                 }
             })
 
@@ -153,7 +207,41 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                 circleTag = it
             }
         }
+        queryMemberCircle()
     }
+
+    private fun queryMemberCircle() {
+        viewModel.queryCircleStatus(circleId) {
+            it.onSuccess {
+                it?.let {
+                    circleStatus.clear()
+                    circleStatus.addAll(it)
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置圈子成员身份
+     */
+    private fun checkCircleMember(circleStarRoleId: Int, userIds: ArrayList<String>) {
+        var body: HashMap<String, Any> = HashMap()
+        body["circleId"] = circleId
+        body["circleStarRoleId"] = circleStarRoleId
+        body["userIds"] = userIds
+        viewModel.setCircleStatus(body) {
+            it.onSuccess {
+                initRefreshData(1)
+                showToast("设置成功")
+            }
+            it.onWithMsgFailure {
+                it?.let {
+                    showToast(it)
+                }
+            }
+        }
+    }
+
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyCollect.smartCommonLayout
@@ -162,7 +250,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
     /**
      * 删除圈子用户
      */
-    private fun delete(circleId: String, userId: String) {
+    private fun delete(circleId: String, userId: ArrayList<String>) {
         ConfirmTwoBtnPop(requireContext()).apply {
             contentText.text = "确认把用户从圈子删除？"
             btnConfirm.setOnClickListener {
@@ -197,7 +285,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
             btnConfirm.setOnClickListener {
                 dismiss()
                 body.toString().logE()
-//                viewModel.agree(body)
+                viewModel.agree(body)
             }
             btnCancel.setOnClickListener {
                 dismiss()
@@ -217,39 +305,34 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
         Circle().showPopupWindow()
     }
 
-    inner class CircleAdapter : BaseMultiItemQuickAdapter<CircleMemberData, BaseViewHolder>() {
+    inner class CircleAdapter :
+        BaseQuickAdapter<CircleMemberData, BaseViewHolder>(R.layout.item_member_all) {
 
-        init {
-            addItemType(0, R.layout.item_member_all)
-            addItemType(1, R.layout.item_member)
-        }
-
-        override fun convert(holder: BaseViewHolder, item: CircleMemberData) {
+        override fun convert(
+            holder: BaseViewHolder,
+            item: CircleMemberData
+        ) {
             var checkBox: CheckBox = holder.getView(R.id.checkbox)
-            when (getItemViewType(holder.layoutPosition)) {
-                0 -> {
-                    var icon: ShapeableImageView = holder.getView(R.id.item_icon)
-                    var name: TextView = holder.getView(R.id.item_name)
-                    var date: TextView = holder.getView(R.id.item_date)
-                    icon.load(item.avatar)
-                    name.text = item.nickname
-                    date.text = item.createTime
-                }
-                1 -> {
-                    var icon: ShapeableImageView = holder.getView(R.id.item_icon)
-                    var name: TextView = holder.getView(R.id.item_name)
-                    var date: TextView = holder.getView(R.id.item_date)
-                    icon.load(item.avatar)
-                    name.text = item.nickname
-                    date.text = "申请时间:${TimeUtils.InputTimetamp(item.createTime)}"
-                }
+            var icon: ShapeableImageView = holder.getView(R.id.item_icon)
+            var name: TextView = holder.getView(R.id.item_name)
+            var date: TextView = holder.getView(R.id.item_date)
+            var tag: AppCompatTextView = holder.getView(R.id.item_tag)
+            icon.load(item.avatar)
+            name.text = item.nickname
+            date.text = "申请时间：${TimeUtils.InputTimetamp(item.createTime)}"
+            if (item.starOrderNumStr.isNullOrEmpty()) {
+                tag.visibility = View.GONE
+            } else {
+                tag.visibility = View.VISIBLE
+                tag.text = item.starOrderNumStr
             }
             checkBox.visibility =
-                if (this@MangerCircleFragment.circleCheck.isShow) View.VISIBLE else View.GONE
+                if (this@AllMangerCircleFragment.circleCheck.isShow) View.VISIBLE else View.GONE
             checkBox.setOnCheckedChangeListener { _, isChecked ->
                 checkMap[item.userId] = isChecked
+                setCheckNum()
             }
-            checkBox.isChecked = checkMap[item.userId]!!
+//            checkBox.isChecked = checkMap[item.userId]!!
         }
 
 
@@ -261,6 +344,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                 checkMap[it.key] = isAllCheck
             }
             notifyItemRangeChanged(0, itemCount)
+            setCheckNum()
         }
 
         /**
@@ -275,8 +359,23 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
             }
             return ids
         }
+
+        fun setCheckNum() {
+            var num: Int = 0
+            checkMap.forEach {
+                if (it.value) {
+                    num++
+                }
+            }
+            checkUserNum = num
+            binding.checkboxAll.text = if (checkUserNum == 0) "全选" else "全选(${checkUserNum})"
+        }
+
     }
 
+    /**
+     * 审核圈子POP
+     */
     inner class Circle : BasePopupWindow(requireContext()) {
         var binding = PopCircleBinding.inflate(layoutInflater)
         var map: HashMap<String, Boolean> = HashMap()
@@ -314,7 +413,7 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
                     }
                 }
             }.apply {
-                this@MangerCircleFragment.circleTag?.let {
+                this@AllMangerCircleFragment.circleTag?.let {
                     addData(it.refuse!!)
                 }
             }
@@ -355,9 +454,13 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
         }
     }
 
+    /**
+     * 设置圈子成员身份
+     */
     inner class MemberPartPop : BasePopupWindow(requireContext()) {
         var binding = PopMemberPartBinding.inflate(layoutInflater)
-        var map: HashMap<String, Boolean> = HashMap()
+
+        var circleStarRoleId: Int = -1
 
         init {
             contentView = binding.root
@@ -366,34 +469,28 @@ class MangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleViewM
 
         override fun onViewCreated(contentView: View) {
             super.onViewCreated(contentView)
+            binding.cancel.setOnClickListener { dismiss() }
             binding.circleTagRv.layoutManager = GridLayoutManager(requireContext(), 2)
             binding.circleTagRv.adapter = object :
-                BaseQuickAdapter<Refuse, BaseDataBindingHolder<ItemLabelBinding>>(R.layout.item_label) {
+                BaseQuickAdapter<CircleStatusItemBean, BaseDataBindingHolder<ItemLabelBinding>>(R.layout.item_label) {
                 override fun convert(
                     holder: BaseDataBindingHolder<ItemLabelBinding>,
-                    item: Refuse
+                    item: CircleStatusItemBean
                 ) {
                     holder.dataBinding?.let {
-                        it.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                            map.forEach {
-                                map[item.type] = false
-                            }
-                            map[item.type] = isChecked
+                        it.checkbox.setOnClickListener {
+                            circleStarRoleId = item.circleStarRoleId
+                            binding.tvHint.text =
+                                if (item.surplusNum == 0) "已达上限" else "剩余名额${item.surplusNum}"
+                            notifyDataSetChanged()
                         }
-                        it.checkbox.text = "${item.type}"
-                        it.checkbox.isChecked = map[item.type]!!
-                    }
-                }
-
-                override fun addData(newData: Collection<Refuse>) {
-                    super.addData(newData)
-                    newData.forEach {
-                        map[it.type] = false
+                        it.checkbox.text = "${item.starName}"
+                        it.checkbox.isChecked = circleStarRoleId == item.circleStarRoleId
                     }
                 }
             }.apply {
-                this@MangerCircleFragment.circleTag?.let {
-                    addData(it.refuse!!)
+                this@AllMangerCircleFragment.circleStatus?.let {
+                    addData(it)
                 }
             }
         }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/quessionicon"/>
+            <EditText
+                android:id="@+id/et_answer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请输入选项标题"
+                android:maxLength="20"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="15sp"
+                android:textColorHint="@color/color_cc" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/rl_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+            <ImageView
+                android:id="@+id/iv_img"
+                android:scaleType="centerCrop"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/add_image"/>
+                <ImageView
+                    android:id="@+id/iv_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="@dimen/dp_4"
+                    android:paddingRight="4dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_delete_menu"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="图片非必传"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffcccccc"
+                android:textSize="15sp"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:background="@color/alertdialog_line"/>
+
+    </LinearLayout>
+</layout>

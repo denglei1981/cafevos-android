@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:background="@color/white"
+        android:paddingLeft="25dp"
+        android:orientation="vertical"
+        android:paddingRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="* "
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+            <TextView
+                style="@style/commonTextView.Normal"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="25dp"
+                android:text="调查标题"
+                android:textStyle="bold"
+                android:textColor="@color/textblack"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_timu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请填写调查标题"
+                android:maxLength="20"
+                android:paddingTop="10dp"
+                android:textSize="15sp"
+                android:paddingBottom="10dp"
+                android:textColorHint="@color/color_cc" />
+            <TextView
+                android:id="@+id/tv_num"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/et_timu"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/20"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/alertdialog_line"/>
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/rl_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:id="@+id/iv_timuimg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/add_image"/>
+                <ImageView
+                    android:id="@+id/iv_shanchu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="@dimen/dp_4"
+                    android:paddingRight="4dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_delete_menu"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/color_cc"
+                android:text="图片非必传"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textColor="@color/textblack"
+                style="@style/commonTextView.Normal"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="30dp"
+                android:text="问题"/>
+            <TextView
+                android:textColor="@color/textblack"
+                style="@style/commonTextView.Small.Light"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="30dp"
+                android:text="（长按拖动选项可排序）"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

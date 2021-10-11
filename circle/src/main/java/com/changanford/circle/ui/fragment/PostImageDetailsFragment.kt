@@ -3,6 +3,10 @@ package com.changanford.circle.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
@@ -13,6 +17,7 @@ import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostGraphicBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
+import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
@@ -20,9 +25,13 @@ import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.zhpan.bannerview.constants.IndicatorGravity
@@ -36,9 +45,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     BaseFragment<ActivityPostGraphicBinding, PostGraphicViewModel>() {
 
     private var page = 1
+    private var checkPosition = 0
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter()
+        PostDetailsCommentAdapter(this)
     }
 
     private var webHelper: CustomWebHelper? = null
@@ -49,7 +59,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             ryComment.adapter = commentAdapter
             AppUtils.setStatusBarMarginTop(llTitle, requireActivity())
             ivHead.loadImage(
-                mData.authorBaseVo?.memberIcon,
+                mData.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             tvName.text = mData.authorBaseVo?.nickname
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
@@ -77,6 +87,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
                 tvShareNum.text = mData.shareCount.toString()
                 if (mData.type == 1) {//webView布局
+                    if (!mData.city.isNullOrEmpty()) {
+                        tvOneCity.visibility = View.VISIBLE
+                        tvOneCity.text = mData.city
+                    }
                     clImageAndText.visibility = View.VISIBLE
                     clImage.visibility = View.GONE
                     if (mData.isGood == 1) {
@@ -86,9 +100,13 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     if (mData.circleName.isNullOrEmpty()) {
                         tvOneFrom.visibility = View.GONE
                     } else {
-                        MUtils.postDetailsFrom(tvOneFrom, mData.circleName)
+                        MUtils.postDetailsFrom(
+                            tvOneFrom,
+                            mData.circleName,
+                            mData.circleId.toString()
+                        )
                     }
-                    tvOneTime.text = mData.timeStr
+                    tvOneTime.text = "发布于   ${mData.timeStr}"
 
                     //webview加载文本
                     if (webHelper == null) webHelper =
@@ -100,6 +118,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     clImageAndText.visibility = View.GONE
                     clImage.visibility = View.VISIBLE
+
+                    if (!mData.city.isNullOrEmpty()) {
+                        tvTwoCity.visibility = View.VISIBLE
+                        tvTwoCity.text = mData.city
+                    }
 
                     mData.imageList?.let {
                         banner.run {
@@ -132,25 +155,35 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     if (mData.circleName.isNullOrEmpty()) {
                         tvTwoFrom.visibility = View.GONE
                     } else {
-                        MUtils.postDetailsFrom(tvTwoFrom, mData.circleName)
+                        MUtils.postDetailsFrom(
+                            tvTwoFrom,
+                            mData.circleName,
+                            mData.circleId.toString()
+                        )
                     }
                     if (mData.topicName.isNullOrEmpty()) {
                         tvTalkOut.visibility = View.GONE
                     }
                     tvTalkOut.text = mData.topicName
-                    tvTwoTime.text = mData.timeStr
+                    tvTwoTime.text = "发布于   ${mData.timeStr}"
                     tvContent.text = mData.content
                 }
             }
         }
 
         initListener()
+        bus()
     }
 
     private fun initListener() {
         binding.run {
             ivBack.setOnClickListener {
                 requireActivity().finish()
+            }
+            ivHead.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("value", mData.authorBaseVo?.authorId)
+                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
             bottomView.tvTalk.setOnClickListener {
                 ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
@@ -159,9 +192,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     }
 
                 }).show()
-            }
-            bottomView.tvCommentNum.setOnClickListener {
-                nestScroll.smoothScrollTo(0, ryComment.top - 20)
             }
             ivMenu.setOnClickListener {
                 CircleShareModel.shareDialog(
@@ -179,13 +209,36 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     mData.topicName
                 )
             }
+            tvTalkOut.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("topicId", mData.topicId)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+            tvFollow.setOnClickListener {
+                val isFol = mData.authorBaseVo?.isFollow
+                viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
+            }
         }
         binding.bottomView.run {
+            tvCommentNum.setOnClickListener {
+                binding.nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
+            }
             llLike.setOnClickListener {
                 viewModel.likePosts(mData.postsId)
             }
             llCollection.setOnClickListener {
                 viewModel.collectionApi(mData.postsId)
+            }
+            tvShareNum.setOnClickListener {
+                CircleShareModel.shareDialog(
+                    activity,
+                    0,
+                    mData.shares,
+                    null,
+                    null,
+                    mData.authorBaseVo?.nickname,
+                    mData.topicName
+                )
             }
         }
         commentAdapter.loadMoreModule.setOnLoadMoreListener {
@@ -194,10 +247,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
 
         commentAdapter.setOnItemClickListener { _, view, position ->
+            val commentBean = commentAdapter.getItem(position)
             val bundle = Bundle()
-            startARouter(ARouterCirclePath.AllReplyActivity)
-//            bundle.putString("postsId", commentAdapter.getItem(position).postsId.toString())
-//            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            bundle.putString("groupId", commentBean.groupId)
+            bundle.putInt("type", 2)// 1 资讯 2 帖子
+            bundle.putString("bizId", mData.postsId)
+            startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+
+            checkPosition = position
         }
     }
 
@@ -222,17 +279,74 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
         })
         viewModel.likePostsBean.observe(this, {
-            it.msg?.toast()
+            it.msg.toast()
+            if (it.code == 0) {
+                if (mData.isLike == 0) {
+                    mData.isLike = 1
+                    binding.bottomView.ivLike.setImageResource(R.mipmap.circle_like_image)
+                    mData.likesCount++
+                    AnimScaleInUtil.animScaleIn(binding.bottomView.ivLike)
+                } else {
+                    mData.isLike = 0
+                    mData.likesCount--
+                    binding.bottomView.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                }
+                binding.bottomView.tvLikeNum.text =
+                    "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+            }
         })
         viewModel.collectionPostsBean.observe(this, {
-            it.msg?.toast()
+            it.msg.toast()
+            if (it.code == 0) {
+                if (mData.isCollection == 0) {
+                    mData.isCollection = 1
+                } else {
+                    mData.isCollection = 0
+                }
+                binding.bottomView.ivCollection.setImageResource(
+                    if (mData.isCollection == 1) {
+                        AnimScaleInUtil.animScaleIn(binding.bottomView.ivCollection)
+                        R.mipmap.circle_collection_image
+                    } else {
+                        R.mipmap.circle_no_collection_image
+                    }
+                )
+            }
         })
         viewModel.addCommendBean.observe(this, {
-            it.msg?.toast()
+            it.msg.toast()
             page = 1
+            mData.commentCount++
+            binding.bottomView.tvCommentNum.text =
+                "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             initData()
 //            binding. nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
         })
+        viewModel.followBean.observe(this, {
+            val isFol = mData.authorBaseVo?.isFollow
+            mData.authorBaseVo?.isFollow = if (isFol == 1) 0 else 1
+            binding.tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
+                "已关注"
+            } else {
+                "关注"
+            }
+            if (mData.authorBaseVo?.isFollow == 1)
+                "关注成功".toast()
+            else
+                "已取消关注".toast()
+        })
     }
 
+    private fun bus() {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+            val bean = commentAdapter.getItem(checkPosition)
+            bean.isLike = it
+            if (bean.isLike == 1) {
+                bean.likesCount++
+            } else {
+                bean.likesCount--
+            }
+            commentAdapter.notifyItemChanged(checkPosition)
+        })
+    }
 }

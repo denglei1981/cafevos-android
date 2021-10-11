@@ -24,6 +24,10 @@
         <activity android:name=".ui.activity.LongPostAvtivity" />
         <activity android:name=".ui.activity.SearchCircleActivity" />
         <activity android:name=".ui.activity.SearchTopicActivity" />
-
+        <activity android:name=".ui.release.ReleaseUpActivity" />
+        <activity android:name=".ui.release.PerfectQuessionActivity" />
+        <activity android:name=".ui.release.PerfectQuessionWBActivity" />
+        <activity android:name=".ui.release.MMapActivity" />
+        <activity android:name=".ui.release.ReleaseActivity" />
     </application>
 </manifest>

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
 import com.changanford.circle.ext.loadImage
@@ -22,6 +23,7 @@ import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
 import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
@@ -31,6 +33,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
@@ -137,11 +140,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
             }
         }
-        binding.topContent.run {
-            tvJoinText.setOnClickListener {
-                viewModel.joinCircle(circleId)
-            }
-        }
+
     }
 
     private fun initTabAndViewPager() {
@@ -174,7 +173,19 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this, {
+            setJoinType(it.isApply)
             binding.barTitleTv.text = it.name
+            binding.shareImg.setOnClickListener { _ ->
+                CircleShareModel.shareDialog(
+                    this,
+                    0,
+                    it.shareBeanVO,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            }
             binding.topContent.run {
                 Glide.with(this@CircleDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
@@ -194,41 +205,19 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     bundle.putString("circleId", circleId)
                     startARouter(ARouterCirclePath.PersonalActivity, bundle)
                 }
-                tvJoin.setOnClickListener {
-                    CircleManagementPop(this@CircleDetailsActivity,
-                        object : CircleManagementPop.ClickListener {
-                            override fun checkPosition(bean: String) {
-                                ApplicationCircleManagementDialog(
-                                    this@CircleDetailsActivity,
-                                    1
-                                ).show()
-                            }
-                        }).run {
-                        //pop背景对齐
-//                    setAlignBackground(true)
-                        //无透明背景
-//                    setBackgroundColor(Color.TRANSPARENT)
-                        //背景模糊false
-                        setBlurBackgroundEnable(false)
-                        //弹出位置 基于绑定的view 默认BOTTOM
-//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                        showPopupWindow(tvJoinText)
-                        setData(arrayListOf("星推官", "星推官助手"))
-                        onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                            override fun onDismiss() {
-
-                            }
-
-                        }
-                        setOnPopupWindowShowListener {
-
-                        }
-                    }
-                }
             }
         })
         viewModel.joinBean.observe(this, {
-            it.msg?.toast()
+            it.msg.toast()
+            if (it.code == 0) {
+                val data = viewModel.circleDetailsBean.value
+                data?.let { circleBean ->
+                    if (circleBean.isApply == 0) {
+                        circleBean.isApply = 1
+                        setJoinType(1)
+                    }
+                }
+            }
         })
     }
 
@@ -280,5 +269,83 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 
+    private fun setJoinType(applyType: Int) {
+        when (applyType) {
+            0 -> {
+                binding.topContent.run {
+                    tvJoin.setBackgroundResource(R.drawable.circle_follow_bg)
+                    tvJoinText.text = "加入"
+                    tvJoinText.setTextColor(
+                        ContextCompat.getColor(
+                            this@CircleDetailsActivity,
+                            R.color.white
+                        )
+                    )
+                    tvJoin.setOnClickListener {
+                        viewModel.joinCircle(circleId)
+                    }
+                }
+            }
+            1 -> {
+                binding.topContent.run {
+                    tvJoin.setBackgroundResource(R.drawable.circle_ee_12_bg)
+                    tvJoinText.text = "申请中"
+                    tvJoinText.setTextColor(
+                        ContextCompat.getColor(
+                            this@CircleDetailsActivity,
+                            R.color.color_99
+                        )
+                    )
+                    tvJoin.setOnClickListener {
+                        "您已申请这个圈子,无须再次申请".toast()
+                    }
+                }
+            }
+            2 -> {
+                binding.topContent.run {
+                    tvJoin.setBackgroundResource(R.drawable.circle_follow_bg)
+                    tvJoinText.text = "申请圈管"
+                    tvJoinText.setTextColor(
+                        ContextCompat.getColor(
+                            this@CircleDetailsActivity,
+                            R.color.white
+                        )
+                    )
+                    tvJoin.setOnClickListener {
+                        CircleManagementPop(this@CircleDetailsActivity,
+                            object : CircleManagementPop.ClickListener {
+                                override fun checkPosition(bean: String) {
+                                    ApplicationCircleManagementDialog(
+                                        this@CircleDetailsActivity,
+                                        1
+                                    ).show()
+                                }
+                            }).run {
+                            //pop背景对齐
+//                    setAlignBackground(true)
+                            //无透明背景
+//                    setBackgroundColor(Color.TRANSPARENT)
+                            //背景模糊false
+                            setBlurBackgroundEnable(false)
+                            //弹出位置 基于绑定的view 默认BOTTOM
+//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                            showPopupWindow(tvJoinText)
+                            setData(arrayListOf("星推官", "星推官助手"))
+                            onDismissListener =
+                                object : BasePopupWindow.OnDismissListener() {
+                                    override fun onDismiss() {
+
+                                    }
+
+                                }
+                            setOnPopupWindowShowListener {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

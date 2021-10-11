@@ -2,6 +2,7 @@ package com.changanford.circle.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
@@ -16,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changanford.circle.R
 import com.changanford.circle.ext.toIntPx
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 
 object MUtils {
 
-    fun postDetailsFrom(textView: TextView, content: String) {
+    fun postDetailsFrom(textView: TextView, content: String, circleId: String) {
 
         val content1 = "来自"
 
@@ -28,6 +31,9 @@ object MUtils {
         spannable.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
+                    val bundle = Bundle()
+                    bundle.putString("circleId", circleId)
+                    startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
                 }
 
                 override fun updateDrawState(ds: TextPaint) {

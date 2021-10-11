@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GrowUpItem
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -32,9 +33,9 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
 
     override fun initView() {
         binding.toolbarJifen.toolbarTitle.text = "积分"
-
-        var headView = ViewTaskHead1Binding.inflate(layoutInflater)
-        jfAdapter.addHeaderView(headView.root)
+        UserManger.getSysUserInfo()?.integral?.let {
+            binding.myJifenNum.text = "${it.toInt()}"
+        }
 
         binding.rcyJifen.rcyCommonView.layoutManager = LinearLayoutManager(this)
         binding.rcyJifen.rcyCommonView.adapter = jfAdapter

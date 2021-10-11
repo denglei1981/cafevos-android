@@ -16,6 +16,9 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class NewsListAdapter : BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
 
+    init {
+        addChildClickViewIds(R.id.layout_content,R.id.btn_follow,R.id.iv_header,R.id.tv_author_name,R.id.tv_sub_title,R.id.tv_time_look_count,R.id.tv_comment_count,R.id.tv_like_count)
+    }
 
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
 
@@ -69,7 +72,7 @@ class NewsListAdapter : BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.
             }
             1 -> {//  已经关注
                 btnFollow.text = "已关注"
-                btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+                btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.blue_tab))
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         }

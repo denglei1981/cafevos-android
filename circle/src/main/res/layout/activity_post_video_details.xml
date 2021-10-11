@@ -43,9 +43,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/circle_video_bottom_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_height="310dp"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_talk_type"
@@ -57,7 +58,10 @@
             android:background="@drawable/circle_talk_20_v_bg"
             android:drawableStart="@mipmap/circle_talk_hint"
             android:drawablePadding="9dp"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxEms="20"
+            android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="14dp"
             android:textColor="@color/circle_8195C8"
@@ -89,16 +93,39 @@
             app:layout_constraintRight_toRightOf="parent"
             tools:text="长安福特这一次给大家一个好大的惊喜，刚看到..." />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_from"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/ll_form_and_city"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:textColor="@color/white"
-            android:textSize="14sp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/tv_content"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
-            tools:text="来自重庆车友圈" />
+            app:layout_constraintRight_toRightOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:text="来自重庆车友圈" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_two_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"
+                android:drawableStart="@mipmap/circle_location_details"
+                android:drawablePadding="4dp"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/color_cc"
+                android:textSize="13sp"
+                tools:text="重庆市" />
+
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
@@ -107,7 +134,7 @@
             android:layout_marginBottom="14dp"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_from"
+            app:layout_constraintBottom_toTopOf="@+id/ll_form_and_city"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="@+id/tv_content"
             tools:text="重庆长安福特EVOS华丽登场" />
@@ -125,12 +152,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-            android:layout_marginTop="4dp"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_follow"
             app:layout_constraintLeft_toRightOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/tv_follow"
             tools:text="萨瓦迪LALA" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -149,21 +176,21 @@
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/shap_e5_12"
             android:gravity="center"
             android:textColor="@color/circle_app_color"
             android:textSize="11sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
             app:layout_constraintLeft_toRightOf="@+id/tv_name"
-            app:layout_constraintTop_toTopOf="@+id/tv_name"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
             tools:text="关注" />
 
         <LinearLayout
             android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/black"
+            android:background="@color/transparent"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -171,7 +198,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_talk"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="37dp"
                 android:layout_marginStart="19dp"
                 android:layout_marginEnd="19dp"
                 android:layout_weight="1"
@@ -197,6 +224,7 @@
                 tools:text="255" />
 
             <LinearLayout
+                android:id="@+id/ll_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
@@ -220,6 +248,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"

@@ -8,8 +8,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
-import com.changanford.home.databinding.ItemBigShotStateBinding
-import com.changanford.home.news.data.SpecialData
 
 class BigShotPostListAdapter :
     BaseQuickAdapter<BigShotPostBean, BaseDataBindingHolder<ItemBigShotItemsBinding>>(R.layout.item_big_shot_items) {

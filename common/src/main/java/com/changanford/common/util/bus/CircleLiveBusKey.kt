@@ -9,4 +9,5 @@ object CircleLiveBusKey {
     //定位权限
     const val LOCATION_RESULT = "locationResult"
     const val CLOSE_POST_DETAILS = "closePostDetails"
+    const val REFRESH_COMMENT_ITEM = "refreshCommentItem"
 }

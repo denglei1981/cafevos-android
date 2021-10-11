@@ -44,11 +44,16 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initViewModel()
         curActivity = this
 //        makeStateBarTransparent(true)
+        initView(savedInstanceState)
         initView()
 //        StatusBarUtil.setLightStatusBar(this, true)
         ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
         initData()
         observe()
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+
     }
 
     override fun onResume() {

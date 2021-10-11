@@ -410,6 +410,16 @@ public class TimeUtils {
         return sdf.format(new Date());
     }
 
+    public static String getDay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd");
+        return sdf.format(new Date());
+    }
+
+    public static String getNowDay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(new Date());
+    }
+
     public static String getShowYearMonth(int index) {//相较于当前月份的年月：2020年08月，前一月 index -1,后一月+1
         try {
             int year = Integer.valueOf(getYear());
@@ -427,10 +437,10 @@ public class TimeUtils {
                     year += 1;
                 }
             }
-            if (month<10){
-                return year + "年0" + month+"月";
-            }else {
-                return year + "年" + month+"月";
+            if (month < 10) {
+                return year + "年0" + month + "月";
+            } else {
+                return year + "年" + month + "月";
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,6 +450,7 @@ public class TimeUtils {
 
     /**
      * yyyy-MM-dd
+     *
      * @param index
      * @return
      */
@@ -460,9 +471,9 @@ public class TimeUtils {
                     year += 1;
                 }
             }
-            if (month<10){
+            if (month < 10) {
                 return year + "-0" + month;
-            }else {
+            } else {
                 return year + "-" + month;
             }
         } catch (Exception e) {
@@ -472,17 +483,16 @@ public class TimeUtils {
     }
 
     /**
-     *
      * @param pastDay yyyy-MM-hh
      * @return
      */
-    public static boolean dayBefore(String pastDay){
+    public static boolean dayBefore(String pastDay) {
         String cur = MillisToDayStr(System.currentTimeMillis());
-        try{
-            cur = cur.replace("-","");
-            pastDay = pastDay.replace("-","");
-            return  Long.valueOf(cur)-Long.valueOf(pastDay)>=0L;
-        }catch (Exception e){
+        try {
+            cur = cur.replace("-", "");
+            pastDay = pastDay.replace("-", "");
+            return Long.valueOf(cur) - Long.valueOf(pastDay) > 0L;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
