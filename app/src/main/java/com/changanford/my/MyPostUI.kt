@@ -135,7 +135,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
         }
         ConfirmTwoBtnPop(this)
             .apply {
-                contentText.text = "是否确定删除？"
+                contentText.text = "是否确定删除？\n删除后将无法找回，请谨慎操作"
                 btnConfirm.setOnClickListener {
                     dismiss()
                     postDelete(ids)

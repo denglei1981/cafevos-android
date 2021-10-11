@@ -48,5 +48,6 @@
         <activity android:name=".MyPostUI" />
         <activity android:name=".ui.UserVipUI" />
         <activity android:name=".ui.MyVipUI" />
+        <activity android:name=".ui.MyPostDraftUI" />
     </application>
 </manifest>
