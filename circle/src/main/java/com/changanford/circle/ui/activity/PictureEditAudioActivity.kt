@@ -2,6 +2,8 @@ package com.changanford.circle.ui.activity
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.app.Activity
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +25,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.videoedit.*
 import com.changanford.common.util.AppUtils
@@ -37,7 +40,6 @@ import com.vincent.videocompressor.videocompressor.VideoCompress
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.lang.ref.WeakReference
-import java.util.ArrayList
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -92,6 +94,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     private lateinit var cutHandler:Handler
     private lateinit var finalPath:String   //最终向外输出的文件
     private lateinit var cutpath:String
+
     val progressDialog: LoadDialog by lazy {
         LoadDialog(this)
     }
@@ -100,6 +103,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     }
     private val mUIHandler by lazy {
         MainHandler(this)
+    }
+    companion object{
+        const val EDIT_VIDEOPATH =0X4568
     }
 
     override fun initView() {
@@ -139,7 +145,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.title.barTvOther.setOnClickListener {
             oncut()
         }
-
+        binding.title.barImgBack.setOnClickListener {
+            finish()
+        }
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
             finish()
         })
@@ -156,7 +164,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                             progressDialog.dismiss()
                             finalPath =  cutpath
                             "${cutpath}---${endcropTime-startCropTime}s".toast()
-                            startChoseFm()
+                            Callback()
                         }else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100){
                             //                                    String compressPath = SiliCompressor.with(EsayVideoEditActivity.this).compressVideo(cutPath, Environment.getExternalStorageDirectory().getPath() + "/Uni/video",1080,1920,1200000);
                             val task: VideoCompress.VideoCompressTask = VideoCompress.compressVideoLow(
@@ -173,7 +181,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                                             progressDialog.dismiss()
                                             "$cutpath".toast()
                                             finalPath = cutpath
-                                            startChoseFm()
+                                            Callback()
 //                                            val intent = Intent()
 //                                            intent.putExtra("cutPath", mpath)
 //                                            intent.putExtra("time", ReturnTime)
@@ -567,11 +575,18 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         super.onDestroy()
     }
 
-    fun startChoseFm(){
+    fun Callback(){
+//        cutpath?.let {
+//            startARouter(ARouterCirclePath.VideoChoseFMActivity, Bundle().apply {
+//                putString("cutpath",cutpath)
+//            })
+//        }
+
         cutpath?.let {
-            startARouter(ARouterCirclePath.VideoChoseFMActivity, Bundle().apply {
-                putString("cutpath",cutpath)
-            })
+            var intent = Intent()
+            intent.putExtra("finalPath",finalPath)
+            setResult(Activity.RESULT_OK,intent)
+            finish()
         }
     }
 }

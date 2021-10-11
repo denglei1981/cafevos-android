@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.getRandomKey
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import kotlinx.coroutines.Dispatchers
@@ -37,15 +39,15 @@ open class PostRoomViewModel() :BaseViewModel() {
         }
     }
 
-//    /**
-//     * 删除该帖子
-//     */
-//    fun deletePost(post:PostEntity){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            PostDatabase.getInstance(context).getPostDao()
-//                .delete(post)
-//        }
-//    }
+    /**
+     * 删除该帖子
+     */
+    fun deletePost(id:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                .delete(id)
+        }
+    }
 
     /**
      * 查询所有帖子
@@ -55,5 +57,8 @@ open class PostRoomViewModel() :BaseViewModel() {
           posts.value =  PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value
         }
     }
+
+
+
 
 }

@@ -9,7 +9,7 @@ import java.io.Serializable
  */
 @Entity(tableName = "post_table")
 data class PostEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @ColumnInfo(name = "postsId") var postsId: Int = 0,//帖子id
     @ColumnInfo(name = "circleId") var circleId: String = "",  //圈子id
     @ColumnInfo(name = "circleName") var circleName: String = "",  //圈子名称
@@ -24,7 +24,7 @@ data class PostEntity(
     @ColumnInfo(name = "title") var title: String = "",//标题
     @ColumnInfo(name = "topicId") var topicId: String = "",//话题id
     @ColumnInfo(name = "topicName") var topicName: String = "",//话题id
-    @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频
+    @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频 4 图文长帖
     @ColumnInfo(name = "userId") var userId: String = "",//用户id
     @ColumnInfo(name = "videoTime") var videoTime: String = "",//若为视频帖子,视频时长
     @ColumnInfo(name = "videoUrl") var videoUrl: String = "",//视频帖子中视频地址
@@ -49,4 +49,7 @@ interface PostDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: PostEntity)
+
+    @Query("Delete from post_table Where postsId = :postid")
+    suspend fun delete(postid:Int)
 }

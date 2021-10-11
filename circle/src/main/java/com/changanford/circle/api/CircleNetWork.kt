@@ -2,6 +2,7 @@ package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
 import com.changanford.common.bean.CircleListBean
+import com.changanford.common.bean.LocationDataBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
 import io.reactivex.Observable
@@ -211,6 +212,12 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
+
+    @POST("/baseDealer/getCityDetailBylngAndlat")
+    suspend fun getCityDetailBylngAndlat(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<LocationDataBean>
 
     /**
      * 社区v2: 获取管理员信息

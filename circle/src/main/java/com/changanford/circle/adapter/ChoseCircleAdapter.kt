@@ -23,13 +23,13 @@ class ChoseCircleAdapter() : BaseMultiItemQuickAdapter<ChooseCircleData, BaseVie
                 var imageView = holder.getView<ImageView>(R.id.avatar_img)
                 var name = holder.getView<TextView>(R.id.name_tv)
                 name.text = item.name
-//                item.url?.let {
-//                    GlideUtils.loadBD(it,imageView)
-//                }
+                item.pic?.let {
+                    GlideUtils.loadCircle(it,imageView)
+                }
             }
             else -> {
                 var title = holder.getView<TextView>(R.id.title)
-//                title.text= item.title
+                title.text= item.title
             }
         }
     }

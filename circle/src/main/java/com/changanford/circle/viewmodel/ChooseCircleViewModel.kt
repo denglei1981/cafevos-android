@@ -23,8 +23,8 @@ class ChooseCircleViewModel : BaseViewModel() {
                         if (it.dataList.isNotEmpty()){
                             var chooseCircleData = ChooseCircleData(title = "我加入的",mItemType = 1)
                             lists.add(chooseCircleData)
-                            for (chooseCircleData in it.dataList) {
-                                chooseCircleData.apply {
+                            for (bean in it.dataList) {
+                                bean.apply {
                                     mItemType = 2
                                 }
                             }
@@ -52,8 +52,8 @@ class ChooseCircleViewModel : BaseViewModel() {
                         if (it.dataList.isNotEmpty()){
                             var chooseCircleBean = ChooseCircleData(title = "我创建的",mItemType = 1)
                             lists.add(chooseCircleBean)
-                            for (chooseCircleData in it.dataList) {
-                                chooseCircleData.apply {
+                            for (bean in it.dataList) {
+                                bean.apply {
                                     mItemType = 2
                                 }
                             }
