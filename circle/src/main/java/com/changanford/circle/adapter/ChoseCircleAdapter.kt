@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.ChooseCircleBean
 import com.changanford.circle.bean.ChooseCircleData
 import com.changanford.common.utilext.GlideUtils
 

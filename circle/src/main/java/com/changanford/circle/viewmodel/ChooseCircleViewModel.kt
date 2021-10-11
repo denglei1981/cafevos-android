@@ -12,6 +12,7 @@ import com.changanford.common.utilext.toast
 
 class ChooseCircleViewModel :BaseViewModel(){
     var datas = MutableLiveData<ArrayList<ChooseCircleData>>()
+    var lists = arrayListOf<ChooseCircleData>()
     fun getjoinCircle(){//我加入的圈子
         launch (block = {
             val body = MyApp.mContext.createHashMap()
@@ -22,8 +23,14 @@ class ChooseCircleViewModel :BaseViewModel(){
                     it?.let {
                         if (it.dataList.isNotEmpty()){
                             var chooseCircleData = ChooseCircleData(title = "我加入的",ItemType = 1)
-                            datas.value?.add(chooseCircleData)
-                            datas.value?.addAll(it.dataList)
+                            lists.add(chooseCircleData)
+                            for (chooseCircleData in it.dataList) {
+                                chooseCircleData.apply {
+                                    itemType = 2
+                                }
+                            }
+                            lists.addAll(it.dataList)
+                            datas.value = lists
                         }
                     }
 
@@ -42,11 +49,17 @@ class ChooseCircleViewModel :BaseViewModel(){
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getCreateCircles(body.header(rKey),body.body(rKey))
                 .onSuccess {
-                    it?.let {
+                    it?.let { it ->
                         if (it.dataList.isNotEmpty()){
                             var chooseCircleBean = ChooseCircleData(title = "我创建的",ItemType = 1)
-                            datas.value?.add(chooseCircleBean)
-                            datas.value?.addAll(it.dataList)
+                            lists.add(chooseCircleBean)
+                            for (chooseCircleData in it.dataList) {
+                                chooseCircleData.apply {
+                                    itemType = 2
+                                }
+                            }
+                            lists.addAll(it.dataList)
+                            datas.value = lists
                             getjoinCircle()
                         }else{
                             getjoinCircle()

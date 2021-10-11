@@ -32,7 +32,7 @@ data class ChooseCircleData(
     private var ItemType:Int =2,
     var title:String
 ): MultiItemEntity {
-    override val itemType: Int
+    override var itemType: Int = 2
         get() = ItemType
 }
 
