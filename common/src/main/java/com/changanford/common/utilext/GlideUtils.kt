@@ -155,6 +155,24 @@ object GlideUtils {
         }.into(imageView)
     }
 
+    /**
+     * 普通加载
+     */
+    @JvmOverloads
+    fun loadFilePath(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
+    ) {
+        Glide.with(imageView.context).load(url).apply {
+            if (errorDefaultRes != null) {
+                placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
+                    .error(errorDefaultRes)
+            }
+        }.into(imageView)
+    }
+
     fun loadCover(imageView: ImageView, url: String?, time: Long) {
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         Glide.with(imageView.context)

@@ -8,6 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_title"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
@@ -64,15 +65,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:maxLength="10"
-                android:ellipsize="end"
-                android:textSize="@dimen/sp_11"
                 android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:maxLength="10"
                 android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
                 tools:text="@string/app_name" />
 
         </LinearLayout>
-
 
 
         <TextView
@@ -80,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_gray_9fabb7"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

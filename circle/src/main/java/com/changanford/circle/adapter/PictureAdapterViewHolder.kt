@@ -17,14 +17,14 @@ import com.zhpan.bannerview.BaseViewHolder
 
 
 class PictureAdapterViewHolder(itemView:View,activity: Activity,type:Int) : BaseViewHolder<LocalMedia>(itemView) {
-    var pic: ImageView? = findView(R.id.pic)
+    var pic: ImageView = findView(R.id.pic)
     var etcontent: EditText? = findView(R.id.et_picmiaoshu)
     var tv_tiaozhen: TextView? = findView(R.id.tv_tiaozhen)
     var activity: Activity = activity
     var showedittype =type
-    override fun bindData(data: LocalMedia?, position: Int, pageSize: Int) {
+    override fun bindData(data: LocalMedia, position: Int, pageSize: Int) {
         if (showedittype==-1)etcontent?.visibility =View.GONE else etcontent?.visibility = View.VISIBLE
-        pic?.let { GlideUtils.loadBD(data?.let { PictureUtil.getFinallyPath(it) }, it) }
+         GlideUtils.loadFilePath(PictureUtil.getFinallyPath(data),pic)
         etcontent?.setText(data?.contentDesc)
         tv_tiaozhen?.setOnClickListener {
             if (!DoubleUtils.isFastDoubleClick()) {

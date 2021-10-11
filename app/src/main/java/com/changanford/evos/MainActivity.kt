@@ -116,10 +116,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         getNavigator()
         initBottomNavigation()
-        LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
-            if (it as Boolean) {
-            }
-        })
+//        LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
+//            if (it as Boolean) {
+//            }
+//        })
         checkPermission()
     }
 

@@ -186,6 +186,24 @@ interface CircleNetWork {
     ): CommonResponse<Any>
 
     /**
+     * 参与的圈子
+     */
+    @POST("con/circle/getJoinCircles")
+    suspend fun getjoinCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<ChooseCircleBean>
+
+    /**
+     * 我创建的圈子
+     */
+    @POST("con/circle/getCreateCircles")
+    suspend fun getCreateCircles(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<ChooseCircleBean>
+
+    /**
      *  一级评论回复列表
      */
     @POST("con/comment/childCommentList")

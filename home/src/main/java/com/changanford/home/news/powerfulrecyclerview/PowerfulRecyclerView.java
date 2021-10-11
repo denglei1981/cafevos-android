@@ -65,7 +65,7 @@ public class PowerfulRecyclerView extends RecyclerView {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.PowerfulRecyclerView);
 
-        mDividerColor = ta.getColor(R.styleable.PowerfulRecyclerView_dividerColor, Color.parseColor("#ffd8d8d8"));
+        mDividerColor = ta.getColor(R.styleable.PowerfulRecyclerView_dividerColor, Color.parseColor("#00000000"));
         mDividerSize = ta.getDimensionPixelSize(R.styleable.PowerfulRecyclerView_dividerSize, DisplayUtil.dip2px(context,1));
 
         mDividerDrawable = ta.getDrawable(R.styleable.PowerfulRecyclerView_dividerDrawable);

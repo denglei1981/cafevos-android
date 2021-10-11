@@ -46,6 +46,12 @@ class CircleMainBottomAdapter(context: Context) :
             binding.tvLikeNum.text = "${if (item.likesCount > 0) item.likesCount else "0"}"
 //             item.isLike == 1//点赞
 
+            binding.ivLike.setImageResource(
+                if (item.isLike == 1) {
+                    R.mipmap.circle_like_image
+                } else R.mipmap.circle_no_like_image
+            )
+
             if (item.type == 3) {//视频
                 binding.ivPlay.visibility = View.VISIBLE
             } else {
