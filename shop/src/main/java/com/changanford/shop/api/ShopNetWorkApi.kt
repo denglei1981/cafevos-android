@@ -65,4 +65,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/order/list")
     suspend fun shopOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    /**
+     *所有订单
+     * */
+    @POST("/userOrderMergeInfo/getAllUserOrderMergeInfo")
+    suspend fun getAllOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
 }

@@ -3,6 +3,7 @@ package com.changanford.shop.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
+import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
@@ -17,6 +18,10 @@ import kotlinx.coroutines.launch
 class OrderViewModel: BaseViewModel() {
     //首页
     var shopOrderData = MutableLiveData<ShopOrderBean>()
+    /**
+     * 获取地址列表
+     */
+    var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -67,6 +72,36 @@ class OrderViewModel: BaseViewModel() {
                 shopOrderData.postValue(it)
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
+    /**
+     * 所有订单
+     * */
+    fun getAllOrderList(pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                val randomKey = getRandomKey()
+                shopApiService.getAllOrderList(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                shopOrderData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
+
+    fun getAddressList() {
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val rkey = getRandomKey()
+                apiService.getAddressList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                addressList.postValue(it)
             }
         }
     }

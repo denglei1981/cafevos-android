@@ -8,6 +8,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:background="@drawable/bord_f4_t_10dp"
+        android:onClick="onClick"
         android:id="@+id/layout_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

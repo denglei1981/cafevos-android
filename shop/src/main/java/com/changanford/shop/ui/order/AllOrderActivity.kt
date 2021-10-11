@@ -26,6 +26,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
             context.startActivity(Intent(context, AllOrderActivity::class.java).putExtra("orderType",orderType))
         }
     }
+    private var pageNo=1
     private val mAdapter by lazy { AllOrderAdapter() }
     override fun initView() {
         binding.topBar.setActivity(this)
@@ -39,7 +40,9 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
             OrderDetailsActivity.start(this,"$position")
         }
     }
+
     override fun initData() {
+        viewModel.getAllOrderList(pageNo)
         val datas= arrayListOf<OrderItemBean>()
         for (i in 0..15){
             val item= OrderItemBean(i,"Title$i")
