@@ -2,6 +2,7 @@ package com.changanford.circle
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import com.alibaba.fastjson.JSON
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.utils.MUtils
@@ -18,12 +19,13 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.utilext.logD
 
 /**
  * 社区
  */
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
-    private var postEntity: List<PostEntity>? = null//草稿
+    private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     private val circleAdapter by lazy {
         CircleMainAdapter(requireContext(), childFragmentManager)
@@ -39,7 +41,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
             Observer {
-                postEntity = it
+                postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
             if (postEntity==null){
@@ -63,11 +65,11 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                     initData()
                 }
             }else{
+                JSON.toJSONString(postEntity).logD()
                 AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
                     .setNegativeButton("继续编辑") {
                         startARouter(ARouterMyPath.MyPostDraftUI)
                     }.setPositiveButton("不使用草稿") {
-                        viewModel.clearPost()
                         CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                             override fun checkLongBar() {
                                 startARouter(ARouterCirclePath.LongPostAvtivity)
@@ -83,7 +85,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
                         }).run {
                             setBlurBackgroundEnable(false)
-                            showPopupWindow(it)
+                            showPopupWindow(binding.ivMenu)
                             initData()
                         }
                     }.show()

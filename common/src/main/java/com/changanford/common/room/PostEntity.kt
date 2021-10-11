@@ -9,7 +9,7 @@ import java.io.Serializable
  */
 @Entity(tableName = "post_table")
 data class PostEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "postsId") var postsId: Int = 0,//帖子id
     @ColumnInfo(name = "circleId") var circleId: String = "",  //圈子id
     @ColumnInfo(name = "circleName") var circleName: String = "",  //圈子名称
