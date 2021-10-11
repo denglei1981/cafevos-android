@@ -25,6 +25,28 @@ object OSSHelper {
         return this
     }
 
+    //图片上传
+    fun getOSSToImage(context: Context, base64Str: String, listener: OSSImageListener){
+        BaseApplication.currentViewModelScope.launch {
+            val body = HashMap<String, Any>()
+            val rKey = getRandomKey()
+            fetchRequest {
+                apiService.getOSS(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                val stsBean = it
+                dialog.setCancelable(false)
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.setLoadingText("图片上传中..")
+                dialog.show()
+                stsBean?.let { it1 -> uploadImg(context, base64Str, it1, dialog, listener) }
+            }.onFailure {
+                val msg = "上传失败"
+                msg.toast()
+            }
+        }
+    }
+
+    //身份证识别
     fun getOss(context: Context, base64Str: String, listener: OSSListener) {
         BaseApplication.currentViewModelScope.launch {
             val body = HashMap<String, Any>()
@@ -103,6 +125,42 @@ object OSSHelper {
         })
     }
 
+
+    //图片上传
+    private fun uploadImg(
+        context: Context,
+        upFile: String,
+        stsBean: STSBean,
+        dialog: LoadDialog,
+        listener: OSSImageListener
+    ) {
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        val path = createFileName(upFile, stsBean.tempFilePath)
+        AliYunOssUploadOrDownFileConfig.getInstance(context)
+            .uploadFile(stsBean.bucketName, path, upFile, "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                dialog.dismiss()
+                listener.getPicUrl(path)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+                dialog.dismiss()
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+            }
+        })
+    }
+
     /**
      * 取文件后缀名 创建文件名
      */
@@ -115,5 +173,9 @@ object OSSHelper {
 
     interface OSSListener {
         fun upLoadInfo(info: CommonResponse<OcrBean>)
+    }
+
+    interface OSSImageListener{
+        fun getPicUrl(url:String)
     }
 }

@@ -36,6 +36,7 @@ object ARouterCirclePath {
     const val LongPostAvtivity = "/circle/LongPostAvtivity"
     const val SearchCircleActivity = "/circle/SearchCircleActivity"
     const val SearchTopicActivity = "/circle/SearchTopicActivity"
+    const val CreateCircleActivity = "/circle/CreateCircleActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

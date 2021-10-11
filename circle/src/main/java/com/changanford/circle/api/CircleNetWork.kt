@@ -254,4 +254,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     * 创建圈子
+     */
+    @POST("/con/circle/createCircle")
+    suspend fun addCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

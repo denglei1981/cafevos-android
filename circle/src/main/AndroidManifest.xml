@@ -29,5 +29,6 @@
         <activity android:name=".ui.release.PerfectQuessionWBActivity" />
         <activity android:name=".ui.release.MMapActivity" />
         <activity android:name=".ui.release.ReleaseActivity" />
+        <activity android:name=".ui.activity.CreateCircleActivity" />
     </application>
 </manifest>
