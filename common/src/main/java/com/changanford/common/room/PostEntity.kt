@@ -36,7 +36,9 @@ data class PostEntity(
     @ColumnInfo(name = "address") var address: String = "",
     @ColumnInfo(name = "city") var city: String = "",
     @ColumnInfo(name = "province") var province: String = "",
-    @ColumnInfo(name = "cityCode") var cityCode:String =""
+    @ColumnInfo(name = "cityCode") var cityCode:String ="",
+    @ColumnInfo(name="creattime") var creattime:String=""
+
 ) : Serializable
 
 @Dao

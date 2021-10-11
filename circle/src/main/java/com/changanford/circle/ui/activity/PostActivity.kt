@@ -233,6 +233,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.city = params["city"] as? String ?: ""
                         postEntity.province = params["province"] as? String ?: ""
                         postEntity.cityCode = params["cityCode"] as? String ?: ""
+                        postEntity.creattime = System.currentTimeMillis().toString()
                         viewModel.insertPostentity(postEntity)
                         finish()
                     }
