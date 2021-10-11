@@ -11,6 +11,7 @@ import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.exchange.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -36,7 +37,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
         binding.smartRl.setOnRefreshListener(this)
         //test
-        binding.inTop.btnPj.setOnClickListener {JumpUtils.instans?.jump(5,"0") }
+        binding.inTop.btnPj.setOnClickListener {OrderEvaluationActivity.start(requireContext(),"0") }
         binding.inTop.btnOrdersGoods.setOnClickListener { JumpUtils.instans?.jump(52) }
         binding.inTop.btnAllOrder.setOnClickListener { JumpUtils.instans?.jump(36)}
     }

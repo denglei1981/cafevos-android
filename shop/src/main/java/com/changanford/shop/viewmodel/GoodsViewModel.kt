@@ -1,6 +1,5 @@
 package com.changanford.shop.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
@@ -59,17 +58,16 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 获取商品列表
-     * [typeId]分类id
+     * [tagId]分类id
      * */
-    fun getGoodsList(typeId:String,pageNo:Int,pageSize:Int=this.pageSize){
-        Log.e("okhttp","typeId:$typeId")
+    fun getGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["tagId"]=typeId
+               if("0"!=tagId) body["queryParams"]=HashMap<String,Any>().also {
+                    it["tagId"]=tagId
                 }
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
