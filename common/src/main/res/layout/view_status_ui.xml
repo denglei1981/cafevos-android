@@ -21,8 +21,8 @@
             android:id="@+id/view_status_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             android:layout_margin="@dimen/dp_10"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
             android:maxWidth="120dp"
             android:maxHeight="120dp"
@@ -37,9 +37,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="要啥啥没有"
-            android:textColor="#666666"
-            android:textSize="16sp" />
+            android:text="暂时没有数据哦~"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_14" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_address"
+            style="@style/login_btn_style"
+            android:layout_width="@dimen/dp_125"
+            android:layout_height="@dimen/dp_35"
+            android:text="新增收货地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone" />
 
     </LinearLayout>
 </layout>

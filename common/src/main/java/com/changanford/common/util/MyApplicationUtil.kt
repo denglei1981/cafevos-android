@@ -45,7 +45,7 @@ object MyApplicationUtil {
         initThirdPush()
         initshare()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            initBugfy()
+//            initBugfy()
         }
 
     }

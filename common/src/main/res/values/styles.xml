@@ -98,4 +98,16 @@
         <item name="cornerSizeTopRight">@dimen/dp_5</item>
     </style>
 
+    <style name="login_btn_style">
+        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dp_42</item>
+        <item name="android:layout_marginStart">@dimen/dp_20</item>
+        <item name="android:layout_marginTop">@dimen/dp_20</item>
+        <item name="android:layout_marginEnd">@dimen/dp_20</item>
+        <item name="android:background">@drawable/next_btn_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

@@ -46,8 +46,10 @@ class CircleViewModel : ViewModel() {
                 apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
-                    it[0].typeStr = "处理中"
-                    it[0].isShowTitle = true
+                    if (it.size > 0) {
+                        it[0].typeStr = "处理中"
+                        it[0].isShowTitle = true
+                    }
                     circleItemBeans.addAll(it)
                 }
                 mMangerCircle.postValue(circleItemBeans)
