@@ -63,11 +63,12 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_special"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_30"
             android:layout_marginStart="8dp"
             android:background="@drawable/shape_home_di_blue"
-            app:layout_constraintBottom_toTopOf="@+id/layout_comment"
+            app:layout_constraintBottom_toTopOf="@+id/ll_comment"
             app:layout_constraintStart_toStartOf="@+id/home_tv_content"
             app:layout_constraintTop_toBottomOf="@+id/home_tv_content"
             app:layout_constraintWidth_percent="0.62">
@@ -96,7 +97,7 @@
         </LinearLayout>
 
         <include
-            android:id="@+id/layout_comment"
+            android:id="@+id/ll_comment"
             layout="@layout/include_home_comment_bg_blue"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_60"

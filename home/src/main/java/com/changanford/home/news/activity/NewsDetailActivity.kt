@@ -80,7 +80,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 checkPosition = position
             }
         })
-        binding.layoutTitle.ivBack.setOnClickListener{
+        binding.layoutTitle.ivBack.setOnClickListener {
             onBackPressed()
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
@@ -100,6 +100,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             bus()
         }
     }
+
     private val inflateHeader: LayoutHeadlinesHeaderNewsDetailBinding by lazy {
         DataBindingUtil.inflate(
             LayoutInflater.from(this),
@@ -108,9 +109,11 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             false
         )
     }
+
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
     }
+
     private fun bus() {
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
             if (checkPosition == -1) {
@@ -144,24 +147,28 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         setFollowState(inflateHeader.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
-        inflateHeader.tvTitle.text=newsDetailData.title
+        inflateHeader.tvTitle.text = newsDetailData.title
+        inflateHeader.tvTime.text = newsDetailData.timeStr
 
-        if(!TextUtils.isEmpty(newsDetailData.content)){
+        if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
-        try{
+        try {
             if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
                 GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
                 inflateHeader.ivPic.visibility = View.VISIBLE
             } else {
                 inflateHeader.ivPic.visibility = View.GONE
             }
+            if (TextUtils.isEmpty(newsDetailData.specialTopicTitle)) {
+                inflateHeader.llSpecial.visibility = View.GONE
+            }
             inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         inflateHeader.llSpecial.setOnClickListener {// 跳转到专题详情。
-            if(newsDetailData.specialTopicId>0){
+            if (newsDetailData.specialTopicId > 0) {
                 JumpUtils.instans?.jump(8, newsDetailData.specialTopicId.toString())
             }
         }
@@ -185,6 +192,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         }
 
     }
+
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
