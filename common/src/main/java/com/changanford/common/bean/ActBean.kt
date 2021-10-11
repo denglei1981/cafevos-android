@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
 
@@ -25,7 +26,7 @@ data class InfoDataBean(
     val catId: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
-    val content: String="",
+    val content: String = "",
     val createTime: Long = 0L,
     val isDeleted: Int = 0,
     var isLike: Int = 0,
@@ -40,7 +41,7 @@ data class InfoDataBean(
     val shareCount: Int = 0,
     val sortOrder: Int = 0,
     val specialTopicId: Any = Any(),
-    val specialTopicTitle:String="",
+    val specialTopicTitle: String = "",
     val status: Int = 0,
     val summary: String = "",
     val timeStr: String = "",
@@ -55,18 +56,16 @@ data class InfoDataBean(
     val viewsCountMul: Double = 0.0,
     val jumpVal: String = "",
     val jumpType: Int = 0
-) : MultiItemEntity{
+) : MultiItemEntity {
 
-    fun getCommentCountResult():String{
-        var commentCountResult:String=""
+    fun getCommentCountResult(): String {
+        var commentCountResult: String = ""
         if (commentCount == 0L) {
             return "评论"
         }
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
         return commentCountResult
     }
-
-
 
 
 }
@@ -83,7 +82,15 @@ data class AuthorBaseVo(
     val memberId: Int = 0,
     val memberName: String = "",
     val nickname: String = ""
-)
+) {
+    fun getMemberNames(): String {
+        return if (TextUtils.isEmpty(memberName)) {
+            "车迷级公民"
+        } else {
+            memberName
+        }
+    }
+}
 
 data class PostBean(
     val dataList: ArrayList<PostDataBean> = arrayListOf(),

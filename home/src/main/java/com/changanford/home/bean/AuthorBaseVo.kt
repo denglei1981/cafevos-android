@@ -6,7 +6,7 @@ data class AuthorBaseVo(
     var authorId: Int,
     var avatar: String,
     var headFrameImage: Any,
-    var imags: List<Imag>,
+    var imags: List<LabelBean>,
     var isFollow: Int,
     var medalImage: Any,
     var medalName: Any,
