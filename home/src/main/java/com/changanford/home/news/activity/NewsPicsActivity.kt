@@ -265,9 +265,9 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
                         this,
-                        1,
+                        0,
                         it.shares,
-                        ReportDislikeBody(1, it.artId.toString()),
+                        null,
                         null,
                         it.authors.nickname
                     )
@@ -280,7 +280,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                         this,
                         1,
                         it.shares,
-                        null,
+                        ReportDislikeBody(1, it.artId.toString()),
                         null,
                         it.authors.nickname
                     )

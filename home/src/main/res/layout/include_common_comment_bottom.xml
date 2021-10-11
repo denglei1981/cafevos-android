@@ -5,12 +5,18 @@
 
     <data>
 
+
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         android:background="@color/color_faf8fd">
+
+
+
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_news_to_share"
@@ -34,7 +40,6 @@
             android:drawablePadding="6dp"
             android:gravity="center"
             android:textSize="@dimen/sp_10"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_news_to_share"
             app:layout_constraintTop_toTopOf="parent"

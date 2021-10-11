@@ -94,9 +94,9 @@ class NewsVideoDetailActivity :
                 view: View,
                 position: Int
             ) {
-                when(view.id){
-                    R.id.iv_like,R.id.tv_like_count->{
-                      toastShow("点我。。。")
+                when (view.id) {
+                    R.id.iv_like, R.id.tv_like_count -> {
+                        toastShow("点我。。。")
                     }
                 }
 
@@ -215,9 +215,11 @@ class NewsVideoDetailActivity :
         binding.llComment.tvNewsToLike.text = newsDetailData.getLikeCount()
         binding.llComment.tvNewsToShare.text = newsDetailData.getShareCount()
         binding.llComment.tvNewsToMsg.text = newsDetailData.getCommentCount()
+        binding.llComment.tvNewsToCollect.text = newsDetailData.getCollectCount()
         binding.llComment.tvNewsToLike.setOnClickListener(this)
         binding.llComment.tvNewsToShare.setOnClickListener(this)
         binding.llComment.tvNewsToMsg.setOnClickListener(this)
+        binding.llComment.tvNewsToCollect.setOnClickListener(this)
         if (newsDetailData.isLike == 0) {
             binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_unlike)
         } else {
@@ -324,7 +326,19 @@ class NewsVideoDetailActivity :
 //                binding.homeRvContent.smoothScrollToPosition(1)
                 smooth()
             }
-            R.id.tv_news_to_share, R.id.iv_more -> {
+            R.id.tv_news_to_share -> {
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        this,
+                        0,
+                        it.shares,
+                        null,
+                        null,
+                        it.authors.nickname
+                    )
+                }
+            }
+            R.id.iv_more -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
                         this,
@@ -383,7 +397,7 @@ class NewsVideoDetailActivity :
             if (checkPosition == -1) {
                 return@observe
             }
-            ToastUtils.showShortToast("checkPosition="+checkPosition,this)
+            ToastUtils.showShortToast("checkPosition=" + checkPosition, this)
             val bean = homeNewsCommentAdapter.getItem(checkPosition)
             bean.isLike = it
             if (bean.isLike == 1) {
@@ -392,7 +406,7 @@ class NewsVideoDetailActivity :
                 bean.likesCount--
             }
             // 有头布局。
-            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
         })
     }
 
