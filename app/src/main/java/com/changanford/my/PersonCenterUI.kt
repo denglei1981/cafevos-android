@@ -15,11 +15,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.databinding.ItemMedalBinding
+import com.changanford.common.databinding.ItemPersonMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiPersonCenterBinding
@@ -47,6 +49,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
         }
         binding.centerToolbar.toolbarTitle.text = "个人主页"
         binding.centerToolbar.toolbar.setNavigationOnClickListener { back() }
+        binding.personRcy.visibility = View.GONE
         initViewpager()
     }
 
@@ -65,38 +68,43 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                         fansNum.text = "${MineUtils.num(user.count?.fans.toLong())}"
                         goodNum.text = "${MineUtils.num(user.count?.likeds.toLong())}"
                     }
-                    binding.userDesc.text = user.brief
+                    binding.userDesc.text = if (user.brief.isNullOrEmpty()) "这个人很赖~" else user.brief
                     binding.btnFollow.text = if (user.isFollow == 0) "关注" else "已关注"
 
+                    binding.userVip.visibility =
+                        if (user.ext?.medalName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
                     binding.userVip.text = user.ext?.memberName
+                }
+            }
+        }
 
-                    binding.personRcy.layoutManager = LinearLayoutManager(this).apply {
-                        orientation = RecyclerView.HORIZONTAL
-                    }
-                    binding.personRcy.adapter =
-                        object :
-                            BaseQuickAdapter<MedalListBeanItem, BaseDataBindingHolder<ItemMedalBinding>>(
-                                R.layout.item_medal
-                            ) {
-                            override fun convert(
-                                holder: BaseDataBindingHolder<ItemMedalBinding>,
-                                item: MedalListBeanItem
-                            ) {
-                                holder.dataBinding?.let {
-                                    it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
-                                    it.tvMedalName.text = item.medalName
-                                    it.btnGetMedal.visibility = View.GONE
-                                    it.tvMedalDes.visibility = View.VISIBLE
-                                    it.tvMedalDes.text = "2021.08.31点亮\n车迷级勋章"
-                                }
-
-                            }
-                        }.apply {
-                            user.ext?.userMedalList?.let {
-                                addData(it)
+        viewModel.queryOtherUserMedal(userId) {
+            it.onSuccess { medals ->
+                binding.personRcy.layoutManager = LinearLayoutManager(this).apply {
+                    orientation = RecyclerView.HORIZONTAL
+                }
+                binding.personRcy.adapter =
+                    object :
+                        BaseQuickAdapter<MedalListBeanItem, BaseDataBindingHolder<ItemPersonMedalBinding>>(
+                            R.layout.item_person_medal
+                        ) {
+                        override fun convert(
+                            holder: BaseDataBindingHolder<ItemPersonMedalBinding>,
+                            item: MedalListBeanItem
+                        ) {
+                            holder.dataBinding?.let {
+                                it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
+                                it.tvMedalName.text = item.medalName
                             }
                         }
-                }
+                    }.apply {
+                        medals?.apply {
+                            if (size > 0) {
+                                binding.personRcy.visibility = View.VISIBLE
+                                addData(this)
+                            }
+                        }
+                    }
             }
         }
     }

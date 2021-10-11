@@ -24,7 +24,7 @@
                 layout="@layout/view_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll" />
+                app:layout_scrollFlags="scroll|enterAlways" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_24"
-                    android:src="@mipmap/ic_medal_ex"
+                    android:src="@mipmap/ic_def_vip"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
                     android:id="@+id/im_medal_with_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sp_12"
+                    android:layout_marginTop="@dimen/dp_12"
                     android:text="当前未佩戴勋章"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_15"
@@ -74,7 +74,7 @@
                     android:layout_marginTop="@dimen/dp_25"
                     android:background="@drawable/shape_r_lift_18_c_ff"
                     android:gravity="center"
-                    android:text="我的勋章"
+                    android:text="我的会员"
                     android:textColor="#01025C"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintRight_toRightOf="parent"
@@ -90,25 +90,19 @@
                 android:elevation="0dp"
                 android:gravity="bottom">
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_44"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/white"
-                    app:tabIndicator="@null"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMode="scrollable"
-                    app:tabRippleColor="@color/transparent"
-                    app:tabSelectedTextColor="#161E37"
-                    app:tabTextAppearance="@style/TabLayoutTextStyle"
-                    app:tabTextColor="#90161E37" />
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center"
+                    android:text="会员身份认证"
+                    android:textColor="#172634"
+                    android:textSize="@dimen/sp_14" />
+
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcy_vip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

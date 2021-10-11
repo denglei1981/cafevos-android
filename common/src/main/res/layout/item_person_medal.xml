@@ -20,14 +20,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="@dimen/dp_104"
-            android:minHeight="@dimen/dp_148"
+            android:minWidth="@dimen/dp_92"
+            android:minHeight="@dimen/dp_104"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/im_medal_icon"
-                android:layout_width="@dimen/dp_68"
-                android:layout_height="@dimen/dp_74"
+                android:layout_width="@dimen/dp_55"
+                android:layout_height="@dimen/dp_55"
                 android:layout_marginTop="@dimen/dp_8"
                 android:src="@mipmap/ic_medal_ex"
                 app:layout_constraintDimensionRatio="1:1"
@@ -50,36 +50,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginTop="@dimen/dp_11"
                     android:layout_marginEnd="@dimen/dp_4"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@string/app_name"
                     android:textColor="#071726"
                     android:textSize="@dimen/sp_14" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_medal_des"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:lineSpacingMultiplier="1.2"
-                    android:maxLines="1"
-                    android:text="2021.08.31点亮\n车迷级勋章"
-                    android:textColor="#999999"
-                    android:textSize="@dimen/sp_10"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_get_medal"
-                    android:layout_width="@dimen/dp_67"
-                    android:layout_height="@dimen/dp_22"
-                    android:layout_marginTop="@dimen/dp_11"
-                    android:background="@drawable/shape_login_sms_r_16_c_89"
-                    android:gravity="center"
-                    android:text="立即点亮"
-                    android:textColor="#01025C"
-                    android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

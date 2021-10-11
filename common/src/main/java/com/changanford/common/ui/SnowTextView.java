@@ -32,7 +32,7 @@ public class SnowTextView extends TextView {
     //统一设置**
     public void setT(String content) {
         SpannableString spannableString = new SpannableString("* " + content);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#FC883B"));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#1500F6"));
         spannableString.setSpan(colorSpan, 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         setText(spannableString);
     }

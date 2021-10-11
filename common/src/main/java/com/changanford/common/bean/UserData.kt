@@ -98,7 +98,7 @@ data class Ext(
     val isAllTaskDone: Int,
     val isNewTaskDone: Int,
     val medalImage: String,
-    val medalName: String,
+    val medalName: String? = "",
     val memberName: String,
 )
 
@@ -146,24 +146,6 @@ data class CancelReasonBeanItem(
     var reasonId: Int = 0
 )
 
-data class UserIdCardBeanItem(
-    val actionIds: String,
-    val dataScope: String,
-    val fillCondition: String,
-    val interestsId: String,
-    val isAuth: String,
-    var isShow: String,
-    val keepCondition: String,
-    val keepConditionNo: String,
-    val memberDesc: String,
-    val memberIcon: String,
-    val memberId: Int,
-    val memberKey: String,
-    val memberName: String,
-    val sort: String,
-    val status: String,
-    val medalType: Int//勋章类型（1.身份 2.成长值 3社交互动 4每日动态 5节日）
-)
 
 data class AddressBeanItem(
     val addressId: Int = 0,
@@ -230,4 +212,11 @@ data class Interests(
 data class AuthImagesItem(
     val imgPosition: Int = 0,//图片位置（1名称资料证明 2个人展示照片）
     val imgUrls: List<String> = arrayListOf()
+)
+
+data class MyShopBean(
+    val imageUrl: String = "",
+    val shopName: String = "",
+    val integral: String = "0",
+    val collectNum: String = "0"
 )

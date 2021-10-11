@@ -18,6 +18,7 @@ import com.changanford.common.bean.CircleTagBean
 import com.changanford.common.bean.Refuse
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -177,7 +178,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                             }
                         }
                     }
-//                    circleAdapter.notifyItemRangeChanged(0, circleAdapter.itemCount)
+                    circleAdapter.notifyDataSetChanged()
                 }
             })
 
@@ -332,7 +333,10 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                 checkMap[item.userId] = isChecked
                 setCheckNum()
             }
-//            checkBox.isChecked = checkMap[item.userId]!!
+            checkBox.isChecked = checkMap[item.userId]!!
+            icon.setOnClickListener {
+                RouterManger.param("value",item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
+            }
         }
 
 

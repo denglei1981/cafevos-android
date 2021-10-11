@@ -364,7 +364,7 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun weekSignDetail( result: (CommonResponse<MonthSignBean>) -> Unit) {
+    fun weekSignDetail(result: (CommonResponse<MonthSignBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
@@ -545,18 +545,20 @@ class SignViewModel : ViewModel() {
      */
     val wearMedal: MutableLiveData<String> = MutableLiveData()
 
-    suspend fun wearMedal(medalId: String, type: String) {
-        var medal = fetchRequest {
-            var body = HashMap<String, String>()
-            body["medalId"] = medalId
-            body["type"] = type
-            var rkey = getRandomKey()
-            apiService.wearMedal(body.header(rkey), body.body(rkey))
-        }
-        if (medal.code == 0) {
-            wearMedal.postValue("佩戴成功")
-        } else {
-            wearMedal.postValue(medal.msg)
+    fun wearMedal(medalId: String, type: String) {
+        viewModelScope.launch {
+            var medal = fetchRequest {
+                var body = HashMap<String, String>()
+                body["medalId"] = medalId
+                body["type"] = type
+                var rkey = getRandomKey()
+                apiService.wearMedal(body.header(rkey), body.body(rkey))
+            }
+            if (medal.code == 0) {
+                wearMedal.postValue("true")
+            } else {
+                wearMedal.postValue(medal.msg)
+            }
         }
     }
 
@@ -778,6 +780,20 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    fun queryOtherUserMedal(
+        userId: String,
+        result: (CommonResponse<ArrayList<MedalListBeanItem>>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userId"] = userId
+                var rkey = getRandomKey()
+                apiService.queryOtherUserMedal(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
     /**
      * 登录成功
      */
@@ -903,6 +919,47 @@ class SignViewModel : ViewModel() {
                 //currentSize*100/totalSize
             }
         })
+    }
+
+
+    /**
+     * 获取会员所有身份
+     */
+    fun getUserIdCardList(result: (CommonResponse<ArrayList<UserIdCardBeanItem>>) -> Unit) {
+        viewModelScope.launch() {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.getUserIdCardList(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    /**
+     * 获取会员身份
+     */
+    fun queryLoginUserIdCardList(result: (CommonResponse<ArrayList<UserIdCardBeanItem>>) -> Unit) {
+        viewModelScope.launch() {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryLoginUserIdCardList(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    /**
+     * 显示用户身份
+     */
+    fun showUserIdCard(memberId: String, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch() {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                body["memberId"] = memberId
+                var rkey = getRandomKey()
+                apiService.showUserIdCard(body.header(rkey), body.body(rkey))
+            })
+        }
     }
 
 

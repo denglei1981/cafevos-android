@@ -1,22 +1,30 @@
 package com.changanford.my.ui
 
+import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalBannerBinding
+import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.databinding.UiMedalDetailBinding
+import com.changanford.my.viewmodel.SignViewModel
+import com.xiaomi.push.it
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.listener.OnPageChangeListener
+import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：MedalDetailUI
@@ -26,8 +34,12 @@ import com.youth.banner.listener.OnPageChangeListener
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MedalDetailUI)
-class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, EmptyViewModel>(),
+class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
     OnPageChangeListener {
+
+    var medalIds: String = ""
+
+    var indexMedalItem: Int = 0
 
     var medals: ArrayList<MedalListBeanItem> = ArrayList()
 
@@ -37,16 +49,53 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, EmptyViewModel>(),
             var medal = (it as ArrayList<MedalListBeanItem>).apply {
                 medals.addAll(it)
             }
-            if (medal.size > 0) {
-                setItem(medal[0])
+            intent?.extras?.getInt(RouterManger.KEY_TO_ID, 0)?.let {
+                indexMedalItem = it
             }
+            if (medal.size > 0) {
+                setItem(indexMedalItem)
+            }
+            binding.banner.isAutoLoop(false)
             binding.banner.setAdapter(MedalAdapter(medal))
                 .addBannerLifecycleObserver(this)
                 .setBannerGalleryEffect(30, 18)
                 .addOnPageChangeListener(this)
-                .currentItem = intent?.extras?.getInt(RouterManger.KEY_TO_ID, 0)!!
+                .currentItem = indexMedalItem
             //更多使用方法仔细阅读文档，或者查看demo
         }
+
+        binding.btnGetMedal.setOnClickListener {
+            if (indexMedalItem in 0..medals.size) {
+                var medal = medals[indexMedalItem]
+                if (null != medal && medal?.isGet == "0") {
+                    medal?.medalId?.let {
+                        viewModel.wearMedal(it, "2")
+                    }
+                }
+            }
+        }
+
+        viewModel.wearMedal.observe(this, Observer {
+            if ("true" == it) {
+                var medal = medals[indexMedalItem]
+                if (null != medal) {
+                    if (!medalIds.contains(medal.medalId)) {
+                        medalIds += "${medal.medalId},"
+                    }
+                    PopSuccessMedal().apply {
+                        binding.icon.load(medal?.medalImage, R.mipmap.ic_medal_ex)
+                        binding.medalName.text = medal?.medalName
+                        binding.getTitle1.text = medal?.fillCondition
+                    }.showPopupWindow()
+                    medals[indexMedalItem].isGet = "1"
+                    setItem(indexMedalItem)
+                } else {
+                    showToast("已点亮")
+                }
+            } else {
+                showToast(it)
+            }
+        })
     }
 
     inner class MedalAdapter(mDatas: ArrayList<MedalListBeanItem>) :
@@ -86,14 +135,46 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, EmptyViewModel>(),
     }
 
     override fun onPageSelected(position: Int) {
-        setItem(medals[position])
+        setItem(position)
     }
 
     override fun onPageScrollStateChanged(state: Int) {
     }
 
-    private fun setItem(medal: MedalListBeanItem) {
+    private fun setItem(position: Int) {
+        indexMedalItem = position
+        var medal = medals[position]
         binding.tvConTitle.text = "勋章获取条件"
         binding.tvCon.text = medal.fillCondition
+        if (medal.isGet == "0") {
+            binding.btnGetMedal.text = "立即点亮"
+        } else {
+            binding.btnGetMedal.visibility = View.GONE
+        }
+    }
+
+    inner class PopSuccessMedal : BasePopupWindow(this) {
+        var binding = PopMedalBinding.inflate(layoutInflater)
+
+        init {
+            contentView = binding.root
+            popupGravity = Gravity.CENTER
+        }
+
+        override fun onViewCreated(contentView: View) {
+            super.onViewCreated(contentView)
+
+            binding.close.setOnClickListener { dismiss() }
+        }
+    }
+
+    override fun back() {
+        LiveDataBus.get().with("refreshMedal", String::class.java).postValue(medalIds)
+        super.back()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        LiveDataBus.get().with("refreshMedal", String::class.java).postValue(medalIds)
+        return super.onKeyDown(keyCode, event)
     }
 }

@@ -13,7 +13,7 @@ data class MedalListBeanItem(
     val createBy: String,
     val createTime: String,
     val fillCondition: String,
-    val isGet: String?,
+    var isGet: String?,
     var isShow: String,
     val medalId: String,
     val medalImage: String,
@@ -25,5 +25,25 @@ data class MedalListBeanItem(
     val sort: String,
     val status: String,
     val updateBy: String,
-    val updateTime: String
+    val updateTime: String,
+    val getTime: String // 获取时间
 ) : Serializable
+
+data class UserIdCardBeanItem(
+    val actionIds: String,
+    val dataScope: String,
+    val fillCondition: String,
+    val interestsId: String,
+    val isAuth: String,
+    var isShow: String,
+    val keepCondition: String,
+    val keepConditionNo: String,
+    val memberDesc: String,
+    val memberIcon: String,
+    val memberId: Int,
+    val memberKey: String,
+    val memberName: String,
+    val sort: String,
+    val status: String,
+    val medalType: Int//勋章类型（1.身份 2.成长值 3社交互动 4每日动态 5节日）
+)

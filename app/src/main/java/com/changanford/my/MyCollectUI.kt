@@ -49,6 +49,9 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                         2 -> {
                             ActFragment.newInstance("collectAct")
                         }
+                        3->{
+                            MyShopFragment.newInstance("collectShop")
+                        }
                         else -> {
                             ActFragment.newInstance("$position")
                         }

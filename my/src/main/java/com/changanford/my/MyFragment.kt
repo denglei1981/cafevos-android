@@ -118,7 +118,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 //        binding.mySet.setOnClickListener { JumpUtils.instans?.jump(42) }
 //        binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(71) }
 
-        binding.memberEnter.setOnClickListener { JumpUtils.instans?.jump(29) }
+        binding.memberEnter.setOnClickListener { JumpUtils.instans?.jump(22) }
         binding.myHead.setOnClickListener { JumpUtils.instans?.jump(34) }
         binding.myScore.setOnClickListener { JumpUtils.instans?.jump(30) }
         binding.myScoreIc.setOnClickListener { JumpUtils.instans?.jump(30) }
@@ -132,6 +132,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.myCarAuthLayout.apply {
             include.textView10.setOnClickListener {
                 JumpUtils.instans?.jump(16)
+            }
+            include.textView11.setOnClickListener {
+                JumpUtils.instans?.jump(32)
             }
             include2.myMylovecar.setOnClickListener {
                 RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
@@ -193,7 +196,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getUserInfo()
+//        viewModel.getUserInfo()
     }
 }
 

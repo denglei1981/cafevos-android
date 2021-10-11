@@ -43,6 +43,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<QueryDetail>
+
     /**
      * 修改调查
      */
@@ -51,6 +52,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
     /**
      * 发布调查
      */
@@ -59,6 +61,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
     /**
      * 获取可填字段列表
      */
@@ -98,6 +101,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<LocationDataBean>
+
     /**--------------------------------car---------------------------------------**/
 
     @POST("/ser/carAuth/getMyCar")
@@ -461,6 +465,59 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MedalListBeanItem>>
 
+
+    /*--------------会员身份--------------*/
+    /**
+     * 获取会员身份列表
+     */
+    @POST("user/member/getUserMemberList")
+    suspend fun getUserIdCardList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<UserIdCardBeanItem>>
+
+    //user/member/queryListByUserId
+
+    @POST("user/member/queryListByUserId")
+    suspend fun queryLoginUserIdCardList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<UserIdCardBeanItem>>
+
+
+    /**
+     * 查询会员身份
+     */
+
+    @POST("user/member/getUserMemberInfo")
+    suspend fun getUserIdCard(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AuthBean>
+
+
+    /**
+     * 提交会员身份
+     */
+
+    @POST("user/member/apply")
+    suspend fun submitUserIdCard(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 显示会员身份
+     */
+
+    @POST("user/member/show")
+    suspend fun showUserIdCard(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
     /*-------------------车主认证---------------*/
     /**
      * 获取车主认证状态
@@ -793,6 +850,12 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<UserInfoBean>
 
+    //user/medal/getOtherUserMedalList
+    @POST("user/medal/getOtherUserMedalList")
+    suspend fun queryOtherUserMedal(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MedalListBeanItem>>
 
     //结束活动
     @POST("highlights/endedActivity")
@@ -818,28 +881,6 @@ interface NetWorkApi {
     //login/removeOauth
     @POST("login/removeOauth")
     suspend fun unBindMobile(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<String>
-
-
-    /**
-     * 查询会员身份
-     */
-
-    @POST("user/member/getUserMemberInfo")
-    suspend fun getUserIdCard(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<AuthBean>
-
-
-    /**
-     * 提交会员身份
-     */
-
-    @POST("user/member/apply")
-    fun submitUserIdCard(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>

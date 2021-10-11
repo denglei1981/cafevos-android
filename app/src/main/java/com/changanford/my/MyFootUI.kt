@@ -39,7 +39,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return when(position){
+                    return when (position) {
                         0 -> {
                             InformationFragment.newInstance("footInformation")
                         }
@@ -49,7 +49,10 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                         2 -> {
                             ActFragment.newInstance("footAct")
                         }
-                        else->{
+                        3 -> {
+                            MyShopFragment.newInstance("footShop")
+                        }
+                        else -> {
                             PostFragment.newInstance("$position")
                         }
                     }
