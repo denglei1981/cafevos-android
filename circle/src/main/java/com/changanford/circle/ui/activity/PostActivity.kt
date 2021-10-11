@@ -37,6 +37,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.router.startARouterForResult
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.FullyGridLayoutManager
 import com.changanford.common.util.PictureUtil
@@ -59,6 +60,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     lateinit var postPicAdapter: PostPicAdapter
     private var selectList = ArrayList<LocalMedia>()
     private var type = 0
+    private val REQUEST_CIRCLE = 0x435
     private lateinit var params: HashMap<String, Any>
     private lateinit var plateBean: PlateBean
     private val buttomTypeAdapter by lazy {
@@ -100,41 +102,25 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     override fun observe() {
         super.observe()
-
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
             .observe(this,
                 Observer {
                     buttomTypeAdapter.setData(2,ButtomTypeBean(it.name, 1, 2))
+                    params["topicId"] =it.topicId
                 })
-    }
 
-    override fun initData() {
-        onclick()
-        viewModel.getPlate() //获取发帖类型
-        initbuttom()
 
-        LiveDataBus.get().with(LiveDataBusKey.CIRCLECHOOSE, String::class.java)
-            .observe(this, Observer {
-                buttomTypeAdapter.setData(3,ButtomTypeBean(it, 1, 3))
-            })
-
-        viewModel.plateBean.observe(this, Observer {
-            plateBean = it
-
-        })
-        binding.title.barTvOther.setOnClickListener {
-            ispost()
-        }
-
-        binding.bottom.tvMok.setOnClickListener {
-
-        }
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
                 it.location.latitude.toString().toast()
                 buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
 
             })
+
+        viewModel.plateBean.observe(this, Observer {
+            plateBean = it
+
+        })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
@@ -146,6 +132,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             selectList.addAll(it as Collection<LocalMedia>)
             postPicAdapter.setList(selectList)
         })
+
+
+    }
+
+    override fun initData() {
+        onclick()
+        viewModel.getPlate() //获取发帖类型
+        initbuttom()
 
         val manager = FullyGridLayoutManager(
             this,
@@ -160,6 +154,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun onclick() {
+        binding.title.barTvOther.setOnClickListener {
+            ispost()
+        }
+
+        binding.bottom.tvMok.setOnClickListener {
+
+        }
         binding.bottom.ivEmoj.setOnClickListener {
             "表情未开发".toast()
         }
@@ -194,7 +195,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         override fun onClickItem(position: Int, str: String) {
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
-                            str.toast()
+                            params["plate"] = plateBean.plate[position].plate
                         }
                     }).show()
                 } else {
@@ -218,7 +219,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         })
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            startARouter(ARouterCirclePath.ChoseCircleActivity)
+            startARouterForResult(
+                this,
+                ARouterCirclePath.ChoseCircleActivity,
+                REQUEST_CIRCLE
+            )
         }
 
         binding.bottom.ivLoc.setOnClickListener {
@@ -379,18 +384,23 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun ispost() {
+        var biaoti = binding.etBiaoti.text.toString()
+        var content= binding.etContent.text.toString()
         if (selectList.size == 0) {
             "请选择图片".toast()
             return
-        } else if (binding.etBiaoti.text.isNullOrEmpty()) {
-            "请输入标题".toast()
+        } else if (biaoti.isNullOrEmpty()||biaoti.length<6||biaoti.length>20) {
+            "请输入6-20字的帖子标题".toast()
             return
-        } else if (binding.etContent.text.isNullOrEmpty()) {
+        } else if (content.isNullOrEmpty()) {
             "请输入正文内容".toast()
-        } else if (binding.etContent.text.isNotEmpty() && binding.etContent.text.length < 6) {
-            "内容不能少于6个".toast()
+        }else if(!params.containsKey("plate")){
+            "请选择模块".toast()
         }
+
     }
+
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -403,6 +413,27 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postPicAdapter.notifyDataSetChanged()
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(data!!)
+        }
+        if (resultCode == RESULT_OK){
+            when(requestCode){
+                UCrop.REQUEST_CROP ->{
+                    val resultUri = UCrop.getOutput(data!!)
+                    selectList[0].isCut = true
+                    selectList[0].cutPath = resultUri?.path
+                    postPicAdapter.setList(selectList)
+                    postPicAdapter.notifyDataSetChanged()
+                }
+                UCrop.RESULT_ERROR ->{
+                    val cropError = UCrop.getError(data!!)
+                }
+                REQUEST_CIRCLE ->{
+                    if (data != null) {
+                        params["circleId"] = data.getStringExtra("circleId") ?: "0"
+                        var name = data.getStringExtra("name")
+                        buttomTypeAdapter.setData(3,ButtomTypeBean(name!!, 1, 3))
+                    }
+                }
+            }
         }
     }
 

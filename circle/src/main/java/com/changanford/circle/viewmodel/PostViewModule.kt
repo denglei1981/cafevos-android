@@ -6,11 +6,12 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.PlateBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.createHashMap
 
-class PostViewModule :BaseViewModel(){
+class PostViewModule() :PostRoomViewModel(){
     var postsuccess = MutableLiveData<String>()
     val plateBean = MutableLiveData<PlateBean>()
       fun postEdit(params: HashMap<String,Any>){
@@ -44,4 +45,6 @@ class PostViewModule :BaseViewModel(){
                 }
         })
     }
+
+
 }
