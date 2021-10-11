@@ -130,6 +130,7 @@ data class PostDataBean(
     val timeStr: String = "",
     val title: String? = "",
     val city: String? = "",
+    val topicName: String? = "",
     val topTime: Any? = Any(),
     val topicId: Int? = 0,
     val type: Int = 0,

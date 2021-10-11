@@ -3,11 +3,14 @@ package com.changanford.circle.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleDetailBean
+import com.changanford.circle.bean.CircleStarRoleDto
+import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.PostBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
 
 /**
  *Author lcw
@@ -25,6 +28,10 @@ class CircleDetailsViewModel : BaseViewModel() {
     val joinBean = MutableLiveData<CommonResponse<Any>>()
 
     val circleDetailsBean = MutableLiveData<CircleDetailBean>()
+
+    val circleRolesBean = MutableLiveData<ArrayList<CircleStarRoleDto>>()
+
+    val applyBean = MutableLiveData<CommonResponse<GetApplyManageBean>>()
 
     fun getData(viewType: Int, page: Int) {
         launch(block = {
@@ -90,5 +97,33 @@ class CircleDetailsViewModel : BaseViewModel() {
                     joinBean.value = it
                 }
         })
+    }
+
+    fun getCircleRoles(circleId: String) {
+        launch( block = {
+            val body = MyApp.mContext.createHashMap()
+            body["circleId"] = circleId
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getCircleRoles(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    circleRolesBean.value = it?.circleStarRoleDtos
+                }
+        }, error = {
+            it.message.toString().toast()
+        })
+    }
+
+    fun applyManagerInfo(circleId: String, circleStarRoleId: String) {
+        launch(true, block = {
+            val body = MyApp.mContext.createHashMap()
+            body["circleId"] = circleId
+            body["circleStarRoleId"] = circleStarRoleId
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .applyManagerInfo(body.header(rKey), body.body(rKey)).also {
+                    applyBean.value = it
+                }
+        })
+
     }
 }

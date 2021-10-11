@@ -1,22 +1,42 @@
 package com.changanford.circle.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
+import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleMainBottomBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.utils.AnimScaleInUtil
+import com.changanford.circle.utils.launchWithCatch
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.DensityUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
 import com.luck.picture.lib.tools.ScreenUtils
 
 /**
@@ -44,13 +64,34 @@ class CircleMainBottomAdapter(context: Context) :
             } else params.topMargin = 0
 
             binding.tvLikeNum.text = "${if (item.likesCount > 0) item.likesCount else "0"}"
-//             item.isLike == 1//点赞
 
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.circle_like_image
                 } else R.mipmap.circle_no_like_image
             )
+
+            binding.llLike.setOnClickListener {
+                likePost(binding, item, holder.layoutPosition)
+            }
+
+            if (item.topicName.isNullOrEmpty()) {
+                binding.tvTalk.visibility = View.GONE
+            } else {
+                binding.tvTalk.visibility = View.VISIBLE
+                binding.tvTalk.text = item.topicName
+                binding.tvTalk.setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putString("topicId", item.topicId.toString())
+                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+                }
+            }
+
+            binding.ivHead.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("value", item.userId.toString())
+                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+            }
 
             if (item.type == 3) {//视频
                 binding.ivPlay.visibility = View.VISIBLE
@@ -102,6 +143,35 @@ class CircleMainBottomAdapter(context: Context) :
             binding.ryLabel.adapter = labelAdapter
 
             binding.bean = item
+        }
+    }
+
+    private fun likePost(binding: ItemCircleMainBottomBinding, item: PostDataBean, position: Int) {
+        val activity = BaseApplication.curActivity as AppCompatActivity
+        activity.launchWithCatch {
+            val body = MyApp.mContext.createHashMap()
+            body["postsId"] = item.postsId
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .actionLike(body.header(rKey), body.body(rKey)).also {
+                    if (it.code == 0) {
+                        if (item.isLike == 0) {
+                            item.isLike = 1
+                            binding.ivLike.setImageResource(R.mipmap.circle_like_image)
+                            item.likesCount++
+                            AnimScaleInUtil.animScaleIn(binding.ivLike)
+                        } else {
+                            item.isLike = 0
+                            item.likesCount--
+                            binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                        }
+                        binding.tvLikeNum.text =
+                            "${if (item.likesCount > 0) item.likesCount else "0"}"
+                    } else {
+                        it.msg.toast()
+                    }
+                }
         }
     }
 }

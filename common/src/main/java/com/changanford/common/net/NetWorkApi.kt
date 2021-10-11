@@ -895,5 +895,9 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
-
+    @POST("ser/carAuth/ocrDistinguish")
+    suspend fun ocr(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OcrBean>
 }
