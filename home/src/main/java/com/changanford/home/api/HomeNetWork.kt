@@ -63,11 +63,11 @@ interface HomeNetWork {
      * /user/toggleFocus
      *  关注用户/取消。
      * */
-//    @POST("/userFans/userFollowOrCanaleFollow")
-//    suspend fun getToggleFocus(
-//        @HeaderMap headMap: Map<String, String>,
-//        @Body requestBody: RequestBody
-//    ):CommonResponse
+    @POST("/userFans/userFollowOrCanaleFollow")
+    suspend fun followOrCancelUser(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<Any>
 
     /**
      * /con/posts/postsList
@@ -121,6 +121,44 @@ interface HomeNetWork {
      * */
     @POST("/con/article/actionLike")
     suspend fun actionLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+
+    /**
+     * 搜索 热门搜索关键词
+     * */
+    @POST("/con/search/hots")
+    suspend fun searchHots(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+
+    /**
+     * 搜索自动填充关键词？
+     * */
+    @POST("/con/search/ac")
+    suspend fun searchAc(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *搜索内容。
+     * */
+    @POST("/con/search/s")
+    suspend fun searchS(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * /con/posts/keyWords
+     * 搜索关键字
+     * */
+    suspend fun searchKeyWords(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>

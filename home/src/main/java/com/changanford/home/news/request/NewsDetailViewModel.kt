@@ -22,7 +22,11 @@ class NewsDetailViewModel : BaseViewModel() {
     val commentSateLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
 
     val actionLikeLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
-    var pageNo:Int =1
+
+    val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
+
+    var pageNo: Int = 1
+
     /**
      *  资讯详情。
      * */
@@ -43,13 +47,14 @@ class NewsDetailViewModel : BaseViewModel() {
                 }
         })
     }
+
     /**
      *  获取资讯评论
      * */
-    fun getNewsCommentList(bizId: String,isLoadMore:Boolean) {
-        if(!isLoadMore){
-            pageNo=1
-        }else{
+    fun getNewsCommentList(bizId: String, isLoadMore: Boolean) {
+        if (!isLoadMore) {
+            pageNo = 1
+        } else {
             pageNo += 1
         }
         launch(false, block = {
@@ -58,30 +63,33 @@ class NewsDetailViewModel : BaseViewModel() {
                 it["bizId"] = bizId
                 it["type"] = "1"
             }
-            requestBody["pageNo"]=pageNo
-            requestBody["pageSize"]=PageConstant.DEFAULT_PAGE_SIZE_THIRTY
+            requestBody["pageNo"] = pageNo
+            requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getCommentList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore,"")
+                    val updateUiState =
+                        UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore, "")
                     commentsLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<ListMainBean<CommentListBean>>(false, it,isLoadMore)
+                    val updateUiState =
+                        UpdateUiState<ListMainBean<CommentListBean>>(false, it, isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
         })
     }
-    fun addNewsComment(bizId:String,content:String,pid:String="",phoneModel:String=""){
+
+    fun addNewsComment(bizId: String, content: String, pid: String = "", phoneModel: String = "") {
         launch(true, {
             val requestBody = HashMap<String, Any>()
             requestBody["bizId"] = bizId
-            requestBody["content"]=content
-            if(!TextUtils.isEmpty(phoneModel)){
-                requestBody["phoneModel"]=phoneModel
+            requestBody["content"] = content
+            if (!TextUtils.isEmpty(phoneModel)) {
+                requestBody["phoneModel"] = phoneModel
             }
-            if(!TextUtils.isEmpty(pid)){
-                requestBody["pid"]=pid
+            if (!TextUtils.isEmpty(pid)) {
+                requestBody["pid"] = pid
             }
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
@@ -96,8 +104,8 @@ class NewsDetailViewModel : BaseViewModel() {
         })
     }
 
-    fun actionLike(artId:String){
-        launch(true, {
+    fun actionLike(artId: String) {
+        launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["artId"] = artId
             val rkey = getRandomKey()
@@ -112,4 +120,28 @@ class NewsDetailViewModel : BaseViewModel() {
                 }
         })
     }
+
+    fun followOrCancelUser(followId:String,type:Int){
+
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["followId"] = followId
+            requestBody["type"]=type
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    followLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    followLiveData.postValue(updateUiState)
+                }
+        })
+
+
+    }
+
+
+
 }

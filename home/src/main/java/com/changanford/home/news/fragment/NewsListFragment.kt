@@ -21,6 +21,7 @@ import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.common.bean.NewsValueData
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -64,9 +65,14 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
                     }
                     R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
-                        var newsValueData = NewsValueData(item.artId, item.type)
-                        var values = Gson().toJson(newsValueData)
-                        JumpUtils.instans?.jump(2, values)
+
+                        if(item.authors!=null){
+                            var newsValueData = NewsValueData(item.artId, item.type)
+                            var values = Gson().toJson(newsValueData)
+                            JumpUtils.instans?.jump(2, values)
+                        }else{
+                            toastShow("没有作者")
+                        }
                     }
                     R.id.btn_follow -> {// 是否去关注用户
                     }
@@ -147,9 +153,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         super.observe()
         viewModel.specialListLiveData.observe(this, {
             if (it.isSuccess) {
-
                 headNewBinding?.bViewpager?.create(it.data.dataList)
-
             } else {
                 ToastUtils.showShortToast(it.message, requireActivity())
             }

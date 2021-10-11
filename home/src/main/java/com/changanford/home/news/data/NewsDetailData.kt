@@ -24,7 +24,7 @@ data class NewsDetailData(
     var isSpecialTopic: Int,
     var keyWordsParam: Any,
     var keyword: String,
-    var likesCount: Int,
+    var likesCount: Long,
     var likesCountBase: Int,
     var likesCountMul: Int,
     var picCount: Int,
@@ -46,7 +46,7 @@ data class NewsDetailData(
     var type: Int,
     var updateBy: Any,
     var updateTime: Long,
-    var userId: Int,
+    var userId: String,
     var videoTime: String,
     var videoUrl: String,
     var viewsCount: Int,
@@ -71,5 +71,6 @@ data class NewsDetailData(
     fun getShareCount():String{
         return CountUtils.formatNum(shareCount.toString(), false).toString()
     }
+
 
 }
