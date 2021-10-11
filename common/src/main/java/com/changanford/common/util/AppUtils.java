@@ -327,7 +327,9 @@ public class AppUtils {
 
     /**
      * 获取最终地址
+     * 用PictureUtil
      */
+    @Deprecated
     public static String getFinallyPath(LocalMedia media) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return media.getAndroidQToPath();

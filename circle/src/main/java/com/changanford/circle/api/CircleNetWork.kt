@@ -192,7 +192,7 @@ interface CircleNetWork {
     suspend fun getjoinCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<ChooseCircleBean>
+    ): CommonResponse<ChooseCircleBean>
 
     /**
      * 我创建的圈子
@@ -201,7 +201,7 @@ interface CircleNetWork {
     suspend fun getCreateCircles(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<ChooseCircleBean>
+    ): CommonResponse<ChooseCircleBean>
 
     /**
      *  一级评论回复列表
@@ -211,4 +211,40 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
+
+    /**
+     * 社区v2: 获取管理员信息
+     */
+    @POST("con/circle/getCircleRoles")
+    suspend fun getCircleRoles(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleRolesBean>
+
+    /**
+     * 社区v2: 获取申请管理员信息
+     */
+    @POST("con/circle/applyManagerInfo")
+    suspend fun applyManagerInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GetApplyManageBean>
+
+    /**
+     * 社区v2: 提交管理员申请信息
+     */
+    @POST("con/circle/applyManager")
+    suspend fun applyManager(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 社区v2: 取消 管理员申请信息
+     */
+    @POST("/con/circle/cancelApplyManager")
+    suspend fun cancelApplyManager(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

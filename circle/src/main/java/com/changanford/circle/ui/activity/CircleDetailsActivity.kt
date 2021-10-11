@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -15,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.bean.CircleStarRoleDto
+import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
@@ -187,6 +190,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 )
             }
             binding.topContent.run {
+                //加暗
+                ivBg.setColorFilter(ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_00_a30))
                 Glide.with(this@CircleDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
@@ -205,6 +210,12 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     bundle.putString("circleId", circleId)
                     startARouter(ARouterCirclePath.PersonalActivity, bundle)
                 }
+
+                if (it.isApply == 2) {
+                    binding.ivPostBar.visibility = View.VISIBLE
+                } else {
+                    binding.ivPostBar.visibility = View.GONE
+                }
             }
         })
         viewModel.joinBean.observe(this, {
@@ -216,6 +227,73 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                         circleBean.isApply = 1
                         setJoinType(1)
                     }
+                }
+            }
+        })
+        viewModel.applyBean.observe(this, {
+            //response.data.status  1待审核 2审核通过 3审核不过
+            if (it.code == 0) {
+                val mBean = it.data
+                var type = 0
+                when (mBean?.status) {
+                    2 -> {
+                        "您申请的${mBean.memo}已通过，无需再次申请".toast()
+                        return@observe
+                    }
+                    1 -> {
+                        type = 1
+                    }
+                    3 -> {
+                        type = 2
+                    }
+                }
+                ApplicationCircleManagementDialog(
+                    this@CircleDetailsActivity,
+                    type, mBean?.memo, this,
+                    bean = mBean
+                ).show()
+            } else {
+                it.msg.toast()
+            }
+        })
+        viewModel.circleRolesBean.observe(this, {
+            CircleManagementPop(this@CircleDetailsActivity,
+                object : CircleManagementPop.ClickListener {
+                    override fun checkPosition(bean: CircleStarRoleDto) {
+                        if (bean.isApply == 0) {//没有申请过
+                            ApplicationCircleManagementDialog(
+                                this@CircleDetailsActivity,
+                                bean.isApply, bean.starName, this@CircleDetailsActivity,
+                                GetApplyManageBean(
+                                    circleId = circleId,
+                                    circleStarRoleId = bean.circleStarRoleId
+                                )
+                            ).show()
+                        } else {
+                            viewModel.applyManagerInfo(circleId, bean.circleStarRoleId)
+                        }
+
+                    }
+                }).run {
+                //pop背景对齐
+//                    setAlignBackground(true)
+                //无透明背景
+//                    setBackgroundColor(Color.TRANSPARENT)
+                //背景模糊false
+                setBlurBackgroundEnable(false)
+                //弹出位置 基于绑定的view 默认BOTTOM
+//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                showPopupWindow(binding.topContent.tvJoinText)
+                setData(it)
+                onDismissListener =
+                    object : BasePopupWindow.OnDismissListener() {
+                        override fun onDismiss() {
+
+                        }
+
+                    }
+                setOnPopupWindowShowListener {
+
                 }
             }
         })
@@ -312,36 +390,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                         )
                     )
                     tvJoin.setOnClickListener {
-                        CircleManagementPop(this@CircleDetailsActivity,
-                            object : CircleManagementPop.ClickListener {
-                                override fun checkPosition(bean: String) {
-                                    ApplicationCircleManagementDialog(
-                                        this@CircleDetailsActivity,
-                                        1
-                                    ).show()
-                                }
-                            }).run {
-                            //pop背景对齐
-//                    setAlignBackground(true)
-                            //无透明背景
-//                    setBackgroundColor(Color.TRANSPARENT)
-                            //背景模糊false
-                            setBlurBackgroundEnable(false)
-                            //弹出位置 基于绑定的view 默认BOTTOM
-//                    popupGravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                            showPopupWindow(tvJoinText)
-                            setData(arrayListOf("星推官", "星推官助手"))
-                            onDismissListener =
-                                object : BasePopupWindow.OnDismissListener() {
-                                    override fun onDismiss() {
-
-                                    }
-
-                                }
-                            setOnPopupWindowShowListener {
-
-                            }
-                        }
+                        viewModel.getCircleRoles(circleId)
                     }
                 }
             }

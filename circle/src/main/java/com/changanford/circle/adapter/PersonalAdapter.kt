@@ -1,5 +1,6 @@
 package com.changanford.circle.adapter
 
+import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -11,6 +12,8 @@ import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.MUtils
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 
 /**
  *Author lcw
@@ -37,11 +40,18 @@ class PersonalAdapter :
             labelAdapter.setItems(item.imags)
             binding.ryImage.adapter = labelAdapter
 
-            if (holder.layoutPosition == 4) {
-                binding.tvOut.visibility = View.VISIBLE
-            } else {
-                binding.tvOut.visibility = View.GONE
+//            if (holder.layoutPosition == 4) {
+//                binding.tvOut.visibility = View.VISIBLE
+//            } else {
+//                binding.tvOut.visibility = View.GONE
+//            }
+
+            binding.ivIcon.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("value", item.userId)
+                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
+
             binding.bean = item
         }
     }

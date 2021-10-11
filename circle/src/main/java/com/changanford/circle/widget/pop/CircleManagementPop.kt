@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PopManagementAdapter
+import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.databinding.PopCircleManagementBinding
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import razerdp.basepopup.BasePopupWindow
@@ -51,7 +52,7 @@ class CircleManagementPop(context: Context, private val listener: ClickListener)
     }
 
 
-    fun setData(list: ArrayList<String>) {
+    fun setData(list: ArrayList<CircleStarRoleDto>) {
         adapter.setItems(list)
         binding.ryManagement.adapter = adapter
         adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
@@ -64,6 +65,6 @@ class CircleManagementPop(context: Context, private val listener: ClickListener)
     }
 
     interface ClickListener {
-        fun checkPosition(bean: String)
+        fun checkPosition(bean: CircleStarRoleDto)
     }
 }
