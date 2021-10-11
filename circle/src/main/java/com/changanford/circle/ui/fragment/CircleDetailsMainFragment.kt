@@ -9,6 +9,8 @@ import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import java.lang.reflect.Method
 
 /**
@@ -26,6 +28,8 @@ class CircleDetailsMainFragment :
 
     private var type = 0
     private var page = 1
+
+    private var checkPosition: Int? = null
 
     companion object {
         fun newInstance(type: Int): CircleDetailsMainFragment {
@@ -67,7 +71,11 @@ class CircleDetailsMainFragment :
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+
+            checkPosition = position
         }
+
+        bus()
     }
 
     override fun initData() {
@@ -86,6 +94,22 @@ class CircleDetailsMainFragment :
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
+        })
+    }
+
+    private fun bus() {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
+            val bean = checkPosition?.let { it1 -> adapter.getItem(it1) }
+            bean?.let { _ ->
+                bean.isLike = it
+                if (bean.isLike == 1) {
+                    bean.likesCount++
+                } else {
+                    bean.likesCount--
+                }
+            }
+
+            checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
         })
     }
 }

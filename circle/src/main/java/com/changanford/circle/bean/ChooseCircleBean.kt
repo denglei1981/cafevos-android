@@ -29,11 +29,11 @@ data class ChooseCircleData(
     var updateTime: Long = 0,
     var userCount: Int = 0,
     var userId: Int = 0,
-    private var ItemType:Int =2,
+    var mItemType:Int,
     var title:String
 ): MultiItemEntity {
-    override var itemType: Int = 2
-        get() = ItemType
+    override val itemType: Int
+        get() = mItemType
 }
 
 class Extend

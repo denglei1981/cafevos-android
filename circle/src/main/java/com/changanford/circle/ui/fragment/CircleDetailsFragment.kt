@@ -14,6 +14,8 @@ import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import java.lang.reflect.Method
 
 /**
@@ -34,6 +36,8 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
     private var topicId = ""
     private var circleId = ""
 
+    private var checkPosition: Int? = null
+
     companion object {
         fun newInstance(
             type: String,
@@ -52,7 +56,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
 
     override fun initView() {
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
-
+        bus()
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
@@ -91,6 +95,7 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            checkPosition = position
         }
     }
 
@@ -113,6 +118,22 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
+        })
+    }
+
+    private fun bus() {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
+            val bean = checkPosition?.let { it1 -> adapter.getItem(it1) }
+            bean?.let { _ ->
+                bean.isLike = it
+                if (bean.isLike == 1) {
+                    bean.likesCount++
+                } else {
+                    bean.likesCount--
+                }
+            }
+
+            checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
         })
     }
 }

@@ -2,7 +2,6 @@ package com.changanford.circle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.ChooseCircleBean
 import com.changanford.circle.bean.ChooseCircleData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
@@ -10,7 +9,7 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
-class ChooseCircleViewModel :BaseViewModel(){
+class ChooseCircleViewModel : BaseViewModel() {
     var datas = MutableLiveData<ArrayList<ChooseCircleData>>()
     var lists = arrayListOf<ChooseCircleData>()
     fun getjoinCircle(){//我加入的圈子
@@ -22,11 +21,11 @@ class ChooseCircleViewModel :BaseViewModel(){
                 .onSuccess {
                     it?.let {
                         if (it.dataList.isNotEmpty()){
-                            var chooseCircleData = ChooseCircleData(title = "我加入的",ItemType = 1)
+                            var chooseCircleData = ChooseCircleData(title = "我加入的",mItemType = 1)
                             lists.add(chooseCircleData)
                             for (chooseCircleData in it.dataList) {
                                 chooseCircleData.apply {
-                                    itemType = 2
+                                    mItemType = 2
                                 }
                             }
                             lists.addAll(it.dataList)
@@ -51,11 +50,11 @@ class ChooseCircleViewModel :BaseViewModel(){
                 .onSuccess {
                     it?.let { it ->
                         if (it.dataList.isNotEmpty()){
-                            var chooseCircleBean = ChooseCircleData(title = "我创建的",ItemType = 1)
+                            var chooseCircleBean = ChooseCircleData(title = "我创建的",mItemType = 1)
                             lists.add(chooseCircleBean)
                             for (chooseCircleData in it.dataList) {
                                 chooseCircleData.apply {
-                                    itemType = 2
+                                    mItemType = 2
                                 }
                             }
                             lists.addAll(it.dataList)
