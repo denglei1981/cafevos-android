@@ -137,8 +137,6 @@
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12"
                     tools:text="@string/app_name" />
-
-
             </LinearLayout>
 
 
@@ -148,7 +146,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="18dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/image_recommend_test"
+                tools:src="@drawable/image_recommend_test"
                 app:layout_constraintDimensionRatio="335:150"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
