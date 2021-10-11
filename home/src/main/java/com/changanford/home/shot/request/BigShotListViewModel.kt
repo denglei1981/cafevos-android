@@ -16,6 +16,8 @@ class BigShotListViewModel : BaseViewModel() {
     val bigShotsLiveData = MutableLiveData<UpdateUiState<List<BigShotRecommendBean>>>() // 推荐的大咖
 
     val bigShotPostLiveData = MutableLiveData<UpdateUiState<ListMainBean<BigShotPostBean>>>() //
+
+    val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
     var pageNo: Int = 1
 
     /**
@@ -63,5 +65,26 @@ class BigShotListViewModel : BaseViewModel() {
                 }
         })
     }
+
+    fun followOrCancelUser(followId:String,type:Int){
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["followId"] = followId
+            requestBody["type"]=type
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    followLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    followLiveData.postValue(updateUiState)
+                }
+        })
+    }
+
+
+
 
 }

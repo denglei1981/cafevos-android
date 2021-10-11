@@ -10,7 +10,6 @@ import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.adapter.LabelAdapter
-import com.changanford.home.bean.LabelBean
 import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
@@ -69,7 +68,6 @@ class NewsListAdapter : BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.
             val labelAdapter = LabelAdapter(16)
             labelAdapter.setNewInstance(item.authors?.imags)
         }
-
     }
 
     /**

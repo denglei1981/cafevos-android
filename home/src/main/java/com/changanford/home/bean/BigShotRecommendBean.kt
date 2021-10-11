@@ -5,7 +5,7 @@ data class BigShotRecommendBean(
     var isMutualAttention: Int,
     var memberIcon: String,
     var nickname: String,
-    var userId: Int
+    var userId: String
 ) {
     fun getIsFollow(): String {
         when (isMutualAttention) {
