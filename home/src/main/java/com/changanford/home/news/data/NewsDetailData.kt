@@ -16,7 +16,7 @@ data class NewsDetailData(
     var content: String,
     var createBy: Any,
     var createTime: Long,
-    var imageTexts: Any,
+    var imageTexts: List<ImageTexts>, // 图片信息。纯图片使用。
     var isCollect: Int,
     var isDeleted: Int,
     var isLike: Int,
@@ -65,11 +65,24 @@ data class NewsDetailData(
         return CountUtils.formatNum(commentCount.toString(), false).toString()
     }
 
-    fun getLikeCount():String{
+    fun getLikeCount(): String {
         return CountUtils.formatNum(likesCount.toString(), false).toString()
     }
-    fun getShareCount():String{
+
+    fun getShareCount(): String {
         return CountUtils.formatNum(shareCount.toString(), false).toString()
+    }
+
+    fun getShowContent(): String {
+        return if (!TextUtils.isEmpty(content)) {
+            content
+        } else {
+            summary
+        }
+    }
+
+    fun getCollectCount(): String {
+        return CountUtils.formatNum(collectCount.toString(), false).toString()
     }
 
 

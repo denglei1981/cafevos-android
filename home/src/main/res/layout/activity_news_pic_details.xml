@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-    <variable
-        name="newsDetailData"
-        type="com.changanford.home.news.data.NewsDetailData" />
+
+        <variable
+            name="newsDetailData"
+            type="com.changanford.home.news.data.NewsDetailData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00142E">
+        android:background="#00142E"
+        >
 
         <include
             android:id="@+id/layout_header"
@@ -39,7 +41,7 @@
             app:layout_constraintWidth_percent="0.9" />
 
         <com.zhpan.bannerview.BannerViewPager
-            android:id="@+id/banner"
+            android:id="@+id/b_viewpager"
             android:layout_width="match_parent"
             android:layout_height="335dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,16 +52,17 @@
             android:id="@+id/home_tv_content"
             android:layout_width="0dp"
             android:layout_height="38dp"
+            android:layout_marginTop="18dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{newsDetailData.title}"
-            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示..."
             android:textColor="#ffffffff"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/banner"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
+            app:layout_constraintWidth_percent="0.9"
+            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示..." />
 
 
         <LinearLayout
