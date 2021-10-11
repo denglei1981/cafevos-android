@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
         <CheckBox
+            android:onClick="onClick"
             style="@style/style_cb_collection"
             android:paddingStart="@dimen/dp_20"
             android:paddingEnd="@dimen/dp_20"

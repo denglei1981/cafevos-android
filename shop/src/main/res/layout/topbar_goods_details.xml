@@ -35,6 +35,7 @@
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorHeight="@dimen/dp_0"/>
         <androidx.appcompat.widget.AppCompatImageView
+            android:onClick="onClick"
             android:layout_marginEnd="@dimen/dp_10"
             android:background="@drawable/garden_1a000000"
             android:id="@+id/img_collection"

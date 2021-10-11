@@ -34,6 +34,8 @@ class GoodsViewModel: BaseViewModel() {
     var shopHomeGoodsData =MutableLiveData<GoodsHomeBean>()
     //评价列表
     var commentData =MutableLiveData<CommentBean?>()
+    //商品收藏状态
+    var collectionGoodsStates = MutableLiveData<Boolean>()
     /**
      * 获取banner
      * */
@@ -96,6 +98,7 @@ class GoodsViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }
             response.onSuccess {
+                addFootprint(spuId)
                 it?.timestamp=response.timestamp?.toLong()
                 goodsDetailData.postValue(it)
             }
@@ -143,6 +146,9 @@ class GoodsViewModel: BaseViewModel() {
             fetchRequest {
                 body.clear()
                 body["setCancel"]=states
+//                body["dto"]=HashMap<String,Any>().also {
+//                    it["setCancel"]=states
+//                }
                 val randomKey = getRandomKey()
                 shopApiService.setKillNotices(rangeId,body.header(randomKey), body.body(randomKey))
             }.onSuccess {
@@ -168,6 +174,35 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.orderEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentData.postValue(it)
+            }
+        }
+    }
+    /**
+     * 添加足迹
+     * */
+   private fun addFootprint(spuId:String){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.addFootprint(spuId,body.header(randomKey), body.body(randomKey))
+            }
+        }
+   }
+    /**
+     * 收藏商品
+     * [spuId]商品id
+     * */
+    fun collectGoods(spuId:String){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val rkey = getRandomKey()
+                shopApiService.collectGoods(spuId,body.header(rkey), body.body(rkey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }.onSuccess {
+                collectionGoodsStates.postValue(true)
             }
         }
     }

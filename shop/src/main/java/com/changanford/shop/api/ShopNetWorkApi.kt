@@ -42,8 +42,8 @@ interface ShopNetWorkApi {
     /**
      *秒杀提醒设置/取消
     * */
-    @POST("/mall/seckills/spus/{rangeId}/noticesSetting")
-    suspend fun setKillNotices(@Path("rangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    @POST("/mall/seckills/spus/{mallMallSpuSeckillRangeId}/noticesSetting")
+    suspend fun setKillNotices(@Path("mallMallSpuSeckillRangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
      *秒订单评价
      * */
@@ -70,4 +70,24 @@ interface ShopNetWorkApi {
      * */
     @POST("/userOrderMergeInfo/getAllUserOrderMergeInfo")
     suspend fun getAllOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    /**
+     *添加足迹
+     * */
+    @POST("/mall/addFootprint/{spuId}")
+    suspend fun addFootprint(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *收藏商品
+     * */
+    @POST("/mall/collectGoods/{spuId}")
+    suspend fun collectGoods(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *订单详情
+     * */
+    @POST("/mall/order/detail")
+    suspend fun orderDetail(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderItemBean>
+    /**
+     *取消订单
+     * */
+    @POST("/mall/pay/cancel")
+    suspend fun orderCancel(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

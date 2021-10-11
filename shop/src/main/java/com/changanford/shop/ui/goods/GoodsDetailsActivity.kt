@@ -38,7 +38,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         }
     }
     private val spuPageTypes= arrayListOf("NOMROL","SECKILL","MEMBER_EXCLUSIVE","MEMBER_DISCOUNT")
-    private var spuId:String?="108"//商品ID
+    private var spuId:String="108"//商品ID
     private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
@@ -52,7 +52,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
     private var isCollection=false //是否收藏
-
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.inComment.layoutComment.y-topBarH
@@ -64,8 +63,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
-        spuId=intent.getStringExtra("spuId")
-        if(null==spuId){
+        spuId=intent.getStringExtra("spuId")?:"0"
+        if("0"==spuId){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
         }
@@ -85,8 +84,20 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             control.bindingData(it)
+            viewModel.collectionGoodsStates.postValue(it.isCollection)
         })
-        viewModel.queryGoodsDetails(spuId!!)
+        viewModel.collectionGoodsStates.observe(this,{
+            isCollection= it
+            binding.inBottom.cbCollect.isChecked=isCollection
+            binding.inHeader.imgCollection.setImageResource(
+                when {
+                    isCollection -> R.mipmap.shop_collect_1
+                    oldScrollY<commentH -> R.mipmap.shop_collect_0
+                    else -> R.mipmap.shop_collect_0
+                }
+            )
+        })
+        viewModel.queryGoodsDetails(spuId)
 //        viewModel.getOrderEvalList(spuId!!,1,1)
 
     }
@@ -98,6 +109,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
+            //收藏商品
+            R.id.cb_collect,R.id.img_collection->viewModel.collectGoods(spuId)
             //返回
             R.id.img_back->this.finish()
         }
