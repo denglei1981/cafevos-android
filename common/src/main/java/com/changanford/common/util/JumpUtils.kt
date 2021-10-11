@@ -147,9 +147,10 @@ class JumpUtils {
             }
             3 -> {//商品详情
                 if (value != null) {
-                    val json = JSON.parseObject(value)
-                    bundle.putString("spuId", json.getString("spuId"))
-                    bundle.putString("spuPageType", json.getString("spuPageType"))
+                    bundle.putString("spuId",value)
+//                    val json = JSON.parseObject(value)
+//                    bundle.putString("spuId", json.getString("spuId"))
+//                    bundle.putString("spuPageType", json.getString("spuPageType"))
                     startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
                 }
             }

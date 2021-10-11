@@ -83,17 +83,12 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 获取商品详情数据
-     * [spuId]商品id
-     * [spuPageType] 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
+     * [spuId]商品id  108
     * */
-    fun queryGoodsDetails(spuId:String,spuPageType:String="NOMROL"){
+    fun queryGoodsDetails(spuId:String){
         viewModelScope.launch {
             val response=fetchRequest {
                 body.clear()
-//                body["paramDto"]=HashMap<String,Any>().also {
-//                    it["spuPageType"] = spuPageType
-//                }
-                body["spuPageType"] = spuPageType
                 val rkey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
             }.onWithMsgFailure {

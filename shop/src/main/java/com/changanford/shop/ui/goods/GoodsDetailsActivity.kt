@@ -31,7 +31,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
         fun start(spuId:String, spuPageType:String?="NOMROL") {
-            JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
+            JumpUtils.instans?.jump(3,spuId)
+//            JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
 //            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("spuId",spuId)
 //                .putExtra("spuPageType",spuPageType))
         }
@@ -68,7 +69,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
         }
-        spuPageType=spuPageTypes.lastOrNull { it==intent.getStringExtra("spuPageType") }?:"NOMROL"
+//        spuPageType=spuPageTypes.lastOrNull { it==intent.getStringExtra("spuPageType") }?:"NOMROL"
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
@@ -88,7 +89,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         viewModel.commentData.observe(this,{
             control.bindingComment(it)
         })
-        viewModel.queryGoodsDetails(spuId!!,spuPageType)
+        viewModel.queryGoodsDetails(spuId!!)
         viewModel.getOrderEvalList(spuId!!,1,1)
 
     }
