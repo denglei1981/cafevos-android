@@ -161,6 +161,7 @@ data class GoodsDetailBean(
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",
     val stock: Int = 0,
+    val mallOrderEval:CommentItem?,
     var stockProportion:String="0",//库存百分比 0-100
     var timestamp:Long?=0//服务器时间
 )

@@ -38,7 +38,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         }
     }
     private val spuPageTypes= arrayListOf("NOMROL","SECKILL","MEMBER_EXCLUSIVE","MEMBER_DISCOUNT")
-    private var spuId:String?="0"//商品ID
+    private var spuId:String?="108"//商品ID
     private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
@@ -86,11 +86,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         viewModel.goodsDetailData.observe(this,{
             control.bindingData(it)
         })
-        viewModel.commentData.observe(this,{
-            control.bindingComment(it)
-        })
         viewModel.queryGoodsDetails(spuId!!)
-        viewModel.getOrderEvalList(spuId!!,1,1)
+//        viewModel.getOrderEvalList(spuId!!,1,1)
 
     }
     fun onClick(v:View){

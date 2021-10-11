@@ -6,13 +6,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.popupwindow.SetNoticPop
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 
@@ -31,6 +31,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             dataBinding.btnStates.setOnClickListener {
                 clickBtn(dataBinding,item)
             }
+            dataBinding.root.setOnClickListener { GoodsDetailsActivity.start(item.spuId) }
         }
     }
     /**
@@ -62,7 +63,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     private fun clickBtn(dataBinding:ItemGoodsKillAreaBinding,item: GoodsItemBean){
         when(dataBinding.btnStates.getStates()){
             //去抢购
-            0-> JumpUtils.instans?.jump(3,"{\"spuId\":${item.spuId},\"spuPageType\":\"SECKILL\"}")
+            0-> GoodsDetailsActivity.start(item.spuId)
             //设置提醒
             3->{
                 if(!WCommonUtil.isNotificationEnabled(context))SetNoticPop(context).showPopupWindow()

@@ -75,6 +75,7 @@ class GoodsViewModel: BaseViewModel() {
                 shopHomeGoodsData.postValue(it)
                 goodsListData.postValue(it?.responsePageBean)
             }.onFailure {
+                goodsListData.postValue(null)
                 shopHomeGoodsData.postValue(it)
             }.onWithMsgFailure {
                 if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)

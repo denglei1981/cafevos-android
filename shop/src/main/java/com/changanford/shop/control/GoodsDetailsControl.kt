@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.CountDownTimer
 import android.view.View
-import com.changanford.common.bean.CommentBean
+import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
@@ -53,16 +53,18 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
                 }
             }
         }
-
+        bindingComment(datas.mallOrderEval)
     }
+    /**
+     * 评价信息
+    * */
     @SuppressLint("SetTextI18n")
-    fun bindingComment(commentBean: CommentBean?){
-        if(commentBean?.pageList?.dataList != null && commentBean.totalEvalNum>0){
+    fun bindingComment(itemData: CommentItem?){
+        if(null!=itemData){
             headerBinding.inComment.layoutComment.visibility=View.VISIBLE
-            val itemData= commentBean.pageList?.dataList!![0]
             headerBinding.inComment.model=itemData
             GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),headerBinding.inComment.imgGoodsCommentAvatar)
-            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, commentBean.pageList!!.total)
+            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
         }
     }
     /**
