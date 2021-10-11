@@ -50,6 +50,7 @@ import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.FileUtils;
 import com.changanford.common.util.FullyGridLayoutManager;
 import com.changanford.common.util.GlideEngine;
+import com.changanford.common.util.PictureUtil;
 import com.changanford.common.util.PictureUtils;
 import com.changanford.common.util.SoftHideKeyBoardUtil;
 import com.changanford.common.util.TimeUtils;
@@ -208,8 +209,8 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                             @Override
                             public void onResult(List<LocalMedia> result) {
                                 for (LocalMedia media : result) {
-                                    GlideUtils.INSTANCE.loadRoundLocal(AppUtils.getFinallyPath(media), binding.ivFengmian, 5, R.mipmap.ic_def_square_img);
-                                    dtoBean.setCoverImgUrl(AppUtils.getFinallyPath(media));
+                                    GlideUtils.INSTANCE.loadRoundLocal(PictureUtil.INSTANCE.getFinallyPath(media), binding.ivFengmian, 5, R.mipmap.ic_def_square_img);
+                                    dtoBean.setCoverImgUrl(PictureUtil.INSTANCE.getFinallyPath(media));
                                     binding.tvFm.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -231,8 +232,8 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
                                     for (LocalMedia media : result) {
 
-                                        GlideUtils.INSTANCE.loadRoundLocal(AppUtils.getFinallyPath(media), binding.ivFengmian, 5, R.mipmap.ic_def_square_img);
-                                        dtoBean.setCoverImgUrl(AppUtils.getFinallyPath(media));
+                                        GlideUtils.INSTANCE.loadRoundLocal(PictureUtil.INSTANCE.getFinallyPath(media), binding.ivFengmian, 5, R.mipmap.ic_def_square_img);
+                                        dtoBean.setCoverImgUrl(PictureUtil.INSTANCE.getFinallyPath(media));
                                         binding.tvFm.setVisibility(View.VISIBLE);
                                     }
                                 }
@@ -455,7 +456,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                                 contentImgs = new ArrayList<>();
                                 for (int i = 0; i < mAdapter.getData().size(); i++) {
                                     DtoBean.ContentImg contentImg = new DtoBean.ContentImg();
-                                    contentImg.setContentImgUrl(AppUtils.getFinallyPath(mAdapter.getData().get(i)));
+                                    contentImg.setContentImgUrl(PictureUtil.INSTANCE.getFinallyPath(mAdapter.getData().get(i)));
                                     contentImg.setContentDesc(mAdapter.getData().get(i).getContentDesc());
                                     contentImgs.add(contentImg);
                                 }
@@ -463,7 +464,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                                 upimgs.clear();
                                 imglist.clear();
                                 Log.d("dtobean", JSON.toJSONString(dtoBean));
-                                ToastUtils.s(ReleaseActivity.this, response.getMessage());
+                                ToastUtils.s(ReleaseActivity.this, response.getMsg());
                             }
                             return null;
                         }
@@ -829,7 +830,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
             List<DtoBean.ContentImg> contentImgs = dtoBean.getContentImgList();
             for (int i = 0; i < retlist.size(); i++) {
                 contentImgs.get(i).setContentDesc(retlist.get(i).getContentDesc());
-                String path = AppUtils.getFinallyPath(retlist.get(i));
+                String path = PictureUtil.INSTANCE.getFinallyPath(retlist.get(i));
                 contentImgs.get(i).setContentImgUrl(path);
 
             }
@@ -1139,7 +1140,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                     DtoBean.ContentImg contentImg = new DtoBean.ContentImg();
                     LocalMedia media = result.get(i);
 
-                    contentImg.setContentImgUrl(AppUtils.getFinallyPath(media));
+                    contentImg.setContentImgUrl(PictureUtil.INSTANCE.getFinallyPath(media));
                     contentImgs.add(contentImg);
                 }
                 dtoBean.setContentImgList(contentImgs);
