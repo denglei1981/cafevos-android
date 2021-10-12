@@ -187,10 +187,16 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
             longpostadapter.addData(LongPostBean( localMedias[0].contentDesc?:"",localMedias[0]))
 //            postPicAdapter.setList(selectList)
         })
+        viewModel.keywords.observe(this, Observer {
+            buttomlabelAdapter.addData(it)
+        })
+
     }
 
     override fun initData() {
         initandonclickhead()
+        viewModel.getPlate()
+        viewModel.getKeyWords() //标签
         binding.longpostrec.layoutManager = LinearLayoutManager(this)
         longpostadapter.draggableModule.isDragEnabled=true
         binding.longpostrec.adapter = longpostadapter
@@ -219,15 +225,7 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
             orientation = LinearLayoutManager.HORIZONTAL
         }
         binding.bottom.labelrec.adapter = buttomlabelAdapter
-        buttomlabelAdapter.addData(
-            arrayListOf(
-                ButtomlabelBean("最美重庆1"),
-                ButtomlabelBean("最美重庆111"),
-                ButtomlabelBean("最美重庆12222"),
-                ButtomlabelBean("最美重庆13333"),
-                ButtomlabelBean("最美重庆144444")
-            )
-        )
+
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
             buttomlabelAdapter.getItem(position).isselect = true
             buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
@@ -236,7 +234,7 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
                 }
             }
             buttomlabelAdapter.notifyDataSetChanged()
-            buttomlabelAdapter.getItem(position).content.toast()
+            buttomlabelAdapter.getItem(position).tagName.toast()
         }
     }
 

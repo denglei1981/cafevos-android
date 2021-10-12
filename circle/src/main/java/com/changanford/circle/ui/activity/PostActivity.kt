@@ -27,7 +27,6 @@ import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.ButtomTypeBean
-import com.changanford.circle.bean.ButtomlabelBean
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.PlateBean
 import com.changanford.circle.databinding.PostActivityBinding
@@ -179,6 +178,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postPicAdapter.setList(selectList)
         })
 
+        viewModel.keywords.observe(this, Observer {
+            buttomlabelAdapter.addData(it)
+        })
 
     }
 
@@ -186,6 +188,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     override fun initData() {
         onclick()
         viewModel.getPlate() //获取发帖类型
+        viewModel.getKeyWords() //标签
         initbuttom()
         params["type"] = 2
         val manager = FullyGridLayoutManager(
@@ -449,15 +452,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         binding.bottom.labelrec.adapter = buttomlabelAdapter
-        buttomlabelAdapter.addData(
-            arrayListOf(
-                ButtomlabelBean("最美重庆1"),
-                ButtomlabelBean("最美重庆111"),
-                ButtomlabelBean("最美重庆12222"),
-                ButtomlabelBean("最美重庆13333"),
-                ButtomlabelBean("最美重庆144444")
-            )
-        )
+
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
             buttomlabelAdapter.getItem(position).isselect = true
             buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
@@ -466,7 +461,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
             }
             buttomlabelAdapter.notifyDataSetChanged()
-            buttomlabelAdapter.getItem(position).content.toast()
+            buttomlabelAdapter.getItem(position).tagName.toast()
         }
     }
 

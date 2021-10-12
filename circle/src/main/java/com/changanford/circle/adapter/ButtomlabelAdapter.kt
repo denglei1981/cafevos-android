@@ -4,15 +4,15 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.ButtomlabelBean
+import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.utils.ShapeCreator
 import com.changanford.common.MyApp
 
 
-class ButtomlabelAdapter :BaseQuickAdapter<ButtomlabelBean, BaseViewHolder>(R.layout.item_buttomlabel) {
-    override fun convert(holder: BaseViewHolder, item: ButtomlabelBean) {
+class ButtomlabelAdapter :BaseQuickAdapter<PostKeywordBean, BaseViewHolder>(R.layout.item_buttomlabel) {
+    override fun convert(holder: BaseViewHolder, item: PostKeywordBean) {
         var text = holder.getView<TextView>(R.id.tv_content)
-        text.text = item.content
+        text.text = item.tagName
         if (item.isselect){
             text.setTextColor( MyApp.mContext.resources.getColor(R.color.white))
             ShapeCreator.create()

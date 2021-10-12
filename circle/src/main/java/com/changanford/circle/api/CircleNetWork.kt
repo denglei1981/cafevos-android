@@ -133,6 +133,15 @@ interface CircleNetWork {
     ): CommonResponse<PlateBean>
 
     /**
+     * 标签
+     */
+    @POST("con/posts/keyWords")
+    suspend fun getkeywords(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<PostKeywordBean>>
+
+    /**
      * 帖子点赞
      */
     @POST("con/posts/actionLike")

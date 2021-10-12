@@ -169,12 +169,17 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             postVideoAdapter.notifyDataSetChanged()
         })
 
+        viewModel.keywords.observe(this, Observer {
+            buttomlabelAdapter.addData(it)
+        })
+
     }
 
 
     override fun initData() {
         onclick()
-        viewModel.getPlate() //获取发帖类型
+        viewModel.getPlate()
+        viewModel.getKeyWords() //标签
         initbuttom()
         val manager = FullyGridLayoutManager(
             this,
@@ -205,15 +210,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         binding.bottom.labelrec.adapter = buttomlabelAdapter
-        buttomlabelAdapter.addData(
-            arrayListOf(
-                ButtomlabelBean("最美重庆1"),
-                ButtomlabelBean("最美重庆111"),
-                ButtomlabelBean("最美重庆12222"),
-                ButtomlabelBean("最美重庆13333"),
-                ButtomlabelBean("最美重庆144444")
-            )
-        )
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
             buttomlabelAdapter.getItem(position).isselect = true
             buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
@@ -222,7 +218,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
             }
             buttomlabelAdapter.notifyDataSetChanged()
-            buttomlabelAdapter.getItem(position).content.toast()
+            buttomlabelAdapter.getItem(position).tagName.toast()
         }
     }
 
