@@ -44,8 +44,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
         setNumber(number)
     }
     fun setNumber(newNumber:Int,isPostValue:Boolean=true){
-        if(newNumber>maxValue||newNumber<minValue)return
-        this.number=newNumber
+        this.number=if(newNumber>maxValue||newNumber<minValue)minValue else newNumber
         tvNumberValue.text="$number"
         if(isPostValue)numberLiveData.postValue(number)
     }

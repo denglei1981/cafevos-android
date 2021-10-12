@@ -60,7 +60,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         })
     }
     private fun bindingBtn(stock:Int){
-        if(stock<200){
+        if(stock<1){
             viewDataBinding.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
         }else viewDataBinding.btnSubmit.setStates(5)
     }
