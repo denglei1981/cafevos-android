@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
@@ -42,7 +41,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         binding.collectToolbar.toolbarSave.setOnClickListener {
             viewModel.createCircle {
                 it.onSuccess {
-                    RouterManger.startARouter(ARouterCirclePath.AddCircleActivity)
+                    RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
                 }
                 it.onWithMsgFailure {
                     it?.let {

@@ -52,6 +52,7 @@ object UserManger {
                     it.mobile
                 }
             }
+            it.ext.integralDecimal = null
             it.ext?.integralDecimal?.let {
                 sysUserInfoBean.integral = it.toDouble()
             }

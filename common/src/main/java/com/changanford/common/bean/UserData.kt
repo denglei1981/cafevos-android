@@ -85,7 +85,7 @@ data class Ext(
     val headFrameImage: String,
     val headFrameName: String,
     val imags: List<Imag>,
-    val integralDecimal: Int? = 0,
+    var integralDecimal: Int? = 0,
     val medalId: Int,
     val memberIcon: String,
     val memberId: Int,
