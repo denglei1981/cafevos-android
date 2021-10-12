@@ -9,20 +9,21 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
+import com.changanford.common.utilext.logE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
  * 帖子数据库操作 可继承
  */
-open class PostRoomViewModel() :BaseViewModel() {
+open class PostRoomViewModel() : BaseViewModel() {
 
     var posts = MutableLiveData<List<PostEntity>>()
 
     /**
      * 插入帖子
      */
-    fun  insertPostentity(postEntity: PostEntity){
+    fun insertPostentity(postEntity: PostEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             PostDatabase.getInstance(MyApp.mContext).getPostDao()
                 .insert(postEntity)
@@ -32,7 +33,7 @@ open class PostRoomViewModel() :BaseViewModel() {
     /**
      * 删除所有帖子
      */
-    fun clearPost (){
+    fun clearPost() {
         viewModelScope.launch(Dispatchers.IO) {
             PostDatabase.getInstance(MyApp.mContext).getPostDao()
                 .clearAll()
@@ -42,7 +43,7 @@ open class PostRoomViewModel() :BaseViewModel() {
     /**
      * 删除该帖子
      */
-    fun deletePost(id:Int){
+    fun deletePost(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             PostDatabase.getInstance(MyApp.mContext).getPostDao()
                 .delete(id)
@@ -57,8 +58,5 @@ open class PostRoomViewModel() :BaseViewModel() {
           posts.value =  PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value
         }
     }
-
-
-
 
 }

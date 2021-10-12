@@ -38,7 +38,6 @@ data class PostEntity(
     @ColumnInfo(name = "province") var province: String = "",
     @ColumnInfo(name = "cityCode") var cityCode:String ="",
     @ColumnInfo(name="creattime") var creattime:String=""
-
 ) : Serializable
 
 @Dao
@@ -53,5 +52,5 @@ interface PostDao {
     suspend fun insert(entity: PostEntity)
 
     @Query("Delete from post_table Where postsId = :postid")
-    suspend fun delete(postid:Int)
+    suspend fun delete(postid: Int)
 }

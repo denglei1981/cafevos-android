@@ -5,11 +5,14 @@ import android.view.View
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.adapter.CircleMainBottomAdapter
+import com.changanford.common.MyApp
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.room.PostDatabase
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.MineUtils
@@ -36,13 +39,22 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
     private lateinit var mCheckForGapMethod: Method
 
     var userId: String = ""
+    var num: Int = 0
 
     val postAdapter: CircleMainBottomAdapter by lazy {
         CircleMainBottomAdapter(this)
     }
 
     override fun initView() {
+        PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value?.let {
+            num = it.size
+        }
         binding.postToolbar.toolbarTitle.text = "我的帖子"
+        binding.postToolbar.toolbarSave.text = "草稿"
+        binding.postToolbar.toolbarSave.visibility = View.VISIBLE
+        binding.postToolbar.toolbarSave.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+        }
         userId = UserManger.getSysUserInfo().uid
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
