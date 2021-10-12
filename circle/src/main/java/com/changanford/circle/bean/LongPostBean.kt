@@ -5,5 +5,5 @@ import com.luck.picture.lib.entity.LocalMedia
 
 data class LongPostBean(
     var content:String,
-    val localMedias: LocalMedia
+    var localMedias: LocalMedia?
 )

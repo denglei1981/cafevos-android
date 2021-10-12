@@ -1,36 +1,38 @@
 package com.changanford.circle.adapter
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.LongPostBean
+import com.changanford.circle.databinding.LongpostItemBinding
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.logD
 
 
 class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter<LongPostBean, BaseViewHolder>(R.layout.longpost_item), DraggableModule {
     init {
         addChildClickViewIds(R.id.iv_delete)
+        addChildClickViewIds(R.id.iv_addfm)
     }
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
-        var content = holder.getView<AppCompatEditText>(R.id.tv_tex)
-        var pic = holder.getView<ImageView>(R.id.iv_img)
-        var det = holder.getView<ImageView>(R.id.iv_delete)
-        GlideUtils.loadBD(PictureUtil.getFinallyPath(item.localMedias),pic)
-
-        content.setText(item.content)
+        var binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
+        if (item.localMedias==null){
+            binding.ivFm.visibility = View.GONE
+            binding.ivAddfm.visibility = View.VISIBLE
+        }else{
+            binding.ivAddfm.visibility = View.GONE
+            binding.ivFm.visibility = View.VISIBLE
+            GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(item.localMedias!!),binding.ivFm)
+        }
+        if(item.content.isNotEmpty()|| item.content != "/null/"){
+            binding.tvTex.setText(item.content)
+        }
         var watcher = object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -39,17 +41,17 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (content.hasFocus()){
+                if (binding.tvTex.hasFocus()){
                     item.content = p0.toString()
                 }
             }
 
         }
-        if (content.tag !=null){
-            content.removeTextChangedListener(watcher)
+        if (binding.tvTex.tag !=null){
+            binding.tvTex.removeTextChangedListener(watcher)
         }
-        content.addTextChangedListener(watcher)
-        content.tag = watcher
+        binding.tvTex.addTextChangedListener(watcher)
+        binding.tvTex.tag = watcher
 
     }
 }

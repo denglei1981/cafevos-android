@@ -313,25 +313,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                             )
                                         }, VideoChoseFMActivity.FM_CALLBACK
                                     )
-//                                    PictureUtil.openGalleryOnePic(this@VideoPostActivity,
-//                                        object : OnResultCallbackListener<LocalMedia> {
-//                                            override fun onResult(result: MutableList<LocalMedia>?) {
-//                                                val localMedia = result?.get(0)
-//                                                localMedia?.let {
-//
-//
-//                                                    postVideoAdapter.fmPath =
-//                                                        PictureUtil.getFinallyPath(localMedia)
-//                                                    postVideoAdapter.notifyDataSetChanged()
-//                                                }
-//
-//                                            }
-//
-//                                            override fun onCancel() {
-//
-//                                            }
-//
-//                                        })
+
                                 }
                                 "编辑视频" -> {
                                     startARouterForResult(
