@@ -52,7 +52,9 @@ object UserManger {
                     it.mobile
                 }
             }
-            sysUserInfoBean.integral = it.ext?.integralDecimal.toDouble()
+            it.ext?.integralDecimal?.let {
+                sysUserInfoBean.integral = it.toDouble()
+            }
             sysUserInfoBean.userJson = JSON.toJSONString(it)
             database.insert(sysUserInfoBean)
         }

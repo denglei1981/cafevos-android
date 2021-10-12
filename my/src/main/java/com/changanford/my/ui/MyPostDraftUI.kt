@@ -47,7 +47,6 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
         binding.rcyPostDraft.rcyCommonView.adapter = adapter
         PostDatabase.getInstance(this).getPostDao().findAll().observe(this, Observer {
             it?.apply {
-                it.size.toString().logE()
                 if (it.isEmpty()) {
                     showEmpty()?.let {
                         adapter.setEmptyView(it)
@@ -57,10 +56,5 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                 }
             }
         })
-    }
-
-    override fun initData() {
-        super.initData()
-
     }
 }
