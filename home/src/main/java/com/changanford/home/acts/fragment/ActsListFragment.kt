@@ -37,13 +37,9 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         SearchActsResultAdapter()
     }
     var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
-
-
     //， 排序，活动状态  ，发布方,线上线下
     var shaixuanList =
         arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
-
-
     companion object {
         fun newInstance(): ActsListFragment {
             val fg = ActsListFragment()
@@ -54,7 +50,6 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     }
 
     override fun initView() {
-
         binding.homeCrv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.homeCrv.adapter = searchActsResultAdapter
@@ -95,12 +90,14 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     override fun initData() {
         binding.layoutHomeScreen.tvSrceen.setOnClickListener {
             if (homeActsDialog == null) {
-                homeActsDialog = HomeActsScreenDialog(requireActivity(), object : ICallback {
+                homeActsDialog = HomeActsScreenDialog(requireActivity(),this, object : ICallback {
                     override fun onResult(result: ResultData) {
 
                     }
                 })
             }
+            xianshangEnum?.let { it1 -> homeActsDialog?.setActsTypeDatta(it1) }
+            officialEnum?.let { it1 -> homeActsDialog?.setOfficalData(it1) }
             homeActsDialog?.show()
         }
         binding.layoutHomeScreen.tvAllActs.setOnClickListener {
@@ -111,8 +108,11 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         }
         appBarState()
         viewModel.getActList(true, 10, 1)
+        viewModel.getEnum(shaixuanList[2])
+        viewModel.getEnum(shaixuanList[3])
     }
-
+    var  officialEnum :List<EnumBean>?=null
+    var  xianshangEnum:List<EnumBean>?=null
     override fun observe() {
         super.observe()
         viewModel.actsLiveData.observe(this, androidx.lifecycle.Observer {
@@ -127,6 +127,13 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         })
         viewModel.screenstype.observe(this, androidx.lifecycle.Observer {
             setPopu(binding.layoutHomeScreen.tvAllActs, it as MutableList<EnumBean>)
+        })
+        viewModel.guanfang.observe(this, androidx.lifecycle.Observer {
+             // 记录官方渠道
+            officialEnum=it
+        })
+        viewModel.xianshang.observe(this, androidx.lifecycle.Observer {
+            xianshangEnum=it
         })
 
     }

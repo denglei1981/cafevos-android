@@ -3,20 +3,20 @@ package com.changanford.home.acts.dialog
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import com.changanford.home.R
 import com.changanford.home.acts.adapter.HomeActsScreenItemAdapter
 import com.changanford.home.acts.adapter.HomeActsTypeItemAdapter
 import com.changanford.home.base.BaseAppCompatDialog
 import com.changanford.home.callback.ICallback
+import com.changanford.home.data.EnumBean
 import com.changanford.home.databinding.DialogHomeActsScreenBinding
-import com.changanford.home.search.data.SearchData
 
 
-class HomeActsScreenDialog(var acts: Context) : BaseAppCompatDialog(acts) {
+class HomeActsScreenDialog(var acts: Context,private val lifecycleOwner: LifecycleOwner) : BaseAppCompatDialog(acts) {
     lateinit var mDatabind: DialogHomeActsScreenBinding
     lateinit var callback: ICallback
-
     private val homeActsScreenItemAdapter: HomeActsScreenItemAdapter by lazy {
         HomeActsScreenItemAdapter(
             arrayListOf()
@@ -29,7 +29,7 @@ class HomeActsScreenDialog(var acts: Context) : BaseAppCompatDialog(acts) {
         )
     }
 
-    constructor(acts: Context, callback: ICallback) : this(acts) {
+    constructor(acts: Context,lifecycleOwner: LifecycleOwner, callback: ICallback) : this(acts,lifecycleOwner) {
         this.callback = callback
         mDatabind = DataBindingUtil.inflate(
             LayoutInflater.from(context),
@@ -42,6 +42,14 @@ class HomeActsScreenDialog(var acts: Context) : BaseAppCompatDialog(acts) {
         initData()
     }
 
+    fun  setOfficalData(officalList:List<EnumBean>){
+        homeActsScreenItemAdapter.setNewInstance(officalList as? MutableList<EnumBean>)
+
+    }
+    fun setActsTypeDatta(actsList:List<EnumBean>){
+        homeActsTypeItemAdapter.setNewInstance(actsList as? MutableList<EnumBean>)
+    }
+
     override fun initAd() {
 
     }
@@ -51,20 +59,14 @@ class HomeActsScreenDialog(var acts: Context) : BaseAppCompatDialog(acts) {
     }
     fun initData() {
         mDatabind.homeRvPublish.layoutManager = GridLayoutManager(acts, 3)
-        mDatabind.homeRvPublish.adapter = homeActsScreenItemAdapter.apply {
-            addData(SearchData())
-            addData(SearchData())
-            addData(SearchData())
-        }
+        mDatabind.homeRvPublish.adapter = homeActsScreenItemAdapter
         mDatabind.homeRvActsType.layoutManager=GridLayoutManager(acts,3)
-        mDatabind.homeRvActsType.adapter=homeActsTypeItemAdapter.apply {
-            addData(SearchData())
-            addData(SearchData())
-            addData(SearchData())
-            addData(SearchData())
-            addData(SearchData())
-            addData(SearchData())
-        }
+        mDatabind.homeRvActsType.adapter=homeActsTypeItemAdapter
+    }
+
+
+    fun getData(){
+
     }
 
 
