@@ -37,7 +37,7 @@
             android:layout_marginTop="@dimen/dp_15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{model.shareBeanVO.shareTitle}"
+            android:text="@{model.spuName}"
             tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 "
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />

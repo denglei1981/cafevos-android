@@ -164,6 +164,7 @@ data class GoodsDetailBean(
     val mallOrderEval:CommentItem?,
     var isCollection:Boolean=false,//是否收藏
     var stockProportion:String="0",//库存百分比 0-100
+    val spuName:String?="",
     var timestamp:Long?=0//服务器时间
 )
 
