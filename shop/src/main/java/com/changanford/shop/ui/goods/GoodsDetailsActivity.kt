@@ -98,8 +98,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             )
         })
         viewModel.queryGoodsDetails(spuId)
-//        viewModel.getOrderEvalList(spuId!!,1,1)
-
+        viewModel.getMyIntegral()
     }
     fun onClick(v:View){
         when(v.id){

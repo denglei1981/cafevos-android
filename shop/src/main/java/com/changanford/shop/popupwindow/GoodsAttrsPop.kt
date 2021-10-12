@@ -9,7 +9,9 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
+import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
+import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -20,7 +22,6 @@ import razerdp.util.animation.TranslationConfig
  */
 open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
-
     private var skuCodeLiveData: MutableLiveData<String> = MutableLiveData()
     private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCodeLiveData) }
     init {
@@ -31,6 +32,10 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     private fun initView(){
         viewDataBinding.recyclerView.adapter=mAdapter
         viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
+        viewDataBinding.btnSubmit.setOnClickListener {
+            dismiss()
+            OrderConfirmActivity.start(activity,Gson().toJson(dataBean))
+        }
     }
     private fun initData(){
         viewDataBinding.model=dataBean
@@ -47,14 +52,17 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${findItem.stock}件）")
             val max=limitBuyNum?:findItem.stock
             viewDataBinding.addSubtractView.setMax(max.toInt())
-//            val skuCodes=mAdapter.getSkuCodes()
-//            var skuCodeTxt=""
-//            for((i,item) in dataBean.attributes.withIndex()){
-//                val optionVosItem=item.optionVos.find { skuCodes[i+1]== it.optionId }
-//                skuCodeTxt+="${optionVosItem?.optionName}  "
-//            }
-//            Log.e("okhttp","skuCodeTxt:$skuCodeTxt")
+            bindingBtn(findItem.stock.toInt())
         })
+        viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
+        viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
+            dataBean.buyNum=it
+        })
+    }
+    private fun bindingBtn(stock:Int){
+        if(stock<200){
+            viewDataBinding.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
+        }else viewDataBinding.btnSubmit.setStates(5)
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {

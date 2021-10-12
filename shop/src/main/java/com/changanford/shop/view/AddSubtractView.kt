@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import com.changanford.shop.R
 
 /**
@@ -19,6 +20,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     private var number=1//初始值为1
     private var minValue=1//最小值
     private var maxValue=10//最大值
+    var numberLiveData: MutableLiveData<Int> = MutableLiveData()
     init {
         initView()
     }
@@ -39,22 +41,21 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
                 if(number>minValue)number--
             }
         }
-
+        setNumber(number)
+    }
+    fun setNumber(newNumber:Int,isPostValue:Boolean=true){
+        if(newNumber>maxValue||newNumber<minValue)return
+        this.number=newNumber
         tvNumberValue.text="$number"
+        if(isPostValue)numberLiveData.postValue(number)
     }
     fun setMax(max:Int){
         this.maxValue=max
-        if(minValue<number){
-            number=minValue
-            tvNumberValue.text= minValue.toString()
-        }
+        if(maxValue<number)setNumber(minValue)
     }
     fun setMine(min:Int){
         this.minValue=min
-        if(minValue>number){
-            number=minValue
-            tvNumberValue.text= minValue.toString()
-        }
+        if(minValue>number)setNumber(minValue)
     }
     fun getNumber():Int{
         return number

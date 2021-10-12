@@ -17,7 +17,7 @@
             android:paddingEnd="@dimen/dp_20"
             android:id="@+id/cb_collect"
             android:text="@string/str_collection" />
-        <androidx.appcompat.widget.AppCompatButton
+        <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
             android:id="@+id/btn_submit"
             android:background="@drawable/btn_selector"

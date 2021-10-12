@@ -122,4 +122,5 @@
     <string name="str_percent">%</string>
     <string name="str_parameterIllegal">参数非法!</string>
     <string name="str_pleaseAddShippingAddress">请添加收货地址</string>
+    <string name="str_hasBeenSoldOut">已售罄</string>
 </resources>

@@ -14,9 +14,9 @@ import com.changanford.shop.R
  * @Description : KillBtnView
  */
 class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(context,attrs) {
-    private var btnStates=0//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
-    private val statesTxt= arrayOf(context.getString(R.string.str_toSnapUp),context.getString(R.string.str_hasGone),
-        context.getString(R.string.str_hasEnded), context.getString(R.string.str_remindMe),context.getString(R.string.str_cancelReminder))
+    private var btnStates=0//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄
+    private val statesTxt= arrayOf(R.string.str_toSnapUp,R.string.str_hasGone,
+        R.string.str_hasEnded, R.string.str_remindMe,R.string.str_cancelReminder,R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut)
     init {
         initAttributes(context, attrs)
     }
@@ -28,8 +28,8 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         typeface= Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
         setStates(btnStates)
     }
-    fun setStates(states:Int){
-        if(states>4||states<0)return
+    fun setStates(states:Int,isDetailkill:Boolean=false){
+        if(states>statesTxt.size-1||states<0)return
         btnStates=states
         when(states){
             //去抢购
@@ -40,7 +40,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             }
             //已抢光
             1->{
-                setBackgroundResource(R.drawable.shadow_f4_15dp)
+                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_f4_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
@@ -62,8 +62,20 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.color_37AA74))
                 isEnabled=true
             }
+            //立即兑换
+            5->{
+                setBackgroundResource(R.drawable.btn_selector)
+                setTextColor(ContextCompat.getColor(context,R.color.white))
+                isEnabled=true
+            }
+            //已售罄
+            6->{
+                setBackgroundResource(R.drawable.shadow_f4_20dp)
+                setTextColor(ContextCompat.getColor(context,R.color.color_99))
+                isEnabled=false
+            }
         }
-        text=statesTxt[states]
+        setText(statesTxt[states])
     }
     fun getStates():Int{
         return btnStates

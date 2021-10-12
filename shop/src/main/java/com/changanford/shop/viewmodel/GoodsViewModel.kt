@@ -204,4 +204,20 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+    /**
+     * 获取我的积分
+     * */
+    fun getMyIntegral(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val rkey = getRandomKey()
+                shopApiService.getMyIntegral(body.header(rkey), body.body(rkey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }.onSuccess {
+
+            }
+        }
+    }
 }

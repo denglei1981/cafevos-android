@@ -2,6 +2,7 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
@@ -102,6 +103,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
                         getSkuTxt(_skuCode)
+                        Log.e("okhttp","buyNum:${dataBean.buyNum}")
                     }
                 }
             }
@@ -110,8 +112,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private fun getSkuTxt(skuCode:String){
         this.skuCode=skuCode
         val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
+        dataBean.skuId=findItem.skuId
         dataBean.fbPrice=findItem.fbPrice
         dataBean.stock=findItem.stock.toInt()
+        dataBean.skuCodeTxts= arrayListOf()
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
         for((i,item) in dataBean.attributes.withIndex()){
@@ -119,7 +123,13 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             skuCodeTxt+="${optionVosItem?.optionName}  "
         }
         WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvGoodsAttrs,"选择 <font color=\"#333333\">已选：${skuCodeTxt}</font>")
-
+        bindingBtn()
+    }
+    private fun bindingBtn(){
+        //库存不足,已售罄、已抢光
+        if(dataBean.stock<1){
+            binding.inBottom.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
+        }else binding.inBottom.btnSubmit.setStates(5)
     }
     fun onDestroy(){
         timeCount?.cancel()

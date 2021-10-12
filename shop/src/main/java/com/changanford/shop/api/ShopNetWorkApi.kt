@@ -90,4 +90,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/pay/cancel")
     suspend fun orderCancel(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *我的积分
+     * */
+    @POST("/mall/index/myPoints")
+    suspend fun getMyIntegral(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

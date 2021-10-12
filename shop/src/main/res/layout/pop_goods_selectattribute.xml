@@ -161,7 +161,7 @@
                 tools:text="@string/str_yourAccountPointsF"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12"/>
-            <androidx.appcompat.widget.AppCompatButton
+            <com.changanford.shop.view.btn.KillBtnView
                 style="@style/style_btn"
                 android:id="@+id/btn_submit"
                 android:text="@string/str_immediatelyChange"

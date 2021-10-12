@@ -165,7 +165,10 @@ data class GoodsDetailBean(
     var isCollection:Boolean=false,//是否收藏
     var stockProportion:String="0",//库存百分比 0-100
     val spuName:String?="",
-    val spuId:String?=""
+    val spuId:String?="",
+    var skuId: String,
+    var buyNum:Int=1,//购买数量
+    var skuCodeTxts:List<String>?
 )
 
 data class Attribute(
