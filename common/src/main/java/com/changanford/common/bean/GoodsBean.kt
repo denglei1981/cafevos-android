@@ -174,7 +174,7 @@ data class Attribute(
 )
 
 data class SecKillInfo(
-    val timeBegin: String = "",
+    val timeBegin: Long = 0,
     val timeEnd: Long =0
 )
 

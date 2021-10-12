@@ -46,7 +46,7 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
                     headerBinding.inKill.model=datas
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inKill.layoutKill.visibility= View.VISIBLE
-                    if(null!=datas.timestamp)initTimeCount(datas.timestamp!! -secKillInfo.timeEnd)
+                    if(null!=datas.timestamp)initTimeCount(datas.timestamp!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
                     val purchasedNum=datas.purchasedNum?:0
                     headerBinding.inKill.tvStockProportion.setText("${purchasedNum/datas.stock*100}")
                     if(null==fbLine)headerBinding.inKill.tvFbLine.visibility= View.GONE
@@ -69,9 +69,18 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
     }
     /**
      * 秒杀倒计时
-     * [remainingTime]剩余时间 毫秒
+     * [timestamp]当前时间
+     * [startTime]秒杀开始时间
+     * [endTime]秒杀结束时间
     * */
-   private fun initTimeCount(remainingTime:Long){
+   private fun initTimeCount(timestamp:Long,startTime:Long,endTime:Long){
+        var remainingTime=startTime-timestamp//当前时间小于开始时间说明未开始
+        if(remainingTime>0){//未开始
+            headerBinding.inKill.tvKillStates.setText(R.string.str_fromStart)
+        }else{//已开始
+            headerBinding.inKill.tvKillStates.setText(R.string.str_fromEnd)
+            remainingTime=timestamp-endTime//距离结束剩余时间
+        }
         if(remainingTime<=0)return
         timeCount= KllTimeCountControl(remainingTime,headerBinding.inKill.tvKillH,headerBinding.inKill.tvKillM,headerBinding.inKill.tvKillS,object :
             OnTimeCountListener {

@@ -63,7 +63,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
-        spuId=intent.getStringExtra("spuId")?:"0"
+//        spuId=intent.getStringExtra("spuId")?:"0"
         if("0"==spuId){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
@@ -93,7 +93,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 when {
                     isCollection -> R.mipmap.shop_collect_1
                     oldScrollY<commentH -> R.mipmap.shop_collect_0
-                    else -> R.mipmap.shop_collect_0
+                    else -> R.mipmap.shop_collect_00
                 }
             )
         })
