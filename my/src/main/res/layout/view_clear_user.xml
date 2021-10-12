@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/hint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+
+    <include
+        android:id="@+id/mine_toolbar"
+        layout="@layout/view_toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon_def_head"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginStart="@dimen/dp_25"
+        android:layout_marginTop="24dp"
+        android:src="@mipmap/icon_cancel_account"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_toolbar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="该用户已注销"
+        android:textColor="@color/text_color_08"
+        android:textSize="@dimen/sp_18"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_def_head"
+        app:layout_constraintLeft_toRightOf="@+id/icon_def_head"
+        app:layout_constraintTop_toTopOf="@+id/icon_def_head" />
+
+    <TextView
+        android:id="@+id/my_fans_def_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:gravity="center"
+        android:text="粉丝"
+        android:textColor="#081725"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/my_follow_def_num"
+        app:layout_constraintTop_toBottomOf="@+id/icon_def_head" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#f2f2f2"
+        app:layout_constraintBottom_toBottomOf="@+id/my_fans_def_num"
+        app:layout_constraintLeft_toRightOf="@+id/my_fans_def_num"
+        app:layout_constraintTop_toTopOf="@+id/my_fans_def_num" />
+
+    <TextView
+        android:id="@+id/my_follow_def_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="关注"
+        android:textColor="#081725"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintLeft_toRightOf="@+id/my_fans_def_num"
+        app:layout_constraintRight_toLeftOf="@+id/my_good_def_num"
+        app:layout_constraintTop_toTopOf="@+id/my_fans_def_num" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#f2f2f2"
+        app:layout_constraintBottom_toBottomOf="@+id/my_fans_def_num"
+        app:layout_constraintLeft_toRightOf="@+id/my_follow_def_num"
+        app:layout_constraintTop_toTopOf="@+id/my_fans_def_num" />
+
+
+    <TextView
+        android:id="@+id/my_good_def_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="获赞数"
+        android:textColor="#081725"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintLeft_toRightOf="@+id/my_follow_def_num"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/my_fans_def_num" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,14 +44,14 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
             type = it
             binding.fansToolbar.toolbarTitle.text = if (type == 1) "粉丝" else "关注"
         }
+        intent?.extras?.getString(RouterManger.KEY_TO_OBJ)?.let {
+            userId = it
+        }
+        intent?.extras?.getString("title")?.let {
+            binding.fansToolbar.toolbarTitle.text = it
+        }
 
         binding.fansRcy.rcyCommonView.adapter = fanAdapter
-
-        viewModel.fansLive.observe(this, Observer {
-            it?.let {
-                completeRefresh(it.dataList, fanAdapter, it.total)
-            }
-        })
 
         viewModel.cancelTip.observe(this, Observer {
             if ("true" == it) {
@@ -64,8 +64,10 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
-        lifecycleScope.launch {
-            viewModel.queryFansList(pageSize, type, userId)
+        viewModel.queryFansList(pageSize, type, userId) {
+            it?.data?.let {
+                completeRefresh(it.dataList, fanAdapter, it.total)
+            }
         }
     }
 

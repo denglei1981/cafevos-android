@@ -22,8 +22,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/item_medal_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_89"
+                android:layout_height="@dimen/dp_112"
                 android:layout_marginTop="@dimen/dp_23"
                 android:src="@mipmap/ic_medal_ex"
                 app:layout_constraintLeft_toLeftOf="parent"
