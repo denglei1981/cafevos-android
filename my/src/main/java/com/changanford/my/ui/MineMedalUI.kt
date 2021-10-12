@@ -52,13 +52,11 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
         })
 
         binding.btnWear.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.wearMedal(medalId, "1")
-            }
+            viewModel.wearMedal(medalId, "1")
         }
 
         viewModel.wearMedal.observe(this, Observer {
-            showToast(it)
+            showToast(if ("true" == it) "佩戴成功" else it)
         })
     }
 

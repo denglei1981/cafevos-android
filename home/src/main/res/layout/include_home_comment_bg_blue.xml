@@ -5,6 +5,7 @@
 
     <data>
 
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +17,7 @@
             android:id="@+id/tv_news_to_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:drawableTop="@drawable/icon_home_comment_share_white"
             android:gravity="center"
@@ -30,6 +32,7 @@
             android:id="@+id/tv_news_to_collect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:textColor="@color/white"
             android:drawableTop="@drawable/icon_home_comment_collect_white"
@@ -45,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_20"
-            android:drawableTop="@drawable/icon_home_comment_like_white"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/icon_home_bottom_like_white"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
@@ -61,6 +65,7 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:drawableTop="@drawable/icon_home_comment_msg_white"
             android:textColor="@color/white"
+            android:drawablePadding="6dp"
             android:gravity="center"
             android:textSize="@dimen/sp_10"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +74,7 @@
             tools:text="12" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_speak_something"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="@dimen/dp_20"

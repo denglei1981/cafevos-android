@@ -13,6 +13,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.luck.picture.lib.entity.LocalMedia
@@ -26,13 +27,15 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
     var mediaList: List<LocalMedia>? = null //预览的所有图片集合:
     var selectorPosition = 0
     var showEditType = -1
+    var isVideo = false
+    var FMPath: String = ""
     override fun initView() {
 
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         intent.extras?.getParcelableArrayList<LocalMedia>("picList").also {
             mediaList = it
         }
-
+        isVideo = intent.getBooleanExtra("isVideo", false)
         selectorPosition = intent.getIntExtra("position", 0)
         showEditType = intent.getIntExtra("showEditType", -1)
         binding.title.barTvOther.text = "下一步"
@@ -47,7 +50,14 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
         binding.title.barImgBack.setOnClickListener { finish() }
 
         binding.title.barTvOther.setOnClickListener {
-            LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(mediaList)
+            if (isVideo) {
+                if (FMPath.isEmpty()){
+                    FMPath=PictureUtil.getFinallyPath(mediaList!![0])
+                }
+                LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(FMPath)
+            } else {
+                LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(mediaList)
+            }
             finish()
         }
 
@@ -77,9 +87,13 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
         when {
             resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP -> {
                 val resultUri = UCrop.getOutput(data!!)
+                if (isVideo) {
+                    FMPath = resultUri!!.path.toString()
+                }
                 mediaList!![selectorPosition].isCut = true
                 mediaList!![selectorPosition].cutPath = resultUri!!.path
                 binding.picturePager.refreshData(mediaList)
+
             }
             resultCode == UCrop.RESULT_ERROR -> {
                 val cropError = UCrop.getError(data!!)

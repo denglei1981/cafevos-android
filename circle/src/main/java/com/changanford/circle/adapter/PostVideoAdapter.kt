@@ -14,7 +14,6 @@ class PostVideoAdapter() :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.
 
     init {
         addChildClickViewIds(R.id.iv_delete)
-
     }
     //封面地址
     var fmPath: String? = null
@@ -44,13 +43,23 @@ class PostVideoAdapter() :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.
             holder.setGone(R.id.fm_tv, true)
             holder.setGone(R.id.iv_delete,true)
         }else{
-            var path = PictureUtil.getFinallyPath(item)
-            GlideUtils.loadRoundLocal(
-                path,
-                holder.getView(R.id.img),
-                5F,
-                R.mipmap.ic_def_square_img
-            )
+
+            if (fmPath.isNullOrEmpty()){
+                var path = PictureUtil.getFinallyPath(item)
+                GlideUtils.loadRoundLocal(
+                    path,
+                    holder.getView(R.id.img),
+                    5F,
+                    R.mipmap.ic_def_square_img
+                )
+            }else{
+                GlideUtils.loadRoundLocal(
+                    fmPath,
+                    holder.getView(R.id.img),
+                    5F,
+                    R.mipmap.ic_def_square_img
+                )
+            }
         }
     }
 }

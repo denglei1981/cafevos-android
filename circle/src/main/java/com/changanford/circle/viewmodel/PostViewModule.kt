@@ -6,13 +6,18 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.PlateBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.basic.PostRoomViewModel
+import com.changanford.common.bean.LocationDataBean
+import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.createHashMap
 
-class PostViewModule :BaseViewModel(){
+class PostViewModule() :PostRoomViewModel(){
     var postsuccess = MutableLiveData<String>()
     val plateBean = MutableLiveData<PlateBean>()
+    val cityCode = MutableLiveData<LocationDataBean>()
+    val stsBean = MutableLiveData<STSBean>()
       fun postEdit(params: HashMap<String,Any>){
          launch (block = {
               val body = params
@@ -20,7 +25,7 @@ class PostViewModule :BaseViewModel(){
               val rKey = getRandomKey()
               ApiClient.createApi<CircleNetWork>().postEdit(body.header(rKey),body.body(rKey))
                   .onSuccess {
-                      postsuccess.value = it
+                      postsuccess.value = "upsuccess"
                   }
                   .onFailure {
 
@@ -38,6 +43,42 @@ class PostViewModule :BaseViewModel(){
             ApiClient.createApi<CircleNetWork>().getPlate(body.header(rKey),body.body(rKey))
                 .onSuccess {
                      plateBean.value = it
+                }
+                .onFailure {
+
+                }
+        })
+    }
+
+    /**
+     * 获取省市区ID
+     */
+    fun getCityDetailBylngAndlat(latY: Double,lngX:Double) {
+        var body = HashMap<String, Any>()
+        body["latY"] = latY
+        body["lngX"] = lngX
+        launch(block =  {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getCityDetailBylngAndlat(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    cityCode.value= it
+                }
+                .onFailure {
+
+                }
+        })
+
+    }
+
+
+    fun getOSS(){
+        launch(block =  {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    stsBean.value= it
                 }
                 .onFailure {
 

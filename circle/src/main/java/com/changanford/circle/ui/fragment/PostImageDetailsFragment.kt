@@ -3,11 +3,6 @@ package com.changanford.circle.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.ScaleAnimation
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostBarBannerAdapter
@@ -23,9 +18,7 @@ import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -293,6 +286,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 }
                 binding.bottomView.tvLikeNum.text =
                     "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).postValue(mData.isLike)
             }
         })
         viewModel.collectionPostsBean.observe(this, {
@@ -320,7 +314,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             binding.bottomView.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             initData()
-//            binding. nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
         })
         viewModel.followBean.observe(this, {
             val isFol = mData.authorBaseVo?.isFollow

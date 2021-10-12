@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.graphics.Color
+import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -57,6 +58,11 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
 
         viewModel.addressList.observe(this, Observer {
             completeRefresh(it, addAdapter)
+            if (null == it || it.size == 0) {
+                binding.add.visibility = View.GONE
+            } else {
+                binding.add.visibility = View.VISIBLE
+            }
         })
 
         viewModel.saveAddressStatus.observe(this, Observer {
@@ -82,6 +88,16 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
         binding.add.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.EditAddressUI)
         }
+    }
+
+    override fun showEmpty(): View? {
+        emptyBinding.viewStatusIcon.setImageResource(com.changanford.common.R.mipmap.ic_empty_no_address)
+        emptyBinding.viewStatusText.text = "您暂时还没有收货地址哦~"
+        emptyBinding.btnAddAddress.visibility = View.VISIBLE
+        emptyBinding.btnAddAddress.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.EditAddressUI)
+        }
+        return super.showEmpty()
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

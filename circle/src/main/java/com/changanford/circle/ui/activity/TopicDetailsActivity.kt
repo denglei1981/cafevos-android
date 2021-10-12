@@ -18,6 +18,7 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
+import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
@@ -150,6 +151,18 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 tvContent.text = it.description
             }
             binding.barTitleTv.text = it.name
+
+            binding.shareImg.setOnClickListener { _ ->
+                CircleShareModel.shareDialog(
+                    this,
+                    0,
+                    it.shareBeanVO,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            }
         })
     }
 

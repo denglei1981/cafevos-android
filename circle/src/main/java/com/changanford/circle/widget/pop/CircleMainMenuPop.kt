@@ -62,6 +62,7 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
 
         adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
+
                 when (position) {
                     0 -> {
                         listener.checkLongBar()

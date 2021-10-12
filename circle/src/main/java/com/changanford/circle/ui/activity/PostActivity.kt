@@ -1,6 +1,5 @@
 package com.changanford.circle.ui.activity
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Color
@@ -11,16 +10,16 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
+import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
@@ -33,13 +32,16 @@ import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.PlateBean
 import com.changanford.circle.databinding.PostActivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
+import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.bean.ImageUrlBean
+import com.changanford.common.bean.STSBean
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.FullyGridLayoutManager
-import com.changanford.common.util.PictureUtil
+import com.changanford.common.router.startARouterForResult
+import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.logD
@@ -56,16 +58,38 @@ import com.yalantis.ucrop.UCrop
  */
 @Route(path = ARouterCirclePath.PostActivity)
 class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
+    private var platename: String=""
+    private var circlename: String=""
+    private var address: String = ""
     lateinit var postPicAdapter: PostPicAdapter
     private var selectList = ArrayList<LocalMedia>()
     private var type = 0
-    private lateinit var params: HashMap<String, Any>
+
+    private var params = hashMapOf<String, Any>()
     private lateinit var plateBean: PlateBean
+    private var nomalwith = 500;
+    private var nomalhight = 500;
+
+    private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
+
+
+    private val dialog by lazy{
+        LoadDialog(this).apply {
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            setLoadingText("图片上传中..")
+            show()
+        }
+    }
     private val buttomTypeAdapter by lazy {
         ButtomTypeAdapter()
     }
     private val buttomlabelAdapter by lazy {
         ButtomlabelAdapter()
+    }
+
+    companion object{
+         const val REQUEST_CIRCLE = 0x435
     }
 
     override fun initView() {
@@ -101,40 +125,48 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     override fun observe() {
         super.observe()
 
+        viewModel.postsuccess.observe(this, Observer {
+            if (dialog.isShowing){
+                dialog.dismiss()
+            }
+            "发布成功".toast()
+            finish()
+        })
+        viewModel.stsBean.observe(this, Observer {
+            it?.let {
+                upedimgs.clear()
+                uploadImgs(it,0,dialog)
+            }
+        })
+        viewModel.cityCode.observe(this, Observer {
+            params["cityCode"] = it.cityCode ?: ""
+            params["city"] = it.cityName
+        })
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
             .observe(this,
                 Observer {
-                    buttomTypeAdapter.setData(2,ButtomTypeBean(it.name, 1, 2))
+                    buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 2))
+                    params["topicId"] = it.topicId
                 })
-    }
 
-    override fun initData() {
-        onclick()
-        viewModel.getPlate() //获取发帖类型
-        initbuttom()
 
-        LiveDataBus.get().with(LiveDataBusKey.CIRCLECHOOSE, String::class.java)
-            .observe(this, Observer {
-                buttomTypeAdapter.setData(3,ButtomTypeBean(it, 1, 3))
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
+            {
+                it.location.latitude.toString().toast()
+                address = it.address
+                params["address"] = address
+                params["lat"] = it.location.latitude
+                params["lon"] = it.location.longitude
+                params["province"] = it.province ?: address
+                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
+
             })
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
 
         })
-        binding.title.barTvOther.setOnClickListener {
-            ispost()
-        }
-
-        binding.bottom.tvMok.setOnClickListener {
-
-        }
-        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
-            {
-                it.location.latitude.toString().toast()
-                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
-
-            })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
@@ -147,6 +179,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postPicAdapter.setList(selectList)
         })
 
+
+    }
+
+
+    override fun initData() {
+        onclick()
+        viewModel.getPlate() //获取发帖类型
+        initbuttom()
+        params["type"] = 2
         val manager = FullyGridLayoutManager(
             this,
             4, GridLayoutManager.VERTICAL, false
@@ -160,11 +201,56 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun onclick() {
+        binding.title.barImgBack.setOnClickListener {
+            if (binding.etBiaoti.text.toString().isEmpty()){
+                finish()
+            }else{
+                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                    override fun con() {
+
+                    }
+
+                    override fun save() {
+                        var postEntity = PostEntity()
+                        postEntity.content = binding.etContent.text.toString()
+                        postEntity.circleId = params["circleId"] as? String ?: "0"
+                        postEntity.circleName = circlename
+                        postEntity.plate = params["plate"] as? Int ?: 0
+                        postEntity.plateName = platename
+                        postEntity.topicId = params["topicId"] as? String ?: "0"
+//                    postEntity.topicName = binding.choseTopicTv.text.toString()  //关键词
+//                    postEntity.keywords = hashMap["keywords"].toString()  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                        postEntity.localMeadle = JSON.toJSONString(selectList)
+                        postEntity.actionCode = params["actionCode"].toString()
+//                    postEntity.fmpath = mAdapter.fmPath.toString()
+                        postEntity.type = params["type"].toString()
+                        postEntity.title =
+                            if (binding.etBiaoti.text == null) "" else "${binding.etBiaoti.text}"
+                        postEntity.address = params["address"] as? String ?: ""
+                        postEntity.lat = params["lat"] as? Double ?: 0.0
+                        postEntity.lon = params["lon"] as? Double ?: 0.0
+                        postEntity.city = params["city"] as? String ?: ""
+                        postEntity.province = params["province"] as? String ?: ""
+                        postEntity.cityCode = params["cityCode"] as? String ?: ""
+                        postEntity.creattime = System.currentTimeMillis().toString()
+                        viewModel.insertPostentity(postEntity)
+                        finish()
+                    }
+
+                    override fun unsave() {
+//                    viewModel.clearPost()
+                        finish()
+                    }
+
+                }).showPopupWindow()
+            }
+        }
         binding.bottom.ivEmoj.setOnClickListener {
             "表情未开发".toast()
         }
         binding.title.barTvOther.setOnClickListener {
-            "发帖".toast()
+            ispost()
         }
         binding.bottom.ivHuati.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseConversationActivity)
@@ -194,7 +280,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         override fun onClickItem(position: Int, str: String) {
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
-                            str.toast()
+                            platename = str
+                            params["plate"] = plateBean.plate[position].plate
+                            params["actionCode"] = plateBean.plate[position].actionCode
                         }
                     }).show()
                 } else {
@@ -218,7 +306,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         })
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            startARouter(ARouterCirclePath.ChoseCircleActivity)
+            startARouterForResult(
+                this,
+                ARouterCirclePath.ChoseCircleActivity,
+                REQUEST_CIRCLE
+            )
         }
 
         binding.bottom.ivLoc.setOnClickListener {
@@ -379,30 +471,122 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun ispost() {
-        if (selectList.size == 0) {
-            "请选择图片".toast()
-            return
-        } else if (binding.etBiaoti.text.isNullOrEmpty()) {
-            "请输入标题".toast()
-            return
-        } else if (binding.etContent.text.isNullOrEmpty()) {
-            "请输入正文内容".toast()
-        } else if (binding.etContent.text.isNotEmpty() && binding.etContent.text.length < 6) {
-            "内容不能少于6个".toast()
+        var biaoti = binding.etBiaoti.text.toString()
+        var content = binding.etContent.text.toString()
+        when {
+            selectList.size == 0 -> {
+                "请选择图片".toast()
+                return
+            }
+            biaoti.isNullOrEmpty() || biaoti.length < 6 || biaoti.length > 20 -> {
+                "请输入6-20字的帖子标题".toast()
+                return
+            }
+            content.isNullOrEmpty() -> {
+                "请输入正文内容".toast()
+            }
+            !params.containsKey("plate") -> {
+                "请选择模块".toast()
+            }
+            else -> {
+                params["content"] = content
+                params["title"] = biaoti
+                viewModel.getOSS()
+            }
         }
+    }
+
+    private fun uploadImgs(stsBean: STSBean, index: Int, dialog: LoadDialog) {
+        AliYunOssUploadOrDownFileConfig.getInstance(this).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+
+        val media = selectList[index]
+        val ytPath = PictureUtil.getFinallyPath(media)
+        Log.d("=============", "${ytPath}")
+        var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
+
+        val path =
+            stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
+                if (media.width == 0) {
+                    nomalwith
+                } else {
+                    media.width
+                }
+            }_${
+                if (media.height == 0) {
+                    nomalhight
+                } else {
+                    media.height
+                }
+            }." + type
+
+
+        params["pics"] = path
+
+        AliYunOssUploadOrDownFileConfig.getInstance(this)
+            .uploadFile(stsBean.bucketName, path, ytPath, "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(this).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+
+                upedimgs.add(ImageUrlBean(path,""))
+                val scount = index + 1
+                runOnUiThread {
+                    dialog.setTvprogress("${scount}/${selectList.size}")
+                }
+                if (scount == selectList.size) {
+                    params["imgUrl"] = upedimgs
+                    params["isPublish"]= 2
+                    JSON.toJSONString(params).logD()
+                    addPost(dialog)
+                    return
+                }
+                uploadImgs(stsBean, scount, dialog)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+                errCode.toast()
+                dialog.dismiss()
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+            }
+        })
+    }
+
+    fun addPost(dialog: LoadDialog) {
+        viewModel.postEdit(params)
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            val resultUri = UCrop.getOutput(data!!)
-            selectList[0].isCut = true
-            selectList[0].cutPath = resultUri?.path
-            postPicAdapter.setList(selectList)
-            postPicAdapter.notifyDataSetChanged()
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = UCrop.getError(data!!)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                UCrop.REQUEST_CROP -> {
+                    val resultUri = UCrop.getOutput(data!!)
+                    selectList[0].isCut = true
+                    selectList[0].cutPath = resultUri?.path
+                    postPicAdapter.setList(selectList)
+                    postPicAdapter.notifyDataSetChanged()
+                }
+                UCrop.RESULT_ERROR -> {
+                    val cropError = UCrop.getError(data!!)
+                }
+                REQUEST_CIRCLE -> {
+                    if (data != null) {
+                        params["circleId"] = data.getStringExtra("circleId") ?: "0"
+                        circlename = data.getStringExtra("name").toString()
+                        buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
+                    }
+                }
+            }
         }
     }
 

@@ -9,8 +9,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.room.SysUserInfoBean
+import com.changanford.common.utilext.load
+import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
@@ -18,6 +23,7 @@ import com.changanford.my.databinding.UiAllMedalBinding
 import com.changanford.my.ui.fragment.MedalFragment
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 
 /**
  *  文件名：AllMedalListUI
@@ -36,6 +42,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private var oldPosition = 0
 
     override fun initView() {
+        var num: Int = 0
+        var sysUserInfoBean: SysUserInfoBean = UserManger.getSysUserInfo()
+        var userInfoBean: UserInfoBean? = null
+        sysUserInfoBean?.userJson?.let {
+            userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)
+        }
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
@@ -48,9 +60,22 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     } else {
                         list.add(item)
                     }
+                    if (item.isGet == "1") {
+                        num++
+                    }
+                    userInfoBean?.ext?.medalId?.logE()
+                    if (item.medalId.equals("${userInfoBean?.ext?.medalId}")) {
+                        binding.imMedalWithIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
+                        binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
+                    }
                 }
                 medalMap.filterKeys { key ->
                     titles.add(key)
+                }
+                if (num == 0) {
+                    binding.imWithVipNum.text = "未获取勋章"
+                } else {
+                    binding.imWithVipNum.text = "${num}枚勋章"
                 }
                 initViewpager()
             }

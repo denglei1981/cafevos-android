@@ -228,3 +228,18 @@
     public static ** valueOf(java.lang.String);
 }
 
+#蓝松
+-keep class javax.** { *; }
+-keep class org.** { *; }
+-keep class com.lansosdk.** { *; }
+-keepclassmembers class com.lansosdk.videoeditor.LanSoEditor{ *; }
+-keep class java.lang.System
+-keepclassmembers class java.lang.System{ *; }
+
+#视频编辑
+-keep class com.esay.ffmtool.FfmpegTool{*;}
+-keepclassmembers class com.luck.picture.lib.entity.**{*;}
+
+#DKVideoPlayer
+-keep class com.dueeeke.videoplayer.** { *; }
+-dontwarn com.dueeeke.videoplayer.**

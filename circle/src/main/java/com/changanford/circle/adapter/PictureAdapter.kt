@@ -19,7 +19,7 @@ class PictureAdapter(activity: Activity, type: Int) :
 
     override fun onBind(
         holder: PictureAdapterViewHolder?,
-        data: LocalMedia?,
+        data: LocalMedia,
         position: Int,
         pageSize: Int
     ) {

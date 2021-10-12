@@ -78,10 +78,15 @@ kapt {
 dependencies {
 
     api(project(":base"))
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':picture_library')
     api project(path: ':videocompressor')
     api project(path: ':lansong')
+    //aar文件，否则打包失败
+    api(name: 'nativelib-uni', ext: 'aar')
+    api(name: 'alipaySdk-15.7.5-20200422171636-noUtdid', ext: 'aar')
+    api(name: 'openDefault-9.12.0', ext: 'aar')
+
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //multidex
     api "androidx.multidex:multidex:$versions_multidex"

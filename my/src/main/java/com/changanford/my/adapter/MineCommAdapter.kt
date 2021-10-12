@@ -56,11 +56,11 @@ object MineCommAdapter {
                     "", "0" -> {
                         if (item.jumpDataType == 99) {
                             it.des.text = "未满足"
-                            it.des.setTextColor(Color.parseColor("#AFB3B6"))
+                            it.des.setTextColor(Color.parseColor("#999999"))
                             it.des.setOnClickListener(null)
                         } else {
-                            it.des.text = "${item.noConditionName}  >"
-                            it.des.setTextColor(Color.parseColor("#FC883B"))
+                            it.des.text = "${item.noConditionName}"
+                            it.des.setTextColor(Color.parseColor("#01025C"))
                             it.des.setOnClickListener {
                                 if (context is UserAuthUI) {
                                     (context as UserAuthUI).isRequest = true
@@ -72,7 +72,7 @@ object MineCommAdapter {
                     }
                     "1" -> {
                         it.des.text = "已满足"
-                        it.des.setTextColor(Color.parseColor("#AFB3B6"))
+                        it.des.setTextColor(Color.parseColor("#999999"))
                         it.des.setOnClickListener(null)
                     }
                 }
@@ -531,7 +531,7 @@ object MineCommAdapter {
                         }
                         word.text = "补"
                         word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.text_01025C))
-                    }else{
+                    } else {
                         word.text = ""
                         icon.load(R.mipmap.checked)
                     }

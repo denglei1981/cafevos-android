@@ -10,13 +10,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="我创建的"
-        android:textColor="#ffafb3b6"
+        android:layout_marginTop="20dp"
+        android:textColor="#AFB3B6"
         android:layout_marginLeft="20dp"
         android:textSize="13sp"
         />
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         app:layout_constraintLeft_toLeftOf="@id/title"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"

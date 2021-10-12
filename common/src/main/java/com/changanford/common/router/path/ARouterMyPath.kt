@@ -26,8 +26,10 @@ object ARouterMyPath {
     const val SignTransparentUI = "/my/SignTransparentUI" //签到
     const val SignMonth = "/my/SignMonthUI" //签到
     const val AboutUI = "/my/AboutUI" //签到
+    const val MyPostDraftUI = "/my/MyPostDraftUI" //我的帖子 草稿
 
     const val UniUserIdcardUI = "/my/UniUserIdcardUI" //用户等级
+    const val MyVipUI = "/my/MyVipUI" //我的身份
     const val MineFollowUI = "/app/MineFollowUI" //我的发布
     const val MineMessageUI = "/my/MineMessageUI" //消息
     const val MineFansUI = "/my/MineFansUI" //我的粉丝

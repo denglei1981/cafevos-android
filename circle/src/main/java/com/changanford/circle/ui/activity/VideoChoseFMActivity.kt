@@ -73,6 +73,7 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         private const val SEL_TIME = 0
         private const val SUBMIT = 1
         private const val SAVE_BITMAP = 2
+         const val  FM_CALLBACK=0x5869
     }
 
     override fun initView() {
@@ -146,7 +147,7 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         FileHelper.saveBitmapToFile(bitmap, path)
         var bundle = Bundle()
         var selectList = arrayListOf(LocalMedia().apply {
-            this.path = path
+            this.path = cutpath
             this.realPath = path
             this.chooseModel = PictureMimeType.ofImage()
             this.mimeType = PictureMimeType.getImageMimeType(path)
@@ -154,6 +155,7 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         bundle.putParcelableArrayList("picList", selectList)
         bundle.putInt("position", 0)
         bundle.putInt("showEditType", -1)
+        bundle.putBoolean("isVideo",true)
         startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
 
     }
@@ -168,6 +170,7 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
                     bundle.putParcelableArrayList("picList", selectList)
                     bundle.putInt("position", 0)
                     bundle.putInt("showEditType", -1)
+                    bundle.putBoolean("isVideo",true)
                     startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
 
                 }

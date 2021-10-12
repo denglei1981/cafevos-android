@@ -28,7 +28,7 @@ object PictureUtil {
      * 获取最终地址
      */
     fun getFinallyPath(media: LocalMedia): String {
-        var path = ""
+        var path=""
         return if (media.isCut && !media.isCompressed) {
             media.cutPath
         } else if (media.isCompressed || media.isCut && media.isCompressed) {
@@ -360,7 +360,7 @@ object PictureUtil {
 
     fun ChoseVideo(
         activity: Activity,
-        datas: ArrayList<LocalMedia>,
+        datas: ArrayList<LocalMedia>?=null,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
         videoMaxSecond: Int = 4 * 60,//秒
         videoMinSecond: Int = 3

@@ -2,6 +2,7 @@ package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
 import com.changanford.common.bean.CircleListBean
+import com.changanford.common.bean.LocationDataBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
 import io.reactivex.Observable
@@ -186,6 +187,24 @@ interface CircleNetWork {
     ): CommonResponse<Any>
 
     /**
+     * 参与的圈子
+     */
+    @POST("con/circle/getJoinCircles")
+    suspend fun getjoinCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ChooseCircleBean>
+
+    /**
+     * 我创建的圈子
+     */
+    @POST("con/circle/getCreateCircles")
+    suspend fun getCreateCircles(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ChooseCircleBean>
+
+    /**
      *  一级评论回复列表
      */
     @POST("con/comment/childCommentList")
@@ -193,4 +212,55 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
+
+    @POST("/baseDealer/getCityDetailBylngAndlat")
+    suspend fun getCityDetailBylngAndlat(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ):CommonResponse<LocationDataBean>
+
+    /**
+     * 社区v2: 获取管理员信息
+     */
+    @POST("con/circle/getCircleRoles")
+    suspend fun getCircleRoles(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleRolesBean>
+
+    /**
+     * 社区v2: 获取申请管理员信息
+     */
+    @POST("con/circle/applyManagerInfo")
+    suspend fun applyManagerInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GetApplyManageBean>
+
+    /**
+     * 社区v2: 提交管理员申请信息
+     */
+    @POST("con/circle/applyManager")
+    suspend fun applyManager(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 社区v2: 取消 管理员申请信息
+     */
+    @POST("/con/circle/cancelApplyManager")
+    suspend fun cancelApplyManager(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 创建圈子
+     */
+    @POST("/con/circle/createCircle")
+    suspend fun addCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

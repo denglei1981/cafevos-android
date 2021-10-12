@@ -139,8 +139,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:drawableEnd="@drawable/icon_home_next"
                 android:gravity="center_vertical|start"
+                android:drawableEnd="@drawable/icon_home_small_next"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_12"
                 tools:text="@string/app_name" />
@@ -175,6 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_28"
             android:text="@string/home_hot_recommend"
             android:textColor="#ff343434"
             android:textSize="16sp"
@@ -188,6 +189,7 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:drawableEnd="@drawable/icon_home_small_next"
             android:drawablePadding="4dp"
+
             android:text="@string/home_more"
             android:textColor="#ff74889d"
             android:textSize="14sp"
@@ -211,10 +213,16 @@
             android:id="@+id/home_gray_line_2"
             style="@style/homeGraLine"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_rv_recommend" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/gr_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tv_home_hot,tv_home_more,home_gray_line_2,home_rv_recommend" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

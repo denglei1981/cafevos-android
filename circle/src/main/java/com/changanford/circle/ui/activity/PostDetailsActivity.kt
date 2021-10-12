@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity
 
+import android.view.MotionEvent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityPostDetailsBinding
@@ -61,5 +62,23 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.CLOSE_POST_DETAILS).observe(this, {
             finish()
         })
+    }
+
+    //点击区域接口
+    private var onOtherTouchListener: OnOtherTouchEvent? = null
+
+    interface OnOtherTouchEvent {
+        fun onTouchEvent(ev: MotionEvent?)
+    }
+
+    //注册点击区域
+    fun registerOnOtherTouchEvent(onOtherTouchListener: OnOtherTouchEvent) {
+        this.onOtherTouchListener = onOtherTouchListener
+    }
+
+    //回调点击区域
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        onOtherTouchListener?.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
 }
