@@ -2,11 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OptionVo" />
     </data>
     <androidx.appcompat.widget.AppCompatRadioButton
         android:layout_marginEnd="@dimen/dp_10"
         android:id="@+id/radioButton"
-        android:text="@string/str_text"
+        android:text="@{model.optionName}"
         style="@style/rb_goods"/>
 </layout>

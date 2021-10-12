@@ -8,7 +8,7 @@ import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.SkuVo
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
-import com.changanford.shop.adapter.goods.GoodsAttributeAdapter
+import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.utils.WCommonUtil
 import razerdp.basepopup.BasePopupWindow
@@ -21,21 +21,20 @@ import razerdp.util.animation.TranslationConfig
  */
 open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
-    private val colorAdapter by lazy { GoodsAttributeAdapter(0) }
-    private val specificationAdapter by lazy { GoodsAttributeAdapter(0) }
     var skuItem: MutableLiveData<SkuVo> = MutableLiveData()
+    private val mAdapter by lazy { GoodsAttributeIndexAdapter() }
     init {
         contentView=viewDataBinding.root
         initView()
         initData()
     }
     private fun initView(){
+        viewDataBinding.recyclerView.adapter=mAdapter
         viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
-        viewDataBinding.rvColor.adapter=colorAdapter
-        viewDataBinding.rvSpecifications.adapter=specificationAdapter
     }
     private fun initData(){
         viewDataBinding.model=dataBean
+        mAdapter.setList(dataBean.attributes)
         skuItem.postValue(dataBean.skuVos[0])
         skuItem.observe(activity,{
             viewDataBinding.sku=it
@@ -46,8 +45,6 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             val max=limitBuyNum?:it.stock
             viewDataBinding.addSubtractView.setMax(max.toInt())
         })
-        colorAdapter.setList(arrayListOf("红色","黑色","蓝色"))
-        specificationAdapter.setList(arrayListOf("64G","128G","512G"))
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {
