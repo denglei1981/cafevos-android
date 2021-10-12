@@ -14,6 +14,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.utils.WCommonUtil
+import razerdp.basepopup.BasePopupWindow
 
 /**
  * @Author : wenke
@@ -22,40 +23,39 @@ import com.changanford.shop.utils.WCommonUtil
  */
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding) {
+    private var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
-    private lateinit var datas: GoodsDetailBean
-    fun bindingData(datas:GoodsDetailBean){
-        this.datas=datas
-        val fbLine=datas.fbLine//划线积分
-        headerBinding.inGoodsInfo.model=datas
-        BannerControl.bindingBannerFromDetail(headerBinding.banner,datas.imgs,0)
-        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,datas.detailsHtml)
+    private lateinit var dataBean: GoodsDetailBean
+    fun bindingData(dataBean:GoodsDetailBean){
+        this.dataBean=dataBean
+        getSkuTxt(dataBean.skuVos[0].skuCode)
+        val fbLine=dataBean.fbLine//划线积分
+        headerBinding.inGoodsInfo.model=dataBean
+        headerBinding.inVip.model=dataBean
+        BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
+        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
-        when(datas.spuPageType){
-            "MEMBER_EXCLUSIVE"->{
-                headerBinding.inVip.layoutVip.visibility=View.VISIBLE
-                headerBinding.inVip.model=datas
-            }
+        when(dataBean.spuPageType){
+            "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
             "MEMBER_DISCOUNT"-> {
                 headerBinding.inDiscount.lLayoutVip.visibility=View.VISIBLE
-                headerBinding.inDiscount.tvVipIntegral.setText(datas.fbPrice)
+                headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
             }
-            "SECKILL"->{
-                //秒杀信息
-                val secKillInfo=datas.secKillInfo
+            "SECKILL"->{//秒杀信息
+                val secKillInfo=dataBean.secKillInfo
                 if(null!=secKillInfo){
-                    headerBinding.inKill.model=datas
+                    headerBinding.inKill.model=dataBean
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inKill.layoutKill.visibility= View.VISIBLE
-                    if(null!=datas.now)initTimeCount(datas.now!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
-                    val purchasedNum=datas.purchasedNum?:0
-                    headerBinding.inKill.tvStockProportion.setText("${purchasedNum/datas.stock*100}")
+                    if(null!=dataBean.now)initTimeCount(dataBean.now!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
+                    val purchasedNum=dataBean.purchasedNum?:0
+                    headerBinding.inKill.tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
                     if(null==fbLine)headerBinding.inKill.tvFbLine.visibility= View.GONE
                 }
             }
         }
-        bindingComment(datas.mallOrderEval)
+        bindingComment(dataBean.mallOrderEval)
     }
     /**
      * 评价信息
@@ -96,12 +96,31 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
-        if(::datas.isInitialized){
-            val pop= GoodsAttrsPop(activity,this.datas)
-            pop.showPopupWindow()
+        if(::dataBean.isInitialized&&skuCode.isNotEmpty()){
+            GoodsAttrsPop(activity,this.dataBean,skuCode).apply {
+                showPopupWindow()
+                onDismissListener=object : BasePopupWindow.OnDismissListener() {
+                    override fun onDismiss() {
+                        getSkuTxt(_skuCode)
+                    }
+                }
+            }
         }
     }
+    private fun getSkuTxt(skuCode:String){
+        this.skuCode=skuCode
+        val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
+        dataBean.fbPrice=findItem.fbPrice
+        dataBean.stock=findItem.stock.toInt()
+        val skuCodes=skuCode.split("-")
+        var skuCodeTxt=""
+        for((i,item) in dataBean.attributes.withIndex()){
+            val optionVosItem=item.optionVos.find { skuCodes[i+1]== it.optionId }
+            skuCodeTxt+="${optionVosItem?.optionName}  "
+        }
+        WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvGoodsAttrs,"选择 <font color=\"#333333\">已选：${skuCodeTxt}</font>")
 
+    }
     fun onDestroy(){
         timeCount?.cancel()
     }

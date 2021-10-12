@@ -8,9 +8,7 @@
             type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
     <LinearLayout
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:id="@+id/layout_vip"
+
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/dp_20"
         android:paddingStart="@dimen/dp_20"
@@ -19,6 +17,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/tv_vipExclusive"
             android:layout_marginEnd="@dimen/dp_5"
             android:background="@drawable/shadow_00142e_2dp"
@@ -27,7 +27,7 @@
             android:minHeight="@dimen/dp_16"
             android:minWidth="@dimen/dp_48"
             android:gravity="center"
-            android:text="@string/str_vipDiscount"
+            android:text="@string/str_vipExclusive"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
         <com.changanford.shop.view.TypefaceTextView

@@ -185,7 +185,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
                     tabLayout.getTabAt(1)?.select()
                 }
-
                 binding.inHeader.imgBack.background.alpha=0
                 binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back_black)
 

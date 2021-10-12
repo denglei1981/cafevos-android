@@ -10,7 +10,7 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 
-class GoodsAttributeAdapter(val pos:Int,var optionId:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
+class GoodsAttributeAdapter(private val pos:Int, var optionId:String, val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {

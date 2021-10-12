@@ -146,8 +146,8 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    val fbLine: String? = "0",
-    val fbPrice: String? = "0",
+    var fbLine: String? = "0",
+    var fbPrice: String? = "0",
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",
@@ -160,7 +160,7 @@ data class GoodsDetailBean(
     val skuCodeRule: String = "",
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",
-    val stock: Int = 0,
+    var stock: Int = 0,
     val mallOrderEval:CommentItem?,
     var isCollection:Boolean=false,//是否收藏
     var stockProportion:String="0",//库存百分比 0-100
@@ -195,7 +195,8 @@ data class SkuVo(
     val skuCode: String = "",
     val skuId: String = "0",
     val skuImg: String = "",
-    val stock: String = "0"
+    val stock: String = "0",
+    var skuTxt:String?=""
 )
 
 data class OptionVo(

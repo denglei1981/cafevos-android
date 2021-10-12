@@ -28,14 +28,15 @@
             android:paddingTop="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_25"
             tools:minHeight="450dp">
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_cover"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/shadow_1b51d9_5dp"
                 android:scaleType="fitXY"
                 android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_80"/>
+                android:layout_height="@dimen/dp_80"
+                app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
             <ImageView
                 android:id="@+id/img_close"
                 android:padding="@dimen/dp_6"

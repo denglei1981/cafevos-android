@@ -39,13 +39,22 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
                 if(number>minValue)number--
             }
         }
+
         tvNumberValue.text="$number"
     }
     fun setMax(max:Int){
         this.maxValue=max
+        if(minValue<number){
+            number=minValue
+            tvNumberValue.text= minValue.toString()
+        }
     }
     fun setMine(min:Int){
         this.minValue=min
+        if(minValue>number){
+            number=minValue
+            tvNumberValue.text= minValue.toString()
+        }
     }
     fun getNumber():Int{
         return number

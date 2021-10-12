@@ -1,6 +1,7 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Attribute
@@ -9,8 +10,8 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 
-class GoodsAttributeIndexAdapter(var skuCode:String): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
-   private var skuCodes:ArrayList<String> = skuCode.split("-") as ArrayList<String>//"108-1-31-43"
+class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
+    private lateinit var skuCodes:ArrayList<String>//"108-1-31-43"[108,1,31,43]
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>, item: Attribute) {
         val dataBinding=holder.dataBinding
@@ -18,7 +19,8 @@ class GoodsAttributeIndexAdapter(var skuCode:String): BaseQuickAdapter<Attribute
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
-            val mAdapter=GoodsAttributeAdapter(position+1,skuCodes[position+1],object :GoodsAttributeAdapter.OnSelectedBackListener{
+            val pos=position+1
+            val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],object :GoodsAttributeAdapter.OnSelectedBackListener{
                 override fun onSelectedBackListener(pos: Int, item: OptionVo) {
                     item.optionId.also { skuCodes[pos] = it }
                     updateSkuCode()
@@ -28,10 +30,18 @@ class GoodsAttributeIndexAdapter(var skuCode:String): BaseQuickAdapter<Attribute
             mAdapter.setList(item.optionVos)
         }
     }
-    private fun updateSkuCode(){
-        skuCode=""
+    fun setSkuCodes(skuCode:String){
+        skuCodes= skuCode.split("-") as ArrayList<String>
+    }
+    fun getSkuCodes():ArrayList<String>{
+        return skuCodes
+    }
+    fun updateSkuCode(){
+        var skuCode=""
         skuCodes.forEach{
             skuCode+="$it-"
         }
+        skuCode=skuCode.substring(0,skuCode.length-1)
+        skuCodeLiveData.postValue(skuCode)
     }
 }

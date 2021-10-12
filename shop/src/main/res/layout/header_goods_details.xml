@@ -26,11 +26,11 @@
         <include
             android:id="@+id/inKill"
             layout="@layout/in_goods_details_kill"/>
-        <!-- 会员折扣       -->
+        <!-- 会员专享       -->
         <include
             android:id="@+id/in_vip"
             layout="@layout/in_goods_detsils_vip"/>
-        <!-- 会员专享    -->
+        <!-- 会员折扣    -->
         <include
             android:id="@+id/in_discount"
             android:layout_marginTop="@dimen/dp_10"
