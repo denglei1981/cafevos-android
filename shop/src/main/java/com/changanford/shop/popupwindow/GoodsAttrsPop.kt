@@ -22,7 +22,8 @@ import razerdp.util.animation.TranslationConfig
 open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
     var skuItem: MutableLiveData<SkuVo> = MutableLiveData()
-    private val mAdapter by lazy { GoodsAttributeIndexAdapter() }
+    private var skuCode=""
+    private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCode) }
     init {
         contentView=viewDataBinding.root
         initView()
@@ -34,6 +35,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     }
     private fun initData(){
         viewDataBinding.model=dataBean
+        skuCode=dataBean.skuVos[0].skuCode//默认选中第一个
+        mAdapter.skuCode=skuCode
         mAdapter.setList(dataBean.attributes)
         skuItem.postValue(dataBean.skuVos[0])
         skuItem.observe(activity,{

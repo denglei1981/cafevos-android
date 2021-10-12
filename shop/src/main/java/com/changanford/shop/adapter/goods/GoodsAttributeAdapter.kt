@@ -10,22 +10,22 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 
-class GoodsAttributeAdapter(var selectPos:Int): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
+class GoodsAttributeAdapter(val pos:Int,var optionId:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
         val dataBinding=holder.dataBinding
-        val position=holder.absoluteAdapterPosition
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
-            dataBinding.radioButton.isChecked= if(selectPos==position){
+            dataBinding.radioButton.isChecked= if(optionId==item.optionId){
                 lastRb=dataBinding.radioButton
                 true
             }else false
             dataBinding.radioButton.setOnClickListener {
                 selectRb(dataBinding.radioButton)
-                selectPos=position
+                optionId=item.optionId
+                listener.onSelectedBackListener(pos,item)
             }
         }
     }
@@ -33,5 +33,8 @@ class GoodsAttributeAdapter(var selectPos:Int): BaseQuickAdapter<OptionVo, BaseD
         if(::lastRb.isInitialized)lastRb.isChecked=false
         rb.isChecked=true
         lastRb=rb
+    }
+    interface OnSelectedBackListener {
+        fun onSelectedBackListener(pos: Int,item: OptionVo)
     }
 }

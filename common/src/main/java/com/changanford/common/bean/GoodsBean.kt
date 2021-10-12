@@ -164,7 +164,8 @@ data class GoodsDetailBean(
     val mallOrderEval:CommentItem?,
     var isCollection:Boolean=false,//是否收藏
     var stockProportion:String="0",//库存百分比 0-100
-    val spuName:String?=""
+    val spuName:String?="",
+    val spuId:String?=""
 )
 
 data class Attribute(
@@ -198,7 +199,7 @@ data class SkuVo(
 )
 
 data class OptionVo(
-    val optionId: Int = 0,
+    val optionId: String = "0",
     val optionName: String = ""
 )
 /**
