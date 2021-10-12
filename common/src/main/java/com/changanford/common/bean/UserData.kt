@@ -61,7 +61,7 @@ data class UserInfoBean(
     val remark: String,
     val searchValue: String,
     val sex: Int,
-    val status: Int,
+    var status: Int,
     val updateBy: String,
     val updateTime: String,
     val userId: String,
@@ -85,7 +85,7 @@ data class Ext(
     val headFrameImage: String,
     val headFrameName: String,
     val imags: List<Imag>,
-    val integralDecimal: Int,
+    var integralDecimal: Int? = 0,
     val medalId: Int,
     val memberIcon: String,
     val memberId: Int,
@@ -214,9 +214,19 @@ data class AuthImagesItem(
     val imgUrls: List<String> = arrayListOf()
 )
 
+data class ShopBean(
+    val dataList: List<MyShopBean>? = arrayListOf(),
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
+)
+
 data class MyShopBean(
     val imageUrl: String = "",
-    val shopName: String = "",
-    val integral: String = "0",
-    val collectNum: String = "0"
+    val spuName: String = "",
+    val normalFb: String = "0",
+    val count: String = "0",
+    val spuImgs: String = "",
+    val mallMallSpuId: String
 )

@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -14,14 +13,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MedalListBeanItem
-import com.changanford.common.databinding.ItemMedalBinding
 import com.changanford.common.databinding.ItemPersonMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
-import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiPersonCenterBinding
@@ -57,23 +53,60 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
         viewModel.queryOtherInfo(userId) {
             it.onSuccess { user ->
                 user?.let {
-                    if (user.userId == userId) {
-                        binding.btnFollow.visibility = View.GONE
-                    }
-                    binding.headIcon.load(user.avatar, R.mipmap.my_headdefault)
-                    binding.nickName.text = user.nickname
-                    binding.userGrade.text = user.ext?.growSeriesName
-                    binding.followLayout.apply {
-                        followNum.text = "${MineUtils.num(user.count?.follows.toLong())}"
-                        fansNum.text = "${MineUtils.num(user.count?.fans.toLong())}"
-                        goodNum.text = "${MineUtils.num(user.count?.likeds.toLong())}"
-                    }
-                    binding.userDesc.text = if (user.brief.isNullOrEmpty()) "这个人很赖~" else user.brief
-                    binding.btnFollow.text = if (user.isFollow == 0) "关注" else "已关注"
+                    when (it.status) {
+                        2 -> {
+                            binding.contentLayout.visibility = View.GONE
+                            binding.clearLayout.apply {
+                                hintLayout.visibility = View.VISIBLE
+                                mineToolbar.toolbarTitle.text = "个人中心"
+                                mineToolbar.toolbar.setNavigationOnClickListener { back() }
+                                MineUtils.setTextNum(myFansDefNum, "粉丝", 0)
+                                MineUtils.setTextNum(myFollowDefNum, "关注", 0)
+                                MineUtils.setTextNum(myGoodDefNum, "获赞数", 0)
+                            }
+                        }
+                        else -> {
+                            binding.contentLayout.visibility = View.VISIBLE
+                            binding.clearLayout.hintLayout.visibility = View.GONE
 
-                    binding.userVip.visibility =
-                        if (user.ext?.medalName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-                    binding.userVip.text = user.ext?.memberName
+                            if (user.userId == userId) {
+                                binding.btnFollow.visibility = View.GONE
+                            }
+                            binding.headIcon.load(user.avatar, R.mipmap.my_headdefault)
+                            binding.nickName.text = user.nickname
+                            binding.userGrade.text = user.ext?.growSeriesName
+                            binding.followLayout.apply {
+                                followNum.text = "${MineUtils.num(user.count?.follows.toLong())}"
+                                fansNum.text = "${MineUtils.num(user.count?.fans.toLong())}"
+                                goodNum.text = "${MineUtils.num(user.count?.likeds.toLong())}"
+
+                                followNum.setOnClickListener {
+                                    mapOf(
+                                        RouterManger.KEY_TO_ID to 2,
+                                        "userId" to userId,
+                                        "title" to "TA的关注"
+                                    )
+                                    RouterManger.param(RouterManger.KEY_TO_ID, 2)
+                                        .param(RouterManger.KEY_TO_OBJ, userId)
+                                        .param("title", "TA的关注")
+                                        .startARouter(ARouterMyPath.MineFansUI)
+                                }
+                                fansNum.setOnClickListener {
+                                    RouterManger.param(RouterManger.KEY_TO_ID, 1)
+                                        .param(RouterManger.KEY_TO_OBJ, userId)
+                                        .param("title", "TA的粉丝")
+                                        .startARouter(ARouterMyPath.MineFansUI)
+                                }
+                            }
+                            binding.userDesc.text =
+                                if (user.brief.isNullOrEmpty()) "这个人很赖~" else user.brief
+                            binding.btnFollow.text = if (user.isFollow == 0) "关注" else "已关注"
+
+                            binding.userVip.visibility =
+                                if (user.ext?.medalName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+                            binding.userVip.text = user.ext?.memberName
+                        }
+                    }
                 }
             }
         }

@@ -1,12 +1,10 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -900,4 +898,19 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<OcrBean>
+
+
+    //我的足迹 商品
+    @POST("mall/myMallFootprint")
+    suspend fun queryShopFoot(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopBean>
+
+    //我的收藏 商品
+    @POST("mall/myMallCollect")
+    suspend fun queryShopCollect(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopBean>
 }

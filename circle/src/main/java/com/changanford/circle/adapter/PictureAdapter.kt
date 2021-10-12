@@ -8,13 +8,13 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.zhpan.bannerview.BaseBannerAdapter
 
 
-class PictureAdapter(activity: Activity, type: Int) :
+class PictureAdapter(activity: Activity, type: Int,var content:String) :
     BaseBannerAdapter<LocalMedia, PictureAdapterViewHolder>() {
     var activity: Activity = activity
     var type: Int = type
     override fun createViewHolder(itemView: View, viewType: Int): PictureAdapterViewHolder {
 
-        return PictureAdapterViewHolder(itemView, activity = activity, type =type)
+        return PictureAdapterViewHolder(itemView, activity = activity, type =type,content)
     }
 
     override fun onBind(

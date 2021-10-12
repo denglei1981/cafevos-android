@@ -18,7 +18,7 @@
             android:id="@+id/title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:text="恭喜你获得新的勋章"
             android:textColor="#01025C"
             android:textSize="@dimen/sp_15" />
@@ -28,9 +28,9 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:minWidth="130dp"
-            android:minHeight="130dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:minWidth="@dimen/dp_112"
+            android:minHeight="@dimen/dp_112"
             android:src="@mipmap/ic_launcher" />
 
 
@@ -38,7 +38,7 @@
             android:id="@+id/medal_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:text="光新增"
             android:textColor="#071726"
             android:textSize="@dimen/sp_15" />
@@ -47,10 +47,20 @@
             android:id="@+id/get_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/dp_9"
             android:text="恭喜你获得"
             android:textColor="#71747B"
             android:textSize="@dimen/sp_13" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_get_take"
+            style="@style/login_btn_style"
+            android:layout_width="@dimen/dp_230"
+            android:layout_height="@dimen/dp_40"
+            android:text="立即点亮"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone" />
 
     </LinearLayout>
 

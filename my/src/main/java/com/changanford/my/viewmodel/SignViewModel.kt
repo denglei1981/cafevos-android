@@ -596,20 +596,22 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    var fansLive: MutableLiveData<FansListBean> = MutableLiveData()
-
-    suspend fun queryFansList(pageNo: Int, type: Int, userId: String) {
-        var fans = fetchRequest {
-            var map = mapOf("type" to type, "userId" to userId)
-            var body = HashMap<String, Any>()
-            body["pageNo"] = pageNo
-            body["pageSize"] = 20
-            body["queryParams"] = map
-            var rkey = getRandomKey()
-            apiService.queryFansList(body.header(rkey), body.body(rkey))
-        }
-        if (fans.code == 0) {
-            fansLive.postValue(fans.data)
+    fun queryFansList(
+        pageNo: Int,
+        type: Int,
+        userId: String,
+        result: (CommonResponse<FansListBean>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var map = mapOf("type" to type, "userId" to userId)
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = 20
+                body["queryParams"] = map
+                var rkey = getRandomKey()
+                apiService.queryFansList(body.header(rkey), body.body(rkey))
+            })
         }
     }
 

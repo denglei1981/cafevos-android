@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.PlateBean
+import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.basic.PostRoomViewModel
@@ -18,6 +19,7 @@ class PostViewModule() :PostRoomViewModel(){
     val plateBean = MutableLiveData<PlateBean>()
     val cityCode = MutableLiveData<LocationDataBean>()
     val stsBean = MutableLiveData<STSBean>()
+    val keywords = MutableLiveData<List<PostKeywordBean>>()
       fun postEdit(params: HashMap<String,Any>){
          launch (block = {
               val body = params
@@ -49,6 +51,25 @@ class PostViewModule() :PostRoomViewModel(){
                 }
         })
     }
+
+    /**
+     * 获取发帖模块
+     */
+    fun getKeyWords(){
+        launch(block =  {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getkeywords(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    keywords.value = it
+                }
+                .onFailure {
+
+                }
+        })
+    }
+
+
 
     /**
      * 获取省市区ID

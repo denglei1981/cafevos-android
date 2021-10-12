@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.content.Intent
 import android.os.Build
+import android.os.Parcelable
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -16,8 +17,10 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.bus.LiveDataBusKey.LONGPOSTFM
 import com.luck.picture.lib.entity.LocalMedia
 import com.yalantis.ucrop.UCrop
+import java.util.ArrayList
 
 /**
  * 图片编辑
@@ -28,7 +31,11 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
     var selectorPosition = 0
     var showEditType = -1
     var isVideo = false
+    var longPostFM = false
     var FMPath: String = ""
+    var longpostItemSelect = false
+    var itemposition = 0  //长图图片选择的item
+    var itemcontent = ""  //长图图片选择过来的编辑内容
     override fun initView() {
 
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
@@ -38,6 +45,10 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
         isVideo = intent.getBooleanExtra("isVideo", false)
         selectorPosition = intent.getIntExtra("position", 0)
         showEditType = intent.getIntExtra("showEditType", -1)
+        longPostFM = intent.getBooleanExtra("longPostFM",false)
+        itemposition = intent.getIntExtra("itemPosition",0)
+        longpostItemSelect= intent.getBooleanExtra("longpostItemSelect",false)
+        itemcontent = intent.getStringExtra("itemcontent")?:""
         binding.title.barTvOther.text = "下一步"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
@@ -56,7 +67,20 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
                 }
                 LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(FMPath)
             } else {
-                LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(mediaList)
+                if (longPostFM){
+                    LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).postValue(mediaList?.get(0))
+                }else if(longpostItemSelect){
+                    val intent = Intent()
+                    intent.putParcelableArrayListExtra(
+                        "itemMedia",
+                        mediaList as ArrayList<out Parcelable?>?
+                    )
+                    intent.putExtra("position",itemposition)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                } else{
+                    LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(mediaList)
+                }
             }
             finish()
         }
@@ -68,7 +92,7 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
             .setIndicatorVisibility(View.GONE)
             .setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
             .setInterval(3500)
-            .setAdapter(PictureAdapter(this, showEditType))
+            .setAdapter(PictureAdapter(this, showEditType,itemcontent))
             .registerOnPageChangeCallback(object : OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

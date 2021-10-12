@@ -1,6 +1,8 @@
 package com.changanford.my.ui
 
 import android.graphics.Typeface
+import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -13,17 +15,20 @@ import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
+import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.databinding.UiAllMedalBinding
 import com.changanford.my.ui.fragment.MedalFragment
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：AllMedalListUI
@@ -40,6 +45,8 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private val titles: ArrayList<String> = ArrayList()
 
     private var oldPosition = 0
+
+    private var medalItem: MedalListBeanItem? = null
 
     override fun initView() {
         var num: Int = 0
@@ -62,6 +69,9 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     }
                     if (item.isGet == "1") {
                         num++
+                        if (null == medalItem) {
+                            medalItem = item
+                        }
                     }
                     userInfoBean?.ext?.medalId?.logE()
                     if (item.medalId.equals("${userInfoBean?.ext?.medalId}")) {
@@ -84,6 +94,17 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         binding.mineMedal.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.MineMedalUI)
         }
+
+        //弹框领取勋章
+        viewModel.wearMedal.observe(this, Observer {
+            if ("true" == it) {
+                showToast("已点亮")
+                LiveDataBus.get().with("refreshMedal", String::class.java)
+                    .postValue("${medalItem?.medalId},")
+            } else {
+                showToast(it)
+            }
+        })
     }
 
     private fun initViewpager() {
@@ -167,10 +188,38 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 tab.customView = itemHelpTabBinding.root
             }.attach()
         }
+
+        medalItem?.let { item ->
+            PopSuccessMedal().apply {
+                binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
+                binding.medalName.text = item?.medalName
+                binding.getTitle1.text = item?.fillCondition
+                binding.btnGetTake.visibility = View.VISIBLE
+                binding.btnGetTake.setOnClickListener {
+                    dismiss()
+                    viewModel.wearMedal(item.medalId, "2")
+                }
+            }.showPopupWindow()
+        }
     }
 
     override fun initData() {
         super.initData()
         viewModel.mineMedal()
+    }
+
+    inner class PopSuccessMedal : BasePopupWindow(this) {
+        var binding = PopMedalBinding.inflate(layoutInflater)
+
+        init {
+            contentView = binding.root
+            popupGravity = Gravity.CENTER
+        }
+
+        override fun onViewCreated(contentView: View) {
+            super.onViewCreated(contentView)
+
+            binding.close.setOnClickListener { dismiss() }
+        }
     }
 }

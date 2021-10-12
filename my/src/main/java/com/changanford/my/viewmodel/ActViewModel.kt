@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.AccBean
 import com.changanford.common.bean.InfoBean
 import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.ShopBean
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
 
@@ -267,4 +268,36 @@ class ActViewModel : ViewModel() {
             })
         }
     }
+
+
+    /**
+     * 我的足迹 商品
+     */
+    fun queryShopFoot(pageNo: Int, result: (CommonResponse<ShopBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
+                var rkey = getRandomKey()
+                apiService.queryShopFoot(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    /**
+     * 我的收藏 商品
+     */
+    fun queryShopCollect(pageNo: Int, result: (CommonResponse<ShopBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
+                var rkey = getRandomKey()
+                apiService.queryShopCollect(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
 }

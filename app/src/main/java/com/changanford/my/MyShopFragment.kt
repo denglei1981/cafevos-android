@@ -3,12 +3,13 @@ package com.changanford.my
 import android.os.Bundle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MyShopBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.databinding.ItemMyShopBinding
+import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -18,7 +19,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  描述: TODO
  *  修改描述：TODO
  */
-class MyShopFragment : BaseMineFM<FragmentActBinding, EmptyViewModel>() {
+class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     var type: String = ""
     var userId: String = ""
@@ -38,27 +39,58 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, EmptyViewModel>() {
         }
     }
 
-    override fun initRefreshData(pageSize: Int) {
-        super.initRefreshData(pageSize)
-        completeRefresh(arrayListOf(MyShopBean(), MyShopBean(), MyShopBean()), shopAdapter)
-    }
 
     override fun initView() {
         binding.rcyAct.rcyCommonView.adapter = shopAdapter
+        arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
+            type = it
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyAct.smartCommonLayout
     }
 
+    override fun initRefreshData(pageSize: Int) {
+        super.initRefreshData(pageSize)
+        when (type) {
+            "collectShop" -> {
+                viewModel.queryShopCollect(pageSize) {
+                    it?.data?.let {
+                        completeRefresh(it.dataList, shopAdapter, it.total)
+                    }
+                }
+            }
+            "footShop" -> {
+                viewModel.queryShopFoot(pageSize) {
+                    it?.data?.let {
+                        completeRefresh(it.dataList, shopAdapter, it.total)
+                    }
+                }
+            }
+        }
+    }
+
     inner class ShopAdapter :
         BaseQuickAdapter<MyShopBean, BaseDataBindingHolder<ItemMyShopBinding>>(R.layout.item_my_shop) {
         override fun convert(holder: BaseDataBindingHolder<ItemMyShopBinding>, item: MyShopBean) {
             holder.dataBinding?.let {
-                it.itemIcon.load(item.imageUrl, R.mipmap.ic_launcher)
-                it.itemName.text = item.shopName
-                it.itemIntegral.text = "${item.integral}积分"
-                it.itemCollectNum.text = "${item.collectNum}收藏"
+                try {
+                    item.spuImgs?.let { img ->
+                        var imgs = img.split(",")
+                        if (imgs.size > 1) {
+                            it.itemIcon.load(imgs[0], R.mipmap.ic_launcher)
+                        }
+                    }
+                } catch (e: Exception) {
+
+                }
+                it.itemName.text = item.spuName
+                it.itemIntegral.text = "${item.normalFb}积分"
+                it.itemCollectNum.text = "${item.count}人收藏"
+            }
+            holder.itemView.setOnClickListener {
+                JumpUtils.instans?.jump(3, item.mallMallSpuId)
             }
         }
     }
