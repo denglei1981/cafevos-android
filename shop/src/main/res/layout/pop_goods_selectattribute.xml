@@ -4,7 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="sku"
+            type="com.changanford.common.bean.SkuVo" />
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
 
     <LinearLayout
@@ -47,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:start_txt="@string/str_serialNumber"
+                android:text="@{sku.skuCode}"
                 tools:text="编号 : ABBC123001"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12" />
@@ -58,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:end_txt="@string/str_integral"
-                tools:text="1300积分"
+                android:text="@{sku.fbPrice}"
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_18" />
             <com.changanford.shop.view.TypefaceTextView
@@ -67,8 +73,7 @@
                 android:layout_marginStart="@dimen/dp_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:end_txt="@string/str_integral"
-                tools:text="1600积分"
+                android:text="@{model.fbLine}"
                 android:textColor="@color/color_cc"
                 android:textSize="@dimen/sp_12"
                 app:text_flags="0x10"/>
@@ -122,6 +127,7 @@
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_15" />
             <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_stock"
                 app:layout_constraintBottom_toBottomOf="@id/tv_number"
                 app:layout_constraintStart_toEndOf="@id/tv_number"
                 android:layout_width="wrap_content"
@@ -130,6 +136,7 @@
                 android:textColor="@color/color_99"
                 android:textSize="@dimen/sp_12" />
             <com.changanford.shop.view.AddSubtractView
+                android:id="@+id/addSubtractView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_number"
                 android:layout_width="wrap_content"

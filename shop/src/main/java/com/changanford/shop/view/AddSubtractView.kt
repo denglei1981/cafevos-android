@@ -17,7 +17,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     View.OnClickListener {
     private lateinit var tvNumberValue:TextView
     private var number=1//初始值为1
-    private var minValue=0//最小值
+    private var minValue=1//最小值
     private var maxValue=10//最大值
     init {
         initView()

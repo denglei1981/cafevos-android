@@ -9,7 +9,10 @@ import android.graphics.Shader
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
-import android.text.*
+import android.text.Editable
+import android.text.Html
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
@@ -117,8 +120,8 @@ object WCommonUtil {
     /**
      * 将html转为str
      * */
-    fun htmlToString(str: String): Spanned {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    fun htmlToString(textView: TextView,str: String) {
+        textView.text= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY)
         } else {
             Html.fromHtml(str)

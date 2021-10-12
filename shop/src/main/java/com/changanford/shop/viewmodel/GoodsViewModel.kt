@@ -90,16 +90,14 @@ class GoodsViewModel: BaseViewModel() {
     * */
     fun queryGoodsDetails(spuId:String){
         viewModelScope.launch {
-            val response=fetchRequest {
+            fetchRequest {
                 body.clear()
                 val rkey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
-            }
-            response.onSuccess {
+            }.onSuccess {
                 addFootprint(spuId)
-                it?.timestamp=response.timestamp?.toLong()
                 goodsDetailData.postValue(it)
             }
         }

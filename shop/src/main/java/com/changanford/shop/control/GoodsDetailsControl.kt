@@ -1,9 +1,9 @@
 package com.changanford.shop.control
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.CountDownTimer
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.utilext.GlideUtils
@@ -20,11 +20,13 @@ import com.changanford.shop.utils.WCommonUtil
  * @Time : 2021/9/18
  * @Description : GoodsDetailsControl
  */
-class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDetailsBinding,
+class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding) {
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
+    private lateinit var datas: GoodsDetailBean
     fun bindingData(datas:GoodsDetailBean){
+        this.datas=datas
         val fbLine=datas.fbLine//划线积分
         headerBinding.inGoodsInfo.model=datas
         BannerControl.bindingBannerFromDetail(headerBinding.banner,datas.imgs,0)
@@ -46,7 +48,7 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
                     headerBinding.inKill.model=datas
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inKill.layoutKill.visibility= View.VISIBLE
-                    if(null!=datas.timestamp)initTimeCount(datas.timestamp!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
+                    if(null!=datas.now)initTimeCount(datas.now!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
                     val purchasedNum=datas.purchasedNum?:0
                     headerBinding.inKill.tvStockProportion.setText("${purchasedNum/datas.stock*100}")
                     if(null==fbLine)headerBinding.inKill.tvFbLine.visibility= View.GONE
@@ -94,8 +96,10 @@ class GoodsDetailsControl(val activity: Activity, val binding: ActivityGoodsDeta
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
-        val pop= GoodsAttrsPop(activity)
-        pop.showPopupWindow()
+        if(::datas.isInitialized){
+            val pop= GoodsAttrsPop(activity,this.datas)
+            pop.showPopupWindow()
+        }
     }
 
     fun onDestroy(){
