@@ -44,7 +44,7 @@ class CityPicker : LinkagePicker {
         if (onAddressPickedListener != null) {
             val province = wheelLayout.firstWheelView.currentItem as ProvinceEntity
             val city = wheelLayout.secondWheelView.currentItem as CityEntity
-            val county = wheelLayout.thirdWheelView.currentItem as CountyEntity
+            val county = wheelLayout.thirdWheelView.currentItem as? CountyEntity
             onAddressPickedListener!!.onAddressPicked(province, city, county)
         }
     }

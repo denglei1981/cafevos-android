@@ -3,29 +3,32 @@ package com.changanford.home.news.activity
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.home.R
-import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
-import com.changanford.home.news.request.NewsDetailViewModel
-import androidx.lifecycle.Observer
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.setDrawableTop
+import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.data.InfoDetailsChangeData
+import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
-import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
+import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.FigureIndicatorView
 import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
@@ -85,6 +88,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify=true
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -96,6 +100,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify=true
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
                 setLikeState()
@@ -216,7 +221,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
     /**
      *  设置关注状态。
      * */
-    private fun setFollowState(btnFollow: MaterialButton, authors: Authors) {
+    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(this)
         setFollowState.setFollowState(btnFollow, authors)
     }
@@ -226,11 +231,12 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         newsDetailData?.let {
             var followType = it.authors.isFollow
             when (followType) {
-                0 -> {
-                    followType = 1
-                }
+
                 1 -> {
-                    followType = 0
+                    followType = 2
+                }
+                else -> {
+                    followType = 1
                 }
             }
             it.authors.isFollow = followType;
@@ -296,5 +302,23 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         })
         replyDialog.show()
+    }
+
+    var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
+    override fun onDestroy() {
+        if (isNeedNotify) {
+            newsDetailData?.let {
+                var infoDetailsChangeData = InfoDetailsChangeData(
+                    it.commentCount,
+                    it.likesCount,
+                    it.authors.isFollow,
+                    it.isLike
+                )
+                LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+                    .postValue(infoDetailsChangeData)
+            }
+        }
+        super.onDestroy()
+
     }
 }

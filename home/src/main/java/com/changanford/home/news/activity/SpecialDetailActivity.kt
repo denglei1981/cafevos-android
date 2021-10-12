@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseLoadSirActivity
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
@@ -22,7 +23,7 @@ class SpecialDetailActivity :
 
 
     val newsListAdapter: NewsListAdapter by lazy {
-        NewsListAdapter()
+        NewsListAdapter(this)
     }
 
 
@@ -30,10 +31,7 @@ class SpecialDetailActivity :
         binding.layoutEmpty.llEmpty.visibility=View.GONE
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
         binding.recyclerView.adapter = newsListAdapter
-
-
     }
 
     override fun initData() {
@@ -52,7 +50,6 @@ class SpecialDetailActivity :
             setLoadSir(binding.recyclerView)
         }
     }
-
     override fun observe() {
         super.observe()
         viewModel.specialDetailLiveData.observe(this, Observer {

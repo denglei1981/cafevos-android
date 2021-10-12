@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.home.R
 import com.changanford.home.databinding.HomeChildRecycerViewBinding
@@ -46,7 +45,7 @@ class ActsMainAdapter(
 
     var  shopLists = mutableListOf<SearchData>()
     val searchActsResultAdapter : SearchActsResultAdapter by lazy {
-        SearchActsResultAdapter(mutableListOf())
+        SearchActsResultAdapter()
     }
 
 

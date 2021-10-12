@@ -1,6 +1,6 @@
 package com.changanford.home.bean
 
-data class Imag(
+data class LabelBean(
     var img: String,
     var jumpDataType: Int,
     var jumpDataValue: String

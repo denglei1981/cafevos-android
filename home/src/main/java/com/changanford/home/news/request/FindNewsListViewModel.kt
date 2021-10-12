@@ -15,7 +15,7 @@ class FindNewsListViewModel : BaseViewModel() {
 
     val newsListLiveData = MutableLiveData<UpdateUiState<NewsListMainBean>>() // 专题列表 轮播图。
     var pageNo: Int = 1
-
+    val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
     /**
      *  专题列表顶部
      * */
@@ -62,5 +62,25 @@ class FindNewsListViewModel : BaseViewModel() {
                 }
         })
     }
+
+    fun followOrCancelUser(followId:String,type:Int){
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["followId"] = followId
+            requestBody["type"]=type
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    followLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    followLiveData.postValue(updateUiState)
+                }
+        })
+    }
+
+
 
 }

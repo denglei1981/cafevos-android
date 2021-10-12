@@ -1,5 +1,6 @@
 package com.changanford.home.bean
 
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.TimeFromUtils
 import com.changanford.common.util.TimeUtils
@@ -33,7 +34,6 @@ data class BigShotPostBean(
     var likesCountBase: Int,
     var likesCountMul: Int,
     var lon: Double,
-    var params: Params,
     var picCount: Int,
     var pics: String,
     var plate: Int,

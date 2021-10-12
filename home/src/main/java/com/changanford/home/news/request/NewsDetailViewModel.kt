@@ -122,7 +122,6 @@ class NewsDetailViewModel : BaseViewModel() {
     }
 
     fun followOrCancelUser(followId:String,type:Int){
-
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -138,8 +137,6 @@ class NewsDetailViewModel : BaseViewModel() {
                     followLiveData.postValue(updateUiState)
                 }
         })
-
-
     }
 
 

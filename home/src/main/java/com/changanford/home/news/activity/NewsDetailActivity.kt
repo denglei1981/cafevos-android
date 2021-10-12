@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
@@ -21,6 +22,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -29,10 +31,10 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
-import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
@@ -134,7 +136,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     /**
      *  设置关注状态。
      * */
-    private fun setFollowState(btnFollow: MaterialButton, authors: Authors) {
+    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(this)
         setFollowState.setFollowState(btnFollow, authors)
     }
@@ -215,6 +217,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -226,6 +229,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
                 setLikeState()
@@ -278,11 +282,11 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         newsDetailData?.let {
             var followType = it.authors.isFollow
             when (followType) {
-                0 -> {
-                    followType = 1
-                }
                 1 -> {
-                    followType = 0
+                    followType = 2
+                }
+                else -> {
+                    followType = 1
                 }
             }
             it.authors.isFollow = followType;
@@ -352,8 +356,20 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         webHelper.onPause()
         super.onPause()
     }
-
+    var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
     override fun onDestroy() {
+        if (isNeedNotify) {
+            newsDetailData?.let {
+                var infoDetailsChangeData = InfoDetailsChangeData(
+                    it.commentCount,
+                    it.likesCount,
+                    it.authors.isFollow,
+                    it.isLike
+                )
+                LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+                    .postValue(infoDetailsChangeData)
+            }
+        }
         webHelper.onDestroy()
         super.onDestroy()
     }

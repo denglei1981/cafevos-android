@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
 
@@ -21,11 +22,11 @@ data class InfoBean(
 data class InfoDataBean(
     override val itemType: Int,
     val artId: String = "",
-    val authors: AuthorBaseVo? = AuthorBaseVo(),
+    var authors: AuthorBaseVo?=null,
     val catId: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
-    val content: String="",
+    val content: String = "",
     val createTime: Long = 0L,
     val isDeleted: Int = 0,
     var isLike: Int = 0,
@@ -40,7 +41,7 @@ data class InfoDataBean(
     val shareCount: Int = 0,
     val sortOrder: Int = 0,
     val specialTopicId: Any = Any(),
-    val specialTopicTitle:String="",
+    val specialTopicTitle: String = "",
     val status: Int = 0,
     val summary: String = "",
     val timeStr: String = "",
@@ -55,10 +56,10 @@ data class InfoDataBean(
     val viewsCountMul: Double = 0.0,
     val jumpVal: String = "",
     val jumpType: Int = 0
-) : MultiItemEntity{
+) : MultiItemEntity {
 
-    fun getCommentCountResult():String{
-        var commentCountResult:String=""
+    fun getCommentCountResult(): String {
+        var commentCountResult: String = ""
         if (commentCount == 0L) {
             return "评论"
         }
@@ -67,23 +68,29 @@ data class InfoDataBean(
     }
 
 
-
-
 }
 
 
 data class AuthorBaseVo(
-    val authorId: Int = 0,
+    val authorId: String,
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
-    val isFollow: Int = 0,
+    var  isFollow: Int = 0,
     val medalImage: Any? = Any(),
     val medalName: Any? = Any(),
     val memberIcon: String = "",
     val memberId: Int = 0,
     val memberName: String = "",
     val nickname: String = ""
-)
+) {
+    fun getMemberNames(): String {
+        return if (TextUtils.isEmpty(memberName)) {
+            "车迷级公民"
+        } else {
+            memberName
+        }
+    }
+}
 
 data class PostBean(
     val dataList: ArrayList<PostDataBean> = arrayListOf(),
@@ -94,7 +101,7 @@ data class PostBean(
 )
 
 data class PostDataBean(
-    val authorBaseVo: AuthorBaseVo? = AuthorBaseVo(),
+    val authorBaseVo: AuthorBaseVo?=null,
     val circleId: Int? = 0,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,

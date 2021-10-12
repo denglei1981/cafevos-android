@@ -10,21 +10,21 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import com.changanford.home.R;
-import com.changanford.home.search.data.SearchData;
+import com.changanford.home.bean.SearchKeyBean;
 
 
 import java.util.List;
 
-public class SearchHistoryAdapter extends BaseQuickAdapter<SearchData, BaseViewHolder> {
+public class SearchHistoryAdapter extends BaseQuickAdapter<SearchKeyBean, BaseViewHolder> {
 
-    public SearchHistoryAdapter(@Nullable List<SearchData> data) {
+    public SearchHistoryAdapter(@Nullable List<SearchKeyBean> data) {
         super(R.layout.item_common_search_tag, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, SearchData item) {
+    protected void convert(BaseViewHolder helper, SearchKeyBean item) {
         TextView tvLabel=helper.getView(R.id.tv_search_tag);
-        tvLabel.setText(item.tagName);
+        tvLabel.setText(item.getKeyword());
         GradientDrawable myGrad = (GradientDrawable) tvLabel.getBackground();
         myGrad.setColor(Color.parseColor("#f6f6f6"));
 

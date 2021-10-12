@@ -33,11 +33,7 @@ class NewsPicAdActivity : BaseActivity<ActivityHomeNewsPicAdBinding, NewsDetailV
         binding.homeRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        mNewsPicAdAdapter.addData(InfoDataBean(1))
-        mNewsPicAdAdapter.addData(InfoDataBean(1))
-        mNewsPicAdAdapter.addData(InfoDataBean(1))
-        mNewsPicAdAdapter.addData(InfoDataBean(1))
-        mNewsPicAdAdapter.addData(InfoDataBean(1))
+
         binding.homeRv.adapter = mNewsPicAdAdapter
         binding.banner.setAdapter(NewsPicAdBannerAdapter())
             .setCanLoop(true)

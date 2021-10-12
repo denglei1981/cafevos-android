@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.changanford.home.R;
+import com.changanford.home.util.AnimScaleInUtil;
 
 
 public class DrawCenterTextView extends ConstraintLayout {
@@ -65,10 +66,11 @@ public class DrawCenterTextView extends ConstraintLayout {
         ivThumb = findViewById(R.id.iv_thumbs);
 
         //将从资源文件中加载的属性设置给子控件
-        if (!TextUtils.isEmpty(titleText) )
+        if (!TextUtils.isEmpty(titleText))
             setPageTitleText(titleText);
-            setThumb(resourceId);
+        setThumb(resourceId, false);
     }
+
 
     /**
      * 设置标题文字
@@ -80,8 +82,12 @@ public class DrawCenterTextView extends ConstraintLayout {
 
     }
 
-    public void setThumb(int  resourceId) {
-         ivThumb.setImageResource(resourceId);
+    public void setThumb(int resourceId, boolean isNeedAnim) {
+        ivThumb.setImageResource(resourceId);
+        if (isNeedAnim) {
+            AnimScaleInUtil.INSTANCE.animScaleIn(ivThumb);
+        }
+
     }
 
 

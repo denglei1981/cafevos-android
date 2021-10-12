@@ -20,7 +20,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var userId: String = ""
 
     val infoAdapter: NewsListAdapter by lazy {
-        NewsListAdapter()
+        NewsListAdapter(this)
     }
 
     companion object {
