@@ -4,10 +4,16 @@ import android.text.TextUtils
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
+import com.changanford.home.SetFollowState
+
 import com.changanford.home.bean.BigShotPostBean
+import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
+
+import com.google.android.material.button.MaterialButton
 
 class BigShotPostListAdapter :
     BaseQuickAdapter<BigShotPostBean, BaseDataBindingHolder<ItemBigShotItemsBinding>>(R.layout.item_big_shot_items) {
@@ -30,6 +36,7 @@ class BigShotPostListAdapter :
                 }
                 it.layoutHeader.tvAuthorName.text = item.authorBaseVo?.nickname
                 it.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
+                setFollowState(it.layoutHeader.btnFollow,item.authorBaseVo!!)
                 when(item.authorBaseVo?.isFollow){
                     0->{
                         it.layoutHeader.btnFollow.text="关注"
@@ -47,5 +54,13 @@ class BigShotPostListAdapter :
             it.layoutCount.tvTimeLookCount.setPageTitleText(item.getViewCount())
             it.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCount())
         }
+    }
+
+    /**
+     *  设置关注状态。
+     * */
+    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+        val setFollowState = SetFollowState(context)
+        setFollowState.setFollowState(btnFollow, authors)
     }
 }

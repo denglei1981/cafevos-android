@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
@@ -32,7 +33,6 @@ import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
-import com.changanford.home.news.data.Authors
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
@@ -134,7 +134,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     /**
      *  设置关注状态。
      * */
-    private fun setFollowState(btnFollow: MaterialButton, authors: Authors) {
+    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(this)
         setFollowState.setFollowState(btnFollow, authors)
     }
@@ -278,11 +278,11 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         newsDetailData?.let {
             var followType = it.authors.isFollow
             when (followType) {
-                0 -> {
-                    followType = 1
-                }
                 1 -> {
-                    followType = 0
+                    followType = 2
+                }
+                else -> {
+                    followType = 1
                 }
             }
             it.authors.isFollow = followType;

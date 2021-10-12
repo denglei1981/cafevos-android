@@ -22,7 +22,7 @@ data class InfoBean(
 data class InfoDataBean(
     override val itemType: Int,
     val artId: String = "",
-    val authors: AuthorBaseVo? = AuthorBaseVo(),
+    var authors: AuthorBaseVo?=null,
     val catId: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
@@ -72,10 +72,10 @@ data class InfoDataBean(
 
 
 data class AuthorBaseVo(
-    val authorId: Int = 0,
+    val authorId: String,
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
-    val isFollow: Int = 0,
+    var  isFollow: Int = 0,
     val medalImage: Any? = Any(),
     val medalName: Any? = Any(),
     val memberIcon: String = "",
@@ -101,7 +101,7 @@ data class PostBean(
 )
 
 data class PostDataBean(
-    val authorBaseVo: AuthorBaseVo? = AuthorBaseVo(),
+    val authorBaseVo: AuthorBaseVo?=null,
     val circleId: Int? = 0,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,

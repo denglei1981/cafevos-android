@@ -236,5 +236,8 @@ object LiveDataBusKey {
 
     const val Conversation= "Conversation" //选择话题回调
 
+
+    const val  NEWS_DETAIL_CHANGE="NEWS_DETAIL_CHANGE"//详情数据更改。。。
+
 }
 

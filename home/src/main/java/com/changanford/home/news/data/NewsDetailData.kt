@@ -1,7 +1,9 @@
 package com.changanford.home.news.data
 
 import android.text.TextUtils
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.util.CountUtils
+
 
 /**
  *  资讯详情。。。。
@@ -9,7 +11,7 @@ import com.changanford.common.util.CountUtils
 data class NewsDetailData(
     var artCount: Any,
     var artId: Int,
-    var authors: Authors,
+    var authors: AuthorBaseVo,
     var catId: Any,
     var collectCount: Int,
     var commentCount: Long,
@@ -49,7 +51,7 @@ data class NewsDetailData(
     var userId: String,
     var videoTime: String,
     var videoUrl: String,
-    var viewsCount: Int,
+    var viewsCount: Long,
     var viewsCountBase: Int,
     var viewsCountMul: Int
 ) {

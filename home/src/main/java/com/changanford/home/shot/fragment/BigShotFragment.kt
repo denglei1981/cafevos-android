@@ -14,7 +14,6 @@ import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.databinding.FragmentBigShotBinding
-import com.changanford.home.news.data.Authors
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
 import com.changanford.home.shot.request.BigShotListViewModel
@@ -28,8 +27,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  * */
 class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListViewModel>(),
     OnRefreshListener, OnLoadMoreListener {
-
-
     private val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
         BigShotUserListAdapter()
     }

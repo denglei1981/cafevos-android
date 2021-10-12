@@ -190,6 +190,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         super.onResume()
 
     }
+    fun isCurrentIndex(index: Int) = binding.homeViewpager.currentItem == index
 
     //初始化tab
     private fun initTab() {
