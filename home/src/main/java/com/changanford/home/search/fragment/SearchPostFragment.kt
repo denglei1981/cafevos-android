@@ -6,7 +6,6 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchPostResultAdapter
-import com.changanford.home.search.adapter.SearchShopResultAdapter
 import com.changanford.home.search.data.SearchData
 
 class SearchPostFragment : BaseFragment<HomeBaseRecyclerViewBinding, EmptyViewModel>() {

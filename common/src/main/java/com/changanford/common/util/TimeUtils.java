@@ -114,7 +114,7 @@ public class TimeUtils {
 
     public static String FORMATE_DATE_DAY_STR = "yyyy-MM-dd";
 
-    public static String FORMATE_DATE_M_H = "MM/dd HH:mm";
+    public static String FORMATE_DATE_M_H = "yyyy.MM.dd HH:mm";
 
     public static String MillisToDayStr(Long timeMillis) {
         if (timeMillis == null) {
@@ -124,7 +124,16 @@ public class TimeUtils {
         SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_DAY_STR);
         return sf.format(date);
     }
+    public static String FORMATE_ACT_TIME = "yyyy.MM.dd HH:mm";
 
+    public static String  formateActTime(Long timeMillis) {
+        if (timeMillis == null) {
+            return "";
+        }
+        Date date = new Timestamp(timeMillis);
+        SimpleDateFormat sf = new SimpleDateFormat(FORMATE_ACT_TIME);
+        return sf.format(date);
+    }
 
     public static String MillisTo_M_H(Long timeMillis) {
         if (timeMillis == null) {

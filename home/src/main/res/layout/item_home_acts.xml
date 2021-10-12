@@ -76,7 +76,7 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_follow"
+            android:id="@+id/btn_state"
             style="@style/materialButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,19 +114,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="活动截止时间：2021.09.11 12:00"
+            tools:text="活动截止时间：2021.09.11 12:00"
             android:textColor="#ff9fabb7"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tag_one" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tag_two" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_act_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="地点：重庆"
+            tools:text="地点：重庆"
             android:textColor="#ff9fabb7"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"

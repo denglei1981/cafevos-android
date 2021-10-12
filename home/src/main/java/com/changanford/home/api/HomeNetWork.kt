@@ -1,9 +1,14 @@
 package com.changanford.home.api
 
+import com.changanford.common.bean.CityX
+import com.changanford.common.bean.Province
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
+import com.changanford.home.data.ActBean
+import com.changanford.home.data.EnumBean
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.SpecialDetailData
+import io.reactivex.Observable
 
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -67,7 +72,7 @@ interface HomeNetWork {
     suspend fun followOrCancelUser(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<Any>
+    ): CommonResponse<Any>
 
     /**
      * /con/posts/postsList
@@ -133,7 +138,7 @@ interface HomeNetWork {
     suspend fun searchHots(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<List<SearchKeyBean>>
 
 
     /**
@@ -155,13 +160,51 @@ interface HomeNetWork {
     ): CommonResponse<Any>
 
     /**
-     * /con/posts/keyWords
+     *
      * 搜索关键字
      * */
+    @POST("/con/posts/keyWords")
     suspend fun searchKeyWords(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
 
+    /***
+     * /highlights/getHighlights
+     *  查询活动。
+     * */
+    @POST("/highlights/getHighlights")
+    suspend fun getHighlights(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
+
+
+    /**
+     *
+     * */
+    @POST("/highlights/callBackOuterChain")
+    suspend fun addactbrid(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
+    /**
+     * 枚举字典
+     */
+    @POST("/base/dict/getEnum")
+    suspend fun getEnum(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<List<EnumBean>>
+
+    /*---------------省 市 区--------------*/
+    @POST("base/region/provinceList")
+    suspend  fun queryProvinceList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<List<Province>>>
+
+    @POST("base/region/cityList")
+    suspend fun queryCityList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<List<CityX>>>
 }
