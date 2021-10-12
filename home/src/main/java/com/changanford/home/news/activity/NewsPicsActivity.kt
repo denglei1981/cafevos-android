@@ -14,6 +14,8 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -21,6 +23,7 @@ import com.changanford.common.utilext.setDrawableTop
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
 import com.changanford.home.news.data.NewsDetailData
@@ -85,6 +88,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify=true
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -96,6 +100,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify=true
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
                 setLikeState()
@@ -297,5 +302,23 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         })
         replyDialog.show()
+    }
+
+    var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
+    override fun onDestroy() {
+        if (isNeedNotify) {
+            newsDetailData?.let {
+                var infoDetailsChangeData = InfoDetailsChangeData(
+                    it.commentCount,
+                    it.likesCount,
+                    it.authors.isFollow,
+                    it.isLike
+                )
+                LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+                    .postValue(infoDetailsChangeData)
+            }
+        }
+        super.onDestroy()
+
     }
 }

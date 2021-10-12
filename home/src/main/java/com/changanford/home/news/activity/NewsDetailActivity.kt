@@ -22,6 +22,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -30,6 +31,7 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
@@ -215,6 +217,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -226,6 +229,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                isNeedNotify
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
                 setLikeState()
@@ -352,8 +356,20 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         webHelper.onPause()
         super.onPause()
     }
-
+    var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
     override fun onDestroy() {
+        if (isNeedNotify) {
+            newsDetailData?.let {
+                var infoDetailsChangeData = InfoDetailsChangeData(
+                    it.commentCount,
+                    it.likesCount,
+                    it.authors.isFollow,
+                    it.isLike
+                )
+                LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+                    .postValue(infoDetailsChangeData)
+            }
+        }
         webHelper.onDestroy()
         super.onDestroy()
     }
