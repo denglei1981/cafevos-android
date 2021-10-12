@@ -13,6 +13,7 @@ import com.changanford.common.bean.CityX
 import com.changanford.common.bean.Province
 import com.changanford.common.net.*
 import com.changanford.common.widget.picker.CityPicker
+import com.changanford.common.widget.picker.annotation.AddressMode.PROVINCE_CITY
 import com.changanford.common.widget.picker.contract.OnAddressPickedListener
 import com.changanford.common.widget.picker.entity.CityEntity
 import com.changanford.common.widget.picker.entity.CountyEntity
@@ -31,6 +32,8 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
     BaseAppCompatDialog(acts) {
     lateinit var mDatabind: DialogHomeActsScreenBinding
     lateinit var callback: ICallback
+    var cityName:String=""
+    var cityId:String=""
     private val homeActsScreenItemAdapter: HomeActsScreenItemAdapter by lazy {
         HomeActsScreenItemAdapter(
             arrayListOf()
@@ -105,6 +108,17 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             homeActsTypeItemAdapter.setChooseTypes("")
             showCity(false)
             mDatabind.tvCityAny.text = "不限城市"
+            cityName=""
+            cityId=""
+        }
+        mDatabind.homeBtnSure.setOnClickListener {
+            // 没有sm 活动
+
+            var chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
+            var chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
+
+
+
         }
     }
     fun showCity(isVisible: Boolean) {
@@ -148,7 +162,7 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
     var cityPicker: CityPicker? = null
     fun chooseCity() { // 选择城市。。
         cityPicker = CityPicker(acts as Activity).apply {
-            setAddressMode(provinces)
+            setAddressMode(provinces,PROVINCE_CITY)
             //
             setDefaultValue("重庆市", "重庆市", "渝中区")
         }
@@ -169,12 +183,14 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
 //                    body["city"] = it.code
 //                    body["cityName"] = "${it.name}"
                     cityA += it.name
+                    cityName=it.name
+                    cityId=it.code
                 }
-                county?.let {
-//                    body["district"] = it.code
-//                    body["districtName"] = "${it.name}"
-                    cityA += it.name
-                }
+//                county?.let {
+////                    body["district"] = it.code
+////                    body["districtName"] = "${it.name}"
+//                    cityA += it.name
+//                }
                 mDatabind.tvCityAny.text = cityA
 
             }

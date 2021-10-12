@@ -19,6 +19,7 @@ class HomeActsTypeItemAdapter(list: MutableList<EnumBean>) : BaseQuickAdapter<En
         this.chooseType = chooseType
         notifyDataSetChanged()
     }
+
     override fun convert(holder: BaseViewHolder, item: EnumBean) {
         var btnCheck: MaterialButton = holder.getView(R.id.btn_check)
         btnCheck.text = item.message

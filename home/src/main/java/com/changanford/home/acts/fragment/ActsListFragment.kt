@@ -38,8 +38,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     }
     var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
     //， 排序，活动状态  ，发布方,线上线下
-    var shaixuanList =
-        arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
+    var shaixuanList = arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
     companion object {
         fun newInstance(): ActsListFragment {
             val fg = ActsListFragment()
@@ -209,6 +208,12 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
         mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
         return mPictureList
+    }
+
+
+    fun  changeScreen(){ // 改变了筛选参数。。
+//        viewModel.getActList()
+
     }
 
 }

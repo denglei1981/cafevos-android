@@ -1,5 +1,6 @@
 package com.changanford.home.acts.request
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
@@ -19,6 +20,7 @@ class ActsListViewModel : BaseViewModel() {
     var screenstype = MutableLiveData<List<EnumBean>>()  //进行中等
     var guanfang = MutableLiveData<List<EnumBean>>()  //官方
     var xianshang = MutableLiveData<List<EnumBean>>()  //线上线下
+
     // 发布方， 排序， 线上线下，活动状态
     var shaixuanList =
         arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
@@ -26,33 +28,39 @@ class ActsListViewModel : BaseViewModel() {
     fun getActList(
         page: Boolean,
         count: Int,
-        pageSize: Int
+        pageSize: Int,
+        cityId: Int = -1,// 城市id
+        cityName: String = "",// 城市名称
+        wonderfulType: Int = -1,// 线上，线下， 问卷调查。0-线上，1-线下，2-问卷,4可用
+        orderType: String = "",//排序 综合排序  COMPREHENSIVE HOT,New
+        official: Int = -1,//0-官方，1-非官方,2-经销商,可用
+        activityTimeStatus: String = "" // 过期，还是进行中。ON_GOING CLOSED
     ) {
         launch(false, {
             var body = HashMap<String, Any>()
             body["page"] = page
             body["pageNo"] = count
             body["pageSize"] = pageSize
-//            var hashMap = HashMap<String, Any>()
-//            if (choosezonghe.code != "") {
-//                hashMap["orderType"] = choosezonghe.code
-//            }
-//            if (chooseact.code != "-1") {
-//                hashMap["activityTimeStatus"] = chooseact.code
-//            }
-//            if (chooseguanfang.code is Number) {
-//                hashMap["official"] = (chooseguanfang.code as Number).toInt()
-//            }
-//            if (choosexianshang.code is Number) {
-//                hashMap["wonderfulType"] = (choosexianshang.code as Number).toInt()
-//                if ((choosexianshang.code as Number).toInt() == 1) {
-//                    if (choosecityx.regionName != "") {
-//                        hashMap["cityId"] = choosecityx.regionId
-//                        hashMap["cityName"] = choosecityx.regionName
-//                    }
-//                }
-//            }
-//            body["queryParams"] = hashMap
+            var hashMap = HashMap<String, Any>()
+            if (!TextUtils.isEmpty(orderType)) {
+                hashMap["orderType"] = orderType
+            }
+            if (TextUtils.isEmpty(activityTimeStatus)) {
+                hashMap["activityTimeStatus"] = activityTimeStatus
+            }
+            if (official >= 0) {
+                hashMap["official"] = official
+            }
+            if (wonderfulType >= 0) {
+                hashMap["wonderfulType"] = wonderfulType
+                if (wonderfulType == 1) {
+                    if (cityId == -1 || TextUtils.isEmpty(cityName)) {
+                        hashMap["cityId"] = cityId
+                        hashMap["cityName"] = cityName
+                    }
+                }
+            }
+            body["queryParams"] = hashMap
             var rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getHighlights(body.header(rkey), body.body(rkey))
