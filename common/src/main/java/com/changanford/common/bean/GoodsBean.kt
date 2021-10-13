@@ -329,6 +329,7 @@ data class OrderItemBean(
     val spuSecondName: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    val userId: Int = 0
+    val userId: Int = 0,
+    val cost:String?="0",
+    var waitPayCountDown:Long?=0
 )
-data class OrderInfoBean(val orderNo:String,val cost:String)

@@ -50,7 +50,7 @@ fun getHeader(
     }
     //设置默认token
 //    map["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
-    map["token"] = "user:token:app:336:uni-05b4b3b00264f7bff144ce1d50b81fb3"
+//    map["token"] = "user:token:app:336:uni-05b4b3b00264f7bff144ce1d50b81fb3"
     map["timestamp"] = timestamp
     map["os"] = "Android"//操作系统 （ios、Android、wp）
     map["osVersion"] = DeviceUtils.getDeviceVersion()//操作系统版本号

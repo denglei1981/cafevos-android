@@ -94,9 +94,7 @@ class GoodsViewModel: BaseViewModel() {
             fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
-                val bodyHeader= body.header(randomKey)
-//                if(BuildConfig.DEBUG)bodyHeader["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
-                shopApiService.queryGoodsDetails(spuId,bodyHeader, body.body(randomKey))
+                shopApiService.queryGoodsDetails(spuId,body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {

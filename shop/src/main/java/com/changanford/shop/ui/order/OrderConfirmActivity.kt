@@ -108,7 +108,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private fun submitOrder(){
         val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-        viewModel.orderCreate(dataBean.spuId,dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+        viewModel.orderCreate(dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
     }
     @SuppressLint("SetTextI18n")
     private fun bindingAddress(item:AddressBeanItem?){
@@ -129,7 +129,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         JumpUtils.instans?.jump(20,"1")
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
-                    Log.e("wenke","所选地址为:$it")
+                    Log.e("okhttp","所选地址为:$it")
                     it?.let {bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))}
                 })
     }

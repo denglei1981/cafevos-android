@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.OrderInfoBean
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
@@ -24,7 +24,7 @@ class OrderViewModel: BaseViewModel() {
      */
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     //订单
-    var orderInfoLiveData: MutableLiveData<OrderInfoBean> = MutableLiveData()
+    var orderInfoLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -34,7 +34,7 @@ class OrderViewModel: BaseViewModel() {
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * busSourse 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
-    fun orderCreate(spuId:String,skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
+    fun orderCreate(skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
         val busSourse=if("SECKILL"==spuPageType)1 else 0
         viewModelScope.launch {
           fetchRequest {
@@ -45,7 +45,6 @@ class OrderViewModel: BaseViewModel() {
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType
                 body["addressId"]=addressId?:"0"
-//                body["spuId"]=spuId
 //                body["mallMallHaggleUserGoodsId"]=108
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
@@ -105,8 +104,8 @@ class OrderViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                apiService.getAddressList(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                apiService.getAddressList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 addressList.postValue(it)
             }.onWithMsgFailure {
@@ -124,8 +123,8 @@ class OrderViewModel: BaseViewModel() {
             fetchRequest {
                 body.clear()
                 body["orderNo"]=orderNo
-                val rkey = getRandomKey()
-                shopApiService.orderDetail(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
 
             }
