@@ -334,3 +334,4 @@ data class OrderItemBean(
     var waitPayCountDown:Long?=0,
     var acountFb:String?="0"
 )
+data class OrderInfoBena(val orderNo:String,val cost:Int)

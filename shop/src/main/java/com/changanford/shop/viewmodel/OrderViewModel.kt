@@ -26,6 +26,7 @@ class OrderViewModel: BaseViewModel() {
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     //订单
     var orderInfoLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
+    var orderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
     /**
@@ -129,7 +130,7 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-
+                orderInfoLiveData.postValue(it)
             }
         }
     }

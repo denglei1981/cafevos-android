@@ -47,6 +47,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             return
         }
         dataBean= Gson().fromJson(orderInfo,OrderItemBean::class.java)
+        dataBean?.orderNo?.let { viewModel.getOrderDetail(it) }
         bindingData()
     }
     private fun bindingData(){
