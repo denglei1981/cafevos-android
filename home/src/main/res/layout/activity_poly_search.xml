@@ -38,6 +38,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_back"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smart_layout"
             android:layout_width="0dp"
@@ -63,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         android:layout_marginEnd="13dp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_history" />
@@ -79,6 +81,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_15"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,6 +97,7 @@
                         android:text="热门搜索"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_16"
+
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recycler_view_history" />
@@ -110,9 +114,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_search_hot" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.core.widget.NestedScrollView>
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_auto"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -129,7 +129,6 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
     // 喜欢
     fun actionLike(artId: String) {
-
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["artId"] = artId

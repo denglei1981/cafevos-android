@@ -3,16 +3,15 @@ package com.changanford.home.search.fragment
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
-import com.changanford.home.search.adapter.SearchPostResultAdapter
+import com.changanford.home.search.adapter.SearchNewsResultAdapter
 import com.changanford.home.search.data.SearchData
+import com.changanford.home.search.request.PolySearchNewsResultViewModel
 
-class SearchPostFragment : BaseFragment<HomeBaseRecyclerViewBinding, EmptyViewModel>() {
+class SearchPostFragment : BaseFragment<HomeBaseRecyclerViewBinding, PolySearchNewsResultViewModel>() {
 
-    var  shopLists = mutableListOf<SearchData>()
-    val searchPostResultAdapter : SearchPostResultAdapter by lazy {
-        SearchPostResultAdapter(mutableListOf())
+    val searchPostResultAdapter : SearchNewsResultAdapter by lazy {
+        SearchNewsResultAdapter(this)
     }
 
 
@@ -24,16 +23,10 @@ class SearchPostFragment : BaseFragment<HomeBaseRecyclerViewBinding, EmptyViewMo
             return fg
         }
     }
-
     override fun initView() {
         binding.recyclerView.layoutManager=
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
-        shopLists.add(SearchData())
-        shopLists.add(SearchData())
-        shopLists.add(SearchData())
-        shopLists.add(SearchData())
-        shopLists.add(SearchData())
-        binding.recyclerView.adapter=SearchPostResultAdapter(shopLists)
+        binding.recyclerView.adapter=searchPostResultAdapter
     }
 
     override fun initData() {

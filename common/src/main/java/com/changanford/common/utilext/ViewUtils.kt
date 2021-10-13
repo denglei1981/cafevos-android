@@ -8,6 +8,8 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.zhpan.bannerview.BaseViewHolder
 
 fun TextView.setDrawableLeft(@DrawableRes res: Int, @DimenRes size: Int) {
     var drawableLeft = resources.getDrawable(res, null)
@@ -30,3 +32,4 @@ fun AppCompatTextView.styleAuthCheck(isCheck: Boolean) {
     this.setTextColor(Color.parseColor(if (isCheck) "#333333" else "#666666"))
     this.typeface = Typeface.defaultFromStyle(if (isCheck) Typeface.BOLD else Typeface.NORMAL)
 }
+

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -12,6 +13,16 @@ android {
         targetSdk targetSDKVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        // Java 数据库编译配置。
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments += [
+//                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+//                        "room.incremental"     : "true",
+//                        "room.expandProjection": "true"]
+//            }
+//        }
     }
 
     buildTypes {
@@ -31,6 +42,7 @@ android {
         viewBinding true
         dataBinding true
     }
+
 }
 kapt {
     arguments {
@@ -42,7 +54,20 @@ dependencies {
     implementation(project(":common"))
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
 //    implementation  'com.androidkun:XTabLayout:1.1.5'
+    // room 数据库。
+//    api"android.arch.persistence.room:runtime:$rootProject.room_version"
+//    kapt"android.arch.persistence.room:compiler:$rootProject.room_version"
+    //查看数据库的插件。
+//    debugImplementation 'com.idescout.sql:sqlscout-server:4.1'
+//    releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
+//    kapt deps.room.compiler
 
+
+//    implementation "androidx.room:room-runtime:2.3.0"
+//    annotationProcessor "androidx.room:room-compiler:2.3.0"
+    api "androidx.room:room-runtime:2.3.0"
+    api "androidx.room:room-ktx:2.3.0"
+    kapt("androidx.room:room-compiler:2.3.0")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

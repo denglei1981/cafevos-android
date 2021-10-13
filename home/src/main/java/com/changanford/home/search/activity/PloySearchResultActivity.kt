@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.home.R
 import com.changanford.home.databinding.ActivityPloySearchResultBinding
@@ -33,11 +34,17 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
         ImmersionBar.with(this)
             .fitsSystemWindows(true)
             .statusBarColor(R.color.color_ee)
+
+        var  searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
+        var  searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT)
+
+
+
         fragmentList.add(SearchActsFragment.newInstance())
-        fragmentList.add(SearchNewsFragment.newInstance())
+        fragmentList.add(SearchNewsFragment.newInstance(searchContent!!))
         fragmentList.add(SearchPostFragment.newInstance())
         fragmentList.add(SearchShopFragment.newInstance())
-        fragmentList.add(SearchUserFragment.newInstance())
+        fragmentList.add(SearchUserFragment.newInstance(searchContent))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_search_post))

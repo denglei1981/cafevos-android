@@ -3,12 +3,12 @@ package com.changanford.home.search.fragment
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchShopResultAdapter
 import com.changanford.home.search.data.SearchData
+import com.changanford.home.search.request.PolySearchNewsResultViewModel
 
-class SearchShopFragment: BaseFragment<HomeBaseRecyclerViewBinding, EmptyViewModel>() {
+class SearchShopFragment: BaseFragment<HomeBaseRecyclerViewBinding, PolySearchNewsResultViewModel>() {
 
 
     var  shopLists = mutableListOf<SearchData>()

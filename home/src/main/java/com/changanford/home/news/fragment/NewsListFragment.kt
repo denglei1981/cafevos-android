@@ -64,8 +64,6 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     JumpUtils.instans!!.jump(35)
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
-
-
                     if (item.authors != null) {
                         var newsValueData = NewsValueData(item.artId, item.type)
                         var values = Gson().toJson(newsValueData)
