@@ -54,9 +54,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             bindingAddress(item)
         })
         viewModel.getAddressList()
+        bindingBaseData()
     }
     private fun bindingBaseData(){
-
         //购买数量
         val buyNum=dataBean.buyNum
         //运费
@@ -80,6 +80,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inOrderInfo.model=dataBean
         goodsInfo.model=dataBean
         binding.inBottom.model=dataBean
+        binding.inBottom.tvAcountFb.setText("${dataBean.acountFb}")
     }
     fun onClick(v:View){
         when(v.id){
