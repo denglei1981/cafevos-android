@@ -40,7 +40,7 @@ class SearchNewsFragment :
             val bundle = Bundle()
             bundle.putString(JumpConstant.SEARCH_CONTENT, skwContent)
             fg.arguments = bundle
-            fg.arguments = bundle
+
             return fg
         }
     }

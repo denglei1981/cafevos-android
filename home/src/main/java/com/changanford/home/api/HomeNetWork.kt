@@ -177,6 +177,27 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<PostDataBean>>
+
+
+    /**
+     * 搜索搜索商城
+     */
+    @POST("con/search/s")
+    suspend fun getSearchShopList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<SearchShopBean>>
+
+    /**
+     * 搜索搜索活动
+     */
+    @POST("con/search/s")
+    suspend fun getSearchDoingList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
+
+
     /**
      *
      * 搜索关键字

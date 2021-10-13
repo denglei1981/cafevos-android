@@ -36,14 +36,14 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
             .statusBarColor(R.color.color_ee)
 
         var  searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
-        var  searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT)
+        val searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT)
 
 
 
-        fragmentList.add(SearchActsFragment.newInstance())
-        fragmentList.add(SearchNewsFragment.newInstance(searchContent!!))
+        fragmentList.add(SearchActsFragment.newInstance(searchContent!!))
+        fragmentList.add(SearchNewsFragment.newInstance(searchContent))
         fragmentList.add(SearchPostFragment.newInstance(searchContent))
-        fragmentList.add(SearchShopFragment.newInstance())
+        fragmentList.add(SearchShopFragment.newInstance(searchContent))
         fragmentList.add(SearchUserFragment.newInstance(searchContent))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))

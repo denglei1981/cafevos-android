@@ -8,6 +8,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -22,7 +24,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class SearchPostFragment :   BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchPostResultViewModel>(),
+class SearchPostFragment :
+    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchPostResultViewModel>(),
     OnRefreshListener, OnLoadMoreListener {
 
 
@@ -64,7 +67,10 @@ class SearchPostFragment :   BaseLoadSirFragment<HomeBaseRecyclerViewBinding, Po
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = searchPostsResultAdapter.getItem(position)
                 selectPosition = position
-               // todo 跳转到帖子
+                // todo 跳转到帖子
+//                bundle.putString("postsId", value)
+//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+                JumpUtils.instans!!.jump(4, item.postsId.toString())
             }
 
         })
