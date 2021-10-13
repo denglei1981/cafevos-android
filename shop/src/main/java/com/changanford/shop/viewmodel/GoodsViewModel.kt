@@ -93,13 +93,15 @@ class GoodsViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                shopApiService.queryGoodsDetails(spuId,body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                val bodyHeader= body.header(randomKey)
+//                if(BuildConfig.DEBUG)bodyHeader["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
+                shopApiService.queryGoodsDetails(spuId,bodyHeader, body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
                 addFootprint(spuId)
-                if(BuildConfig.DEBUG)it?.acountFb=1000
+                if(BuildConfig.DEBUG&&it?.acountFb!!<1) it.acountFb =1000
                 goodsDetailData.postValue(it)
             }
         }

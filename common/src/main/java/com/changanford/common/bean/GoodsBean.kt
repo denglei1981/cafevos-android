@@ -164,7 +164,7 @@ data class GoodsDetailBean(
     val mallOrderEval:CommentItem?,
     var stockProportion:String="0",//库存百分比 0-100
     val spuName:String?="",
-    val spuId:String?="",
+    val spuId:String="",
     var skuId: String,
     var buyNum:Int=1,//购买数量
     var skuCodeTxts:List<String>?,
@@ -172,8 +172,8 @@ data class GoodsDetailBean(
     val param:String?,
     var totalPayFb:String,//总支付积分
     val freightPrice:String,//运费 0为包邮
-    val collect:String//是否收藏 YES NO
-
+    val collect:String,//是否收藏 YES NO
+    var addressId:Int?,
 )
 
 data class Attribute(

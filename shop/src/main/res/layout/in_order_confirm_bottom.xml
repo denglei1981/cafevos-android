@@ -37,7 +37,7 @@
             tools:text="您的账户：1600积分"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_10" />
-        <androidx.appcompat.widget.AppCompatButton
+        <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
             android:id="@+id/btn_submit"
             android:text="@string/str_submitOrder"

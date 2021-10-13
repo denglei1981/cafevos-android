@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -54,10 +55,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             bindingAddress(item)
         })
         binding.inGoodsInfo.addSubtractView.numberLiveData.observe(this,{
-            dataBean.buyNum=it
+            dataBean.buyNum= it
+            bindingBaseData()
         })
         viewModel.getAddressList()
         bindingBaseData()
+        binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
             PayConfirmActivity.start(this,"orderInfo")
         })
@@ -85,12 +88,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             model=dataBean
-            addSubtractView.setNumber(buyNum)
+            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(skuItem.skuImg),imgGoodsCover)
             //if(freightPrice!=0)tvDistributionType
         }
         binding.inBottom.apply {
             model=dataBean
             tvAcountFb.setText("${dataBean.acountFb}")
+            btnSubmit.updateEnabled(null!=dataBean.addressId&&dataBean.totalPayFb.toInt()<=dataBean.acountFb)
         }
     }
     fun onClick(v:View){
@@ -103,15 +108,18 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private fun submitOrder(){
         val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-        viewModel.orderCreate(dataBean.skuId,"1",dataBean.spuPageType,dataBean.buyNum,consumerMsg)
-//        PayConfirmActivity.start(this,"orderInfo")
+        viewModel.orderCreate(dataBean.spuId,dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
     }
     @SuppressLint("SetTextI18n")
     private fun bindingAddress(item:AddressBeanItem?){
         if(null==item){//未绑定地址
+            dataBean.addressId=null
             binding.inAddress.tvAddress.setText(R.string.str_pleaseAddShippingAddress)
             binding.inAddress.tvAddressRemark.visibility=View.GONE
+            binding.inBottom.btnSubmit.updateEnabled(false)
         }else{
+            dataBean.addressId=item.addressId
+            binding.inBottom.btnSubmit.updateEnabled(dataBean.totalPayFb.toInt()<=dataBean.acountFb)
             binding.inAddress.tvAddressRemark.visibility=View.VISIBLE
             binding.inAddress.tvAddress.text="${item.provinceName}${item.cityName}${item.districtName}${item.addressName}"
             binding.inAddress.tvAddressRemark.text="${item.consignee}   ${item.phone}"

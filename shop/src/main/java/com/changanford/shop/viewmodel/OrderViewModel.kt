@@ -31,9 +31,11 @@ class OrderViewModel: BaseViewModel() {
      * [buyNum]数量
      * [consumerMsg]买家留言
      * [payType]支付方式(积分),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付)
-     * [busSourse] 业务来源 0普通商品 1秒杀商品 2砍价商品
+     * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
+     * busSourse 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
-    fun orderCreate(skuId:String,addressId:String,busSourse:String,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
+    fun orderCreate(spuId:String,skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
+        val busSourse=if("SECKILL"==spuPageType)1 else 0
         viewModelScope.launch {
           fetchRequest {
                 body.clear()
@@ -42,7 +44,9 @@ class OrderViewModel: BaseViewModel() {
                 body["buyNum"]=buyNum
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType
-                body["addressId"]=addressId
+                body["addressId"]=addressId?:"0"
+//                body["spuId"]=spuId
+//                body["mallMallHaggleUserGoodsId"]=108
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {

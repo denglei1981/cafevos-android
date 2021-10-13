@@ -78,6 +78,14 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         }
         setText(statesTxt[states])
     }
+    fun updateEnabled(isEnabled:Boolean){
+        this.isEnabled=isEnabled
+        if(isEnabled){
+            setBackgroundResource(R.drawable.btn_selector)
+        }else{
+            setBackgroundResource(R.drawable.shadow_f4_20dp)
+        }
+    }
     fun getStates():Int{
         return btnStates
     }
