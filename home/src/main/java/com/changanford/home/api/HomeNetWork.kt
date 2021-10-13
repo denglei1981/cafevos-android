@@ -169,7 +169,14 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<InfoDataBean>>
 
-
+    /**
+     * 搜索搜索帖子
+     */
+    @POST("con/search/s")
+    suspend fun getSearchPostList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<PostDataBean>>
     /**
      *
      * 搜索关键字

@@ -42,7 +42,7 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
 
         fragmentList.add(SearchActsFragment.newInstance())
         fragmentList.add(SearchNewsFragment.newInstance(searchContent!!))
-        fragmentList.add(SearchPostFragment.newInstance())
+        fragmentList.add(SearchPostFragment.newInstance(searchContent))
         fragmentList.add(SearchShopFragment.newInstance())
         fragmentList.add(SearchUserFragment.newInstance(searchContent))
         titleList.add(getString(R.string.home_acts))

@@ -125,8 +125,8 @@ data class PostDataBean(
     val circleId: Int? = 0,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,
-    val commentCount: Int = 0,
-    val content: String? = "",
+    var commentCount: Long = 0,
+    val content: String = "",
     val contentLike: Any? = Any(),
     val createBy: Any? = Any(),
     val createTime: Long = 0,
@@ -140,7 +140,7 @@ data class PostDataBean(
     val isRecommend: Int = 0,
     val isTop: Int = 0,
     val keywords: String = "",
-    var likesCount: Int = 0,
+    var likesCount: Long = 0,
     val likesCountBase: Int = 0,
     val likesCountMul: Int = 0,
     val picCount: Int = 0,
@@ -169,7 +169,21 @@ data class PostDataBean(
     val viewsCount: Int = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0
-)
+){
+    fun getCommentCountAnViewCount(): String {
+        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
+        val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        return commentStr.plus("\t").plus(viewStr)
+    }
+
+    fun getContentStr(): String {
+        if (!TextUtils.isEmpty(content)) {
+            return content
+        }
+        return ""
+    }
+
+}
 
 data class AcBean(var title: String, var iconUrl: String, var type: Int) : MultiItemEntity {
     override val itemType: Int
