@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.content.Context
 import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
@@ -10,10 +11,13 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MessageItemData
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.ConfirmPop
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -21,6 +25,7 @@ import com.changanford.my.databinding.ItemMineMessageInfoSysBinding
 import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.xiaomi.push.it
 
 /**
  *  文件名：MineMessageSysInfoUI
@@ -34,11 +39,22 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
 
     var messageStatus: Int = 1 // 默认有未读消息
 
-    private var adapter = MessageAdapter()
+    private var adapter : MessageAdapter? = null
 
 
     override fun initView() {
 
+        adapter = MessageAdapter(this){id,pos->
+            viewModel.delUserMessage(id) {
+                it.onSuccess {
+                    adapter?.data?.removeAt(pos)
+                    adapter?.notifyItemRemoved(pos)
+                    adapter?.notifyItemRangeChanged(0,adapter?.itemCount?:0)
+                }.onWithMsgFailure {
+                    it?.toast()
+                }
+            }
+        }
         intent.extras?.let {
             messageStatus = it.getInt("messageStatus", 1)
         }
@@ -67,11 +83,11 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
         binding.mineRefresh.refreshRv.layoutManager = LinearLayoutManager(this)
         binding.mineRefresh.refreshRv.adapter = adapter
 
-        adapter.setOnItemClickListener { ad, view, position ->
-            JumpUtils.instans?.jump(
-                adapter.getItem(position).jumpDataType,
-                adapter.getItem(position).jumpDataValue
-            )
+        adapter?.setOnItemClickListener { ad, view, position ->
+//            JumpUtils.instans?.jump(
+//                adapter?.getItem(position)?.jumpDataType,
+//                adapter?.getItem(position)?.jumpDataValue
+//            )
 //            if (adapter.getItem(position).status == 0) {
 //                viewModel.changMessage(adapter.getItem(position).userMessageId.toString())
 //            }
@@ -115,7 +131,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                         if (refreshAndLoadMore(
                                 data.total,
                                 it.size,
-                                adapter
+                                adapter!!
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
@@ -123,13 +139,13 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
-                            adapter.addData(it)
+                            adapter?.addData(it)
                             setSaveText(messageStatus)
                         }
                     }
                     if (null == list) {
                         showEmptyView()?.let {
-                            adapter.setEmptyView(it)
+                            adapter?.setEmptyView(it)
                         }
                     }
                 }
@@ -137,7 +153,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
             }
             it.onFailure {
                 showErrorView(getString(R.string.error_msg))?.let {
-                    adapter.setEmptyView(it)
+                    adapter?.setEmptyView(it)
                 }
             }
         }
@@ -145,7 +161,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
 
     }
 
-    class MessageAdapter :
+    class MessageAdapter(var mContext: Context,var func: (String,Int)->Unit) :
         BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoSysBinding>>(
             R.layout.item_mine_message_info_sys
         ) {
@@ -162,6 +178,23 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                     it.arrowR.visibility = View.GONE
                 } else {
                     it.arrowR.visibility = View.VISIBLE
+                }
+                it.delete.setOnClickListener {v->
+                    AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
+                        .setNegativeButton(
+                            "取消", R.color.color_7174
+                        ) { v->
+                            it.swipeLayout.quickClose()
+                        }
+                        .setPositiveButton("确认", R.color.black) {
+                            func("${item.userMessageId}",getItemPosition(item))
+                        }.show()
+                }
+                it.item.setOnClickListener {
+                    JumpUtils.instans?.jump(
+                        item.jumpDataType,
+                        item.jumpDataValue
+                    )
                 }
             }
         }

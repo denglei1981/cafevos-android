@@ -44,7 +44,7 @@ abstract class BaseApplication : MultiDexApplication() {
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
         // 获取隐私政策签署状态
-        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
+        if ((SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()
         } else {
             MyApplicationUtil.init(this)

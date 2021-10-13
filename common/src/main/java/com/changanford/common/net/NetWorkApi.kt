@@ -187,6 +187,12 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<MessageListBean>
 
+    //删除消息
+    @POST("userMessage/delUserMessage")
+    suspend fun delUserMessage(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
     /**
      * 获取反馈 常用问题
      */

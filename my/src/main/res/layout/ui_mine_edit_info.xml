@@ -5,7 +5,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#F4F4F4"
         android:orientation="vertical">
 
         <include
@@ -18,34 +19,41 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/edit_name_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:text="头像"
-                    android:textColor="@color/color_00"
-                    android:textSize="@dimen/text_size_mid"
-                    app:layout_constraintBottom_toBottomOf="@+id/edit_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/edit_icon" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/helay"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/white"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/edit_name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:text="头像"
+                        android:textColor="@color/color_00"
+                        android:textSize="@dimen/text_size_mid"
+                        app:layout_constraintBottom_toBottomOf="@+id/edit_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/edit_icon" />
 
-                <ImageView
-                    android:id="@+id/edit_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/edit_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="24dp"
+                        android:src="@mipmap/ic_launcher"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <View
                     android:id="@+id/edit_line1"
@@ -54,7 +62,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="14dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edit_icon" />
+                    app:layout_constraintTop_toBottomOf="@id/helay" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_nickname"
@@ -90,7 +98,6 @@
                     android:id="@+id/edit_sex"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="1dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_autograph"
@@ -146,9 +153,9 @@
                     app:right_text="请选择"
                     app:right_text_color="@color/color_33"
                     app:show_bottom_line="true" />
-
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_email"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -239,6 +246,7 @@
                     android:id="@+id/edit_reg_time"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
+                    android:layout_marginTop="@dimen/dp_10"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_industry"
@@ -248,6 +256,24 @@
                     app:right_text="请选择"
                     app:right_text_color="@color/color_33"
                     app:show_bottom_line="true" />
+
+                <TextView
+                    android:id="@+id/toauth"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="长安福特员工认证"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:textColor="#01025C"
+                    android:textSize="@dimen/sp_12"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:drawableRight="@mipmap/arrow_right_5c"
+                    android:drawablePadding="@dimen/dp_10"
+                    app:layout_constraintTop_toBottomOf="@id/edit_reg_time"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textStyle="normal"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

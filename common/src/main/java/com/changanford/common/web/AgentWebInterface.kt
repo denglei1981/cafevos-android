@@ -30,6 +30,8 @@ import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
 import com.just.agentweb.AgentWeb
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -195,34 +197,34 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     @JavascriptInterface
     fun choseImg(callback: String) {
 //        toastShow("选择图片")
-//        PictureUtil.openGarlly(500,
-//            activity,
-//            object : OnResultCallbackListener<LocalMedia?> {
-//                override fun onCancel() {}
-//                override fun onResult(result: MutableList<LocalMedia?>?) {
-//                    if (result != null) {
-//                        for (media in result) {
-//                            var path = ""
-//                            media?.let {
-//                                path = if (media.isCut && !media.isCompressed) {
-//                                    // 裁剪过
-//                                    media.cutPath
-//                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
-//                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-//                                    media.compressPath
-//                                } else {
-//                                    // 原图
-//                                    media.path
-//                                }
-//                            }
-//                            path?.let {
-//                                var base64Str = FileHelper.getImageStr(path)
-//                                agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
-//                            }
-//                        }
-//                    }
-//                }
-//            })
+        PictureUtils.openGarlly(500,
+            activity,
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onCancel() {}
+                override fun onResult(result: MutableList<LocalMedia?>?) {
+                    if (result != null) {
+                        for (media in result) {
+                            var path = ""
+                            media?.let {
+                                path = if (media.isCut && !media.isCompressed) {
+                                    // 裁剪过
+                                    media.cutPath
+                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                    media.compressPath
+                                } else {
+                                    // 原图
+                                    media.path
+                                }
+                            }
+                            path?.let {
+                                var base64Str = FileHelper.getImageStr(path)
+                                agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                            }
+                        }
+                    }
+                }
+            })
     }
 
     /**

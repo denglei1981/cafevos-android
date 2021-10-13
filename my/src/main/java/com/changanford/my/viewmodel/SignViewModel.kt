@@ -99,6 +99,22 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 删除消息
+     */
+    fun delUserMessage(
+        userMessageIds: String,result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["userMessageIds"] = userMessageIds
+                var rkey = getRandomKey()
+                apiService.delUserMessage(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
     fun changAllMessage(userMessageId: String) {
         viewModelScope.launch {
             fetchRequest {

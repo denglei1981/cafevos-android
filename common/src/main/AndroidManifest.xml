@@ -47,6 +47,8 @@
         <activity android:name=".web.AgentWebActivity" />
         <activity android:name=".ui.PhotoViewActivity" />
         <activity android:name=".ui.NothingActivity" />
+        <activity android:name=".sharelib.activity.QqShareActivity" />
+        <activity android:name=".sharelib.activity.WxShareCallBackActivity" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

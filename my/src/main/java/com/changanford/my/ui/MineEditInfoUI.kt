@@ -114,6 +114,8 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         binding.editAutograph.setOnClickListener(this)
         //邮箱
         binding.editEmail.setOnClickListener(this)
+        //员工认证
+        binding.toauth.setOnClickListener(this)
 
         //监听数据
         getUserInfo()
@@ -317,6 +319,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                         .putExtra("type", 2)
                         .putExtra("content", binding.editEmail.rightDesc.toString())
                 )
+            }
+            R.id.toauth -> {
+                //
             }
         }
     }

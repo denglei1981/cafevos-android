@@ -3,11 +3,22 @@ package com.changanford.common.web
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.STSBean
+import com.changanford.common.net.*
+import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.Base64Utils
+import com.huawei.hms.common.ApiException
+import com.xiaomi.push.it
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 
@@ -30,62 +41,62 @@ class AgentWebViewModle : ViewModel() {
      * 上传图片（对外接口）
      */
     fun uploadImg(base64Str: String) {
-//        ossRepository.GetOSS(object : ResponseObserver<BaseBean<STSBean>>() {
-//            override fun onSuccess(response: BaseBean<STSBean>) {
-//                val stsBean = response.data
-//                val dialog = LoadDialog(getApplication())
-//                dialog.setCancelable(false)
-//                dialog.setCanceledOnTouchOutside(false)
-//                dialog.setLoadingText("图片上传中..")
-////              dialog.show()
-//                var imgBytes = Base64Utils.base64ToByteArray(base64Str)
-////                viewModelScope.launch(Dispatchers.IO) {
-//                imgBytes?.let {
-//                    uploadImgs(it, stsBean, dialog)
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.getOSS(body.header(rkey),body.body(rkey))
+            }.onSuccess { stsBean->
+                val dialog = LoadDialog(BaseApplication.INSTANT)
+                dialog.setCancelable(false)
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.setLoadingText("图片上传中..")
+//                dialog.show()
+                var imgBytes = Base64Utils.base64ToByteArray(base64Str)
+//                viewModelScope.launch(Dispatchers.IO) {
+                    imgBytes?.let {
+                        stsBean?.let { it1 -> uploadImgs(it, it1, dialog) }
+                    }
 //                }
-////                }
-//            }
-//
-//            override fun onFail(e: ApiException) {
-//            }
-//
-//        })
+            }
+        }
     }
 
-//    private fun uploadImgs(
-//        imgBytes: ByteArray,
-//        stsBean: STSBean,
-//        dialog: LoadDialog
-//    ) {
-//        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
-//            stsBean.endpoint, stsBean.accessKeyId,
-//            stsBean.accessKeySecret, stsBean.securityToken
-//        )
-//        val path =
-//            stsBean.tempFilePath.plus(System.currentTimeMillis().toString()).plus(".jpg")
-//        AliYunOssUploadOrDownFileConfig.getInstance(context)
-//            .uploadFile(true, imgBytes, stsBean.bucketName, path, "", "", 0)
-//        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object : OnUploadFile {
-//            override fun onUploadFileSuccess(info: String) {
-//                viewModelScope.launch(Dispatchers.Main) {
-////                    dialog.dismiss()
-//                }
-////                _pic.postValue(stsBean.cdn.plus(path))
-//                _pic.postValue(path)
-//            }
-//
-//            override fun onUploadFileFailed(errCode: String) {
-////                dialog.dismiss()
-//            }
-//
-//            override fun onuploadFileprogress(
-//                request: PutObjectRequest,
-//                currentSize: Long,
-//                totalSize: Long
-//            ) {
-//            }
-//        })
-//    }
+    private fun uploadImgs(
+        imgBytes: ByteArray,
+        stsBean: STSBean,
+        dialog: LoadDialog
+    ) {
+        AliYunOssUploadOrDownFileConfig.getInstance(BaseApplication.INSTANT).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        val path =
+            stsBean.tempFilePath.plus(System.currentTimeMillis().toString()).plus(".jpg")
+        AliYunOssUploadOrDownFileConfig.getInstance(BaseApplication.INSTANT)
+            .uploadFile(true, imgBytes, stsBean.bucketName, path, "", "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(BaseApplication.INSTANT).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                viewModelScope.launch(Dispatchers.Main) {
+//                    dialog.dismiss()
+                }
+//                _pic.postValue(stsBean.cdn.plus(path))
+                _pic.postValue(path)
+            }
+
+            override fun onUploadFileFailed(errCode: String) {
+//                dialog.dismiss()
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+            }
+        })
+    }
 
     /**
      * 微信

@@ -7,8 +7,8 @@
 
         <TextView
             android:id="@+id/item_q"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_25"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:background="@mipmap/icon_feedback"
@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_20"
             android:layout_marginRight="18dp"
             android:padding="6dp"
             android:src="@mipmap/arrow_down"
