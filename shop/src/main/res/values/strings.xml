@@ -126,4 +126,5 @@
     <string name="str_hasBeenSoldOut">已售罄</string>
     <string name="str_lackBalance">余额不足</string>
     <string name="str_combined">合计：</string>
+    <string name="str_Xfb">%1$s福币</string>
 </resources>

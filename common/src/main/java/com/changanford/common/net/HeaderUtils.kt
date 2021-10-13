@@ -46,12 +46,12 @@ fun getHeader(
     map["sign"] = MD5Utils.encode_big(
         getAESBody(body, key).plus(timestamp).plus("hyzh-unistar-5KWJKH291IvadR")
     )
+    if(BuildConfig.DEBUG)map["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
     if (null != token && token.isNotEmpty()) {
         map["token"] = token
     }
     //设置默认token
 //    map["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
-    if(BuildConfig.DEBUG)map["token"] = "user:token:app:199:uni-e31811a45ca7811fcd18c052570f207c"
     map["timestamp"] = timestamp
     map["os"] = "Android"//操作系统 （ios、Android、wp）
     map["osVersion"] = DeviceUtils.getDeviceVersion()//操作系统版本号

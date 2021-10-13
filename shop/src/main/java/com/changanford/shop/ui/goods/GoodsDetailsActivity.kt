@@ -103,10 +103,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     fun onClick(v:View){
         val vid=v.id
-        if(R.id.img_back!=vid&&(!::control.isInitialized))return
+        if(R.id.img_back!=vid&&(!::control.isInitialized||viewModel.goodsDetailData.value==null))return
         when(vid){
             //确认订单
-            R.id.btn_submit->OrderConfirmActivity.start(this, Gson().toJson(control.dataBean))
+            R.id.btn_submit->OrderConfirmActivity.start(this, Gson().toJson(viewModel.goodsDetailData.value))
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
             //选择商品属性

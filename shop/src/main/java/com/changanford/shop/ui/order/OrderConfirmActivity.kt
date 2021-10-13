@@ -53,9 +53,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             }
             bindingAddress(item)
         })
+        binding.inGoodsInfo.addSubtractView.numberLiveData.observe(this,{
+            dataBean.buyNum=it
+        })
         viewModel.getAddressList()
         bindingBaseData()
     }
+    @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
         //购买数量
         val buyNum=dataBean.buyNum
@@ -65,22 +69,26 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         val fbPrice=dataBean.fbPrice.toInt()
         //总商品价 单价*购买数量
         val totalFb=fbPrice*buyNum
-        binding.inOrderInfo.tvAmountValue.setText("$totalFb")
-        //会员优惠
-//        val memberDiscount=dataBean.fbLine.toInt()*buyNum-totalFb
-//        binding.inOrderInfo.tvMemberDiscountValue.setText("$memberDiscount")
         //总共支付 (商品金额+运费)
         val totalPayFb=totalFb+freightPrice
         dataBean.totalPayFb="$totalPayFb"
-        binding.inOrderInfo.tvTotal.setHtmlTxt("$totalPayFb","#00095B")
-
-        val goodsInfo=binding.inGoodsInfo
-        goodsInfo.addSubtractView.setNumber(buyNum)
-//        if(freightPrice!=0)goodsInfo.tvDistributionType
-        binding.inOrderInfo.model=dataBean
-        goodsInfo.model=dataBean
-        binding.inBottom.model=dataBean
-        binding.inBottom.tvAcountFb.setText("${dataBean.acountFb}")
+        binding.inOrderInfo.apply {
+            model=dataBean
+            tvAmountValue.setText("$totalFb")
+            tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
+            //会员优惠
+//          val memberDiscount=dataBean.fbLine.toInt()*buyNum-totalFb
+//          tvMemberDiscountValue.setText("$memberDiscount")
+        }
+        binding.inGoodsInfo.apply {
+            model=dataBean
+            addSubtractView.setNumber(buyNum)
+            //if(freightPrice!=0)tvDistributionType
+        }
+        binding.inBottom.apply {
+            model=dataBean
+            tvAcountFb.setText("${dataBean.acountFb}")
+        }
     }
     fun onClick(v:View){
         when(v.id){
