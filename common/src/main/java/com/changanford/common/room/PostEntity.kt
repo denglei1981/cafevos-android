@@ -2,6 +2,7 @@ package com.changanford.common.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.luck.picture.lib.entity.LocalMedia
 import java.io.Serializable
 
 /**
@@ -22,7 +23,7 @@ data class PostEntity(
     @ColumnInfo(name = "plate") var plate: Int = 0,//所属板块id 1 大咖 2 社区
     @ColumnInfo(name = "plateName") var plateName: String = "",//所属板块名称 1 大咖 2 社区
     @ColumnInfo(name = "title") var title: String = "",//标题
-    @ColumnInfo(name = "topicId") var topicId: String = "",//话题id
+    @ColumnInfo(name = "topicId") var topicId: Int = 0,//话题id
     @ColumnInfo(name = "topicName") var topicName: String = "",//话题id
     @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频 4 图文长帖
     @ColumnInfo(name = "userId") var userId: String = "",//用户id
@@ -37,7 +38,9 @@ data class PostEntity(
     @ColumnInfo(name = "city") var city: String = "",
     @ColumnInfo(name = "province") var province: String = "",
     @ColumnInfo(name = "cityCode") var cityCode:String ="",
-    @ColumnInfo(name="creattime") var creattime:String=""
+    @ColumnInfo(name="creattime") var creattime:String="",
+    @ColumnInfo(name="longpostFmLocalMeadle") var longpostFmLocalMeadle:String="",//发长图的封面
+    @ColumnInfo(name="longPostDatas") var longPostDatas:String="" //发长图的列表集合 分开存储是因为可能没有选择封面
 ) : Serializable
 
 @Dao

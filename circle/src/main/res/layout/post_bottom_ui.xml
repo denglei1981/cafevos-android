@@ -216,5 +216,11 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/emojirec"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="5"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>
 </LinearLayout>
