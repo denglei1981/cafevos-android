@@ -33,13 +33,19 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.room.PostDatabase
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
+import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -64,6 +70,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private var circleId = ""
     private var isOpenMenuPop = false
+
+    private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     private val personalAdapter by lazy {
         CircleDetailsPersonalAdapter(this)
@@ -102,48 +110,70 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 binding.barTitleTv.alpha = 1.0F
             }
         })
-        initListener()
         initTabAndViewPager()
+        PostDatabase.getInstance(this).getPostDao().findAll().observe(this,
+            {
+                postEntity = it as ArrayList<PostEntity>
+            })
     }
 
-    private fun initListener() {
+    private fun initListener(circleName: String) {
         binding.ivPostBar.setOnClickListener {
-            if (isOpenMenuPop) {
-                return@setOnClickListener
+            if (postEntity == null) {
+                initPop(circleName)
+            } else {
+                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
+                    .setNegativeButton("继续编辑") {
+                        RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+                    }.setPositiveButton("不使用草稿") {
+                        initPop(circleName)
+                    }.show()
             }
-            CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
-                override fun checkLongBar() {
 
-                }
-
-                override fun checkPic() {
-
-                }
-
-                override fun checkVideo() {
-
-                }
-
-            }).run {
-                //无透明背景
-                setBackgroundColor(Color.TRANSPARENT)
-                //背景模糊false
-                setBlurBackgroundEnable(false)
-                showPopupWindow(it)
-                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        isOpenMenuPop = false
-                        binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
-                    }
-
-                }
-                setOnPopupWindowShowListener {
-                    isOpenMenuPop = true
-                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
-                }
-            }
         }
 
+    }
+
+    private fun initPop(circleName: String) {
+        if (isOpenMenuPop) {
+            return
+        }
+
+        val bundle = Bundle()
+        bundle.putString("circleId", circleId)
+        bundle.putString("circleName", circleName)
+
+        CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
+            override fun checkLongBar() {
+                startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
+            }
+
+            override fun checkPic() {
+                startARouter(ARouterCirclePath.PostActivity, bundle)
+            }
+
+            override fun checkVideo() {
+                startARouter(ARouterCirclePath.VideoPostActivity, bundle)
+            }
+
+        }).run {
+            //无透明背景
+            setBackgroundColor(Color.TRANSPARENT)
+            //背景模糊false
+            setBlurBackgroundEnable(false)
+            showPopupWindow(binding.ivPostBar)
+            onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                override fun onDismiss() {
+                    isOpenMenuPop = false
+                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+                }
+
+            }
+            setOnPopupWindowShowListener {
+                isOpenMenuPop = true
+                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
+            }
+        }
     }
 
     private fun initTabAndViewPager() {
@@ -169,6 +199,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     override fun initData() {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getCircleDetails(circleId)
     }
 
@@ -177,6 +212,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         super.observe()
         viewModel.circleDetailsBean.observe(this, {
             setJoinType(it.isApply)
+            initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.shareImg.setOnClickListener { _ ->
                 CircleShareModel.shareDialog(
@@ -191,7 +227,12 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             }
             binding.topContent.run {
                 //加暗
-                ivBg.setColorFilter(ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_00_a30))
+                ivBg.setColorFilter(
+                    ContextCompat.getColor(
+                        this@CircleDetailsActivity,
+                        R.color.color_00_a30
+                    )
+                )
                 Glide.with(this@CircleDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
@@ -205,9 +246,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 tvPersonal.text = "${it.userCount}成员"
                 personalAdapter.setItems(it.users)
                 personalAdapter.notifyDataSetChanged()
-                tvPersonal.setOnClickListener {
+                tvPersonal.setOnClickListener {_->
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
+                    bundle.putString("isApply", it.isApply.toString())
                     startARouter(ARouterCirclePath.PersonalActivity, bundle)
                 }
 

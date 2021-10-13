@@ -70,6 +70,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
             titles = arrayListOf("全部(${it.userCount})", "待审核(${it.userApplyCount})")
         }
 
+        binding.viewpager.isUserInputEnabled = false
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyCircleMangerUI) {
                 override fun getItemCount(): Int {

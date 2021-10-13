@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.graphics.Typeface
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiMyActBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -28,6 +30,11 @@ class MyActUI : BaseMineUI<UiMyActBinding, EmptyViewModel>() {
 
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的活动"
+        binding.collectToolbar.toolbarSave.text = "发布"
+        binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
+        binding.collectToolbar.toolbarSave.setOnClickListener {
+            JumpUtils.instans?.jump(13)
+        }
         initViewpager()
     }
 

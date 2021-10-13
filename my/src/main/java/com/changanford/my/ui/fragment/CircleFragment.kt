@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
@@ -128,6 +129,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     reasonLayout.visibility = View.GONE
 
                     var operation: TextView = holder.getView(R.id.item_operation)
+                    operation.setOnClickListener(null)
                     //状态 状态 2待审核  1认证失败 3审核通过
                     when (item.checkStatus) {
                         "2", "1" -> {
@@ -139,6 +141,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                 if (item.checkStatus == "2") "" else "原因：${item.checkNoReason}"
                             )
                             operation.text = "去编辑"
+                            operation.setOnClickListener {
+                                RouterManger.param(RouterManger.KEY_TO_ITEM, item)
+                                    .startARouter(ARouterCirclePath.CreateCircleActivity)
+                            }
                         }
                         "3" -> {
                             status.visibility = View.VISIBLE

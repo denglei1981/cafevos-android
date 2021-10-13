@@ -699,7 +699,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
                 REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getStringExtra("circleId") ?: "0"
+                        params["circleId"] = data.getIntExtra("circleId",0)
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
                     }

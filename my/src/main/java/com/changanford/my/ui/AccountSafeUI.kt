@@ -19,7 +19,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -76,6 +75,7 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         wxApi.registerApp(ConfigUtils.WXAPPID)
 
         binding.accountToolbar.toolbarTitle.text = "账号与安全"
+        binding.accountToolbar.toolbar.setNavigationOnClickListener { back() }
 
         viewModel.bindAccount.observe(this, Observer {
             it?.forEach { bean ->

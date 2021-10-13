@@ -75,11 +75,10 @@ class PostViewModule() :PostRoomViewModel(){
      * 获取省市区ID
      */
     fun getCityDetailBylngAndlat(latY: Double,lngX:Double) {
-        var body = HashMap<String, Any>()
-        body["latY"] = latY
-        body["lngX"] = lngX
         launch(block =  {
             val body = MyApp.mContext.createHashMap()
+            body["latY"] = latY
+            body["lngX"] = lngX
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getCityDetailBylngAndlat(body.header(rKey),body.body(rKey))
                 .onSuccess {

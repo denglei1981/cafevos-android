@@ -17,9 +17,12 @@ import com.changanford.common.utilext.createHashMap
 class PersonalViewModel : BaseViewModel() {
 
     val personalBean = MutableLiveData<HomeDataListBean<CircleMemberBean>>()
+    val isStarRole = MutableLiveData<String>()
+    val isCircle = MutableLiveData<String>()
+    val quitCircleBean = MutableLiveData<CommonResponse<Any>>()
 
     fun getData(circleId: String, page: Int) {
-        launch(block ={
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -30,9 +33,24 @@ class PersonalViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().getCircleUsers(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     personalBean.value = it
+                    isStarRole.value = it?.extend?.isStarRole
+//                    isCircle.value = it?.extend?.isCircler
                 }
                 .onFailure { }
-        } )
+        })
+    }
+
+    fun quitCircle(circleId: String) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["circleId"] = circleId
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().quitCircle(body.header(rKey), body.body(rKey))
+                .also {
+                    quitCircleBean.value = it
+                }
+        })
     }
 
 }

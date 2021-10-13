@@ -27,23 +27,6 @@
             app:shapeAppearanceOverlay="@style/rounded5TopImageStyle" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_btn_state"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
-            android:layout_marginStart="17dp"
-            android:layout_marginBottom="14dp"
-            android:background="@drawable/shape_whit5_bg"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/home_more"
-            android:textColor="@color/black"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_acts"
-            app:layout_constraintStart_toStartOf="@+id/iv_acts"
-            tools:text="进行中" />
-
-        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_tips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,6 +54,7 @@
             android:text="官方"
             android:textColor="#ff74889d"
             android:textSize="11sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/tv_tips"
             app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
 
@@ -84,6 +68,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="14dp"
             android:backgroundTint="@color/color_F4"
+            android:padding="@dimen/dp_4"
             android:text="进行中"
             android:textColor="@color/black"
             android:textSize="13sp"
@@ -107,7 +92,8 @@
             android:textColor="#ff74889d"
             android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@+id/tv_tag_one"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tips"
+            app:layout_goneMarginStart="@dimen/dp_0" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_act_times"
@@ -119,7 +105,7 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tag_one" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tag_two" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_act_address"
@@ -135,14 +121,27 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_home_act_look_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_19"
+            android:text="15.3W浏览"
+            android:textColor="#ff9fabb7"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_act_times" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_act_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"
-            android:text="报名人数1234人"
+            android:text=""
             android:textColor="#ff9fabb7"
             android:textSize="@dimen/sp_12"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_home_act_address"
+            app:layout_constraintStart_toStartOf="@+id/tv_tips"
             app:layout_constraintTop_toBottomOf="@+id/tv_home_act_address" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -154,6 +153,7 @@
             android:text="点击查看"
             android:textColor="#01025C"
             android:textSize="@dimen/sp_12"
+            android:visibility="invisible"
             app:layout_constraintLeft_toRightOf="@+id/tv_act_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_home_act_address" />
 
@@ -162,14 +162,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_20"
             android:background="@drawable/shape_r_13_c_25c"
             android:gravity="center"
             android:minWidth="@dimen/dp_54"
             android:minHeight="@dimen/dp_25"
             android:text="结束"
             android:textColor="#01025C"
-            android:layout_marginEnd="@dimen/dp_20"
             android:textSize="@dimen/sp_13"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_home_act_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>

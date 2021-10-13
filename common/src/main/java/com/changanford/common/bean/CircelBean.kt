@@ -1,6 +1,7 @@
 package com.changanford.common.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import java.io.Serializable
 
 /**
  *  文件名：CircelBean
@@ -46,7 +47,7 @@ data class CircleItemBean(
     var typeStr: String,//圈子角色名称
     var isShowTitle: Boolean = false,//是否为圈子角色
 
-) : MultiItemEntity
+) : MultiItemEntity,Serializable
 
 
 data class CircleMemberBean(

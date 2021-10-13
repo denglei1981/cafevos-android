@@ -1,17 +1,17 @@
 package com.changanford.my.ui
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.MyApp
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.basic.PostRoomViewModel
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
-import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemPostDraftBinding
@@ -55,6 +55,22 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                         }.showPopupWindow()
                     true
                 }
+                holder.itemView.setOnClickListener {
+                    when (item.type) {
+                        "2" -> {
+                            RouterManger.param("postEntity", item)
+                                .startARouter(ARouterCirclePath.PostActivity)
+                        }
+                        "3" -> {
+                            RouterManger.param("postEntity", item)
+                                .startARouter(ARouterCirclePath.VideoPostActivity)
+                        }
+                        "4" -> {
+                            RouterManger.param("postEntity", item)
+                                .startARouter(ARouterCirclePath.LongPostAvtivity)
+                        }
+                    }
+                }
             }
         }
 
@@ -69,6 +85,12 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
 
     override fun hasRefresh(): Boolean {
         return true
+    }
+
+    override fun showEmpty(): View? {
+        emptyBinding.viewStatusIcon.visibility = View.GONE
+        emptyBinding.viewStatusText.text = "取消发送或发送失败的帖子可以被存为草稿"
+        return super.showEmpty()
     }
 
     override fun initRefreshData(pageSize: Int) {
