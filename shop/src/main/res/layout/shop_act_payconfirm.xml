@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:end_txt="@string/str_integral"
-                tools:text="1300积分"
+                android:text="@{model.fbCost}"
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_28" />
             <com.changanford.shop.view.TypefaceTextView
@@ -40,17 +41,21 @@
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_10" />
             <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_accountPoints"
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/str_yourAccountPoints_font"
+                tools:text="@string/str_yourAccountPoints_font"
+                app:start_txt="@string/str_yourAccountPoints"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <include
-            android:visibility="gone"
+            tools:visibility="gone"
+            android:id="@+id/in_payResults"
             layout="@layout/in_pay_results"/>
         <androidx.appcompat.widget.AppCompatButton
+            android:onClick="btnSubmit"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/btn_submit"

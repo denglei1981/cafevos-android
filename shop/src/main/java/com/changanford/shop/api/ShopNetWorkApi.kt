@@ -95,4 +95,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/index/myPoints")
     suspend fun getMyIntegral(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *虚拟币支付
+     * */
+    @POST("/app/pay/virtualCoinPay")
+    suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

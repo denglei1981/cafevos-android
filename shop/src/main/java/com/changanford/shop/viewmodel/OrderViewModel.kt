@@ -9,6 +9,7 @@ import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
+import com.changanford.shop.base.ResponseBean
 import kotlinx.coroutines.launch
 
 /**
@@ -25,6 +26,8 @@ class OrderViewModel: BaseViewModel() {
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     //订单
     var orderInfoLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
+    //我的积分
+    var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -139,10 +142,47 @@ class OrderViewModel: BaseViewModel() {
             fetchRequest {
                 body.clear()
                 body["orderNo"]=orderNo
-                val rkey = getRandomKey()
-                shopApiService.orderCancel(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.orderCancel(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
 
+            }
+        }
+    }
+    /**
+     * fb支付
+     * [orderNo]订单号
+     * */
+    fun fbPay(orderNo:String,fordPayType:String="INTEGRAL") {
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["orderNo"]=orderNo
+                body["fordPayType"]=fordPayType
+                val randomKey = getRandomKey()
+                shopApiService.fbPay(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                responseData.postValue(ResponseBean(true))
+            }.onWithMsgFailure {
+                responseData.postValue(ResponseBean(false,msg = it))
+
+            }
+        }
+    }
+
+    /**
+     * 获取我的积分
+     * */
+    fun getMyIntegral(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val rkey = getRandomKey()
+                shopApiService.getMyIntegral(body.header(rkey), body.body(rkey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }.onSuccess {
+                myFbLiveData.postValue(it as Int?)
             }
         }
     }

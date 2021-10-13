@@ -2,6 +2,7 @@ package com.changanford.common.util.toast
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -70,7 +71,7 @@ object ToastUtils {
      * @param msg  提示信息
      */
     fun showLongToast(msg: String?, context: Context?) {
-        if(null!=msg)showToast(msg, Toast.LENGTH_LONG, context)
+        if(!TextUtils.isEmpty(msg))showToast(msg, Toast.LENGTH_LONG, context)
     }
 
     /**

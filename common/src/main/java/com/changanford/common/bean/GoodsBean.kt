@@ -291,7 +291,7 @@ data class OrderItemBean(
     val discount: Int = 0,
     val discountScale: Int = 0,
     val evalStatus: String = "",
-    val fbCost: Int = 0,
+    var fbCost: String? = "0",
     val fbOfOrderPrice: Int = 0,
     val fbOfUnitPrice: Int = 0,
     val haggleOrder: String = "",
@@ -331,5 +331,6 @@ data class OrderItemBean(
     val updateTime: String = "",
     val userId: Int = 0,
     val cost:String?="0",
-    var waitPayCountDown:Long?=0
+    var waitPayCountDown:Long?=0,
+    var acountFb:String?="0"
 )

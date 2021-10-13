@@ -62,7 +62,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         bindingBaseData()
         binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
-            PayConfirmActivity.start(this,"orderInfo")
+            it.fbCost=it.cost
+            it.acountFb=dataBean.acountFb.toString()
+            PayConfirmActivity.start(this,Gson().toJson(it))
         })
     }
     @SuppressLint("StringFormatMatches")
