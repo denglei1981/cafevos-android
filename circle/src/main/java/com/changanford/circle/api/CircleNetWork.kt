@@ -222,7 +222,7 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
 
-    @POST("/baseDealer/getCityDetailBylngAndlat")
+    @POST("baseDealer/getCityDetailBylngAndlat")
     suspend fun getCityDetailBylngAndlat(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

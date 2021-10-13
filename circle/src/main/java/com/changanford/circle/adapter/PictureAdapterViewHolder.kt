@@ -46,6 +46,7 @@ class PictureAdapterViewHolder(itemView:View,activity: Activity,type:Int,var con
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
                 data?.contentDesc = s.toString()
+
             }
         })
 

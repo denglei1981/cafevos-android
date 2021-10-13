@@ -40,7 +40,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-            if (postEntity == null) {
+            if (postEntity?.size==0){
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {

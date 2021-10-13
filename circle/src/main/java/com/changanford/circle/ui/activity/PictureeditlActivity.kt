@@ -18,6 +18,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.LONGPOSTFM
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.yalantis.ucrop.UCrop
 import java.util.ArrayList
@@ -37,7 +38,7 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
     var itemposition = 0  //长图图片选择的item
     var itemcontent = ""  //长图图片选择过来的编辑内容
     override fun initView() {
-
+        ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         intent.extras?.getParcelableArrayList<LocalMedia>("picList").also {
             mediaList = it

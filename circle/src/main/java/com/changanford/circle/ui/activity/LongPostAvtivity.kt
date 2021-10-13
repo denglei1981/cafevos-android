@@ -569,13 +569,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             }
 
                         })
-                } else if (view.id == R.id.tv_tex) {
-//                    editText = view as EditText
-//                    itemEditChoose=true
-//                    val emoji = emojiAdapter.getItem(position)
-//                    var index = (view as EditText).selectionStart
-//                    var editContent = (view as EditText).text
-//                    editContent?.insert(index, emoji)
                 }
             }
         })
@@ -869,7 +862,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getStringExtra("circleId") ?: "0"
+                        params["circleId"] = data.getIntExtra("circleId",0)
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
                     }

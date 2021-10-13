@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fillViewport="true"
     android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <FrameLayout
         android:layout_weight="1"
@@ -43,7 +49,8 @@
         android:layout_height="120dp"
         android:gravity="top|left"
         android:padding="25dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/transparent"
         android:hint="添加图片描述" />
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

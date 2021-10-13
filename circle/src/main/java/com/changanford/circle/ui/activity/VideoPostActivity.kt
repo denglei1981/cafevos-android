@@ -746,7 +746,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getStringExtra("circleId") ?: "0"
+                        params["circleId"] = data.getIntExtra("circleId",0)
                         var name = data.getStringExtra("name")
                         buttomTypeAdapter.setData(3, ButtomTypeBean(name!!, 1, 3))
                     }
