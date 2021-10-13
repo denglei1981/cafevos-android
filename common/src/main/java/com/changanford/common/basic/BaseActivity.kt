@@ -143,7 +143,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
      *
      * @param token
      */
-    private fun hideKeyboard(token: IBinder?) {
+    protected fun hideKeyboard(token: IBinder?) {
         if (token != null) {
             val im = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)

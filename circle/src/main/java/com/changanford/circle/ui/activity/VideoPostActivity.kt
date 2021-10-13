@@ -46,7 +46,11 @@ import android.graphics.Bitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.circle.widget.pop.ShowSavePostPop
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.room.PostEntity
 import com.changanford.common.util.*
+import com.yw.li_model.adapter.EmojiAdapter
 import kotlin.concurrent.thread
 
 
@@ -58,12 +62,14 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     val postVideoAdapter by lazy {
         PostVideoAdapter()
     }
+    private var platename: String = ""
+    private var circlename: String = ""
+    private var address: String = ""
     private var selectList = ArrayList<LocalMedia>()
     private var nomalwith = 500;
     private var nomalhight = 500;
     private lateinit var plateBean: PlateBean
 
-    private var address: String = ""
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -81,7 +87,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private val buttomlabelAdapter by lazy {
         ButtomlabelAdapter()
     }
-
+    private val emojiAdapter by lazy {
+        EmojiAdapter(this)
+    }
+    private var postEntity: PostEntity? = null
     override fun initView() {
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
@@ -111,6 +120,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
         binding.etBiaoti.hint = spannableString
+        postEntity = intent.getSerializableExtra("postEntity") as PostEntity?
     }
 
     override fun observe() {
@@ -171,6 +181,14 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
+            if (postEntity != null) {
+                if (postEntity!!.keywords.isNotEmpty()) {
+                    buttomlabelAdapter.data.forEach {
+                        it.isselect = it.tagName == postEntity!!.keywords
+                    }
+                    buttomlabelAdapter.notifyDataSetChanged()
+                }
+            }
         })
 
     }
@@ -188,8 +206,58 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.picsrec.layoutManager = manager
         postVideoAdapter.draggableModule.isDragEnabled = true
         binding.picsrec.adapter = postVideoAdapter
-
         postVideoAdapter.setList(selectList)
+        initlocaData()
+    }
+
+    private fun initlocaData(){
+        if (postEntity != null) {
+
+            binding.etBiaoti.setText(postEntity!!.title)
+            binding.etContent.setText(postEntity!!.content)
+            params["plate"] = postEntity!!.plate
+            params["topicId"] = postEntity!!.topicId
+            params["type"] = postEntity!!.type
+            params["keywords"] = postEntity!!.keywords
+            params["circleId"] = postEntity!!.circleId
+            params["content"] = postEntity!!.content
+            params["actionCode"] = postEntity!!.actionCode
+            params["title"] = postEntity!!.title
+            params["address"] = postEntity!!.address
+            params["lat"] = postEntity!!.lat
+            params["lon"] = postEntity!!.lon
+            params["province"] = postEntity!!.province
+            params["cityCode"] = postEntity!!.cityCode
+            params["city"] = postEntity!!.city
+
+            if (params.containsKey("plate")) {
+                buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                buttomTypeAdapter.setData(1, ButtomTypeBean(postEntity!!.plateName, 1, 1))
+            }
+            if (postEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
+                2,
+                ButtomTypeBean(postEntity!!.topicName, 1, 2)
+            )
+            if (postEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
+                3,
+                ButtomTypeBean(postEntity!!.circleName, 1, 3)
+            )
+            if (postEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
+                4,
+                ButtomTypeBean(postEntity!!.address, 1, 4)
+            )
+            if ( postEntity!!.fmpath.isNotEmpty()){
+                postVideoAdapter.fmPath =  postEntity!!.fmpath
+                postVideoAdapter.notifyDataSetChanged()
+            }
+            jsonStr2obj(postEntity!!.localMeadle)
+        }
+    }
+
+    private fun jsonStr2obj(jonson: String) {
+        val media = JSON.parseArray(jonson, LocalMedia::class.java);
+        postVideoAdapter.setList(media)
+        postVideoAdapter.notifyDataSetChanged()
     }
 
     private fun initbuttom() {
@@ -220,6 +288,42 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             buttomlabelAdapter.notifyDataSetChanged()
             buttomlabelAdapter.getItem(position).tagName.toast()
         }
+
+        binding.bottom.emojirec.adapter = emojiAdapter
+        val emojiList = ArrayList<String>()
+        for (i in EmojiBean.emojiint) {
+            getEmojiStringByUnicode(
+                i
+            ).let {
+                emojiList.add(
+                    it
+                )
+            }
+        }
+        emojiAdapter.setItems(emojiList)
+        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                val emoji = emojiAdapter.getItem(position)
+
+                var index = if (binding.etBiaoti.hasFocus()){
+                    binding.etBiaoti.selectionStart
+                }else{
+                    binding.etContent.selectionStart
+                }
+
+                var editContent =if (binding.etBiaoti.hasFocus()){
+                    binding.etBiaoti.text
+                }else{
+                    binding.etContent.text
+                }
+                editContent?.insert(index, emoji)
+            }
+
+        })
+    }
+
+    private fun getEmojiStringByUnicode(unicode: Int): String {
+        return String(Character.toChars(unicode))
     }
 
     private fun ispost() {
@@ -250,6 +354,61 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun onclick() {
 
+
+        binding.title.barImgBack.setOnClickListener {
+            if (binding.etBiaoti.text.toString().isEmpty()) {
+                finish()
+            } else {
+                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                    override fun con() {
+
+                    }
+
+                    override fun save() {
+                        var postEntity = PostEntity()
+                        postEntity.content = binding.etContent.text.toString() //内容
+                        postEntity.circleId =
+                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                        postEntity.circleName = circlename  //选择圈子的名称
+                        postEntity.plate =
+                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                        postEntity.plateName = platename  //模块名称
+                        postEntity.topicId =
+                            if (params["topicId"] == null) 0 else params["topicId"] as Int  //话题ID
+                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                        postEntity.keywords =
+                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                        postEntity.localMeadle = JSON.toJSONString(selectList)
+                        postEntity.actionCode =
+                            if (params["actionCode"] != null) params["actionCode"] as String else ""
+                        postEntity.fmpath =
+                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+                        postEntity.type = "3"  //视频帖子类型
+                        postEntity.title = binding.etBiaoti.text.toString()
+                        postEntity.address =
+                            if (params["address"] != null) params["address"] as String else ""
+                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                        postEntity.city =
+                            if (params["city"] != null) params["city"] as String else ""
+                        postEntity.province =
+                            if (params["province"] != null) params["province"] as String else ""
+                        postEntity.cityCode =
+                            if (params["cityCode"] != null) params["cityCode"] as String else ""
+                        postEntity.creattime = System.currentTimeMillis().toString()
+                        viewModel.insertPostentity(postEntity)
+                        finish()
+                    }
+
+                    override fun unsave() {
+//                    viewModel.clearPost()
+                        finish()
+                    }
+
+                }).showPopupWindow()
+            }
+        }
         postVideoAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postVideoAdapter.getItem(position))

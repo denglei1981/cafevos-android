@@ -78,7 +78,7 @@ object MConstant {
     const val LOGIN_INTERCEPT_PATH = "intercept_login_path"
 
     const val PUSH_ID = "sys:pushid"
-    const val UmengKey = "615fea28ac9567566e8c9d48"
+    const val UmengKey = ""
 
     var H5_privacy = "${H5_BASE_URL_CSCIR}/privacy"//隐私协议
     var H5_regTerms = "${H5_BASE_URL_CSCIR}/regTerms" //注册协议

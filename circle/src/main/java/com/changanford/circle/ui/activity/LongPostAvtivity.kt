@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,16 +37,20 @@ import com.changanford.circle.databinding.LongpostactivityBinding
 import com.changanford.circle.databinding.LongpostheadBinding
 import com.changanford.circle.ext.loadImageNoOther
 import com.changanford.circle.viewmodel.PostViewModule
+import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -58,7 +63,11 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
+import com.yw.li_model.adapter.EmojiAdapter
+import java.util.*
 import java.util.zip.Inflater
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() {
@@ -82,6 +91,8 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
     private var type = 0
     private var params = hashMapOf<String, Any>()
     private  var FMMeadia:LocalMedia? = null
+    private var postEntity: PostEntity? = null
+    private  var editText:EditText?=null
     private val dialog by lazy{
         LoadDialog(this).apply {
             setCancelable(false)
@@ -97,6 +108,10 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
     private val buttomlabelAdapter by lazy {
         ButtomlabelAdapter()
     }
+    private val emojiAdapter by lazy {
+        EmojiAdapter(this)
+    }
+
     companion object{
         const val ITEM_SELECTPIC= 0x5564
     }
@@ -111,10 +126,15 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         headBinding =DataBindingUtil.bind(headview)!!
+        postEntity = intent.getSerializableExtra("postEntity") as PostEntity?
     }
 
     override fun observe() {
         super.observe()
+        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
+            Log.d("ImmersionBar",keyboardHeight.toString())
+            if (isPopup) binding.bottom.emojirec.visibility=View.GONE
+        }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             FMMeadia = it as LocalMedia
             headBinding.ivFm.visibility=View.VISIBLE
@@ -204,7 +224,58 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
         params["type"] = 4
         initbuttom()
         onclick()
+        initlocaData()
+    }
 
+    private fun initlocaData(){
+        if (postEntity != null) {
+            headBinding.etBiaoti.setText(postEntity!!.title)
+            headBinding.etContent.setText(postEntity!!.content)
+            params["plate"] = postEntity!!.plate
+            params["topicId"] = postEntity!!.topicId
+            params["type"] = postEntity!!.type
+            params["keywords"] = postEntity!!.keywords
+            params["circleId"] = postEntity!!.circleId
+            params["content"] = postEntity!!.content
+            params["actionCode"] = postEntity!!.actionCode
+            params["title"] = postEntity!!.title
+            params["address"] = postEntity!!.address
+            params["lat"] = postEntity!!.lat
+            params["lon"] = postEntity!!.lon
+            params["province"] = postEntity!!.province
+            params["cityCode"] = postEntity!!.cityCode
+            params["city"] = postEntity!!.city
+            if (params.containsKey("plate")) {
+                buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                buttomTypeAdapter.setData(1, ButtomTypeBean(postEntity!!.plateName, 1, 1))
+            }
+            if (postEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
+                2,
+                ButtomTypeBean(postEntity!!.topicName, 1, 2)
+            )
+            if (postEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
+                3,
+                ButtomTypeBean(postEntity!!.circleName, 1, 3)
+            )
+            if (postEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
+                4,
+                ButtomTypeBean(postEntity!!.address, 1, 4)
+            )
+            if (postEntity!!.longpostFmLocalMeadle.isNotEmpty()){
+                FMMeadia = JSON.parseObject(postEntity!!.longpostFmLocalMeadle,LocalMedia::class.java)
+                headBinding.ivFm.visibility=View.VISIBLE
+                GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!),headBinding.ivFm)
+                headBinding.ivAddfm.visibility = View.GONE
+                headBinding.tvFm.visibility = View.GONE
+            }
+            jsonStr2obj(postEntity!!.localMeadle)
+        }
+    }
+
+    private fun jsonStr2obj(jonson: String) {
+        val longPostBean = JSON.parseArray(jonson, LongPostBean::class.java);
+        longpostadapter.addData(longPostBean)
+        longpostadapter.notifyDataSetChanged()
     }
 
     private fun initbuttom() {
@@ -236,11 +307,122 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
             buttomlabelAdapter.notifyDataSetChanged()
             buttomlabelAdapter.getItem(position).tagName.toast()
         }
+
+        binding.bottom.emojirec.adapter = emojiAdapter
+        val emojiList = ArrayList<String>()
+        for (i in EmojiBean.emojiint) {
+            getEmojiStringByUnicode(
+                i
+            ).let {
+                emojiList.add(
+                    it
+                )
+            }
+        }
+        emojiAdapter.setItems(emojiList)
+        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                val emoji = emojiAdapter.getItem(position)
+
+                var index = if (headBinding.etBiaoti.hasFocus()){
+                    headBinding.etBiaoti.selectionStart
+                }else if(editText!=null){
+                    editText!!.selectionStart
+                } else{
+                    headBinding.etContent.selectionStart
+                }
+
+                var editContent =if (headBinding.etBiaoti.hasFocus()){
+                    headBinding.etBiaoti.text
+                }else if(editText!=null){
+                    editText!!.text
+                } else{
+                    headBinding.etContent.text
+                }
+                editContent?.insert(index, emoji)
+//                if (editText!=null){
+//                    longpostadapter.notifyDataSetChanged()
+//                }
+            }
+
+        })
     }
 
+    private fun getEmojiStringByUnicode(unicode: Int): String {
+        return String(Character.toChars(unicode))
+    }
     private fun onclick() {
+
+        binding.title.barImgBack.setOnClickListener {
+            if (headBinding.etBiaoti.text.toString().isEmpty()) {
+                finish()
+            } else {
+                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                    override fun con() {
+
+                    }
+
+                    override fun save() {
+                        var postEntity = PostEntity()
+                        postEntity.content = headBinding.etContent.text.toString() //内容
+                        postEntity.circleId =
+                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                        postEntity.circleName = circlename  //选择圈子的名称
+                        postEntity.plate =
+                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                        postEntity.plateName = platename  //模块名称
+                        postEntity.topicId =
+                            if (params["topicId"] == null) 0 else params["topicId"] as Int  //话题ID
+                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                        postEntity.keywords =
+                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                        postEntity.localMeadle = JSON.toJSONString(selectList)
+                        postEntity.actionCode =
+                            if (params["actionCode"] != null) params["actionCode"] as String else ""
+                        postEntity.longpostFmLocalMeadle =
+                            if (FMMeadia!=null) PictureUtil.getFinallyPath(FMMeadia!!) else ""
+                        postEntity.longPostDatas = JSON.toJSONString(longpostadapter.data)
+                        postEntity.type = "4"  //长图帖子类型
+                        postEntity.title = headBinding.etBiaoti.text.toString()
+                        postEntity.address =
+                            if (params["address"] != null) params["address"] as String else ""
+                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                        postEntity.city =
+                            if (params["city"] != null) params["city"] as String else ""
+                        postEntity.province =
+                            if (params["province"] != null) params["province"] as String else ""
+                        postEntity.cityCode =
+                            if (params["cityCode"] != null) params["cityCode"] as String else ""
+                        postEntity.creattime = System.currentTimeMillis().toString()
+                        viewModel.insertPostentity(postEntity)
+                        finish()
+                    }
+
+                    override fun unsave() {
+//                    viewModel.clearPost()
+                        finish()
+                    }
+
+                }).showPopupWindow()
+            }
+        }
+
         binding.bottom.ivEmoj.setOnClickListener {
-            "表情未开发".toast()
+
+            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+
+            Timer().schedule(80){
+                binding.bottom.emojirec.post {
+                    if (binding.bottom.emojirec.isShown){
+
+                        binding.bottom.emojirec.visibility=View.GONE
+                    }else{
+                        binding.bottom.emojirec.visibility=View.VISIBLE
+                    }
+                }
+            }
         }
         binding.title.barTvOther.setOnClickListener {
             ispost()
@@ -293,9 +475,6 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
 
         binding.bottom.ivLoc.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseLocationActivity)
-        }
-        binding.bottom.ivEmoj.setOnClickListener {
-            "表情未开发".toast()
         }
         binding.bottom.ivHuati.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseConversationActivity)
@@ -356,6 +535,13 @@ class LongPostAvtivity: BaseActivity<LongpostactivityBinding, PostViewModule>() 
                             }
 
                         })
+                }else if(view.id == R.id.tv_tex){
+                    editText = view as EditText
+//                    itemEditChoose=true
+//                    val emoji = emojiAdapter.getItem(position)
+//                    var index = (view as EditText).selectionStart
+//                    var editContent = (view as EditText).text
+//                    editContent?.insert(index, emoji)
                 }
             }
         })

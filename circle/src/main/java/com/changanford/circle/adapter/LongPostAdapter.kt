@@ -19,6 +19,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter
     init {
         addChildClickViewIds(R.id.iv_delete)
         addChildClickViewIds(R.id.iv_addfm)
+        addChildClickViewIds(R.id.tv_tex)
     }
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
         var binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
@@ -54,4 +55,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) : BaseQuickAdapter
         binding.tvTex.tag = watcher
 
     }
+
+
+
 }

@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,12 +28,14 @@ import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.ButtomTypeBean
+import com.changanford.circle.bean.EmojiBean
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.PlateBean
 import com.changanford.circle.databinding.PostActivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.room.PostEntity
@@ -47,18 +50,24 @@ import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
 import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.OnKeyboardListener
+import com.jakewharton.rxbinding4.view.visibility
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
+import com.yw.li_model.adapter.EmojiAdapter
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 /**
  * 发图片帖子
  */
 @Route(path = ARouterCirclePath.PostActivity)
 class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
-    private var platename: String=""
-    private var circlename: String=""
+    private var platename: String = ""
+    private var circlename: String = ""
     private var address: String = ""
     lateinit var postPicAdapter: PostPicAdapter
     private var selectList = ArrayList<LocalMedia>()
@@ -72,7 +81,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
 
 
-    private val dialog by lazy{
+    private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
@@ -86,9 +95,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private val buttomlabelAdapter by lazy {
         ButtomlabelAdapter()
     }
+    private val emojiAdapter by lazy {
+        EmojiAdapter(this)
+    }
+    private var postEntity: PostEntity? = null
 
-    companion object{
-         const val REQUEST_CIRCLE = 0x435
+    companion object {
+        const val REQUEST_CIRCLE = 0x435
     }
 
     override fun initView() {
@@ -118,14 +131,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
         binding.etBiaoti.hint = spannableString
-
+        postEntity = intent.getSerializableExtra("postEntity") as PostEntity?
+        binding.etBiaoti.requestFocus()
     }
 
     override fun observe() {
         super.observe()
-
+        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
+            Log.d("ImmersionBar",keyboardHeight.toString())
+            if (isPopup) binding.bottom.emojirec.visibility=View.GONE
+        }
         viewModel.postsuccess.observe(this, Observer {
-            if (dialog.isShowing){
+            if (dialog.isShowing) {
                 dialog.dismiss()
             }
             "发布成功".toast()
@@ -134,7 +151,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         viewModel.stsBean.observe(this, Observer {
             it?.let {
                 upedimgs.clear()
-                uploadImgs(it,0,dialog)
+                uploadImgs(it, 0, dialog)
             }
         })
         viewModel.cityCode.observe(this, Observer {
@@ -180,6 +197,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
+            if (postEntity != null) {
+                if (postEntity!!.keywords.isNotEmpty()) {
+                    buttomlabelAdapter.data.forEach {
+                        it.isselect = it.tagName == postEntity!!.keywords
+                    }
+                    buttomlabelAdapter.notifyDataSetChanged()
+                }
+            }
         })
 
     }
@@ -200,14 +225,59 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.picsrec.adapter = postPicAdapter
         postPicAdapter.setList(selectList)
 
+        initlocaData()
+    }
 
+    private fun initlocaData(){
+        if (postEntity != null) {
+            jsonStr2obj(postEntity!!.localMeadle)
+            binding.etBiaoti.setText(postEntity!!.title)
+            binding.etContent.setText(postEntity!!.content)
+            params["plate"] = postEntity!!.plate
+            params["topicId"] = postEntity!!.topicId
+            params["type"] = postEntity!!.type
+            params["keywords"] = postEntity!!.keywords
+            params["circleId"] = postEntity!!.circleId
+            params["content"] = postEntity!!.content
+            params["actionCode"] = postEntity!!.actionCode
+            params["title"] = postEntity!!.title
+            params["address"] = postEntity!!.address
+            params["lat"] = postEntity!!.lat
+            params["lon"] = postEntity!!.lon
+            params["province"] = postEntity!!.province
+            params["cityCode"] = postEntity!!.cityCode
+            params["city"] = postEntity!!.city
+            if (params.containsKey("plate")) {
+                buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                buttomTypeAdapter.setData(1, ButtomTypeBean(postEntity!!.plateName, 1, 1))
+            }
+            if (postEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
+                2,
+                ButtomTypeBean(postEntity!!.topicName, 1, 2)
+            )
+            if (postEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
+                3,
+                ButtomTypeBean(postEntity!!.circleName, 1, 3)
+            )
+            if (postEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
+                4,
+                ButtomTypeBean(postEntity!!.address, 1, 4)
+            )
+
+        }
+    }
+
+    private fun jsonStr2obj(jonson: String) {
+        val media = JSON.parseArray(jonson, LocalMedia::class.java);
+        postPicAdapter.setList(media)
+        postPicAdapter.notifyDataSetChanged()
     }
 
     private fun onclick() {
         binding.title.barImgBack.setOnClickListener {
-            if (binding.etBiaoti.text.toString().isEmpty()){
+            if (binding.etBiaoti.text.toString().isEmpty()) {
                 finish()
-            }else{
+            } else {
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                     override fun con() {
 
@@ -215,27 +285,36 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                     override fun save() {
                         var postEntity = PostEntity()
-                        postEntity.content = binding.etContent.text.toString()
-                        postEntity.circleId = params["circleId"] as? String ?: "0"
-                        postEntity.circleName = circlename
-                        postEntity.plate = params["plate"] as? Int ?: 0
-                        postEntity.plateName = platename
-                        postEntity.topicId = params["topicId"] as? String ?: "0"
-//                    postEntity.topicName = binding.choseTopicTv.text.toString()  //关键词
-//                    postEntity.keywords = hashMap["keywords"].toString()  //关键字
+                        postEntity.content = binding.etContent.text.toString() //内容
+                        postEntity.circleId =
+                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                        postEntity.circleName = circlename  //选择圈子的名称
+                        postEntity.plate =
+                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                        postEntity.plateName = platename  //模块名称
+                        postEntity.topicId =
+                            if (params["topicId"] == null) 0 else params["topicId"] as Int  //话题ID
+                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                        postEntity.keywords =
+                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
                         postEntity.localMeadle = JSON.toJSONString(selectList)
-                        postEntity.actionCode = params["actionCode"].toString()
-//                    postEntity.fmpath = mAdapter.fmPath.toString()
-                        postEntity.type = params["type"].toString()
-                        postEntity.title =
-                            if (binding.etBiaoti.text == null) "" else "${binding.etBiaoti.text}"
-                        postEntity.address = params["address"] as? String ?: ""
-                        postEntity.lat = params["lat"] as? Double ?: 0.0
-                        postEntity.lon = params["lon"] as? Double ?: 0.0
-                        postEntity.city = params["city"] as? String ?: ""
-                        postEntity.province = params["province"] as? String ?: ""
-                        postEntity.cityCode = params["cityCode"] as? String ?: ""
+                        postEntity.actionCode =
+                            if (params["actionCode"] != null) params["actionCode"] as String else ""
+                        postEntity.fmpath =
+                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+                        postEntity.type = "2"  //图片帖子类型
+                        postEntity.title = binding.etBiaoti.text.toString()
+                        postEntity.address =
+                            if (params["address"] != null) params["address"] as String else ""
+                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                        postEntity.city =
+                            if (params["city"] != null) params["city"] as String else ""
+                        postEntity.province =
+                            if (params["province"] != null) params["province"] as String else ""
+                        postEntity.cityCode =
+                            if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
                         viewModel.insertPostentity(postEntity)
                         finish()
@@ -250,7 +329,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         }
         binding.bottom.ivEmoj.setOnClickListener {
-            "表情未开发".toast()
+            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+
+            Timer().schedule(80){
+                binding.bottom.emojirec.post {
+                    binding.bottom.emojirec.visibility=View.VISIBLE
+                }
+            }
+
         }
         binding.title.barTvOther.setOnClickListener {
             ispost()
@@ -460,9 +546,41 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     buttomlabelBean.isselect = false
                 }
             }
+            params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             buttomlabelAdapter.notifyDataSetChanged()
             buttomlabelAdapter.getItem(position).tagName.toast()
         }
+        binding.bottom.emojirec.adapter = emojiAdapter
+        val emojiList = ArrayList<String>()
+        for (i in EmojiBean.emojiint) {
+            getEmojiStringByUnicode(
+                i
+            ).let {
+                emojiList.add(
+                    it
+                )
+            }
+        }
+        emojiAdapter.setItems(emojiList)
+        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                val emoji = emojiAdapter.getItem(position)
+
+                var index = if (binding.etBiaoti.hasFocus()){
+                    binding.etBiaoti.selectionStart
+                }else{
+                    binding.etContent.selectionStart
+                }
+
+                var editContent =if (binding.etBiaoti.hasFocus()){
+                    binding.etBiaoti.text
+                }else{
+                    binding.etContent.text
+                }
+                editContent?.insert(index, emoji)
+            }
+
+        })
     }
 
     private fun ispost() {
@@ -489,6 +607,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 viewModel.getOSS()
             }
         }
+
     }
 
     private fun uploadImgs(stsBean: STSBean, index: Int, dialog: LoadDialog) {
@@ -526,14 +645,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             AliYunOssUploadOrDownFileConfig.OnUploadFile {
             override fun onUploadFileSuccess(info: String) {
 
-                upedimgs.add(ImageUrlBean(path,""))
+                upedimgs.add(ImageUrlBean(path, ""))
                 val scount = index + 1
                 runOnUiThread {
                     dialog.setTvprogress("${scount}/${selectList.size}")
                 }
                 if (scount == selectList.size) {
                     params["imgUrl"] = upedimgs
-                    params["isPublish"]= 2
+                    params["isPublish"] = 2
                     JSON.toJSONString(params).logD()
                     addPost(dialog)
                     return
@@ -557,6 +676,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         viewModel.postEdit(params)
+    }
+
+    private fun getEmojiStringByUnicode(unicode: Int): String {
+        return String(Character.toChars(unicode))
     }
 
 

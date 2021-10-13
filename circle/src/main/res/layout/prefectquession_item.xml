@@ -40,8 +40,8 @@
                 android:textColorHint="@color/color_cc" />
             <ImageView
                 android:id="@+id/iv_img"
-                android:layout_width="@dimen/dp_33"
-                android:layout_height="@dimen/dp_27"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_22"
                 android:layout_gravity="center"
                 android:adjustViewBounds="false"
                 android:scaleType="centerCrop"
