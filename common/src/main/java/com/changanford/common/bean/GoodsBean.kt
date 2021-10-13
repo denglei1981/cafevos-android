@@ -151,7 +151,7 @@ data class GoodsDetailBean(
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",
-    val now: Long? = 0,
+    val now: Long = 0,
     val purchasedNum: Int? = 0,
     val salesCount: Int = 0,
     val secKillInfo: SecKillInfo? = null,
@@ -162,13 +162,16 @@ data class GoodsDetailBean(
     val spuPageType: String = "",
     var stock: Int = 0,
     val mallOrderEval:CommentItem?,
-    var isCollection:Boolean=false,//是否收藏
     var stockProportion:String="0",//库存百分比 0-100
     val spuName:String?="",
     val spuId:String?="",
     var skuId: String,
     var buyNum:Int=1,//购买数量
-    var skuCodeTxts:List<String>?
+    var skuCodeTxts:List<String>?,
+    var acountFb:Int?,//账号积分
+    val param:String?,
+    val freightPrice:Int,//运费 0为包邮
+    val collect:String//是否收藏 YES NO
 )
 
 data class Attribute(

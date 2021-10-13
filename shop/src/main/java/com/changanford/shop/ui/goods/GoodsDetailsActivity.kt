@@ -84,7 +84,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             control.bindingData(it)
-            viewModel.collectionGoodsStates.postValue(it.isCollection)
+            viewModel.collectionGoodsStates.postValue(it.collect=="YES")
         })
         viewModel.collectionGoodsStates.observe(this,{
             isCollection= it
@@ -98,7 +98,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             )
         })
         viewModel.queryGoodsDetails(spuId)
-        viewModel.getMyIntegral()
     }
     fun onClick(v:View){
         when(v.id){

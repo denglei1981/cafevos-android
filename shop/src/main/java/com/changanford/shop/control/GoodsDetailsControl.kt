@@ -36,6 +36,15 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inVip.model=dataBean
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
+        //品牌参数
+        val param=dataBean.param
+        if(null!=param){
+            WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvParameter,"参数 <font color=\"#333333\">$param</font>")
+            headerBinding.inGoodsInfo.tvParameter.visibility=View.VISIBLE
+        }
+        //运费 0为包邮
+        val freightPrice=dataBean.freightPrice
+        if(freightPrice!=0)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         when(dataBean.spuPageType){
             "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
@@ -126,8 +135,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         bindingBtn()
     }
     private fun bindingBtn(){
-        //库存不足,已售罄、已抢光
-        if(dataBean.stock<1){
+        //秒杀未开始
+        if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){
+            binding.inBottom.btnSubmit.setStates(7)
+        }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
             binding.inBottom.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
         }else binding.inBottom.btnSubmit.setStates(5)
     }
