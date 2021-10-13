@@ -79,7 +79,6 @@ class PolySearchViewModel : BaseViewModel() {
                     searchAutoLiveData.postValue(updateUiState)
                 }
         })
-
     }
     fun deleteRecord(context:Context,keyword: String) {
         viewModelScope.launch(Dispatchers.IO) {
