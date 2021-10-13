@@ -155,7 +155,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                             PostFragment.newInstance("centerPost", userId)
                         }
                         1 -> {
-                            ActFragment.newInstance("actMyCreate", userId)
+                            ActFragment.newInstance("actTaCreate", userId)
                         }
                         2 -> {
                             InformationFragment.newInstance("centerInformation", userId)

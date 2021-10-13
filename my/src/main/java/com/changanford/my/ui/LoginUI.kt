@@ -1,7 +1,6 @@
 package com.changanford.my.ui
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
@@ -15,7 +14,6 @@ import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
-import com.changanford.my.R
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement
 import com.changanford.my.viewmodel.SignViewModel
@@ -89,6 +87,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        UserManger.deleteUserInfo()
+        MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
         StatusBarUtil.setAndroidNativeLightStatusBar(this, false)
         tencent = Tencent.createInstance(MConstant.QQAPPID, this)

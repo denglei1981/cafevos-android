@@ -129,6 +129,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                 it?.let { c ->
                     circleCheck = c
                     binding.bottomLayout.visibility = if (c.isShow) View.VISIBLE else View.GONE
+
                     binding.btnCheckId.visibility = if (c.index == 0) View.VISIBLE else View.GONE
                     binding.btnDelete.visibility = if (c.index == 0) View.VISIBLE else View.GONE
                     binding.btnApply.visibility = if (c.index == 1) View.VISIBLE else View.GONE
