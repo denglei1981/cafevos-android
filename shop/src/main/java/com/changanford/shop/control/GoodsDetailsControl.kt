@@ -130,7 +130,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             val optionVosItem=item.optionVos.find { skuCodes[i+1]== it.optionId }
             skuCodeTxt+="${optionVosItem?.optionName}  "
         }
-        WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvGoodsAttrs,"选择 <font color=\"#333333\">已选：${skuCodeTxt}</font>")
+        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
         bindingBtn()
     }
     private fun bindingBtn(){

@@ -180,7 +180,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 添加足迹
      * */
-   private fun addFootprint(spuId:String){
+    fun addFootprint(spuId:String){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

@@ -100,6 +100,9 @@ class OrderViewModel: BaseViewModel() {
                 apiService.getAddressList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 addressList.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+                addressList.postValue(null)
             }
         }
     }

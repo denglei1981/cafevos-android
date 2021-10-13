@@ -100,6 +100,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             )
         })
         viewModel.queryGoodsDetails(spuId)
+//        viewModel.addFootprint(spuId)
     }
     fun onClick(v:View){
         val vid=v.id
