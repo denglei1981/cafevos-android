@@ -11,4 +11,5 @@ object CircleLiveBusKey {
     const val CLOSE_POST_DETAILS = "closePostDetails"
     const val REFRESH_COMMENT_ITEM = "refreshCommentItem"
     const val REFRESH_POST_LIKE = "refreshPostLike"
+    const val POST_EDIT = "postEdit"
 }

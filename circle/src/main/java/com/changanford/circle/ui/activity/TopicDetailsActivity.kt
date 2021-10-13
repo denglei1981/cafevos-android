@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -24,7 +25,13 @@ import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.room.PostDatabase
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.appbar.AppBarLayout
@@ -51,6 +58,8 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var isWhite = true//是否是白色状态
     private var topicId = ""
     private var isOpenMenuPop = false
+
+    private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     override fun initView() {
         initMagicIndicator()
@@ -87,49 +96,71 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 binding.barTitleTv.alpha = 1.0F
             }
         })
-        initListener()
         initTabAndViewPager()
+
+        PostDatabase.getInstance(this).getPostDao().findAll().observe(this,
+            {
+                postEntity = it as ArrayList<PostEntity>
+            })
     }
 
     override fun initData() {
         viewModel.getData(topicId)
     }
 
-    private fun initListener() {
+    private fun initListener(topicName: String) {
         binding.ivPostBar.setOnClickListener {
-            if (isOpenMenuPop) {
-                return@setOnClickListener
+            if (postEntity == null) {
+                initPop(topicName)
+            } else {
+                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
+                    .setNegativeButton("继续编辑") {
+                        RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+                    }.setPositiveButton("不使用草稿") {
+                        initPop(topicName)
+                    }.show()
             }
-            CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
-                override fun checkLongBar() {
+        }
+    }
 
+    private fun initPop(topicName: String) {
+        if (isOpenMenuPop) {
+            return
+        }
+
+        val bundle = Bundle()
+        bundle.putString("topicId", topicId)
+        bundle.putString("topicName", topicName)
+
+        CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
+            override fun checkLongBar() {
+                startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
+            }
+
+            override fun checkPic() {
+                startARouter(ARouterCirclePath.PostActivity, bundle)
+            }
+
+            override fun checkVideo() {
+                startARouter(ARouterCirclePath.VideoPostActivity, bundle)
+            }
+
+        }).run {
+            //无透明背景
+            setBackgroundColor(Color.TRANSPARENT)
+            //背景模糊false
+            setBlurBackgroundEnable(false)
+            showPopupWindow(binding.ivPostBar)
+            onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                override fun onDismiss() {
+                    isOpenMenuPop = false
+                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
                 }
 
-                override fun checkPic() {
-
-                }
-
-                override fun checkVideo() {
-
-                }
-
-            }).run {
-                //无透明背景
-                setBackgroundColor(Color.TRANSPARENT)
-                //背景模糊false
-                setBlurBackgroundEnable(false)
-                showPopupWindow(it)
-                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        isOpenMenuPop = false
-                        binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
-                    }
-
-                }
-                setOnPopupWindowShowListener {
-                    isOpenMenuPop = true
-                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
-                }
+            }
+            setOnPopupWindowShowListener {
+                isOpenMenuPop = true
+                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
             }
         }
     }
@@ -138,8 +169,16 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     override fun observe() {
         super.observe()
         viewModel.topPicDetailsTopBean.observe(this, {
+            initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.topContent.run {
+                //加暗
+                ivBg.setColorFilter(
+                    ContextCompat.getColor(
+                        this@TopicDetailsActivity,
+                        R.color.color_00_a30
+                    )
+                )
                 Glide.with(this@TopicDetailsActivity)
                     .load(GlideUtils.handleImgUrl(it.pic))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))

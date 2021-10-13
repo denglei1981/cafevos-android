@@ -1,15 +1,12 @@
 package com.changanford.circle
 
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
-import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -40,11 +37,11 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
-            Observer {
+            {
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-            if (postEntity==null){
+            if (postEntity == null) {
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {
@@ -64,26 +61,28 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                     showPopupWindow(it)
                     initData()
                 }
-            }else{
+            } else {
                 JSON.toJSONString(postEntity).logD()
                 AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
                     .setNegativeButton("继续编辑") {
                         startARouter(ARouterMyPath.MyPostDraftUI)
                     }.setPositiveButton("不使用草稿") {
-                        CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
-                            override fun checkLongBar() {
-                                startARouter(ARouterCirclePath.LongPostAvtivity)
-                            }
+                        CircleMainMenuPop(
+                            requireContext(),
+                            object : CircleMainMenuPop.CheckPostType {
+                                override fun checkLongBar() {
+                                    startARouter(ARouterCirclePath.LongPostAvtivity)
+                                }
 
-                            override fun checkPic() {
-                                startARouter(ARouterCirclePath.PostActivity)
-                            }
+                                override fun checkPic() {
+                                    startARouter(ARouterCirclePath.PostActivity)
+                                }
 
-                            override fun checkVideo() {
-                                startARouter(ARouterCirclePath.VideoPostActivity)
-                            }
+                                override fun checkVideo() {
+                                    startARouter(ARouterCirclePath.VideoPostActivity)
+                                }
 
-                        }).run {
+                            }).run {
                             setBlurBackgroundEnable(false)
                             showPopupWindow(binding.ivMenu)
                             initData()
