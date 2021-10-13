@@ -46,6 +46,7 @@ public class QueryInfo implements Serializable {
         private String questionImgUrl;  //问题图片
         private String BDquestionImgUrl;
         private String questionInfo;  //问题描述
+        private boolean isSeleted;
 
         public String getBDquestionImgUrl() {
             return BDquestionImgUrl;
@@ -89,6 +90,14 @@ public class QueryInfo implements Serializable {
             public void setOptionName(String optionName) {
                 this.optionName = optionName;
             }
+        }
+
+        public boolean isSeleted() {
+            return isSeleted;
+        }
+
+        public void setSeleted(boolean seleted) {
+            isSeleted = seleted;
         }
 
         public int getIsQuestionNecessary() {

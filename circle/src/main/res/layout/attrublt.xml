@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="match_parent"
@@ -8,27 +8,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:text="需要收集"
-        android:textColor="@color/textblack"
-        android:textSize="15sp" />
+
         <TextView
-            android:background="@drawable/bg_bt_blue_corner39"
-            android:id="@+id/tv_commit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:text="提交"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:paddingLeft="11dp"
-            android:paddingRight="11dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/white"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="25dp"
+            android:text="收集资料"
+            android:textColor="@color/textblack"
             android:textSize="15sp" />
+
+
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/attrbulerec"
@@ -37,19 +31,34 @@
         android:layout_marginBottom="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_10"
-        android:background="#fff6f6f6"/>
     <TextView
         android:id="@+id/tv_cannel"
         android:textSize="15sp"
         android:textColor="@color/textblack"
         android:layout_width="match_parent"
         android:gravity="center"
+        android:visibility="gone"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content"
         android:text="取消"/>
+    <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/bg_bt_blue_corner39"
+        android:paddingLeft="11dp"
+        android:paddingTop="3dp"
+        android:paddingRight="11dp"
+        android:paddingBottom="3dp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 </LinearLayout>
 </layout>

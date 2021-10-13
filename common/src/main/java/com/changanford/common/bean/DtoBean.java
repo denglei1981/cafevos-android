@@ -10,7 +10,7 @@ public class DtoBean {
 
     private String content ;//活动描述
     private List<ContentImg> contentImgList ;//内容图片
-    private List<AttributeBean.AttributesInfoBean.AttributeListBean> attributes; //填写资料数组，数组顺序是用户填写的顺序
+    private List<AttributeBean.AttributeCategoryVos.AttributeListBean> attributes; //填写资料数组，数组顺序是用户填写的顺序
     private String coverImgUrl;//封面图片
     private String deadLineTime;//截止时间
     private String endTime;//结束时间
@@ -80,11 +80,11 @@ public class DtoBean {
         this.contentImgList = contentImgList;
     }
 
-    public List<AttributeBean.AttributesInfoBean.AttributeListBean> getAttributes() {
+    public List<AttributeBean.AttributeCategoryVos.AttributeListBean> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeBean.AttributesInfoBean.AttributeListBean> attributes) {
+    public void setAttributes(List<AttributeBean.AttributeCategoryVos.AttributeListBean> attributes) {
         this.attributes = attributes;
     }
 

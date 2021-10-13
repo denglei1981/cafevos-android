@@ -25,7 +25,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             setAdapter(carTopBanner)
             setIndicatorView(binding.drIndicator)
             setOnPageClickListener {
-                //todo
+                JumpUtils.instans?.jump(topBannerList[it].jumpDataType,topBannerList[it].jumpDataValue)
             }
             setIndicatorView(binding.drIndicator)
         }
@@ -57,7 +57,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 binding.carTopViewPager.isVisible = false
                 return@observe
             }
-            binding.carTopViewPager.isVisible = false
+            binding.carTopViewPager.isVisible = true
             topBannerList.clear()
             topBannerList.addAll(it)
             binding.carTopViewPager.create(topBannerList)
@@ -72,12 +72,21 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             } else {
                 binding.carRecommendLayout.root.isVisible = true
                 carRecommendAdapter.data.clear()
-                carRecommendAdapter.data.add(it.carModels)
+                carRecommendAdapter.data.addAll(it.carModels)
+                carRecommendAdapter.notifyDataSetChanged()
+            }
+            if (it?.carModelMoreJump == null){
+                binding.carRecommendLayout.imageView2.isVisible = false
+            }else{
+                binding.carRecommendLayout.imageView2.isVisible = true
+                binding.carRecommendLayout.imageView2.setOnClickListener {v->
+                    JumpUtils.instans?.jump(it?.carModelMoreJump)
+                }
             }
 
             it?.carInfos?.let { cars ->
                 carAuthAdapter.data.clear()
-                carAuthAdapter.data.add(cars)
+                carAuthAdapter.data.addAll(cars)
             }
         })
     }

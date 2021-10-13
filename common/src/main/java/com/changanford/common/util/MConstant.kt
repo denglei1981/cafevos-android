@@ -60,7 +60,7 @@ object MConstant {
 
     const val WXAPPID = "wx134a7f5ed01da769" //微信appid
 
-    const val QQAPPID = "1109690244" //QQ
+    const val QQAPPID = "1111168800" //QQ
     var mine_phone = ""
 
     var NUM = "" //

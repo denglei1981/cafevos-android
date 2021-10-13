@@ -112,20 +112,20 @@ abstract class BaseApplication : MultiDexApplication() {
 
     private fun initThirdPush() {
 // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
-        MiPushRegister.register(applicationContext, "", "");
+        MiPushRegister.register(applicationContext, "2882303761520063552", "5362006310552");
 // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
         HuaWeiRegister.register(this);
 // OPPO通道注册
         OppoRegister.register(
             applicationContext,
-            "",
-            ""
+            "23f903e9037946efaef146204b6224cf",
+            "1cd761f24f6c4ca8ac5e9aca51a270d1"
         ); // appKey/appSecret在OPPO开发者平台获取
 // 魅族通道注册
         MeizuRegister.register(
             applicationContext,
-            "",
-            ""
+            "144598",
+            "160d69f44b5c4f7582fd5cb37b318f5f"
         ); // appId/appkey在魅族开发者平台获取
 // VIVO通道注册
         VivoRegister.register(applicationContext);

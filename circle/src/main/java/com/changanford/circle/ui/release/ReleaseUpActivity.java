@@ -543,28 +543,16 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
         releaseUpDragAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-
-                if (releaseUpDragAdapter.getItem(position).getQuestionType() == 0) {
-
-                    Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionActivity.class);
-                    intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
-                    intent.putExtra("position", position);
-                    intent.putExtra("queryId", queryId);
-                    startActivityForResult(intent, UPDATEQUESS);
-                } else if (releaseUpDragAdapter.getItem(position).getQuestionType() == 1) {
-                    Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionActivity.class);
-                    intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
-                    intent.putExtra("position", position);
-                    intent.putExtra("queryId", queryId);
-                    startActivityForResult(intent, UPDATEQUESS);
-                } else if (releaseUpDragAdapter.getItem(position).getQuestionType() == 2) {
-                    Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionWBActivity.class);
-                    intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
-                    intent.putExtra("position", position);
-                    intent.putExtra("queryId", queryId);
-                    startActivityForResult(intent, UPDATEWENBEN);
+                for (int i = 0;i<queryInfo.getQuestionList().size();i++){
+                    if (i!=position){
+                        queryInfo.getQuestionList().get(i).setSeleted(false);
+                    }else if (!queryInfo.getQuestionList().get(i).isSeleted()){
+                        queryInfo.getQuestionList().get(i).setSeleted(true);
+                    }else {
+                        queryInfo.getQuestionList().get(i).setSeleted(false);
+                    }
                 }
-
+                adapter.notifyItemChanged(position);
             }
         });
 
@@ -574,6 +562,42 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
                 if (view.getId() == R.id.iv_close) {
                     queryInfo.getQuestionList().remove(position);
                     releaseUpDragAdapter.remove(position);
+                }else if (view.getId() == R.id.iv_edit){
+                    if (releaseUpDragAdapter.getItem(position).getQuestionType() == 0) {
+
+                        Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionActivity.class);
+                        intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
+                        intent.putExtra("position", position);
+                        intent.putExtra("queryId", queryId);
+                        startActivityForResult(intent, UPDATEQUESS);
+                    } else if (releaseUpDragAdapter.getItem(position).getQuestionType() == 1) {
+                        Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionActivity.class);
+                        intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
+                        intent.putExtra("position", position);
+                        intent.putExtra("queryId", queryId);
+                        startActivityForResult(intent, UPDATEQUESS);
+                    } else if (releaseUpDragAdapter.getItem(position).getQuestionType() == 2) {
+                        Intent intent = new Intent(ReleaseUpActivity.this, PerfectQuessionWBActivity.class);
+                        intent.putExtra("quessionBean", releaseUpDragAdapter.getItem(position));
+                        intent.putExtra("position", position);
+                        intent.putExtra("queryId", queryId);
+                        startActivityForResult(intent, UPDATEWENBEN);
+                    }
+//                    releaseUpDragAdapter.getRecyclerView().getChildAt(position).callOnClick();
+                }else if (view.getId() == R.id.iv_up){
+                    if (position!=0){
+                        QueryInfo.QuessionBean temp = queryInfo.getQuestionList().get(position-1);
+                        queryInfo.getQuestionList().set(position-1,queryInfo.getQuestionList().get(position));
+                        queryInfo.getQuestionList().set(position,temp);
+                        releaseUpDragAdapter.notifyDataSetChanged();
+                    }
+                }else if (view.getId() == R.id.iv_down){
+                    if (position!=queryInfo.getQuestionList().size()){
+                        QueryInfo.QuessionBean temp = queryInfo.getQuestionList().get(position+1);
+                        queryInfo.getQuestionList().set(position+1,queryInfo.getQuestionList().get(position));
+                        queryInfo.getQuestionList().set(position,temp);
+                        releaseUpDragAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });

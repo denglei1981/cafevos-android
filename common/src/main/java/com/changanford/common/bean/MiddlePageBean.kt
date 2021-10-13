@@ -1,6 +1,6 @@
 package com.changanford.common.bean
 
-data class MiddlePageBean(var carModels: CarModels, var carInfos: CarInfos)
+data class MiddlePageBean(var carModelMoreJump:JumpDataBean,var carModels: ArrayList<CarModels>, var carInfos: ArrayList<CarInfos>)
 data class CarModels(
     val spuId: String,
     var spuCode: String,//车型编码

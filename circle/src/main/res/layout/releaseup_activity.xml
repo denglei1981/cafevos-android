@@ -16,7 +16,7 @@
             android:id="@+id/title"
             layout="@layout/circle_title_view" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -165,11 +165,6 @@
                     android:textColor="@color/textblack"
                     android:textSize="15sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/alertdialog_line" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/quessionrec"
@@ -193,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_marginTop="10dp"
-                    android:background="@color/alertdialog_line"/>
+                    android:background="@color/color_FF"/>
                 <RelativeLayout
                     android:id="@+id/rltime"
                     android:layout_width="match_parent"
@@ -269,8 +264,8 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="18dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
                         android:text="添加问题" />
 
                     <TextView
@@ -279,13 +274,13 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toLeftOf="@id/text"
                         android:gravity="center"
-                        android:paddingTop="18dp"
+                        android:paddingTop="15dp"
                         android:paddingRight="5dp"
-                        android:paddingBottom="18dp"
+                        android:paddingBottom="15dp"
                         android:text="+"
                         android:textSize="30sp" />
                 </RelativeLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

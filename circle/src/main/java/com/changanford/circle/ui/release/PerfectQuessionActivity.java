@@ -95,7 +95,7 @@ public class PerfectQuessionActivity extends BaseActivity<PerfectquessionActivit
             quessionType = getIntent().getIntExtra("quessionType", 0);
             quessionBean.setOptionList(optionBeans);
             quessionBean.setQuestionType(quessionType);
-            quessionBean.setIsQuestionNecessary(0);
+            quessionBean.setIsQuestionNecessary(1);
         }
 
         binding.addchoice.mcb.setOnClickListener(v -> {//是否必填

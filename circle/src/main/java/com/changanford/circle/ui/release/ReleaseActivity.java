@@ -115,9 +115,9 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
     private TimePickerView pvActEndTime;
     public DtoBean dtoBean = new DtoBean();
     List<DtoBean.ContentImg> ContentImglist = new ArrayList<>();
-    List<AttributeBean.AttributesInfoBean.AttributeListBean> Attributelist = new ArrayList<>();
+    List<AttributeBean.AttributeCategoryVos.AttributeListBean> Attributelist = new ArrayList<>();
 
-    List<AttributeBean.AttributesInfoBean.AttributeListBean> attributeListBeans = new ArrayList<>();
+    List<AttributeBean.AttributeCategoryVos> attributeListBeans = new ArrayList<>();
     Date timebegin;  //活动时间
     List<String> upimgs = null;
 
@@ -324,23 +324,27 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
     }
 
-    private void Showattribult(List<AttributeBean.AttributesInfoBean.AttributeListBean> attributeListBeans) {
+    private void Showattribult(List<AttributeBean.AttributeCategoryVos> attributeListBeans) {
         if (!DoubleUtils.isFastDoubleClick()) {
             AttrbultPop a = new AttrbultPop(this, attributeListBeans, new AttrbultPop.AttrCallBack() {
 
-
                 @Override
-                public void data(HashMap<Integer, AttributeBean.AttributesInfoBean.AttributeListBean> object) {
-                    List<AttributeBean.AttributesInfoBean.AttributeListBean> m
+                public void data(HashMap<Integer, HashMap<Integer, AttributeBean.AttributeCategoryVos.AttributeListBean>> object) {
+                    List<AttributeBean.AttributeCategoryVos.AttributeListBean> m
                             = new ArrayList<>();
+
                     for (Integer key : object.keySet()) {
-                        m.add(object.get(key));
+                        for (Integer key1 :object.get(key).keySet()){
+                            m.add(object.get(key).get(key1));
+                        }
                     }
                     dtoBean.setAttributes(m);
                     String Showstr = "";
                     for (int i = 0; i < attributeListBeans.size(); i++) {
-                        if (attributeListBeans.get(i).getChecktype() == 1) {
-                            Showstr += attributeListBeans.get(i).getAttributeName() + " ";
+                        for (int j= 0; j< attributeListBeans.get(i).getAttributeList().size();j++) {
+                            if (attributeListBeans.get(i).getAttributeList().get(j).getChecktype() == 1) {
+                                Showstr += attributeListBeans.get(i).getAttributeList().get(j).getAttributeName() + " ";
+                            }
                         }
                     }
                     if (!TextUtils.isEmpty(Showstr)) {
@@ -800,9 +804,10 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
         });
 
         viewModel.attributeBean.observe(this, attributeBean -> {
-            if (viewModel.attributeBean.getValue().getAttributesInfo().getAttributeList() != null)
+            if (viewModel.attributeBean.getValue().getAttributesInfo().getAttributeCategoryVos() != null) {
                 attributeListBeans.clear();
-            attributeListBeans.addAll(viewModel.attributeBean.getValue().getAttributesInfo().getAttributeList());
+                attributeListBeans.addAll(viewModel.attributeBean.getValue().getAttributesInfo().getAttributeCategoryVos());
+            }
         });
     }
 

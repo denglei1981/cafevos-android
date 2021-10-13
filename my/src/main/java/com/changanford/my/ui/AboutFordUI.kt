@@ -6,6 +6,7 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.*
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -58,6 +59,8 @@ class AboutFordUI : BaseMineUI<UiAboutBinding, EmptyViewModel>() {
                     })
 
                 }
+            }else{
+                "没有更新".toast()
             }
         }
     }
