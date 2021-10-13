@@ -1,6 +1,10 @@
 package com.changanford.circle
 
+import android.Manifest
+import cn.hchstudio.kpermissions.KPermission
 import com.alibaba.fastjson.JSON
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.viewmodel.CircleViewModel
@@ -13,15 +17,25 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.logD
+import com.xiaomi.push.it
 
 /**
  * 社区
  */
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
+
     private var postEntity: ArrayList<PostEntity>? = null//草稿
+
+    private val permissionsGroup =
+        arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
     private val circleAdapter by lazy {
         CircleMainAdapter(requireContext(), childFragmentManager)
@@ -34,7 +48,6 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
-//        MUtils.scrollStopLoadImage(binding.ryCircle)
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
             {
                 postEntity = it as ArrayList<PostEntity>
@@ -89,18 +102,61 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                     }.show()
             }
         }
-        binding.refreshLayout.setOnRefreshListener {
-//            circleAdapter.topBinding.tvCircleMore.text="asd"
-//            circleAdapter.circleAdapter.setItems(arrayListOf("",""))
-//            circleAdapter.circleAdapter.notifyDataSetChanged()
-            viewModel.communityIndex()
-            it.finishRefresh()
+        binding.ivSearch.setOnClickListener {
+
         }
+        binding.refreshLayout.setOnRefreshListener {
+            initData()
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT).postValue(false)
+        }
+        initRecyclerData()
     }
 
-    override fun initData() {
+    private fun initRecyclerData() {
         val list = arrayListOf("", "")
         circleAdapter.setItems(list)
         binding.ryCircle.adapter = circleAdapter
+    }
+
+    override fun initData() {
+        KPermission(requireActivity()).requestPermission(permissionsGroup, {
+            if (it) {
+                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                    override fun onReceiveLocation(location: BDLocation) {
+                        val latitude = location.latitude //获取纬度信息
+                        val longitude = location.longitude //获取经度信息
+                        viewModel.communityIndex(longitude, latitude)
+                    }
+                })
+            } else {
+                viewModel.communityIndex()
+            }
+        })
+
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.circleBean.observe(this, {
+            circleAdapter.run {
+                allCircleAdapter.setItems(it.allCircles)
+                allCircleAdapter.notifyDataSetChanged()
+                circleAdapter.topicAdapter.setItems(it.topics)
+                topicAdapter.notifyDataSetChanged()
+
+                topFragments.forEachIndexed { index, circleMainFragment ->
+                    when (index) {
+                        0 -> {
+                            circleMainFragment.setData(it.regionCircles.circleInfos)
+                        }
+                        1 -> {
+                            circleMainFragment.setData(it.interestCircles.circleInfos)
+                        }
+
+                    }
+                }
+            }
+            binding.refreshLayout.finishRefresh()
+        })
     }
 }

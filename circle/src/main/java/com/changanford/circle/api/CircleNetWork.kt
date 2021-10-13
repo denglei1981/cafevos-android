@@ -298,5 +298,5 @@ interface CircleNetWork {
     suspend fun communityIndex(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<CircleMainBean>
 }

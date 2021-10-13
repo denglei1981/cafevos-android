@@ -111,5 +111,11 @@ class CircleDetailsMainFragment :
 
             checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
         })
+
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT)
+            .observe(this, {
+                page = 1
+                viewModel.getData(type, page)
+            })
     }
 }

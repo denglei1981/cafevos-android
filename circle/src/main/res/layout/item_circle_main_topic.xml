@@ -7,7 +7,7 @@
 
         <variable
             name="bean"
-            type="String" />
+            type="com.changanford.circle.bean.Topic" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,40 +31,50 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="人工智能发展迅猛，会摆脱人类码？"
+            android:text="@{bean.description}"
             android:textColor="@color/color_33"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/iv_icon"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+            app:layout_constraintTop_toTopOf="@+id/iv_icon"
+            tools:text="人工智能发展迅猛，会摆脱人类码？" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_talk"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:background="@drawable/circle_talk_20_bg"
-            android:drawableStart="@mipmap/circle_talk_hint"
-            android:drawablePadding="4dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:paddingEnd="8dp"
-            android:text="年轻人喜欢什么样的车"
-            android:textColor="@color/circle_8195C8"
-            android:textSize="10sp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            tools:ignore="RtlSymmetry,SmallSp" />
+            app:layout_constraintRight_toLeftOf="@+id/iv_icon"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:background="@drawable/circle_talk_20_bg"
+                android:drawableStart="@mipmap/circle_talk_hint"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingEnd="8dp"
+                android:text="@{bean.name}"
+                android:textColor="@color/circle_8195C8"
+                android:textSize="10sp"
+                tools:ignore="RtlSymmetry,SmallSp"
+                tools:text="年轻人喜欢什么样的车" />
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20万讨论 12亿阅读"
             android:textColor="@color/circle_74889D"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="20万讨论 12亿阅读" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

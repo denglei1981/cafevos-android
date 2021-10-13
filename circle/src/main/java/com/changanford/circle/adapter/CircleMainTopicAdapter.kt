@@ -1,8 +1,10 @@
 package com.changanford.circle.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
+import com.changanford.circle.bean.Topic
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleMainTopicBinding
 import com.changanford.circle.ext.loadImage
@@ -15,11 +17,14 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Purpose
  */
 class CircleMainTopicAdapter(context: Context) :
-    BaseAdapterOneLayout<String>(context, R.layout.item_circle_main_topic) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
+    BaseAdapterOneLayout<Topic>(context, R.layout.item_circle_main_topic) {
+
+    @SuppressLint("SetTextI18n")
+    override fun fillData(vdBinding: ViewDataBinding?, item: Topic, position: Int) {
         val binding = vdBinding as ItemCircleMainTopicBinding
         binding.ivIcon.setCircular(5)
-        binding.ivIcon.loadImage(CircleConfig.TestUrl2)
+        binding.ivIcon.loadImage(item.pic)
+        binding.tvNum.text = "${item.postsCount}帖子 ${item.likesCount}热度"
         binding.bean = item
     }
 }

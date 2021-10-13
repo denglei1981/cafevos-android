@@ -1,13 +1,11 @@
 package com.changanford.circle.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.CircleMainBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.PostRoomViewModel
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
-import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -18,17 +16,18 @@ import com.changanford.common.utilext.toast
  */
 class CircleViewModel : PostRoomViewModel() {
 
+    val circleBean = MutableLiveData<CircleMainBean>()
 
-    fun communityIndex() {
+    fun communityIndex(lng: Double? = null, lat: Double? = null) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
-            body["lng"] = LocationUtils.mLongitude.value!!
-            body["lat"] = LocationUtils.mLatitude.value!!
+            lng?.let { body["lng"] = lng }
+            lat?.let { body["lat"] = lat }
 
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
-                .communityIndex(body.header(rKey), body.body(rKey)).also {
-
+                .communityIndex(body.header(rKey), body.body(rKey)).onSuccess {
+                    circleBean.value = it
                 }
 
         }, error = {

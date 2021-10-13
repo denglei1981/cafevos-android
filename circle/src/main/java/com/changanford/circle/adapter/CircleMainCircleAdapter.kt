@@ -3,6 +3,7 @@ package com.changanford.circle.adapter
 import android.content.Context
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
+import com.changanford.circle.bean.AllCircle
 import com.changanford.circle.databinding.ItemCircleMainCircleBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
@@ -14,10 +15,11 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Purpose
  */
 class CircleMainCircleAdapter(context: Context) :
-    BaseAdapterOneLayout<String>(context, R.layout.item_circle_main_circle) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
-        val binding=vdBinding as ItemCircleMainCircleBinding
+    BaseAdapterOneLayout<AllCircle>(context, R.layout.item_circle_main_circle) {
+    override fun fillData(vdBinding: ViewDataBinding?, item: AllCircle, position: Int) {
+        val binding = vdBinding as ItemCircleMainCircleBinding
         binding.ivIcon.setCircular(5)
-        binding.ivIcon.loadImage("http://139.186.199.89:8008/images/20210909/1631182101477.jpg")
+        binding.ivIcon.loadImage(item.pic)
+        binding.tvName.text = item.name
     }
 }

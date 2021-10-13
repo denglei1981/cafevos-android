@@ -1,11 +1,13 @@
 package com.changanford.common.util.permission
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import cn.hchstudio.kpermissions.KPermission
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.xiaomi.push.it
 
 object PermissionUtil {
 
@@ -18,6 +20,8 @@ object PermissionUtil {
 
     //定位权限
     var LOCATION = false
+
+    @SuppressLint("StaticFieldLeak")
     private var kPermission: KPermission? = null
 
     private val permissionsGroup =

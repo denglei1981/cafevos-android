@@ -1,16 +1,15 @@
 package com.changanford.circle.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
-import com.changanford.circle.config.CircleConfig
+import com.changanford.circle.bean.CircleInfo
 import com.changanford.circle.databinding.ItemCircleAddressBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
-import com.changanford.circle.utils.MUtils
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
@@ -19,8 +18,9 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Purpose
  */
 class CircleMainAddress(context: Context) :
-    BaseAdapterOneLayout<String>(context, R.layout.item_circle_address) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
+    BaseAdapterOneLayout<CircleInfo>(context, R.layout.item_circle_address) {
+    @SuppressLint("SetTextI18n")
+    override fun fillData(vdBinding: ViewDataBinding?, item: CircleInfo, position: Int) {
         val binding = vdBinding as ItemCircleAddressBinding
 
         val params = binding.clContent.layoutParams as ViewGroup.MarginLayoutParams
@@ -29,6 +29,9 @@ class CircleMainAddress(context: Context) :
                 14.toIntPx()
         } else params.topMargin = 0
         binding.ivIcon.setCircular(5)
-        binding.ivIcon.loadImage(CircleConfig.TestUrl2)
+        binding.ivIcon.loadImage(item.pic)
+        binding.tvNum.text = "${item.userCount}成员"
+
+        binding.bean = item
     }
 }

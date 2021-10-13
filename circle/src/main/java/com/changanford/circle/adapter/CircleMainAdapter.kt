@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -47,9 +48,14 @@ class CircleMainAdapter(
     private val tabList = listOf("推荐", "最新")
     private val topTabList = listOf("地域", "兴趣")
 
+    val topFragments = arrayListOf(
+        CircleMainFragment.newInstance("0"),
+        CircleMainFragment.newInstance("1")
+    )
+
     lateinit var topBinding: ItemCircleMainTopBinding
 
-    val circleAdapter by lazy {
+    val allCircleAdapter by lazy {
         CircleMainCircleAdapter(context)
     }
 
@@ -62,14 +68,11 @@ class CircleMainAdapter(
             0 -> {
                 val binding = vdBinding as ItemCircleMainTopBinding
                 topBinding = binding
-                val circleList = arrayListOf("", "", "", "", "", "", "", "", "", "")
-                circleAdapter.setItems(circleList)
-                binding.ryCircle.adapter = circleAdapter
+
+                binding.ryCircle.adapter = allCircleAdapter
 
                 initTopMagicIndicator(binding)
                 initTopTabAndViewPager(binding)
-
-                topicAdapter.setItems(arrayListOf("", "", ""))
 
                 binding.ryTopic.adapter = topicAdapter
 
@@ -94,9 +97,24 @@ class CircleMainAdapter(
             }
             topicAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
-                    startARouter(ARouterCirclePath.TopicDetailsActivity)
+                    val bundle = Bundle()
+                    bundle.putString("topicId", topicAdapter.getItem(position)?.topicId.toString())
+                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
                 }
-
+            })
+            allCircleAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+                override fun onItemClick(view: View?, position: Int) {
+                    if (allCircleAdapter.getItem(position)?.name == "全部") {
+                        startARouter(ARouterCirclePath.CircleListActivity)
+                    } else {
+                        val bundle = Bundle()
+                        bundle.putString(
+                            "circleId",
+                            allCircleAdapter.getItem(position)?.circleId.toString()
+                        )
+                        startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                    }
+                }
             })
         }
     }
@@ -161,7 +179,7 @@ class CircleMainAdapter(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleMainFragment.newInstance(position.toString())
+                    return topFragments[position]
                 }
 
             }
