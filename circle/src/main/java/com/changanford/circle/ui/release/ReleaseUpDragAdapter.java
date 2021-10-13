@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class ReleaseUpDragAdapter extends BaseQuickAdapter<QueryInfo.QuessionBean, BaseDataBindingHolder<QuessionItemBinding>> implements DraggableModule {
     public ReleaseUpDragAdapter() {
         super(R.layout.quession_item);
-        addChildClickViewIds(R.id.iv_close,R.id.iv_down,R.id.iv_up,R.id.iv_edit);
+        addChildClickViewIds(R.id.iv_close,R.id.iv_down,R.id.iv_up,R.id.iv_edit,R.id.quessionrec,R.id.bglayout,R.id.inputed);
     }
 
 
@@ -39,10 +39,10 @@ public class ReleaseUpDragAdapter extends BaseQuickAdapter<QueryInfo.QuessionBea
             binding.edlayout.setVisibility(View.VISIBLE);
         }else {
             binding.getRoot().setBackgroundResource(R.drawable.bg_quession_unselected);
-            binding.edlayout.setVisibility(View.INVISIBLE);
+            binding.edlayout.setVisibility(View.GONE);
         }
         binding.tvQuession.setText(quessionBean.getQuestionInfo());
-        binding.tvNum.setText(getItemCount()+". ");
+        binding.tvNum.setText(getItemPosition(quessionBean)+1+"");
         if (quessionBean.getQuestionType() == 2){
             binding.inputed.setVisibility(View.VISIBLE);
             binding.quessionrec.setVisibility(View.GONE);

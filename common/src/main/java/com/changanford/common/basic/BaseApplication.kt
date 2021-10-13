@@ -20,10 +20,7 @@ import com.baidu.mapapi.SDKInitializer
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.*
-import com.changanford.common.util.MConstant.UmengKey
 import com.changanford.common.utilext.logD
-import com.umeng.commonsdk.UMConfigure
-import com.umeng.tunnel.UMChannelAgent
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -38,8 +35,8 @@ abstract class BaseApplication : MultiDexApplication() {
         }
         ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
         //友盟预初始化,不会传数据给后台
-        UMConfigure.preInit(INSTANT,UmengKey,
-            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
+//        UMConfigure.preInit(INSTANT,UmengKey,
+//            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
         //阿里云push初始化
         PushServiceFactory.init(this)
         SDKInitializer.initialize(this);
@@ -60,7 +57,7 @@ abstract class BaseApplication : MultiDexApplication() {
     //友盟初始化
     private fun initUmeng() {
         //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
-        UMConfigure.init(this, UmengKey, DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"), UMConfigure.DEVICE_TYPE_PHONE, "");
+//        UMConfigure.init(this, UmengKey, DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"), UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     /**

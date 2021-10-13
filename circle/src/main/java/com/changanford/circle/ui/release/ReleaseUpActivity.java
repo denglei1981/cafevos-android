@@ -68,6 +68,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -543,16 +544,14 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
         releaseUpDragAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                for (int i = 0;i<queryInfo.getQuestionList().size();i++){
-                    if (i!=position){
-                        queryInfo.getQuestionList().get(i).setSeleted(false);
-                    }else if (!queryInfo.getQuestionList().get(i).isSeleted()){
-                        queryInfo.getQuestionList().get(i).setSeleted(true);
-                    }else {
-                        queryInfo.getQuestionList().get(i).setSeleted(false);
+                for (int i = 0; i < list.size(); i++) {
+                    if (i == position && !list.get(i).isSeleted()) {
+                        list.get(i).setSeleted(true);
+                    } else {
+                        list.get(i).setSeleted(false);
                     }
                 }
-                adapter.notifyItemChanged(position);
+                releaseUpDragAdapter.notifyDataSetChanged();
             }
         });
 
@@ -586,18 +585,27 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
 //                    releaseUpDragAdapter.getRecyclerView().getChildAt(position).callOnClick();
                 }else if (view.getId() == R.id.iv_up){
                     if (position!=0){
-                        QueryInfo.QuessionBean temp = queryInfo.getQuestionList().get(position-1);
-                        queryInfo.getQuestionList().set(position-1,queryInfo.getQuestionList().get(position));
-                        queryInfo.getQuestionList().set(position,temp);
+                        Collections.swap(list,position-1,position);
+                        releaseUpDragAdapter.setList(list);
                         releaseUpDragAdapter.notifyDataSetChanged();
+
                     }
                 }else if (view.getId() == R.id.iv_down){
-                    if (position!=queryInfo.getQuestionList().size()){
-                        QueryInfo.QuessionBean temp = queryInfo.getQuestionList().get(position+1);
-                        queryInfo.getQuestionList().set(position+1,queryInfo.getQuestionList().get(position));
-                        queryInfo.getQuestionList().set(position,temp);
+                    if (position!=list.size()-1){
+                        Collections.swap(list,position,position+1);
+                        releaseUpDragAdapter.setList(list);
                         releaseUpDragAdapter.notifyDataSetChanged();
+
                     }
+                }else if (view.getId() == R.id.bglayout||view.getId() ==R.id.quessionrec||view.getId() ==R.id.inputed){
+                    for (int i = 0; i < list.size(); i++) {
+                        if (i == position && !list.get(i).isSeleted()) {
+                            list.get(i).setSeleted(true);
+                        } else {
+                            list.get(i).setSeleted(false);
+                        }
+                    }
+                    releaseUpDragAdapter.notifyDataSetChanged();
                 }
             }
         });

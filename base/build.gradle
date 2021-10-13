@@ -70,9 +70,6 @@ dependencies {
     api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
     //阿里云oss
     api "com.aliyun.dpa:oss-android-sdk:2.9.6"
-    //友盟统计
-    api  'com.umeng.umsdk:common:9.4.2'// 必选
-    api  'com.umeng.umsdk:asms:1.4.0'// 必选
     //发布问卷选择器
     api 'com.contrarywind:Android-PickerView:4.1.6'
     //兴趣爱好标签

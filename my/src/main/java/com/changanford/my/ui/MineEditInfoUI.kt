@@ -220,9 +220,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             body["hobbyNames"] = user.hobbyNames
 
             body["industryIds"] = ""
-            if (user.industryIds.isNotEmpty()) {
+            if (user?.industryIds?.isNotEmpty()) {
                 var ids = user.industryIds.split(",")
-                body["industryIds"] = if (ids[0].isNotEmpty()) ids[0] else ""
+                body["industryIds"] = if (ids!=null && ids[0].isNotEmpty()) ids[0] else ""
             }
 
             body["industryNames"] = ""
