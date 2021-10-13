@@ -199,6 +199,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     override fun initData() {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getCircleDetails(circleId)
     }
 
@@ -241,9 +246,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 tvPersonal.text = "${it.userCount}成员"
                 personalAdapter.setItems(it.users)
                 personalAdapter.notifyDataSetChanged()
-                tvPersonal.setOnClickListener {
+                tvPersonal.setOnClickListener {_->
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
+                    bundle.putString("isApply", it.isApply.toString())
                     startARouter(ARouterCirclePath.PersonalActivity, bundle)
                 }
 

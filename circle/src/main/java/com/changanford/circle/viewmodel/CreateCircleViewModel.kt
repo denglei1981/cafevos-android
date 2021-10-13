@@ -36,4 +36,26 @@ class CreateCircleViewModel : BaseViewModel() {
             it.message.toString().toast()
         })
     }
+
+    fun editCircle(
+        description: String,
+        circleId: String,
+        name: String,
+        pic: String
+    ) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["description"] = description
+            body["name"] = name
+            body["circleId"] = circleId
+            body["pic"] = pic
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().editCircle(body.header(rKey), body.body(rKey))
+                .also {
+                    upLoadBean.value = it
+                }
+        }, error = {
+            it.message.toString().toast()
+        })
+    }
 }

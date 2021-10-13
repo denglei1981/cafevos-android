@@ -1,6 +1,5 @@
 package com.changanford.circle
 
-import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
@@ -94,6 +93,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 //            circleAdapter.topBinding.tvCircleMore.text="asd"
 //            circleAdapter.circleAdapter.setItems(arrayListOf("",""))
 //            circleAdapter.circleAdapter.notifyDataSetChanged()
+            viewModel.communityIndex()
             it.finishRefresh()
         }
     }

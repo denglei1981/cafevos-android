@@ -10,11 +10,16 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.viewmodel.CreateCircleViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.helper.OSSHelper
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
+import com.huawei.hms.scankit.p.da
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
@@ -77,7 +82,41 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 })
             }
 
-            commit.setOnClickListener {
+        }
+    }
+
+
+    override fun initData() {
+        val data = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
+        if (data != null) {
+            binding.run {
+                picUrl = data.pic
+                ivFengmian.loadImage(data.pic)
+                etBiaoti.setText(data.name)
+                etContent.setText(data.description)
+                binding.commit.text = "立即编辑"
+
+                commit.setOnClickListener {
+                    val title = binding.etBiaoti.text.toString()
+                    val content = binding.etContent.text.toString()
+
+                    if (picUrl.isEmpty()) {
+                        "请上传封面".toast()
+                        return@setOnClickListener
+                    }
+                    if (title.isEmpty()) {
+                        "请输入标题".toast()
+                        return@setOnClickListener
+                    }
+                    if (content.isEmpty()) {
+                        "请输入详情".toast()
+                        return@setOnClickListener
+                    }
+                    viewModel.editCircle(content, data.circleId.toString(), title, picUrl)
+                }
+            }
+        } else {
+            binding.commit.setOnClickListener {
                 val title = binding.etBiaoti.text.toString()
                 val content = binding.etContent.text.toString()
 
@@ -96,10 +135,6 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 viewModel.upLoadCircle(content, title, picUrl)
             }
         }
-    }
-
-
-    override fun initData() {
 
     }
 
@@ -108,6 +143,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         viewModel.upLoadBean.observe(this, {
             it.msg.toast()
             if (it.code == 0) {
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(false)
                 finish()
             }
         })

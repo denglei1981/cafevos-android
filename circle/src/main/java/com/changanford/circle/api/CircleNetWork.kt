@@ -226,7 +226,7 @@ interface CircleNetWork {
     suspend fun getCityDetailBylngAndlat(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ):CommonResponse<LocationDataBean>
+    ): CommonResponse<LocationDataBean>
 
     /**
      * 社区v2: 获取管理员信息
@@ -258,7 +258,7 @@ interface CircleNetWork {
     /**
      * 社区v2: 取消 管理员申请信息
      */
-    @POST("/con/circle/cancelApplyManager")
+    @POST("con/circle/cancelApplyManager")
     suspend fun cancelApplyManager(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -267,8 +267,35 @@ interface CircleNetWork {
     /**
      * 创建圈子
      */
-    @POST("/con/circle/createCircle")
+    @POST("con/circle/createCircle")
     suspend fun addCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 编辑圈子
+     */
+    @POST("con/circle/editCircle")
+    suspend fun editCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 退出圈子
+     */
+    @POST("con/circle/quitCircle")
+    suspend fun quitCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 社区首页顶部
+     */
+    @POST("con/circle/communityIndex")
+    suspend fun communityIndex(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
