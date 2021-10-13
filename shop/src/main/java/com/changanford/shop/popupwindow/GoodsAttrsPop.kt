@@ -55,9 +55,10 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             viewDataBinding.addSubtractView.setMax(max.toInt())
             bindingBtn(findItem.stock.toInt(),viewDataBinding.btnSubmit)
         })
+        viewDataBinding.tvAccountPoints.setHtmlTxt(dataBean.acountFb,"#00095B")
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
-            dataBean.buyNum=it
+            dataBean.buyNum= it
         })
     }
     private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){

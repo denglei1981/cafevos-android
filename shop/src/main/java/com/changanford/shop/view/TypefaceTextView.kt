@@ -1,5 +1,6 @@
 package com.changanford.shop.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.InputType
 import android.text.TextUtils
@@ -7,6 +8,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.shop.R
 import com.changanford.shop.utils.TypefaceUtils
+import com.changanford.shop.utils.WCommonUtil
 
 
 /**
@@ -42,6 +44,9 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun initView(){
         if(TextUtils.isEmpty(text))setText(context.getString(R.string.str_text))
     }
+    fun setHtmlTxt(str:Any,color:String){
+        WCommonUtil.htmlToString(this,"${startText?:""}<font color=\"$color\">$str</font>${endText?:""}")
+    }
     fun setText(str:Int?){
         setText(str?:"0")
     }
@@ -51,11 +56,13 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     fun setIntTxt(str:Int){
         setText("$str")
     }
+    @SuppressLint("SetTextI18n")
     fun setText(str:String?){
         if(str==null)return
-        text=if(startText!=null&&endText!=null) "$startText$str$endText"
-        else if(startText!=null) "$startText$str"
-        else if (endText != null) "$str$endText"
-        else str
+        text="${startText?:""}$str${endText?:""}"
+//        text=if(startText!=null&&endText!=null) "$startText$str$endText"
+//        else if(startText!=null) "$startText$str"
+//        else if (endText != null) "$str$endText"
+//        else str
     }
 }

@@ -59,6 +59,7 @@
     <string name="str_number">数量</string>
     <string name="str_xgXjkcXj">（<font color="#00095B">限购5件</font> 库存1024件）</string>
     <string name="str_yourAccountPointsF">您的账户福币：<font color="#00095B">1800</font>分</string>
+    <string name="str_yourAccountLuckyMoney">您的账户福币：</string>
     <string name="str_limited">限量</string>
     <string name="str_a">件</string>
     <string name="str_toSnapUp">去抢购</string>

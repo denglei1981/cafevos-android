@@ -159,6 +159,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="@string/str_yourAccountPointsF"
+                app:start_txt="@string/str_yourAccountLuckyMoney"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12"/>
             <com.changanford.shop.view.btn.KillBtnView
