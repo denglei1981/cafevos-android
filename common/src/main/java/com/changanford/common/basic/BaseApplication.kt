@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -99,6 +100,11 @@ abstract class BaseApplication : MultiDexApplication() {
         pushService.register(applicationContext, object : CommonCallback {
             override fun onSuccess(response: String?) {
                 "init cloudchannel success".logD()
+                var deviceid = pushService.deviceId
+                deviceid?.let {
+                    SPUtils.setParam(applicationContext, MConstant.PUSH_ID, deviceid)
+                    Log.d("12121", deviceid)
+                }
             }
 
             override fun onFailed(errorCode: String, errorMessage: String) {

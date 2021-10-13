@@ -1,8 +1,10 @@
 package com.changanford.my
 
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
@@ -12,6 +14,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
@@ -23,6 +26,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     lateinit var menuBean: ArrayList<MenuBeanItem>
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
+    val labelAdapter: LabelAdapter by lazy {
+        LabelAdapter(20)
+    }
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
     private var authState: MutableLiveData<Boolean> = MutableLiveData()
     override fun initView() {
@@ -174,6 +180,17 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     ((userInfoBean?.ext?.growthDecimal
                         ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toFloat()
                 )
+            }
+        }
+        userInfoBean?.ext?.let {
+            //用户图标
+            it.imags?.let {
+                binding.myIconRv.visibility = View.VISIBLE
+                binding.myIconRv.layoutManager =
+                    LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                binding.myIconRv.adapter = labelAdapter
+                labelAdapter.data.clear()
+                labelAdapter.addData(it)
             }
         }
     }
