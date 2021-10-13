@@ -2,7 +2,6 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
@@ -27,9 +26,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
-    private lateinit var dataBean: GoodsDetailBean
+    lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
+        dataBean.buyNum=1
         getSkuTxt(dataBean.skuVos[0].skuCode)
         val fbLine=dataBean.fbLine//划线积分
         headerBinding.inGoodsInfo.model=dataBean
@@ -58,7 +58,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                     headerBinding.inKill.model=dataBean
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inKill.layoutKill.visibility= View.VISIBLE
-                    if(null!=dataBean.now)initTimeCount(dataBean.now!!,secKillInfo.timeBegin,secKillInfo.timeEnd)
+                    initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
                     val purchasedNum=dataBean.purchasedNum?:0
                     headerBinding.inKill.tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
                     if(null==fbLine)headerBinding.inKill.tvFbLine.visibility= View.GONE
@@ -112,7 +112,6 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
                         getSkuTxt(_skuCode)
-                        Log.e("okhttp","buyNum:${dataBean.buyNum}")
                     }
                 }
             }

@@ -19,6 +19,7 @@ import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
+import com.google.gson.Gson
 import kotlin.math.roundToInt
 
 /**
@@ -100,9 +101,11 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         viewModel.queryGoodsDetails(spuId)
     }
     fun onClick(v:View){
-        when(v.id){
+        val vid=v.id
+        if(R.id.img_back!=vid&&(!::control.isInitialized))return
+        when(vid){
             //确认订单
-            R.id.btn_submit->OrderConfirmActivity.start(this,"goodsInfo")
+            R.id.btn_submit->OrderConfirmActivity.start(this, Gson().toJson(control.dataBean))
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
             //选择商品属性

@@ -30,6 +30,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
     }
     override fun initView() {
+        val goodsInfo=intent.getStringExtra("goodsInfo")
+        Log.e("okhttp","goodsInfo:$goodsInfo")
         binding.topBar.setActivity(this)
     }
 
