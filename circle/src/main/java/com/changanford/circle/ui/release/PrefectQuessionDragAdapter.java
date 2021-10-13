@@ -38,7 +38,7 @@ public class PrefectQuessionDragAdapter extends BaseQuickAdapter<QueryInfo.Quess
                 GlideUtils.INSTANCE.loadRoundLocal(optionBean.getBdoptionImgUrl(),binding.ivImg,5);
             }else{
                 binding.ivDel.setVisibility(View.INVISIBLE);
-                binding.ivImg.setImageResource(R.mipmap.add_image);
+                binding.ivImg.setImageResource(R.mipmap.img_icon_default);
             }
 
         }

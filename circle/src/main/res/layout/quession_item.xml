@@ -1,38 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:paddingTop="17dp"
-        android:paddingBottom="17dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:clickable="true"
+        android:descendantFocusability="afterDescendants"
+        android:background="@drawable/bg_quession_selected"
+        android:paddingTop="17dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="17dp">
+
+        <TextView
+            android:id="@+id/must"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:textColor="@color/red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_num"
-            tools:text="11."
-            android:textColor="#71747B"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            app:layout_goneMarginLeft="@dimen/dp_0"
+            android:layout_marginLeft="@dimen/dp_10"
+            app:layout_constraintStart_toEndOf="@id/must"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="11." />
+
         <TextView
-            android:layout_toRightOf="@id/tv_num"
             android:id="@+id/tv_quession"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_num"
+            android:text="问题问题问题问题"
+            android:textColor="#333333"
             android:textSize="15sp"
-            android:textColor="#71747B"
-            android:layout_width="match_parent"
+            app:layout_constraintStart_toEndOf="@id/tv_num"
+            app:layout_constraintTop_toTopOf="@id/tv_num" />
+
+        <EditText
+            android:id="@+id/inputed"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="问题问题问题问题"/>
-        <ImageView
-            android:id="@+id/iv_close"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:enabled="false"
+            android:background="@null"
+            android:lines="6"
+            app:layout_constraintEnd_toStartOf="@id/edlayout"
+            app:layout_constraintStart_toStartOf="@id/tv_num"
+            app:layout_constraintTop_toBottomOf="@id/tv_num" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/quessionrec"
+            android:layout_width="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="wrap_content"
-            android:src="@mipmap/quessionicon"/>
-    </RelativeLayout>
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toStartOf="@id/edlayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_num" />
+
+        <LinearLayout
+            android:id="@+id/edlayout"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/quessionrec">
+
+            <ImageView
+                android:id="@+id/iv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/quessionedit" />
+
+            <ImageView
+                android:id="@+id/iv_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@mipmap/quessionup" />
+
+            <ImageView
+                android:id="@+id/iv_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@mipmap/quessiondown" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@mipmap/quessiondelete" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

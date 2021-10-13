@@ -96,9 +96,21 @@
             style="@style/commonTextView.Medium"
             android:layout_marginTop="20dp"
             android:text="@string/my_loginTips"
-            app:layout_constraintEnd_toEndOf="@+id/my_head"
+            app:layout_constraintEnd_toStartOf="@+id/medalImg"
             app:layout_constraintStart_toStartOf="@+id/my_head"
             app:layout_constraintTop_toBottomOf="@+id/my_head" />
+        <ImageView
+            app:layout_constraintStart_toEndOf="@id/my_name"
+            app:layout_constraintTop_toTopOf="@id/my_name"
+            app:layout_constraintBottom_toBottomOf="@id/my_name"
+            app:layout_constraintEnd_toEndOf="@id/my_head"
+            android:layout_marginLeft="@dimen/dp_5"
+            tools:src="@mipmap/my_myvicon"
+            android:visibility="gone"
+            android:id="@+id/medalImg"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"/>
+
 
         <TextView
             android:id="@+id/my_content"
@@ -164,7 +176,8 @@
             android:id="@+id/medalRec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"

@@ -38,23 +38,27 @@
                 android:paddingBottom="10dp"
                 android:textSize="15sp"
                 android:textColorHint="@color/color_cc" />
-
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="@dimen/dp_33"
+                android:layout_height="@dimen/dp_27"
+                android:layout_gravity="center"
+                android:adjustViewBounds="false"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/img_icon_default" />
         </LinearLayout>
         <LinearLayout
             android:padding="10dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:id="@+id/rl_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp">
-            <ImageView
-                android:id="@+id/iv_img"
-                android:scaleType="centerCrop"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@mipmap/add_image"/>
+
+
                 <ImageView
                     android:id="@+id/iv_del"
                     android:layout_width="wrap_content"

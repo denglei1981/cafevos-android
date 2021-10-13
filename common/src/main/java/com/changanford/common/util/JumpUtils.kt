@@ -11,6 +11,7 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
@@ -124,6 +125,13 @@ class JumpUtils {
 
     }
 
+    fun jump(jumpData:JumpDataBean?){
+        if (jumpData == null){
+            return
+        }
+        jump(jumpData.jumpDataType,jumpData.jumpDataValue)
+
+    }
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
             "跳转类型不能为空".toast()

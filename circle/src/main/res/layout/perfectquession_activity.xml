@@ -57,10 +57,9 @@
                         style="@style/commonTextView.Normal.Bold"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
-                        android:drawablePadding="5dp"
                         android:gravity="center"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="18dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
                         android:text="添加选项" />
                     <TextView
                         style="@style/commonTextView.Bold"
@@ -70,8 +69,8 @@
                         android:gravity="center"
                         android:textSize="30sp"
                         android:layout_toLeftOf="@id/text"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="18dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
                         android:text="+" />
                 </RelativeLayout>
 

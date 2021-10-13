@@ -7,9 +7,10 @@ import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.changanford.circle.ui.release.AttribltAdapter;
+import com.changanford.circle.ui.release.AttribltMidAdapter;
 import com.changanford.common.bean.AttributeBean;
 import com.changanford.circle.R;
 import com.changanford.circle.databinding.AttrubltBinding;
@@ -26,12 +27,12 @@ public class AttrbultPop extends BasePopupWindow implements View.OnClickListener
     RecyclerView attrrec;
     public AttrCallBack CallBack;
     TextView tv_commit;
-    List<AttributeBean.AttributesInfoBean.AttributeListBean> attributeListBeans =new ArrayList<>();
+    List<AttributeBean.AttributeCategoryVos> attributeListBeans =new ArrayList<>();
 
     Context context;
-    private AttribltAdapter attribltAdapter;
+    private AttribltMidAdapter attribltAdapter;
 
-    public AttrbultPop(Context context, List<AttributeBean.AttributesInfoBean.AttributeListBean> attributeListBeans
+    public AttrbultPop(Context context, List<AttributeBean.AttributeCategoryVos> attributeListBeans
     , AttrCallBack attrCallBack) {
         super(context);
         AttrubltBinding binding = DataBindingUtil.bind(createPopupById(R.layout.attrublt));
@@ -47,13 +48,13 @@ public class AttrbultPop extends BasePopupWindow implements View.OnClickListener
 
 
     private void bindEvent() {
-         attribltAdapter = new AttribltAdapter(CallBack);
+         attribltAdapter = new AttribltMidAdapter(context,CallBack);
         tvconnel = findViewById(R.id.tv_cannel);
         attrrec = findViewById(R.id.attrbulerec);
         tv_commit = findViewById(R.id.tv_commit);
         tv_commit.setOnClickListener(this);
         tvconnel.setOnClickListener(this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context,2);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         attrrec.setLayoutManager(layoutManager);
         attrrec.setAdapter(attribltAdapter);
         attribltAdapter.addData(attributeListBeans);
@@ -107,7 +108,7 @@ public class AttrbultPop extends BasePopupWindow implements View.OnClickListener
         int id = v.getId();
         if (id == R.id.tv_cannel) {
             dismiss();
-            CallBack.data(new HashMap<Integer,AttributeBean.AttributesInfoBean.AttributeListBean>());
+            CallBack.data(new HashMap<Integer,HashMap<Integer, AttributeBean.AttributeCategoryVos.AttributeListBean>>());
         }else if(id==R.id.tv_commit){
             dismiss();
             CallBack.data(attribltAdapter.getAttributeListBeanMap());
@@ -116,6 +117,6 @@ public class AttrbultPop extends BasePopupWindow implements View.OnClickListener
 
     public interface AttrCallBack {
 
-        void data(HashMap<Integer, AttributeBean.AttributesInfoBean.AttributeListBean> object);
+        void data(HashMap<Integer, HashMap<Integer, AttributeBean.AttributeCategoryVos.AttributeListBean>> object);
     }
 }

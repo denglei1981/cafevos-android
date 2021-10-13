@@ -13,7 +13,7 @@ class CarRecommendAdapter :
     ) {
     override fun convert(holder: BaseViewHolder, item: CarModels) {
         holder.getView<ImageView>(R.id.carimg)
-            .load("uni-stars-manager/2021/09/22/a07c2ee4aaec45a5a212211f1e9f79b7.png")
-        holder.setText(R.id.carname, "车型$")
+            .load(item.carModelPic,R.mipmap.ic_def_square_img)
+        holder.setText(R.id.carname, item.spuName)
     }
 }

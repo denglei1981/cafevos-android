@@ -71,9 +71,9 @@
     <!--Button-->
     <style name="commonButton">
         <item name="android:background">@drawable/bg_bt_blue_corner39</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">@dimen/dp_40</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 

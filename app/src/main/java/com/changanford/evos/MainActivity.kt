@@ -21,6 +21,7 @@ import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.location.LocationUtils
@@ -293,6 +294,58 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                   setHomBottomNavi(View.VISIBLE)
               }
         })
+        LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB,Boolean::class.java).observe(this,{
+            if (it){
+                lifecycleScope.launch {
+                    MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
+                    MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
+                }
+            }
+        })
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleViewIntent(it) }
+    }
+    /**
+     * 处理外部浏览
+     */
+    private fun handleViewIntent(intent: Intent) {
+        if (Intent.ACTION_VIEW == intent.action) {
+            val uri = intent.data
+            if (uri != null) {
+                try {
+                    val type = uri.getQueryParameter("jumpDataType")!!.toInt()
+                    val value = uri.getQueryParameter("jumpDataValue")
+                    JumpUtils.instans!!.jump(type, value)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    JumpUtils.instans!!.jump(0, "")
+                }
+            }
+        } else {
+            intent.extras?.let {
+                var jumpValue = it.getInt("jumpValue")
+                if (jumpValue > 0)
+                    when(jumpValue){
+                        1-> navController?.navigate(R.id.homeFragment)
+                        2-> navController?.navigate(R.id.circleFragment)
+                        3-> navController?.navigate(R.id.carFragment)
+                        4-> navController?.navigate(R.id.shopFragment)
+                        5-> navController?.navigate(R.id.myFragment)
+                    }
+                try {
+                    val jumpDataType = it.getString("jumpDataType")?.toInt()
+                    val jumpDataValue = it.getString("jumpDataValue")
+                    JumpUtils.instans!!.jump(
+                        Integer.valueOf(jumpDataType ?: 99),
+                        jumpDataValue
+                    )
+                } catch (e: Exception) {
+                }
+            }
+        }
     }
 }
 

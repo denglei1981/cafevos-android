@@ -43,21 +43,21 @@
             android:value="${channel_value}" />
         <meta-data
             android:name="com.alibaba.app.appkey"
-            android:value="" /> <!-- 请填写你自己的- appKey -->
+            android:value="333550720" /> <!-- 请填写你自己的- appKey -->
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="" /> <!-- 请填写你自己的appSecret -->
+            android:value="3df29f53750248f2b2c2c92737c84bd6" /> <!-- 请填写你自己的appSecret -->
         <!--阿里推送华为-->
         <meta-data
             android:name="com.huawei.hms.client.appid"
-            android:value="appid=" />
+            android:value="appid=104818573" />
         <!--阿里推送Vivo-->
         <meta-data
             android:name="com.vivo.push.api_key"
-            android:value="" />
+            android:value="6babd1d6f310777c9532d2b96e128f39" />
         <meta-data
             android:name="com.vivo.push.app_id"
-            android:value="" />
+            android:value="105514947" />
         <!-- 消息接收监听器 （用户可自主扩展） -->
         <receiver
             android:name="com.changanford.common.receiver.MyMessageReceiver"
@@ -102,7 +102,9 @@
                 <data android:scheme="um.615fea28ac9567566e8c9d48" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTask"
+            />
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -134,7 +136,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1109690244" />
+                <data android:scheme="tencent1111168800" />
             </intent-filter>
         </activity>
 

@@ -30,7 +30,7 @@ android {
         minSdkVersion minSDKVersion
         targetSdkVersion targetSDKVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         resConfigs "zh"
         ndk {
             abiFilters "armeabi-v7a"
@@ -41,8 +41,8 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.keyconfig
-            minifyEnabled true
-            shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //            android.applicationVariants.all{ variant ->
 //                variant.outputs.all{

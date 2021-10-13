@@ -1,5 +1,6 @@
 package com.changanford.common.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttributeBean {
@@ -17,9 +18,39 @@ public class AttributeBean {
     public void setAttributesInfo(AttributesInfoBean attributesInfo) {
         this.attributesInfo = attributesInfo;
     }
-
     public static class AttributesInfoBean {
+        private ArrayList<AttributeCategoryVos> attributeCategoryVos;
+
+        public ArrayList<AttributeCategoryVos> getAttributeCategoryVos() {
+            return attributeCategoryVos;
+        }
+
+        public void setAttributeCategoryVos(ArrayList<AttributeCategoryVos> attributeCategoryVos) {
+            this.attributeCategoryVos = attributeCategoryVos;
+        }
+    }
+
+    public static class AttributeCategoryVos {
+
+        private int categoryId;//
+        private String categoryName;//基本属性
         private List<AttributeListBean> attributeList;
+
+        public int getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(int categoryId) {
+            this.categoryId = categoryId;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public void setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
+        }
 
         public List<AttributeListBean> getAttributeList() {
             return attributeList;
@@ -49,7 +80,7 @@ public class AttributeBean {
 
             private int attributeId;  //属性id
             private String attributeName; //属性名称
-            private int attributeType; //字段类型（0-电话，1-其他）
+            private String attributeType; //字段类型（0-电话，1-其他）
             private int defaultCheck; //是否默认勾选
             private int mustInput;  //是否必填
 
@@ -69,11 +100,11 @@ public class AttributeBean {
                 this.attributeName = attributeName;
             }
 
-            public int getAttributeType() {
+            public String getAttributeType() {
                 return attributeType;
             }
 
-            public void setAttributeType(int attributeType) {
+            public void setAttributeType(String attributeType) {
                 this.attributeType = attributeType;
             }
 

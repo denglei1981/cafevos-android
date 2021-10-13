@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarIntroBinding
+import com.changanford.common.bean.AdBean
 import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -11,14 +12,14 @@ import com.zhpan.bannerview.BaseViewHolder
 /**
  * 订车顶部广告
  */
-class CarTopBannerAdapter : BaseBannerAdapter<String, CarTopBannerViewHolder>() {
+class CarTopBannerAdapter : BaseBannerAdapter<AdBean, CarTopBannerViewHolder>() {
     override fun createViewHolder(itemView: View?, viewType: Int): CarTopBannerViewHolder {
         return CarTopBannerViewHolder(itemView!!)
     }
 
     override fun onBind(
         holder: CarTopBannerViewHolder,
-        data: String?,
+        data: AdBean?,
         position: Int,
         pageSize: Int
     ) {
@@ -30,10 +31,10 @@ class CarTopBannerAdapter : BaseBannerAdapter<String, CarTopBannerViewHolder>() 
     }
 }
 
-class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<String>(itemView) {
-    override fun bindData(data: String?, position: Int, pageSize: Int) {
+class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
+    override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
         var binding = DataBindingUtil.bind<ItemCarIntroBinding>(itemView)
-        binding?.imageCarIntro?.load(R.mipmap.car_topimg1)
+        binding?.imageCarIntro?.load(data?.adImg)
     }
 
 }
