@@ -331,3 +331,4 @@ data class OrderItemBean(
     val updateTime: String = "",
     val userId: Int = 0
 )
+data class OrderInfoBean(val orderNo:String,val cost:String)

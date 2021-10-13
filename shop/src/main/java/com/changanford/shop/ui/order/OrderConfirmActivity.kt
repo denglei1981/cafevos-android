@@ -58,6 +58,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         })
         viewModel.getAddressList()
         bindingBaseData()
+        viewModel.orderInfoLiveData.observe(this,{
+            PayConfirmActivity.start(this,"orderInfo")
+        })
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
@@ -93,10 +96,15 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     fun onClick(v:View){
         when(v.id){
             //提交订单
-            R.id.btn_submit->PayConfirmActivity.start(this,"orderInfo")
+            R.id.btn_submit->submitOrder()
             //选择地址
             R.id.in_address->selectAddress()
         }
+    }
+    private fun submitOrder(){
+        val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
+        viewModel.orderCreate(dataBean.skuId,"1",dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+//        PayConfirmActivity.start(this,"orderInfo")
     }
     @SuppressLint("SetTextI18n")
     private fun bindingAddress(item:AddressBeanItem?){

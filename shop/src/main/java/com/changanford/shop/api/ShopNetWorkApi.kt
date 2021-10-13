@@ -59,7 +59,7 @@ interface ShopNetWorkApi {
      *订单创建
      * */
     @POST("/mall/order/create")
-    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderInfoBean>
     /**
      *商城订单列表
      * */

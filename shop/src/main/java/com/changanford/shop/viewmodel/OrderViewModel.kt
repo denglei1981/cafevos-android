@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
@@ -22,6 +23,8 @@ class OrderViewModel: BaseViewModel() {
      * 获取地址列表
      */
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
+    //订单
+    var orderInfoLiveData: MutableLiveData<OrderInfoBean> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -30,9 +33,9 @@ class OrderViewModel: BaseViewModel() {
      * [payType]支付方式(积分),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付)
      * [busSourse] 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
-    fun orderCreate(skuId:String,addressId:String,busSourse:String,buyNum:Int,consumerMsg:String?,payType:String="FB_PAY"){
+    fun orderCreate(skuId:String,addressId:String,busSourse:String,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
         viewModelScope.launch {
-           fetchRequest {
+          fetchRequest {
                 body.clear()
                 body["skuId"]=skuId
                 body["busSourse"]=busSourse
@@ -43,8 +46,10 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-
-            }
+              orderInfoLiveData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+          }
         }
     }
     /**
