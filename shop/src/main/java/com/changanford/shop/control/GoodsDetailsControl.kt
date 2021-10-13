@@ -44,7 +44,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
-        if(freightPrice!=0)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
+        if(freightPrice!="0")WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         when(dataBean.spuPageType){
             "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE

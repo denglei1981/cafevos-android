@@ -146,7 +146,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    var fbLine: String? = "0",
+    var fbLine: String = "0",
     var fbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
@@ -170,8 +170,10 @@ data class GoodsDetailBean(
     var skuCodeTxts:List<String>?,
     var acountFb:Int=0,//账号积分
     val param:String?,
-    val freightPrice:Int,//运费 0为包邮
+    var totalPayFb:String,//总支付积分
+    val freightPrice:String,//运费 0为包邮
     val collect:String//是否收藏 YES NO
+
 )
 
 data class Attribute(

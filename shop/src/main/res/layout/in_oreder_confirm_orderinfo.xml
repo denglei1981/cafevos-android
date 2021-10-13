@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
-            tools:text="1300积分"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
@@ -46,7 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
-            tools:text="-300积分"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
@@ -65,7 +68,8 @@
             app:layout_constraintTop_toTopOf="@id/tv_freight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="¥0.00"
+            app:start_txt="@string/str_rmb"
+            android:text="@{model.freightPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <View
@@ -76,12 +80,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"/>
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_totle"
+            android:id="@+id/tv_total"
             android:layout_marginTop="@dimen/dp_17"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:end_txt="@string/str_integral"
+            app:start_txt="@string/str_combined"
             tools:text="@string/str_combinedXintegral"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />

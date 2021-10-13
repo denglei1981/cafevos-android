@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +23,7 @@
             app:end_txt="@string/str_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1300积分"
+            android:text="@{model.totalPayFb}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="您的账户：1600积分"
+            android:text="@{model.acountFb}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_10" />
         <androidx.appcompat.widget.AppCompatButton

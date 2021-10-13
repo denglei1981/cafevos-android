@@ -125,4 +125,5 @@
     <string name="str_pleaseAddShippingAddress">请添加收货地址</string>
     <string name="str_hasBeenSoldOut">已售罄</string>
     <string name="str_lackBalance">余额不足</string>
+    <string name="str_combined">合计：</string>
 </resources>

@@ -43,6 +43,8 @@
                     layout="@layout/in_oreder_confirm_pay"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
-        <include layout="@layout/in_order_confirm_bottom"/>
+        <include
+            android:id="@+id/in_bottom"
+            layout="@layout/in_order_confirm_bottom"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

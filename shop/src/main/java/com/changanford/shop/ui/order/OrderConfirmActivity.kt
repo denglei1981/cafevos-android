@@ -8,10 +8,12 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -29,10 +31,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
         }
     }
+    private lateinit var dataBean:GoodsDetailBean
     override fun initView() {
-        val goodsInfo=intent.getStringExtra("goodsInfo")
-        Log.e("okhttp","goodsInfo:$goodsInfo")
         binding.topBar.setActivity(this)
+        val goodsInfo=intent.getStringExtra("goodsInfo")
+        if(null==goodsInfo){
+            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
+            this.finish()
+            return
+        }
+        dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
     }
 
     override fun initData() {
@@ -46,6 +54,32 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             bindingAddress(item)
         })
         viewModel.getAddressList()
+    }
+    private fun bindingBaseData(){
+
+        //购买数量
+        val buyNum=dataBean.buyNum
+        //运费
+        val freightPrice=dataBean.freightPrice.toInt()
+        //单价
+        val fbPrice=dataBean.fbPrice.toInt()
+        //总商品价 单价*购买数量
+        val totalFb=fbPrice*buyNum
+        binding.inOrderInfo.tvAmountValue.setText("$totalFb")
+        //会员优惠
+//        val memberDiscount=dataBean.fbLine.toInt()*buyNum-totalFb
+//        binding.inOrderInfo.tvMemberDiscountValue.setText("$memberDiscount")
+        //总共支付 (商品金额+运费)
+        val totalPayFb=totalFb+freightPrice
+        dataBean.totalPayFb="$totalPayFb"
+        binding.inOrderInfo.tvTotal.setHtmlTxt("$totalPayFb","#00095B")
+
+        val goodsInfo=binding.inGoodsInfo
+        goodsInfo.addSubtractView.setNumber(buyNum)
+//        if(freightPrice!=0)goodsInfo.tvDistributionType
+        binding.inOrderInfo.model=dataBean
+        goodsInfo.model=dataBean
+        binding.inBottom.model=dataBean
     }
     fun onClick(v:View){
         when(v.id){

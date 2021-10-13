@@ -68,6 +68,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if("0"==spuId){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
+            return
         }
 //        spuPageType=spuPageTypes.lastOrNull { it==intent.getStringExtra("spuPageType") }?:"NOMROL"
         binding.rvGoodsImg.adapter=mAdapter
