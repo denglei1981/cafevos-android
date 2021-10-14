@@ -134,7 +134,6 @@ class JumpUtils {
     }
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
-            "跳转类型不能为空".toast()
             return
         }
         val bundle = Bundle()

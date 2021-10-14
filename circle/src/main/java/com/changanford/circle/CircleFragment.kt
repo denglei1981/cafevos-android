@@ -18,6 +18,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
@@ -104,7 +105,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.ivSearch.setOnClickListener {
-            startARouter(ARouterHomePath.PolySearchActivity)
+            JumpUtils.instans!!.jump(108)
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()

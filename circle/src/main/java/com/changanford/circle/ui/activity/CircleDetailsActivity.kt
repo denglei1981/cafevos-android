@@ -141,6 +141,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
         val bundle = Bundle()
         bundle.putString("circleId", circleId)
+        bundle.putBoolean("isCirclePost", true)
         bundle.putString("circleName", circleName)
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
