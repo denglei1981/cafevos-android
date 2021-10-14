@@ -100,4 +100,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/app/pay/virtualCoinPay")
     suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *订单确认收货
+     * */
+    @POST("/mall/order/confirmReceipt")
+    suspend fun confirmReceipt(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

@@ -11,6 +11,7 @@ import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
+import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
 
 /**
@@ -183,12 +184,29 @@ class OrderViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                shopApiService.getMyIntegral(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.getMyIntegral(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
                 myFbLiveData.postValue(it as Int?)
+            }
+        }
+    }
+    /**
+     * 订单确认收货
+     * */
+    fun confirmReceipt(orderNo:String,listener: OnPerformListener?){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["orderNo"]=orderNo
+                val randomKey = getRandomKey()
+                shopApiService.confirmReceipt(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }.onSuccess {
+                listener?.onFinish(0)
             }
         }
     }

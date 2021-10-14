@@ -10,6 +10,7 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
+import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
@@ -146,7 +147,23 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
      * 确认收货
      * */
     private fun confirmGoods(item: OrderItemBean){
-        viewModel.let {  }
+        val pop= PublicPop(context)
+        pop.showPopupWindow(context.getString(R.string.str_confirmReceiptGoods),null,null,object :
+            PublicPop.OnPopClickListener{
+            override fun onLeftClick() {
+                pop.dismiss()
+            }
+            override fun onRightClick() {
+                viewModel?.confirmReceipt(item.orderNo,object :OnPerformListener{
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onFinish(code: Int) {
+                        item.orderStatus="FINISH"
+                        this@OrderAdapter.notifyDataSetChanged()
+                        pop.dismiss()
+                    }
+                })
+            }
+        })
     }
     /**
      * 去支付

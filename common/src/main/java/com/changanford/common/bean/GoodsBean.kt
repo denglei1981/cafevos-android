@@ -312,7 +312,7 @@ data class OrderItemBean(
     val nickName: String = "",
     val `operator`: String = "",
     val orderNo: String = "",
-    val orderStatus: String = "",
+    var orderStatus: String = "",
     val orderTime: String = "",
     val params: Params = Params(),
     val payType: String = "",
