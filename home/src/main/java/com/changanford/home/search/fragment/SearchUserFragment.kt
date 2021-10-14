@@ -85,7 +85,10 @@ class SearchUserFragment :
             viewModel.getSearchContent(SearchTypeConstant.SEARCH_USER, it, true)
         }
     }
-
+    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+        searchContent = keyWord
+        onRefresh(binding.smartLayout)
+    }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(SearchTypeConstant.SEARCH_USER, it, false)

@@ -68,6 +68,11 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                 startARouter(ARouterMyPath.SignUI)
             }
         }
+        bigShotPostListAdapter.setOnItemChildClickListener { adapter, view, position ->
+            JumpUtils.instans!!.jump(35) // 跳转到其他人的主页。
+
+
+        }
         bigShotPostListAdapter.setOnItemClickListener(object :OnItemClickListener{
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = bigShotPostListAdapter.getItem(position)

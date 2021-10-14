@@ -11,18 +11,16 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
-
 import com.changanford.home.bean.BigShotPostBean
-import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
 import com.changanford.home.util.launchWithCatch
-
 import com.google.android.material.button.MaterialButton
 
 class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<BigShotPostBean, BaseDataBindingHolder<ItemBigShotItemsBinding>>(R.layout.item_big_shot_items) {
-
-
+    init {
+        addChildClickViewIds(R.id.tv_author_name,R.id.iv_header)
+    }
     override fun convert(
         holder: BaseDataBindingHolder<ItemBigShotItemsBinding>,
         item: BigShotPostBean
@@ -70,16 +68,12 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
         setFollowState(btnFollow, authorBaseVo)
         getFollow(authorBaseVo.authorId, followType)
     }
-
     fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }
     }
-
-
-
     // 关注。
     fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
