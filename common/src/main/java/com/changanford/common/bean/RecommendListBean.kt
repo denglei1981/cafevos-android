@@ -75,18 +75,41 @@ data class RecommendData(
     val postsVideoUrl: Any,
     val postsViewsCount: Long,
     val rtype: Int, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
-    val authors: HomeAuthorsBean?,
+    val authors: AuthorBaseVo?,
     val timeStr: String,
     val city: String,
     val artPicCount: Int,
     val postsTopicName: String,
-    val title: String,
-    val pic: String,
-    var pisList: List<String>? = null
+    val title: String, // 后台设置的
+    val pic: String, // 后台设置的封面。
+    var pisList: List<String>? = null,
+    val townName: String? = null,
+    val beginTime: Long = 0,
+    val deadLineTime: Long = 0,
+    val endTime: Long = 0,
+    val official: Int? = null,
+    val wonderfulType: Int? = null,
+    val activityJoinCount : String? = null, //参加活动人数
+    val coverImg: String? = null,
+    val jumpVal: String? = null,
+    val serverTime: Long = 0,
+    val cityName: String? = null,
+    val provinceName: String? = null,
+    val recommend: String? = null,
+    val hot: String? = null,
+    val wonderfulTitle:String="",
+    val wonderfulPic:String="",
+    val timeState:String="",
+    val openTime: String="",
+    val jumpType:String="",
+    val jumpValue:String="",
+
+
 ) : MultiItemEntity {
-
-
     fun getItemTypeLocal(): Int {
+        if (rtype == 3) {// 活动
+            return 3
+        }
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
             pisList = postsPics.split(",")
         } else if (!TextUtils.isEmpty(artPics)) {
@@ -97,8 +120,6 @@ data class RecommendData(
         }
         return 1
     }
-
-
     fun getContent(): String { // 获取内容
         var contentString: String = ""
         when (rtype) {//1 资讯 2 帖子 3 活动

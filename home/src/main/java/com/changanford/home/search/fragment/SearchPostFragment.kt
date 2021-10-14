@@ -60,7 +60,6 @@ class SearchPostFragment :
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
                     JumpUtils.instans!!.jump(35)
                 }
-
             }
         }
         searchPostsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
@@ -122,6 +121,10 @@ class SearchPostFragment :
 
     override fun onRetryBtnClick() {
 
+    }
+    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+        searchContent = keyWord
+        onRefresh(binding.smartLayout)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

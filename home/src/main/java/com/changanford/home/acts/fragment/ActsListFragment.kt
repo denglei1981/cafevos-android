@@ -11,6 +11,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.R
@@ -36,7 +37,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
-    var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
+
     //， 排序，活动状态  ，发布方,线上线下
     var shaixuanList = arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
     companion object {
@@ -107,6 +108,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         }
         appBarState()
         viewModel.getActList(true, 10, 1)
+        viewModel.getBanner()
         viewModel.getEnum(shaixuanList[2])
         viewModel.getEnum(shaixuanList[3])
     }
@@ -134,7 +136,13 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         viewModel.xianshang.observe(this, androidx.lifecycle.Observer {
             xianshangEnum=it
         })
-
+        viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
+            if(it.isSuccess){
+                binding.layoutViewpager.bViewpager.create(it.data)
+            }else{
+                toastShow(it.message)
+            }
+        })
     }
 
     fun appBarState() {
@@ -182,7 +190,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
                 ContextCompat.getColor(context, R.color.colorPrimary)
             )
             setIndicatorView(binding.layoutViewpager.drIndicator)
-        }.create(getPicList(4))
+        }.create()
     }
 
     /**
@@ -202,14 +210,6 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             )
             .setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
-    private fun getPicList(count: Int): MutableList<String> {
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        return mPictureList
-    }
-
 
     fun  changeScreen(){ // 改变了筛选参数。。
 //        viewModel.getActList()

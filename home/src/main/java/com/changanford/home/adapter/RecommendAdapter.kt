@@ -1,62 +1,144 @@
 package com.changanford.home.adapter
 
 import android.text.TextUtils
+import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.util.GifUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.load
 import com.changanford.home.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
-
 class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>() {
-
     init {
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
+        addItemType(3, R.layout.item_home_acts)
     }
 
     override fun convert(holder: BaseViewHolder, item: RecommendData) {
+        val picLists = item.getPicLists()
+        when (item.itemType) {
+            1 -> {//1张图
+                showPics(holder, item)
+                val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
+                if (picLists != null) {
+                    GlideUtils.loadBD(picLists[0], ivPic)
+                }
+            }
+            2 -> { //3张图
+                showPics(holder, item)
+                val onePic = holder.getView<ShapeableImageView>(R.id.iv_one)
+                val twoPic = holder.getView<ShapeableImageView>(R.id.iv_two)
+                val threePic = holder.getView<ShapeableImageView>(R.id.iv_three)
+                if (picLists != null) {
+                    for (s in picLists) {
+                        val index = picLists.indexOf(s)
+                        when (index) {
+                            0 -> {
+                                GlideUtils.loadBD(s, onePic)
+                            }
+                            1 -> {
+                                GlideUtils.loadBD(s, twoPic)
+                            }
+                            2 -> {
+                                GlideUtils.loadBD(s, threePic)
+                            }
+                        }
+                    }
+                }
+            }
+            3 -> { // 活动
+                showActs(holder, item)
+            }
 
+        }
+    }
+
+    fun showActs(holder: BaseViewHolder, item: RecommendData) { //活动
+        val ivActs = holder.getView<ShapeableImageView>(R.id.iv_acts)
+        val tvTips = holder.getView<AppCompatTextView>(R.id.tv_tips)
+        val tvHomeActAddress = holder.getView<AppCompatTextView>(R.id.tv_home_act_address)
+        val tvHomeActTimes = holder.getView<AppCompatTextView>(R.id.tv_home_act_times)
+        val btnState = holder.getView<MaterialButton>(R.id.btn_state)
+        val tvTagOne = holder.getView<AppCompatTextView>(R.id.tv_tag_one)
+        val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
+        GlideUtils.loadBD(item.wonderfulPic, ivActs)
+        tvTips.text = item.title
+
+
+        tvHomeActAddress.text = "地点：".plus(item.city)
+        tvHomeActTimes.text = "活动截止时间:".plus(item.deadLineTime)
+        if (item.deadLineTime <= item.serverTime) {
+            btnState.text = "已截止"
+        } else {
+            btnState.text = "进行中"
+        }
+        when (item.wonderfulType) {
+            0 -> {
+                tvTagTwo.text = "线上活动"
+                tvHomeActTimes.text =
+                    "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
+            }
+            1 -> {
+                tvTagTwo.text = "线下活动"
+                tvHomeActTimes.text =
+                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+            }
+            2 -> {
+                tvTagTwo.text = "调查问卷"
+                tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
+            }
+            3 -> {
+                tvTagTwo.text = "厂家活动"
+                tvHomeActTimes.text =
+                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+            }
+        }
+        when (item.official) {
+            0 -> {
+                tvTagOne.text = "官方"
+                tvTagOne.visibility = View.VISIBLE
+            }
+            2 -> {
+                tvTagOne.text = "经销商"
+                tvTagOne.visibility = View.VISIBLE
+            }
+            else -> {
+                tvTagOne.visibility = View.VISIBLE
+                tvTagOne.text = "个人"
+            }
+        }
+
+
+    }
+
+    fun showPics(holder: BaseViewHolder, item: RecommendData) { // 图片
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
-
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         tvAuthorName.text = item.authors?.nickname
         tvSubtitle.text = item.authors?.memberName
-
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
 
-
-        val picLists = item.getPicLists()
-
         tvContent.text = item.getContent()
-
         val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
-
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
-
         val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
-
-
-
         tvLikeCount.text = item.getLikeCount()
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
-
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
-
-        if(TextUtils.isEmpty(item.getTopic())){
-            tvTopic.text =""
-        }else{
+        if (TextUtils.isEmpty(item.getTopic())) {
+            tvTopic.text = ""
+        } else {
             tvTopic.text = "#${item.getTopic()}#"
         }
         when (item.authors?.isFollow) {
@@ -74,35 +156,6 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 btnFollow.text = "已关注"
                 btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
-            }
-        }
-        when (item.itemType) {
-            1 -> {//1张图
-                val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
-                if (picLists != null) {
-                    GlideUtils.loadBD(picLists[0], ivPic)
-                }
-            }
-            2 -> { //3张图
-                var onePic = holder.getView<ShapeableImageView>(R.id.iv_one)
-                var twoPic = holder.getView<ShapeableImageView>(R.id.iv_two)
-                var threePic = holder.getView<ShapeableImageView>(R.id.iv_three)
-                if (picLists != null) {
-                    for (s in picLists) {
-                        var index = picLists.indexOf(s)
-                        when (index) {
-                            0 -> {
-                                GlideUtils.loadBD(s, onePic)
-                            }
-                            1 -> {
-                                GlideUtils.loadBD(s, twoPic)
-                            }
-                            2 -> {
-                                GlideUtils.loadBD(s, threePic)
-                            }
-                        }
-                    }
-                }
             }
         }
     }

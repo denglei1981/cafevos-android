@@ -18,14 +18,16 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class SearchActsFragment : BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchActsResultViewModel>(),
+class SearchActsFragment :
+    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchActsResultViewModel>(),
     OnRefreshListener, OnLoadMoreListener {
 
-    val searchActsResultAdapter : SearchActsResultAdapter by lazy {
+    val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
+
     companion object {
-        fun newInstance(skwContent:String): SearchActsFragment {
+        fun newInstance(skwContent: String): SearchActsFragment {
             val fg = SearchActsFragment()
             val bundle = Bundle()
             bundle.putString(JumpConstant.SEARCH_CONTENT, skwContent)
@@ -33,6 +35,7 @@ class SearchActsFragment : BaseLoadSirFragment<HomeBaseRecyclerViewBinding, Poly
             return fg
         }
     }
+
     private var selectPosition: Int = -1;// 记录选中的 条目
     var searchContent: String? = null
     override fun initView() {
@@ -77,6 +80,7 @@ class SearchActsFragment : BaseLoadSirFragment<HomeBaseRecyclerViewBinding, Poly
 
         })
     }
+
     override fun initData() {
         setLoadSir(binding.smartLayout)
         onRefresh(binding.smartLayout)
@@ -107,14 +111,24 @@ class SearchActsFragment : BaseLoadSirFragment<HomeBaseRecyclerViewBinding, Poly
             }
         })
     }
+
     override fun onRetryBtnClick() {
 
     }
+
+    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+        searchContent = keyWord
+        searchContent?.let {
+            viewModel.getSearchContent(it, false)
+        }
+    }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(it, false)
         }
     }
+
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(it, true)

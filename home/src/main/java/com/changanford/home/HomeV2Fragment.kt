@@ -164,7 +164,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
-            startARouter(ARouterHomePath.PolySearchActivity)
+//            startARouter(ARouterHomePath.PolySearchActivity)
+            JumpUtils.instans!!.jump(108)
         }
 
     }
