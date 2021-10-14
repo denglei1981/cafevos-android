@@ -56,7 +56,9 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0): BaseQuickA
                     visibility = View.VISIBLE
                 }
                 "WAIT_PAY"==orderStatus -> {
-                    text=sf.format(nowTime?:System.currentTimeMillis())
+                    //支付结束时间=服务器时间+支付剩余时间
+                    val payEndTime=(nowTime?:System.currentTimeMillis())+item.waitPayCountDown*1000
+                    text=sf.format(payEndTime)
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE
                 }

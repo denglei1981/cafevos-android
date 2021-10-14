@@ -332,7 +332,7 @@ data class OrderItemBean(
     val updateTime: String = "",
     val userId: Int = 0,
     val cost:String?="0",
-    var waitPayCountDown:Long?=0,
+    var waitPayCountDown:Long=0,
     var acountFb:String?="0",
     val busSourse: Int = 0,
     val closeTime: Long? = 0,
