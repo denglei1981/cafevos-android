@@ -7,6 +7,7 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
@@ -60,7 +61,7 @@ class ActsListViewModel : BaseViewModel() {
                     }
                 }
             }
-            if(hashMap.size>0){
+            if (hashMap.size > 0) {
                 body["queryParams"] = hashMap
             }
             var rkey = getRandomKey()
@@ -133,6 +134,32 @@ class ActsListViewModel : BaseViewModel() {
 
         })
     }
+
+    val bannerLiveData = MutableLiveData<UpdateUiState<List<CircleHeadBean>>>() //
+    fun getBanner() {
+        launch(false, {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            body["posCode"] = "activiity_list_topad"
+            ApiClient.createApi<HomeNetWork>()
+                .adsLists(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<List<CircleHeadBean>>(it, true, "")
+                    bannerLiveData.postValue(updateUiState)
+
+                }.onWithMsgFailure {
+
+                }.onFailure {
+//                    val updateUiState = UpdateUiState<String>(false, it)
+//                    bannerLiveData.postValue(updateUiState)
+                }
+
+
+        })
+
+
+    }
+
 }
 
 

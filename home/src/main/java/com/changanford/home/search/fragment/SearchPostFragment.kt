@@ -60,7 +60,6 @@ class SearchPostFragment :
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
                     JumpUtils.instans!!.jump(35)
                 }
-
             }
         }
         searchPostsResultAdapter.setOnItemClickListener(object : OnItemClickListener {

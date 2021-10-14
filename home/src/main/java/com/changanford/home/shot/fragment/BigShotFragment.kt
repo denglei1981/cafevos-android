@@ -2,8 +2,11 @@ package com.changanford.home.shot.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -31,9 +34,9 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         BigShotUserListAdapter()
     }
     private val bigShotPostListAdapter: BigShotPostListAdapter by lazy {
-        BigShotPostListAdapter()
+        BigShotPostListAdapter(this)
     }
-
+    private var selectPosition: Int = -1;// 记录选中的 条目
     companion object {
         fun newInstance(): BigShotFragment {
             val fg = BigShotFragment()
@@ -65,6 +68,17 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                 startARouter(ARouterMyPath.SignUI)
             }
         }
+        bigShotPostListAdapter.setOnItemClickListener(object :OnItemClickListener{
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val item = bigShotPostListAdapter.getItem(position)
+                selectPosition = position
+                // todo 跳转到帖子
+//                bundle.putString("postsId", value)
+//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+                JumpUtils.instans!!.jump(4, item.postsId.toString())
+            }
+
+        })
     }
     override fun observe() {
         super.observe()
