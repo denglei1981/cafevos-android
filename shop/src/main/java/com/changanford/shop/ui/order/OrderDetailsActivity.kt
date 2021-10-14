@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.order
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -7,13 +8,16 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.viewmodel.OrderViewModel
+import com.google.gson.Gson
 
 /**
  * @Author : wenke
@@ -27,6 +31,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
         }
     }
+    private lateinit var dataBean: OrderItemBean
     private var orderNo:String=""
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var timeCountControl:PayTimeCountControl?=null
@@ -46,9 +51,11 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             bindingData(it)
         })
     }
+    @SuppressLint("SetTextI18n")
     private fun bindingData(dataBean:OrderItemBean){
         val evalStatus=dataBean.evalStatus
         val orderStatus=dataBean.orderStatus
+        binding.inAddress.layoutLogistics.visibility=View.GONE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
             dataBean.orderStatusName= this
             when(this){
@@ -76,19 +83,41 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
                 }
                 "待收货"->{
+                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
+                }
+                "待评价"->{
+                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+                    binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
+                }
+                "已完成"->{
+                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+                    binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
+                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                 }
                 "已关闭"->{
                     binding.tvOrderRemainingTime.text=dataBean.evalStatusDetail
                 }
-                "已完成"->{
-                    binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
-                }
             }
         }
+        Gson().fromJson(dataBean.addressInfo,ShopAddressInfoBean::class.java).apply {
+            addressInfo="$provinceName$cityName$districtName$addressName"
+            userInfo="$consignee   $phone"
+            binding.inAddress.addressInfo=this
+        }
         binding.model=dataBean
+        this.dataBean=dataBean
     }
-
+    fun onClick(v:View){
+        if(!::dataBean.isInitialized)return
+        when(v.id){
+            R.id.tv_copy->{
+                MTextUtil.copystr(this,dataBean.courierNo)
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         timeCountControl?.cancel()

@@ -349,5 +349,34 @@ data class OrderItemBean(
     val orderImg: Any? = null,
     var orderStatusName: String? = "",
     val skuName: String = "",
+    var logisticsInfo:String?="",//物流信息
 )
 data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")
+data class ShopAddressInfoBean(
+    val addressId: Int = 0,
+    val addressName: String = "",
+    val addressValueObj: AddressValueObj = AddressValueObj(),
+    val city: Int = 0,
+    val cityName: String = "",
+    val consignee: String = "",
+    val district: Int = 0,
+    val districtName: String = "",
+    val isDefault: Int = 0,
+    val phone: String = "",
+    val province: Int = 0,
+    val provinceName: String = "",
+    val status: Int = 0,
+    val userId: Int = 0,
+    var userInfo:String?="$consignee   $phone",
+    var addressInfo: String?="$provinceName$cityName$districtName$addressName"
+)
+
+data class AddressValueObj(
+    val addressName: String = "",
+    val city: Int = 0,
+    val cityName: String = "",
+    val district: Int = 0,
+    val districtName: String = "",
+    val province: Int = 0,
+    val provinceName: String = ""
+)

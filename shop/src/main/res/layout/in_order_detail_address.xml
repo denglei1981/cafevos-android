@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
+        <variable
+            name="addressInfo"
+            type="com.changanford.common.bean.ShopAddressInfoBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,56 +19,68 @@
         android:paddingStart="@dimen/dp_20"
         android:paddingTop="@dimen/dp_18"
         android:paddingBottom="@dimen/dp_16">
-        <com.changanford.shop.view.TypefaceTextView
-            android:textStyle="bold"
-            android:drawableStart="@mipmap/shop_car"
-            android:drawablePadding="@dimen/dp_5"
-            android:id="@+id/tv_logisticsInfo"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_logistics"
+            android:paddingBottom="@dimen/dp_8"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/str_logisticsInformation"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
+            android:layout_height="wrap_content">
+            <com.changanford.shop.view.TypefaceTextView
+                android:textStyle="bold"
+                android:drawableStart="@mipmap/shop_car"
+                android:drawablePadding="@dimen/dp_5"
+                android:id="@+id/tv_logisticsInfo"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_logisticsInformation"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_14" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_logisticsNo"
+                android:layout_marginTop="@dimen/dp_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_logisticsInfo"
+                android:layout_marginStart="@dimen/dp_23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="顺丰快递 SF201804200001"
+                android:text="@{model.logisticsInfo}"
+                android:textColor="@color/text_colorv6"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:onClick="onClick"
+                android:id="@+id/tv_copy"
+                android:paddingStart="@dimen/dp_15"
+                android:paddingEnd="@dimen/dp_15"
+                app:layout_constraintTop_toTopOf="@id/tv_logisticsNo"
+                app:layout_constraintStart_toEndOf="@id/tv_logisticsNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_copy"
+                android:textColor="@color/color_00095B"
+                android:textSize="@dimen/sp_11" />
+            <View
+                android:id="@+id/view_divider"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/tv_logisticsNo"
+                android:background="@color/color_ee"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_logisticsNo"
-            android:layout_marginTop="@dimen/dp_5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_logisticsInfo"
-            android:layout_marginStart="@dimen/dp_23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="顺丰快递 SF201804200001"
-            android:textColor="@color/text_colorv6"
-            android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_copy"
-            android:paddingStart="@dimen/dp_15"
-            android:paddingEnd="@dimen/dp_15"
-            app:layout_constraintTop_toTopOf="@id/tv_logisticsNo"
-            app:layout_constraintStart_toEndOf="@id/tv_logisticsNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_copy"
-            android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_11" />
-        <View
-            android:id="@+id/view_divider"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/tv_logisticsNo"
-            android:background="@color/color_ee"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_5"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_8"
             android:id="@+id/tv_userInfo"
             android:drawableStart="@mipmap/shop_location"
             android:drawablePadding="@dimen/dp_5"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:layout_constraintTop_toBottomOf="@id/layout_logistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="白女士   159****7880"
+            android:text="@{addressInfo.userInfo}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
@@ -75,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="重庆市渝中区李子坝正街156号长帆江岸公馆2号楼"
+            android:text="@{addressInfo.addressInfo}"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_12" />
     </androidx.constraintlayout.widget.ConstraintLayout>
