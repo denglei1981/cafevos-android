@@ -25,7 +25,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             return fragment
         }
     }
-    private val mAdapter by lazy { OrderAdapter() }
+    private val mAdapter by lazy { OrderAdapter(0) }
     private var pageNo=1
     private var statesId=-1
     override fun initView() {

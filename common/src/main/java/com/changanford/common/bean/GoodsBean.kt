@@ -334,12 +334,14 @@ data class OrderItemBean(
     var waitPayCountDown:Long?=0,
     var acountFb:String?="0",
     val busSourse: Int = 0,
-    val closeTime: Long = 0,
+    val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
     val payTime: Any? = null,
     val preferentialFbOfUnitPrice: Any? = null,
     val receiveTime: Any? = null,
     val sendTime: Any? = null,
-    val waitPayDuration: Int = 0
+    val waitPayDuration: Int = 0,
+    var orderStatusTxt:String?="",
+    var orderType:Int=0,
 )
 data class OrderInfoBean(val orderNo:String,val cost:Int,var accountFb:String?="")

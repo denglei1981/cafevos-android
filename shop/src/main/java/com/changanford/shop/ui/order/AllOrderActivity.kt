@@ -26,7 +26,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         }
     }
     private var pageNo=1
-    private val mAdapter by lazy { OrderAdapter() }
+    private val mAdapter by lazy { OrderAdapter(-1) }
     override fun initView() {
         binding.topBar.setActivity(this)
         binding.topBar.setOnRightTvClickListener(object :TopBar.OnRightTvClickListener{
