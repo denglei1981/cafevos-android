@@ -1,5 +1,6 @@
 package com.changanford.shop.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
@@ -67,7 +68,7 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
-            fetchRequest {
+            val responseBean=fetchRequest {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -77,10 +78,14 @@ class OrderViewModel: BaseViewModel() {
                 }
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
-            }.onSuccess {
-                shopOrderData.postValue(it)
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+            responseBean.onSuccess {
+                val timestamp=responseBean.timestamp?:System.currentTimeMillis()
+                Log.e("okhttp","timestamp:$timestamp")
+//                it?.nowTime= (responseBean.timestamp?:System.currentTimeMillis()) as Long
+                shopOrderData.postValue(it)
             }
         }
     }

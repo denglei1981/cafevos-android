@@ -14,7 +14,7 @@ import com.changanford.shop.view.TypefaceTextView
 import java.text.SimpleDateFormat
 
 
-class OrderAdapter(private val orderType:Int=-1): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
+class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     //orderType -1所有订单 0 商品、1购车 2 试驾
     private val orderTypes= arrayOf("商品订单","1购车订单","试驾订单","","")
     @SuppressLint("SetTextI18n")
@@ -56,7 +56,7 @@ class OrderAdapter(private val orderType:Int=-1): BaseQuickAdapter<OrderItemBean
                     visibility = View.VISIBLE
                 }
                 "WAIT_PAY"==orderStatus -> {
-                    text=sf.format(item.closeTime)
+                    text=sf.format(nowTime?:System.currentTimeMillis())
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE
                 }

@@ -273,7 +273,8 @@ data class ShopOrderBean(
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
-    val totalPage: Int = 0
+    val totalPage: Int = 0,
+    var nowTime:Long?=0,
 )
 
 data class OrderItemBean(

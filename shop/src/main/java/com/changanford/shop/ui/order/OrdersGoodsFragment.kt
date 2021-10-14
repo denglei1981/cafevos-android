@@ -42,6 +42,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             viewModel.getShopOrderList(statesId,pageNo)
         }
         viewModel.shopOrderData.observe(this,{
+            mAdapter.nowTime=it.nowTime
             if(1==pageNo)mAdapter.setList(it.dataList)
             else mAdapter.addData(it.dataList)
             binding.smartRl.finishLoadMore()
