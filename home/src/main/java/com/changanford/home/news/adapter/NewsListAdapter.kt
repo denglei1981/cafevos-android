@@ -3,10 +3,9 @@ package com.changanford.home.news.adapter
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
@@ -17,8 +16,6 @@ import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
-import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.databinding.ItemBigShotStateBinding
 import com.changanford.home.util.LoginUtil
 import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.DrawCenterTextView
@@ -28,7 +25,6 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
-
     init {
         addChildClickViewIds(
             R.id.layout_content,
@@ -63,6 +59,8 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvLookCount = holder.getView<DrawCenterTextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
 
+
+
         tvLikeCount.setPageTitleText(item.likesCount.toString())
         setLikeState(tvLikeCount,item,false)
         tvCommentCount.setPageTitleText(item.getCommentCountResult())
@@ -77,8 +75,10 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
             tvTopic.visibility = View.VISIBLE
             tvTopic.text = "#${item.specialTopicTitle}#"
         }
+        val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
         if (item.authors != null) {
             val labelAdapter = LabelAdapter(16)
+            rvUserTag.adapter=labelAdapter
             labelAdapter.setNewInstance(item.authors?.imags)
         }
         btnFollow.setOnClickListener {

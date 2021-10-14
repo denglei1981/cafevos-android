@@ -144,7 +144,7 @@ object GlideUtils {
     fun loadBD(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
     ) {
         Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
             if (errorDefaultRes != null) {

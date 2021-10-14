@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"
@@ -42,12 +41,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            tools:text="#驭见美好之旅#"
             android:textColor="#ff74889d"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_time" />
+            app:layout_constraintTop_toTopOf="@+id/tv_time"
+            tools:text="#驭见美好之旅#" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_pic"
@@ -55,14 +54,50 @@
             android:layout_height="0dp"
             android:layout_marginTop="18dp"
             android:scaleType="centerCrop"
-            tools:visibility="visible"
             android:src="@drawable/image_recommend_test"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             app:layout_constraintDimensionRatio="335:150"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
-           />
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_news_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="@drawable/shape_black_trans"
+            android:paddingStart="4dp"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingEnd="4dp"
+            android:visibility="gone"
+            android:paddingBottom="@dimen/dp_2"
+            tools:text="资讯"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_video_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:paddingStart="4dp"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
+            android:paddingBottom="@dimen/dp_2"
+            tools:text="10:12"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/dp_4"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,12 +27,18 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
             1 -> {//1张图
                 showPics(holder, item)
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
-                if (picLists != null) {
+                if (!TextUtils.isEmpty(item.pic)) {
+                    GlideUtils.loadBD(item.pic, ivPic,R.mipmap.image_h_one_default)
+                } else if (picLists != null) {
                     GlideUtils.loadBD(picLists[0], ivPic)
                 }
             }
             2 -> { //3张图
                 showPics(holder, item)
+                val tvPicSizes = holder.getView<AppCompatTextView>(R.id.tv_pic_size)
+                item.getPicLists()?.let {
+                    tvPicSizes.text = it.size.toString()
+                }
                 val onePic = holder.getView<ShapeableImageView>(R.id.iv_one)
                 val twoPic = holder.getView<ShapeableImageView>(R.id.iv_two)
                 val threePic = holder.getView<ShapeableImageView>(R.id.iv_three)
@@ -128,6 +134,10 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
 
+        val tvNewsTag = holder.getView<TextView>(R.id.tv_news_tag)
+
+        val tvVideoTime=holder.getView<TextView>(R.id.tv_video_times)
+
         tvContent.text = item.getContent()
         val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
@@ -157,6 +167,21 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
+        }
+
+        when (item.rtype) {
+            1 -> {
+                tvNewsTag.visibility = View.VISIBLE
+                if(!TextUtils.isEmpty(item.artVideoTime)){
+                    tvVideoTime.text=item.artVideoTime
+                }
+                tvVideoTime.visibility=View.VISIBLE
+            }
+            else -> {
+                tvNewsTag.visibility = View.GONE
+                tvVideoTime.visibility=View.GONE
+            }
+
         }
     }
 }

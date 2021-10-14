@@ -3,6 +3,7 @@ package com.changanford.home.shot.adapter
 import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.AuthorBaseVo
@@ -10,6 +11,7 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
@@ -50,6 +52,12 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             it.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
             it.layoutCount.tvTimeLookCount.setPageTitleText(item.getViewCount())
             it.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCount())
+            val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+            if (item.authorBaseVo != null) {
+                val labelAdapter = LabelAdapter(16)
+                labelAdapter.setNewInstance(item.authorBaseVo?.imags)
+            }
+
         }
     }
 
