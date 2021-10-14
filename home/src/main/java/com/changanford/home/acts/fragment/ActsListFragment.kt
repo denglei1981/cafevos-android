@@ -26,7 +26,6 @@ import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.google.android.material.appbar.AppBarLayout
 import com.zhpan.bannerview.BannerViewPager
 import razerdp.basepopup.BasePopupWindow
-import java.util.*
 
 /**
  *  活动列表
@@ -36,7 +35,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
-    var mPictureList: MutableList<String> = ArrayList() // 图片存储位置
+
     //， 排序，活动状态  ，发布方,线上线下
     var shaixuanList = arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
     companion object {
@@ -106,7 +105,8 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             viewModel.getEnum(shaixuanList[0])
         }
         appBarState()
-        viewModel.getActList(true, 10, 1)
+        viewModel.getActList()
+        viewModel.getBanner()
         viewModel.getEnum(shaixuanList[2])
         viewModel.getEnum(shaixuanList[3])
     }
@@ -134,7 +134,13 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         viewModel.xianshang.observe(this, androidx.lifecycle.Observer {
             xianshangEnum=it
         })
-
+        viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
+            if(it.isSuccess){
+                binding.layoutViewpager.bViewpager.create(it.data)
+            }else{
+                toastShow(it.message)
+            }
+        })
     }
 
     fun appBarState() {
@@ -182,7 +188,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
                 ContextCompat.getColor(context, R.color.colorPrimary)
             )
             setIndicatorView(binding.layoutViewpager.drIndicator)
-        }.create(getPicList(4))
+        }.create()
     }
 
     /**
@@ -202,14 +208,6 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             )
             .setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
-    private fun getPicList(count: Int): MutableList<String> {
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        mPictureList.add("https://img.oushangstyle.com/images/article_img/2021/09/528614463ed76ffa.png")
-        return mPictureList
-    }
-
 
     fun  changeScreen(){ // 改变了筛选参数。。
 //        viewModel.getActList()

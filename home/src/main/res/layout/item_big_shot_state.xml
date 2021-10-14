@@ -25,7 +25,6 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_head"
-                app:shapeAppearanceOverlay="@style/circleImageStyle"
                 android:layout_width="@dimen/dp_75"
                 android:layout_height="@dimen/dp_75"
                 android:scaleType="centerCrop"
@@ -33,19 +32,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <ImageView
                 android:id="@+id/iv_vip"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:contentDescription="@string/app_name"
-                tools:src="@drawable/icon_home_big_vip"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_head"
                 app:layout_constraintCircle="@id/iv_head"
                 app:layout_constraintCircleAngle="120"
                 app:layout_constraintCircleRadius="38dp"
-                app:layout_constraintEnd_toEndOf="@+id/iv_head" />
+                app:layout_constraintEnd_toEndOf="@+id/iv_head"
+                tools:src="@drawable/icon_home_big_vip" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
@@ -60,15 +60,16 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_follow"
+                style="@style/materialButton"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
                 android:backgroundTint="@color/gray_e5e5ee"
-                style="@style/materialButton"
+                android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="+关注"
                 android:textColor="@color/blue_tab"
                 android:textSize="@dimen/sp_12"
                 app:cornerRadius="12dp"
-                android:stateListAnimator="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

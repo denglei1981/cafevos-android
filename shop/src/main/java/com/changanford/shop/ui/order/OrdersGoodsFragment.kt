@@ -3,7 +3,7 @@ package com.changanford.shop.ui.order
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.R
-import com.changanford.shop.adapter.order.OrderGoodsAdapter
+import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -25,14 +25,14 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             return fragment
         }
     }
-    private val mAdapter by lazy { OrderGoodsAdapter() }
+    private val mAdapter by lazy { OrderAdapter(0,viewModel=viewModel) }
     private var pageNo=1
     private var statesId=-1
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsActivity.start(requireContext(),mAdapter.data[position].mallMallOrderId)
+            OrderDetailsActivity.start(requireContext(),mAdapter.data[position].orderNo)
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }
@@ -42,7 +42,11 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             viewModel.getShopOrderList(statesId,pageNo)
         }
         viewModel.shopOrderData.observe(this,{
-            mAdapter.setList(it.dataList)
+            it?.let {
+                mAdapter.nowTime=it.nowTime
+                if(1==pageNo)mAdapter.setList(it.dataList)
+                else mAdapter.addData(it.dataList)
+            }
             binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
         })

@@ -91,6 +91,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 tools:text="自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="13sp"

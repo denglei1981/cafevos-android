@@ -9,7 +9,7 @@
     <string name="str_collection">收藏</string>
     <string name="str_immediatelyChange">立即兑换</string>
     <string name="str_goods">商品</string>
-    <string name="str_comment">评价</string>
+    <string name="str_eval">评价</string>
     <string name="str_details">详情</string>
     <string name="str_shop">商城</string>
     <string name="str_earnPointsMoreGifts">赚取福币换更多好礼</string>
@@ -97,6 +97,7 @@
     <string name="prompt_cancelOrder">取消订单后，订单将不可恢复</string>
     <string name="str_confirmReceiptGoods">是否确认收货</string>
     <string name="prompt_orderUpdateAddress">（温馨提示：只能修改1次收货地址，请谨慎操作）</string>
+    <string name="prompt_waitSend">（温馨提示：付款后不能申请退款，有问题请联系客服）</string>
     <string name="str_remainingTimePayment0">支付剩余时间 </string>
     <string name="str_copeWithTotalAmount">应付总额：</string>
     <string name="str_cancelOrder">取消订单</string>
@@ -128,4 +129,13 @@
     <string name="str_combined">合计：</string>
     <string name="str_Xfb">%1$s福币</string>
     <string name="str_select">选择</string>
+    <string name="str_confirmGoods">确认收货</string>
+    <string name="str_onceAgainToBuy">再次购买</string>
+    <string name="str_orderCancelledSuccessfully">订单取消成功</string>
+    <string name="str_goodsSuccessfully">收货成功</string>
+    <string name="str_x">x</string>
+    <string name="prompt_paymentHasBeen">已付款，等待商家发货</string>
+    <string name="prompt_hasBeenShipped">商家已发货，待确认收货</string>
+    <string name="prompt_evaluate">已确认收货，待评价</string>
+    <string name="prompt_hasBeenCompleted">已评价，订单完成</string>
 </resources>

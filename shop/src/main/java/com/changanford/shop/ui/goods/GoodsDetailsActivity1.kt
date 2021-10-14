@@ -28,7 +28,7 @@ class GoodsDetailsActivity1:BaseActivity<ActGoodsDetailsBinding, GoodsViewModel>
     private val tabH by lazy { tabLayout.y+tabLayout.height }
     private val commentH by lazy { binding.inTop.tvComment.y-tabH}
     private val detailsH by lazy { binding.inTop.recycler.y-tabH }
-    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_comment),getString(R.string.str_details))}
+    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
     private var oldScrollY=0
     override fun initView() {
         initTab()

@@ -127,6 +127,10 @@ class SearchNewsFragment :
 
     }
 
+    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+        searchContent = keyWord
+        onRefresh(binding.smartLayout)
+    }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(it, false)

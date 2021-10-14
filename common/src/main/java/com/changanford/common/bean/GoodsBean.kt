@@ -161,19 +161,19 @@ data class GoodsDetailBean(
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",
     var stock: Int = 0,
-    val mallOrderEval:CommentItem?,
+    val mallOrderEval:CommentItem?=null,
     var stockProportion:String="0",//库存百分比 0-100
     val spuName:String?="",
     val spuId:String="",
-    var skuId: String,
+    var skuId: String="",
     var buyNum:Int=1,//购买数量
-    var skuCodeTxts:List<String>?,
+    var skuCodeTxts:List<String>?= listOf(),
     var acountFb:Int=0,//账号积分
-    val param:String?,
-    var totalPayFb:String,//总支付积分
-    val freightPrice:String,//运费 0为包邮
-    val collect:String,//是否收藏 YES NO
-    var addressId:Int?,
+    val param:String?="",
+    var totalPayFb:String="",//总支付积分
+    val freightPrice:String="",//运费 0为包邮
+    val collect:String="",//是否收藏 YES NO
+    var addressId:Int?=0
 )
 
 data class Attribute(
@@ -273,14 +273,15 @@ data class ShopOrderBean(
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
-    val totalPage: Int = 0
+    val totalPage: Int = 0,
+    var nowTime:Long?=0,
 )
 
 data class OrderItemBean(
     val addressId: Int = 0,
     val addressInfo: String = "",
     val addressName: String = "",
-    val buyNum: Int = 0,
+    val buyNum: String ="0",
     val consignee: String = "",
     val consumerMsg: String = "",
     val courierCompany: String = "",
@@ -290,10 +291,10 @@ data class OrderItemBean(
     val dataState: String = "",
     val discount: Int = 0,
     val discountScale: Int = 0,
-    val evalStatus: String = "",
+    val evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: Int = 0,
-    val fbOfUnitPrice: Int = 0,
+    val fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",
     val mallMallDiscountScaleId: Int = 0,
     val mallMallHaggleActivityId: Int = 0,
@@ -311,7 +312,7 @@ data class OrderItemBean(
     val nickName: String = "",
     val `operator`: String = "",
     val orderNo: String = "",
-    val orderStatus: String = "",
+    var orderStatus: String = "",
     val orderTime: String = "",
     val params: Params = Params(),
     val payType: String = "",
@@ -332,6 +333,50 @@ data class OrderItemBean(
     val userId: Int = 0,
     val cost:String?="0",
     var waitPayCountDown:Long?=0,
-    var acountFb:String?="0"
+    var acountFb:String?="0",
+    val busSourse: Int = 0,
+    val closeTime: Long? = 0,
+    val evalStatusDetail: String = "",
+    val payTime: Any? = null,
+    val preferentialFbOfUnitPrice: Any? = null,
+    val receiveTime: Any? = null,
+    val sendTime: Any? = null,
+    val waitPayDuration: Int = 0,
+    var orderType:Int=0,
+    val jumpDataType: Int = 0,
+    val jumpDataValue: String = "",
+    val orderBrief: String = "",
+    val orderImg: Any? = null,
+    var orderStatusName: String? = "",
+    val skuName: String = "",
+    var logisticsInfo:String?="",//物流信息
 )
-data class OrderInfoBena(val orderNo:String,val cost:Int)
+data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")
+data class ShopAddressInfoBean(
+    val addressId: Int = 0,
+    val addressName: String = "",
+    val addressValueObj: AddressValueObj = AddressValueObj(),
+    val city: Int = 0,
+    val cityName: String = "",
+    val consignee: String = "",
+    val district: Int = 0,
+    val districtName: String = "",
+    val isDefault: Int = 0,
+    val phone: String = "",
+    val province: Int = 0,
+    val provinceName: String = "",
+    val status: Int = 0,
+    val userId: Int = 0,
+    var userInfo:String?="$consignee   $phone",
+    var addressInfo: String?="$provinceName$cityName$districtName$addressName"
+)
+
+data class AddressValueObj(
+    val addressName: String = "",
+    val city: Int = 0,
+    val cityName: String = "",
+    val district: Int = 0,
+    val districtName: String = "",
+    val province: Int = 0,
+    val provinceName: String = ""
+)

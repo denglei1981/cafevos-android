@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +34,7 @@
             android:layout_height="wrap_content"
             tools:text="共2件商品"
             app:end_txt="@string/str_jsp"
+            android:text="@{model.buyNum}"
             app:start_txt="@string/str_common"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12" />

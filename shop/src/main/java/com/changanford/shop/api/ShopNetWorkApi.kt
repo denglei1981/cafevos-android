@@ -59,7 +59,7 @@ interface ShopNetWorkApi {
      *订单创建
      * */
     @POST("/mall/order/create")
-    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderItemBean>
+    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderInfoBean>
     /**
      *商城订单列表
      * */
@@ -100,4 +100,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/app/pay/virtualCoinPay")
     suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     *订单确认收货
+     * */
+    @POST("/mall/order/confirmReceipt")
+    suspend fun confirmReceipt(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
 import com.changanford.common.utilext.toastShow
+import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
@@ -25,10 +27,9 @@ class ActsListViewModel : BaseViewModel() {
     var shaixuanList =
         arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
 
+    var pageNo = 1
     fun getActList(
-        page: Boolean,
-        count: Int,
-        pageSize: Int,
+        isLoadMore: Boolean = false,
         cityId: String = "",// 城市id
         cityName: String = "",// 城市名称
         wonderfulType: Int = -1,// 线上，线下， 问卷调查。0-线上，1-线下，2-问卷,4可用
@@ -38,9 +39,9 @@ class ActsListViewModel : BaseViewModel() {
     ) {
         launch(false, {
             var body = HashMap<String, Any>()
-            body["page"] = page
-            body["pageNo"] = count
-            body["pageSize"] = pageSize
+            body["page"] = true
+            body["pageNo"] = pageNo
+            body["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             var hashMap = HashMap<String, Any>()
             if (!TextUtils.isEmpty(orderType)) {
                 hashMap["orderType"] = orderType
@@ -60,7 +61,7 @@ class ActsListViewModel : BaseViewModel() {
                     }
                 }
             }
-            if(hashMap.size>0){
+            if (hashMap.size > 0) {
                 body["queryParams"] = hashMap
             }
             var rkey = getRandomKey()
@@ -133,6 +134,32 @@ class ActsListViewModel : BaseViewModel() {
 
         })
     }
+
+    val bannerLiveData = MutableLiveData<UpdateUiState<List<CircleHeadBean>>>() //
+    fun getBanner() {
+        launch(false, {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            body["posCode"] = "activiity_list_topad"
+            ApiClient.createApi<HomeNetWork>()
+                .adsLists(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<List<CircleHeadBean>>(it, true, "")
+                    bannerLiveData.postValue(updateUiState)
+
+                }.onWithMsgFailure {
+
+                }.onFailure {
+//                    val updateUiState = UpdateUiState<String>(false, it)
+//                    bannerLiveData.postValue(updateUiState)
+                }
+
+
+        })
+
+
+    }
+
 }
 
 

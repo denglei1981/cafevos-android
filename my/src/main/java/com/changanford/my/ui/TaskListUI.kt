@@ -13,9 +13,9 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.MConstant
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -25,7 +25,6 @@ import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 /**
  *  文件名：TaskListUI
@@ -69,7 +68,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         binding.rcyDay.adapter = dayAdapter
         var sysUser = UserManger.getSysUserInfo()
         sysUser?.integral?.let {
-            binding.tvTaskJifenNum.text = "我的积分：${it}"
+            binding.tvTaskJifenNum.text = "我的积分：${it?.toInt()}"
         }
 
         binding.taskFinish.setOnClickListener {
@@ -81,7 +80,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             .observe(this, Observer {
                 isRefresh = true
                 if (it) {//此时发帖
-
+                    JumpUtils.instans?.jump(102)
                 }
             })
     }
@@ -113,7 +112,8 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             dayAdapter.data.clear()
             bean?.let {
                 it.data?.apply {
-                    binding.des.text = "已连续签到${ontinuous}天，明天签到+${nextIntegral}积分+${nextGrowth}成长值"
+                    binding.des.text =
+                        "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}积分+${nextGrowth ?: 0}成长值"
                     roundList?.forEach {
                         it.isNowDay = TimeUtils.getNowDay().equals(it.date)
                         if (TimeUtils.getNowDay().equals(it.date)) {
@@ -195,24 +195,8 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         return true
     }
 
-//    inner class TaskAdapter : BaseNodeAdapter() {
-//        init {
-//            addFullSpanNodeProvider(RootNodeProvider())
-//            addNodeProvider(SecondNodeProvider())
-//        }
-//
-//        override fun getItemType(data: List<BaseNode>, position: Int): Int {
-//            return when (data[position]) {
-//                is RootTaskBean -> {
-//                    0
-//                }
-//                is ItemTaskBean -> {
-//                    1
-//                }
-//                else -> {
-//                    -1
-//                }
-//            }
-//        }
-//    }
+    override fun isUserLightMode(): Boolean {
+        return false
+    }
+
 }

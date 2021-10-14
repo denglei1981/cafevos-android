@@ -1,27 +1,21 @@
 package com.changanford.my.ui
 
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.onSuccess
-import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiBindMobileBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
-import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 /**
@@ -35,8 +29,6 @@ import java.util.concurrent.TimeUnit
 class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
     override fun initView() {
-//        StatusBarUtil.setTranslucentForImageView(this,null)
-        StatusBarUtil.setAndroidNativeLightStatusBar(this, false)
 
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
@@ -137,6 +129,10 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
     override fun isUseFullScreenMode(): Boolean {
         return true
+    }
+
+    override fun isUserLightMode(): Boolean {
+        return false
     }
 
     override fun onDestroy() {

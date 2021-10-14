@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.toast.ToastUtils
@@ -29,15 +30,12 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         }
     }
     private var timeCountControl:PayTimeCountControl?=null
+    private var orderInfoBean:OrderInfoBean?=null
     private var dataBean:OrderItemBean?=null
-    private var waitPayCountDown:Long=30*60*1000//支付剩余时间 默认半小时
+    private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var isPaySuccessful=false//是否支付成功
     override fun initView() {
         binding.topBar.setActivity(this)
-        viewModel.responseData.observe(this,{
-            ToastUtils.showLongToast(it.msg,this)
-            payResults(it.isSuccess)
-        })
     }
     override fun initData() {
         val orderInfo=intent.getStringExtra("orderInfo")
@@ -46,15 +44,23 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
-        dataBean= Gson().fromJson(orderInfo,OrderItemBean::class.java)
-        dataBean?.orderNo?.let { viewModel.getOrderDetail(it) }
-        bindingData()
+        orderInfoBean= Gson().fromJson(orderInfo,OrderInfoBean::class.java)
+        orderInfoBean?.orderNo?.let { viewModel.getOrderDetail(it) }
+        viewModel.orderItemLiveData.observe(this,{orderItem->
+            orderInfoBean?.accountFb?.let {orderItem.acountFb=it }
+            dataBean= orderItem
+            bindingData()
+        })
+        viewModel.responseData.observe(this,{
+            ToastUtils.showLongToast(it.msg,this)
+            payResults(it.isSuccess)
+        })
     }
     private fun bindingData(){
         binding.model=dataBean
         binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.acountFb),"#00095B")
         val payCountDown=dataBean?.waitPayCountDown?:waitPayCountDown
-        timeCountControl=PayTimeCountControl(if(payCountDown>0)payCountDown else waitPayCountDown,binding.tvPayTime,object : OnTimeCountListener {
+        timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
             override fun onFinish() {
                 payResults(false)
             }
@@ -65,6 +71,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
      * [isSuccessful]支付成功、支付失败
     * */
     private fun payResults(isSuccessful:Boolean){
+        this.isPaySuccessful=isSuccessful
         binding.layoutPay.visibility=View.GONE
         binding.inPayResults.apply {
             model=dataBean

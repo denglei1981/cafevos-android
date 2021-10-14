@@ -10,10 +10,22 @@ import java.io.File
  * @Version : V1.0
  * @Date: 2021/6/21 15:43
  * @Description: 　
+ * 商品详情：`/goodsDetail?goodsId=123`
+圈子详情： `/circleDetail?circleId=94`
+话题详情： `/topicDetail?topicId=178`
+帖子详情(图文postsId=8528853，图片，视频postsId=8452106):  `/postDetail?postsId=8528853`
+资讯详情（图文?artId=830，图片，视频826）: `/articleDetail?artId=830`
+专题详情: `/specialDetail?spId=660`
+任务规则说明: `/taskExplain`
+关于成长值: `/growthValue`
+注册: `/register`
+隐私协议: `/privacy`
+注册协议: `/regTerms`
+注销协议: `/cancellation`
  * *********************************************************************************
  */
 object MConstant {
-//    const val BASE_URL = "https://csapi.uniplanet.cn"
+    //    const val BASE_URL = "https://csapi.uniplanet.cn"
     const val BASE_URL = "https://evosapiqa.changanford.cn"
     const val isDebug = true
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
@@ -87,9 +99,10 @@ object MConstant {
      * 任务说明
      */
     var H5_TASK_RULE = "${H5_BASE_URL_CSCIR}/taskExplain"
+
     /**
      * https://cscir.uniplanet.cn/quanzi/#/regTerms
-     * 引力域注册协议
+     * 注册协议
      */
     var H5_REGISTER_AGREEMENT = H5_regTerms
 
@@ -103,5 +116,11 @@ object MConstant {
      */
     var H5_CANCEL_ACCOUNT = "${H5_BASE_URL_CSCIR}/cancellation"
 
+    /**
+     * 积分规则
+     */
+    var H5_MINE_INTEGRAL = "${H5_BASE_URL_CSCIR}/taskExplain"
+
+    var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
 }

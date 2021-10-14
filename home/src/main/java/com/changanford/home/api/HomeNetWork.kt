@@ -5,6 +5,7 @@ import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
 import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
+import com.changanford.home.data.TwoAdData
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.SpecialDetailData
 import io.reactivex.Observable
@@ -159,7 +160,6 @@ interface HomeNetWork {
     ): CommonResponse<ListMainBean<AuthorBaseVo>>
 
 
-
     /**
      * 搜索搜索资讯
      */
@@ -228,15 +228,33 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<ActBean>>
+
+    /**
+     * 活动头部轮播。
+     * */
+    @POST("/con/ads/list")
+    suspend fun adsLists(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<CircleHeadBean>>
+
+    @POST("con/ads/bathList")
+    suspend  fun getTwoBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<TwoAdData>
     /**
      * 枚举字典
      */
     @POST("/base/dict/getEnum")
-    suspend fun getEnum(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<List<EnumBean>>
+    suspend fun getEnum(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<EnumBean>>
 
     /*---------------省 市 区--------------*/
     @POST("base/region/provinceList")
-    suspend  fun queryProvinceList(
+    suspend fun queryProvinceList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<List<Province>>>
@@ -246,4 +264,6 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<List<CityX>>>
+
+
 }

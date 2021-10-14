@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_orderNo"
+            android:text="@{model.orderNo}"
             tools:text="订单编号：DD202109110023"
             android:textColor="@color/picture_color_66"
             android:textSize="@dimen/sp_12" />
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="待发货"
+            android:text="@{model.orderStatusName}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12" />
         <include
@@ -53,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/font_aCombined"
+            app:start_txt="@string/str_combined"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <View
@@ -62,8 +65,10 @@
             android:background="@color/color_ee"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_btn_confirm"
+        <androidx.appcompat.widget.AppCompatButton
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:id="@+id/btn_confirm"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_10"
@@ -72,33 +77,36 @@
             android:background="@drawable/bord_00095b_15dp"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            tools:text="立即支付"
+            tools:text="@string/str_immediatePayment"
             android:textStyle="bold"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_btn_cancel"
+        <androidx.appcompat.widget.AppCompatButton
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:id="@+id/btn_cancel"
             android:gravity="center"
             android:layout_marginEnd="@dimen/dp_10"
-            app:layout_constraintTop_toTopOf="@id/tv_btn_confirm"
-            app:layout_constraintEnd_toStartOf="@id/tv_btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_99_15dp"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            tools:text="取消订单"
+            android:text="@string/str_cancelOrder"
             android:textStyle="bold"
             android:textColor="@color/picture_color_66"
             android:textSize="@dimen/sp_12" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_orderType"
-            app:layout_constraintBottom_toBottomOf="@id/tv_btn_confirm"
-            app:layout_constraintTop_toTopOf="@id/tv_btn_confirm"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="请在09月05日 15:09 前支付"
             android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@id/btn_confirm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            tools:text="请在09月05日 15:09 前支付" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,7 +2,6 @@ package com.changanford.my.ui
 
 import android.graphics.Color
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -16,10 +15,7 @@ import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountVerifyBinding
 import com.changanford.my.databinding.UiClearAccountConBinding
 import com.changanford.my.viewmodel.SignViewModel
-import com.jakewharton.rxbinding4.widget.textChanges
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import io.reactivex.Observable
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：ClearAccountUI
@@ -74,9 +70,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
-        lifecycleScope.launch {
-            viewModel.verifyCancelAccount()
-        }
+        viewModel.verifyCancelAccount()
     }
 
     override fun hasRefresh(): Boolean {

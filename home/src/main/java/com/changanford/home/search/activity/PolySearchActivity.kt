@@ -1,6 +1,5 @@
 package com.changanford.home.search.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -8,7 +7,6 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -61,8 +59,12 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     var searchType = -1
 
     override fun initView() {
-        searchType = intent.getIntExtra(SEARCH_TYPE, -1)
-
+        val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
+        if(!TextUtils.isEmpty(searchTypStr)){
+            searchType = searchTypStr?.toIntOrNull()!!
+        }else{
+            searchType=-1
+        }
         ImmersionBar.with(this).fitsSystemWindows(true)
 
 

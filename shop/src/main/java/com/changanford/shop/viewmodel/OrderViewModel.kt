@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
+import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
 
 /**
@@ -18,14 +20,14 @@ import kotlinx.coroutines.launch
  * @Description : OrderViewModel
  */
 class OrderViewModel: BaseViewModel() {
-    //首页
-    var shopOrderData = MutableLiveData<ShopOrderBean>()
+    //订单列表
+    var shopOrderData = MutableLiveData<ShopOrderBean?>()
     /**
      * 获取地址列表
      */
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     //订单
-    var orderInfoLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
+    var orderInfoLiveData: MutableLiveData<OrderInfoBean> = MutableLiveData()
     var orderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
@@ -66,7 +68,7 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
-            fetchRequest {
+            val responseBean=fetchRequest {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -76,10 +78,14 @@ class OrderViewModel: BaseViewModel() {
                 }
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
-            }.onSuccess {
-                shopOrderData.postValue(it)
             }.onWithMsgFailure {
+                shopOrderData.postValue(null)
                 ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+            responseBean.onSuccess {
+                val timestamp=responseBean.timestamp?:System.currentTimeMillis().toString()
+                it?.nowTime= timestamp.toLong()
+                shopOrderData.postValue(it)
             }
         }
     }
@@ -130,7 +136,9 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                orderInfoLiveData.postValue(it)
+                orderItemLiveData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }
@@ -138,15 +146,17 @@ class OrderViewModel: BaseViewModel() {
      * 取消订单
      * [orderNo]订单号
      * */
-    fun orderCancel(orderNo:String) {
+    fun orderCancel(orderNo:String,listener: OnPerformListener?) {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["orderNo"]=orderNo
+                body["orderNo"] = orderNo
                 val randomKey = getRandomKey()
                 shopApiService.orderCancel(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }.onSuccess {
-
+                listener?.onFinish(0)
             }
         }
     }
@@ -178,12 +188,44 @@ class OrderViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                shopApiService.getMyIntegral(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.getMyIntegral(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
                 myFbLiveData.postValue(it as Int?)
+            }
+        }
+    }
+    /**
+     * 订单确认收货
+     * */
+    fun confirmReceipt(orderNo:String,listener: OnPerformListener?){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["orderNo"]=orderNo
+                val randomKey = getRandomKey()
+                shopApiService.confirmReceipt(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                listener?.onFinish(0)
+            }
+        }
+    }
+    /**
+     * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
+     * */
+    fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
+        return if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价" else {
+            when(orderStatus){
+                "WAIT_PAY"->"待付款"
+                "WAIT_SEND"->"待发货"
+                "WAIT_RECEIVE"->"待收货"
+                "FINISH"->"已完成"
+                "CLOSED"->"已关闭"
+                else ->"未知"
             }
         }
     }

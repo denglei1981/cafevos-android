@@ -141,6 +141,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
         val bundle = Bundle()
         bundle.putString("circleId", circleId)
+        bundle.putBoolean("isCirclePost", true)
         bundle.putString("circleName", circleName)
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
@@ -213,6 +214,13 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         viewModel.circleDetailsBean.observe(this, {
             setJoinType(it.isApply)
             initListener(it.name)
+
+            if (it.isOwner == 1) {
+                binding.topContent.tvJoin.visibility = View.INVISIBLE
+            } else {
+                binding.topContent.tvJoin.visibility = View.VISIBLE
+            }
+
             binding.barTitleTv.text = it.name
             binding.shareImg.setOnClickListener { _ ->
                 CircleShareModel.shareDialog(
@@ -246,7 +254,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 tvPersonal.text = "${it.userCount}成员"
                 personalAdapter.setItems(it.users)
                 personalAdapter.notifyDataSetChanged()
-                tvPersonal.setOnClickListener {_->
+                tvPersonal.setOnClickListener { _ ->
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
                     bundle.putString("isApply", it.isApply.toString())
