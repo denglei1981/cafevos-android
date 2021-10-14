@@ -87,7 +87,7 @@ object GlideUtils {
 //            preUrl
 //        )
 
-     fun defaultHandleImageUrl(preUrl: String?): String =
+    fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )

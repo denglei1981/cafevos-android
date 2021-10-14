@@ -88,9 +88,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/edit_nickname"
                     app:left_text="个性签名"
                     app:left_text_color="@color/color_00"
+                    app:line_left_right_margin="14"
                     app:right_icon="@mipmap/arrow_right"
                     app:right_text="请填写"
-                    app:line_left_right_margin="14"
                     app:show_bottom_line="true" />
 
 
@@ -162,8 +162,8 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_hobby"
                     app:left_text="邮箱"
-                    app:line_left_right_margin="14"
                     app:left_text_color="@color/color_00"
+                    app:line_left_right_margin="14"
                     app:right_icon="@mipmap/arrow_right"
                     app:right_text="请填写"
                     app:show_bottom_line="true" />
@@ -274,6 +274,22 @@
                     app:layout_constraintTop_toBottomOf="@id/edit_reg_time"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:textStyle="normal"/>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ford_auth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_19"
+                    android:drawableRight="@mipmap/arrow_right_5c"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:padding="@dimen/dp_4"
+                    android:text="长安福特员工认证"
+                    android:textColor="#01025C"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_reg_time" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

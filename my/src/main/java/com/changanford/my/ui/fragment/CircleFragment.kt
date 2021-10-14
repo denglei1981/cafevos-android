@@ -13,6 +13,8 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
@@ -68,6 +70,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                 }
             }
             completeRefresh(it?.dataList, circleAdapter, it?.total ?: 0)
+        })
+
+        LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).observe(this, Observer {
+            initRefreshData(1)
         })
     }
 

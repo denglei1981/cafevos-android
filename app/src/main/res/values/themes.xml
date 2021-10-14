@@ -32,9 +32,11 @@
         <item name="android:windowFullscreen">true</item>
         <!--也可以设置成一张图片 -->
     </style>
-    <style name="Theme.EVOS.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <style name="Theme.EVOS.NoActionBar" parent="Theme.EVOS">
+        <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 

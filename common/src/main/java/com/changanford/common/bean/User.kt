@@ -18,7 +18,7 @@ data class User(
 
 data class LoginBean(
     val openid: String,
-    val phone: String,
+    val phone: String = "",
     val roleSession: String,
     val token: String,
     val userId: String,

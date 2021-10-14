@@ -13,7 +13,6 @@ import com.changanford.my.R
 import com.changanford.my.adapter.GrowUpAndJifenViewHolder
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiJifenBinding
-import com.changanford.my.databinding.ViewTaskHead1Binding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
@@ -32,7 +31,8 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
     }
 
     override fun initView() {
-        binding.toolbarJifen.toolbarTitle.text = "积分"
+        binding.toolbarJifen.toolbar.setBackgroundResource(0)
+        binding.toolbarJifen.toolbarTitle.text = "积分明细"
         UserManger.getSysUserInfo()?.integral?.let {
             binding.myJifenNum.text = "${it.toInt()}"
         }
@@ -54,6 +54,13 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
         return binding.rcyJifen.smartCommonLayout
     }
 
+    override fun isUseFullScreenMode(): Boolean {
+        return true
+    }
+
+    override fun isUserLightMode(): Boolean {
+        return false
+    }
 
     override fun initRefreshData(pageSize: Int) {
         task(pageSize)

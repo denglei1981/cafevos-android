@@ -20,7 +20,6 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -530,12 +529,31 @@ class SignViewModel : ViewModel() {
                 body["pageSize"] = "20"
                 body["queryParams"] = mapOf("type" to type)
                 var rkey = getRandomKey()
-                apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+                when (type) {
+                    "1" -> {
+                        apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+                    }
+                    else -> {
+                        apiService.mineGrowUpLog(body.header(rkey), body.body(rkey))
+                    }
+                }
             }.onSuccess {
                 jifenBean.postValue(it)
             }.onFailure {
                 jifenBean.postValue(null)
             }
+        }
+    }
+
+    //等级权益
+    fun mineGrowUpQy(result: (CommonResponse<ArrayList<GrowUpQYBean>>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["interestsType"] = 2
+                var rkey = getRandomKey()
+                apiService.queryUserQy(body.header(rkey), body.body(rkey))
+            })
         }
     }
 
@@ -780,7 +798,11 @@ class SignViewModel : ViewModel() {
 
     }
 
+    var userInfo: MutableLiveData<UserInfoBean> = MutableLiveData()
+
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
+        userInfo.postValue(userInfoBean)
+
         UserManger.updateUserInfo(userInfoBean)
     }
 

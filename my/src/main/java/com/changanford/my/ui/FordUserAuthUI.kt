@@ -1,17 +1,12 @@
 package com.changanford.my.ui
 
-import android.animation.ValueAnimator
-import android.graphics.Color
-import android.os.Build
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.Interests
 import com.changanford.common.databinding.ItemWebviewBinding
@@ -25,12 +20,14 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_MEMBER_INFO_ID
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_MEMBER_INFO_TYPE
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.bean.UniAuthImageBean
-import com.changanford.my.databinding.UiUniUserAuthBinding
+import com.changanford.my.databinding.UiFordUserAuthBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
@@ -44,20 +41,14 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
  *  描述: 用户等级认证
  *  修改描述：TODO
  */
-@Route(path = ARouterMyPath.UniUserAuthUI)
-class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
+@Route(path = ARouterMyPath.FordUserAuthUI)
+class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
 
-    private var conditionAdapter =
-        MineCommAdapter.ConditionAdapter()
-
-    private var uniUserAdapter = MineCommAdapter.UniUserAdapter(R.layout.item_uni_user)
-
-    private var uniImgAdapter = MineCommAdapter.UniUserAdapter(R.layout.item_uni_user)
+    private var conditionAdapter = MineCommAdapter.ConditionAdapter()
 
     private var authQyAdapter = AuthQYAdapter()
 
     var body = HashMap<String, Any>()//提交申请数据
-
 
     private var memberId: Int = 0
     private lateinit var memberType: String
@@ -78,12 +69,10 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
         memberId = intent.getIntExtra(MINE_MEMBER_INFO_ID, 0)
         memberType = intent.getStringExtra(MINE_MEMBER_INFO_TYPE).toString()
 
-        dialog = LoadDialog(this@UserAuthUI)
+        dialog = LoadDialog(this@FordUserAuthUI)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setLoadingText("图片上传中..")
-
-
 
         binding.mineToolbar.toolbarTitle.text = "${title}认证"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
@@ -92,20 +81,15 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
 
         binding.uniSubmitBtn.text = "立即申请成为${title}"
 
-        //只有大哈 需要上传图片  big_coffee
+        //员工认证 ford_user
         when (memberType) {
-            "big_coffee" -> {
-                binding.group.visibility = View.VISIBLE
-                binding.title1.text = "用户名片、自媒体资料或邀约证明"
-                binding.title2.text = "个人展示照片"
+            "ford_user" -> {
+                binding.uniBg.visibility = View.VISIBLE
+                binding.includeAuthId.fordIdLayout.visibility = View.VISIBLE
+                binding.fordCard.visibility = View.VISIBLE
             }
-//            "ford_user" -> {
-//                binding.group.visibility = View.VISIBLE
-//                binding.title1.text = "个人身份证"
-//                binding.title2.text = "员工工牌"
-//            }
             else -> {
-                binding.group.visibility = View.GONE
+                binding.uniBg.visibility = View.GONE
             }
         }
 
@@ -128,14 +112,14 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
         binding.uniSubmitBtn.setOnClickListener {
             images.clear()
             body["memberId"] = memberId
-            if (memberType == "big_coffee") {//大哈
+            if (memberType == "ford_user") {//员工
 
-                if (userData.size == 0) {
-                    showToast("上传用户名片、自媒体邀约证明")
+                if (userData.size == 0 || userData.size < 2) {
+                    showToast("请上传用户身份证")
                     return@setOnClickListener
                 }
                 if (imgData.size == 0) {
-                    showToast("上传个人展示照片")
+                    showToast("请上传员工工牌")
                     return@setOnClickListener
                 }
                 var userFiles = ArrayList<String>()
@@ -189,91 +173,9 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
         binding.uniAuthConditionRv.layoutManager = LinearLayoutManager(this)
         binding.uniAuthConditionRv.adapter = conditionAdapter
 
-
-        //用户名片
-        binding.uniAuthCardRv.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
         //用户认证权益
         binding.authQyRv.layoutManager = LinearLayoutManager(this)
         binding.authQyRv.adapter = authQyAdapter
-
-        uniUserAdapter.draggableModule.isDragEnabled = true
-        uniUserAdapter.draggableModule.setOnItemDragListener(object : OnItemDragListener {
-            override fun onItemDragMoving(
-                source: RecyclerView.ViewHolder?,
-                from: Int,
-                target: RecyclerView.ViewHolder?,
-                to: Int
-            ) {
-
-            }
-
-            override fun onItemDragStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-                val holder =
-                    viewHolder as BaseViewHolder
-
-                // 开始时，item背景色变化，demo这里使用了一个动画渐变，使得自然
-                val startColor = Color.WHITE
-                val endColor = Color.rgb(245, 245, 245)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val v = ValueAnimator.ofArgb(startColor, endColor)
-                    v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
-                    v.duration = 300
-                    v.start()
-                }
-            }
-
-            override fun onItemDragEnd(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-
-                val holder =
-                    viewHolder as BaseViewHolder
-                // 结束时，item背景色变化，demo这里使用了一个动画渐变，使得自然
-                val startColor = Color.rgb(245, 245, 245)
-                val endColor = Color.WHITE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val v = ValueAnimator.ofArgb(startColor, endColor)
-                    v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
-                    v.duration = 300
-                    v.start()
-                }
-            }
-        })
-
-        binding.uniAuthCardRv.adapter = uniUserAdapter
-
-        uniUserAdapter.addIcons(null)
-        uniUserAdapter.setIconCallback(object : MineCommAdapter.IconOnclick {
-            override fun callback(localMedia: LocalMedia?) {
-                if (null == localMedia) {//选择照片
-                    type = 1
-                    selectIcon()
-                } else {//删除
-                    userData.remove(localMedia)
-                    uniUserAdapter.addIcons(userData)
-                }
-            }
-        })
-
-
-        //个人展示
-        binding.uniAuthImgRv.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.uniAuthImgRv.adapter = uniImgAdapter
-
-        uniImgAdapter.addIcons(null)
-
-        uniImgAdapter.setIconCallback(object : MineCommAdapter.IconOnclick {
-            override fun callback(localMedia: LocalMedia?) {
-                if (null == localMedia) {//选择照片
-                    type = 2
-                    selectIcon()
-                } else {//删除
-                    imgData.remove(localMedia)
-                    uniImgAdapter.addIcons(imgData)
-                }
-            }
-        })
 
         //提交按钮
         LiveDataBus.get().with("isCondition", Boolean::class.java).observe(this, Observer {
@@ -282,6 +184,20 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
             }
         })
 
+        binding.includeAuthId?.apply {
+            iconIdZhen.setOnClickListener {
+                type = 1
+                selectIcon()
+            }
+            iconIdFan.setOnClickListener {
+                type = 2
+                selectIcon()
+            }
+        }
+        binding.fordCard.setOnClickListener {
+            type = 3
+            selectIcon()
+        }
     }
 
     var images = ArrayList<UniAuthImageBean>()
@@ -298,6 +214,7 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
                         files.add((it.path))
                     }
                 }
+
                 images.add(UniAuthImageBean(1, files))
 
                 if (imgFiles.size > 0) {// 有新增的个人展示
@@ -320,6 +237,7 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
             }
 
             override fun onuploadFileprogress(progress: Long) {
+
             }
         })
     }
@@ -355,6 +273,7 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
      */
     fun submit() {
         body["images"] = images
+        body["memberKey"] = "ford_user"
         viewModel.submitUserIdCard(body) {
             it.onSuccess {
                 ConfirmTwoBtnPop(this)
@@ -365,7 +284,7 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
                         btnConfirm.setOnClickListener {
                             dismiss()
                         }
-                    }
+                    }.showPopupWindow()
             }
             it.onWithMsgFailure {
                 binding.uniSubmitBtn.isEnabled = true
@@ -406,6 +325,7 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
                         isEdit = true
                         binding.uniSubmitBtn.isEnabled = false
                         binding.uniSubmitBtn.text = "成为${title}审核中"
+                        binding.uniHint.visibility = View.VISIBLE
                     }
                     "1" -> {
                         isEdit = true
@@ -415,6 +335,8 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
                     "2" -> {
                         binding.uniSubmitBtn.isEnabled = true
                         binding.uniSubmitBtn.text = "重新申请成为${title}"
+//                        binding.uniHint.visibility = View.VISIBLE
+//                        binding.uniHint.text = "审核不通过，原因：${response.}"
                     }
                 }
                 response?.conditionList?.let {
@@ -445,11 +367,17 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
                             }
                         }
                     }
-                    uniUserAdapter.addIcons(userData)
-                    uniImgAdapter.addIcons(imgData)
+
+                    if (userData.size >= 2) {
+                        loadPic(userData[0], binding.includeAuthId.iconIdZhen)
+                        loadPic(userData[1], binding.includeAuthId.iconIdFan)
+                    }
+
+                    if (imgData.size > 0) {
+                        loadPic(imgData[0], binding.iconFordStaff)
+                    }
                 }
             }
-
         }
     }
 
@@ -478,24 +406,10 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
      * 选择图片
      */
     fun pic() {
-        var maxNum = if (type == 1) {
-            9 - userData.size
-        } else {
-            9 - imgData.size
-        }
-        PictureUtil.openGarlly(this@UserAuthUI, maxNum, object :
+        PictureUtil.openGarlly(this@FordUserAuthUI, 1, object :
             OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
-                when (type) {
-                    1 -> {
-                        userData.addAll(result)
-                        uniUserAdapter.addIcons(userData)
-                    }
-                    2 -> {
-                        imgData.addAll(result)
-                        uniImgAdapter.addIcons(imgData)
-                    }
-                }
+                addFile(result)
             }
 
             override fun onCancel() {
@@ -509,25 +423,48 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
      */
     fun takePhoto() {
         PictureUtil.opencarcme(
-            this@UserAuthUI,
+            this@FordUserAuthUI,
             object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: List<LocalMedia>) {
-                    when (type) {
-                        1 -> {
-                            userData.add(result.get(0))
-                            uniUserAdapter.addIcons(userData)
-                        }
-                        2 -> {
-                            imgData.add(result.get(0))
-                            uniImgAdapter.addIcons(imgData)
-                        }
-                    }
+                    addFile(result)
                 }
 
                 override fun onCancel() {
                     // 取消
                 }
             })
+    }
+
+    /**
+     * 选择图片后设置
+     */
+    private fun addFile(result: List<LocalMedia>?) {
+        if (null != result && result.isNotEmpty()) {
+            when (type) {
+                1 -> {
+                    userData.add(0, result[0])
+                    loadPic(result[0], binding.includeAuthId.iconIdZhen)
+                }
+                2 -> {
+                    userData.add(result[0])
+                    loadPic(result[0], binding.includeAuthId.iconIdFan)
+                }
+                3 -> {
+                    imgData.addAll(result)
+                    loadPic(result[0], binding.iconFordStaff)
+                }
+            }
+        }
+    }
+
+    private fun loadPic(localMedia: LocalMedia?, imageView: ImageView) {
+        localMedia?.let {
+            if (it.hasHttpUrl()) {
+                imageView.load(localMedia.path, R.mipmap.icon_add)
+            } else {
+                GlideUtils.loadRoundFilePath(localMedia.path, imageView, R.mipmap.icon_add)
+            }
+        }
     }
 
     /**
