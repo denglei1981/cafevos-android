@@ -14,6 +14,7 @@ import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
@@ -53,7 +54,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-            if (postEntity?.size==0){
+            if (postEntity?.size == 0) {
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {
@@ -103,7 +104,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.ivSearch.setOnClickListener {
-
+            startARouter(ARouterHomePath.PolySearchActivity)
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()

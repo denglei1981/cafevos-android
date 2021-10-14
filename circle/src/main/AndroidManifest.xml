@@ -30,5 +30,6 @@
         <activity android:name=".ui.release.MMapActivity" />
         <activity android:name=".ui.release.ReleaseActivity" />
         <activity android:name=".ui.activity.CreateCircleActivity" />
+        <activity android:name=".ui.activity.CircleMemberManageActivity" />
     </application>
 </manifest>

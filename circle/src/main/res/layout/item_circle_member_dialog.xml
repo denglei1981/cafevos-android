@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.changanford.circle.bean.CircleMemberBean" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_head"
+        android:layout_width="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/master_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/line_fc88_cor8_no_fill"
+        android:paddingLeft="5dp"
+        android:layout_toEndOf="@+id/iv_head"
+        android:visibility="gone"
+        android:paddingTop="2dp"
+        android:layout_centerVertical="true"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:text="@{bean.starOrderNumStr}"
+        android:textColor="@color/color_fc88"
+        android:textSize="10sp"
+        tools:text="xingtuiguan"
+        tools:ignore="SmallSp" />
+</RelativeLayout>
+</layout>
