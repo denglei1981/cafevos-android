@@ -299,4 +299,31 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleMainBean>
+
+    /**
+     * 管理员列表
+     */
+    @POST("con/circle/getStarsRole")
+    suspend fun getStarsRole(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CircleDialogBeanItem>>
+
+    /**
+     * 圈子 ：设置管理员
+     */
+    @POST("con/circle/setStarsRole")
+    suspend fun setStarsRole(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 我的圈子 ：删除圈子已有成员
+     */
+    @POST("con/circle/deleteCircleUsers")
+    suspend fun deleteCircleUsers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

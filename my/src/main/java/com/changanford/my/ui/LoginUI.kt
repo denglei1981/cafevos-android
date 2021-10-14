@@ -12,7 +12,6 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement
@@ -90,7 +89,6 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         UserManger.deleteUserInfo()
         MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
-        StatusBarUtil.setAndroidNativeLightStatusBar(this, false)
         tencent = Tencent.createInstance(MConstant.QQAPPID, this)
 
         wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
@@ -253,6 +251,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun isUseFullScreenMode(): Boolean {
         return true
+    }
+
+    override fun isUserLightMode(): Boolean {
+        return false
     }
 
     override fun onDestroy() {

@@ -1,6 +1,5 @@
 package com.changanford.circle.ui.activity
 
-import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
@@ -11,15 +10,11 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import androidx.annotation.UiThread
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ChoseVideoFMAdapter
-import com.changanford.circle.bean.LongPostBean
 import com.changanford.circle.databinding.VideochosefmBinding
 import com.changanford.circle.widget.view.ThumbnailSelTimeView
 import com.changanford.common.basic.BaseActivity
@@ -32,17 +27,10 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.logD
-import com.changanford.common.utilext.toast
-import com.lansosdk.videoeditor.VideoEditor
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.luck.picture.lib.tools.ScreenUtils
 import java.lang.ref.WeakReference
-import java.util.ArrayList
-import kotlin.concurrent.thread
 
 /**
  * 视频选择封面

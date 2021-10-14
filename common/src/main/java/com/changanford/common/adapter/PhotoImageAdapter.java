@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.changanford.common.bean.MediaListBean;
+import com.changanford.common.utilext.GlideUtils;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
@@ -101,7 +102,7 @@ public class PhotoImageAdapter extends PagerAdapter {
 //        }
         else {
             SubsamplingScaleImageView s = new SubsamplingScaleImageView(activity);
-            Glide.with(activity).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            Glide.with(activity).asBitmap().load(GlideUtils.INSTANCE.handleImgUrl(url)).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource,  Transition<? super Bitmap> transition) {
                     imageUrls.get(position).setBitmap(resource);

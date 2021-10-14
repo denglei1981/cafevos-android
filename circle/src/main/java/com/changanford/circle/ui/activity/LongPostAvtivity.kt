@@ -1,7 +1,6 @@
 package com.changanford.circle.ui.activity
 
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -24,22 +23,18 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.LongPostAdapter
-import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.LongpostactivityBinding
 import com.changanford.circle.databinding.LongpostheadBinding
-import com.changanford.circle.ext.loadImageNoOther
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
@@ -59,14 +54,12 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.luck.picture.lib.tools.ScreenUtils
-import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import java.util.*
-import java.util.zip.Inflater
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
@@ -92,7 +85,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private var type = 0
     private var params = hashMapOf<String, Any>()
     private var FMMeadia: LocalMedia? = null
-    private var postEntity: PostEntity? = null
+    private var locaPostEntity: PostEntity? = null
     private var editText: EditText? = null
     private val dialog by lazy {
         LoadDialog(this).apply {
@@ -127,7 +120,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         headBinding = DataBindingUtil.bind(headview)!!
-        postEntity = intent.getSerializableExtra("postEntity") as PostEntity?
+        locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
         bus()
     }
 
@@ -211,6 +204,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         })
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
+            if (locaPostEntity != null) {
+                if (locaPostEntity!!.keywords.isNotEmpty()) {
+                    buttomlabelAdapter.data.forEach {
+                        it.isselect = it.tagName == locaPostEntity!!.keywords
+                    }
+                    buttomlabelAdapter.notifyDataSetChanged()
+                }
+            }
         })
 
     }
@@ -230,58 +231,78 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     private fun initlocaData() {
-        if (postEntity != null) {
-            headBinding.etBiaoti.setText(postEntity!!.title)
-            headBinding.etContent.setText(postEntity!!.content)
-            params["plate"] = postEntity!!.plate
-            params["topicId"] = postEntity!!.topicId
-            params["type"] = postEntity!!.type
-            params["keywords"] = postEntity!!.keywords
-            params["circleId"] = postEntity!!.circleId
-            params["content"] = postEntity!!.content
-            params["actionCode"] = postEntity!!.actionCode
-            params["title"] = postEntity!!.title
-            params["address"] = postEntity!!.address
-            params["lat"] = postEntity!!.lat
-            params["lon"] = postEntity!!.lon
-            params["province"] = postEntity!!.province
-            params["cityCode"] = postEntity!!.cityCode
-            params["city"] = postEntity!!.city
-            if (params.containsKey("plate")) {
+        if (locaPostEntity != null) {
+            headBinding.etBiaoti.setText(locaPostEntity!!.title)
+            headBinding.etContent.setText(locaPostEntity!!.content)
+            params["plate"] = locaPostEntity!!.plate
+            platename = locaPostEntity!!.plateName
+            params["topicId"] = locaPostEntity!!.topicId
+            params["type"] = locaPostEntity!!.type
+            params["keywords"] = locaPostEntity!!.keywords
+            params["circleId"] = locaPostEntity!!.circleId
+            circlename = locaPostEntity!!.circleName
+            params["content"] = locaPostEntity!!.content
+            params["actionCode"] = locaPostEntity!!.actionCode
+            params["title"] = locaPostEntity!!.title
+            params["address"] = locaPostEntity!!.address
+            address = locaPostEntity!!.address
+            params["lat"] = locaPostEntity!!.lat
+            params["lon"] = locaPostEntity!!.lon
+            params["province"] = locaPostEntity!!.province
+            params["cityCode"] = locaPostEntity!!.cityCode
+            params["city"] = locaPostEntity!!.city
+            if (params["plate"]!=0) {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                buttomTypeAdapter.setData(1, ButtomTypeBean(postEntity!!.plateName, 1, 1))
+                buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
-            if (postEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
-                2,
-                ButtomTypeBean(postEntity!!.topicName, 1, 2)
-            )
-            if (postEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
-                3,
-                ButtomTypeBean(postEntity!!.circleName, 1, 3)
-            )
-            if (postEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
-                4,
-                ButtomTypeBean(postEntity!!.address, 1, 4)
-            )
-            if (postEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
-                FMMeadia =
-                    JSON.parseObject(postEntity!!.longpostFmLocalMeadle, LocalMedia::class.java)
-                headBinding.ivFm.visibility = View.VISIBLE
-                GlideUtils.loadRoundFilePath(
-                    PictureUtil.getFinallyPath(FMMeadia!!),
-                    headBinding.ivFm
+            if (locaPostEntity!!.topicName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    2,
+                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
                 )
-                headBinding.ivAddfm.visibility = View.GONE
-                headBinding.tvFm.visibility = View.GONE
             }
-            jsonStr2obj(postEntity!!.localMeadle)
+            if (locaPostEntity!!.circleName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    3,
+                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
+                )
+            }
+            if (locaPostEntity!!.address.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    4,
+                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+                )
+            }
+
+            if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
+                try{
+                    FMMeadia =
+                        JSON.parseObject(locaPostEntity!!.longpostFmLocalMeadle, LocalMedia::class.java)
+                    headBinding.ivFm.visibility = View.VISIBLE
+                    GlideUtils.loadRoundFilePath(
+                        PictureUtil.getFinallyPath(FMMeadia!!),
+                        headBinding.ivFm
+                    )
+                    headBinding.ivAddfm.visibility = View.GONE
+                    headBinding.tvFm.visibility = View.GONE
+                }catch (e:Exception){
+
+                }
+
+            }
+
+            jsonStr2obj(locaPostEntity!!.longPostDatas)
         }
     }
 
     private fun jsonStr2obj(jonson: String) {
-        val longPostBean = JSON.parseArray(jonson, LongPostBean::class.java);
-        longpostadapter.addData(longPostBean)
-        longpostadapter.notifyDataSetChanged()
+        try {
+            val longPostBean = JSON.parseArray(jonson,LongPostBean::class.java);
+            longpostadapter.addData(longPostBean)
+            longpostadapter.notifyDataSetChanged()
+        }catch (e:Exception){
+
+        }
     }
 
     private fun initbuttom() {
@@ -311,6 +332,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
             }
             buttomlabelAdapter.notifyDataSetChanged()
+            params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             buttomlabelAdapter.getItem(position).tagName.toast()
         }
 
@@ -340,25 +362,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             override fun onItemClick(view: View?, position: Int) {
                 val emoji = emojiAdapter.getItem(position)
                 setEditContent(emoji)
-//                var index = if (headBinding.etBiaoti.hasFocus()){
-//                    headBinding.etBiaoti.selectionStart
-//                }else if(editText!=null){
-//                    editText!!.selectionStart
-//                } else{
-//                    headBinding.etContent.selectionStart
-//                }
-//
-//                var editContent =if (headBinding.etBiaoti.hasFocus()){
-//                    headBinding.etBiaoti.text
-//                }else if(editText!=null){
-//                    editText!!.text
-//                } else{
-//                    headBinding.etContent.text
-//                }
-//                editContent?.insert(index, emoji)
-//                if (editText!=null){
-//                    longpostadapter.notifyDataSetChanged()
-//                }
             }
 
         })
@@ -386,7 +389,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     }
 
                     override fun save() {
-                        var postEntity = PostEntity()
+                        var postEntity = if (locaPostEntity!=null) locaPostEntity!! else PostEntity()
                         postEntity.content = headBinding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -404,7 +407,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         postEntity.actionCode =
                             if (params["actionCode"] != null) params["actionCode"] as String else ""
                         postEntity.longpostFmLocalMeadle =
-                            if (FMMeadia != null) PictureUtil.getFinallyPath(FMMeadia!!) else ""
+                            if (FMMeadia != null) JSON.toJSONString(FMMeadia)  else ""
                         postEntity.longPostDatas = JSON.toJSONString(longpostadapter.data)
                         postEntity.type = "4"  //长图帖子类型
                         postEntity.title = headBinding.etBiaoti.text.toString()
@@ -419,7 +422,11 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        viewModel.insertPostentity(postEntity)
+                        if (locaPostEntity!=null){
+                            viewModel.update(postEntity)
+                        }else{
+                            viewModel.insertPostentity(postEntity)
+                        }
                         finish()
                     }
 

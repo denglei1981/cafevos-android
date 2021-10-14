@@ -45,6 +45,7 @@ object ARouterMyPath {
     const val MineLoveCarListUI = "/my/MineLoveCarListUI" //我的爱车
     const val MineFeedbackListUI = "/my/MineFeedbackListUI" // 我的反馈列表
     const val UniUserAuthUI = "/my/UniUserAuthUI" //我的身份列表
+    const val FordUserAuthUI = "/my/FordUserAuthUI" //员工认证
     const val AddCardNumTransparentUI = "/my/AddCardNumTransparentUI" //添加车牌
     const val MineMessageSysInfoUI = "/my/MineMessageSysInfoUI"//系统消息
     const val MineMessageInfoUI = "/my/MineMessageInfoUI" // 交易消息 和 互动消息

@@ -20,7 +20,6 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -103,7 +102,7 @@ class SignViewModel : ViewModel() {
      * 删除消息
      */
     fun delUserMessage(
-        userMessageIds: String,result: (CommonResponse<String>) -> Unit
+        userMessageIds: String, result: (CommonResponse<String>) -> Unit
     ) {
         viewModelScope.launch {
             result(fetchRequest {
@@ -530,12 +529,31 @@ class SignViewModel : ViewModel() {
                 body["pageSize"] = "20"
                 body["queryParams"] = mapOf("type" to type)
                 var rkey = getRandomKey()
-                apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+                when (type) {
+                    "1" -> {
+                        apiService.mineGrowUp(body.header(rkey), body.body(rkey))
+                    }
+                    else -> {
+                        apiService.mineGrowUpLog(body.header(rkey), body.body(rkey))
+                    }
+                }
             }.onSuccess {
                 jifenBean.postValue(it)
             }.onFailure {
                 jifenBean.postValue(null)
             }
+        }
+    }
+
+    //等级权益
+    fun mineGrowUpQy(result: (CommonResponse<ArrayList<GrowUpQYBean>>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["interestsType"] = 2
+                var rkey = getRandomKey()
+                apiService.queryUserQy(body.header(rkey), body.body(rkey))
+            })
         }
     }
 
@@ -714,15 +732,18 @@ class SignViewModel : ViewModel() {
 
     var clearBean: MutableLiveData<ArrayList<CancelVerifyBean>> = MutableLiveData()
 
-    suspend fun verifyCancelAccount() {
-        var clearAccount = fetchRequest {
-            var body = HashMap<String, String>()
-            var rkey = getRandomKey()
-            apiService.verifyCancelAccount(body.header(rkey), body.body(rkey))
+    fun verifyCancelAccount() {
+        viewModelScope.launch {
+            var clearAccount = fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.verifyCancelAccount(body.header(rkey), body.body(rkey))
+            }
+            if (clearAccount.code == 0) {
+                clearBean.postValue(clearAccount.data)
+            }
         }
-        if (clearAccount.code == 0) {
-            clearBean.postValue(clearAccount.data)
-        }
+
     }
 
     var clearAccountReason: MutableLiveData<ArrayList<CancelReasonBeanItem>> = MutableLiveData()
@@ -738,11 +759,17 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    suspend fun cancelAccount() {
-        var clearAccount = fetchRequest {
-            var body = HashMap<String, String>()
-            var rkey = getRandomKey()
-            apiService.cancelAccount(body.header(rkey), body.body(rkey))
+    fun cancelAccount(
+        phone: String,
+        smsCode: String,
+        delReason: String, result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.cancelAccount(body.header(rkey), body.body(rkey))
+            })
         }
     }
 
@@ -780,7 +807,11 @@ class SignViewModel : ViewModel() {
 
     }
 
+    var userInfo: MutableLiveData<UserInfoBean> = MutableLiveData()
+
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
+        userInfo.postValue(userInfoBean)
+
         UserManger.updateUserInfo(userInfoBean)
     }
 

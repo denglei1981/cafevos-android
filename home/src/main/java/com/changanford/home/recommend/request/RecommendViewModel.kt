@@ -14,7 +14,6 @@ class RecommendViewModel : ViewModel() {
 
     var pageNo:Int=1
     fun getRecommend(isLoadMore: Boolean) {
-
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()

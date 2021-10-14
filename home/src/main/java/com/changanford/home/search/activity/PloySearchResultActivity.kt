@@ -1,26 +1,41 @@
 package com.changanford.home.search.activity
 
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
+import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.databinding.ActivityPloySearchResultBinding
 import com.changanford.home.search.adapter.SearchResultViewpagerAdapter
 import com.changanford.home.search.fragment.*
+import com.changanford.home.search.request.PolySearchViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
 
 
 @Route(path = ARouterHomePath.PloySearchResultActivity)
-class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, EmptyViewModel>() {
+class PloySearchResultActivity :
+    BaseActivity<ActivityPloySearchResultBinding, PolySearchViewModel>() {
 
     var pagerAdapter: SearchResultViewpagerAdapter? = null
 
@@ -28,16 +43,48 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
 
     var titleList = mutableListOf<String>()
 
+    var searchContent: String = ""
+
+    val searchActsFragment: SearchActsFragment by lazy {
+        SearchActsFragment.newInstance(searchContent)
+    }
+    val searchNewsFragment: SearchNewsFragment by lazy {
+        SearchNewsFragment.newInstance(searchContent)
+    }
+    val searchPostFragment: SearchPostFragment by lazy {
+        SearchPostFragment.newInstance(searchContent)
+    }
+
+    val searchShopFragment: SearchShopFragment by lazy {
+        SearchShopFragment.newInstance(searchContent)
+    }
+
+    val searchUserFragment: SearchUserFragment by lazy {
+        SearchUserFragment.newInstance(searchContent)
+    }
+
+
+    //搜索列表
+    private val sAdapter by lazy {
+        HomeSearchAcAdapter()
+    }
 
     override fun initView() {
         ImmersionBar.with(this)
             .fitsSystemWindows(true)
             .statusBarColor(R.color.color_ee)
-        fragmentList.add(SearchActsFragment.newInstance())
-        fragmentList.add(SearchNewsFragment.newInstance())
-        fragmentList.add(SearchPostFragment.newInstance())
-        fragmentList.add(SearchShopFragment.newInstance())
-        fragmentList.add(SearchUserFragment.newInstance())
+
+        var searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
+        searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
+        binding.rvAuto.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvAuto.adapter = sAdapter
+        binding.layoutSearch.searchContent.setText(searchContent)
+        fragmentList.add(searchActsFragment)
+        fragmentList.add(searchNewsFragment)
+        fragmentList.add(searchPostFragment)
+        fragmentList.add(searchShopFragment)
+        fragmentList.add(searchUserFragment)
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_search_post))
@@ -78,7 +125,80 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+        binding.layoutSearch.searchContent.setOnClickListener {
+            onBackPressed()
+        }
+
+//        binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == 0) {
+//                HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
+//                    search(binding.layoutSearch.searchContent.text.toString(), false)
+//                }
+//            }
+//            false
+//        }
+
+
+//        binding.layoutSearch.searchContent.addTextChangedListener(
+//            object : TextWatcher {
+//                override fun afterTextChanged(s: Editable?) {
+//
+//                }
+//
+//                override fun beforeTextChanged(
+//                    s: CharSequence?,
+//                    start: Int,
+//                    count: Int,
+//                    after: Int
+//                ) {
+//                }
+//
+//                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                    if (s.isNullOrEmpty()) {
+////                        binding.verLin.visibility = View.VISIBLE
+////                        binding.recordRecyclerView.visibility = View.VISIBLE
+////                        binding.sRecyclerView.visibility = View.GONE
+////                        binding.clearImg.visibility = View.GONE
+//                        binding.rvAuto.visibility = View.GONE
+//                    } else {
+////                        binding.verLin.visibility = View.GONE
+////                        binding.recordRecyclerView.visibility = View.GONE
+////                        binding.sRecyclerView.visibility = View.VISIBLE
+////                        binding.clearImg.visibility = View.VISIBLE
+//                        binding.rvAuto.visibility = View.VISIBLE
+//                        viewModel.getSearchAc(s.toString())
+//                    }
+//                }
+//
+//            })
+
+        binding.layoutSearch.cancel.setOnClickListener {
+            onBackPressed()
+        }
     }
+
+//    fun search(searchContent: String, needHide: Boolean) {
+//        if (TextUtils.isEmpty(searchContent)) {
+//            toastShow("请输入你喜欢的内容")
+//            return
+//        }
+//        if (needHide) {
+//            HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//        }
+//
+//
+//        searchActsFragment.outRefresh(searchContent)
+////        searchUserFragment.outRefresh(searchContent)
+////        searchNewsFragment.outRefresh(searchContent)
+////        searchPostFragment.outRefresh(searchContent)
+////        searchShopFragment.outRefresh(searchContent)
+//
+//        binding.rvAuto.visibility = View.GONE
+//        binding.layoutSearch.searchContent.setText(searchContent)
+//        viewModel.insertRecord(this, searchContent) // 异步写入本地数据库。
+//
+//    }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
@@ -124,5 +244,14 @@ class PloySearchResultActivity : BaseActivity<ActivityPloySearchResultBinding, E
 
     override fun initData() {
 
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.searchAutoLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                sAdapter.setList(it.data)
+            }
+        })
     }
 }

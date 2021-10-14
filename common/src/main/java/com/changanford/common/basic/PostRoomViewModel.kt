@@ -59,4 +59,13 @@ open class PostRoomViewModel() : BaseViewModel() {
         }
     }
 
+    /**
+     * 查询所有帖子
+     */
+    fun update(postEntity: PostEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            PostDatabase.getInstance(MyApp.mContext).getPostDao().update(postEntity)
+        }
+    }
+
 }

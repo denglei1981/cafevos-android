@@ -64,6 +64,13 @@ data class GrowUpItem(
     val source: String = "长安引力" //来源
 )
 
+data class GrowUpQYBean(
+    val interestsId: Int,
+    val interestsCode: String,
+    val interestsName: String,
+    val icon: String
+)
+
 data class GrowUpExtend(
     val growSeriesName: String,
     val growthSum: Double,

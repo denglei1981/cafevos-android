@@ -20,7 +20,6 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AppUtils
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -94,10 +93,20 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
         binding.uniSubmitBtn.text = "立即申请成为${title}"
 
         //只有大哈 需要上传图片  big_coffee
-        if (memberType == "big_coffee") {
-            binding.group.visibility = View.VISIBLE
-        } else {
-            binding.group.visibility = View.GONE
+        when (memberType) {
+            "big_coffee" -> {
+                binding.group.visibility = View.VISIBLE
+                binding.title1.text = "用户名片、自媒体资料或邀约证明"
+                binding.title2.text = "个人展示照片"
+            }
+//            "ford_user" -> {
+//                binding.group.visibility = View.VISIBLE
+//                binding.title1.text = "个人身份证"
+//                binding.title2.text = "员工工牌"
+//            }
+            else -> {
+                binding.group.visibility = View.GONE
+            }
         }
 
         //认证权益

@@ -12,7 +12,6 @@ import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,8 +49,6 @@ import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
 import com.gyf.immersionbar.ImmersionBar
-import com.gyf.immersionbar.OnKeyboardListener
-import com.jakewharton.rxbinding4.view.visibility
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
@@ -98,7 +95,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private val emojiAdapter by lazy {
         EmojiAdapter(this)
     }
-    private var postEntity: PostEntity? = null
+    private var locaPostEntity: PostEntity? = null
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -131,7 +128,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
         binding.etBiaoti.hint = spannableString
-        postEntity = intent.getSerializableExtra("postEntity") as PostEntity?
+        locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
         binding.etBiaoti.requestFocus()
     }
 
@@ -197,10 +194,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
-            if (postEntity != null) {
-                if (postEntity!!.keywords.isNotEmpty()) {
+            if (locaPostEntity != null) {
+                if (locaPostEntity!!.keywords.isNotEmpty()) {
                     buttomlabelAdapter.data.forEach {
-                        it.isselect = it.tagName == postEntity!!.keywords
+                        it.isselect = it.tagName == locaPostEntity!!.keywords
                     }
                     buttomlabelAdapter.notifyDataSetChanged()
                 }
@@ -229,39 +226,39 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun initlocaData(){
-        if (postEntity != null) {
-            jsonStr2obj(postEntity!!.localMeadle)
-            binding.etBiaoti.setText(postEntity!!.title)
-            binding.etContent.setText(postEntity!!.content)
-            params["plate"] = postEntity!!.plate
-            params["topicId"] = postEntity!!.topicId
-            params["type"] = postEntity!!.type
-            params["keywords"] = postEntity!!.keywords
-            params["circleId"] = postEntity!!.circleId
-            params["content"] = postEntity!!.content
-            params["actionCode"] = postEntity!!.actionCode
-            params["title"] = postEntity!!.title
-            params["address"] = postEntity!!.address
-            params["lat"] = postEntity!!.lat
-            params["lon"] = postEntity!!.lon
-            params["province"] = postEntity!!.province
-            params["cityCode"] = postEntity!!.cityCode
-            params["city"] = postEntity!!.city
-            if (params.containsKey("plate")) {
+        if (locaPostEntity != null) {
+            jsonStr2obj(locaPostEntity!!.localMeadle)
+            binding.etBiaoti.setText(locaPostEntity!!.title)
+            binding.etContent.setText(locaPostEntity!!.content)
+            params["plate"] = locaPostEntity!!.plate
+            params["topicId"] = locaPostEntity!!.topicId
+            params["type"] = locaPostEntity!!.type
+            params["keywords"] = locaPostEntity!!.keywords
+            params["circleId"] = locaPostEntity!!.circleId
+            params["content"] = locaPostEntity!!.content
+            params["actionCode"] = locaPostEntity!!.actionCode
+            params["title"] = locaPostEntity!!.title
+            params["address"] = locaPostEntity!!.address
+            params["lat"] = locaPostEntity!!.lat
+            params["lon"] = locaPostEntity!!.lon
+            params["province"] = locaPostEntity!!.province
+            params["cityCode"] = locaPostEntity!!.cityCode
+            params["city"] = locaPostEntity!!.city
+            if (params["plate"]!=0) {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                buttomTypeAdapter.setData(1, ButtomTypeBean(postEntity!!.plateName, 1, 1))
+                buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
-            if (postEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
+            if (locaPostEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
                 2,
-                ButtomTypeBean(postEntity!!.topicName, 1, 2)
+                ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
             )
-            if (postEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
+            if (locaPostEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
                 3,
-                ButtomTypeBean(postEntity!!.circleName, 1, 3)
+                ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
             )
-            if (postEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
+            if (locaPostEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
                 4,
-                ButtomTypeBean(postEntity!!.address, 1, 4)
+                ButtomTypeBean(locaPostEntity!!.address, 1, 4)
             )
 
         }
@@ -284,7 +281,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }
 
                     override fun save() {
-                        var postEntity = PostEntity()
+                        var postEntity = if (locaPostEntity!=null) locaPostEntity!! else PostEntity()
                         postEntity.content = binding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -316,7 +313,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        viewModel.insertPostentity(postEntity)
+                        if (locaPostEntity == null) {
+                            viewModel.insertPostentity(postEntity)
+                        } else {
+                            viewModel.update(postEntity)
+                        }
                         finish()
                     }
 

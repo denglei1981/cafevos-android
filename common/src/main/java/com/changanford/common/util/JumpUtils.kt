@@ -135,7 +135,6 @@ class JumpUtils {
     }
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
-            "跳转类型不能为空".toast()
             return
         }
         val bundle = Bundle()
@@ -721,7 +720,10 @@ class JumpUtils {
                     }
                 }
             }
-
+            108->{// 聚合搜索。
+                bundle.putString(JumpConstant.SEARCH_TYPE, value)
+                startARouter(ARouterHomePath.PolySearchActivity,bundle = bundle)
+            }
 
             10000 -> {
                 //外部H5
