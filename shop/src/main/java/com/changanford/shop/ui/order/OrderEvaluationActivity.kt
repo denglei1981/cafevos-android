@@ -6,6 +6,7 @@ import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActOrderEvaluationBinding
 import com.changanford.shop.utils.WCommonUtil.onTextChanged
@@ -23,11 +24,17 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             context.startActivity(Intent(context, OrderEvaluationActivity::class.java).putExtra("orderNo",orderNo))
         }
     }
-    private var orderId=""
+    private var orderNo=""
     private val btnSubmit by lazy { binding.btnSubmit }
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.topBar.setActivity(this)
+        orderNo=intent.getStringExtra("orderNo")?:"0"
+        if("0"==orderNo){
+            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
+            this.finish()
+            return
+        }
         val evaluationContent=binding.edtContent
         val contentLength=binding.tvContentLength
         viewModel.orderFormState.observe(this,{
@@ -52,7 +59,7 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
         })
         btnSubmit.setOnClickListener {
             val anonymous=if(binding.checkBox.isChecked)"YesNoNumInDBEnum.YES" else "YesNoNumInDBEnum.NO"
-            viewModel.orderEval(orderId,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
+            viewModel.orderEval(orderNo,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
         }
     }
 

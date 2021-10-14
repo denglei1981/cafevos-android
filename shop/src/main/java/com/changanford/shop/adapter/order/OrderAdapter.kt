@@ -5,14 +5,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.view.TypefaceTextView
@@ -126,8 +124,8 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
      * 再次购买->创建订单页面
     * */
     private fun onceAgainToBuy(item: OrderItemBean){
-        val detailBean=GoodsDetailBean()
-        OrderConfirmActivity.start(context,"goodsInfo")
+//        val detailBean=GoodsDetailBean()
+//        OrderConfirmActivity.start(context,"goodsInfo")
     }
     /**
      * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
