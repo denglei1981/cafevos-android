@@ -19,7 +19,7 @@ import com.changanford.home.data.EnumBean
 class ActsListViewModel : BaseViewModel() {
     val actsLiveData = MutableLiveData<UpdateUiState<ListMainBean<ActBean>>>() //
     var zonghescreens = MutableLiveData<List<EnumBean>>() //综合排序等
-    var screenstype = MutableLiveData<List<EnumBean>>()  //进行中等
+    var screenstype = MutableLiveData<MutableList<EnumBean>>()  //进行中等
     var guanfang = MutableLiveData<List<EnumBean>>()  //官方
     var xianshang = MutableLiveData<List<EnumBean>>()  //线上线下
 
@@ -116,7 +116,8 @@ class ActsListViewModel : BaseViewModel() {
                             zonghescreens.value = it
                         }
                         shaixuanList[1] -> {
-                            screenstype.value = it
+                            screenstype.value = it as? MutableList<EnumBean>
+                            screenstype.value?.add(0,EnumBean("", "全部活动"))
                         }
                         shaixuanList[2] -> {
                             guanfang.value = it

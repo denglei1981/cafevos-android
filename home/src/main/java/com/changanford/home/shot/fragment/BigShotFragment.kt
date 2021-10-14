@@ -54,7 +54,8 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         binding.recyclerViewV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         onRefresh(binding.refreshLayout)
         bigShotUserListAdapter.setOnItemClickListener { adapter, view, position ->
-            JumpUtils.instans!!.jump(35) // 跳转到其他人的主页。
+            val item = bigShotPostListAdapter.getItem(position)
+            JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->
             var recommendUser = bigShotUserListAdapter.getItem(position)
@@ -69,9 +70,8 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
         }
         bigShotPostListAdapter.setOnItemChildClickListener { adapter, view, position ->
-            JumpUtils.instans!!.jump(35) // 跳转到其他人的主页。
-
-
+            val item = bigShotPostListAdapter.getItem(position)
+            JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotPostListAdapter.setOnItemClickListener(object :OnItemClickListener{
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {

@@ -39,7 +39,8 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     }
 
     //， 排序，活动状态  ，发布方,线上线下
-    var shaixuanList = arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
+    var shaixuanList =
+        arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
 
     companion object {
         fun newInstance(): ActsListFragment {
@@ -94,15 +95,15 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             if (homeActsDialog == null) {
                 homeActsDialog = HomeActsScreenDialog(requireActivity(), this, object : ICallback {
                     override fun onResult(result: ResultData) {
-                        if(result.resultCode==ResultData.OK){
-                            var screenData = result.data as ScreenData
-                            cityId=screenData.cityId
-                            cityName=screenData.cityName
-                            if(!TextUtils.isEmpty(screenData.official)){
-                                officialCode= screenData.official.toInt()
+                        if (result.resultCode == ResultData.OK) {
+                            val screenData = result.data as ScreenData
+                            cityId = screenData.cityId
+                            cityName = screenData.cityName
+                            if (!TextUtils.isEmpty(screenData.official)) {
+                                officialCode = screenData.official.toInt()
                             }
-                            if(!TextUtils.isEmpty(screenData.wonderfulType)){
-                                wonderfulType=screenData.wonderfulType.toInt()
+                            if (!TextUtils.isEmpty(screenData.wonderfulType)) {
+                                wonderfulType = screenData.wonderfulType.toInt()
                             }
                             getActList(false)
                         }
@@ -113,10 +114,10 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             officialEnum?.let { it1 -> homeActsDialog?.setOfficalData(it1) }
             homeActsDialog?.show()
         }
-        binding.layoutHomeScreen.tvAllActs.setOnClickListener {
+        binding.layoutHomeScreen.llUnitTime.setOnClickListener {
             viewModel.getEnum(shaixuanList[1])
         }
-        binding.layoutHomeScreen.tvDesc.setOnClickListener { // 综合排序
+        binding.layoutHomeScreen.llUnitOrderType.setOnClickListener { // 综合排序
             viewModel.getEnum(shaixuanList[0])
         }
         appBarState()
@@ -125,6 +126,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         viewModel.getEnum(shaixuanList[2])
         viewModel.getEnum(shaixuanList[3])
     }
+
     var officialEnum: List<EnumBean>? = null
     var xianshangEnum: List<EnumBean>? = null
     override fun observe() {
@@ -157,15 +159,19 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             }
         })
     }
-    fun getActList(isLoadMore:Boolean){
-        viewModel.getActList(isLoadMore,
-            cityId=cityId,
-            cityName=cityName,
-            wonderfulType=wonderfulType,
-            official=officialCode,
+
+    fun getActList(isLoadMore: Boolean) {
+        viewModel.getActList(
+            isLoadMore,
+            cityId = cityId,
+            cityName = cityName,
+            wonderfulType = wonderfulType,
+            official = officialCode,
             orderType = allUnitCode,
-            activityTimeStatus = allActsCode)
+            activityTimeStatus = allActsCode
+        )
     }
+
     fun appBarState() {
         binding.homeAppBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val percent: Float =
@@ -177,12 +183,13 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             }
         })
     }
+
     var allActsCode: String = ""// 进行中
-    var allUnitCode: String=""// 综合排序code
-    var cityId:String=""
-    var cityName:String=""
-    var officialCode:Int=-1
-    var wonderfulType:Int=-1
+    var allUnitCode: String = ""// 综合排序code
+    var cityId: String = ""
+    var cityName: String = ""
+    var officialCode: Int = -1
+    var wonderfulType: Int = -1
     fun setUnitPopu(view: View, list: MutableList<EnumBean>) {
         if (unitPop == null) {
             unitPop = UnitActsPop(this,
@@ -198,15 +205,24 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         unitPop?.updateData(list)
         unitPop?.showPopupWindow(view)
         unitPop?.setAlignBackground(true)
+        unitPop?.setOnDismissListener(object : BasePopupWindow.OnDismissListener() {
+            override fun onDismiss() {
+                binding.layoutHomeScreen.img.rotation = 0f
+            }
+        })
+        unitPop?.setOnPopupWindowShowListener {
+            binding.layoutHomeScreen.img.rotation = 180f
+        }
         unitPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
+
     fun setAllActsPopu(view: View, list: MutableList<EnumBean>) {
         if (allActsPop == null) {
             allActsPop = UnitActsPop(this,
                 object : ICallback {
                     override fun onResult(result: ResultData) {
                         if (result.resultCode == ResultData.OK) {
-                            val allEnum = result.data  as? EnumBean
+                            val allEnum = result.data as? EnumBean
                             binding.layoutHomeScreen.tvAllActs.text = allEnum?.message
                             allActsCode = allEnum?.code.toString()
                             getActList(false)
@@ -217,8 +233,17 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
         allActsPop?.updateData(list)
         allActsPop?.showPopupWindow(view)
         allActsPop?.setAlignBackground(true)
+        allActsPop?.onDismissListener = object : BasePopupWindow.OnDismissListener() {
+            override fun onDismiss() {
+                binding.layoutHomeScreen.ivDown.rotation = 0f
+            }
+        }
+        allActsPop?.setOnPopupWindowShowListener {
+            binding.layoutHomeScreen.ivDown.rotation = 180f
+        }
         allActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
+
     private fun initViewPager() {
         binding.layoutViewpager.bViewpager.apply {
             setAutoPlay(true)
@@ -238,6 +263,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             setIndicatorView(binding.layoutViewpager.drIndicator)
         }.create()
     }
+
     /**
      * 设置指示器
      * */
@@ -255,6 +281,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             )
             .setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
+
     fun changeScreen() { // 改变了筛选参数。。
 //        viewModel.getActList()
 

@@ -5,9 +5,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
@@ -19,7 +21,9 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
         addItemType(3, R.layout.item_home_acts)
+
     }
+
 
     override fun convert(holder: BaseViewHolder, item: RecommendData) {
         val picLists = item.getPicLists()
@@ -78,7 +82,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         tvTips.text = item.title
 
 
-        tvHomeActAddress.text = "地点：".plus(item.city)
+
         tvHomeActTimes.text = "活动截止时间:".plus(item.deadLineTime)
         if (item.deadLineTime <= item.serverTime) {
             btnState.text = "已截止"
@@ -90,20 +94,25 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 tvTagTwo.text = "线上活动"
                 tvHomeActTimes.text =
                     "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
+                tvHomeActAddress.visibility=View.GONE
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+                tvHomeActAddress.text = "地点：".plus(item.city)
+                tvHomeActAddress.visibility=View.VISIBLE
             }
             2 -> {
                 tvTagTwo.text = "调查问卷"
                 tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
+                tvHomeActAddress.visibility=View.GONE
             }
             3 -> {
                 tvTagTwo.text = "厂家活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+                tvHomeActAddress.visibility=View.GONE
             }
         }
         when (item.official) {
@@ -138,6 +147,13 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
 
         val tvVideoTime=holder.getView<TextView>(R.id.tv_video_times)
 
+        ivHeader.setOnClickListener {
+            toUserHomePage(item)
+        }
+        tvAuthorName.setOnClickListener {
+            toUserHomePage(item)
+        }
+
         tvContent.text = item.getContent()
         val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
@@ -169,6 +185,13 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
             }
         }
 
+
+        val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+        if (item.authors != null) {
+            val labelAdapter = LabelAdapter(16)
+            rvUserTag.adapter=labelAdapter
+            labelAdapter.setNewInstance(item.authors?.imags)
+        }
         when (item.rtype) {
             1 -> {
                 tvNewsTag.visibility = View.VISIBLE
@@ -183,5 +206,9 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
             }
 
         }
+    }
+
+    private fun toUserHomePage(item: RecommendData) {
+        JumpUtils.instans!!.jump(35, item.authors?.userId.toString())
     }
 }

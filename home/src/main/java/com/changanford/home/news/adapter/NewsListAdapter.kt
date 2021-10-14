@@ -36,9 +36,7 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
         )
     }
-
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
-
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
@@ -47,7 +45,6 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         GlideUtils.loadBD(item.pics, ivPicBig)
         tvAuthorName.text = item.authors?.nickname
         tvSubtitle.text = item.authors?.getMemberNames()
-
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
         item.authors?.let {
