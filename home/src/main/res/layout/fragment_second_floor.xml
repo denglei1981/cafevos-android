@@ -35,7 +35,7 @@
                     android:id="@+id/classics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10" />
+                     />
             </com.scwang.smart.refresh.header.TwoLevelHeader>
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout

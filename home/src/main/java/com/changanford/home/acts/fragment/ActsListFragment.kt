@@ -11,7 +11,6 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.R
@@ -27,7 +26,6 @@ import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.google.android.material.appbar.AppBarLayout
 import com.zhpan.bannerview.BannerViewPager
 import razerdp.basepopup.BasePopupWindow
-import java.util.*
 
 /**
  *  活动列表
@@ -107,7 +105,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
             viewModel.getEnum(shaixuanList[0])
         }
         appBarState()
-        viewModel.getActList(true, 10, 1)
+        viewModel.getActList()
         viewModel.getBanner()
         viewModel.getEnum(shaixuanList[2])
         viewModel.getEnum(shaixuanList[3])
