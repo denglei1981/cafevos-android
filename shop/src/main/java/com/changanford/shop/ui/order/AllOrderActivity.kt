@@ -4,7 +4,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.ActOrderAllBinding
 import com.changanford.shop.popupwindow.OrderScreeningPop
@@ -59,7 +58,10 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
      * 订单筛选结果回调 0 商品、1购车 2 试驾
     * */
     override fun onSelectBackListener(type: Int) {
-        ToastUtils.showLongToast("订单筛选结果：$type",this)
+        when(type){
+            0->JumpUtils.instans?.jump(52)
+        }
+
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
