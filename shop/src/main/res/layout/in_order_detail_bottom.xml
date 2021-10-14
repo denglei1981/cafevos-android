@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -17,9 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_totalPayFb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/str_copeWithTotalAmount"
+            tools:text="@string/str_copeWithTotalAmount"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView

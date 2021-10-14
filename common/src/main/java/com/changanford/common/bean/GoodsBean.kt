@@ -283,7 +283,7 @@ data class OrderItemBean(
     val addressName: String = "",
     val buyNum: String ="0",
     val consignee: String = "",
-    val consumerMsg: String = "",
+    val consumerMsg: String? = "",
     val courierCompany: String = "",
     val courierNo: String = "",
     val createBy: String = "",
@@ -317,7 +317,7 @@ data class OrderItemBean(
     val params: Params = Params(),
     val payType: String = "",
     val phone: String = "",
-    val preferentialFb: Int = 0,
+    val preferentialFb: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
     val seckill: String = "",
@@ -350,6 +350,10 @@ data class OrderItemBean(
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
+    val freightPrice:String?="0.00",//运费 0为包邮
+    var otherName:String?="",
+    var otherValue:String?="",
+    var statesVisibility:Int=0,
 )
 data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")
 data class ShopAddressInfoBean(

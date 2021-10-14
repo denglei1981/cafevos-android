@@ -3,7 +3,6 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -19,6 +18,7 @@ import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import java.text.SimpleDateFormat
 
 /**
  * @Author : wenke
@@ -36,6 +36,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private var orderNo:String=""
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var timeCountControl:PayTimeCountControl?=null
+    @SuppressLint("SimpleDateFormat")
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     override fun initView() {
         binding.topBar.setActivity(this)
         orderNo=intent.getStringExtra("orderNo")?:""
@@ -61,6 +63,9 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             dataBean.orderStatusName= this
             when(this){
                 "待付款"->{
+                    //留言
+                    dataBean.otherName=getString(R.string.str_leaveMessage)
+                    dataBean.otherValue=dataBean.consumerMsg?:""
                     binding.tvOrderPrompt.apply {
                         visibility= View.VISIBLE
                         setText(R.string.prompt_orderUpdateAddress)
@@ -73,10 +78,11 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         }
                     })
                     timeCountControl?.start()
-                    Log.e("wenke","payCountDown:$payCountDown")
-
                 }
                 "待发货"->{
+                    //支付时间
+                    dataBean.otherName=getString(R.string.str_payTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
                     binding.tvOrderPrompt.apply {
                         visibility= View.VISIBLE
                         setText(R.string.prompt_waitSend)
@@ -84,21 +90,31 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
                 }
                 "待收货"->{
+                    //发货时间
+                    dataBean.otherName=getString(R.string.str_deliveryTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                 }
                 "待评价"->{
+                    //发货时间
+                    dataBean.otherName=getString(R.string.str_deliveryTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.orderTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
                 }
                 "已完成"->{
+                    //支付时间
+                    dataBean.otherName=getString(R.string.str_payTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                 }
                 "已关闭"->{
+                    dataBean.statesVisibility=2
                     binding.tvOrderRemainingTime.text=dataBean.evalStatusDetail
                 }
             }
@@ -108,8 +124,19 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             userInfo="$consignee   $phone"
             binding.inAddress.addressInfo=this
         }
+        //会员优惠
+        val preferentialFb=dataBean.preferentialFb
+        if(null!=preferentialFb&&"0"!=preferentialFb){
+            binding.inGoodsInfo1.tvIntegralVip.visibility=View.VISIBLE
+            binding.inGoodsInfo1.tvMemberDiscount.visibility=View.VISIBLE
+        }
         binding.model=dataBean
         this.dataBean=dataBean
+        binding.inGoodsInfo1.model=dataBean
+        binding.inOrderInfo.apply {
+            model=dataBean
+            if("FB_PAY"!=dataBean.payType)tvPaymentValue.setText(R.string.str_other)
+        }
         binding.inGoodsInfo.apply {
             model=dataBean
             inGoodsInfo.model=dataBean

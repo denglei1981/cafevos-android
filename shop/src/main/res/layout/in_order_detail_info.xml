@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,9 +34,12 @@
             android:layout_height="wrap_content"
             tools:text="1300积分"
             app:end_txt="@string/str_integral"
+            android:text="@{model.fbCost}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/tv_memberDiscount"
             android:layout_marginTop="@dimen/dp_24"
             app:layout_constraintTop_toBottomOf="@id/tv_amountGoods"
@@ -46,12 +51,15 @@
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integralVip"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="-1300积分"
             app:end_txt="@string/str_integral"
+            android:text="@{model.preferentialFb}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
@@ -71,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_rmb"
+            android:text="@{model.freightPrice}"
             tools:text="￥0.0"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
