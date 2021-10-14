@@ -70,10 +70,9 @@ object ToastUtils {
      * 弹出长时间提示
      * @param msg  提示信息
      */
-    fun showLongToast(msg: String?, context: Context?) {
+    fun showLongToast(msg: String?, context: Context?=MyApp.mContext) {
         if(!TextUtils.isEmpty(msg))showToast(msg, Toast.LENGTH_LONG, context)
     }
-
     /**
      * 关闭当前Toast
      */

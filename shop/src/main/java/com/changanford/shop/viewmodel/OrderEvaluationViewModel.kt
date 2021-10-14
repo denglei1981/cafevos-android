@@ -4,7 +4,9 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.changanford.common.MyApp
 import com.changanford.common.net.*
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.bean.OrderFormState
@@ -46,8 +48,8 @@ class OrderEvaluationViewModel: BaseViewModel(){
                 shopApiService.orderEval(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 responseData.postValue(ResponseBean(true))
-            }.onFailure {
-
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }
