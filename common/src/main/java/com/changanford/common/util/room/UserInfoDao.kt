@@ -31,6 +31,10 @@ interface UserInfoDao {
     @Query("Update table_sys_uni_user set user_mobile = :mobile Where uni_user_id = :userId")
     fun updateMobile(userId: String, mobile: String): Int
 
+    //按userId去更新bindMobileJumpType
+    @Query("Update table_sys_uni_user set user_mobile = :bindMobileJumpType Where uni_user_id = :userId")
+    fun updateBindMobile(userId: String, bindMobileJumpType: String): Int
+
     //按userId去更新mobile
     @Query("Update table_sys_uni_user set user_token = :token Where uni_user_id = :userId")
     fun updateToken(userId: String, token: String): Int

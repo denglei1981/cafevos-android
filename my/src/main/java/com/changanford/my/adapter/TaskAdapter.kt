@@ -110,8 +110,10 @@ fun GrowUpAndJifenViewHolder(
         if (isGrowUp) {
             if (item.growth < 0) {
                 it.num.text = "${item.growth}"
+                it.num.setTextColor(Color.parseColor("#1B3B89"))
             } else {
                 it.num.text = "+${item.growth}"
+                it.num.setTextColor(Color.parseColor("#333333"))
             }
         } else {
             if (item.integral < 0) {

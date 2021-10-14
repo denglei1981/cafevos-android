@@ -18,9 +18,12 @@ data class User(
 
 data class LoginBean(
     val openid: String,
-    val phone: String = "",
+    val phone: String? = "",
     val roleSession: String,
     val token: String,
     val userId: String,
-    val isNewUser: Int
+    val isNewUser: Int,
+    var jumpData: BindMobileJumpData? = BindMobileJumpData()
 )
+
+data class BindMobileJumpData(val jumpDataType: Int = 0, val jumpDataMsg: String = "")
