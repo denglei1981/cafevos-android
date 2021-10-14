@@ -719,7 +719,10 @@ class JumpUtils {
                     }
                 }
             }
-
+            108->{// 聚合搜索。
+                bundle.putString(JumpConstant.SEARCH_TYPE, value)
+                startARouter(ARouterHomePath.PolySearchActivity,bundle = bundle)
+            }
 
             10000 -> {
                 //外部H5
