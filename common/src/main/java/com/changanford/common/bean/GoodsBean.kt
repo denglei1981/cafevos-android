@@ -161,19 +161,19 @@ data class GoodsDetailBean(
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",
     var stock: Int = 0,
-    val mallOrderEval:CommentItem?,
+    val mallOrderEval:CommentItem?=null,
     var stockProportion:String="0",//库存百分比 0-100
     val spuName:String?="",
     val spuId:String="",
-    var skuId: String,
+    var skuId: String="",
     var buyNum:Int=1,//购买数量
-    var skuCodeTxts:List<String>?,
+    var skuCodeTxts:List<String>?= listOf(),
     var acountFb:Int=0,//账号积分
-    val param:String?,
-    var totalPayFb:String,//总支付积分
-    val freightPrice:String,//运费 0为包邮
-    val collect:String,//是否收藏 YES NO
-    var addressId:Int?,
+    val param:String?="",
+    var totalPayFb:String="",//总支付积分
+    val freightPrice:String="",//运费 0为包邮
+    val collect:String="",//是否收藏 YES NO
+    var addressId:Int?=0
 )
 
 data class Attribute(
@@ -291,7 +291,7 @@ data class OrderItemBean(
     val dataState: String = "",
     val discount: Int = 0,
     val discountScale: Int = 0,
-    val evalStatus: String = "",
+    val evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: Int = 0,
     val fbOfUnitPrice: String ="0",
@@ -345,4 +345,4 @@ data class OrderItemBean(
     var orderStatusTxt:String?="",
     var orderType:Int=0,
 )
-data class OrderInfoBean(val orderNo:String,val cost:Int,var accountFb:String?="")
+data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")

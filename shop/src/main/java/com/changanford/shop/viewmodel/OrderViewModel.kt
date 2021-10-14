@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class OrderViewModel: BaseViewModel() {
     //订单列表
-    var shopOrderData = MutableLiveData<ShopOrderBean>()
+    var shopOrderData = MutableLiveData<ShopOrderBean?>()
     /**
      * 获取地址列表
      */
@@ -78,6 +78,7 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
+                shopOrderData.postValue(null)
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }
             responseBean.onSuccess {

@@ -19,8 +19,8 @@ import com.changanford.shop.viewmodel.OrderEvaluationViewModel
 @Route(path = ARouterShopPath.OrderEvaluationActivity)
 class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvaluationViewModel>() {
     companion object{
-        fun start(context: Context,orderId:String) {
-            context.startActivity(Intent(context, OrderEvaluationActivity::class.java).putExtra("orderId",orderId))
+        fun start(context: Context,orderNo:String) {
+            context.startActivity(Intent(context, OrderEvaluationActivity::class.java).putExtra("orderNo",orderNo))
         }
     }
     private var orderId=""

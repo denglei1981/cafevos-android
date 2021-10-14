@@ -18,7 +18,7 @@ class AllOrderAdapter: BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<Ite
             dataBinding.model=item
             dataBinding.executePendingBindings()
             //取消订单
-            dataBinding.tvBtnCancel.setOnClickListener {
+            dataBinding.btnCancel.setOnClickListener {
                 val pop=PublicPop(context)
                 pop.showPopupWindow(context.getString(R.string.prompt_cancelOrder),null,null,object :PublicPop.OnPopClickListener{
                     override fun onLeftClick() {
