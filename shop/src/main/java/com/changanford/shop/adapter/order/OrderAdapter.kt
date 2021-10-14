@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 
 class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     //orderType -1所有订单 0 商品、1购车 2 试驾
-    private val orderTypes= arrayOf("商品订单","购车订单","试驾订单","","")
+    private val orderTypes= arrayOf("未知0","购车订单","试驾订单","商品订单","未知4","未知5","未知6","")
     @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
