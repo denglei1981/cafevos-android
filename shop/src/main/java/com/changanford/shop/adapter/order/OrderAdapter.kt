@@ -147,23 +147,24 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
      * 确认收货
      * */
     private fun confirmGoods(item: OrderItemBean){
-        val pop= PublicPop(context)
-        pop.showPopupWindow(context.getString(R.string.str_confirmReceiptGoods),null,null,object :
-            PublicPop.OnPopClickListener{
-            override fun onLeftClick() {
-                pop.dismiss()
-            }
-            override fun onRightClick() {
-                viewModel?.confirmReceipt(item.orderNo,object :OnPerformListener{
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onFinish(code: Int) {
-                        item.orderStatus="FINISH"
-                        this@OrderAdapter.notifyDataSetChanged()
-                        pop.dismiss()
-                    }
-                })
-            }
-        })
+        PublicPop(context).apply {
+            showPopupWindow(context.getString(R.string.str_confirmReceiptGoods),null,null,object :
+                PublicPop.OnPopClickListener{
+                override fun onLeftClick() {
+                    dismiss()
+                }
+                override fun onRightClick() {
+                    viewModel?.confirmReceipt(item.orderNo,object :OnPerformListener{
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onFinish(code: Int) {
+                            item.orderStatus="FINISH"
+                            this@OrderAdapter.notifyDataSetChanged()
+                            dismiss()
+                        }
+                    })
+                }
+            })
+        }
     }
     /**
      * 去支付
@@ -175,15 +176,21 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
      * 取消订单
     * */
     private fun cancelOrder(item: OrderItemBean){
-        val pop= PublicPop(context)
-        pop.showPopupWindow(context.getString(R.string.prompt_cancelOrder),null,null,object :
-            PublicPop.OnPopClickListener{
-            override fun onLeftClick() {
-                pop.dismiss()
-            }
-            override fun onRightClick() {
-                pop.dismiss()
-            }
-        })
+        PublicPop(context).apply {
+            showPopupWindow(context.getString(R.string.prompt_cancelOrder),null,null,object :
+                PublicPop.OnPopClickListener{
+                override fun onLeftClick() { dismiss() }
+                override fun onRightClick() {
+                    viewModel?.orderCancel(item.orderNo,object:OnPerformListener{
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onFinish(code: Int) {
+                            item.orderStatus="CLOSED"
+                            this@OrderAdapter.notifyDataSetChanged()
+                            dismiss()
+                        }
+                    })
+                }
+            })
+        }
     }
 }

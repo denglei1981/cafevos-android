@@ -144,15 +144,17 @@ class OrderViewModel: BaseViewModel() {
      * 取消订单
      * [orderNo]订单号
      * */
-    fun orderCancel(orderNo:String) {
+    fun orderCancel(orderNo:String,listener: OnPerformListener?) {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["orderNo"]=orderNo
+                body["orderNo"] = orderNo
                 val randomKey = getRandomKey()
                 shopApiService.orderCancel(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }.onSuccess {
-
+                listener?.onFinish(0)
             }
         }
     }
@@ -204,7 +206,7 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.confirmReceipt(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it,MyApp.mContext)
+                ToastUtils.showLongToast(it)
             }.onSuccess {
                 listener?.onFinish(0)
             }
