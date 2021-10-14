@@ -149,8 +149,6 @@
         <activity android:name="com.changanford.my.MyFootUI" />
         <activity android:name="com.changanford.my.MyActUI" />
         <activity android:name="com.changanford.my.PersonCenterUI" />
-        <activity android:name="com.changanford.my.ui.JiFenList"
-            android:theme="@style/Theme.EVOS.NoActionBar"/>
 
     </application>
 

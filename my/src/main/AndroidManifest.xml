@@ -34,8 +34,9 @@
         <activity android:name=".ui.MineMessageUI" />
         <activity android:name=".ui.MineMessageSysInfoUI" />
         <activity android:name=".ui.MineMessageInfoUI" />
-        <activity android:name=".ui.SignTransparentUI"
-            android:theme="@style/Picture.Theme.Translucent"/>
+        <activity
+            android:name=".ui.SignTransparentUI"
+            android:theme="@style/Picture.Theme.Translucent" />
         <activity android:name=".ui.MineFeedbackUI" />
         <activity android:name=".ui.MineEditFeedbackUI" />
         <activity android:name=".ui.MineFeedbackRecordUI" />
@@ -44,11 +45,12 @@
         <activity android:name=".ui.SignMonthUI" />
         <activity android:name=".ui.AboutFordUI" />
         <activity android:name=".ui.UserAuthUI" />
-        <activity android:name=".MyPostUI" />
         <activity android:name=".ui.UserVipUI" />
         <activity android:name=".ui.MyVipUI" />
         <activity android:name=".ui.MyPostDraftUI" />
         <activity android:name=".ui.FordUserAuthUI" />
         <activity android:name=".ui.CarAuthSubmitUI" />
+        <activity android:name=".ui.ConfirmCancelAccountUI" />
+        <activity android:name=".ui.JiFenList" />
     </application>
 </manifest>
