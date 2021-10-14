@@ -83,11 +83,7 @@ object GlideUtils {
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
-//        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else "https://img.uni.changan.com.cn/".plus(
-//            preUrl
-//        )
-
-    fun defaultHandleImageUrl(preUrl: String?): String =
+     fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
@@ -144,7 +140,7 @@ object GlideUtils {
     fun loadBD(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int = R.mipmap.ic_launcher
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
     ) {
         Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
             if (errorDefaultRes != null) {

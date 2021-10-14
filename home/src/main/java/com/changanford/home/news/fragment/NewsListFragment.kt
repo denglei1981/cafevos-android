@@ -62,7 +62,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             selectPosition = position
             when (view.id) {
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
-                    JumpUtils.instans!!.jump(35)
+                    JumpUtils.instans!!.jump(35,item.userId.toString())
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
@@ -198,23 +198,6 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         return false
     }
 
-    // 关注或者取消
-    private fun followActionIn(authorBaseVo: AuthorBaseVo, position: Int) {
-        var followType = authorBaseVo.isFollow
-        when (followType) {
-            1 -> {
-                followType = 2
-            }
-            else -> {
-                followType = 1
-            }
-        }
-        authorBaseVo.isFollow = followType
-        // 有头布局。
-//        newsListAdapter.notifyItemChanged(position+1,"follow")
-//        newsListAdapter.notifyItemChanged(position+1)
-        viewModel.followOrCancelUser(authorBaseVo.authorId, followType)
-    }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.getSpecialList()

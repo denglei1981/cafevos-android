@@ -19,7 +19,6 @@ class ActBean {
      val provinceName: String? = null
      val recommend: String? = null
      val hot: String? = null
-
      fun getAddress(){
 
      }
