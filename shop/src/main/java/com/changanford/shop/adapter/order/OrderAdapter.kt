@@ -1,6 +1,7 @@
 package com.changanford.shop.adapter.order
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -30,7 +31,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
-            item.orderStatusTxt=getOrderStatus(item.orderStatus,item.evalStatus)
+            if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
             updateBtnUI(dataBinding,item)

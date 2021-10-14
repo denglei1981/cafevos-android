@@ -342,7 +342,12 @@ data class OrderItemBean(
     val receiveTime: Any? = null,
     val sendTime: Any? = null,
     val waitPayDuration: Int = 0,
-    var orderStatusTxt:String?="",
     var orderType:Int=0,
+    val jumpDataType: Int = 0,
+    val jumpDataValue: String = "",
+    val orderBrief: String = "",
+    val orderImg: Any? = null,
+    var orderStatusName: String? = "",
+    val skuName: String = "",
 )
 data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")

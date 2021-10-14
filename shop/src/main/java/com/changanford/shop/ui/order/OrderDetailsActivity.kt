@@ -17,7 +17,7 @@ import com.changanford.shop.viewmodel.OrderViewModel
 class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
     companion object{
         fun start(context: Context,orderNo:String?) {
-            context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))
+            orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
         }
     }
     override fun initView() {
