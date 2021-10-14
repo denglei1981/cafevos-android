@@ -56,4 +56,7 @@ interface PostDao {
 
     @Query("Delete from post_table Where postsId = :postid")
     suspend fun delete(postid: Int)
+
+    @Update
+    suspend fun update(postEntity: PostEntity)
 }
