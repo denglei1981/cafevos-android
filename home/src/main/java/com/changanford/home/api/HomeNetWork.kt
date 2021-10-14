@@ -5,6 +5,7 @@ import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
 import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
+import com.changanford.home.data.TwoAdData
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.SpecialDetailData
 import io.reactivex.Observable
@@ -237,7 +238,11 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<List<CircleHeadBean>>
 
-
+    @POST("con/ads/bathList")
+    suspend  fun getTwoBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<TwoAdData>
     /**
      * 枚举字典
      */

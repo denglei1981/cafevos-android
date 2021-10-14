@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_trans_bg"
+        >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_thumbs"
+            android:layout_width="93dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_recommend_test"
+            app:layout_constraintDimensionRatio="186:256"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_black_trans"
+            android:drawableStart="@drawable/shape_orange_f97bg"
+            android:drawablePadding="@dimen/dp_2"
+            android:gravity="center_vertical"
+            android:maxLength="4"
+            android:padding="2dp"
+            android:textColor="#fffefefe"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintStart_toStartOf="@+id/iv_thumbs"
+            app:layout_constraintTop_toTopOf="@+id/iv_thumbs"
+            tools:text="秒杀活动" />
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_home_play"
+            android:layout_marginBottom="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_thumbs"
+            app:layout_constraintEnd_toEndOf="@+id/iv_thumbs"
+            app:layout_constraintStart_toStartOf="@+id/iv_thumbs"
+            app:layout_constraintTop_toTopOf="@+id/iv_thumbs" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="2dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="以后人工智能会代替人类吗"
+            android:textColor="#fffefefe"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_thumbs"
+            app:layout_constraintEnd_toEndOf="@+id/iv_thumbs"
+            app:layout_constraintStart_toStartOf="@+id/iv_thumbs" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
