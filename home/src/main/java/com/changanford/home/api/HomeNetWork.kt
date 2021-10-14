@@ -1,7 +1,6 @@
 package com.changanford.home.api
 
-import com.changanford.common.bean.CityX
-import com.changanford.common.bean.Province
+import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
 import com.changanford.home.data.ActBean
@@ -148,16 +147,56 @@ interface HomeNetWork {
     suspend fun searchAc(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<List<SearchKeyBean>>
 
     /**
-     *搜索内容。
+     *搜索作者
      * */
     @POST("/con/search/s")
     suspend fun searchS(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<ListMainBean<AuthorBaseVo>>
+
+
+
+    /**
+     * 搜索搜索资讯
+     */
+    @POST("con/search/s")
+    suspend fun getSearchNewsList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<InfoDataBean>>
+
+    /**
+     * 搜索搜索帖子
+     */
+    @POST("con/search/s")
+    suspend fun getSearchPostList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<PostDataBean>>
+
+
+    /**
+     * 搜索搜索商城
+     */
+    @POST("con/search/s")
+    suspend fun getSearchShopList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<SearchShopBean>>
+
+    /**
+     * 搜索搜索活动
+     */
+    @POST("con/search/s")
+    suspend fun getSearchDoingList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
+
 
     /**
      *

@@ -29,7 +29,7 @@ class ActsListViewModel : BaseViewModel() {
         page: Boolean,
         count: Int,
         pageSize: Int,
-        cityId: Int = -1,// 城市id
+        cityId: String = "",// 城市id
         cityName: String = "",// 城市名称
         wonderfulType: Int = -1,// 线上，线下， 问卷调查。0-线上，1-线下，2-问卷,4可用
         orderType: String = "",//排序 综合排序  COMPREHENSIVE HOT,New
@@ -45,7 +45,7 @@ class ActsListViewModel : BaseViewModel() {
             if (!TextUtils.isEmpty(orderType)) {
                 hashMap["orderType"] = orderType
             }
-            if (TextUtils.isEmpty(activityTimeStatus)) {
+            if (!TextUtils.isEmpty(activityTimeStatus)) {
                 hashMap["activityTimeStatus"] = activityTimeStatus
             }
             if (official >= 0) {
@@ -54,13 +54,15 @@ class ActsListViewModel : BaseViewModel() {
             if (wonderfulType >= 0) {
                 hashMap["wonderfulType"] = wonderfulType
                 if (wonderfulType == 1) {
-                    if (cityId == -1 || TextUtils.isEmpty(cityName)) {
+                    if (!TextUtils.isEmpty(cityId) || !TextUtils.isEmpty(cityName)) {
                         hashMap["cityId"] = cityId
                         hashMap["cityName"] = cityName
                     }
                 }
             }
-            body["queryParams"] = hashMap
+            if(hashMap.size>0){
+                body["queryParams"] = hashMap
+            }
             var rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getHighlights(body.header(rkey), body.body(rkey))

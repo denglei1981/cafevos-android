@@ -22,7 +22,7 @@ data class InfoBean(
 data class InfoDataBean(
     override val itemType: Int,
     val artId: String = "",
-    var authors: AuthorBaseVo?=null,
+    var authors: AuthorBaseVo? = null,
     val catId: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
@@ -67,6 +67,22 @@ data class InfoDataBean(
         return commentCountResult
     }
 
+    fun getCommentCountAnViewCount(): String {
+        var commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
+        var viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        return commentStr.plus("\t").plus(viewStr)
+    }
+
+    fun getContentStr(): String {
+        if (!TextUtils.isEmpty(content)) {
+            return content
+        }
+        if (!TextUtils.isEmpty(summary)) {
+            return summary
+        }
+        return ""
+    }
+
 
 }
 
@@ -75,13 +91,17 @@ data class AuthorBaseVo(
     val authorId: String,
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
-    var  isFollow: Int = 0,
+    var isFollow: Int = 0,
     val medalImage: Any? = Any(),
     val medalName: Any? = Any(),
     val memberIcon: String = "",
     val memberId: Int = 0,
     val memberName: String = "",
-    val nickname: String = ""
+    val nickname: String = "",
+    // 一下三个参数是用户搜索的。
+    val headFrameName: String = "",
+    val headFrameImage: String = "",
+    val userId: String
 ) {
     fun getMemberNames(): String {
         return if (TextUtils.isEmpty(memberName)) {
@@ -101,12 +121,12 @@ data class PostBean(
 )
 
 data class PostDataBean(
-    val authorBaseVo: AuthorBaseVo?=null,
+    val authorBaseVo: AuthorBaseVo? = null,
     val circleId: Int? = 0,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,
-    val commentCount: Int = 0,
-    val content: String? = "",
+    var commentCount: Long = 0,
+    val content: String = "",
     val contentLike: Any? = Any(),
     val createBy: Any? = Any(),
     val createTime: Long = 0,
@@ -120,7 +140,7 @@ data class PostDataBean(
     val isRecommend: Int = 0,
     val isTop: Int = 0,
     val keywords: String = "",
-    var likesCount: Int = 0,
+    var likesCount: Long = 0,
     val likesCountBase: Int = 0,
     val likesCountMul: Int = 0,
     val picCount: Int = 0,
@@ -149,7 +169,21 @@ data class PostDataBean(
     val viewsCount: Int = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0
-)
+){
+    fun getCommentCountAnViewCount(): String {
+        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
+        val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        return commentStr.plus("\t").plus(viewStr)
+    }
+
+    fun getContentStr(): String {
+        if (!TextUtils.isEmpty(content)) {
+            return content
+        }
+        return ""
+    }
+
+}
 
 data class AcBean(var title: String, var iconUrl: String, var type: Int) : MultiItemEntity {
     override val itemType: Int
