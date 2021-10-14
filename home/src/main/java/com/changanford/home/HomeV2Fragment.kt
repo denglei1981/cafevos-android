@@ -7,7 +7,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.EmptyViewModel
@@ -17,14 +20,18 @@ import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
+import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
+import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
+import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -37,7 +44,7 @@ import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(),
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>(),
     OnRefreshListener {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
@@ -55,6 +62,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
     }
     val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
+    }
+
+
+    val twoAdRvListAdapter: TwoAdRvListAdapter by lazy {
+        TwoAdRvListAdapter()
     }
 
     override fun initView() {
@@ -133,6 +145,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         binding.layoutTopBar.ivScan.setOnClickListener {
             showPublish(binding.layoutTopBar.ivScan)
         }
+        binding.recommendContent.etSearchContent.setOnClickListener {
+            JumpUtils.instans!!.jump(108)
+        }
         binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
             override fun onHeaderMoving(
                 header: RefreshHeader?,
@@ -191,6 +206,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
         super.onResume()
 
     }
+
     fun isCurrentIndex(index: Int) = binding.homeViewpager.currentItem == index
 
     //初始化tab
@@ -231,14 +247,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
             Constraints.LayoutParams.WRAP_CONTENT,
             object : ICallback {
                 override fun onResult(result: ResultData) {
-                    when((result.data as PublishData).code){
-                        1->{//发布活动
+                    when ((result.data as PublishData).code) {
+                        1 -> {//发布活动
                             JumpUtils.instans?.jump(13)
                         }
-                        2->{//问卷调查
+                        2 -> {//问卷调查
                             JumpUtils.instans?.jump(12)
                         }
-                        3->{//扫一扫
+                        3 -> {//扫一扫
                             JumpUtils.instans?.jump(61)
                         }
                     }
@@ -251,13 +267,60 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, EmptyViewModel>(
 
 
     override fun initData() {
+        viewModel.getTwoBanner()
+        binding.recommendContent.rvBanner.adapter = twoAdRvListAdapter
+        twoAdRvListAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val item = twoAdRvListAdapter.getItem(position)
+                JumpUtils.instans!!.jump(item.jumpDataType, item.jumpDataValue)
+            }
+        })
+
+        binding.recommendContent.tvBigTopic.setOnClickListener {
+
+        }
 
     }
 
-     fun stopRefresh() {
+    override fun observe() {
+        super.observe()
+        viewModel.twoBannerLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                val appIndexBackground = it.data.app_index_background  // 背景广告
+                appIndexBackground.forEach { b -> // 背景。
+                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+                }
+                twoAdRvListAdapter.setNewInstance(it.data.app_index_background)
+                val appIndexTopic = it.data.app_index_topic
+                appIndexTopic.forEach { t -> // 话题
+                    binding.recommendContent.tvTopicTitle.text = t.adSubName
+                    binding.recommendContent.tvBigTopic.text = t.adName
+                    binding.recommendContent.tvBigTopic.setOnClickListener {
+                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                    }
+                    binding.recommendContent.tvTopicTitle.setOnClickListener {
+                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                    }
+                }
+                var appIndexBanner = it.data.app_index_banner
+                appIndexBanner.forEach { b-> // banner
+                    GlideUtils.loadBD(b.adImg,binding.recommendContent.ivBanner)
+                    binding.recommendContent.ivBanner.setOnClickListener {
+                        JumpUtils.instans?.jump(b.jumpDataType,b.jumpDataValue)
+                    }
+                }
+
+            }
+
+        })
+    }
+
+
+    fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
     }
-    fun exBand(isExpand:Boolean){
+
+    fun exBand(isExpand: Boolean) {
         binding.appbarLayout.setExpanded(isExpand)
     }
 
