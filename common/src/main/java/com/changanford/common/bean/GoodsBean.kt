@@ -280,7 +280,7 @@ data class OrderItemBean(
     val addressId: Int = 0,
     val addressInfo: String = "",
     val addressName: String = "",
-    val buyNum: Int = 0,
+    val buyNum: String ="0",
     val consignee: String = "",
     val consumerMsg: String = "",
     val courierCompany: String = "",
@@ -293,7 +293,7 @@ data class OrderItemBean(
     val evalStatus: String = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: Int = 0,
-    val fbOfUnitPrice: Int = 0,
+    val fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",
     val mallMallDiscountScaleId: Int = 0,
     val mallMallHaggleActivityId: Int = 0,
@@ -332,6 +332,14 @@ data class OrderItemBean(
     val userId: Int = 0,
     val cost:String?="0",
     var waitPayCountDown:Long?=0,
-    var acountFb:String?="0"
+    var acountFb:String?="0",
+    val busSourse: Int = 0,
+    val closeTime: Long = 0,
+    val evalStatusDetail: String = "",
+    val payTime: Any? = null,
+    val preferentialFbOfUnitPrice: Any? = null,
+    val receiveTime: Any? = null,
+    val sendTime: Any? = null,
+    val waitPayDuration: Int = 0
 )
 data class OrderInfoBean(val orderNo:String,val cost:Int,var accountFb:String?="")

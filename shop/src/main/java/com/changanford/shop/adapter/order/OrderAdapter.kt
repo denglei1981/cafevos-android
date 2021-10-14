@@ -9,13 +9,15 @@ import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
 
 
-class OrderGoodsAdapter: BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
+class OrderAdapter: BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
+            dataBinding.tvTotleIntegral.setHtmlTxt(context.getString(R.string.str_Xfb,item.fbCost),"#00095B")
+            dataBinding.inGoodsInfo.model=item
             //取消订单
             dataBinding.tvBtnCancel.setOnClickListener {
                 val pop=PublicPop(context)

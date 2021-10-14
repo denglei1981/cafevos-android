@@ -429,7 +429,8 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                startARouter(ARouterShopPath.OrderGoodsActivity,true)
+                value?.let {bundle.putInt("states", value.toInt())  }//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
+                startARouter(ARouterShopPath.OrderGoodsActivity,bundle,true)
             }
             53 -> {//AR说明书跳转类型
                 when {

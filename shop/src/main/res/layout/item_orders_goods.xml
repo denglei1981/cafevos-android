@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_orderNo"
+            android:text="@{model.orderNo}"
             tools:text="订单编号：DD202109110023"
             android:textColor="@color/picture_color_66"
             android:textSize="@dimen/sp_12" />
@@ -53,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/font_aCombined"
+            app:start_txt="@string/str_combined"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <View

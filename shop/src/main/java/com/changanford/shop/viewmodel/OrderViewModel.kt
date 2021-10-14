@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * @Description : OrderViewModel
  */
 class OrderViewModel: BaseViewModel() {
-    //首页
+    //订单列表
     var shopOrderData = MutableLiveData<ShopOrderBean>()
     /**
      * 获取地址列表
