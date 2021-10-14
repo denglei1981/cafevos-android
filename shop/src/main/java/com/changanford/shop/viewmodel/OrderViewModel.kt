@@ -137,6 +137,8 @@ class OrderViewModel: BaseViewModel() {
                 shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 orderItemLiveData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }
@@ -209,6 +211,21 @@ class OrderViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
                 listener?.onFinish(0)
+            }
+        }
+    }
+    /**
+     * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
+     * */
+    fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
+        return if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价" else {
+            when(orderStatus){
+                "WAIT_PAY"->"待付款"
+                "WAIT_SEND"->"待发货"
+                "WAIT_RECEIVE"->"待收货"
+                "FINISH"->"已完成"
+                "CLOSED"->"已关闭"
+                else ->"未知"
             }
         }
     }

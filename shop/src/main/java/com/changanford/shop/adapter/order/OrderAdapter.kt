@@ -31,7 +31,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
-            if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=getOrderStatus(item.orderStatus,item.evalStatus)
+            if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
             updateBtnUI(dataBinding,item)
@@ -112,7 +112,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                 }
                 "WAIT_PAY"==orderStatus -> {
                     //可支付结束时间=服务器当前时间+可支付剩余时间
-                    val payEndTime=(nowTime?:System.currentTimeMillis())+item.waitPayCountDown*1000
+                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
                     text=sf.format(payEndTime)
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE
@@ -129,21 +129,6 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     private fun onceAgainToBuy(item: OrderItemBean){
 //        val detailBean=GoodsDetailBean()
 //        OrderConfirmActivity.start(context,"goodsInfo")
-    }
-    /**
-     * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
-     * */
-    private fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
-        return if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价" else {
-            when(orderStatus){
-                "WAIT_PAY"->"待付款"
-                "WAIT_SEND"->"待发货"
-                "WAIT_RECEIVE"->"待收货"
-                "FINISH"->"已完成"
-                "CLOSED"->"已关闭"
-                else ->"未知"
-            }
-        }
     }
     /**
      * 确认收货

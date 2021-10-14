@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -31,9 +33,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="待支付"
+                android:text="@{model.orderStatusName}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15" />
             <com.changanford.shop.view.TypefaceTextView
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/tv_order_prompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
