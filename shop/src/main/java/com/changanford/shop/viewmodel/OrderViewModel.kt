@@ -1,6 +1,5 @@
 package com.changanford.shop.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
@@ -82,9 +81,8 @@ class OrderViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }
             responseBean.onSuccess {
-                val timestamp=responseBean.timestamp?:System.currentTimeMillis()
-                Log.e("okhttp","timestamp:$timestamp")
-//                it?.nowTime= (responseBean.timestamp?:System.currentTimeMillis()) as Long
+                val timestamp=responseBean.timestamp?:System.currentTimeMillis().toString()
+                it?.nowTime= timestamp.toLong()
                 shopOrderData.postValue(it)
             }
         }
