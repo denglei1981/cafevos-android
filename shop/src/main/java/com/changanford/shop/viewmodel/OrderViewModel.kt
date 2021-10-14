@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopOrderBean
 import com.changanford.common.net.*
@@ -25,7 +26,7 @@ class OrderViewModel: BaseViewModel() {
      */
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
     //订单
-    var orderInfoLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
+    var orderInfoLiveData: MutableLiveData<OrderInfoBean> = MutableLiveData()
     var orderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
@@ -130,7 +131,7 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                orderInfoLiveData.postValue(it)
+                orderItemLiveData.postValue(it)
             }
         }
     }
