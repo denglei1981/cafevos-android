@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
@@ -157,6 +158,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                     viewModel?.confirmReceipt(item.orderNo,object :OnPerformListener{
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
+                            ToastUtils.showShortToast(R.string.str_goodsSuccessfully,context)
                             item.orderStatus="FINISH"
                             this@OrderAdapter.notifyDataSetChanged()
                             dismiss()
@@ -170,7 +172,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
      * 去支付
     * */
     private fun toPay(item: OrderItemBean){
-        viewModel.let { PayConfirmActivity.start(context,Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost))) }
+        PayConfirmActivity.start(context,Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
     }
     /**
      * 取消订单
@@ -184,6 +186,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                     viewModel?.orderCancel(item.orderNo,object:OnPerformListener{
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
+                            ToastUtils.showShortToast(R.string.str_orderCancelledSuccessfully,context)
                             item.orderStatus="CLOSED"
                             this@OrderAdapter.notifyDataSetChanged()
                             dismiss()

@@ -130,4 +130,6 @@
     <string name="str_select">选择</string>
     <string name="str_confirmGoods">确认收货</string>
     <string name="str_onceAgainToBuy">再次购买</string>
+    <string name="str_orderCancelledSuccessfully">订单取消成功</string>
+    <string name="str_goodsSuccessfully">收货成功</string>
 </resources>
