@@ -897,15 +897,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     fun handleEditPost() {
         var postsId = intent?.getStringExtra("postsId")
         postsId?.let {
-            //监听下载的图片
-            viewModel._downloadLocalMedias.observe(this,{
-                //选择的图片重置
-//                selectList.clear()
-//                selectList.addAll(it)
-                //展示选择的图片
-//                postPicAdapter.setList(it)
-//                postPicAdapter.notifyDataSetChanged()
-            })
             //赋值
             viewModel.postDetailsBean.observe(this, {
                 it?.let { locaPostEntity ->
@@ -979,11 +970,39 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             }
                             buttomlabelAdapter.notifyDataSetChanged()
                         }
-                        //图片下载
+                        //图片下载,第一张图为封面图
                         locaPostEntity?.imageList?.let {
-                            viewModel.downGlideImgs(it)
+                            var templist = ArrayList<ImageList>()
+                            templist.add(ImageList(locaPostEntity.pics))
+                            templist.addAll(it)
+                            viewModel.downGlideImgs(templist)
                         }
+                        //监听下载的图片
+                        viewModel._downloadLocalMedias.observe(this,{
+                            //选择的图片重置
+                            //封面逻辑
+                            FMMeadia = it[0]
+                            headBinding.ivFm.visibility = View.VISIBLE
+                            GlideUtils.loadRoundFilePath(
+                                PictureUtil.getFinallyPath(FMMeadia!!),
+                                headBinding.ivFm
+                            )
+                            headBinding.ivAddfm.visibility = View.GONE
+                            headBinding.tvFm.visibility = View.GONE
+                            //长图部分
+//                            selectList.clear()
+                            longpostadapter.data.clear()
+                            it.forEachIndexed { index, localMedia ->
+                                if (index !=0){
+                                    var longPostBean = LongPostBean(locaPostEntity?.imageList?.get(index-1)?.imgDesc?:"",if (localMedia?.realPath?.isNullOrEmpty() == true) null else localMedia)
+//                                    selectList.add(longPostBean)
 
+                                    //展示选择的图片
+                                    longpostadapter.addData(longPostBean)
+                                    longpostadapter.notifyDataSetChanged()
+                                }
+                            }
+                        })
                     }
                 }
             })

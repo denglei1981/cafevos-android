@@ -257,24 +257,6 @@
                     app:right_text_color="@color/color_33"
                     app:show_bottom_line="true" />
 
-                <TextView
-                    android:id="@+id/toauth"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="长安福特员工认证"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:textColor="#01025C"
-                    android:textSize="@dimen/sp_12"
-                    android:gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:drawableRight="@mipmap/arrow_right_5c"
-                    android:drawablePadding="@dimen/dp_10"
-                    app:layout_constraintTop_toBottomOf="@id/edit_reg_time"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textStyle="normal"/>
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_ford_auth"

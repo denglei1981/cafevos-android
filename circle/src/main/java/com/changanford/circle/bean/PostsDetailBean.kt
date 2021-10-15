@@ -65,5 +65,6 @@ data class PostsDetailBean(
 )
 
 data class ImageList(
-    val imgUrl:String?=""
+    val imgUrl:String?="",
+    val imgDesc:String?=""//type为4,图文长帖时,图片描述
 )
