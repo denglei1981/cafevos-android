@@ -55,7 +55,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_5"
             android:id="@+id/btn_order_confirm"
-            android:background="@drawable/shadow_00095b_20dp"
+            android:background="@drawable/btn_selector"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_40"

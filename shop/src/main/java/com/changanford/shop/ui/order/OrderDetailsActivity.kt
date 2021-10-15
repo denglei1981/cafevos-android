@@ -63,6 +63,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         val orderStatus=dataBean.orderStatus
         //应付总额
         var totalPayName=R.string.str_copeWithTotalAmount
+        binding.inOrderInfo.layoutOrderClose.visibility=View.VISIBLE
         binding.inAddress.layoutLogistics.visibility=View.GONE
         binding.inBottom.btnOrderConfirm.visibility=View.VISIBLE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
@@ -133,7 +134,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                 }
                 "已关闭"->{
-                    dataBean.statesVisibility=2
+                    binding.inOrderInfo.layoutOrderClose.visibility=View.GONE
                     binding.tvOrderRemainingTime.text=dataBean.evalStatusDetail
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                 }
