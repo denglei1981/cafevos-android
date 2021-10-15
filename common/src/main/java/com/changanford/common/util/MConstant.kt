@@ -70,7 +70,7 @@ object MConstant {
     var newApk = false//是否有新版本
     var newApkUrl = ""//新版本的链接
 
-    const val WXAPPID = "wx134a7f5ed01da769" //微信appid
+    const val WXAPPID = "wx4b97d35e8496e940" //微信appid
 
     const val QQAPPID = "1111168800" //QQ
     var mine_phone = ""

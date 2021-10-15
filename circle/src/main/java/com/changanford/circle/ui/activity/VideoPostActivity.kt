@@ -50,6 +50,8 @@ import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.room.PostEntity
 import com.changanford.common.util.*
+import com.changanford.common.utilext.GlideUtils
+import com.luck.picture.lib.config.PictureMimeType
 import com.yw.li_model.adapter.EmojiAdapter
 
 
@@ -180,6 +182,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
+            handleEditPost()
             if (locaPostEntity != null) {
                 if (locaPostEntity!!.keywords.isNotEmpty()) {
                     buttomlabelAdapter.data.forEach {
@@ -452,7 +455,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             } else {
                 val array = ArrayList<String>()
                 array.add("选择封面")
-                array.add("编辑视频")
+                if (canEditVideo) {
+                    array.add("编辑视频")
+                }else{
+                    array.add("重选视频")
+                }
                 if (!postVideoAdapter.fmPath.isNullOrEmpty()) {
                     array.add("删除封面")
                 }
@@ -462,17 +469,42 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         override fun onClickItem(position: Int, str: String) {
                             when (str) {
                                 "选择封面" -> {
-                                    startARouterForResult(
-                                        this@VideoPostActivity,
-                                        ARouterCirclePath.VideoChoseFMActivity,
-                                        Bundle().apply {
-                                            putString(
-                                                "cutpath",
-                                                PictureUtil.getFinallyPath(selectList[0])
-                                            )
-                                        }, VideoChoseFMActivity.FM_CALLBACK
-                                    )
+                                    if (canEditVideo) {
+                                        startARouterForResult(
+                                            this@VideoPostActivity,
+                                            ARouterCirclePath.VideoChoseFMActivity,
+                                            Bundle().apply {
+                                                putString(
+                                                    "cutpath",
+                                                    PictureUtil.getFinallyPath(selectList[0])
+                                                )
+                                            }, VideoChoseFMActivity.FM_CALLBACK
+                                        )
+                                    }else{
+                                        PictureUtil.openGalleryOnePic(this@VideoPostActivity,
+                                            object : OnResultCallbackListener<LocalMedia> {
+                                                override fun onResult(result: MutableList<LocalMedia>?) {
+                                                    val localMedia = result?.get(0)
+                                                    var bundle = Bundle()
+                                                    var selectList = arrayListOf(localMedia)
+                                                    bundle.putParcelableArrayList("picList", selectList)
+                                                    bundle.putInt("position", 0)
+                                                    bundle.putInt("showEditType", -1)
+                                                    bundle.putBoolean("isVideo",true)
+                                                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
 
+                                                }
+
+                                                override fun onCancel() {
+
+                                                }
+
+                                            })
+                                    }
+
+                                }
+                                "重选视频" -> {
+                                    cxsp()
                                 }
                                 "编辑视频" -> {
                                     startARouterForResult(
@@ -756,6 +788,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     }
                 }
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {
+                    canEditVideo = true
                     val videoeditpath = data?.getStringExtra("finalPath")
                     selectList[0].isCut = true
                     selectList[0].cutPath = videoeditpath
@@ -768,5 +801,106 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
             }
         }
+    }
+
+    var canEditVideo = true
+    fun handleEditPost() {
+        var postsId = intent?.getStringExtra("postsId")
+        postsId?.let {
+            canEditVideo = false
+            //监听下载的图片
+            viewModel._downloadLocalMedias.observe(this,{
+                //选择的图片重置
+                selectList.clear()
+                selectList.addAll(it)
+                //添加封面
+                if ( it.size!=0){
+                    postVideoAdapter.fmPath =  it[0].realPath
+                    postVideoAdapter.notifyDataSetChanged()
+                }
+                //展示选择的图片
+                postVideoAdapter.setList(it)
+                postVideoAdapter.notifyDataSetChanged()
+            })
+            //赋值
+            viewModel.postDetailsBean.observe(this, {
+                it?.let { locaPostEntity ->
+                    if (locaPostEntity != null) {//同草稿逻辑
+                        viewModel.downGlideImgs(listOf(ImageList(locaPostEntity.pics)))
+
+                        binding.etBiaoti.setText(locaPostEntity!!.title)
+                        binding.etContent.setText(locaPostEntity!!.content)
+                        params["plate"] = locaPostEntity!!.plate
+                        params["topicId"] = locaPostEntity!!.topicId
+                        params["postsId"] = locaPostEntity!!.postsId
+                        params["type"] = locaPostEntity!!.type
+                        params["keywords"] = locaPostEntity!!.keywords
+                        params["circleId"] = locaPostEntity!!.circleId
+                        params["content"] = locaPostEntity!!.content?:""
+                        params["actionCode"] = locaPostEntity!!.actionCode
+                        params["title"] = locaPostEntity!!.title
+                        params["address"] = locaPostEntity!!.address
+                        params["lat"] = locaPostEntity!!.lat
+                        params["lon"] = locaPostEntity!!.lon
+                        params["province"] = locaPostEntity!!.province
+                        params["cityCode"] = locaPostEntity!!.cityCode
+                        params["city"] = locaPostEntity!!.city
+
+                        if (params["plate"]!=0) {
+                            buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                            buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+                        }
+                        if (locaPostEntity!!.topicName?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                            2,
+                            ButtomTypeBean(locaPostEntity!!.topicName?:"", 1, 2)
+                        )
+                        if (locaPostEntity!!.circleName?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                            3,
+                            ButtomTypeBean(locaPostEntity!!.circleName?:"", 1, 3)
+                        )
+                        if (locaPostEntity!!.address?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                            4,
+                            ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+                        )
+//                        jsonStr2obj(locaPostEntity!!.localMeadle)
+                        //选择的标签
+                        if (locaPostEntity!!.keywords.isNotEmpty()) {
+                            buttomlabelAdapter.data.forEach {
+                                it.isselect = it.tagName == locaPostEntity!!.keywords
+                            }
+                            buttomlabelAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+            viewModel.getPostById(it)
+        }
+    }
+    private fun cxsp(){
+        PictureUtil.ChoseVideo(
+            this,
+            selectList.apply { clear() },
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    if (result != null) {
+                        selectList.clear()
+                        selectList.addAll(result)
+                    }
+                    postVideoAdapter.setList(selectList)
+                    startARouterForResult(
+                        this@VideoPostActivity,
+                        ARouterCirclePath.PictureEditAudioActivity,
+                        Bundle().apply {
+                            putString("path", selectList[0].realPath)
+                        },
+                        PictureEditAudioActivity.EDIT_VIDEOPATH
+                    )
+                }
+
+                override fun onCancel() {
+
+                }
+
+            })
     }
 }
