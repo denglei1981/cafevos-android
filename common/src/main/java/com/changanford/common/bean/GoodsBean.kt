@@ -286,7 +286,7 @@ data class OrderItemBean(
     val addressId: Int = 0,
     val addressInfo: String = "",
     val addressName: String = "",
-    val buyNum: String ="0",
+    var buyNum: String ="0",
     val consignee: String = "",
     val consumerMsg: String? = "",
     val courierCompany: String = "",
@@ -321,7 +321,7 @@ data class OrderItemBean(
     var orderTime: Long? = 0,
     var orderTimeTxt: String? = "",
     val params: Params = Params(),
-    val payType: String = "",
+    var payType: String = "",
     val phone: String = "",
     val preferentialFb: String? = "0",
     val remark: String = "",
@@ -329,10 +329,10 @@ data class OrderItemBean(
     val seckill: String = "",
     val seckillFb: Int = 0,
     val skuCode: String = "",
-    val skuImg: String = "",
+    var skuImg: String = "",
     val snapshotOfAttrOption: String = "",
     var specifications: String = "",
-    val spuName: String = "",
+    var spuName: String = "",
     val spuSecondName: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
@@ -352,7 +352,7 @@ data class OrderItemBean(
     val jumpDataType: Int = 0,
     val jumpDataValue: String = "",
     val orderBrief: String = "",
-    val orderImg: Any? = null,
+    val orderImg: String = "",
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
@@ -389,4 +389,17 @@ data class AddressValueObj(
     val districtName: String = "",
     val province: Int = 0,
     val provinceName: String = ""
+)
+data class OrderBriefBean(
+    val busSourse: Int = 0,
+    val buyNum: String ="0",
+    val fbCost: String = "0",
+    val payType: String = "",
+    val snapshotOfAttrOption: List<SnapshotOfAttrOption> = listOf()
+)
+
+data class SnapshotOfAttrOption(
+    val mallMallAttributeId: Int = 0,
+    val mallMallOptionId: Int = 0,
+    val optionName: String = ""
 )

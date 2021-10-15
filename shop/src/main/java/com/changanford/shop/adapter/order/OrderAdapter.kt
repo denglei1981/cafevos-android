@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
@@ -17,6 +18,7 @@ import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 
 
@@ -30,6 +32,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
+            dataFormat(item)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
@@ -45,6 +48,21 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                 }
             }
             setOrderType(dataBinding.tvOrderType,item)
+        }
+    }
+    /**
+     * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
+    * */
+    private fun dataFormat(item: OrderItemBean){
+        if(-1==orderType){
+            val orderBriefBean=Gson().fromJson(item.orderBrief,OrderBriefBean::class.java)
+            item.apply {
+                spuName=skuName
+                skuImg=orderImg
+                buyNum=orderBriefBean.buyNum
+                payType=orderBriefBean.payType
+                fbCost=orderBriefBean.fbCost
+            }
         }
     }
     private fun updateBtnUI(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
