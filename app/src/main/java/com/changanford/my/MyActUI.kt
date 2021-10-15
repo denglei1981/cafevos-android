@@ -39,6 +39,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, EmptyViewModel>() {
     }
 
     private fun initViewpager() {
+        binding.viewpager.isUserInputEnabled = false
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyActUI) {
                 override fun getItemCount(): Int {

@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.graphics.Typeface
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     var position: Int = 0 // 全部
 
     override fun initView() {
+        binding.tabLayout.visibility = View.GONE
         intent.extras?.getString(RouterManger.KEY_TO_ITEM)?.let {
             title = it
         }
@@ -78,7 +80,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return AllMangerCircleFragment.newInstance(position, circleId)
+                    return AllMangerCircleFragment.newInstance(1, circleId)
                 }
             }
 
@@ -170,6 +172,6 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         }
         LiveDataBus.get()
             .with(LiveDataBusKey.MINE_DELETE_CIRCLE_USER, MangerCircleCheck::class.java)
-            .postValue(MangerCircleCheck(position, !isCheck))
+            .postValue(MangerCircleCheck(1, !isCheck))
     }
 }

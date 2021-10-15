@@ -263,9 +263,9 @@ class JumpUtils {
                     startARouter(ARouterMyPath.MineAddressListUI, true)
                 } else {//选择地址，点击地址Item直接返回地址Json
                     value.toIntOrNull()?.let {
-                        var b = Bundle()
-                        b.putInt("isItemClickBack", it)
-                        startARouter(ARouterMyPath.MineAddressListUI, b, true)
+                        RouterManger.param(RouterManger.KEY_TO_ITEM, it)
+                            .needLogin(true)
+                            .startARouter(ARouterMyPath.MineAddressListUI)
                     }
                 }
 

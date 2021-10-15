@@ -98,6 +98,11 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
         }
 
         binding.tvAddressCityLayout.setOnClickListener {
+            if (provinces.size == 0) {
+                initData()
+                showToast("获取城市数据失败，请稍后再试")
+                return@setOnClickListener
+            }
             val picker = CityPicker(this)
                 .apply {
                     setAddressMode(provinces)

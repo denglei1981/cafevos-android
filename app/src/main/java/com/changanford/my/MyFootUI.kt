@@ -32,6 +32,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     }
 
     private fun initViewpager() {
+        binding.viewpager.isUserInputEnabled = false
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyFootUI) {
                 override fun getItemCount(): Int {
