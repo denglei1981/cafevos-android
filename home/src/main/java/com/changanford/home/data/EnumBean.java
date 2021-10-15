@@ -2,23 +2,23 @@ package com.changanford.home.data;
 
 
 public class EnumBean {
-    private Object code;
+    private String code;
     private String message;
 
-    public EnumBean(Object code, String message) {
+    public EnumBean(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public EnumBean(Object code) {
+    public EnumBean(String code) {
         this.code = code;
     }
 
-    public Object getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Object code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

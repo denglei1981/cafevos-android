@@ -174,6 +174,12 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 JumpUtils.instans?.jump(8, newsDetailData.specialTopicId.toString())
             }
         }
+        inflateHeader.ivAvatar.setOnClickListener {
+            JumpUtils.instans!!.jump(35, newsDetailData.userId.toString())
+        }
+        inflateHeader.tvAuthor.setOnClickListener {
+            JumpUtils.instans!!.jump(35, newsDetailData.userId.toString())
+        }
         inflateHeader.btFollow.setOnClickListener {
             if (MConstant.token.isEmpty()) {
                 startARouter(ARouterMyPath.SignUI)
@@ -181,12 +187,14 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 followAction()
             }
         }
+
         binding.llComment.tvNewsToLike.text = newsDetailData.getLikeCount()
         binding.llComment.tvNewsToShare.text = newsDetailData.getShareCount()
         binding.llComment.tvNewsToMsg.text = newsDetailData.getCommentCount()
         binding.llComment.tvNewsToLike.setOnClickListener(this)
         binding.llComment.tvNewsToShare.setOnClickListener(this)
         binding.llComment.tvNewsToMsg.setOnClickListener(this)
+        binding.llComment.tvNewsToCollect.setOnClickListener(this)
         if (newsDetailData.isLike == 0) {
             binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_unlike)
         } else {
@@ -245,6 +253,19 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             CountUtils.formatNum(commentCount.toString(), false).toString()
 
     }
+
+    private fun setCollection() {
+        when (newsDetailData?.isCollect) {
+            0 -> {
+
+            }
+            1 -> {
+
+            }
+        }
+
+    }
+
 
     private fun setLikeState() { //设置是否喜欢文章。
         var likesCount = newsDetailData?.likesCount
@@ -311,6 +332,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 setLikeState()
                 viewModel.actionLike(artId)
             }
+            R.id.tv_news_to_collect -> {
+                // 收藏
+                viewModel.addCollect(artId)
+            }
             R.id.tv_news_to_msg -> { // 去评论。
 //                replay()
                 // 滑动到看评论的地方
@@ -356,6 +381,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         webHelper.onPause()
         super.onPause()
     }
+
     var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
     override fun onDestroy() {
         if (isNeedNotify) {

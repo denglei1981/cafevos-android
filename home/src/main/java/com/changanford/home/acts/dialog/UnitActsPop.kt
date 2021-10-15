@@ -9,6 +9,7 @@ import com.changanford.home.R
 import com.changanford.home.acts.adapter.UnitSelectAdapter
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.PopupBaseRecyclerViewBinding
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -25,7 +26,7 @@ class UnitActsPop(
     LinearLayout.LayoutParams.MATCH_PARENT,
     LinearLayout.LayoutParams.WRAP_CONTENT
 ) {
-    val sexAdapter: UnitSelectAdapter by lazy {
+    val actsAdapter: UnitSelectAdapter by lazy {
         UnitSelectAdapter(mutableListOf())
     }
     var callback: ICallback
@@ -35,24 +36,27 @@ class UnitActsPop(
     fun initView() {
         binding.homeRv.layoutManager =
             LinearLayoutManager(context.requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.homeRv.adapter = sexAdapter
-
-
-        sexAdapter.setOnItemClickListener { adapter, view, position ->
+        binding.homeRv.adapter = actsAdapter
+        actsAdapter.setOnItemClickListener { adapter, view, position ->
+            val  item = actsAdapter.getItem(position)
+            callback.onResult(ResultData(ResultData.OK,item))
             dismiss()
         }
     }
-
+    fun setSelectedPosition(position:Int){
+        if(actsAdapter!=null){
+            actsAdapter.clickPosition=position
+            actsAdapter.notifyDataSetChanged()
+        }
+    }
     fun updateData( list: MutableList<EnumBean>){
-        sexAdapter.setNewInstance(list)
+        actsAdapter.setNewInstance(list)
     }
     init {
         this.callback = callback
         contentView = binding.root
         initView()
     }
-
-
     override fun onCreateShowAnimation(): Animation {
         return AnimationHelper.asAnimation()
             .withTranslation(
