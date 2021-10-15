@@ -2,17 +2,28 @@ package com.changanford.home.shot.adapter
 
 import android.text.TextUtils
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.PostDataBean
+import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
+import com.changanford.home.util.AnimScaleInUtil
+import com.changanford.home.util.LoginUtil
 import com.changanford.home.util.launchWithCatch
 import com.google.android.material.button.MaterialButton
 
@@ -50,6 +61,19 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             it.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
             it.layoutCount.tvTimeLookCount.setPageTitleText(item.getViewCount())
             it.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCount())
+            val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+            if (item.authorBaseVo != null) {
+                val labelAdapter = LabelAdapter(16)
+                rvUserTag.adapter=labelAdapter
+                labelAdapter.setNewInstance(item.authorBaseVo?.imags)
+            }
+            it.layoutCount.tvLikeCount.setOnClickListener {l->
+                 if(LoginUtil.isLogin()){
+                     likePost(it,item)
+                 }
+
+            }
+
         }
     }
 
@@ -89,5 +113,32 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
         }
     }
 
+
+    private fun likePost(binding: ItemBigShotItemsBinding, item: BigShotPostBean) {
+        val activity = BaseApplication.curActivity as AppCompatActivity
+        activity.launchWithCatch {
+            val body = MyApp.mContext.createHashMap()
+            body["postsId"] = item.postsId
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .actionPostLike(body.header(rKey), body.body(rKey)).also {
+                    if (it.code == 0) {
+                        if (item.isLike == 0) {
+                            item.isLike = 1
+                            binding.layoutCount.tvLikeCount.setThumb(R.drawable.icon_home_bottom_like,true)
+                            item.likesCount++
+                        } else {
+                            item.isLike = 0
+                            item.likesCount--
+                            binding.layoutCount.tvLikeCount.setThumb(R.drawable.icon_home_look_like_count,false)
+                        }
+                        binding.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
+                    } else {
+                        it.msg.toast()
+                    }
+                }
+        }
+    }
 
 }

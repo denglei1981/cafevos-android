@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
@@ -13,6 +14,7 @@ import com.changanford.common.bean.GrowUpQYBean
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -42,15 +44,12 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
 
         binding.mineToolbar.toolbarTitle.text = "成长值详情"
 
-        binding.mineToolbar.toolbarIcon.visibility = View.VISIBLE
-        binding.mineToolbar.toolbarSave.visibility = View.GONE
-
-//        binding.mineToolbar.toolbarIcon.setImageResource(R.mipmap.icon_grow_up)
-//        binding.mineToolbar.toolbarIcon.setOnClickListener {
-//
-//            JumpUtils.instans?.jump(1, H5_MINE_GROW_UP)
-//        }
-
+        binding.mineToolbar.toolbarSave.visibility = View.VISIBLE
+        binding.mineToolbar.toolbarSave.text = "成长值"
+        binding.mineToolbar.toolbarSave.setTextColor(Color.parseColor("#01025C"))
+        binding.mineToolbar.toolbarSave.setOnClickListener {
+            JumpUtils.instans?.jump(1, MConstant.H5_MINE_GROW_UP)
+        }
 
         binding.myUpdateGrade.setOnClickListener {
             JumpUtils.instans!!.jump(16, "")
@@ -109,7 +108,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                     binding.banner.isAutoLoop(false)
                     binding.banner.setAdapter(QyAdapter(it))
                         .addBannerLifecycleObserver(this)
-                        .setBannerGalleryEffect(0, 24,20, 1F)
+                        .setBannerGalleryEffect(0, 24, 20, 1F)
                 }
             }
         }

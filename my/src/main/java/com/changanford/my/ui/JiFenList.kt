@@ -1,13 +1,21 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.GrowUpItem
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.GrowUpAndJifenViewHolder
@@ -36,6 +44,35 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
         UserManger.getSysUserInfo()?.integral?.let {
             binding.myJifenNum.text = "${it.toInt()}"
         }
+
+        binding.toolbarJifen.toolbarSave.text = "..."
+        binding.toolbarJifen.toolbarSave.setTextColor(Color.parseColor("#ffffff"))
+        binding.toolbarJifen.toolbarSave.visibility = View.VISIBLE
+        binding.toolbarJifen.toolbarSave.textSize = 20f
+        binding.toolbarJifen.toolbarSave.setOnClickListener {
+            SelectDialog(
+                this,
+                R.style.transparentFrameWindowStyle,
+                MineUtils.listIntegral,
+                "",
+                1,
+                SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+                    when (i) {
+                        0 -> {
+                            JumpUtils.instans?.jump(1, MConstant.H5_MINE_INTEGRAL)
+                        }
+                        1 -> {
+                            if (viewModel.getBindMobileJumpDataType()) {
+                                RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
+                            } else {
+                                RouterManger.startARouter(ARouterMyPath.MineTaskListUI)
+                            }
+                        }
+                    }
+                }
+            ).show()
+        }
+
 
         binding.rcyJifen.rcyCommonView.layoutManager = LinearLayoutManager(this)
         binding.rcyJifen.rcyCommonView.adapter = jfAdapter

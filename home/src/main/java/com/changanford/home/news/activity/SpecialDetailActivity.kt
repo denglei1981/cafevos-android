@@ -4,34 +4,63 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
+import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toastShow
+import com.changanford.home.R
+import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivitySpecialDetailBinding
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
 class SpecialDetailActivity :
     BaseLoadSirActivity<ActivitySpecialDetailBinding, SpecialDetailViewModel>() {
-
-
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
-
+    private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
-        binding.layoutEmpty.llEmpty.visibility=View.GONE
+        binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = newsListAdapter
+        newsListAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val item = newsListAdapter.getItem(position)
+            selectPosition = position
+            when (view.id) {
+                R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
+                    JumpUtils.instans!!.jump(35)
+                }
+                R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
+                    if (item.authors != null) {
+                        var newsValueData = NewsValueData(item.artId, item.type)
+                        var values = Gson().toJson(newsValueData)
+                        JumpUtils.instans?.jump(2, values)
+                    } else {
+                        toastShow("没有作者")
+                    }
+                }
+            }
+        }
+
     }
 
     override fun initData() {
@@ -50,28 +79,53 @@ class SpecialDetailActivity :
             setLoadSir(binding.recyclerView)
         }
     }
+
     override fun observe() {
         super.observe()
         viewModel.specialDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
+                binding.layoutCollBar.ivShare.setOnClickListener { s ->
+                    HomeShareModel.shareDialog(this, 0, it.data.shares)
+                }
+                binding.layoutBar.ivMenu.setOnClickListener{i->
+                    HomeShareModel.shareDialog(this, 0, it.data.shares)
+                }
                 binding.specialDetailData = it.data
                 GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
-                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivTopBg)
+//                GlideUtils.loadTransformLocal(it.data.getPicUrl(), RequestOptions.bitmapTransform(BlurTransformation(25, 8)),binding.layoutCollBar.ivTopBg)
+                Glide.with(this)
+                    .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
+                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 2)))
+                    .into(binding.layoutCollBar.ivTopBg)
+                binding.layoutCollBar.ivTopBg.setColorFilter(resources.getColor(R.color.color_00_a30))
                 binding.layoutBar.tvTitle.text = it.data.title
-                if (it.data.articles != null&& it.data.articles!!.isNotEmpty()) {
+                if (it.data.articles != null && it.data.articles!!.isNotEmpty()) {
                     newsListAdapter.setNewInstance(it.data.articles as? MutableList<InfoDataBean>?)
                 } else {
 //                    showEmpty()
-                    binding.recyclerView.visibility=View.GONE
-                    binding.layoutEmpty.llEmpty.visibility=View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                    binding.layoutEmpty.llEmpty.visibility = View.VISIBLE
                 }
             } else {
                 showFailure(it.message)
             }
         })
 
+        LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+            .observe(this, Observer {
+                // 主要是改，点赞，评论， 浏览记录。。。
+                val item = newsListAdapter.getItem(selectPosition)
+                item.likesCount = it.likeCount
+                item.isLike = it.isLike
+                item.authors?.isFollow = it.isFollow
+                item.commentCount = it.msgCount
+                newsListAdapter.notifyItemChanged(selectPosition + 1)// 有t
+
+            })
+
     }
+
     private fun setAppbarPercent() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             "verticalOffset=$verticalOffset".logE()

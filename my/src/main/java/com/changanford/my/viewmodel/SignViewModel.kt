@@ -13,6 +13,7 @@ import com.changanford.common.net.*
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
@@ -621,6 +622,9 @@ class SignViewModel : ViewModel() {
                 var rkey = getRandomKey()
                 apiService.bindMobile(body.header(rkey), body.body(rkey))
             }.onSuccess {
+                //发现绑定后，userId,改变了
+                UserManger.deleteUserInfo()
+                it?.jumpData = BindMobileJumpData()
                 loginSuccess(it)
             }.onWithMsgFailure {
                 it?.let {
@@ -1046,6 +1050,18 @@ class SignViewModel : ViewModel() {
                 apiService.submitUserIdCard(body.header(rkey), body.body(rkey))
             })
         }
+    }
+
+    /**
+     * 获取绑定手机jumpDataType true跳转 false 不跳转
+     */
+    fun getBindMobileJumpDataType(): Boolean {
+        userDatabase.getUniUserInfoDao().getNoLiveDataUser()?.let {
+            if (it.bindMobileJumpType == LiveDataBusKey.MINE_SIGN_OTHER_CODE) {
+                return true
+            }
+        }
+        return false
     }
 
     /**

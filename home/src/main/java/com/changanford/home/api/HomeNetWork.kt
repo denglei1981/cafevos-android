@@ -130,6 +130,14 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+    /**
+     * 帖子点赞
+     */
+    @POST("con/posts/actionLike")
+    suspend fun actionPostLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
     /**
      * 搜索 热门搜索关键词
@@ -239,10 +247,11 @@ interface HomeNetWork {
     ): CommonResponse<List<CircleHeadBean>>
 
     @POST("con/ads/bathList")
-    suspend  fun getTwoBanner(
+    suspend fun getTwoBanner(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<TwoAdData>
+
     /**
      * 枚举字典
      */
@@ -252,18 +261,17 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<List<EnumBean>>
 
-    /*---------------省 市 区--------------*/
-    @POST("base/region/provinceList")
-    suspend fun queryProvinceList(
+    /**
+     *  {
+    "collectionContentId": 0,
+    "collectionType": 0
+    }	收藏类型 1 资讯 2 帖子 3 活动
+     */
+    @POST("con/collection/post")
+    suspend fun collectionApi(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<ListMainBean<List<Province>>>
-
-    @POST("base/region/cityList")
-    suspend fun queryCityList(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<ListMainBean<List<CityX>>>
+    ): CommonResponse<Any>
 
 
 }

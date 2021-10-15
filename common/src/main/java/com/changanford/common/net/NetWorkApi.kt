@@ -424,7 +424,7 @@ interface NetWorkApi {
 
     //user/accountLog/getUserAccountLogList 成长值
     //
-    @POST("user/accountLog/getUserAccountLogList")
+    @POST("user/accountLog/getIntegralLogList")
     suspend fun mineGrowUp(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

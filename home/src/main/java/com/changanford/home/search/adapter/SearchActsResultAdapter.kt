@@ -8,6 +8,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.data.ActBean
 import com.changanford.home.databinding.ItemHomeActsBinding
+
 /**
  * 活动列表。
  */
@@ -17,6 +18,7 @@ class SearchActsResultAdapter :
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)
             it.tvTips.text = item.title
+
             it.tvHomeActAddress.text = "地点：".plus(item.cityName)
             it.tvHomeActTimes.text = "活动截止时间:".plus(TimeUtils.formateActTime(item.endTime))
             if (item.deadLineTime <= item.serverTime) {
@@ -29,20 +31,26 @@ class SearchActsResultAdapter :
                     it.tvTagTwo.text = "线上活动"
                     it.tvHomeActTimes.text =
                         "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
+                    it.tvHomeActAddress.visibility = View.GONE
                 }
                 1 -> {
                     it.tvTagTwo.text = "线下活动"
                     it.tvHomeActTimes.text =
                         "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+
+                    it.tvHomeActAddress.text = "地点：".plus(item.cityName)
+                    it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 2 -> {
                     it.tvTagTwo.text = "调查问卷"
                     it.tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
+                    it.tvHomeActAddress.visibility = View.GONE
                 }
                 3 -> {
                     it.tvTagTwo.text = "厂家活动"
                     it.tvHomeActTimes.text =
                         "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+                    it.tvHomeActAddress.visibility = View.GONE
                 }
             }
             when (item.official) {
