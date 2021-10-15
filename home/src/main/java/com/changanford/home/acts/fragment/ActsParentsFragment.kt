@@ -7,8 +7,10 @@ import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.databinding.FragmentActsParentBinding
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>() {
+class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),OnRefreshListener {
 
 
     companion object {
@@ -38,10 +40,16 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         super.observe()
         viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess) {
+                binding.refreshLayout.finishRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
             } else {
                 toastShow(it.message)
             }
         })
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getBanner()
+        adapter.actsChildFragment.getActList(false,adapter.allUnitCode,adapter.allActsCode)
     }
 }
