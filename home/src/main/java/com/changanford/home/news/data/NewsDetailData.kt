@@ -3,6 +3,7 @@ package com.changanford.home.news.data
 import android.text.TextUtils
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.util.CountUtils
+import java.util.*
 
 
 /**
@@ -13,7 +14,7 @@ data class NewsDetailData(
     var artId: Int,
     var authors: AuthorBaseVo,
     var catId: Any,
-    var collectCount: Int,
+    var collectCount: Long,
     var commentCount: Long,
     var content: String,
     var createBy: Any,
@@ -61,6 +62,9 @@ data class NewsDetailData(
             return pisList[0]
         }
         return ""
+    }
+    fun getPicSize():Int{
+       return listOf(pics.split(",")).size
     }
 
     fun getCommentCount(): String { // 获取评论数量

@@ -7,11 +7,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
@@ -26,7 +28,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.setDrawableTop
+import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -35,12 +37,14 @@ import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
+import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 
 /**
  *  图文详情。。。
@@ -50,7 +54,9 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     View.OnClickListener {
 
 
-    var linearLayoutManager: LinearLayoutManager? = null
+    val  linearLayoutManager: LinearLayoutManager by lazy{
+        LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
     var checkPosition: Int = -1
 
     private lateinit var artId: String
@@ -58,15 +64,18 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         HomeNewsCommentAdapter(this)
     }
 
+    private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
+        NewsRecommendListAdapter()
+    }
 
     //HTML文本
     private val webHelper by lazy {
         CustomWebHelper(this, inflateHeader.wvContent)
     }
 
+    var llInfoBottom:Int =0
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
-        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.pbRecyclerview.layoutManager = linearLayoutManager
         binding.pbRecyclerview.adapter = homeNewsCommentAdapter
         addHeaderView()
@@ -86,16 +95,29 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             onBackPressed()
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
+        llInfoBottom = binding.layoutTitle.llAuthorInfo.getBottom()
+        binding.pbRecyclerview.addOnScrollListener(object:RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position: Int = linearLayoutManager.findFirstVisibleItemPosition()
+                val firstVisiableChildView = linearLayoutManager.findViewByPosition(position) as View
+                val itemHeight = firstVisiableChildView.height
+                val scrollHeight = position * itemHeight - firstVisiableChildView.top
+                binding.layoutTitle.llAuthorInfo.visibility = if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
 
-
+            }
+        })
+        binding.layoutTitle.llAuthorInfo.setOnClickListener {
+            JumpUtils.instans!!.jump(35, newsDetailData?.userId.toString())
+        }
     }
-
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             if (!TextUtils.isEmpty(artId)) {
-                viewModel.getNewsDetail(artId!!)
+                viewModel.getNewsDetail(artId)
                 viewModel.getNewsCommentList(artId, false)
+                viewModel.getArtAdditional(artId)
             } else {
                 ToastUtils.showShortToast("没有该资讯类型", this)
             }
@@ -114,6 +136,19 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
 
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
+        inflateHeader.rvRelate.adapter = newsRecommendListAdapter
+        newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val item = newsRecommendListAdapter.getItem(position)
+                if (item.authors != null) {
+                    val newsValueData = NewsValueData(item.artId, item.type)
+                    val values = Gson().toJson(newsValueData)
+                    JumpUtils.instans?.jump(2, values)
+                } else {
+                    toastShow("没有作者")
+                }
+            }
+        })
     }
 
     private fun bus() {
@@ -139,6 +174,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(this)
         setFollowState.setFollowState(btnFollow, authors)
+
     }
 
 
@@ -147,10 +183,13 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
+        GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
+        binding.layoutTitle.tvAuthor.text=author.nickname
         setFollowState(inflateHeader.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
+
 
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
@@ -188,19 +227,27 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             }
         }
 
-        binding.llComment.tvNewsToLike.text = newsDetailData.getLikeCount()
-        binding.llComment.tvNewsToShare.text = newsDetailData.getShareCount()
-        binding.llComment.tvNewsToMsg.text = newsDetailData.getCommentCount()
+        binding.llComment.tvNewsToLike.setPageTitleText(newsDetailData.getLikeCount())
+        binding.llComment.tvNewsToCollect.setPageTitleText(newsDetailData.getCollectCount())
+        binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
+        binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())
         binding.llComment.tvNewsToLike.setOnClickListener(this)
         binding.llComment.tvNewsToShare.setOnClickListener(this)
         binding.llComment.tvNewsToMsg.setOnClickListener(this)
         binding.llComment.tvNewsToCollect.setOnClickListener(this)
         if (newsDetailData.isLike == 0) {
-            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_unlike)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
         } else {
-            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_like)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
         }
-
+        if (newsDetailData.isCollect == 0) {
+            binding.llComment.tvNewsToCollect.setThumb(R.drawable.icon_home_bottom_uncollect, false)
+        } else {
+            binding.llComment.tvNewsToCollect.setThumb(
+                R.drawable.icon_home_bottom_collection,
+                false
+            )
+        }
     }
 
     override fun observe() {
@@ -238,32 +285,77 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify
+                setLikeState()
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
-                setLikeState()
+
             }
         })
-        viewModel.followLiveData.observe(this, Observer {})
+        viewModel.recommendNewsLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.data != null && it.data.recommendArticles.size > 0) {
+                    inflateHeader.flRecommend.visibility=View.VISIBLE
+                    newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                } else {// 隐藏热门推荐。
+                    inflateHeader.flRecommend.visibility=View.GONE
+                }
+
+            }
+        })
+
+        viewModel.followLiveData.observe(this, Observer {
+
+        })
+
+        viewModel.collectLiveData.observe(this, Observer {
+            if(it.isSuccess){
+                if (it.isSuccess) {
+                    setCollection()
+                }
+            }
+        })
     }
 
     private fun setCommentCount() {
         // 评论成功自增1
         val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvNewsToMsg.text =
-            CountUtils.formatNum(commentCount.toString(), false).toString()
-
+        binding.llComment.tvNewsToMsg.setPageTitleText(
+            CountUtils.formatNum(
+                commentCount.toString(),
+                false
+            ).toString()
+        )
     }
 
     private fun setCollection() {
+        var collectCount = newsDetailData?.collectCount
         when (newsDetailData?.isCollect) {
             0 -> {
-
+                newsDetailData?.isCollect = 1
+                collectCount = newsDetailData?.collectCount?.plus(1)
+                binding.llComment.tvNewsToCollect.setThumb(
+                    R.drawable.icon_home_bottom_collection,
+                    true
+                )
             }
             1 -> {
-
+                newsDetailData?.isCollect = 0
+                collectCount = newsDetailData?.collectCount?.minus(1)
+                binding.llComment.tvNewsToCollect.setThumb(
+                    R.drawable.icon_home_bottom_uncollect,
+                    false
+                )
             }
         }
-
+        if (collectCount != null) {
+            newsDetailData?.collectCount = collectCount
+        }
+        binding.llComment.tvNewsToCollect.setPageTitleText(
+            CountUtils.formatNum(
+                collectCount.toString(),
+                false
+            ).toString()
+        )
     }
 
 
@@ -272,30 +364,24 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         when (newsDetailData?.isLike) {
             0 -> {
                 newsDetailData?.isLike = 1
-                binding.llComment.tvNewsToLike.setDrawableTop(
-                    this,
-                    R.drawable.icon_home_bottom_like
-                )
-                newsDetailData?.getLikeCount() + 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
-                binding.llComment.tvNewsToLike.text =
-                    CountUtils.formatNum(likesCount.toString(), false).toString()
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
             }
             1 -> {
                 newsDetailData?.isLike = 0
-                binding.llComment.tvNewsToLike.setDrawableTop(
-                    this,
-                    R.drawable.icon_home_bottom_unlike
-                )
                 likesCount = newsDetailData?.likesCount?.minus(1)
-                binding.llComment.tvNewsToLike.text =
-                    CountUtils.formatNum(likesCount.toString(), false).toString()
-
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
             }
         }
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
+        binding.llComment.tvNewsToLike.setPageTitleText(
+            CountUtils.formatNum(
+                likesCount.toString(),
+                false
+            ).toString()
+        )
     }
 
     // 关注或者取消
@@ -329,7 +415,6 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                setLikeState()
                 viewModel.actionLike(artId)
             }
             R.id.tv_news_to_collect -> {
@@ -342,7 +427,20 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
 //                binding.homeRvContent.smoothScrollToPosition(1)
                 smooth()
             }
-            R.id.tv_news_to_share, R.id.iv_more -> {
+            R.id.tv_news_to_share -> {
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        this,
+                        0,
+                        it.shares,
+                        null,
+                        null,
+                        it.authors.nickname
+                    )
+                }
+
+            }
+            R.id.iv_more -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
                         this,

@@ -16,7 +16,7 @@ import com.changanford.home.news.data.NewsExpandData
 /**
  *  资讯详情viewmodel
  * */
-class NewsDetailViewModel : BaseViewModel() {
+class HomeCommentViewModel : BaseViewModel() {
     val newsDetailLiveData = MutableLiveData<UpdateUiState<NewsDetailData>>() // 详情
 
     val commentsLiveData = MutableLiveData<UpdateUiState<ListMainBean<CommentListBean>>>() //

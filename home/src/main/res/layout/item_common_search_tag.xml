@@ -10,12 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_33"
         android:layout_marginStart="8dp"
+        android:minWidth="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_whit15_bg"
         android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/app_name"
         android:textColor="@color/color_33"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,11 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        android:src="@mipmap/right_arrow_black"
+        android:src="@drawable/icon_home_down"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_search_tag"
+        app:layout_constraintEnd_toEndOf="@+id/tv_search_tag"
+        app:layout_constraintStart_toStartOf="@+id/tv_search_tag"
+        app:layout_constraintTop_toTopOf="@+id/tv_search_tag" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

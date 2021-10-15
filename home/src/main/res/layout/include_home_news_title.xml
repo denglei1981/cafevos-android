@@ -43,23 +43,23 @@
             android:id="@+id/ll_author_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
+            app:layout_constraintStart_toEndOf="@+id/iv_back"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:textColor="@color/black"
                 android:textSize="17sp"
+                android:scaleType="centerCrop"
                 android:textStyle="bold"
                 app:shapeAppearanceOverlay="@style/circleImageStyle"
                 tools:text="@string/app_name" />
-
             <TextView
                 android:id="@+id/tv_author"
                 android:layout_width="wrap_content"
@@ -71,7 +71,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_11"
                 tools:text="@string/app_name" />
-
         </LinearLayout>
 
 
