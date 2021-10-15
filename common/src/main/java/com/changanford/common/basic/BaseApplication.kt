@@ -137,7 +137,7 @@ abstract class BaseApplication : MultiDexApplication() {
     private fun initshare() {
         ShareManager.initWxShareSdk(ConfigUtils.WXAPPID)
         ShareManager.initSinaSdk(ConfigUtils.WEIBOAPPKEY, ModuleConfigureConstant.REDIRECT_URL, "")
-        ShareManager.initQqSdk(ConfigUtils.QQAPPID, "UNI")
+        ShareManager.initQqSdk(ConfigUtils.QQAPPID, "福域")
     }
 
     override fun onTerminate() {

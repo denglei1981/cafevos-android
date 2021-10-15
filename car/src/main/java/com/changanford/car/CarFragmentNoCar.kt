@@ -46,6 +46,8 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             initData()
             it.finishRefresh()
         }
+        binding.carNoauthLayout.root.isVisible = false
+        binding.carAuthrec.isVisible = false
     }
 
     override fun initData() {

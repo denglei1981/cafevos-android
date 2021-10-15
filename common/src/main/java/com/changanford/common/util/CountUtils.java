@@ -35,21 +35,21 @@ public class CountUtils {
 
         // 以百为单位处理
         if (b) {
-            if (b3.compareTo(b0) == 0 || b3.compareTo(b0) == 1) {
+            if (b3.compareTo(b0) == 0 || b3.compareTo(b0) > 0) {
                 return sb.append("99+");
             }
             return sb.append(num);
         }
 
         // 以万为单位处理
-        if (b3.compareTo(b1) == -1) {
+        if (b3.compareTo(b1) < 0) {
             formatNumStr = b3.toString();
-        } else if ((b3.compareTo(b1) == 0 && b3.compareTo(b1) == 1)
-                || b3.compareTo(b2) == -1) {
+        } else if ((b3.compareTo(b1) == 0 && b3.compareTo(b1) > 0)
+                || b3.compareTo(b2) < 0) {
             unit = "w";
 
             formatNumStr = b3.divide(b1).toString();
-        } else if (b3.compareTo(b2) == 0 || b3.compareTo(b2) == 1) {
+        } else if (b3.compareTo(b2) == 0 || b3.compareTo(b2) > 0) {
             unit = "亿";
             formatNumStr = b3.divide(b2).toString();
 

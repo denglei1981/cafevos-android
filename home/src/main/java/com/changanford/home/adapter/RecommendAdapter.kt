@@ -139,7 +139,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         tvAuthorName.text = item.authors?.nickname
-        tvSubtitle.text = item.authors?.memberName
+        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
 

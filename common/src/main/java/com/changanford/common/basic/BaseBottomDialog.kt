@@ -1,4 +1,4 @@
-package com.changanford.home.base
+package com.changanford.common.basic
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.changanford.common.basic.BaseViewModel
-import com.changanford.home.net.getVmClazz
+import com.changanford.common.loadsir.EmptyCommentCallback
+import com.changanford.common.loadsir.ErrorCallback
+import com.changanford.common.loadsir.LoadingCallback
+import com.changanford.common.util.getVmClazz
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
+import com.kingja.loadsir.core.LoadService
 
 
 /**
@@ -36,7 +37,7 @@ abstract  class BaseBottomDialog<VM: BaseViewModel,DB : ViewDataBinding> : Botto
     //该类绑定的ViewDataBinding
     lateinit var mDatabind: DB
     //界面状态管理者
-//     var mLoadService: LoadService<Any>?=null
+     var mLoadService: LoadService<Any>?=null
     /**
      * 当前Fragment绑定的视图布局
      */
@@ -128,32 +129,32 @@ abstract  class BaseBottomDialog<VM: BaseViewModel,DB : ViewDataBinding> : Botto
 
     abstract fun dismissLoading()
     private var isShowedContent = false
-//    open fun showLoading() {
-//        if (null != mLoadService) {
-//            mLoadService!!.showCallback(LoadingCallback::class.java)
-//        }
-//    }
+    open fun showLoading() {
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(LoadingCallback::class.java)
+        }
+    }
 
-//    open fun showEmpty() {
-//        if (null != mLoadService) {
-//            mLoadService!!.showCallback(EmptyCommentCallback::class.java)
-//        }
-//    }
+    open fun showEmpty() {
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(EmptyCommentCallback::class.java)
+        }
+    }
 
-//    open fun showFailure(message: String?) {
-//        if (null != mLoadService) {
-//            if (!isShowedContent) {
-//                mLoadService!!.showCallback(ErrorCallback::class.java)
-//            } else {
-////                ToastUtil.show(, message)
-//            }
-//        }
-//    }
-//    open fun showContent() {
-//        if (null != mLoadService) {
-//            isShowedContent = true
-//            mLoadService!!.showSuccess()
-//        }
-//    }
+    open fun showFailure(message: String?) {
+        if (null != mLoadService) {
+            if (!isShowedContent) {
+                mLoadService!!.showCallback(ErrorCallback::class.java)
+            } else {
+//                ToastUtil.show(, message)
+            }
+        }
+    }
+    open fun showContent() {
+        if (null != mLoadService) {
+            isShowedContent = true
+            mLoadService!!.showSuccess()
+        }
+    }
 
 }

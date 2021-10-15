@@ -119,9 +119,6 @@ object LiveDataBusKey {
 
     const val MINE_UPDATE_ADDRESS = "mine:update_address"
 
-    const val MINE_CHOOSE_ADDRESS = "mine:choose_address"
-
-
     const val MINE_SUBMIT_FEEDBACK_SUCCESS = "mine:submit_feedback_success"
 
     const val MINE_PROVINCE = "mine:province"

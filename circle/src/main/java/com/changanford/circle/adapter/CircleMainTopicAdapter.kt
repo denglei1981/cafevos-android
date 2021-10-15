@@ -7,9 +7,11 @@ import com.changanford.circle.R
 import com.changanford.circle.bean.Topic
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleMainTopicBinding
+import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.xiaomi.push.er
 
 /**
  *Author lcw
@@ -23,7 +25,10 @@ class CircleMainTopicAdapter(context: Context) :
     override fun fillData(vdBinding: ViewDataBinding?, item: Topic, position: Int) {
         val binding = vdBinding as ItemCircleMainTopicBinding
         binding.ivIcon.setCircular(5)
-        binding.ivIcon.loadImage(item.pic)
+        binding.ivIcon.loadImage(item.pic, ImageOptions().apply {
+            placeholder = R.mipmap.image_s_one_default
+            error=R.mipmap.image_s_one_default
+        })
         binding.tvNum.text = "${item.postsCount}帖子 ${item.likesCount}热度"
         binding.bean = item
     }

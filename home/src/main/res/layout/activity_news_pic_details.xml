@@ -13,8 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00142E"
-        >
+        android:background="#00142E">
 
         <include
             android:id="@+id/layout_header"
@@ -47,6 +46,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_pics_num"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_black_trans_radius10"
+            android:gravity="center"
+            android:minWidth="50dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintBottom_toBottomOf="@+id/b_viewpager"
+            app:layout_constraintEnd_toEndOf="@+id/b_viewpager"
+            tools:text="1/5" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_tv_content"
@@ -107,7 +121,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

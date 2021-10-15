@@ -1,9 +1,12 @@
 package com.changanford.my.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.AddressBeanItem
@@ -38,13 +41,13 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
          * it.addressName.logE()
          * })
          */
-        fun startAddress(isChooseAdd: Boolean) {
-            RouterManger.param(RouterManger.KEY_TO_ITEM, isChooseAdd)
+        fun startAddress(isItemClickBack: Int) {
+            RouterManger.param(RouterManger.KEY_TO_ITEM, isItemClickBack)
                 .startARouter(ARouterMyPath.MineAddressListUI)
         }
     }
 
-    private var isChooseAdd: Boolean = false
+    private var isChooseAdd: Int = 0
 
     val addAdapter: AddAdapter by lazy {
         AddAdapter()
@@ -53,7 +56,7 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
     override fun initView() {
         binding.addToolbar.toolbarTitle.text = "收货地址"
 
-        intent.extras?.getBoolean(RouterManger.KEY_TO_ITEM)?.let { isChooseAdd = it }
+        intent.extras?.getInt(RouterManger.KEY_TO_ITEM, 0)?.let { isChooseAdd = it }
         binding.cryAdd.rcyCommonView.adapter = addAdapter
 
         viewModel.addressList.observe(this, Observer {
@@ -140,11 +143,13 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
                         .startARouter(ARouterMyPath.EditAddressUI)
                 }
             }
-            if (isChooseAdd) {//选择收货地址
+            if (isChooseAdd == 1) {//选择收货地址
                 holder.itemView.setOnClickListener {
-                    LiveDataBus.get()
-                        .with(LiveDataBusKey.MINE_CHOOSE_ADDRESS, AddressBeanItem::class.java)
-                        .postValue(item)
+                    LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS)
+                        .postValue(JSON.toJSON(item).toString())//H5回调数据
+                    var intent = Intent()
+                    intent.putExtra("addressBeanItem", item)
+                    setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
             }

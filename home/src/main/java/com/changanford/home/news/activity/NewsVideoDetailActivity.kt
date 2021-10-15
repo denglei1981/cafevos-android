@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
@@ -29,7 +30,6 @@ import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.setDrawableTop
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -38,12 +38,14 @@ import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
+import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
@@ -56,7 +58,9 @@ class NewsVideoDetailActivity :
     var checkPosition: Int = -1
 
     var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
-
+    private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
+        NewsRecommendListAdapter()
+    }
     private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)
     }
@@ -93,28 +97,21 @@ class NewsVideoDetailActivity :
 
             }
         })
-        homeNewsCommentAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
-            override fun onItemChildClick(
-                adapter: BaseQuickAdapter<*, *>,
-                view: View,
-                position: Int
-            ) {
-                when (view.id) {
-                    R.id.iv_like, R.id.tv_like_count -> {
-                        toastShow("点我。。。")
-                    }
+        homeNewsCommentAdapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.iv_like, R.id.tv_like_count -> {
+                    toastShow("点我。。。")
                 }
-
             }
-
-        })
+        }
     }
 
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
-            viewModel.getNewsDetail(artId!!)
+            viewModel.getNewsDetail(artId)
             viewModel.getNewsCommentList(artId, false)
+            viewModel.getArtAdditional(artId)
         } else {
             ToastUtils.showShortToast("没有该资讯类型", this)
         }
@@ -132,6 +129,20 @@ class NewsVideoDetailActivity :
 
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
+        inflateHeader.rvRelate.adapter = newsRecommendListAdapter
+        newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val item = newsRecommendListAdapter.getItem(position)
+                if (item.authors != null) {
+                    val newsValueData = NewsValueData(item.artId, item.type)
+                    val values = Gson().toJson(newsValueData)
+                    JumpUtils.instans?.jump(2, values)
+                } else {
+                    toastShow("没有作者")
+                }
+            }
+
+        })
     }
 
     private fun playVideo(playUrl: String) {
@@ -159,6 +170,17 @@ class NewsVideoDetailActivity :
                 ToastUtils.showShortToast(it.message, this)
             }
         })
+        viewModel.recommendNewsLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.data != null && it.data.recommendArticles.size > 0) {
+                    newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                    inflateHeader.grRecommend.visibility = View.VISIBLE
+                } else {// 隐藏热门推荐。
+                    inflateHeader.grRecommend.visibility = View.GONE
+
+                }
+            }
+        })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 ToastUtils.showShortToast("评论成功", this)
@@ -182,6 +204,14 @@ class NewsVideoDetailActivity :
         viewModel.followLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
+            }
+        })
+
+        viewModel.collectLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.isSuccess) {
+                    setCollection()
+                }
             }
         })
 
@@ -215,18 +245,34 @@ class NewsVideoDetailActivity :
 
             }
         }
-        binding.llComment.tvNewsToLike.text = newsDetailData.getLikeCount()
-        binding.llComment.tvNewsToShare.text = newsDetailData.getShareCount()
-        binding.llComment.tvNewsToMsg.text = newsDetailData.getCommentCount()
-        binding.llComment.tvNewsToCollect.text = newsDetailData.getCollectCount()
+
+        binding.llComment.tvNewsToLike.setPageTitleText(
+            CountUtils.formatNum(
+                newsDetailData.getLikeCount(),
+                false
+            ).toString()
+        )
+
+        binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
+        binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())
+        binding.llComment.tvNewsToCollect.setPageTitleText(newsDetailData.getCollectCount())
         binding.llComment.tvNewsToLike.setOnClickListener(this)
         binding.llComment.tvNewsToShare.setOnClickListener(this)
         binding.llComment.tvNewsToMsg.setOnClickListener(this)
         binding.llComment.tvNewsToCollect.setOnClickListener(this)
+        binding.llComment.tvNewsToCollect.setOnClickListener(this)
         if (newsDetailData.isLike == 0) {
-            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_unlike)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
         } else {
-            binding.llComment.tvNewsToLike.setDrawableTop(this, R.drawable.icon_home_bottom_like)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
+        }
+        if (newsDetailData.isCollect == 0) {
+            binding.llComment.tvNewsToCollect.setThumb(R.drawable.icon_home_bottom_uncollect, false)
+        } else {
+            binding.llComment.tvNewsToCollect.setThumb(
+                R.drawable.icon_home_bottom_collection,
+                false
+            )
         }
     }
 
@@ -271,6 +317,7 @@ class NewsVideoDetailActivity :
         super.onPause()
         playerHelper.pause()
     }
+
     override fun onDestroy() {
         if (isNeedNotify) {
             newsDetailData?.let {
@@ -323,6 +370,9 @@ class NewsVideoDetailActivity :
             return
         }
         when (v.id) {
+            R.id.tv_news_to_collect -> {
+                viewModel.addCollect(artId)
+            }
             R.id.tv_speak_something -> {
                 replay()
             }
@@ -371,37 +421,67 @@ class NewsVideoDetailActivity :
         when (newsDetailData?.isLike) {
             0 -> {
                 newsDetailData?.isLike = 1
-                binding.llComment.tvNewsToLike.setDrawableTop(
-                    this,
-                    R.drawable.icon_home_bottom_like
-                )
-                newsDetailData?.getLikeCount() + 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
-                binding.llComment.tvNewsToLike.text =
-                    CountUtils.formatNum(likesCount.toString(), false).toString()
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
             }
             1 -> {
                 newsDetailData?.isLike = 0
-                binding.llComment.tvNewsToLike.setDrawableTop(
-                    this,
-                    R.drawable.icon_home_bottom_unlike
-                )
                 likesCount = newsDetailData?.likesCount?.minus(1)
-                binding.llComment.tvNewsToLike.text =
-                    CountUtils.formatNum(likesCount.toString(), false).toString()
-
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
             }
         }
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
+        binding.llComment.tvNewsToLike.setPageTitleText(
+            CountUtils.formatNum(
+                likesCount.toString(),
+                false
+            ).toString()
+        )
+    }
+
+    private fun setCollection() {
+        var collectCount = newsDetailData?.collectCount
+        when (newsDetailData?.isCollect) {
+            0 -> {
+                newsDetailData?.isCollect = 1
+                collectCount = newsDetailData?.collectCount?.plus(1)
+                binding.llComment.tvNewsToCollect.setThumb(
+                    R.drawable.icon_home_bottom_collection,
+                    true
+                )
+            }
+            1 -> {
+                newsDetailData?.isCollect = 0
+                collectCount = newsDetailData?.collectCount?.minus(1)
+                binding.llComment.tvNewsToCollect.setThumb(
+                    R.drawable.icon_home_bottom_uncollect,
+                    false
+                )
+            }
+        }
+        if (collectCount != null) {
+            newsDetailData?.collectCount = collectCount
+        }
+        binding.llComment.tvNewsToCollect.setPageTitleText(
+            CountUtils.formatNum(
+                collectCount.toString(),
+                false
+            ).toString()
+        )
     }
 
     private fun setCommentCount() {
         // 评论成功自增1
         val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvNewsToMsg.text =
-            CountUtils.formatNum(commentCount.toString(), false).toString()
+        binding.llComment.tvNewsToMsg.setPageTitleText(
+            CountUtils.formatNum(
+                commentCount.toString(),
+                false
+            ).toString()
+        )
+
     }
 
 

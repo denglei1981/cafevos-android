@@ -99,7 +99,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="um.615fea28ac9567566e8c9d48" />
+                <data
+                    android:host="open"
+                    android:scheme="fordevos" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
@@ -149,6 +151,7 @@
         <activity android:name="com.changanford.my.MyFootUI" />
         <activity android:name="com.changanford.my.MyActUI" />
         <activity android:name="com.changanford.my.PersonCenterUI" />
+        <activity android:name="com.changanford.my.MyPostUI" />
 
     </application>
 

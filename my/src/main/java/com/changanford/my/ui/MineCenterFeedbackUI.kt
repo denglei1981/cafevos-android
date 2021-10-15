@@ -18,7 +18,7 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
     var holidayHotline: String = "951998"//服务热线
     var mobile: String = "951999"//节假日热线
     override fun initView() {
-        binding.mineToolbar.toolbarTitle.text = "常见问题"
+        binding.mineToolbar.toolbarTitle.text = "帮助与反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
         }

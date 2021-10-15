@@ -4,7 +4,7 @@
     tools:context="com.changanford.evos.MainActivity">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher"
         android:title="@string/app_home" />
     <item
         android:id="@+id/circleFragment"

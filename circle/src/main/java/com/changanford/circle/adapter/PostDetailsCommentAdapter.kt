@@ -43,6 +43,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 lifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
+                    body["type"] = 2
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {

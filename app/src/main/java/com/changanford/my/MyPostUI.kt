@@ -9,10 +9,13 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostDatabase
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.MineUtils
@@ -126,7 +129,17 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
                         bundle.putString(
                             "postsId", "${post.postsId}"
                         )
-//                        startARouter(ARouterHomePath.EditPostActivity, bundle)
+                        when (post.type) {
+                            2 -> {//图文
+                                startARouter(ARouterCirclePath.PostActivity, bundle)
+                            }
+                            3 -> {//视频
+                                startARouter(ARouterCirclePath.VideoPostActivity, bundle)
+                            }
+                            4 -> {//长图页
+                                startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
+                            }
+                        }
                     }
                     3 -> {//删除
                         deleteItem(ids)

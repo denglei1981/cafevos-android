@@ -3,6 +3,8 @@ package com.changanford.common.bean
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  *  文件名：ActBean
@@ -66,13 +68,16 @@ data class InfoDataBean(
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
         return commentCountResult
     }
-
     fun getCommentCountAnViewCount(): String {
-        var commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
-        var viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
+        val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
-
+    fun getCommentDiscussAnViewCount(): String {
+        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("讨论")
+        val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        return commentStr.plus("\t").plus(viewStr)
+    }
     fun getContentStr(): String {
         if (!TextUtils.isEmpty(content)) {
             return content
@@ -82,11 +87,21 @@ data class InfoDataBean(
         }
         return ""
     }
-
-
+    fun getPicCover(): String { // 获取封面。
+        if (!TextUtils.isEmpty(pics)) {
+            val asList = listOf(pics.split(","))
+            return asList[0].toString()
+        }
+        return ""
+    }
+    fun getSubTitleStr():String{
+        return if(!TextUtils.isEmpty(specialTopicTitle)){
+            "#".plus(specialTopicTitle).plus("#")
+        }else{
+            summary
+        }
+    }
 }
-
-
 data class AuthorBaseVo(
     val authorId: String,
     val avatar: String = "",
@@ -169,7 +184,7 @@ data class PostDataBean(
     val viewsCount: Int = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0
-){
+) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
         val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")

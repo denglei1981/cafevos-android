@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.changanford.common.util.MConstant;
+import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.evos.R;
@@ -20,7 +20,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
 
     private static final String TAG = "WXPayEntryActivity";
-    public static final String APP_ID = MConstant.WXAPPID;//微信
+    public static final String APP_ID = ConfigUtils.WXAPPID;//微信
     private IWXAPI api;
 
     @Override

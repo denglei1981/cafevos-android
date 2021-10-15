@@ -35,7 +35,7 @@ object ApiClient {
                     chain
                         .request()
                         .newBuilder()
-                        .header("User-Agent", "android-Ford")
+                        .header("User-Agent", "ford-evos")
                         .build()
                 )
             }

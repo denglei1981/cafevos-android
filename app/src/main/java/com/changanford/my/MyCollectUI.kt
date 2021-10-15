@@ -32,6 +32,7 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     }
 
     private fun initViewpager() {
+        binding.viewpager.isUserInputEnabled = false
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyCollectUI) {
                 override fun getItemCount(): Int {

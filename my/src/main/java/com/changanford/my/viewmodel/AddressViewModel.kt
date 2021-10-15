@@ -32,6 +32,8 @@ class AddressViewModel : ViewModel() {
                 apiService.getAllCity(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 allCity.postValue(it)
+            }.onFailure {
+                allCity.postValue(null)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.changanford.home.net
+package com.changanford.common.util
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

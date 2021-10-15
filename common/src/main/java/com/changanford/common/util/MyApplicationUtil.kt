@@ -27,7 +27,7 @@ import com.tencent.bugly.crashreport.CrashReport
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
- * @FileName: com.changan.uni.MyApplicationUtil
+ * @FileName: com.changanford.evos.MyApplicationUtil
  * @Author:　 　
  * @Version : V1.0
  * @Date: 3/12/21 11:03 AM
@@ -168,6 +168,6 @@ object MyApplicationUtil {
     private fun initshare() {
         ShareManager.initWxShareSdk(ConfigUtils.WXAPPID)
         ShareManager.initSinaSdk(ConfigUtils.WEIBOAPPKEY, ModuleConfigureConstant.REDIRECT_URL, "")
-        ShareManager.initQqSdk(ConfigUtils.QQAPPID, "UNI")
+        ShareManager.initQqSdk(ConfigUtils.QQAPPID, "福域")
     }
 }

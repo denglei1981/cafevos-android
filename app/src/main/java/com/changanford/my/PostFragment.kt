@@ -1,8 +1,10 @@
 package com.changanford.my
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleMainBottomAdapter
+import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
@@ -101,6 +103,17 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                         completeRefresh(it?.dataList, postAdapter, total)
                     }
                 }
+            }
+        }
+    }
+
+    override fun showEmpty(): View? {
+        return when (type) {
+            "centerPost" -> {
+                ViewEmptyTopBinding.inflate(layoutInflater).root
+            }
+            else -> {
+                super.showEmpty()
             }
         }
     }

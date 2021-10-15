@@ -3,6 +3,7 @@ package com.changanford.home.news.request
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
@@ -10,6 +11,7 @@ import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.NewsExpandData
 
 /**
  *  资讯详情viewmodel
@@ -24,6 +26,10 @@ class NewsDetailViewModel : BaseViewModel() {
     val actionLikeLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
 
     val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
+
+
+    val recommendNewsLiveData = MutableLiveData<UpdateUiState<NewsExpandData>>() //  推荐的 新闻
+
 
     var pageNo: Int = 1
 
@@ -52,10 +58,10 @@ class NewsDetailViewModel : BaseViewModel() {
      *  获取资讯评论
      * */
     fun getNewsCommentList(bizId: String, isLoadMore: Boolean) {
-        if (!isLoadMore) {
-            pageNo = 1
-        } else {
+        if (isLoadMore) {
             pageNo += 1
+        } else {
+            pageNo = 1
         }
         launch(false, block = {
             val requestBody = HashMap<String, Any>()
@@ -121,11 +127,11 @@ class NewsDetailViewModel : BaseViewModel() {
         })
     }
 
-    fun followOrCancelUser(followId:String,type:Int){
+    fun followOrCancelUser(followId: String, type: Int) {
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
-            requestBody["type"]=type
+            requestBody["type"] = type
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
@@ -138,21 +144,40 @@ class NewsDetailViewModel : BaseViewModel() {
                 }
         })
     }
-
-    fun  addCollect(collId:String){
+    val collectLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
+    fun addCollect(collId: String) {
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["collectionContentId"] = collId
-            requestBody["collectionType"]=1
+            requestBody["collectionType"] = 1
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .collectionApi(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                    collectLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
+                    val updateUiState = UpdateUiState<Any>(false, it)
+                    collectLiveData.postValue(updateUiState)
                 }
         })
     }
 
+
+    fun getArtAdditional(artId: String) {
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["artId"] = artId
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .getArtAdditional(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<NewsExpandData>(it, true, "")
+                    recommendNewsLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+                }
+        })
+    }
 
 
 }

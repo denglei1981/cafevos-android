@@ -45,13 +45,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var updateViewModel: UpdateViewModel
     lateinit var navController: NavController
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
 
@@ -82,8 +75,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_caru,
                     R.mipmap.icon_car_b,
                     R.mipmap.icon_car_c,
-                    "订车",
-                    -30f
+                    "爱车",
+                    -20f
                 )
             )
             .addItem(
@@ -220,7 +213,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtils.s(BaseApplication.INSTANT, "再按一次退出引力域")
+                ToastUtils.s(BaseApplication.INSTANT, "再按一次退出福域")
                 exitTime = System.currentTimeMillis()
             } else {
                 var intent = Intent()

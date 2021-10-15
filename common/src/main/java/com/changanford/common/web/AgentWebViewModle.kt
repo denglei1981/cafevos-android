@@ -24,7 +24,7 @@ import org.json.JSONObject
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
- * @FileName: com.changan.uni.ui.model.AgentWebViewModle
+ * @FileName: com.changanford.evos.ui.model.AgentWebViewModle
  * @Author:　 　
  * @Version : V1.0
  * @Date: 2020/5/13 15:50
