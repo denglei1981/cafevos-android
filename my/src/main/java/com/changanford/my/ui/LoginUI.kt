@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.PUSH_ID
 import com.changanford.common.util.SPUtils
@@ -89,10 +90,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         UserManger.deleteUserInfo()
         MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
-        tencent = Tencent.createInstance(MConstant.QQAPPID, this)
+        tencent = Tencent.createInstance(ConfigUtils.QQAPPID, this)
 
-        wxApi = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID)
-        wxApi.registerApp(MConstant.WXAPPID)
+        wxApi = WXAPIFactory.createWXAPI(this, ConfigUtils.WXAPPID)
+        wxApi.registerApp(ConfigUtils.WXAPPID)
 
         binding.signAgreement.signAgreement()
 
