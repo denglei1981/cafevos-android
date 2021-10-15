@@ -329,10 +329,10 @@ data class OrderItemBean(
     val seckill: String = "",
     val seckillFb: Int = 0,
     val skuCode: String = "",
-    var skuImg: String = "",
+    var skuImg: String? = "",
     val snapshotOfAttrOption: String = "",
     var specifications: String = "",
-    var spuName: String = "",
+    var spuName: String? = "",
     val spuSecondName: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
@@ -395,7 +395,7 @@ data class OrderBriefBean(
     val buyNum: String ="0",
     val fbCost: String = "0",
     val payType: String = "",
-    val snapshotOfAttrOption: List<SnapshotOfAttrOption> = listOf()
+    val snapshotOfAttrOption: String?=""
 )
 
 data class SnapshotOfAttrOption(

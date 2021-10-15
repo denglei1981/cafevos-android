@@ -55,7 +55,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     * */
     private fun dataFormat(item: OrderItemBean){
         if(-1==orderType){
-            val orderBriefBean=Gson().fromJson(item.orderBrief,OrderBriefBean::class.java)
+            val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
             item.apply {
                 spuName=skuName
                 skuImg=orderImg
