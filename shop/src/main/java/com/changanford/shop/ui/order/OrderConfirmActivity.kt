@@ -59,7 +59,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             dataBean.buyNum= it
             bindingBaseData()
         })
-        viewModel.getAddressList()
+        val addressInfo=dataBean.addressInfo
+        if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
+        else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
         bindingBaseData()
         binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
@@ -91,8 +93,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             model=dataBean
-            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(skuItem.skuImg),imgGoodsCover)
+//            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)
             //if(freightPrice!=0)tvDistributionType
         }
         binding.inBottom.apply {

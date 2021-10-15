@@ -45,15 +45,16 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity,{ code ->
             _skuCode=code
-            val findItem=dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]
-            viewDataBinding.sku= findItem
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(findItem.skuImg),viewDataBinding.imgCover)
+            val skuItem=dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]
+            dataBean.skuImg=skuItem.skuImg
+            viewDataBinding.sku= skuItem
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(skuItem.skuImg),viewDataBinding.imgCover)
             val limitBuyNum=dataBean.limitBuyNum
             val htmlStr=if(limitBuyNum!=null)"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
-            WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${findItem.stock}件）")
-            val max=limitBuyNum?:findItem.stock
+            WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${skuItem.stock}件）")
+            val max=limitBuyNum?:skuItem.stock
             viewDataBinding.addSubtractView.setMax(max.toInt())
-            bindingBtn(findItem.stock.toInt(),viewDataBinding.btnSubmit)
+            bindingBtn(skuItem.stock.toInt(),viewDataBinding.btnSubmit)
         })
         viewDataBinding.tvAccountPoints.setHtmlTxt(dataBean.acountFb,"#00095B")
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)

@@ -29,10 +29,11 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
     /**
      * 再次购买->创建订单页面
      * */
-    fun onceAgainToBuy(orderBean: OrderItemBean){
-        val goodsBean= GoodsDetailBean().apply {
-
-        }
+    fun onceAgainToBuy(item: OrderItemBean){
+        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }
+        val goodsBean= GoodsDetailBean(spuId = item.mallMallSpuId,spuName =item.spuName, buyNum = item.buyNum.toInt(),fbPrice = item.fbOfUnitPrice,
+            freightPrice = item.freightPrice,preferentialFb = item.preferentialFb,acountFb = item.acountFb.toInt(),skuCode = item.skuCode,
+            skuCodeTxts = skuCodeTxt, addressInfo = item.addressInfo,addressId = item.addressId,skuId = item.mallMallSkuId,skuImg = item.skuImg,)
         OrderConfirmActivity.start(context,Gson().toJson(goodsBean))
     }
     /**

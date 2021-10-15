@@ -49,6 +49,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{model.preferentialFb}"
             app:end_txt="@string/str_integral"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
