@@ -3,6 +3,7 @@ package com.changanford.circle.viewmodel
 import android.content.Context
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.changanford.circle.api.CircleNetWork
@@ -30,6 +31,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -153,40 +156,51 @@ class PostViewModule() :PostRoomViewModel(){
      * 下载图片
      */
     fun downGlideImgs(imageList:List<ImageList>) {
-        Observable.fromIterable(imageList)
-            .map { t ->
-                val file =
-                    Glide.with(BaseApplication.curActivity).load(GlideUtils.handleImgUrl(t.imgUrl))
-                        .downloadOnly(
-                            Target.SIZE_ORIGINAL,
-                            Target.SIZE_ORIGINAL
-                        ).get()
-                //获取到下载得到的图片，进行本地保存
-                val pictureFolder =
-                    Environment.getExternalStorageDirectory()
-                //第二个参数为你想要保存的目录名称
-                val appDir = File(pictureFolder, "Uni")
-                if (!appDir.exists()) {
-                    appDir.mkdirs()
+        viewModelScope.launch(Dispatchers.IO) {
+            Observable.fromIterable(imageList)
+                .map { t ->
+                    try {
+                        val file =
+                            Glide.with(BaseApplication.INSTANT)
+                                .load(GlideUtils.handleImgUrl(t.imgUrl))
+                                .downloadOnly(
+                                    Target.SIZE_ORIGINAL,
+                                    Target.SIZE_ORIGINAL
+                                ).get()
+                        //获取到下载得到的图片，进行本地保存
+                        val pictureFolder =
+                            Environment.getExternalStorageDirectory()
+                        //第二个参数为你想要保存的目录名称
+                        val appDir = File(pictureFolder, "Uni")
+                        if (!appDir.exists()) {
+                            appDir.mkdirs()
+                        }
+                        val fileName =
+                            System.currentTimeMillis().toString() + ".jpg"
+                        val destFile = File(appDir, fileName)
+                        //把gilde下载得到图片复制到定义好的目录中去
+                        copy(file, destFile)
+                        val localMedia =
+                            LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
+                        localMedia.androidQToPath = destFile.path
+                        localMedia.realPath = destFile.path
+                        localMedia
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        LocalMedia("", 0, PictureMimeType.ofImage(), "image/jpeg").apply {
+                            androidQToPath = ""
+                            realPath = ""
+                        }
+                    }
                 }
-                val fileName =
-                    System.currentTimeMillis().toString() + ".jpg"
-                val destFile = File(appDir, fileName)
-                //把gilde下载得到图片复制到定义好的目录中去
-                copy(file, destFile)
-                val localMedia =
-                    LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
-                localMedia.androidQToPath = destFile.path
-                localMedia.realPath = destFile.path
-                localMedia
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
 //                yuanPathList.add(it.path)
-                downloadLocalMedias.add(it)
-                _downloadLocalMedias.postValue(downloadLocalMedias)
-            }
+                    downloadLocalMedias.add(it)
+                    _downloadLocalMedias.postValue(downloadLocalMedias)
+                }
+        }
     }
     /**
      * 复制文件
