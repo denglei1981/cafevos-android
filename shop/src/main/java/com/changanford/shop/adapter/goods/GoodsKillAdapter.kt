@@ -24,6 +24,8 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             dataBinding.executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.spuImgs),dataBinding.imgCover)
             dataBinding.tvOrIntegral.visibility=if(null!=item.lineFb) View.VISIBLE else View.GONE
+            val seckillNumLimit=item.seckillNumLimit?:"0"
+            dataBinding.tvSeckillNumLimit.visibility=if("0"!=seckillNumLimit)View.VISIBLE else View.INVISIBLE
             when (position) {
                 0 -> ScreenUtils.setMargin(holder.itemView,dp15,0,0,0)
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)

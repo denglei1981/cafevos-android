@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_seckillNumLimit"
                 android:textSize="@dimen/sp_11"
                 android:layout_marginTop="@dimen/dp_9"
                 android:layout_marginBottom="@dimen/dp_11"

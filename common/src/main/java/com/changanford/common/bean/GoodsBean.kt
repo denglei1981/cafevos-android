@@ -104,7 +104,7 @@ data class GoodsItemBean(
     val recommend: String = "",
     val robbedPercentage: String = "",
     val seckillFb: String = "0",
-    var seckillNumLimit: Any? = null,
+    var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
     val seckillStock: Int = 0,
     val sekillCount: Int = 0,
