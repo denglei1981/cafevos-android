@@ -6,24 +6,21 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.listener.OnPerformListener
-import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.OrderEvaluationActivity
-import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 
 
 class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     //orderType -1所有订单 0 商品、1购车 2 试驾
+    private val control by lazy { OrderControl(context,viewModel) }
     private val orderTypes= arrayOf("未知0","购车订单","试驾订单","商品订单","未知4","未知5","未知6","")
     @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
@@ -60,7 +57,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_immediatePayment)
-                            setOnClickListener { toPay(item) }
+                            setOnClickListener { control.toPay(item) }
                         }
                         dataBinding.btnCancel.apply {
                             visibility=View.VISIBLE
@@ -83,7 +80,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_onceAgainToBuy)
-                            setOnClickListener {onceAgainToBuy(item)}
+                            setOnClickListener {control.onceAgainToBuy(item)}
                         }
                     }
                     //未知
@@ -123,63 +120,28 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
 
 
     }
-    /**
-     * 再次购买->创建订单页面
-    * */
-    private fun onceAgainToBuy(item: OrderItemBean){
-//        val detailBean=GoodsDetailBean()
-//        OrderConfirmActivity.start(context,"goodsInfo")
-    }
+
     /**
      * 确认收货
      * */
     private fun confirmGoods(item: OrderItemBean){
-        PublicPop(context).apply {
-            showPopupWindow(context.getString(R.string.str_confirmReceiptGoods),null,null,object :
-                PublicPop.OnPopClickListener{
-                override fun onLeftClick() {
-                    dismiss()
-                }
-                override fun onRightClick() {
-                    viewModel?.confirmReceipt(item.orderNo,object :OnPerformListener{
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onFinish(code: Int) {
-                            ToastUtils.showShortToast(R.string.str_goodsSuccessfully,context)
-                            item.orderStatus="FINISH"
-                            this@OrderAdapter.notifyDataSetChanged()
-                            dismiss()
-                        }
-                    })
-                }
-            })
-        }
+        control.confirmGoods(item,object :OnPerformListener{
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onFinish(code: Int) {
+                this@OrderAdapter.notifyDataSetChanged()
+            }
+        })
     }
-    /**
-     * 去支付
-    * */
-    private fun toPay(item: OrderItemBean){
-        PayConfirmActivity.start(context,Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
-    }
+
     /**
      * 取消订单
     * */
     private fun cancelOrder(item: OrderItemBean){
-        PublicPop(context).apply {
-            showPopupWindow(context.getString(R.string.prompt_cancelOrder),null,null,object :
-                PublicPop.OnPopClickListener{
-                override fun onLeftClick() { dismiss() }
-                override fun onRightClick() {
-                    viewModel?.orderCancel(item.orderNo,object:OnPerformListener{
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onFinish(code: Int) {
-                            ToastUtils.showShortToast(R.string.str_orderCancelledSuccessfully,context)
-                            item.orderStatus="CLOSED"
-                            this@OrderAdapter.notifyDataSetChanged()
-                            dismiss()
-                        }
-                    })
-                }
-            })
-        }
+        control.cancelOrder(item,object :OnPerformListener{
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onFinish(code: Int) {
+                this@OrderAdapter.notifyDataSetChanged()
+            }
+        })
     }
 }

@@ -13,8 +13,10 @@ import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
+import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -32,6 +34,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
         }
     }
+    private val control by lazy { OrderControl(this,viewModel) }
     private lateinit var dataBean: OrderItemBean
     private var orderNo:String=""
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
@@ -58,11 +61,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun bindingData(dataBean:OrderItemBean){
         val evalStatus=dataBean.evalStatus
         val orderStatus=dataBean.orderStatus
+        //应付总额
+        var totalPayName=R.string.str_copeWithTotalAmount
         binding.inAddress.layoutLogistics.visibility=View.GONE
+        binding.inBottom.btnOrderConfirm.visibility=View.VISIBLE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
             dataBean.orderStatusName= this
             when(this){
-                "待付款"->{
+                "待付款","待支付"->{
                     //留言
                     dataBean.otherName=getString(R.string.str_leaveMessage)
                     dataBean.otherValue=dataBean.consumerMsg?:""
@@ -78,8 +84,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         }
                     })
                     timeCountControl?.start()
+                    binding.inBottom.apply {
+                        btnOrderCancle.visibility=View.VISIBLE
+                        btnOrderConfirm.setText(R.string.str_immediatePayment)
+                    }
+
                 }
                 "待发货"->{
+                    totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
@@ -88,34 +100,42 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         setText(R.string.prompt_waitSend)
                     }
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
+                    binding.inBottom.btnOrderConfirm.visibility=View.GONE
                 }
                 "待收货"->{
+                    totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
+                    binding.inBottom.btnOrderConfirm.setText(R.string.str_confirmGoods)
                 }
                 "待评价"->{
+                    totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.orderTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
+                    binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                 }
                 "已完成"->{
+                    totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+                    binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                 }
                 "已关闭"->{
                     dataBean.statesVisibility=2
                     binding.tvOrderRemainingTime.text=dataBean.evalStatusDetail
+                    binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                 }
             }
         }
@@ -142,13 +162,46 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             inGoodsInfo.model=dataBean
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
         }
+        binding.inBottom.apply {
+            model=dataBean
+            tvTotalPayFb.setText(totalPayName)
+        }
+    }
+    /**
+     * 取消订单
+    * */
+    private fun cancelOrder(){
+        control.cancelOrder(dataBean,object :OnPerformListener{
+            override fun onFinish(code: Int) {
+                binding.inBottom.btnOrderCancle.visibility=View.GONE
+                viewModel.getOrderDetail(orderNo)
+            }
+        })
+    }
+    private fun confirmOrder(){
+        when(binding.inBottom.btnOrderConfirm.text){
+            //再次购买
+            getString(R.string.str_onceAgainToBuy)->control.onceAgainToBuy(dataBean)
+            //评价
+            getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
+            //确认收货
+            getString(R.string.str_eval)->{
+                control.confirmGoods(dataBean)
+            }
+            //立即支付
+            getString(R.string.str_eval)->control.toPay(dataBean)
+
+        }
     }
     fun onClick(v:View){
         if(!::dataBean.isInitialized)return
         when(v.id){
-            R.id.tv_copy->{
-                MTextUtil.copystr(this,dataBean.courierNo)
-            }
+            //复制物流信息
+            R.id.tv_copy->MTextUtil.copystr(this,dataBean.courierNo)
+            //取消订单
+            R.id.btn_order_cancle-> cancelOrder()
+            //支付、确认收货、评价、再次购买
+            R.id.btn_order_confirm->confirmOrder()
         }
     }
     override fun onDestroy() {

@@ -146,7 +146,7 @@ class OrderViewModel: BaseViewModel() {
      * 取消订单
      * [orderNo]订单号
      * */
-    fun orderCancel(orderNo:String,listener: OnPerformListener?) {
+    fun orderCancel(orderNo:String,listener: OnPerformListener?=null) {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

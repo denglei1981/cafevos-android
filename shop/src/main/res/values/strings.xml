@@ -100,6 +100,7 @@
     <string name="prompt_waitSend">（温馨提示：付款后不能申请退款，有问题请联系客服）</string>
     <string name="str_remainingTimePayment0">支付剩余时间 </string>
     <string name="str_copeWithTotalAmount">应付总额：</string>
+    <string name="str_realPayTotalAmount">实付总额：</string>
     <string name="str_cancelOrder">取消订单</string>
     <string name="str_immediatePayment">立即支付</string>
     <string name="str_logisticsInformation">物流信息</string>
