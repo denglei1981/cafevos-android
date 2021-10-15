@@ -14,9 +14,11 @@ import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
@@ -53,7 +55,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-            if (postEntity?.size==0){
+            if (postEntity?.size == 0) {
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {
@@ -103,7 +105,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.ivSearch.setOnClickListener {
-
+            JumpUtils.instans!!.jump(108)
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()

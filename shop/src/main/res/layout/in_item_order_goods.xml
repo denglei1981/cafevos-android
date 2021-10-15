@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/img_goods_cover"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
             android:src="@drawable/shadow_1b51d9_5dp"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_title"
             android:textStyle="bold"
@@ -28,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="无线蓝牙耳机 降噪耳机全新苹噪耳…"
+            android:text="@{model.spuName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             style="@style/style_txt_ellipsize"/>
@@ -48,7 +52,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="×1"
+            app:start_txt="@string/str_x"
+            android:text="@{model.buyNum}"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
@@ -60,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
-            tools:text="1300积分"
+            android:text="@{model.fbOfUnitPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
     </androidx.constraintlayout.widget.ConstraintLayout>

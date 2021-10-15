@@ -3,6 +3,7 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -36,7 +37,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     override fun initView() {
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
-        if(null==goodsInfo){
+        if(TextUtils.isEmpty(goodsInfo)){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
             return
@@ -62,9 +63,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         bindingBaseData()
         binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
-            it.fbCost=it.cost
-            it.acountFb=dataBean.acountFb.toString()
+            it.accountFb=dataBean.acountFb.toString()
             PayConfirmActivity.start(this,Gson().toJson(it))
+            this.finish()
         })
     }
     @SuppressLint("StringFormatMatches")

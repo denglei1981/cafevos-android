@@ -14,13 +14,13 @@ import androidx.room.Entity
 @Entity(tableName = "table_sys_uni_user", primaryKeys = ["uni_user_id"])
 class SysUserInfoBean constructor() {
 
-    constructor(uid: String, mobile: String, token: String) : this() {
+    constructor(uid: String, mobile: String?, token: String) : this() {
         this.uid = uid
         this.mobile = mobile
         this.token = token
     }
 
-    constructor(uid: String, mobile: String) : this() {
+    constructor(uid: String, mobile: String?) : this() {
         this.uid = uid
         this.mobile = mobile
     }
@@ -34,16 +34,19 @@ class SysUserInfoBean constructor() {
     lateinit var uid: String
 
     @ColumnInfo(name = "user_mobile")
-    var mobile: String? = null
+    var mobile: String? = ""
 
     @ColumnInfo(name = "user_integral")
     var integral: Double = 0.0
 
     @ColumnInfo(name = "user_token")
-    var token: String? = null
+    var token: String? = ""
 
     @ColumnInfo(name = "user_json")
-    var userJson: String? = null
+    var userJson: String? = ""
+
+    @ColumnInfo(name = "mine_bind_mobile_jump_data")
+    var bindMobileJumpType: Int = 0
 
     fun isLogin(): Boolean? = token?.isNotEmpty()
 

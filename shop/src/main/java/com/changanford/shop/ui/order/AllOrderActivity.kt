@@ -1,17 +1,16 @@
 package com.changanford.shop.ui.order
 
-import android.content.Context
-import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.toast.ToastUtils
-import com.changanford.shop.adapter.order.AllOrderAdapter
+import com.changanford.common.util.JumpUtils
+import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.ActOrderAllBinding
 import com.changanford.shop.popupwindow.OrderScreeningPop
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * @Author : wenke
@@ -20,14 +19,14 @@ import com.changanford.shop.viewmodel.OrderViewModel
  */
 @Route(path = ARouterShopPath.AllOrderActivity)
 class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
-    OrderScreeningPop.OnSelectListener {
+    OrderScreeningPop.OnSelectListener, OnRefreshLoadMoreListener {
     companion object{
-        fun start(context: Context, orderType:Int) {
-            context.startActivity(Intent(context, AllOrderActivity::class.java).putExtra("orderType",orderType))
+        fun start(orderType:Int) {
+            JumpUtils.instans?.jump(36,"$orderType")
         }
     }
     private var pageNo=1
-    private val mAdapter by lazy { AllOrderAdapter() }
+    private val mAdapter by lazy { OrderAdapter(-1) }
     override fun initView() {
         binding.topBar.setActivity(this)
         binding.topBar.setOnRightTvClickListener(object :TopBar.OnRightTvClickListener{
@@ -35,26 +34,43 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
                 OrderScreeningPop(this@AllOrderActivity).show(this@AllOrderActivity)
             }
         })
+        binding.smartRl.setOnRefreshLoadMoreListener(this)
         binding.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsActivity.start(this,"$position")
+            OrderDetailsActivity.start(this,mAdapter.data[position].orderNo)
         }
     }
 
     override fun initData() {
+        viewModel.shopOrderData.observe(this,{
+            it?.let {
+                mAdapter.nowTime=it.nowTime
+                if(1==pageNo)mAdapter.setList(it.dataList)
+                else mAdapter.addData(it.dataList)
+            }
+            binding.smartRl.finishLoadMore()
+            binding.smartRl.finishRefresh()
+        })
         viewModel.getAllOrderList(pageNo)
-        val datas= arrayListOf<OrderItemBean>()
-        for (i in 0..15){
-            val item= OrderItemBean(i,"Title$i")
-            datas.add(item)
-        }
-        mAdapter.setList(datas)
     }
 
     /**
      * 订单筛选结果回调 0 商品、1购车 2 试驾
     * */
     override fun onSelectBackListener(type: Int) {
-        ToastUtils.showLongToast("订单筛选结果：$type",this)
+        when(type){
+            0->JumpUtils.instans?.jump(52)
+        }
+
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        pageNo=1
+        viewModel.getAllOrderList(pageNo)
+    }
+
+    override fun onLoadMore(refreshLayout: RefreshLayout) {
+        pageNo++
+        viewModel.getAllOrderList(pageNo)
     }
 }

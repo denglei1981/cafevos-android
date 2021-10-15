@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
@@ -169,6 +170,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 }
             }
         })
+
+        binding.tvFordAuth.setOnClickListener {
+            RouterManger.param(LiveDataBusKey.MINE_MEMBER_INFO_TYPE, "ford_user")
+                .param(LiveDataBusKey.MINE_MEMBER_INFO_ID, 8)
+                .param("title", "福特员工")
+                .startARouter(ARouterMyPath.FordUserAuthUI)
+        }
     }
 
     override fun initData() {
@@ -224,7 +232,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             body["industryIds"] = ""
             if (user?.industryIds?.isNotEmpty()) {
                 var ids = user.industryIds.split(",")
-                body["industryIds"] = if (ids!=null && ids[0].isNotEmpty()) ids[0] else ""
+                body["industryIds"] = if (ids != null && ids[0].isNotEmpty()) ids[0] else ""
             }
 
             body["industryNames"] = ""
@@ -509,7 +517,11 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         picker = CityPicker(this)
             .apply {
                 setAddressMode(provinces)
-                setDefaultValue(userInfoBean?.provinceName?:"重庆市", userInfoBean?.cityName?:"重庆市", userInfoBean?.districtName?:"渝中区")
+                setDefaultValue(
+                    userInfoBean?.provinceName ?: "重庆市",
+                    userInfoBean?.cityName ?: "重庆市",
+                    userInfoBean?.districtName ?: "渝中区"
+                )
                 setOnAddressPickedListener(this@MineEditInfoUI)
             }
 //        picker?.show()

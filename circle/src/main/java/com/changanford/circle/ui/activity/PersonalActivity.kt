@@ -1,16 +1,19 @@
 package com.changanford.circle.ui.activity
 
+import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.PersonalAdapter
 import com.changanford.circle.databinding.ActivityPersonalBinding
 import com.changanford.circle.viewmodel.PersonalViewModel
 import com.changanford.circle.widget.dialog.QuitCircleDialog
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 
 /**
@@ -29,15 +32,12 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
     override fun initView() {
         circleId = intent.getStringExtra("circleId").toString()
         isApply = intent.getStringExtra("isApply").toString()
+        adapter.isApply = isApply
         binding.ryPersonal.adapter = adapter
         binding.title.run {
             AppUtils.setStatusBarMarginTop(binding.title.root, this@PersonalActivity)
             tvTitle.text = "成员"
             ivBack.setOnClickListener { finish() }
-        }
-        adapter.loadMoreModule.setOnLoadMoreListener {
-            page++
-            viewModel.getData(circleId, page)
         }
         initListener()
     }
@@ -49,6 +49,18 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
                 QuitCircleDialog(this) { viewModel.quitCircle(circleId) }.show()
             }
         }
+
+        adapter.setOnItemChildClickListener { _, view, _ ->
+            if (view.id == R.id.tv_out) {
+                QuitCircleDialog(this) { viewModel.quitCircle(circleId) }.show()
+            }
+        }
+
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.getData(circleId, page)
+        }
+        bus()
     }
 
     override fun initData() {
@@ -67,12 +79,14 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
-        viewModel.isStarRole.observe(this, {
-            if (it == "1") {
+
+            if (it.extend.isStarRole == "1") {
                 binding.title.tvRightMenu.text = "设置"
-                binding.title.tvRightMenu.setOnClickListener {
-                    startARouter(ARouterMyPath.CircleMemberUI)
+                binding.title.tvRightMenu.setOnClickListener { _ ->
+                    val bundle = Bundle()
+                    bundle.putString("circleId", circleId)
+                    bundle.putString("isCircle", it.extend.isCircler)
+                    startARouter(ARouterCirclePath.CircleMemberManageActivity, bundle)
                 }
             }
         })
@@ -82,5 +96,13 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
                 binding.title.tvRightMenu.visibility = View.GONE
             }
         })
+    }
+
+    private fun bus() {
+        LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_MEMBER_MANAGE_FINISH)
+            .observe(this, {
+                page = 1
+                viewModel.getData(circleId, page)
+            })
     }
 }

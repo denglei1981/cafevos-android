@@ -32,6 +32,11 @@ class LabelAdapter(var size: Int, var isShow: Boolean = true) :
             DisplayUtil.dip2px(lable_icon.context, size.toFloat())
         lable_icon.layoutParams = params
         loadBD(labelBean.img, lable_icon)
+
+        lable_icon.setOnClickListener {
+             JumpUtils.instans?.jump(labelBean.jumpDataType,labelBean.jumpDataValue)
+        }
+
     }
 
     override fun addData(newData: Collection<Imag>) {
@@ -40,7 +45,5 @@ class LabelAdapter(var size: Int, var isShow: Boolean = true) :
         }
     }
 
-    init {
-        addChildClickViewIds(R.id.label_icon)
-    }
+
 }

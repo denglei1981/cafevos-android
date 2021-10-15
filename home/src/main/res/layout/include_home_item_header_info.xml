@@ -52,11 +52,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user_tag"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:maxHeight="@dimen/dp_32"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@+id/tv_author_name"
             app:layout_constraintEnd_toStartOf="@+id/btn_follow"
             app:layout_constraintStart_toEndOf="@+id/tv_author_name"
-            app:layout_constraintTop_toTopOf="@+id/tv_author_name"/>
+            app:layout_constraintTop_toTopOf="@+id/tv_author_name" />
 
         <TextView
             android:id="@+id/tv_sub_title"

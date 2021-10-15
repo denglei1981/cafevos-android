@@ -31,6 +31,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     }
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
     private var authState: MutableLiveData<Boolean> = MutableLiveData()
+
+    private var isRefreshUserInfo: Boolean = true //是否刷新用户信息
+
     override fun initView() {
         binding.daySign.setDrawableLeft(R.mipmap.my_daysign, R.dimen.dp_20)
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
@@ -152,10 +155,14 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 设置值
      */
     private fun setData(userInfoBean: UserInfoBean?) {
+        if (!isRefreshUserInfo) {
+            return
+        }
         if (userInfoBean == null) {
             loginState.postValue(false)
             authState.postValue(false)
         } else {
+            isRefreshUserInfo = false
             loginState.postValue(true)
         }
         binding.myHead.load(userInfoBean?.avatar, R.mipmap.my_headdefault)
@@ -211,9 +218,14 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         })
     }
 
+    override fun onPause() {
+        super.onPause()
+        isRefreshUserInfo = true
+    }
+
     override fun onResume() {
         super.onResume()
-//        viewModel.getUserInfo()
+        viewModel.getUserInfo()
     }
 }
 

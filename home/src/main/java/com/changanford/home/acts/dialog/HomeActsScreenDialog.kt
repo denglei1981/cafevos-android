@@ -22,8 +22,10 @@ import com.changanford.home.R
 import com.changanford.home.acts.adapter.HomeActsScreenItemAdapter
 import com.changanford.home.acts.adapter.HomeActsTypeItemAdapter
 import com.changanford.home.base.BaseAppCompatDialog
+import com.changanford.home.bean.ScreenData
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
+import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.DialogHomeActsScreenBinding
 import com.changanford.home.util.launchWithCatch
 
@@ -113,10 +115,11 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
         }
         mDatabind.homeBtnSure.setOnClickListener {
             // 没有sm 活动
-
-            var chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
-            var chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
-
+            val chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
+            val chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
+            val screenData = ScreenData(cityName, cityId, chooseOfficalType, chooseActType)
+            callback.onResult(ResultData(ResultData.OK,screenData))
+            dismiss()
 
 
         }
@@ -143,8 +146,8 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
                     var province = ProvinceEntity(p.province.regionId, p.province.regionName)
                     var citys = ArrayList<CityEntity>()
                     p.citys.forEach { c ->
-                        var city = CityEntity(c.city.regionId, c.city.regionName)
-                        var countys = ArrayList<CountyEntity>()
+                        val city = CityEntity(c.city.regionId, c.city.regionName)
+                        val countys = ArrayList<CountyEntity>()
                         c.district.forEach { d ->
                             var county = CountyEntity(d.regionId, d.regionName)
                             countys.add(county)

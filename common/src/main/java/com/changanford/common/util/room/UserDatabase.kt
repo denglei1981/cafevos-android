@@ -1,9 +1,13 @@
 package com.changanford.common.util.room
 
 import android.content.Context
+import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+
 
 /**
  *  文件名：UniUserDatabase
@@ -12,7 +16,7 @@ import androidx.room.RoomDatabase
  *  描述: exportSchema 导出Schema文件
  *  修改描述：TODO
  */
-@Database(entities = [SysUserInfoBean::class], exportSchema = false, version = 1)
+@Database(entities = [SysUserInfoBean::class], exportSchema = false, version = 2)
 abstract class UserDatabase : RoomDatabase() {
 
     abstract fun getUniUserInfoDao(): UserInfoDao
@@ -28,12 +32,21 @@ abstract class UserDatabase : RoomDatabase() {
                             context,
                             UserDatabase::class.java,
                             "sys_uni_user.db"
-                        ).allowMainThreadQueries() //强制在主线程执行
+                        )
+                            .addMigrations(MIGRATION_1_2)
+                            .allowMainThreadQueries() //强制在主线程执行
                             .build()
                     }
                 }
             }
             return instance!!
+        }
+
+        val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+            override fun migrate(@NonNull database: SupportSQLiteDatabase) {
+                //使用下面分开的形式,可以正确执行
+                database.execSQL("ALTER TABLE table_sys_uni_user " + " ADD COLUMN mine_bind_mobile_jump_data INTEGER " + " NOT NULL DEFAULT 0")
+            }
         }
     }
 }

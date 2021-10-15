@@ -7,6 +7,7 @@ import android.content.Intent
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
@@ -134,7 +135,6 @@ class JumpUtils {
     }
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
-            "跳转类型不能为空".toast()
             return
         }
         val bundle = Bundle()
@@ -429,7 +429,8 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                startARouter(ARouterShopPath.OrderGoodsActivity,true)
+                if(!TextUtils.isEmpty(value))bundle.putInt("states", value!!.toInt())//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
+                startARouter(ARouterShopPath.OrderGoodsActivity,bundle,true)
             }
             53 -> {//AR说明书跳转类型
                 when {
@@ -719,7 +720,10 @@ class JumpUtils {
                     }
                 }
             }
-
+            108->{// 聚合搜索。
+                bundle.putString(JumpConstant.SEARCH_TYPE, value)
+                startARouter(ARouterHomePath.PolySearchActivity,bundle = bundle)
+            }
 
             10000 -> {
                 //外部H5

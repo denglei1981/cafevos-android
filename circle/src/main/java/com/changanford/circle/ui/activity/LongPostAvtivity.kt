@@ -204,6 +204,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         })
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
+            handleEditPost()
             if (locaPostEntity != null) {
                 if (locaPostEntity!!.keywords.isNotEmpty()) {
                     buttomlabelAdapter.data.forEach {
@@ -891,5 +892,102 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         LiveDataBus.get().withs<EditText>(CircleLiveBusKey.POST_EDIT).observe(this, {
             editText = it
         })
+    }
+
+    fun handleEditPost() {
+        var postsId = intent?.getStringExtra("postsId")
+        postsId?.let {
+            //监听下载的图片
+            viewModel._downloadLocalMedias.observe(this,{
+                //选择的图片重置
+//                selectList.clear()
+//                selectList.addAll(it)
+                //展示选择的图片
+//                postPicAdapter.setList(it)
+//                postPicAdapter.notifyDataSetChanged()
+            })
+            //赋值
+            viewModel.postDetailsBean.observe(this, {
+                it?.let { locaPostEntity ->
+                    if (locaPostEntity != null) {//同草稿逻辑
+                        headBinding.etBiaoti.setText(locaPostEntity!!.title)
+                        headBinding.etContent.setText(locaPostEntity!!.content)
+                        params["plate"] = locaPostEntity!!.plate
+                        platename = locaPostEntity!!.plateName
+                        params["topicId"] = locaPostEntity!!.topicId
+                        params["postsId"] = locaPostEntity!!.postsId
+                        params["type"] = locaPostEntity!!.type
+                        params["keywords"] = locaPostEntity!!.keywords
+                        params["circleId"] = locaPostEntity!!.circleId
+                        circlename = locaPostEntity!!.circleName?:""
+                        params["content"] = locaPostEntity!!.content?:""
+                        params["actionCode"] = locaPostEntity!!.actionCode
+                        params["title"] = locaPostEntity!!.title
+                        params["address"] = locaPostEntity!!.address
+                        address = locaPostEntity!!.address
+                        params["lat"] = locaPostEntity!!.lat
+                        params["lon"] = locaPostEntity!!.lon
+                        params["province"] = locaPostEntity!!.province
+                        params["cityCode"] = locaPostEntity!!.cityCode
+                        params["city"] = locaPostEntity!!.city
+                        if (params["plate"]!=0) {
+                            buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                            buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+                        }
+                        if (locaPostEntity!!.topicName?.isNotEmpty() == true) {
+                            buttomTypeAdapter.setData(
+                                2,
+                                ButtomTypeBean(locaPostEntity!!.topicName?:"", 1, 2)
+                            )
+                        }
+                        if (locaPostEntity!!.circleName?.isNotEmpty() == true) {
+                            buttomTypeAdapter.setData(
+                                3,
+                                ButtomTypeBean(locaPostEntity!!.circleName?:"", 1, 3)
+                            )
+                        }
+                        if (locaPostEntity!!.address?.isNotEmpty() == true) {
+                            buttomTypeAdapter.setData(
+                                4,
+                                ButtomTypeBean(locaPostEntity!!.address?:"", 1, 4)
+                            )
+                        }
+
+//                        if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
+//                            try{
+//                                FMMeadia =
+//                                    JSON.parseObject(locaPostEntity!!.longpostFmLocalMeadle, LocalMedia::class.java)
+//                                headBinding.ivFm.visibility = View.VISIBLE
+//                                GlideUtils.loadRoundFilePath(
+//                                    PictureUtil.getFinallyPath(FMMeadia!!),
+//                                    headBinding.ivFm
+//                                )
+//                                headBinding.ivAddfm.visibility = View.GONE
+//                                headBinding.tvFm.visibility = View.GONE
+//                            }catch (e:Exception){
+//
+//                            }
+//
+//                        }
+//
+//                        jsonStr2obj(locaPostEntity!!.longPostDatas)
+
+                        //选择的标签
+                        if (locaPostEntity!!.keywords.isNotEmpty()) {
+                            buttomlabelAdapter.data.forEach {
+                                it.isselect = it.tagName == locaPostEntity!!.keywords
+                            }
+                            buttomlabelAdapter.notifyDataSetChanged()
+                        }
+                        //图片下载
+                        locaPostEntity?.imageList?.let {
+                            viewModel.downGlideImgs(it)
+                        }
+
+                    }
+                }
+            })
+            viewModel.getPostById(it)
+        }
     }
 }

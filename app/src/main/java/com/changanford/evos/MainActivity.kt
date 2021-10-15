@@ -112,7 +112,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
-            showAppPrivacy(this)
+            showAppPrivacy(this) {
+                checkPermission()
+            }
         }
 
         getNavigator()
@@ -121,7 +123,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //            if (it as Boolean) {
 //            }
 //        })
-        checkPermission()
     }
 
     private fun getNavigator() {
@@ -273,29 +274,30 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         if (!checkPermissionFirst) {
             PermissionUtil.applyPermissions(this)
         }
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this,{
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this, {
             LocationUtils.init()
         })
-        LocationUtils.mLongitude.observe(this,{
+        LocationUtils.mLongitude.observe(this, {
             "$it".logD()
         })
     }
+
     // 设置底部导航显示或者隐藏
-    private fun setHomBottomNavi(visibleState:Int){
-        binding.homeBottomNavi.visibility=visibleState
+    private fun setHomBottomNavi(visibleState: Int) {
+        binding.homeBottomNavi.visibility = visibleState
     }
 
     override fun observe() {
         super.observe()
-        LiveDataBus.get().with(LIVE_OPEN_TWO_LEVEL,Boolean::class.java).observe(this, Observer {
-              if(it){
-                  setHomBottomNavi(View.GONE)
-              }else{
-                  setHomBottomNavi(View.VISIBLE)
-              }
+        LiveDataBus.get().with(LIVE_OPEN_TWO_LEVEL, Boolean::class.java).observe(this, Observer {
+            if (it) {
+                setHomBottomNavi(View.GONE)
+            } else {
+                setHomBottomNavi(View.VISIBLE)
+            }
         })
-        LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB,Boolean::class.java).observe(this,{
-            if (it){
+        LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB, Boolean::class.java).observe(this, {
+            if (it) {
                 lifecycleScope.launch {
                     MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
                     MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
@@ -308,6 +310,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         super.onNewIntent(intent)
         intent?.let { handleViewIntent(it) }
     }
+
     /**
      * 处理外部浏览
      */
@@ -328,12 +331,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             intent.extras?.let {
                 var jumpValue = it.getInt("jumpValue")
                 if (jumpValue > 0)
-                    when(jumpValue){
-                        1-> navController?.navigate(R.id.homeFragment)
-                        2-> navController?.navigate(R.id.circleFragment)
-                        3-> navController?.navigate(R.id.carFragment)
-                        4-> navController?.navigate(R.id.shopFragment)
-                        5-> navController?.navigate(R.id.myFragment)
+                    when (jumpValue) {
+                        1 -> navController?.navigate(R.id.homeFragment)
+                        2 -> navController?.navigate(R.id.circleFragment)
+                        3 -> navController?.navigate(R.id.carFragment)
+                        4 -> navController?.navigate(R.id.shopFragment)
+                        5 -> navController?.navigate(R.id.myFragment)
                     }
                 try {
                     val jumpDataType = it.getString("jumpDataType")?.toInt()

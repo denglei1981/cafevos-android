@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_topic"
         android:layout_width="0dp"
@@ -24,38 +25,52 @@
         android:layout_marginTop="9dp"
         android:layout_marginEnd="4dp"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
         android:src="@drawable/image_recommed_default"
         app:layout_constraintEnd_toStartOf="@+id/iv_two"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_two"
         android:layout_width="0dp"
         android:layout_height="105dp"
         android:layout_marginTop="9dp"
-        android:src="@drawable/image_recommed_default"
         android:layout_marginEnd="4dp"
-        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
         android:scaleType="centerCrop"
+        android:src="@drawable/image_recommed_default"
         app:layout_constraintEnd_toStartOf="@+id/iv_three"
         app:layout_constraintStart_toEndOf="@+id/iv_one"
-        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_three"
         android:layout_width="0dp"
         android:layout_height="105dp"
         android:layout_marginTop="9dp"
-        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
         android:scaleType="centerCrop"
         android:src="@drawable/image_recommed_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_two"
-        app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+        app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_pic_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:drawableStart="@drawable/icon_home_more_pics"
+        android:drawablePadding="4dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_three"
+        app:layout_constraintEnd_toEndOf="@+id/iv_three"
+        tools:text="12" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

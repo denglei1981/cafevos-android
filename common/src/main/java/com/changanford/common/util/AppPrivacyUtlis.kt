@@ -3,9 +3,10 @@ package com.changanford.common.util
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.ui.ConfirmPop
 
-fun showAppPrivacy(context: AppCompatActivity) {
+fun showAppPrivacy(context: AppCompatActivity, block: () -> Unit) {
     var pop = ConfirmPop(context)
     MineUtils.popAgreement(pop.contentText)
     pop.title.visibility = View.VISIBLE
@@ -14,7 +15,9 @@ fun showAppPrivacy(context: AppCompatActivity) {
     pop.submitBtn.text = "同意"
     pop.submitBtn.setOnClickListener {
         SPUtils.setParam(context, "isPopAgreement", false)
+        MyApplicationUtil.init(BaseApplication.INSTANT)
         MyApplicationUtil.init()
+        block.invoke()
         pop.dismiss()
     }
     pop.cancelBtn.text = "暂不使用"

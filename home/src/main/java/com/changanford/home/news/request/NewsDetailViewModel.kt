@@ -139,6 +139,20 @@ class NewsDetailViewModel : BaseViewModel() {
         })
     }
 
+    fun  addCollect(collId:String){
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["collectionContentId"] = collId
+            requestBody["collectionType"]=1
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .collectionApi(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                }.onWithMsgFailure {
+                }
+        })
+    }
+
 
 
 }

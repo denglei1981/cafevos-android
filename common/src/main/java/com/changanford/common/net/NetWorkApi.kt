@@ -424,11 +424,25 @@ interface NetWorkApi {
 
     //user/accountLog/getUserAccountLogList 成长值
     //
-    @POST("user/accountLog/getUserAccountLogList")
+    @POST("user/accountLog/getIntegralLogList")
     suspend fun mineGrowUp(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<GrowUpBean>
+
+    //user/accountLog/getGrowthLogList
+    @POST("user/accountLog/getGrowthLogList")
+    suspend fun mineGrowUpLog(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GrowUpBean>
+
+
+    @POST("user/memberInterests/getUserMemberInterestsList")
+    suspend fun queryUserQy(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<GrowUpQYBean>>
 
     //user/accountLog/getIntegralLogList
     @POST("user/accountLog/getIntegralLogList")

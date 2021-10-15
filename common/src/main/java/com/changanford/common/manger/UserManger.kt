@@ -32,9 +32,17 @@ object UserManger {
             var sysUserInfoBean =
                 SysUserInfoBean(
                     it.userId,
-                    if (it.phone?.isNullOrEmpty()) "" else it.phone,
+                    when {
+                        it.phone.isNullOrEmpty() -> ""
+                        else -> {
+                            it.phone
+                        }
+                    },
                     it.token
                 )
+            it.jumpData?.let {
+                sysUserInfoBean.bindMobileJumpType = it.jumpDataType
+            }
             UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
                 .insert(sysUserInfoBean)
         }
