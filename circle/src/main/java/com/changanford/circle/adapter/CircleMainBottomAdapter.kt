@@ -130,7 +130,10 @@ class CircleMainBottomAdapter(context: Context) :
 
             binding.ivHead.loadImage(
                 item.authorBaseVo?.avatar,
-                ImageOptions().apply { circleCrop = true })
+                ImageOptions().apply {
+                    circleCrop = true
+                    error = R.mipmap.head_default
+                })
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
 
             val content = if (!item.title.isNullOrEmpty()) {
