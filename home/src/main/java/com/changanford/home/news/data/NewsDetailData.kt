@@ -13,7 +13,7 @@ data class NewsDetailData(
     var artId: Int,
     var authors: AuthorBaseVo,
     var catId: Any,
-    var collectCount: Int,
+    var collectCount: Long,
     var commentCount: Long,
     var content: String,
     var createBy: Any,

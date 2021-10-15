@@ -198,7 +198,7 @@
             app:layout_constraintTop_toTopOf="@+id/tv_home_hot" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_rv_recommend"
+            android:id="@+id/rv_relate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
@@ -216,13 +216,13 @@
             android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_rv_recommend" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_relate" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gr_recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_home_hot,tv_home_more,home_gray_line_2,home_rv_recommend" />
+            app:constraint_referenced_ids="tv_home_hot,tv_home_more,home_gray_line_2,rv_relate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,6 +7,7 @@ import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
 import com.changanford.home.data.TwoAdData
 import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.NewsExpandData
 import com.changanford.home.news.data.SpecialDetailData
 import io.reactivex.Observable
 
@@ -100,7 +101,7 @@ interface HomeNetWork {
     /**
      *  获取评论
      *
-     *  /con/artAdditional/get
+     *
      * */
 
     @POST("/con/comment/commentList")
@@ -108,6 +109,16 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<CommentListBean>>
+
+    /**
+     *  资讯附加信息
+     *
+     * */
+    @POST("/con/artAdditional/get")
+    suspend fun getArtAdditional(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewsExpandData>
 
 
     /**
