@@ -151,6 +151,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             binding.inGoodsInfo1.tvIntegralVip.visibility=View.VISIBLE
             binding.inGoodsInfo1.tvMemberDiscount.visibility=View.VISIBLE
         }
+        dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime)
         binding.model=dataBean
         this.dataBean=dataBean
         binding.inGoodsInfo1.model=dataBean

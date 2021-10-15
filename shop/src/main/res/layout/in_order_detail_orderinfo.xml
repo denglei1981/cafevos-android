@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2018-04-12 16:45:21"
-            android:text="@{model.orderTime}"
+            android:text="@{model.orderTimeTxt}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <androidx.constraintlayout.widget.ConstraintLayout
