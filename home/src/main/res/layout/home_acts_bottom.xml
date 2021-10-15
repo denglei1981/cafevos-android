@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/dp_4"
+            app:layout_constraintStart_toStartOf="@+id/view_pager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/color_0817" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_srceen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:drawableEnd="@drawable/icon_home_screen"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="筛选"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tabs"
+            app:layout_constraintEnd_toEndOf="@+id/view_pager"
+            app:layout_constraintTop_toTopOf="@+id/tabs" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

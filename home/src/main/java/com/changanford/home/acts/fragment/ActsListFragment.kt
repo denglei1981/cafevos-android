@@ -37,10 +37,11 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
-
     //， 排序，活动状态  ，发布方,线上线下
     var shaixuanList =
         arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
+
+
 
     companion object {
         fun newInstance(): ActsListFragment {
@@ -192,7 +193,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
     var wonderfulType: Int = -1
     fun setUnitPopu(view: View, list: MutableList<EnumBean>) {
         if (unitPop == null) {
-            unitPop = UnitActsPop(this,
+            unitPop = UnitActsPop(this.requireContext(),
                 object : ICallback {
                     override fun onResult(result: ResultData) {
                         val allEnum = result.data as? EnumBean
@@ -218,7 +219,7 @@ class ActsListFragment : BaseFragment<FragmentActsListBinding, ActsListViewModel
 
     fun setAllActsPopu(view: View, list: MutableList<EnumBean>) {
         if (allActsPop == null) {
-            allActsPop = UnitActsPop(this,
+            allActsPop = UnitActsPop(this.requireContext(),
                 object : ICallback {
                     override fun onResult(result: ResultData) {
                         if (result.resultCode == ResultData.OK) {
