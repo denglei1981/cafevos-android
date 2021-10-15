@@ -331,7 +331,7 @@ data class OrderItemBean(
     val skuCode: String = "",
     val skuImg: String = "",
     val snapshotOfAttrOption: String = "",
-    val specifications: String = "",
+    var specifications: String = "",
     val spuName: String = "",
     val spuSecondName: String = "",
     val updateBy: String = "",

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_160">
             <com.google.android.material.imageview.ShapeableImageView
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:id="@+id/img_goodsCover"
                 android:background="@drawable/shadow_1b51d9_5dp"
                 app:layout_constraintTop_toTopOf="parent"

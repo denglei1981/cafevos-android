@@ -9,6 +9,8 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
+import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.listener.OnPerformListener
@@ -36,6 +38,11 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
             dataBinding.inGoodsInfo.apply {
                 model=item
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
+                recyclerView.layoutManager=FlowLayoutManager(context,false)
+                recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
+                    val specifications=item.specifications.split(",").filter { ""!=it }
+                    setList(specifications)
+                }
             }
             setOrderType(dataBinding.tvOrderType,item)
         }

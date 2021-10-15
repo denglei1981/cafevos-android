@@ -13,6 +13,8 @@ import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
+import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
@@ -161,7 +163,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             model=dataBean
-            inGoodsInfo.model=dataBean
+            inGoodsInfo.apply {
+                model=dataBean
+                recyclerView.layoutManager= FlowLayoutManager(this@OrderDetailsActivity,false)
+                recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
+                    val skuCodeTxt=dataBean.specifications.split(",").filter { ""!=it }
+                    setList(skuCodeTxt)
+                }
+            }
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
         }
         binding.inBottom.apply {

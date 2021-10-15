@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/shadow_1b51d9_5dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
                 app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>

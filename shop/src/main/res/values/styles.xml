@@ -112,9 +112,9 @@
         <!-- 提示文案的文字颜色 -->
         <item name="banner_tipTextColor">@android:color/white</item>
         <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
-        <item name="banner_placeholderDrawable">@mipmap/ic_def_square_img</item>
+        <item name="banner_placeholderDrawable">@mipmap/image_h_one_default</item>
         <!-- 占位图和资源图片缩放模式 -->
-        <item name="android:scaleType">fitXY</item>
+        <item name="android:scaleType">centerCrop</item>
         <!-- 当只有一页数据时是否显示指示器-->
         <item name="banner_isNeedShowIndicatorOnOnlyOnePage">false</item>
         <!-- 指示点背景 -->

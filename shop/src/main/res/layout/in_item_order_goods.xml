@@ -19,7 +19,7 @@
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
             android:src="@drawable/shadow_1b51d9_5dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_title"
@@ -35,16 +35,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             style="@style/style_txt_ellipsize"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginEnd="@dimen/dp_30"
-            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
-            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_number"
             app:layout_constraintTop_toTopOf="@id/recyclerView"
@@ -56,6 +46,19 @@
             android:text="@{model.buyNum}"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            app:layout_constraintEnd_toStartOf="@id/tv_goods_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_attribute"
+            android:orientation="horizontal"/>
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integral"
             android:textStyle="bold"

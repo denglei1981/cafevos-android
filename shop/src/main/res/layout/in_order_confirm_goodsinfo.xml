@@ -20,7 +20,7 @@
           android:id="@+id/img_goodsCover"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          android:scaleType="fitXY"
+          android:scaleType="centerCrop"
           android:src="@drawable/shadow_1b51d9_5dp"
           android:layout_width="@dimen/dp_90"
           android:layout_height="@dimen/dp_90"
