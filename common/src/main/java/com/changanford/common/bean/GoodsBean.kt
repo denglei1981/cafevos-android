@@ -146,7 +146,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    var fbLine: String = "0",
+    var fbLine: String? = "0",
     var fbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",

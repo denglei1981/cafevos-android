@@ -14,6 +14,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.viewmodel.GoodsViewModel
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -22,7 +23,7 @@ import razerdp.basepopup.BasePopupWindow
  * @Description : GoodsDetailsControl
  */
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
-                          private val headerBinding: HeaderGoodsDetailsBinding) {
+                          private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
@@ -97,7 +98,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         timeCount= KllTimeCountControl(remainingTime,headerBinding.inKill.tvKillH,headerBinding.inKill.tvKillM,headerBinding.inKill.tvKillS,object :
             OnTimeCountListener {
             override fun onFinish() {
-
+                //秒杀结束刷新数据
+                viewModel.queryGoodsDetails(dataBean.spuId)
             }
         })
         timeCount?.start()
@@ -126,10 +128,15 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.skuCodeTxts= arrayListOf()
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
+        val skuCodeTxtArr= arrayListOf<String>()
         for((i,item) in dataBean.attributes.withIndex()){
-            val optionVosItem=item.optionVos.find { skuCodes[i+1]== it.optionId }
-            skuCodeTxt+="${optionVosItem?.optionName}  "
+            item.optionVos.find { skuCodes[i+1]== it.optionId }?.let {
+                val optionName= it.optionName
+                skuCodeTxtArr.add(optionName)
+                skuCodeTxt+="$optionName  "
+            }
         }
+        dataBean.skuCodeTxts=skuCodeTxtArr
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
         bindingBtn()
     }

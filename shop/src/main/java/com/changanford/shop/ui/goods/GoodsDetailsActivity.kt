@@ -38,7 +38,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
 //                .putExtra("spuPageType",spuPageType))
         }
     }
-    private val spuPageTypes= arrayListOf("NOMROL","SECKILL","MEMBER_EXCLUSIVE","MEMBER_DISCOUNT")
     private var spuId:String="108"//商品ID
     private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
@@ -75,7 +74,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
-        control= GoodsDetailsControl(this,binding,headerBinding)
+        control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
     }
     private  fun initTab(){
