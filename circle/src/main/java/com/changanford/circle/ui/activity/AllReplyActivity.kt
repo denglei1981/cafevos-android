@@ -114,6 +114,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                 this.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
+                    body["type"] = 2
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also { it1 ->

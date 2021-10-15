@@ -49,6 +49,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 lifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
+                    body["type"] = 2
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {
@@ -101,12 +102,13 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                         SpannableStringUtils.getSpannable(
                             "回复@${pare.nickname}：",
                             R.color.color_99,
-                            object : ClickableSpan() {//设置点击事件
-                            override fun onClick(widget: View) {
-                                val bundle = Bundle()
-                                bundle.putString("value", pare.userId)
-                                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
-                            }
+                            object : ClickableSpan() {
+                                //设置点击事件
+                                override fun onClick(widget: View) {
+                                    val bundle = Bundle()
+                                    bundle.putString("value", pare.userId)
+                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                                }
 
                                 override fun updateDrawState(ds: TextPaint) {
                                     ds.isUnderlineText = false
