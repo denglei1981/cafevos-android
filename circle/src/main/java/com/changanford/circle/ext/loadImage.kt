@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.circle.R
 import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -19,6 +20,7 @@ import java.io.File
 fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(GlideUtils.handleImgUrl(url))
+        .error(R.mipmap.image_h_one_default)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -34,6 +36,7 @@ fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
 fun ImageView.loadImageNoOther(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(url)
+        .error(R.mipmap.image_h_one_default)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -49,6 +52,7 @@ fun ImageView.loadImageNoOther(url: String?, imageOptions: ImageOptions? = null)
 fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(url)
+        .error(R.mipmap.image_h_one_default)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -65,6 +69,7 @@ fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
 fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(GlideUtils.handleImgUrl(url))
+        .error(R.mipmap.image_h_one_default)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(

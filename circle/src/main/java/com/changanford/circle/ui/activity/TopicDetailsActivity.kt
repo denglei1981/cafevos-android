@@ -115,7 +115,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             } else {
                 AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
                     .setNegativeButton("继续编辑") {
-                        RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+                       startARouter(ARouterMyPath.MyPostDraftUI)
                     }.setPositiveButton("不使用草稿") {
                         initPop(topicName)
                     }.show()
@@ -135,15 +135,15 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
             override fun checkLongBar() {
-                startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
+                startARouter(ARouterCirclePath.LongPostAvtivity, bundle,true)
             }
 
             override fun checkPic() {
-                startARouter(ARouterCirclePath.PostActivity, bundle)
+                startARouter(ARouterCirclePath.PostActivity, bundle,true)
             }
 
             override fun checkVideo() {
-                startARouter(ARouterCirclePath.VideoPostActivity, bundle)
+                startARouter(ARouterCirclePath.VideoPostActivity, bundle,true)
             }
 
         }).run {

@@ -66,7 +66,13 @@ class CircleMainFragment : BaseFragment<FragmentCircleMainBinding, CircleMainVie
     }
 
     fun setData(list: ArrayList<CircleInfo>) {
-        addressAdapter.setItems(list)
+        val newList = ArrayList<CircleInfo>()
+        list.forEachIndexed { index, circleInfo ->
+            if (index < 4) {
+                newList.add(circleInfo)
+            }
+        }
+        addressAdapter.setItems(newList)
         addressAdapter.notifyDataSetChanged()
     }
 }

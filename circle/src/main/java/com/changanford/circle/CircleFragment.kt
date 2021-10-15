@@ -10,12 +10,11 @@ import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
@@ -24,7 +23,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.logD
-import com.xiaomi.push.it
 
 /**
  * 社区
@@ -59,15 +57,15 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {
-                        startARouter(ARouterCirclePath.LongPostAvtivity)
+                       startARouter(ARouterCirclePath.LongPostAvtivity,true)
                     }
 
                     override fun checkPic() {
-                        startARouter(ARouterCirclePath.PostActivity)
+                        startARouter(ARouterCirclePath.PostActivity,true)
                     }
 
                     override fun checkVideo() {
-                        startARouter(ARouterCirclePath.VideoPostActivity)
+                        startARouter(ARouterCirclePath.VideoPostActivity,true)
                     }
 
                 }).run {
@@ -85,15 +83,15 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                             requireContext(),
                             object : CircleMainMenuPop.CheckPostType {
                                 override fun checkLongBar() {
-                                    startARouter(ARouterCirclePath.LongPostAvtivity)
+                                    startARouter(ARouterCirclePath.LongPostAvtivity,true)
                                 }
 
                                 override fun checkPic() {
-                                    startARouter(ARouterCirclePath.PostActivity)
+                                    startARouter(ARouterCirclePath.PostActivity,true)
                                 }
 
                                 override fun checkVideo() {
-                                    startARouter(ARouterCirclePath.VideoPostActivity)
+                                    startARouter(ARouterCirclePath.VideoPostActivity,true)
                                 }
 
                             }).run {
