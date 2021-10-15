@@ -46,9 +46,9 @@
             android:id="@+id/in_goodsInfo"
             layout="@layout/in_goods_details_info"/>
         <View
-            android:background="@color/color_F4"
+            android:id="@+id/view_comment"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"/>
+            android:layout_height="0dp"/>
         <!-- 商品评价           -->
         <include
             android:id="@+id/inComment"

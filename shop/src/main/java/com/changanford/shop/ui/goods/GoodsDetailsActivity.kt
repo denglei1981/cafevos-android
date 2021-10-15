@@ -55,7 +55,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private var isCollection=false //是否收藏
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
-        commentH=headerBinding.inComment.layoutComment.y-topBarH
+        commentH=headerBinding.viewComment.y-topBarH
         detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH-30
     }
 
