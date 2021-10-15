@@ -34,7 +34,7 @@ data class UserInfoBean(
     val hasFeedbacks: Int,
     val hobbyIds: String,
     val hobbyNames: String,
-    val industryIds: String = "",
+    val industryIds: String? = "",
     val industryNames: String,
     val integralDecimal: String,
     val inviterId: String,
