@@ -7,6 +7,7 @@ import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
@@ -196,11 +197,12 @@ class GoodsViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                shopApiService.collectGoods(spuId,body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.collectGoods(spuId,body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
+                ToastUtils.showShortToast(R.string.str_collectionSuccess,MyApp.mContext)
                 collectionGoodsStates.postValue(true)
             }
         }
@@ -212,8 +214,8 @@ class GoodsViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                val rkey = getRandomKey()
-                shopApiService.getMyIntegral(body.header(rkey), body.body(rkey))
+                val randomKey = getRandomKey()
+                shopApiService.getMyIntegral(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
