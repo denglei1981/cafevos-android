@@ -26,6 +26,7 @@ import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.databinding.ActivityPolySearchBinding
 import com.changanford.home.room.SearchRecordDatabase
+import com.changanford.home.room.SearchRecordEntity
 import com.changanford.home.search.adapter.SearchHistoryAdapter
 import com.changanford.home.search.adapter.SearchHotAdapter
 import com.changanford.home.search.request.PolySearchViewModel
@@ -58,6 +59,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     var searchType = -1
 
+    var historyList:MutableList<SearchRecordEntity>?=null
     override fun initView() {
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
         if(!TextUtils.isEmpty(searchTypStr)){
@@ -66,8 +68,6 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             searchType=-1
         }
         ImmersionBar.with(this).fitsSystemWindows(true)
-
-
         flexboxLayoutManagerHistory = FlexboxLayoutManager(this)
         flexboxLayoutManagerHistory!!.flexDirection = FlexDirection.ROW
         flexboxLayoutManagerHistory!!.justifyContent = JustifyContent.FLEX_START
@@ -81,9 +81,19 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+
+
         historyAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = historyAdapter.getItem(position)
-            search(bean.keyword, true)
+            if(position==7&&!historyAdapter.isExpand){
+                historyList?.let {
+                    historyAdapter.setExpand(true)
+                    historyAdapter.setList(it)
+                }
+            }else{
+                search(bean.keyword, true)
+            }
+
         }
         sAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -105,7 +115,6 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 }
             }
         })
-
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == 0) {
                  HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
@@ -151,7 +160,14 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                     binding.tvHistory.visibility = View.GONE
                     binding.recyclerViewHistory.visibility = View.GONE
                 }
-                historyAdapter.setList(it)
+                historyList=it as? MutableList<SearchRecordEntity>
+                if(it.size>8&&!historyAdapter.isExpand){
+                    val subList = it.subList(0, 8) as MutableList
+                    historyAdapter.setList(subList)
+                }else{
+                    historyAdapter.setList(it)
+                }
+
             })
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()

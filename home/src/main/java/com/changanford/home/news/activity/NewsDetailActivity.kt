@@ -7,6 +7,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -53,7 +54,9 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     View.OnClickListener {
 
 
-    var linearLayoutManager: LinearLayoutManager? = null
+    val  linearLayoutManager: LinearLayoutManager by lazy{
+        LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
     var checkPosition: Int = -1
 
     private lateinit var artId: String
@@ -70,9 +73,9 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         CustomWebHelper(this, inflateHeader.wvContent)
     }
 
+    var llInfoBottom:Int =0
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
-        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.pbRecyclerview.layoutManager = linearLayoutManager
         binding.pbRecyclerview.adapter = homeNewsCommentAdapter
         addHeaderView()
@@ -92,10 +95,22 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             onBackPressed()
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
+        llInfoBottom = binding.layoutTitle.llAuthorInfo.getBottom()
+        binding.pbRecyclerview.addOnScrollListener(object:RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position: Int = linearLayoutManager.findFirstVisibleItemPosition()
+                val firstVisiableChildView = linearLayoutManager.findViewByPosition(position) as View
+                val itemHeight = firstVisiableChildView.height
+                val scrollHeight = position * itemHeight - firstVisiableChildView.top
+                binding.layoutTitle.llAuthorInfo.visibility = if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
 
-
+            }
+        })
+        binding.layoutTitle.llAuthorInfo.setOnClickListener {
+            JumpUtils.instans!!.jump(35, newsDetailData?.userId.toString())
+        }
     }
-
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
@@ -133,7 +148,6 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                     toastShow("没有作者")
                 }
             }
-
         })
     }
 
@@ -169,10 +183,13 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
+        GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
+        binding.layoutTitle.tvAuthor.text=author.nickname
         setFollowState(inflateHeader.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
+
 
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
@@ -277,9 +294,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null && it.data.recommendArticles.size > 0) {
+                    inflateHeader.flRecommend.visibility=View.VISIBLE
                     newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                 } else {// 隐藏热门推荐。
-
+                    inflateHeader.flRecommend.visibility=View.GONE
                 }
 
             }

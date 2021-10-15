@@ -54,7 +54,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         binding.recyclerViewV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         onRefresh(binding.refreshLayout)
         bigShotUserListAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = bigShotPostListAdapter.getItem(position)
+            val item = bigShotUserListAdapter.getItem(position)
             JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->

@@ -20,8 +20,8 @@ class HomeNewsCommentAdapter(context: Context) :
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)
         binding?.let {
             GlideUtils.loadBD(item.avatar, it.ivHead)
+            binding.bean=item
             it.tvName.text = item.nickname
-            it.tvContent.text = item.content
             it.tvTime.text = item.timeStr
             it.tvLikeCount.text=CountUtils.formatNum(item.likesCount.toString(),false)
             it.ivLike.setImageResource(

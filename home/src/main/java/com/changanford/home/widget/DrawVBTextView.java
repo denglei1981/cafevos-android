@@ -43,7 +43,7 @@ public class DrawVBTextView extends ConstraintLayout {
         //加载自定义的属性
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TopBottomText);
         titleText = a.getString(R.styleable.TopBottomText_titleText);
-        titleTextColor = a.getColor(R.styleable.TopBottomText_titleTextColor, Color.RED);
+        titleTextColor = a.getColor(R.styleable.TopBottomText_titleTextColor, Color.GRAY);
         titleTextSize = a.getDimension(R.styleable.TopBottomText_titleTextSize, 20f);
         resourceId = a.getResourceId(R.styleable.TopBottomText_image, R.drawable.icon_home_look_count);
 
@@ -66,6 +66,8 @@ public class DrawVBTextView extends ConstraintLayout {
         if (!TextUtils.isEmpty(titleText))
             setPageTitleText(titleText);
         setThumb(resourceId, false);
+        tvNum.setTextColor(titleTextColor);
+
     }
 
 

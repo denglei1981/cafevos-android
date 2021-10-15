@@ -97,7 +97,14 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<NewsDetailData>
 
-
+    /**
+     * 评论点赞
+     */
+    @POST("con/comment/actionLike")
+    suspend fun commentLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
     /**
      *  获取评论
      *
