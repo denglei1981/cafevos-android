@@ -20,6 +20,9 @@
             android:layout_marginBottom="@dimen/dp_20"
             style="@style/BannerDefaultStyle"
             tools:background="@drawable/shadow_1b51d9_5dp"
+            app:banner_isNumberIndicator="true"
+            app:banner_pointAutoPlayAble="false"
+            app:banner_indicatorGravity="bottom|right"
             app:banner_pointDrawable="@null"
             app:banner_aspectRatio="1"/>
         <!-- 商品秒杀信息           -->

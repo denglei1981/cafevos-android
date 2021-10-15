@@ -19,19 +19,21 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
-            val pos=position+1
-            val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],object :GoodsAttributeAdapter.OnSelectedBackListener{
-                override fun onSelectedBackListener(pos: Int, item: OptionVo) {
-                    item.optionId.also { skuCodes[pos] = it }
-                    updateSkuCode()
-                }
-            })
-            dataBinding.recyclerView.adapter=mAdapter
-            mAdapter.setList(item.optionVos)
+            if(::skuCodes.isInitialized){
+                val pos=position+1
+                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],object :GoodsAttributeAdapter.OnSelectedBackListener{
+                    override fun onSelectedBackListener(pos: Int, item: OptionVo) {
+                        item.optionId.also { skuCodes[pos] = it }
+                        updateSkuCode()
+                    }
+                })
+                dataBinding.recyclerView.adapter=mAdapter
+                mAdapter.setList(item.optionVos)
+            }
         }
     }
-    fun setSkuCodes(skuCode:String){
-        skuCodes= skuCode.split("-") as ArrayList<String>
+    fun setSkuCodes(skuCode:String?){
+        if(null!=skuCode&&skuCode.contains("-"))skuCodes= skuCode.split("-") as ArrayList<String>
     }
     fun getSkuCodes():ArrayList<String>{
         return skuCodes

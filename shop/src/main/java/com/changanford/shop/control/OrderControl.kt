@@ -2,12 +2,14 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.content.Context
+import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
+import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -27,9 +29,11 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
     /**
      * 再次购买->创建订单页面
      * */
-    fun onceAgainToBuy(item: OrderItemBean){
-//        val detailBean=GoodsDetailBean()
-//        OrderConfirmActivity.start(context,"goodsInfo")
+    fun onceAgainToBuy(orderBean: OrderItemBean){
+        val goodsBean= GoodsDetailBean().apply {
+
+        }
+        OrderConfirmActivity.start(context,Gson().toJson(goodsBean))
     }
     /**
      * 确认收货
