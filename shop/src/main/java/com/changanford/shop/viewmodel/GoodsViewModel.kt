@@ -193,7 +193,7 @@ class GoodsViewModel: BaseViewModel() {
      * 收藏商品
      * [spuId]商品id
      * */
-    fun collectGoods(spuId:String){
+    fun collectGoods(spuId:String,isCollection:Boolean){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -202,8 +202,8 @@ class GoodsViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
-                ToastUtils.showShortToast(R.string.str_collectionSuccess,MyApp.mContext)
-                collectionGoodsStates.postValue(true)
+                ToastUtils.showShortToast(if(isCollection)R.string.str_cancelledCollection else R.string.str_collectionSuccess,MyApp.mContext)
+                collectionGoodsStates.postValue(!isCollection)
             }
         }
     }

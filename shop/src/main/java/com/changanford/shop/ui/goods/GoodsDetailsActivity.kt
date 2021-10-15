@@ -112,7 +112,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品
-            R.id.cb_collect,R.id.img_collection->viewModel.collectGoods(spuId)
+            R.id.cb_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
             //返回
             R.id.img_back->this.finish()
         }

@@ -143,4 +143,5 @@
     <string name="str_payTime">支付时间</string>
     <string name="str_deliveryTime">发货时间</string>
     <string name="str_collectionSuccess">收藏成功</string>
+    <string name="str_cancelledCollection">已取消收藏</string>
 </resources>
