@@ -108,7 +108,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //确认订单
             R.id.btn_submit->OrderConfirmActivity.start(this, Gson().toJson(viewModel.goodsDetailData.value))
             //查看评价
-            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,"0")
+            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,spuId)
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.CommentItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,13 +17,14 @@
         android:paddingTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_avatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@mipmap/ic_launcher_round"
+            tools:src="@mipmap/ic_launcher_round"
             android:layout_width="@dimen/dp_35"
-            android:layout_height="@dimen/dp_35"/>
+            android:layout_height="@dimen/dp_35"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_userName"
             android:layout_marginStart="@dimen/dp_18"
@@ -31,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="E**9"
+            android:text="@{model.nickName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
@@ -40,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="刚刚"
+            android:text="@{model.evalTime}"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.ratingbar.AndRatingBar
@@ -48,6 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/ratingBar"
             android:minHeight="@dimen/dp_12"
+            android:rating="@{model.evalScore}"
             style="@style/AndRatingBarStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_evaluate_content"
@@ -55,6 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/img_avatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{model.evalText}"
             tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 最新版蓝牙耳机 降噪耳机"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />

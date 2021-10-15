@@ -34,7 +34,7 @@ class GoodsViewModel: BaseViewModel() {
     //商城首页
     var shopHomeGoodsData =MutableLiveData<GoodsHomeBean>()
     //评价列表
-    var commentData =MutableLiveData<CommentBean?>()
+    var commentLiveData =MutableLiveData<CommentBean?>()
     //商品收藏状态
     var collectionGoodsStates = MutableLiveData<Boolean>()
     /**
@@ -161,7 +161,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 评价列表
      * */
-    fun getOrderEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -171,9 +171,9 @@ class GoodsViewModel: BaseViewModel() {
                     it["spuId"] = spuId
                 }
                 val randomKey = getRandomKey()
-                shopApiService.orderEvalList(body.header(randomKey), body.body(randomKey))
+                shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                commentData.postValue(it)
+                commentLiveData.postValue(it)
             }
         }
     }

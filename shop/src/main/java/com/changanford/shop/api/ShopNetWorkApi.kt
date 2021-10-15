@@ -54,7 +54,7 @@ interface ShopNetWorkApi {
      *评价列表
      * */
     @POST("/mall/eval/list")
-    suspend fun orderEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+    suspend fun goodsEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
     /**
      *订单创建
      * */
