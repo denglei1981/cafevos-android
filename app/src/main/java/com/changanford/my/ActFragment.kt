@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.ActDataBean
+import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
@@ -97,6 +98,17 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
+            }
+        }
+    }
+
+    override fun showEmpty(): View? {
+        return when (type) {
+            "actTaCreate" -> {
+                ViewEmptyTopBinding.inflate(layoutInflater).root
+            }
+            else -> {
+                super.showEmpty()
             }
         }
     }

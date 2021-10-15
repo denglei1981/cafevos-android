@@ -1,6 +1,8 @@
 package com.changanford.my
 
 import android.os.Bundle
+import android.view.View
+import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.home.news.adapter.NewsListAdapter
@@ -47,6 +49,17 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyAct.smartCommonLayout
+    }
+
+    override fun showEmpty(): View? {
+        return when (type) {
+            "centerInformation" -> {
+                ViewEmptyTopBinding.inflate(layoutInflater).root
+            }
+            else -> {
+                super.showEmpty()
+            }
+        }
     }
 
     override fun initRefreshData(pageSize: Int) {

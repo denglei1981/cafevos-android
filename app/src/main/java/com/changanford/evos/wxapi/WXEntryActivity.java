@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.changanford.common.util.MConstant;
+import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.evos.MainActivity;
@@ -33,7 +33,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private String code;
     //    private EventScreen eventScreen;
-    IWXAPI api = WXAPIFactory.createWXAPI(this, MConstant.WXAPPID);
+    IWXAPI api = WXAPIFactory.createWXAPI(this, ConfigUtils.WXAPPID);
     private int result;
 
     @Override
