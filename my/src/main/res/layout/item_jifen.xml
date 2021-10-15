@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="长安引力"
+            android:text="福域"
             android:textColor="#AFB3B6"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintRight_toRightOf="@+id/num"

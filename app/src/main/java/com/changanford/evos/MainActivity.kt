@@ -213,7 +213,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtils.s(BaseApplication.INSTANT, "再按一次退出引力域")
+                ToastUtils.s(BaseApplication.INSTANT, "再按一次退出福域")
                 exitTime = System.currentTimeMillis()
             } else {
                 var intent = Intent()

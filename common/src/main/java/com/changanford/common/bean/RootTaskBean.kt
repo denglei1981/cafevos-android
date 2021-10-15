@@ -61,7 +61,7 @@ data class GrowUpItem(
     val updateTime: String,
     val userId: Int,
     val userName: String,
-    val source: String = "长安引力" //来源
+    val source: String = "福域" //来源
 )
 
 data class GrowUpQYBean(

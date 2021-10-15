@@ -22,7 +22,7 @@
             android:layout_marginStart="23dp"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="23dp"
-            android:text="为了确保您的账号安全，引力域将在你注销账号时进行以下验证："
+            android:text="为了确保您的账号安全，福域将在你注销账号时进行以下验证："
             android:textColor="#24292E"
             android:textSize="@dimen/sp_18" />
 

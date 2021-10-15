@@ -13,7 +13,7 @@ class ConfigBean(
      * 图片域名
      */
     val imgCdn: String,
-    val pointmallServiceTerms: String,  //长安引力服务条款
+    val pointmallServiceTerms: String,  //福域服务条款
     val floatBt :FloatBt,
     /**
      * Uni中间页数据

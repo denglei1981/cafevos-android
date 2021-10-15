@@ -14,7 +14,7 @@ import com.zhpan.bannerview.BannerViewPager
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
- * @FileName: com.changan.uni.ui.fragment.LandingActivity
+ * @FileName: com.changanford.evos.ui.fragment.LandingActivity
  * @Author:　 　
  * @Version : V1.0
  * @Date: 2020/6/5 17:48

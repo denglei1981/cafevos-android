@@ -53,7 +53,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
- * @FileName: com.changan.uni.ui.fragment.AgentWebActivity
+ * @FileName: com.changanford.evos.ui.fragment.AgentWebActivity
  * @Author:　 　
  * @Version : V1.0
  * @Date: 2020/5/13 15:45

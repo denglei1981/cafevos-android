@@ -29,7 +29,7 @@ object JumpMap {
             intent.setPackage("com.autonavi.minimap")
             intent.addCategory("android.intent.category.DEFAULT")
             intent.data =
-                Uri.parse("androidamap://route?sourceApplication=长安引力&sName=我的位置&dlat=$dLat&dlon=$dLon&dname=$dName&dev=0&m=0&t=0")
+                Uri.parse("androidamap://route?sourceApplication=福域&sName=我的位置&dlat=$dLat&dlon=$dLon&dname=$dName&dev=0&m=0&t=0")
             context.startActivity(intent)
         } else {
             toastShow("高德地图未安装")

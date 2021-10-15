@@ -424,7 +424,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 //                        callback
 //                    )
 //                } else {
-                    AlertDialog(activity).builder().setGone().setMsg("UNI发现您有草稿还未发布")
+                    AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
                         .setNegativeButton("继续编辑") {
                             val b = Bundle()
                             b.putBoolean("isH5Post", true)
