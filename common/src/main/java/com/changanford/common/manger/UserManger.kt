@@ -51,19 +51,35 @@ object UserManger {
     fun updateUserInfo(userInfoBean: UserInfoBean?) {
         userInfoBean?.let {
             var database = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
-            var sysUserInfoBean = database.getNoLiveDataUser()
-            sysUserInfoBean.mobile = when {
-                it.phone.isNotEmpty() -> {
-                    it.phone
+            var sysUserInfoBean = SysUserInfoBean(it.userId, "")
+            try {
+                sysUserInfoBean = database.getNoLiveDataUser()
+                sysUserInfoBean.mobile = when {
+                    it.phone.isNotEmpty() -> {
+                        it.phone
+                    }
+                    else -> {
+                        it.mobile
+                    }
                 }
-                else -> {
-                    it.mobile
+                it.ext?.integralDecimal?.let {
+                    sysUserInfoBean.integral = it.toDouble()
                 }
+                sysUserInfoBean.userJson = JSON.toJSONString(it)
+            } catch (e: Exception) {
+                sysUserInfoBean.mobile = when {
+                    it.phone.isNotEmpty() -> {
+                        it.phone
+                    }
+                    else -> {
+                        it.mobile
+                    }
+                }
+                it.ext?.integralDecimal?.let {
+                    sysUserInfoBean.integral = it.toDouble()
+                }
+                sysUserInfoBean.userJson = JSON.toJSONString(it)
             }
-            it.ext?.integralDecimal?.let {
-                sysUserInfoBean.integral = it.toDouble()
-            }
-            sysUserInfoBean.userJson = JSON.toJSONString(it)
             database.insert(sysUserInfoBean)
         }
     }

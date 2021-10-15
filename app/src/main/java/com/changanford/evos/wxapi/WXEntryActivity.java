@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -13,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
+import com.changanford.common.util.toast.ToastUtils;
 import com.changanford.evos.MainActivity;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -102,10 +104,16 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         finish();
                         break;
                     case BaseResp.ErrCode.ERR_USER_CANCEL:
+                        code = ((SendAuth.Resp) resp).code;
+                        ToastUtils.INSTANCE.showLongToast("取消登录", this);
+                        finish();
+                        break;
                     case BaseResp.ErrCode.ERR_AUTH_DENIED:
                         code = ((SendAuth.Resp) resp).code;
+                        Log.e("-----------", ((SendAuth.Resp) resp).errStr);
 //                        eventScreen = new EventScreen(Constant.wx_code, "-2");
 //                        EventUtils.getDefault().forward(eventScreen);
+                        ToastUtils.INSTANCE.showLongToast("用户取消获取信息授权", this);
                         finish();
                         //用户拒绝
                         break;

@@ -191,6 +191,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     }
                     UserManger.UserLoginStatus.USE_UNBIND_MOBILE -> {
                         RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
+                        finish()
                     }
                 }
             })
