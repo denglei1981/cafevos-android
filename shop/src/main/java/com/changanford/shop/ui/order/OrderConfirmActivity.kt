@@ -17,6 +17,8 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
+import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -93,6 +95,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             model=dataBean
+            OrderGoodsAttributeAdapter().apply {
+                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false)
+                rvGoodsProperty.adapter= this
+                setList(dataBean.skuCodeTxts)
+            }
 //            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)
             //if(freightPrice!=0)tvDistributionType

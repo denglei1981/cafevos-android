@@ -7,7 +7,6 @@ import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.shop.BuildConfig
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
@@ -99,7 +98,7 @@ class GoodsViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
                 addFootprint(spuId)
-                if(BuildConfig.DEBUG&&it?.acountFb!!<1) it.acountFb =1000
+//                if(BuildConfig.DEBUG&&it?.acountFb!!<1) it.acountFb =1000
                 goodsDetailData.postValue(it)
             }
         }

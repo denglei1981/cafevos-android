@@ -359,6 +359,7 @@ data class OrderItemBean(
     val freightPrice:String="0",//运费 0为包邮
     var otherName:String?="",
     var otherValue:String?="",
+    var totalIntegral:String?="0"
 )
 data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")
 data class ShopAddressInfoBean(
