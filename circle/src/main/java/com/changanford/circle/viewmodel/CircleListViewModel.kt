@@ -27,11 +27,13 @@ class CircleListViewModel : BaseViewModel() {
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
-                if (lng.isNotEmpty()) {
-                    it["lng"] = lng
-                }
-                if (lat.isNotEmpty()) {
-                    it["lat"] = lat
+                if (type == 1) {
+                    if (lng.isNotEmpty()) {
+                        it["lng"] = lng
+                    }
+                    if (lat.isNotEmpty()) {
+                        it["lat"] = lat
+                    }
                 }
                 it["type"] = type
             }
