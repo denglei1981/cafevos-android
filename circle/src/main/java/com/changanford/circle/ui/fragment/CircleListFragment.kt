@@ -1,7 +1,11 @@
 package com.changanford.circle.ui.fragment
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
+import cn.hchstudio.kpermissions.KPermission
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
@@ -33,6 +37,11 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
 
     private var type = 0
     private var page = 1
+    private val permissionsGroup =
+        arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
     private val adapter by lazy {
         CircleListAdapter()
@@ -60,12 +69,29 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     override fun initData() {
-        viewModel.getData(
-            type,
-            LocationUtils.mLongitude.value.toString(),
-            LocationUtils.mLatitude.value.toString(),
-            page
-        )
+        KPermission(requireActivity()).requestPermission(permissionsGroup, {
+            if (it) {
+                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                    override fun onReceiveLocation(location: BDLocation) {
+                        val latitude = location.latitude //获取纬度信息
+                        val longitude = location.longitude //获取经度信息
+                        viewModel.getData(
+                            type,
+                            longitude.toString(),
+                            latitude.toString(),
+                            page
+                        )
+                    }
+                })
+            } else {
+                viewModel.getData(
+                    type,
+                    "",
+                    "",
+                    page
+                )
+            }
+        })
     }
 
     override fun observe() {
