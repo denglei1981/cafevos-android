@@ -106,10 +106,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }.attach().apply {
             initTab()
         }
-
-
         binding.refreshLayout.setOnRefreshListener(this)
-
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
