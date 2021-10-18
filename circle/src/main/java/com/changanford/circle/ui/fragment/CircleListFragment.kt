@@ -66,6 +66,11 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
             page++
             initData()
         }
+        binding.refreshLayout.setOnRefreshListener {
+            page = 1
+            initData()
+            it.finishRefresh()
+        }
     }
 
     override fun initData() {
