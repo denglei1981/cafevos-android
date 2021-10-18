@@ -35,6 +35,7 @@ object MConstant {
 
     const val COOKIE = false
     const val isAppAlive = true
+    var isPopAgreement = true//是否要弹隐私弹框，true未同意协议
 
     val rootPath by lazy {
         MyApp.mContext.getExternalFilesDir("")?.absolutePath

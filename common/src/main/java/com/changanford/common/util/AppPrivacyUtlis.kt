@@ -17,6 +17,7 @@ fun showAppPrivacy(context: AppCompatActivity, block: () -> Unit) {
         SPUtils.setParam(context, "isPopAgreement", false)
         MyApplicationUtil.init(BaseApplication.INSTANT)
         MyApplicationUtil.init()
+        MConstant.isPopAgreement = false
         block.invoke()
         pop.dismiss()
     }
