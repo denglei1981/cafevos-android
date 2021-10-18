@@ -47,22 +47,30 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0")WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
+        headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
             "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
             "MEMBER_DISCOUNT"-> {
-                headerBinding.inDiscount.lLayoutVip.visibility=View.VISIBLE
-                headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
+                headerBinding.inDiscount.apply {
+                    lLayoutVip.visibility=View.VISIBLE
+                    tvVipIntegral.setText(dataBean.fbPrice)
+                }
             }
             "SECKILL"->{//秒杀信息
                 val secKillInfo=dataBean.secKillInfo
                 if(null!=secKillInfo){
-                    headerBinding.inKill.model=dataBean
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
-                    headerBinding.inKill.layoutKill.visibility= View.VISIBLE
-                    initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
-                    val purchasedNum=dataBean.purchasedNum?:0
-                    headerBinding.inKill.tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
-                    if(null==fbLine)headerBinding.inKill.tvFbLine.visibility= View.GONE
+                    headerBinding.inVip.layoutVip.visibility=View.GONE
+                    headerBinding.inKill.apply {
+                        model=dataBean
+                        layoutKill.visibility= View.VISIBLE
+                        initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
+                        val purchasedNum=dataBean.purchasedNum?:0
+                        tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
+                        if(null==fbLine)tvFbLine.visibility= View.GONE
+                        val limitBuyNum=dataBean.limitBuyNum?:"0"
+                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
+                    }
                 }
             }
         }
@@ -74,10 +82,12 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     @SuppressLint("SetTextI18n")
     fun bindingComment(itemData: CommentItem?){
         if(null!=itemData){
-            headerBinding.inComment.layoutComment.visibility=View.VISIBLE
-            headerBinding.inComment.model=itemData
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),headerBinding.inComment.imgGoodsCommentAvatar)
-            headerBinding.inComment.tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
+            headerBinding.inComment.apply {
+                model=itemData
+                layoutComment.visibility=View.VISIBLE
+                tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar)
+            }
         }
     }
     /**
