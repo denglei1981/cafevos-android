@@ -29,10 +29,6 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
     private var typeId="0"
-    private var allGoodsData:GoodsList?=null
-    fun setAllData(allGoodsData:GoodsList?){
-        this.allGoodsData=allGoodsData
-    }
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!

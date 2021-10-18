@@ -21,6 +21,8 @@ class GoodsViewModel: BaseViewModel() {
     private var adsRepository: AdsRepository = AdsRepository(this)
     //广告
     var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
+    //商品分类
+    var classificationLiveData =MutableLiveData<GoodsClassification?>()
     //首页
     var shopHomeData =MutableLiveData<ShopHomeBean>()
 
@@ -31,8 +33,6 @@ class GoodsViewModel: BaseViewModel() {
     var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
     //秒杀列表
     var killGoodsListData =MutableLiveData<GoodsList?>()
-    //商城首页
-    var shopHomeGoodsData =MutableLiveData<GoodsHomeBean>()
     //评价列表
     var commentLiveData =MutableLiveData<CommentBean?>()
     //商品收藏状态
@@ -60,6 +60,23 @@ class GoodsViewModel: BaseViewModel() {
         }
     }
     /**
+     * 获取商品分类
+     * */
+    fun getClassification(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.getClassification(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                classificationLiveData.postValue(it)
+            }.onWithMsgFailure {
+                classificationLiveData.postValue(null)
+                ToastUtils.showLongToast(it?:"", MyApp.mContext)
+            }
+        }
+    }
+    /**
      * 获取商品列表
      * [tagId]分类id
      * */
@@ -69,17 +86,15 @@ class GoodsViewModel: BaseViewModel() {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-               if("0"!=tagId) body["queryParams"]=HashMap<String,Any>().also {
+                body["queryParams"]=HashMap<String,Any>().also {
                     it["tagId"]=tagId
                 }
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                shopHomeGoodsData.postValue(it)
                 goodsListData.postValue(it?.responsePageBean)
             }.onFailure {
                 goodsListData.postValue(null)
-                shopHomeGoodsData.postValue(it)
             }.onWithMsgFailure {
                 if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
             }

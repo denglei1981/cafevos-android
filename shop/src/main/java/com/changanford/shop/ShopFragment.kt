@@ -1,7 +1,6 @@
 package com.changanford.shop
 import android.graphics.Typeface
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.GoodsHomeBean
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
@@ -36,9 +35,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
         binding.smartRl.setOnRefreshListener(this)
     }
-    private fun bindingTab(homeData:GoodsHomeBean?){
+    private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){
         if(fragments.size>0)return
-        val tabs=homeData?.list?:ArrayList<GoodsTypesItemBean>().apply {
+        val tabs=goodsClassification?:ArrayList<GoodsTypesItemBean>().apply {
             add(GoodsTypesItemBean("0","全部"))
         }
 //        val tabs=ArrayList<GoodsTypesItemBean>().apply {
@@ -47,7 +46,6 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //        }
         for(it in tabs){
             val fragment=ExchangeListFragment.newInstance(it.mallMallTagId)
-            if("0"==it.mallMallTagId)fragment.setAllData(homeData?.responsePageBean)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
@@ -68,7 +66,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-        viewModel.getGoodsList("0",1)
+        viewModel.getClassification()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
@@ -77,7 +75,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         viewModel.shopHomeData.observe(this,{
             mAdapter.setList(it.indexSeckillDtoList)
         })
-        viewModel.shopHomeGoodsData.observe(this,{
+        viewModel.classificationLiveData.observe(this,{
             bindingTab(it)
         })
     }

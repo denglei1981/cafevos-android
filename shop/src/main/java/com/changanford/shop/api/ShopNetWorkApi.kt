@@ -25,6 +25,11 @@ interface ShopNetWorkApi {
     @POST("/mall/sckills/get")
     suspend fun getSckills(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<SeckillSessionsBean>
     /**
+     * 商品分类
+     * */
+    @POST("/mall/spus/getTags")
+    suspend fun getClassification(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsClassification>
+    /**
      * 商城列表
      * */
     @POST("/mall/spus/get")

@@ -6,6 +6,8 @@ package com.changanford.common.bean
  * @Description : 商城
  */
 class Extend
+class GoodsClassification : ArrayList<GoodsTypesItemBean>()
+
 data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
