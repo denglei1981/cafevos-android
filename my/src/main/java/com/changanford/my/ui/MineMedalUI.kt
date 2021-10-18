@@ -2,7 +2,6 @@ package com.changanford.my.ui
 
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,7 +15,6 @@ import com.changanford.my.databinding.ItemMineMedalBinding
 import com.changanford.my.databinding.UiMineMedalBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：MineMedalUI
@@ -40,17 +38,6 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
         binding.rcyMedal.rcyCommonView.layoutManager = GridLayoutManager(this, 3)
         binding.rcyMedal.rcyCommonView.adapter = medalAdapter
 
-        viewModel.mineMedal.observe(this, Observer {
-            completeRefresh(it, medalAdapter, 0)
-            it.let {
-                if (it.size > 0) {
-                    binding.btnWear.text = "佩戴"
-                } else {
-                    binding.btnWear.text = "去点亮勋章"
-                }
-            }
-        })
-
         binding.btnWear.setOnClickListener {
             viewModel.wearMedal(medalId, "1")
         }
@@ -71,8 +58,15 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
-        lifecycleScope.launch {
-            viewModel.oneselfMedal()
+        viewModel.oneselfMedal() {
+            completeRefresh(it?.data, medalAdapter, 0)
+            it?.data?.let {
+                if (it.size > 0) {
+                    binding.btnWear.text = "佩戴"
+                } else {
+                    binding.btnWear.text = "去点亮勋章"
+                }
+            }
         }
     }
 

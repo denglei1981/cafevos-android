@@ -145,7 +145,7 @@ class CircleViewModel : ViewModel() {
 
     fun deleteCircleUsers(circleId: String, userIds: ArrayList<String>) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, Any>()
                 body["circleId"] = circleId
                 body["userIds"] = userIds
@@ -205,7 +205,7 @@ class CircleViewModel : ViewModel() {
 
     fun setCircleStatus(body: HashMap<String, Any>, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
-            result(fetchRequest {
+            result(fetchRequest(showLoading = true) {
                 var rkey = getRandomKey()
                 apiService.setCircleStatus(body.header(rkey), body.body(rkey))
             })

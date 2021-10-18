@@ -65,7 +65,7 @@ class AddressViewModel : ViewModel() {
             return
         }
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var rkey = getRandomKey()
                 apiService.saveAddress(map.header(rkey), map.body(rkey))
             }.onSuccess {
@@ -83,7 +83,7 @@ class AddressViewModel : ViewModel() {
 
     fun deleteAddress(addressId: String) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["addressId"] = addressId
                 var rkey = getRandomKey()

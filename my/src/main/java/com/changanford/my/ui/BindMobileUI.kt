@@ -64,6 +64,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
         viewModel.smsSuccess.observe(this, androidx.lifecycle.Observer {
             smsCountDownTimer()
+            showToast("验证码获取成功")
         })
 
         LiveDataBus.get()
