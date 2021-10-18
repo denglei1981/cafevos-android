@@ -215,6 +215,22 @@ class OrderViewModel: BaseViewModel() {
         }
     }
     /**
+     * 获取订单类型
+     * */
+    fun getOrderKey(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.getOrderKey(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
+            }.onSuccess {
+
+            }
+        }
+    }
+    /**
      * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
      * */
     fun getOrderStatus(orderStatus:String,evalStatus:String?):String{

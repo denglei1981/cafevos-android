@@ -75,6 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:letterSpacing="0.032"
-            android:lineSpacingExtra="@dimen/dp_2" />
+            android:lineSpacingExtra="@dimen/dp_2"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
