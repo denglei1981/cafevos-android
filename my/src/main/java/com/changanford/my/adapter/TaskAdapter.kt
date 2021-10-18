@@ -61,7 +61,7 @@ class TaskContentAdapter() :
                 it.progress.progress = if (item.taskIsOpen == 1) 0 else 1
                 it.taskTitleInfo.text = "${if (item.taskIsOpen == 1) 0 else 1}/1"
             }
-            it.itemTaskDes.text = ("奖励: " + item.taskScore + "U币/次 | "
+            it.itemTaskDes.text = ("奖励: " + item.taskScore + "F币/次 | "
                     + item.taskGrowthValue + "成长值/次") //奖励: 50积分 | 200成长值
 
             if (item.taskIsDone == 1) {
