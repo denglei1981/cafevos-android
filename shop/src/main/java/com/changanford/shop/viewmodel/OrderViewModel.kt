@@ -9,7 +9,6 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.listener.OnPerformListener
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 /**
@@ -225,7 +224,7 @@ class OrderViewModel: BaseViewModel() {
                 shopApiService.getOrderKey(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 orderTypesLiveData.postValue(null)
-                ToastUtils.showLongToast(it)
+//                ToastUtils.showLongToast(it)
             }.onSuccess {
                 orderTypesLiveData.postValue(it)
             }
