@@ -186,6 +186,16 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+
+    /**
+     *   资讯评论
+     * */
+    @POST("/con/article/addComment")
+    suspend fun addCommentNews(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
     /**
      * 加入圈子
      */

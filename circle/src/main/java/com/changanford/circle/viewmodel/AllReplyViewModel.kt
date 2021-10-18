@@ -48,6 +48,32 @@ class AllReplyViewModel : BaseViewModel() {
         })
     }
 
+
+    fun addNewsComment(
+        bizId: String?,
+        groupId: String?,
+        pid: String?,
+        content: String
+    ) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["bizId"] = bizId ?: ""
+            body["pid"] = pid ?: ""
+            body["groupId"] = groupId ?: ""
+            body["content"] = content
+            body["phoneModel"] = DeviceUtils.getDeviceModel()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .addCommentNews(body.header(rKey), body.body(rKey)).also {
+                    addCommendBean.value = it
+                }
+
+        }, error = {
+            it.message?.toast()
+        })
+    }
+
+
     fun addPostsComment(
         bizId: String?,
         groupId: String?,
@@ -61,7 +87,6 @@ class AllReplyViewModel : BaseViewModel() {
             body["groupId"] = groupId ?: ""
             body["content"] = content
             body["phoneModel"] = DeviceUtils.getDeviceModel()
-
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .addPostsComment(body.header(rKey), body.body(rKey)).also {
