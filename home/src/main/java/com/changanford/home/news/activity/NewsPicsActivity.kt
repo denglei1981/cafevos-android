@@ -41,8 +41,6 @@ import com.zhpan.bannerview.constants.IndicatorGravity
 class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailViewModel>(),
     View.OnClickListener {
 
-
-
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.white)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutHeader.conHomeBar, this)
@@ -123,7 +121,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 CommentPicsDialog.CommentCountInterface {
                 override fun commentCount(count: Int) {
                 }
-            })
+            },this)
             mCommentDialog!!.bizId = newsDetailData?.artId.toString()
             mCommentDialog!!.show(supportFragmentManager, "commentShortVideoDialog")
         }
