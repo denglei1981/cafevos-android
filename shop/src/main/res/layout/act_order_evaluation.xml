@@ -88,7 +88,6 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shadow_f9_5dp"
                 android:gravity="start|top"
-                android:text="@string/prompt_order_evaluation"
                 android:hint="@string/str_pleaseEnterComments"
                 android:textColorHint="@color/color_99"
                 android:maxLength="200"
