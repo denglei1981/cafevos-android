@@ -167,13 +167,13 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .param(RouterManger.KEY_TO_ID, item.circleId.toString())
                                     .startARouter(ARouterMyPath.CircleMemberUI)
                             }
-                            holder.itemView.setOnClickListener {
-                                JumpUtils.instans?.jump(6, item.circleId.toString())
-                            }
                         }
                         else -> {
                             status.visibility = View.GONE
                         }
+                    }
+                    holder.itemView.setOnClickListener {
+                        JumpUtils.instans?.jump(6, item.circleId.toString())
                     }
                 }
             }
