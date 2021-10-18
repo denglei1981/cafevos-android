@@ -35,7 +35,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  * @UpdateRemark: 更新说明
  */
 
-open class CommentShortVideoDialog(var commentCountInterface: CommentCountInterface) : BaseBottomDialog<HomeCommentViewModel, DialogShortVideoCommentBinding>(), OnRefreshListener {
+open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) : BaseBottomDialog<HomeCommentViewModel, DialogShortVideoCommentBinding>(), OnRefreshListener {
 
     var bizId: String =""
 
@@ -146,25 +146,23 @@ open class CommentShortVideoDialog(var commentCountInterface: CommentCountInterf
     }
     override fun createObserver() {
         mViewModel.commentsLiveData.observe(this, Observer {
-//            showContent()
-//            if(it.isSuccess){
-//                 if(it.data!=null&&it.data.dataList!=null&&it.data.commentList.size>0){
-//                     showComment(it.data)
-//                 }else{
-//                     showEmpty()
-//                 }
-//            }else{
-//                showEmpty()
-//            }
+            showContent()
+            if(it.isSuccess){
+                 if(it.data!=null&&it.data.dataList.size>0){
+                     showComment(it.data.dataList)
+                 }else{
+                     showEmpty()
+                 }
+            }else{
+                showEmpty()
+            }
         })
     }
 
-    private fun showComment(data: CommentListBean) {
-        mDatabind.commentList.removeAllViews()
-//        if(data.commentList==null||data.commentList.size==0){
-//            return
-//        }
-//        commentAdapter.setNewInstance(data.commentList)
+    private fun showComment(data: List<CommentListBean>) {
+
+
+        commentAdapter.setNewInstance(data as? MutableList<CommentListBean>)
 
     }
     override fun showLoading(message: String) {

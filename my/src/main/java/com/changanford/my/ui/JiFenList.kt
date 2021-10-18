@@ -112,7 +112,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
         private var source: String = ""
 
         override fun convert(holder: BaseDataBindingHolder<ItemGrowUpBinding>, item: GrowUpItem) {
-            GrowUpAndJifenViewHolder(holder, item, true, source)
+            GrowUpAndJifenViewHolder(holder, item, false, source)
         }
 
         fun setSource(source: String) {

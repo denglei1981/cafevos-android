@@ -91,7 +91,7 @@ data class Ext(
     val memberId: Int,
     val multiple: Double,
     val nextGrowSeriesName: String,
-    val nextSeriesMinGrow: Int,
+    val nextSeriesMinGrow: Long,
     val rulesDesc: String,
     val userId: Int,
     val userMedalList: ArrayList<MedalListBeanItem>? = arrayListOf(),
@@ -100,6 +100,8 @@ data class Ext(
     val medalImage: String,
     val medalName: String? = "",
     val memberName: String,
+    val totalIntegral: String,
+    val totalGrowth: Long,
 )
 
 data class Imag(

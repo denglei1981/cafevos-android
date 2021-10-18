@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -167,10 +168,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         }
         binding.myHead.load(userInfoBean?.avatar, R.mipmap.my_headdefault)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
-        binding.myName.text = userInfoBean?.nickname ?: resources.getString(R.string.my_loginTips)
+        binding.myName.text = userInfoBean?.nickname
+            ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginTips)
         binding.myContent.text =
-            userInfoBean?.brief ?: resources.getString(R.string.my_loginSubTips)
-        binding.myScore.text = "${userInfoBean?.ext?.integralDecimal ?: "0"}"//积分
+            userInfoBean?.brief
+                ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginSubTips)
+        binding.myScore.text = "${userInfoBean?.ext?.totalIntegral ?: "0"}"//积分
         binding.myScoreAcc.text = "${userInfoBean?.ext?.multiple ?: "1"} 倍加速"
         binding.myStateLayout.apply {
             myStateFabu.text = "${userInfoBean?.count?.releases ?: "0"}"
@@ -182,9 +185,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             include.apply {
                 textView9.text = userInfoBean?.ext?.growSeriesName
                 textView11.text =
-                    "${userInfoBean?.ext?.growthDecimal}/${userInfoBean?.ext?.nextSeriesMinGrow}"
+                    "${userInfoBean?.ext?.totalGrowth}/${userInfoBean?.ext?.nextSeriesMinGrow}"
                 myScorelevel.setProgressWithAnimation(
-                    ((userInfoBean?.ext?.growthDecimal
+                    ((userInfoBean?.ext?.totalGrowth
                         ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toFloat()
                 )
             }

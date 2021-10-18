@@ -138,8 +138,9 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                 } else {//未签到
                     it.signCheck.visibility = View.GONE
                     it.num.visibility = View.VISIBLE
-                    it.num.text = if (TimeUtils.dayBefore(item.date)) "补" else "+${item.integral}"
-                    if (TimeUtils.dayBefore(item.date)) {
+                    it.num.text =
+                        if (TimeUtils.dayTaskBefore(item.date)) "补" else "+${item.integral}"
+                    if (TimeUtils.dayTaskBefore(item.date)) {
                         it.clLayout.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
                             pop.contentText.text = "本次补签将消耗 ${item.integral} 积分"
@@ -147,7 +148,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                             pop.btnConfirm.setOnClickListener {
                                 pop.dismiss()
                                 BaseApplication.currentViewModelScope.launch {
-                                    fetchRequest {
+                                    fetchRequest(showLoading = true) {
                                         fetchRequest {
                                             var body = HashMap<String, String>()
                                             body["date"] = item.date

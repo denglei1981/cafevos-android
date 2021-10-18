@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
@@ -17,6 +16,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.databinding.ViewEmptyBinding
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toastShow
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -66,8 +66,9 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     }
 
     protected fun showToast(message: String) {
-        if (!message.isNullOrEmpty())
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        if (message?.isNotEmpty()) {
+            toastShow(message)
+        }
     }
 
     open fun hasLoadMore(): Boolean {
@@ -85,6 +86,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     open fun bindToolbar(): Toolbar? {
         return binding.root.findViewById(R.id.toolbar)
     }
+
     /**
      * 显示空布局
      * @param adapter recyclerView的适配器
@@ -95,7 +97,9 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     ): View? {
         return setAdapterView(emptyMessage, errorLayoutId);
     }
+
     var emptyView: View? = null
+
     /**
      * 设置适配器的空布局
      * @param adapter 适配器
@@ -117,6 +121,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
         }
         return emptyView
     }
+
     /**
      * 显示错误布局
      * @param adapter recyclerView的适配器
@@ -197,7 +202,9 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
     open fun initRefreshData(pageSize: Int) {
 
     }
+
     private var pageNo = 1
+
     /**
      * 计算是否有加载更多总数
      *
@@ -242,6 +249,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
             return true
         }
     }
+
     open fun back() {
         finish()
     }

@@ -27,7 +27,7 @@ import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
-import com.changanford.home.news.dialog.CommentShortVideoDialog
+import com.changanford.home.news.dialog.CommentPicsDialog
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
@@ -116,11 +116,11 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
     }
 
-    var  mCommentDialog:CommentShortVideoDialog?=null
+    var  mCommentDialog:CommentPicsDialog?=null
     private fun showCommentDialog() {
         newsDetailData?.let {
-            mCommentDialog = CommentShortVideoDialog(object :
-                CommentShortVideoDialog.CommentCountInterface {
+            mCommentDialog = CommentPicsDialog(object :
+                CommentPicsDialog.CommentCountInterface {
                 override fun commentCount(count: Int) {
                 }
             })

@@ -77,7 +77,15 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             ReplyDialog(this, object : ReplyDialog.ReplyListener {
                 override fun getContent(content: String) {
                     val bean = commentAdapter.getItem(position)
-                    viewModel.addPostsComment(bizId, bean.groupId, bean.id, content)
+                    when(type){
+                        1->{// 资讯
+                            viewModel.addNewsComment(bizId, bean.groupId, bean.id, content)
+                        }
+                        2->{//帖子
+                            viewModel.addPostsComment(bizId, bean.groupId, bean.id, content)
+                        }
+                    }
+
                 }
             }).show()
         }
@@ -101,7 +109,15 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             binding.llTopComment.setOnClickListener { _ ->
                 ReplyDialog(this, object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
-                        viewModel.addPostsComment(bizId, it.groupId, it.id, content)
+                        when(type){
+                            1->{
+                                viewModel.addNewsComment(bizId, it.groupId, it.id, content)
+                            }
+                            2->{
+                                viewModel.addPostsComment(bizId, it.groupId, it.id, content)
+                            }
+                        }
+
                     }
                 }).show()
             }
@@ -114,7 +130,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                 this.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
-                    body["type"] = 2
+                    body["type"] = type
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also { it1 ->

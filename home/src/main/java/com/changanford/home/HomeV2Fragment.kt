@@ -13,9 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.basic.EmptyViewModel
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -23,9 +20,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsListFragment
+import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
-import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
@@ -78,7 +75,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
-        fragmentList.add(ActsListFragment.newInstance())
+        fragmentList.add(ActsParentsFragment.newInstance())
         fragmentList.add(NewsListFragment.newInstance())
         fragmentList.add(BigShotFragment.newInstance())
 

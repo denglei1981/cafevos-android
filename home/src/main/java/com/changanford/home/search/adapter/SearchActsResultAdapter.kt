@@ -2,6 +2,7 @@ package com.changanford.home.search.adapter
 
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
@@ -13,7 +14,7 @@ import com.changanford.home.databinding.ItemHomeActsBinding
  * 活动列表。
  */
 class SearchActsResultAdapter :
-    BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts) {
+    BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts) ,LoadMoreModule{
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)

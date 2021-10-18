@@ -57,6 +57,7 @@
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/circleImageStyle"
                 tools:text="@string/app_name" />
 

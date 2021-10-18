@@ -1,5 +1,6 @@
 package com.changanford.home.acts.dialog
 
+import android.content.Context
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,7 @@ import razerdp.util.animation.TranslationConfig
 
 
 class UnitActsPop(
-    var context: Fragment,
+    var context: Context,
     callback: ICallback
 ) : BasePopupWindow(
     context,
@@ -35,7 +36,7 @@ class UnitActsPop(
 
     fun initView() {
         binding.homeRv.layoutManager =
-            LinearLayoutManager(context.requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.homeRv.adapter = actsAdapter
         actsAdapter.setOnItemClickListener { adapter, view, position ->
             val  item = actsAdapter.getItem(position)

@@ -2,13 +2,13 @@ package com.changanford.my
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.databinding.ViewEmptyBinding
+import com.changanford.common.utilext.toastShow
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -44,7 +44,9 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     }
 
     protected fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        if (message?.isNotEmpty()) {
+            toastShow(message)
+        }
     }
 
     open fun hasLoadMore(): Boolean {
