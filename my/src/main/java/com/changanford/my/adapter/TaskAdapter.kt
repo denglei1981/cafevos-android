@@ -8,6 +8,7 @@ import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.bean.ItemTaskBean
 import com.changanford.common.bean.RootTaskBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemGrowUpBinding
@@ -103,7 +104,7 @@ fun GrowUpAndJifenViewHolder(
 ) {
     holder.dataBinding?.let {
         it.title.text = item.actionName
-//                it.date.text = TimeUtils.MillisToStr(item.createTime)
+        it.date.text = "${TimeUtils.MillisToStr(item.createTime)}"
         it.from.text =
             if (item.source.isNullOrEmpty()) source else item.source
 
