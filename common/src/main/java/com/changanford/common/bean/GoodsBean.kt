@@ -6,6 +6,7 @@ package com.changanford.common.bean
  * @Description : 商城
  */
 class Extend
+//商品分类
 class GoodsClassification : ArrayList<GoodsTypesItemBean>()
 
 data class GoodsTypesItemBean(
@@ -404,4 +405,10 @@ data class SnapshotOfAttrOption(
     val mallMallAttributeId: String = "0",
     val mallMallOptionId: String = "0",
     val optionName: String = ""
+)
+class OrderTypes : ArrayList<OrderTypeItem>()
+data class OrderTypeItem(
+    val jumpDataType: Int=0,
+    val jumpDataValue: String?="",
+    val typeName: String?="",
 )

@@ -168,8 +168,8 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.setKillNotices(rangeId,body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 listener.onFinish(0)
-            }.onFailure {
-                listener.onFinish(-1)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }

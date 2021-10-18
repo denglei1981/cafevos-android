@@ -31,7 +31,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         binding.topBar.setActivity(this)
         binding.topBar.setOnRightTvClickListener(object :TopBar.OnRightTvClickListener{
             override fun onRightTvClick() {
-                OrderScreeningPop(this@AllOrderActivity).show(this@AllOrderActivity)
+                OrderScreeningPop(this@AllOrderActivity,viewModel).show(this@AllOrderActivity)
             }
         })
         binding.smartRl.setOnRefreshLoadMoreListener(this)

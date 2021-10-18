@@ -68,11 +68,13 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             3->{
                 if(!WCommonUtil.isNotificationEnabled(context))SetNoticPop(context).showPopupWindow()
                 else viewModel.setKillNotices("SET",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
+                    @SuppressLint("NotifyDataSetChanged")
                     override fun onFinish(code: Int) {
                         if(0==code){
                             item.isSettedNotice="YES"
                             dataBinding.btnStates.setStates(getKillStates(item))
                             ToastUtils.showLongToast(context.getString(R.string.prompt_set_setNotic),context)
+                            notifyDataSetChanged()
                         }
                     }
                 })
@@ -84,6 +86,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
                         item.isSettedNotice="NO"
                         dataBinding.btnStates.setStates(getKillStates(item))
                         ToastUtils.showLongToast(context.getString(R.string.prompt_cancel_setNotic),context)
+                        notifyDataSetChanged()
                     }
                 }
             })

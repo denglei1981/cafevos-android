@@ -1,11 +1,13 @@
 package com.changanford.shop.popupwindow
 
-import android.content.Context
-import android.view.View
 import android.view.animation.Animation
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.order.OrderTypeAdapter
 import com.changanford.shop.databinding.PopOrderScreeningBinding
+import com.changanford.shop.viewmodel.OrderViewModel
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -14,33 +16,33 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2021/9/22
  * @Description :所有订单-筛选
  */
-open class OrderScreeningPop(context: Context?): BasePopupWindow(context), View.OnClickListener {
+open class OrderScreeningPop(val activity: AppCompatActivity,val viewModel: OrderViewModel): BasePopupWindow(activity) {
     private var viewDataBinding: PopOrderScreeningBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_order_screening))!!
     private var listener: OnSelectListener?=null
+    private val mAdapter by lazy { OrderTypeAdapter() }
     init {
         contentView=viewDataBinding.root
         initView()
+        initData()
     }
     private fun initView(){
-        viewDataBinding.tvCancel.setOnClickListener(this)
-        viewDataBinding.tvOrderGoods.setOnClickListener(this)
-        viewDataBinding.tvOrderCar.setOnClickListener(this)
-        viewDataBinding.tvOrderTestDrive.setOnClickListener(this)
+        viewDataBinding.tvCancel.setOnClickListener{this.dismiss()}
+        viewDataBinding.recyclerView.adapter=mAdapter
+        mAdapter.setOnItemClickListener { _, _, position ->
+            mAdapter.data[position].let {
+                JumpUtils.instans?.jump(it.jumpDataType,it.jumpDataValue)
+            }
+        }
+    }
+    private fun initData(){
+        viewModel.orderTypesLiveData.observe(activity,{
+            mAdapter.setList(it)
+        })
+        viewModel.getOrderKey()
     }
     fun show(listener: OnSelectListener?){
         this.listener=listener
         this.showPopupWindow()
-    }
-    override fun onClick(v: View?) {
-        when(v?.id){
-            //0 商品订单
-            R.id.tv_order_goods->listener?.onSelectBackListener(0)
-            //1 购车订单
-            R.id.tv_order_car->listener?.onSelectBackListener(1)
-            //2 试驾订单
-            R.id.tv_order_testDrive->listener?.onSelectBackListener(2)
-        }
-        this.dismiss()
     }
     interface OnSelectListener {
         fun onSelectBackListener(type:Int)

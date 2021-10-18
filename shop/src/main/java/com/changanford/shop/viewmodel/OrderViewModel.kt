@@ -3,10 +3,7 @@ package com.changanford.shop.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.OrderInfoBean
-import com.changanford.common.bean.OrderItemBean
-import com.changanford.common.bean.ShopOrderBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
@@ -31,6 +28,8 @@ class OrderViewModel: BaseViewModel() {
     var orderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
+    //订单类型
+    var orderTypesLiveData: MutableLiveData<OrderTypes?> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -226,7 +225,7 @@ class OrderViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
-
+                orderTypesLiveData.postValue(it)
             }
         }
     }
