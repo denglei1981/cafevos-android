@@ -41,7 +41,7 @@ class GoodsViewModel: BaseViewModel() {
      * 获取banner
      * */
     fun getBannerData(){
-        adsRepository.getAds("商城广告位")
+        adsRepository.getAds("mall_top_ad_v2")
     }
     /**
      * 获取 商城首页

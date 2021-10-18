@@ -92,27 +92,30 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     /**
      * 秒杀倒计时
-     * [timestamp]当前时间
+     * [nowTime]当前时间
      * [startTime]秒杀开始时间
      * [endTime]秒杀结束时间
     * */
-   private fun initTimeCount(timestamp:Long,startTime:Long,endTime:Long){
-        var remainingTime=startTime-timestamp//当前时间小于开始时间说明未开始
-        if(remainingTime>0){//未开始
-            headerBinding.inKill.tvKillStates.setText(R.string.str_fromStart)
-        }else{//已开始
-            headerBinding.inKill.tvKillStates.setText(R.string.str_fromEnd)
-            remainingTime=timestamp-endTime//距离结束剩余时间
-        }
-        if(remainingTime<=0)return
-        timeCount= KllTimeCountControl(remainingTime,headerBinding.inKill.tvKillH,headerBinding.inKill.tvKillM,headerBinding.inKill.tvKillS,object :
-            OnTimeCountListener {
-            override fun onFinish() {
-                //秒杀结束刷新数据
-                viewModel.queryGoodsDetails(dataBean.spuId)
+   private fun initTimeCount(nowTime:Long,startTime:Long,endTime:Long){
+        headerBinding.inKill.apply {
+            var remainingTime=startTime-nowTime//当前时间小于开始时间说明未开始
+            if(remainingTime>0){//未开始
+                tvKillStates.setText(R.string.str_fromStart)
+            }else{//已开始、已结束
+                //距离结束剩余时间
+                remainingTime=endTime-nowTime
+                tvKillStates.setText(if(remainingTime>0)R.string.str_fromEnd else R.string.str_hasEnded)
             }
-        })
-        timeCount?.start()
+            if(remainingTime<=0)return
+            timeCount= KllTimeCountControl(remainingTime,tvKillH,tvKillM,tvKillS,object :
+                OnTimeCountListener {
+                override fun onFinish() {
+                    //秒杀结束刷新数据
+                    viewModel.queryGoodsDetails(dataBean.spuId)
+                }
+            })
+            timeCount?.start()
+        }
     }
     /**
      * 创建选择商品属性弹窗
