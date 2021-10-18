@@ -165,7 +165,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }else binding.inBottom.btnSubmit.setStates(5)
     }
     fun showShareDialog(){
-        if(::dataBean.isInitialized)dataBean.shareBeanVO?.let { shareViewModule.share(activity, shareBean = it) }
+        if(::dataBean.isInitialized)dataBean.shareBeanVO?.let { shareViewModule.share(activity,it) }
     }
     fun onDestroy(){
         timeCount?.cancel()
