@@ -62,7 +62,7 @@ object UserManger {
                         it.mobile
                     }
                 }
-                it.ext?.integralDecimal?.let {
+                it.ext?.totalIntegral?.let {
                     sysUserInfoBean.integral = it.toDouble()
                 }
                 sysUserInfoBean.userJson = JSON.toJSONString(it)
@@ -75,7 +75,7 @@ object UserManger {
                         it.mobile
                     }
                 }
-                it.ext?.integralDecimal?.let {
+                it.ext?.totalIntegral?.let {
                     sysUserInfoBean.integral = it.toDouble()
                 }
                 sysUserInfoBean.userJson = JSON.toJSONString(it)

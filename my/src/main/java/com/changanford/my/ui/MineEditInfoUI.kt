@@ -31,6 +31,7 @@ import com.changanford.my.databinding.UiMineEditInfoBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
 import com.github.gzuliyujiang.wheelpicker.DatePicker
+import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -443,9 +444,18 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         }
         var bb: List<String> = bTime.split('-')
 
-        var calender = Calendar.getInstance()
-
-        datePicker = DatePicker(this)
+        datePicker = DatePicker(this).apply {
+            wheelLayout.setRange(DateEntity.target(1900, 1, 1), DateEntity.today())
+            if (null != bb && bb.size == 3) {
+                wheelLayout.setDefaultValue(
+                    DateEntity.target(
+                        bb[0].toInt(),
+                        bb[1].toInt(),
+                        bb[2].toInt()
+                    )
+                )
+            }
+        }
 //        datePicker?.setTitleText("日期选择")
 //        //生日起始改到1920  也是6到不行  1920  还能开车  再次修改 客户觉得1900人还能爬起来开车 我服了
 //        datePicker?.setRangeStart(1900, 1, 1)

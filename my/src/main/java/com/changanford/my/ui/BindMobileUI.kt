@@ -37,7 +37,6 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
             mobileText,
             smsText,
             BiFunction<CharSequence, CharSequence, Boolean> { t1, t2 ->
-                binding.btnGetSms.isEnabled = t1.isNotEmpty()
                 t1.isNotEmpty() && t2.isNotEmpty()
             })
             .subscribe {
@@ -47,7 +46,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                viewModel.smsCacLogin(binding.etLoginMobile.text.toString())
+                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
             }, {
 
             })

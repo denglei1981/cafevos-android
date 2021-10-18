@@ -106,7 +106,6 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             smsText,
             checkBox,
             Function3<CharSequence, CharSequence, Boolean, Boolean> { t1, t2, t3 ->
-                binding.btnGetSms.isEnabled = t1.isNotEmpty()
                 t1.isNotEmpty() && t2.isNotEmpty() && t3
             })
             .subscribe {
@@ -116,7 +115,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                viewModel.smsCacLogin(binding.etLoginMobile.text.toString())
+                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
             }, {
 
             })

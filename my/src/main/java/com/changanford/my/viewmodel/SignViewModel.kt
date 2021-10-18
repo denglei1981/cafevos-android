@@ -392,27 +392,43 @@ class SignViewModel : ViewModel() {
 
     /****------------------****/
     fun getSmsCode(mobile: String) {
+        if (mobile?.isNullOrEmpty()) {
+            toastShow("请输入手机号")
+            return
+        }
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, Any>()
                 body["phone"] = mobile
                 var rKey = getRandomKey()
                 apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
             }.onSuccess {
                 smsSuccess.postValue(true)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
             }
         }
     }
 
-    fun smsCacLogin(mobile: String) {
+    fun smsCacSmsCode(mobile: String) {
+        if (mobile?.isNullOrEmpty()) {
+            toastShow("请输入手机号")
+            return
+        }
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["phone"] = mobile
                 var rkey = getRandomKey()
                 apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 smsSuccess.postValue(true)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
             }
         }
     }
@@ -426,13 +442,17 @@ class SignViewModel : ViewModel() {
                 "保存成功".toast()
                 LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
                     .postValue(true)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
             }
         }
     }
 
     fun smsLogin(mobile: String, sms: String, pushId: String) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["phone"] = mobile
                 body["smsCode"] = sms
@@ -470,7 +490,7 @@ class SignViewModel : ViewModel() {
 
 
     suspend fun otherLogin(type: String, code: String, pushId: String) {
-        var other = fetchRequest {
+        var other = fetchRequest(showLoading = true) {
             var body = HashMap<String, String>()
             body["type"] = type
             body["code"] = code
