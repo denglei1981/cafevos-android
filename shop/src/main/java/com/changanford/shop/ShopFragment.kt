@@ -33,6 +33,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         addObserve()
         initKill()
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
+        binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108)  }
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){
