@@ -6,8 +6,10 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
+        app:srlEnableLoadMore="false"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -17,5 +19,5 @@
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

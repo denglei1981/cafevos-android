@@ -27,6 +27,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         player.release()
     }
     override fun initView() {
+        MConstant.isPopAgreement = SPUtils.getParam(requireContext(), "isPopAgreement", true) as Boolean
     }
 
     override fun initData() {

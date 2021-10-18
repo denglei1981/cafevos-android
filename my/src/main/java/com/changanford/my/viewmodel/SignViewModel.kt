@@ -16,7 +16,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
@@ -602,7 +601,7 @@ class SignViewModel : ViewModel() {
 
     fun wearMedal(medalId: String, type: String) {
         viewModelScope.launch {
-            var medal = fetchRequest {
+            var medal = fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["medalId"] = medalId
                 body["type"] = type
@@ -617,18 +616,14 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    val mineMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
 
-    suspend fun oneselfMedal() {
-        var medal = fetchRequest {
-            var body = HashMap<String, String>()
-            var rkey = getRandomKey()
-            apiService.queryUserMedalList(body.header(rkey), body.body(rkey))
-        }
-        if (medal.code == 0) {
-            mineMedal.postValue(medal.data)
-        } else {
-            medal.msg?.logE()
+    fun oneselfMedal(result: (CommonResponse<ArrayList<MedalListBeanItem>>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, String>()
+                var rkey = getRandomKey()
+                apiService.queryUserMedalList(body.header(rkey), body.body(rkey))
+            })
         }
     }
 
@@ -675,21 +670,23 @@ class SignViewModel : ViewModel() {
 
     var cancelTip: MutableLiveData<String> = MutableLiveData()
 
-    suspend fun cancelFans(
+    fun cancelFans(
         followId: String,
         type: String
     ) {
-        var cancle = fetchRequest {
-            var body = HashMap<String, String>()
-            body["followId"] = followId
-            body["type"] = type
-            var rkey = getRandomKey()
-            apiService.cancelFans(body.header(rkey), body.body(rkey))
-        }
-        if (cancle.code == 0) {
-            cancelTip.postValue("true")
-        } else {
-            cancelTip.postValue(cancle.msg)
+        viewModelScope.launch {
+            var cancle = fetchRequest(showLoading = true) {
+                var body = HashMap<String, String>()
+                body["followId"] = followId
+                body["type"] = type
+                var rkey = getRandomKey()
+                apiService.cancelFans(body.header(rkey), body.body(rkey))
+            }
+            if (cancle.code == 0) {
+                cancelTip.postValue("true")
+            } else {
+                cancelTip.postValue(cancle.msg)
+            }
         }
     }
 
@@ -717,7 +714,7 @@ class SignViewModel : ViewModel() {
 
     fun bindOtherAuth(type: String, code: String) {
         viewModelScope.launch {
-            var otherAuth = fetchRequest {
+            var otherAuth = fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["type"] = type
                 body["code"] = code
@@ -789,8 +786,11 @@ class SignViewModel : ViewModel() {
         delReason: String, result: (CommonResponse<String>) -> Unit
     ) {
         viewModelScope.launch {
-            result(fetchRequest {
+            result(fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
+                body["phone"] = phone
+                body["smsCode"] = smsCode
+                body["delReason"] = delReason
                 var rkey = getRandomKey()
                 apiService.cancelAccount(body.header(rkey), body.body(rkey))
             })

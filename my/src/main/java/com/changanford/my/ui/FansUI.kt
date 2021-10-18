@@ -136,9 +136,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     QuickPopupConfig()
                         .gravity(Gravity.CENTER)
                         .withClick(R.id.btn_comfir, View.OnClickListener {
-                            lifecycleScope.launch {
-                                viewModel.cancelFans(followId, type)
-                            }
+                            viewModel.cancelFans(followId, type)
                         }, true)
                         .withClick(R.id.btn_cancel, View.OnClickListener {
 

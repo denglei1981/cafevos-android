@@ -48,14 +48,14 @@ public class DeviceUtils {
      */
     public static String getIMEI(Context context) {
         String imei = "";
-        String[] permissions = {Manifest.permission.READ_PHONE_STATE};
-        int check = ContextCompat.checkSelfPermission(context, permissions[0]);
-        if (check == PackageManager.PERMISSION_GRANTED) {
-            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            imei = telephonyManager.getDeviceId();
-        } else {
-            ToastUtilsKt.toast("请开启获取手机信息权限");
-        }
+//        String[] permissions = {Manifest.permission.READ_PHONE_STATE};
+//        int check = ContextCompat.checkSelfPermission(context, permissions[0]);
+//        if (check == PackageManager.PERMISSION_GRANTED) {
+//            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//            imei = telephonyManager.getDeviceId();
+//        } else {
+//            ToastUtilsKt.toast("请开启获取手机信息权限");
+//        }
         return imei;
     }
 
@@ -63,10 +63,11 @@ public class DeviceUtils {
      * 获取应用程序的IMSI号
      */
     public static String getIMSI(Context context) {
-        TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String imsi = mTelephonyMgr.getSubscriberId();
-
-        return imsi;
+//        TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//        String imsi = mTelephonyMgr.getSubscriberId();
+//
+//        return imsi;
+        return "";
     }
 
     /**
@@ -74,17 +75,18 @@ public class DeviceUtils {
      */
     @SuppressLint("MissingPermission")
     public static String getUUID() {
-        final TelephonyManager tm = (TelephonyManager) MyApp.mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        String tmDevice = "";
-        final String androidId;
-        try {
-            tmDevice = "" + tm.getDeviceId();
-        } catch (Exception e) {
-        }
-        androidId = "" + Settings.Secure.getString(MyApp.mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32));
-        String uniqueId = deviceUuid.toString();
-        return uniqueId;
+//        final TelephonyManager tm = (TelephonyManager) MyApp.mContext.getSystemService(Context.TELEPHONY_SERVICE);
+//        String tmDevice = "";
+//        final String androidId;
+//        try {
+//            tmDevice = "" + tm.getDeviceId();
+//        } catch (Exception e) {
+//        }
+//        androidId = "" + Settings.Secure.getString(MyApp.mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+//        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32));
+//        String uniqueId = deviceUuid.toString();
+//        return uniqueId;
+        return "";
     }
 
     /**

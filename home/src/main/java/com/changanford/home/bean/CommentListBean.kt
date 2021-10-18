@@ -24,7 +24,9 @@ data class CommentListBean(
     val timeStr: String,
     val userId: String,
     val memberIcon: String,
-    val imags: List<Imag>
+    val imags: List<Imag>,
+    val parentVo: List<CommentParentVo>,
+    var isOpenParent: Boolean = false,
 ) : Serializable {
     override fun toString(): String {
         return "CommentListBean(avatar='$avatar', childCount=$childCount, content='$content', createTime='$createTime', groupId='$groupId', id='$id', isLike=$isLike, likesCount=$likesCount, nickname='$nickname', phoneModel='$phoneModel', role='$role', timeStr='$timeStr', userId=$userId)"
@@ -32,3 +34,14 @@ data class CommentListBean(
 
 
 }
+data class CommentParentVo(
+    val avatar: String,
+    val content: String,
+    val createTime: Long,
+    val groupId: String,
+    val id: Int,
+    val nickname: String,
+    val phoneModel: String,
+    val pid: Int,
+    val userId: String
+)

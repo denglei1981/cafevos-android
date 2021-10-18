@@ -53,16 +53,16 @@ fun getHeader(
 //    map["token"] = "user:token:app:336:uni-05b4b3b00264f7bff144ce1d50b81fb3"
     map["timestamp"] = timestamp
     map["os"] = "Android"//操作系统 （ios、Android、wp）
-    map["osVersion"] = DeviceUtils.getDeviceVersion()//操作系统版本号
+    map["osVersion"] = if(MConstant.isPopAgreement) "" else DeviceUtils.getDeviceVersion()//操作系统版本号
     map["loginChannel"] =
-        DeviceUtils.getMetaData(
+        if(MConstant.isPopAgreement) "" else DeviceUtils.getMetaData(
             MyApp.mContext, "CHANNEL_VALUE"
         )
     map["appVersion"] = DeviceUtils.getversionName()//app版本号
-    map["model"] = DeviceUtils.getDeviceModel()//手机机型
-    map["brand"] = DeviceUtils.getManuFacture()//手机品牌
-    map["operatorName"] = NetUtils.getOperatorName(MyApp.mContext)//运营商名称
-    map["networkState"] = NetUtils.getNetworkState(MyApp.mContext)//网络类型
+    map["model"] = if(MConstant.isPopAgreement) "" else DeviceUtils.getDeviceModel()//手机机型
+    map["brand"] = if(MConstant.isPopAgreement) "" else DeviceUtils.getManuFacture()//手机品牌
+    map["operatorName"] = if(MConstant.isPopAgreement) "" else NetUtils.getOperatorName(MyApp.mContext)//运营商名称
+    map["networkState"] = if(MConstant.isPopAgreement) "" else NetUtils.getNetworkState(MyApp.mContext)//网络类型
     map["body"] = MD5Utils.encode_big(JSON.toJSON(body).toString())//body的明文，用于键值判断，在传输的时候删除
 
     return map

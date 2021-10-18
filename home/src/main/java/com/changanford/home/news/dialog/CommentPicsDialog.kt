@@ -1,6 +1,7 @@
 package com.changanford.home.news.dialog
 
 
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
@@ -9,22 +10,26 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseBottomDialog
 import com.changanford.common.loadsir.EmptyCommentCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
 import com.changanford.common.util.getViewModel
+import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeCommentDialogAdapter
 import com.changanford.home.bean.CommentListBean
 import com.changanford.home.databinding.DialogShortVideoCommentBinding
 import com.changanford.home.news.request.HomeCommentViewModel
+import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+
 
 /**
  * @Description: java类作用描述
@@ -35,9 +40,12 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  * @UpdateRemark: 更新说明
  */
 
-open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) : BaseBottomDialog<HomeCommentViewModel, DialogShortVideoCommentBinding>(), OnRefreshListener {
+open class CommentPicsDialog(
+    var commentCountInterface: CommentCountInterface,
+    var contexts: Context
+) : BaseBottomDialog<HomeCommentViewModel, DialogShortVideoCommentBinding>() {
 
-    var bizId: String =""
+    var bizId: String = ""
 
     private val requestShortVideoCommentViewMode: HomeCommentViewModel by lazy { getViewModel<HomeCommentViewModel>() }
 
@@ -63,11 +71,11 @@ open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) :
 
     override fun setLoadSir(view: View?) {
         val loadSir = LoadSir.Builder()
-                .addCallback(LoadingCallback())
-                .addCallback(EmptyCommentCallback())
-                .addCallback(ErrorCallback())
-                .setDefaultCallback(LoadingCallback::class.java)
-                .build()
+            .addCallback(LoadingCallback())
+            .addCallback(EmptyCommentCallback())
+            .addCallback(ErrorCallback())
+            .setDefaultCallback(LoadingCallback::class.java)
+            .build()
         mLoadService = loadSir.register(view, Callback.OnReloadListener { v: View? ->
             mLoadService?.showCallback(LoadingCallback::class.java)
             onRetryBtnClick()
@@ -79,30 +87,32 @@ open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) :
         mDatabind.commentList.adapter = commentAdapter
         mDatabind.commentList.layoutManager = LinearLayoutManager(activity)
         getCommentList()
-        commentAdapter.setOnItemChildClickListener { _, view, position ->
-//            when (view.id) {
-//                R.id.comment_like -> {
-//                    val currentComment = commentAdapter.getItem(position)
-//                    if(currentComment.isLike==0){
-//                        currentComment.isLike=1
-//                    }else{
-//                        currentComment.isLike=0
-//                    }
-//                    commentAdapter.notifyItemChanged(position,"follow")
-//                    mViewModel.commentId(currentComment.id)
-//                }
-//            }
-        }
+
+        commentAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                // 弹出评论窗口。。。
+                val items = commentAdapter.getItem(position)
+                replay(items.id)
+            }
+
+        })
+
         mDatabind.out.setOnClickListener {
             behavior?.setState(BottomSheetBehavior.STATE_HIDDEN)
-//            this.dismiss()
         }
+
+        commentAdapter.loadMoreModule.setOnLoadMoreListener {
+            requestShortVideoCommentViewMode.getNewsCommentList(bizId, true)
+        }
+
+
     }
-    fun  getCommentList(){
+
+    fun getCommentList() {
         requestShortVideoCommentViewMode.getNewsCommentList(bizId, false)
     }
 
-    var behavior: BottomSheetBehavior<View>?=null
+    var behavior: BottomSheetBehavior<View>? = null
     override fun onStart() {
         super.onStart()
         //获取dialog对象
@@ -111,12 +121,13 @@ open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) :
         bottomSheet?.setBackgroundColor(Color.TRANSPARENT)
         if (bottomSheet != null) {
             //获取根部局的LayoutParams对象
-            val layoutParams: CoordinatorLayout.LayoutParams = bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
+            val layoutParams: CoordinatorLayout.LayoutParams =
+                bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
             layoutParams.height = getPeekHeight()
             layoutParams.width = getPeekWidth()
             //修改弹窗的最大高度，不允许上滑（默认可以上滑）
             bottomSheet.layoutParams = layoutParams
-             behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior = BottomSheetBehavior.from(bottomSheet)
             //peekHeight即弹窗的最大高度
             behavior?.peekHeight = getPeekHeight()
             // 初始为展开状态
@@ -144,35 +155,40 @@ open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) :
 
     override fun lazyLoadData() {
     }
+
     override fun createObserver() {
         mViewModel.commentsLiveData.observe(this, Observer {
             showContent()
-            if(it.isSuccess){
-                 if(it.data!=null&&it.data.dataList.size>0){
-                     showComment(it.data.dataList)
-                 }else{
-                     showEmpty()
-                 }
-            }else{
+            if (it.isSuccess) {
+                if (it.data != null && it.data.dataList.size > 0) {
+                    showComment(it.data.dataList, it.isLoadMore)
+                } else {
+                    showEmpty()
+                }
+            } else {
                 showEmpty()
             }
         })
     }
 
-    private fun showComment(data: List<CommentListBean>) {
-
-
-        commentAdapter.setNewInstance(data as? MutableList<CommentListBean>)
-
+    private fun showComment(data: List<CommentListBean>, isLoadMore: Boolean) {
+        if (isLoadMore) {
+            commentAdapter.loadMoreModule.loadMoreComplete()
+            commentAdapter.addData(data)
+        } else {
+            commentAdapter.setNewInstance(data as? MutableList<CommentListBean>)
+        }
+        if (data.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+            commentAdapter.loadMoreModule.loadMoreEnd()
+        }
     }
+
     override fun showLoading(message: String) {
     }
 
     override fun dismissLoading() {
     }
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        requestShortVideoCommentViewMode.getNewsCommentList(bizId, false)
-    }
+
     override fun onDismiss(dialog: DialogInterface) {
         commentCountInterface.commentCount(commentCount)
         super.onDismiss(dialog)
@@ -182,5 +198,13 @@ open class CommentPicsDialog(var commentCountInterface: CommentCountInterface) :
 
     }
 
+    private fun replay(pid: String) {
+        val replyDialog = ReplyDialog(contexts, object : ReplyDialog.ReplyListener {
+            override fun getContent(content: String) {
+                requestShortVideoCommentViewMode.addNewsComment(bizId, content, pid = pid)
+            }
+        })
+        replyDialog.show()
+    }
 
 }

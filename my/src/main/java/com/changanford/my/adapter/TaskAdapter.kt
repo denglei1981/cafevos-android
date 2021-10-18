@@ -8,6 +8,7 @@ import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.bean.ItemTaskBean
 import com.changanford.common.bean.RootTaskBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemGrowUpBinding
@@ -60,7 +61,7 @@ class TaskContentAdapter() :
                 it.progress.progress = if (item.taskIsOpen == 1) 0 else 1
                 it.taskTitleInfo.text = "${if (item.taskIsOpen == 1) 0 else 1}/1"
             }
-            it.itemTaskDes.text = ("奖励: " + item.taskScore + "U币/次 | "
+            it.itemTaskDes.text = ("奖励: " + item.taskScore + "F币/次 | "
                     + item.taskGrowthValue + "成长值/次") //奖励: 50积分 | 200成长值
 
             if (item.taskIsDone == 1) {
@@ -103,7 +104,7 @@ fun GrowUpAndJifenViewHolder(
 ) {
     holder.dataBinding?.let {
         it.title.text = item.actionName
-//                it.date.text = TimeUtils.MillisToStr(item.createTime)
+        it.date.text = "${TimeUtils.MillisToStr(item.createTime)}"
         it.from.text =
             if (item.source.isNullOrEmpty()) source else item.source
 

@@ -9,6 +9,8 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiAccountSafeBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
@@ -186,6 +188,12 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         binding.clearAccount.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.MineCancelAccountUI)
         }
+
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_WX_CODE, String::class.java)
+            .observe(this, Observer {
+                bindMobile("weixin", it)
+            })
+
     }
 
     fun bindMobile(type: String, code: String) {

@@ -94,20 +94,20 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
             "1" -> {
                 JumpUtils.instans?.jump(
                     10000,
-                    item.jumpVal
+                    item.jumpValue
                 )
             }
             "2"-> {
                 JumpUtils.instans?.jump(
                     1,
-                    item.jumpVal
+                    item.jumpValue
                 )
 //                viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
             }
             "3"-> {
                 JumpUtils.instans?.jump(
                     1,
-                    item.jumpVal
+                    item.jumpValue
                 )
             }
         }

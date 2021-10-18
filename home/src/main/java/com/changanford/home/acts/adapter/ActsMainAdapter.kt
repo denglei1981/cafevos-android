@@ -139,20 +139,24 @@ class ActsMainAdapter(
     }
 
     private fun initViewPager(binding: HomeActsHeaderBinding) {
-        binding.bViewpager.apply {
-            setAutoPlay(true)
-            setScrollDuration(500)
-            setCanLoop(true)
-            setAdapter(SimpleAdapter())
-            setIndicatorView(binding.drIndicator)
-            setRoundCorner(20)
-            setOnPageClickListener { }
-            setIndicatorSliderColor(
-                ContextCompat.getColor(context, R.color.blue_tab),
-                ContextCompat.getColor(context, R.color.colorPrimary)
-            )
-            setIndicatorView(binding.drIndicator)
-        }.create(adBean)
+        if(isSetAdBean){
+            binding.bViewpager.apply {
+                setAutoPlay(true)
+                setScrollDuration(500)
+                setCanLoop(true)
+                setAdapter(SimpleAdapter())
+                setIndicatorView(binding.drIndicator)
+                setRoundCorner(20)
+                setOnPageClickListener { }
+                setIndicatorSliderColor(
+                    ContextCompat.getColor(context, R.color.blue_tab),
+                    ContextCompat.getColor(context, R.color.colorPrimary)
+                )
+                setIndicatorView(binding.drIndicator)
+            }.create(adBean)
+
+        }
+
     }
 
 

@@ -27,8 +27,14 @@ class CircleListViewModel : BaseViewModel() {
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
-                it["lng"] = lng
-                it["lat"] = lat
+                if (type == 1) {
+                    if (lng.isNotEmpty()) {
+                        it["lng"] = lng
+                    }
+                    if (lat.isNotEmpty()) {
+                        it["lat"] = lat
+                    }
+                }
                 it["type"] = type
             }
             val rKey = getRandomKey()
@@ -37,7 +43,7 @@ class CircleListViewModel : BaseViewModel() {
                 .onSuccess {
                     circleListBean.value = it
                 }
-        },error ={
+        }, error = {
             it.message?.toast()
         })
     }

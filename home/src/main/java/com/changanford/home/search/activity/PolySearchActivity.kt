@@ -59,13 +59,13 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     var searchType = -1
 
-    var historyList:MutableList<SearchRecordEntity>?=null
+    var historyList: MutableList<SearchRecordEntity>? = null
     override fun initView() {
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
-        if(!TextUtils.isEmpty(searchTypStr)){
+        if (!TextUtils.isEmpty(searchTypStr)) {
             searchType = searchTypStr?.toIntOrNull()!!
-        }else{
-            searchType=-1
+        } else {
+            searchType = -1
         }
         ImmersionBar.with(this).fitsSystemWindows(true)
         flexboxLayoutManagerHistory = FlexboxLayoutManager(this)
@@ -81,16 +81,18 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
-
-
+        binding.tvClear.setOnClickListener {
+            // 清空历史记录。
+            viewModel.clearRecord(this)
+        }
         historyAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = historyAdapter.getItem(position)
-            if(position==7&&!historyAdapter.isExpand){
+            if (position == 7 && !historyAdapter.isExpand) {
                 historyList?.let {
                     historyAdapter.setExpand(true)
                     historyAdapter.setList(it)
                 }
-            }else{
+            } else {
                 search(bean.keyword, true)
             }
 
@@ -117,9 +119,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         })
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == 0) {
-                 HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER &&event.keyCode==KeyEvent.ACTION_UP )) {
-                        search(binding.layoutSearch.searchContent.text.toString(), false)
+                HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
+                    search(binding.layoutSearch.searchContent.text.toString(), false)
                 }
             }
             false
@@ -129,6 +131,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                 }
+
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
@@ -154,17 +157,15 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             .observe(this, Observer {
                 if (!it.isNullOrEmpty()) {//有数据
                     Collections.reverse(it)//倒叙
-                    binding.tvHistory.visibility = View.VISIBLE
-                    binding.recyclerViewHistory.visibility = View.VISIBLE
+                    binding.gHis.visibility = View.VISIBLE
                 } else {
-                    binding.tvHistory.visibility = View.GONE
-                    binding.recyclerViewHistory.visibility = View.GONE
+                    binding.gHis.visibility = View.GONE
                 }
-                historyList=it as? MutableList<SearchRecordEntity>
-                if(it.size>8&&!historyAdapter.isExpand){
+                historyList = it as? MutableList<SearchRecordEntity>
+                if (it.size > 8 && !historyAdapter.isExpand) {
                     val subList = it.subList(0, 8) as MutableList
                     historyAdapter.setList(subList)
-                }else{
+                } else {
                     historyAdapter.setList(it)
                 }
 
