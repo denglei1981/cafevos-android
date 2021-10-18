@@ -156,15 +156,17 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         bindingBtn()
     }
     private fun bindingBtn(){
-        if(dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
-            binding.inBottom.btnSubmit.setStates(8)
-        } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
-            binding.inBottom.btnSubmit.setStates(7)
-        }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
-            binding.inBottom.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-        }else binding.inBottom.btnSubmit.setStates(5)
+        binding.inBottom.btnSubmit.apply {
+            if(dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
+                setStates(8)
+            } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
+                setStates(7)
+            }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
+                setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
+            }else setStates(5)
+        }
     }
-    fun showShareDialog(){
+    fun share(){
         if(::dataBean.isInitialized)dataBean.shareBeanVO?.let { shareViewModule.share(activity,it) }
     }
     fun onDestroy(){

@@ -175,7 +175,6 @@ class OrderViewModel: BaseViewModel() {
                 responseData.postValue(ResponseBean(true))
             }.onWithMsgFailure {
                 responseData.postValue(ResponseBean(false,msg = it))
-
             }
         }
     }

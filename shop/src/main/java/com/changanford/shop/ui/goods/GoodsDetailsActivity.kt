@@ -76,7 +76,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         initTab()
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
-        binding.inHeader.imgShare.setOnClickListener { control.showShareDialog() }
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
@@ -114,6 +113,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品
             R.id.cb_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
+            //分享商品
+            R.id.img_share->control.share()
             //返回
             R.id.img_back->this.finish()
         }

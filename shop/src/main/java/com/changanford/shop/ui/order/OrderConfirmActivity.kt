@@ -22,6 +22,10 @@ import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * @Author : wenke
@@ -36,6 +40,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
     }
     private lateinit var dataBean:GoodsDetailBean
+    private var isClickSubmit=false
     override fun initView() {
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
@@ -67,6 +72,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         bindingBaseData()
         binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
+            isClickSubmit=false
             it.accountFb=dataBean.acountFb.toString()
             PayConfirmActivity.start(this,Gson().toJson(it))
             this.finish()
@@ -118,9 +124,17 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.in_address->selectAddress()
         }
     }
+    @DelicateCoroutinesApi
     private fun submitOrder(){
-        val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-        viewModel.orderCreate(dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+        if(!isClickSubmit){
+            isClickSubmit=true
+            val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
+            viewModel.orderCreate(dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+        }
+        GlobalScope.launch {
+            delay(3000L)
+            isClickSubmit=false
+        }
     }
     @SuppressLint("SetTextI18n")
     private fun bindingAddress(item:AddressBeanItem?){
