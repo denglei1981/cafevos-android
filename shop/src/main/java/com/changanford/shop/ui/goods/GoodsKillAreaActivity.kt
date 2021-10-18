@@ -3,6 +3,7 @@ package com.changanford.shop.ui.goods
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.CountDownTimer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
@@ -42,6 +43,14 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     private var pageNo=1
     private val sf = SimpleDateFormat("HH:mm")
     private val sfDate = SimpleDateFormat("yyyyMMdd")
+    private val totalTime:Long=30*60*1000
+    private val countDownInterval:Long=60*1000//更新当前时间的间隔时间
+    private val timeCountDownTimer=object : CountDownTimer(totalTime,countDownInterval){
+        override fun onTick(millisUntilFinished: Long) {
+            nowTime+=countDownInterval
+        }
+        override fun onFinish() {}
+    }.start()
     override fun initView() {
         binding.rvDate.adapter=dateAdapter
         binding.rvTime.adapter=timeAdapter
@@ -137,5 +146,10 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
 
     override fun onRightClick() {
         JumpUtils.instans?.jump(108)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timeCountDownTimer.cancel()
     }
 }
