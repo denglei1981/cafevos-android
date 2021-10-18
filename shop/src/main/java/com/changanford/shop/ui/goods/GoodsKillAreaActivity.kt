@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
  * @Time : 2021/9/22
  * @Description : 秒杀专区
  */
+@SuppressLint("SimpleDateFormat")
 @Route(path = ARouterShopPath.GoodsKillAreaActivity)
 class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewModel>(),
     GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener,
@@ -39,8 +40,8 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     private val timeAdapter by lazy { GoodsKillAreaTimeAdapter(0,this) }
     private val mAdapter by lazy { GoodsKillAreaAdapter(viewModel) }
     private var pageNo=1
-    @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("HH:mm")
+    private val sfDate = SimpleDateFormat("yyyyMMdd")
     override fun initView() {
         binding.rvDate.adapter=dateAdapter
         binding.rvTime.adapter=timeAdapter
@@ -56,9 +57,22 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     }
     private fun addObserve(){
         viewModel.seckillSessionsData.observe(this,{
-            if(it.now!=null)nowTime= it.now!!
-            dateAdapter.setList(it.seckillSessions)
-            onSelectBackListener(0,it.seckillSessions[0].seckillTimeRanges)
+            it.now?.let {now-> nowTime= now }
+            it.seckillSessions.apply {
+                dateAdapter.setList(this)
+                var dateI=0
+                val nowTimeSf=sfDate.format(nowTime)
+                //筛选出当前时间
+                for((i,item)in this.withIndex()){
+                    if(nowTimeSf==sfDate.format(item.date)){
+                        dateI=i
+                        break
+                    }
+                }
+                onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
+                dateAdapter.selectPos=dateI
+                binding.rvDate.scrollToPosition(dateI)
+            }
         })
         viewModel.killGoodsListData.observe(this,{
             val dataList=it?.dataList
@@ -72,12 +86,16 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
      * 秒杀时间段数据格式化
     * */
     private fun calculateStates(seckillTimeRange:ArrayList<SeckillTimeRange>){
-        nowTime=System.currentTimeMillis()//当前时间挫
-        for(it in seckillTimeRange){
+//        nowTime=System.currentTimeMillis()//当前时间挫
+        var timeI=0
+        for((i,it) in seckillTimeRange.withIndex()){
             it.states= when {
                 nowTime<it.timeBegin -> 2  //当前时间小于开始时间则表示未开始
                 nowTime>=it.timeEnd -> 0 //当前时间大于等于结束时间表示已结束
-                else -> 1//进行中
+                else ->{//进行中
+                    timeI=i
+                    1
+                }
             }
             it.statesTxt=statesTxt[it.states]
             it.time=sf.format(it.timeBegin)
@@ -85,7 +103,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)
         //默认选中第一个
-        onSelectTimeBackListener(0,seckillTimeRange[0])
+        onSelectTimeBackListener(timeI,seckillTimeRange[timeI])
+        timeAdapter.selectPos=timeI
+        binding.rvTime.scrollToPosition(timeI)
     }
     /**
      * 秒杀日期选择回调
