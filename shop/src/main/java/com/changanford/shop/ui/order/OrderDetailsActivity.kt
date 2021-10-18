@@ -165,13 +165,26 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             model=dataBean
             inGoodsInfo.apply {
                 model=dataBean
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
+                tvOrderType.apply {
+                    visibility = when {
+                        "YES"==dataBean.seckill -> {//秒杀
+                            setText(R.string.str_seckill)
+                            View.VISIBLE
+                        }
+                        "YES"==dataBean.haggleOrder -> {//砍价
+                            setText(R.string.str_bargaining)
+                            View.VISIBLE
+                        }
+                        else -> View.GONE
+                    }
+                }
                 recyclerView.layoutManager= FlowLayoutManager(this@OrderDetailsActivity,false)
                 recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
                     val skuCodeTxt=dataBean.specifications.split(",").filter { ""!=it }
                     setList(skuCodeTxt)
                 }
             }
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
         }
         binding.inBottom.apply {
             model=dataBean

@@ -41,6 +41,19 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
             dataBinding.inGoodsInfo.apply {
                 model=item
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
+                tvOrderType.apply {
+                    visibility = when {
+                        "YES"==item.seckill -> {//秒杀
+                            setText(R.string.str_seckill)
+                            View.VISIBLE
+                        }
+                        "YES"==item.haggleOrder -> {//砍价
+                            setText(R.string.str_bargaining)
+                            View.VISIBLE
+                        }
+                        else -> View.GONE
+                    }
+                }
                 recyclerView.layoutManager=FlowLayoutManager(context,false)
                 recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
                     val specifications=item.specifications.split(",").filter { ""!=it }
@@ -48,6 +61,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                 }
             }
             setOrderType(dataBinding.tvOrderType,item)
+
         }
     }
     /**

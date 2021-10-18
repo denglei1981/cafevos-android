@@ -300,7 +300,7 @@ data class OrderItemBean(
     var fbCost: String? = "0",
     val fbOfOrderPrice: Int = 0,
     val fbOfUnitPrice: String ="0",
-    val haggleOrder: String = "",
+    val haggleOrder: String = "",//是否砍价订单
     val mallMallDiscountScaleId: Int = 0,
     val mallMallHaggleActivityId: Int = 0,
     val mallMallHaggleSkuId: Int = 0,
@@ -326,7 +326,7 @@ data class OrderItemBean(
     val preferentialFb: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
-    val seckill: String = "",
+    val seckill: String = "",//是否秒杀
     val seckillFb: Int = 0,
     val skuCode: String = "",
     var skuImg: String? = "",
