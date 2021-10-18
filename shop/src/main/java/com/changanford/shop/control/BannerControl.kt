@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.changanford.common.bean.AdBean
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 
@@ -47,11 +48,11 @@ object BannerControl {
             }
         })
         banner.setData(advertList,null)
-        banner.setDelegate { _, _, _, position ->
+        banner.setDelegate { _, _, _, _ ->
 
         }
     }
     private fun advJumpTo(itemData:AdBean){
-
+        JumpUtils.instans?.jump(itemData.jumpDataType,itemData.jumpDataValue)
     }
 }
