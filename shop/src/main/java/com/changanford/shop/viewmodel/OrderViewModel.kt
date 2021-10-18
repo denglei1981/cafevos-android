@@ -9,6 +9,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.listener.OnPerformListener
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 /**
@@ -29,7 +30,7 @@ class OrderViewModel: BaseViewModel() {
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
     //订单类型
-    var orderTypesLiveData: MutableLiveData<OrderTypes?> = MutableLiveData()
+    var orderTypesLiveData: MutableLiveData<OrderTypesBean?> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -223,6 +224,7 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.getOrderKey(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
+                orderTypesLiveData.postValue(null)
                 ToastUtils.showLongToast(it)
             }.onSuccess {
                 orderTypesLiveData.postValue(it)

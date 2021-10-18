@@ -3,6 +3,7 @@ package com.changanford.shop.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.AssetManager
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
@@ -22,6 +23,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.changanford.shop.bean.EditTextBean
 import com.google.android.material.tabs.TabLayout
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 /**
@@ -137,5 +141,29 @@ object WCommonUtil {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
             else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
         }
+    }
+    /**
+     * 读取 assets json文件
+     * */
+    fun getAssetsJson(fileName: String, context: Context): String {
+        //将json数据变成字符串
+        val stringBuilder = StringBuilder()
+        try {
+            //获取assets资源管理器
+            val assetManager: AssetManager = context.assets
+            //通过管理器打开文件并读取
+            val bf = BufferedReader(
+                InputStreamReader(
+                    assetManager.open(fileName)
+                )
+            )
+            var line: String?
+            while (bf.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return stringBuilder.toString()
     }
 }

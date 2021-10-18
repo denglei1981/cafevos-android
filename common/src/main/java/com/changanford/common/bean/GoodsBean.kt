@@ -406,8 +406,8 @@ data class SnapshotOfAttrOption(
     val mallMallOptionId: String = "0",
     val optionName: String = ""
 )
-class OrderTypes : ArrayList<OrderTypeItem>()
-data class OrderTypeItem(
+class OrderTypesBean : ArrayList<OrderTypeItemBean>()
+data class OrderTypeItemBean(
     val jumpDataType: Int=0,
     val jumpDataValue: String?="",
     val typeName: String?="",
