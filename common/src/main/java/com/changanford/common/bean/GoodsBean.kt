@@ -399,7 +399,7 @@ data class OrderBriefBean(
 )
 
 data class SnapshotOfAttrOption(
-    val mallMallAttributeId: Int = 0,
-    val mallMallOptionId: Int = 0,
+    val mallMallAttributeId: String = "0",
+    val mallMallOptionId: String = "0",
     val optionName: String = ""
 )

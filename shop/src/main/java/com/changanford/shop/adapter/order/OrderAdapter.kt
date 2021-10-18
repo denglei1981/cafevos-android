@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
@@ -19,6 +20,7 @@ import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 
 
@@ -54,10 +56,12 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         else -> View.GONE
                     }
                 }
-                recyclerView.layoutManager=FlowLayoutManager(context,false)
-                recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
-                    val specifications=item.specifications.split(",").filter { ""!=it }
-                    setList(specifications)
+                if(!TextUtils.isEmpty(item.specifications)){
+                    recyclerView.layoutManager=FlowLayoutManager(context,false)
+                    recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
+                        val specifications=item.specifications.split(",").filter { ""!=it }
+                        setList(specifications)
+                    }
                 }
             }
             setOrderType(dataBinding.tvOrderType,item)
@@ -70,12 +74,20 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     private fun dataFormat(item: OrderItemBean){
         if(-1==orderType){
             val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
+            var specifications=""
+            orderBriefBean.snapshotOfAttrOption?.let {
+                val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(it, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
+                for(item in attrOption){
+                    specifications+="${item.optionName},"
+                }
+            }
             item.apply {
                 spuName=skuName
                 skuImg=orderImg
                 buyNum=orderBriefBean.buyNum
                 payType=orderBriefBean.payType
                 fbCost=orderBriefBean.fbCost
+                this.specifications=specifications
             }
         }
     }
