@@ -40,6 +40,11 @@ class ActsListViewModel : BaseViewModel() {
         launch(false, {
             var body = HashMap<String, Any>()
             body["page"] = true
+            if(isLoadMore){
+                pageNo+=1
+            }else{
+                pageNo=1
+            }
             body["pageNo"] = pageNo
             body["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             var hashMap = HashMap<String, Any>()
@@ -68,7 +73,7 @@ class ActsListViewModel : BaseViewModel() {
             ApiClient.createApi<HomeNetWork>()
                 .getHighlights(body.header(rkey), body.body(rkey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<ListMainBean<ActBean>>(it, true, "")
+                    val updateUiState = UpdateUiState<ListMainBean<ActBean>>(it, true, isLoadMore,"")
                     actsLiveData.postValue(updateUiState)
 
                 }.onWithMsgFailure {

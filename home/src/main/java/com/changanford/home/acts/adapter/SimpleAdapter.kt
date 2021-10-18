@@ -43,8 +43,6 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<CircleHeadBean>(i
                 toastShow(e.message.toString())
             }
 
-//            BuriedUtil.instant?.click_activity_ad(data.adId.toString(),data.adName)
-
         }
     }
 
