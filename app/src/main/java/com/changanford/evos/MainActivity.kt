@@ -58,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_home_b,
                     R.mipmap.icon_home_c,
                     "发现",
-                    -5f
+                    12f
                 )
             )
             .addItem(
@@ -67,7 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_circle_b,
                     R.mipmap.icon_circle_c,
                     "社区",
-                    -7f
+                    12f
                 )
             )
             .addItem(
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_car_b,
                     R.mipmap.icon_car_c,
                     "爱车",
-                    -20f
+                    1f
                 )
             )
             .addItem(
@@ -85,7 +85,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_shop_b,
                     R.mipmap.icon_shop_c,
                     "商城",
-                    -3f
+                    10f
                 )
             )
             .addItem(
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_my_b,
                     R.mipmap.icon_my_c,
                     "我的",
-                    8f,
+                    18f,
                     -10f
                 )
             )

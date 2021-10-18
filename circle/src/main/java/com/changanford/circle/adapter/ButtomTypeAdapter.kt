@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -37,6 +38,11 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
             }
             2,3,4 -> {
                 holder.getView<TextView>(R.id.tv_other).text=item.content
+                if (holder.itemViewType==4){
+                    holder.getView<ImageView>(R.id.ivloc).visibility = View.VISIBLE
+                }else{
+                    holder.getView<ImageView>(R.id.ivloc).visibility = View.GONE
+                }
             }
         }
 
