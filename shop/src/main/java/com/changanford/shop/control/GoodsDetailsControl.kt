@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.web.ShareViewModule
 import com.changanford.shop.R
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
@@ -24,6 +25,7 @@ import razerdp.basepopup.BasePopupWindow
  */
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
+    private val shareViewModule by lazy { ShareViewModule() }
     private var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
@@ -161,6 +163,9 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
             binding.inBottom.btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
         }else binding.inBottom.btnSubmit.setStates(5)
+    }
+    fun showShareDialog(){
+        if(::dataBean.isInitialized)dataBean.shareBeanVO?.let { shareViewModule.share(activity, shareBean = it) }
     }
     fun onDestroy(){
         timeCount?.cancel()
