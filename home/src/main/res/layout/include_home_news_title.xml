@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_title"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:background="@color/white">
 
 
         <ImageView
@@ -50,16 +51,18 @@
             app:layout_constraintStart_toEndOf="@+id/iv_back"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:scaleType="centerCrop"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                android:scaleType="centerCrop"
                 android:textStyle="bold"
                 app:shapeAppearanceOverlay="@style/circleImageStyle"
                 tools:text="@string/app_name" />
+
             <TextView
                 android:id="@+id/tv_author"
                 android:layout_width="wrap_content"
