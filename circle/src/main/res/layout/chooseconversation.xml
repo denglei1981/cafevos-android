@@ -41,13 +41,14 @@
         android:layout_marginBottom="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:drawableRight="@drawable/refresh1"
+        android:drawableRight="@mipmap/right_arrow_black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="不参与任何话题"
         android:textColor="#ff1b1b1b"
         android:textSize="14sp"
         />
+
     <View
         android:id="@+id/vline1"
         app:layout_constraintLeft_toLeftOf="parent"

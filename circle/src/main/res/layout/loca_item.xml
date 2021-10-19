@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingRight="10dp"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="10dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_name"
         android:textColor="@color/text_gray_ac"
         android:text="大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:singleLine="true"
         android:textSize="13sp"
         android:layout_marginRight="30dp"

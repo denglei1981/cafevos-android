@@ -2,8 +2,10 @@ package com.changanford.circle.viewmodel
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.changanford.circle.api.CircleNetWork
@@ -169,9 +171,9 @@ class PostViewModule() :PostRoomViewModel(){
                                 ).get()
                         //获取到下载得到的图片，进行本地保存
                         val pictureFolder =
-                            Environment.getExternalStorageDirectory()
+                            MConstant.ftFilesDir
                         //第二个参数为你想要保存的目录名称
-                        val appDir = File(pictureFolder, "Uni")
+                        val appDir = File(pictureFolder)
                         if (!appDir.exists()) {
                             appDir.mkdirs()
                         }
@@ -197,6 +199,7 @@ class PostViewModule() :PostRoomViewModel(){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 //                yuanPathList.add(it.path)
+                    Log.d("lists",JSON.toJSONString(it))
                     downloadLocalMedias.add(it)
                     _downloadLocalMedias.postValue(downloadLocalMedias)
                 }

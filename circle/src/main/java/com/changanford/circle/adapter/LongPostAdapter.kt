@@ -23,6 +23,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
         addChildClickViewIds(R.id.iv_delete)
         addChildClickViewIds(R.id.iv_addfm)
         addChildClickViewIds(R.id.tv_tex)
+        addChildClickViewIds(R.id.ivFm)
     }
 
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {

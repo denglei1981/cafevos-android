@@ -171,7 +171,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                it.location.latitude.toString().toast()
                 address = it.address
                 params["address"] = address
                 params["lat"] = it.location.latitude
@@ -189,7 +188,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
-                    it.toString().toast()
+                    params.remove("lat")
+                    params.remove("lon")
+                    params.remove("city")
+                    params.remove("province")
+                    params.remove("cityCode")
+                    address= ""
+//                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -278,19 +283,27 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
-            if (locaPostEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
-                2,
-                ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
-            )
-            if (locaPostEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
-                3,
-                ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
-            )
-            if (locaPostEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
-                4,
-                ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-            )
 
+            if (locaPostEntity!!.topicName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    2,
+                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
+                )
+            }
+
+
+            if (locaPostEntity!!.circleName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    3,
+                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
+                )
+            }
+            if (locaPostEntity!!.address.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    4,
+                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+                )
+            }
         }
     }
 
@@ -382,6 +395,24 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     position,
                     ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
                 )
+                when(buttomTypeAdapter.getItem(position).itemType){
+                    2 ->{
+                        params.remove("topID")
+                        params.remove("topName")
+                    }
+                    3->{
+                        params.remove("circleId")
+                        params.remove("circleName")
+                        circlename=""
+                    }
+                    4->{
+                        params.remove("lat")
+                        params.remove("lon")
+                        params.remove("city")
+                        params.remove("province")
+                        params.remove("cityCode")
+                    }
+                }
             }
 
         }
@@ -758,7 +789,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
                         locaPostEntity.imageList?.let { it1 -> viewModel.downGlideImgs(it1) }
-                        locaPostEntity.imageList
                         binding.etBiaoti.setText(locaPostEntity!!.title)
                         binding.etContent.setText(locaPostEntity!!.content)
                         params["plate"] = locaPostEntity!!.plate
@@ -797,7 +827,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                             ButtomTypeBean(locaPostEntity!!.address, 1, 4)
                         )
                         //选择的标签
-                        if (locaPostEntity!!.keywords.isNotEmpty()) {
+                        if (locaPostEntity!!.keywords?.isNotEmpty()==true) {
                             buttomlabelAdapter.data.forEach {
                                 it.isselect = it.tagName == locaPostEntity!!.keywords
                             }

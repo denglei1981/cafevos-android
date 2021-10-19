@@ -16,6 +16,7 @@ import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
 import com.baidu.mapapi.search.poi.*
+import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
 import com.changanford.circle.databinding.ChooselocationBinding
 import com.changanford.common.basic.BaseActivity
@@ -145,11 +146,11 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             locaAdapter?.notifyDataSetChanged()
             isselected = true
         }
-        binding.tvCommit.setOnClickListener {
+        binding.title.barTvOther.setOnClickListener {
             if (isselected) {
                 if (locaAdapter?.id == -1) {
                     LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-                        .postValue("")
+                        .postValue(binding.tvBuxs.text.toString())
                 } else {
                     LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
                 }
@@ -158,7 +159,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                "请选择地址".toast()
             }
         }
-        binding.tvConsle.setOnClickListener {
+        binding.title.barImgBack.setOnClickListener {
             finish()
         }
     }
@@ -265,7 +266,13 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     }
 
     override fun initView() {
-        AppUtils.setStatusBarPaddingTop(binding.rltitle, this)
+        AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
+        binding.title.barTvTitle.text = "所在位置"
+        binding.title.barTvOther.visibility = View.VISIBLE
+        binding.title.barTvOther.text = "发布"
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
+        binding.title.barTvOther.textSize = 12f
+        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
