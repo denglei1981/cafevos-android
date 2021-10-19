@@ -9,6 +9,8 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -33,7 +35,8 @@ import java.text.SimpleDateFormat
 class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
     companion object{
         fun start(context: Context,orderNo:String?) {
-            orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
+            if(MConstant.token.isEmpty()) JumpUtils.instans?.jump(100)
+            else orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
         }
     }
     private val control by lazy { OrderControl(this,viewModel) }

@@ -12,6 +12,7 @@ import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
@@ -36,7 +37,8 @@ import kotlinx.coroutines.launch
 class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(){
     companion object{
         fun start(context: Context, goodsInfo:String) {
-            context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
+            if(MConstant.token.isEmpty())JumpUtils.instans?.jump(100)
+            else context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
         }
     }
     private lateinit var dataBean:GoodsDetailBean

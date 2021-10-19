@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.web.ShareViewModule
 import com.changanford.shop.R
@@ -157,7 +158,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     private fun bindingBtn(){
         binding.inBottom.btnSubmit.apply {
-            if(dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
+            if(MConstant.token.isNotEmpty()&&dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
                 setStates(8)
             } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
                 setStates(7)

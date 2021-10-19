@@ -9,6 +9,8 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
@@ -29,7 +31,8 @@ import kotlinx.coroutines.launch
 class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(){
     companion object{
         fun start(context: Context, orderInfo:String) {
-            context.startActivity(Intent(context, PayConfirmActivity::class.java).putExtra("orderInfo",orderInfo))
+            if(MConstant.token.isEmpty()) JumpUtils.instans?.jump(100)
+            else context.startActivity(Intent(context, PayConfirmActivity::class.java).putExtra("orderInfo",orderInfo))
         }
     }
     private var timeCountControl:PayTimeCountControl?=null

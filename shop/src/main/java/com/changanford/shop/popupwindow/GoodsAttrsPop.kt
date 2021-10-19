@@ -1,10 +1,12 @@
 package com.changanford.shop.popupwindow
 
+import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
@@ -56,14 +58,17 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             viewDataBinding.addSubtractView.setMax(max.toInt())
             bindingBtn(skuItem.stock.toInt(),viewDataBinding.btnSubmit)
         })
-        viewDataBinding.tvAccountPoints.setHtmlTxt(dataBean.acountFb,"#00095B")
+        viewDataBinding.tvAccountPoints.apply {
+            visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+            setHtmlTxt(dataBean.acountFb,"#00095B")
+        }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
             dataBean.buyNum= it
         })
     }
     private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
-        if(dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
+        if(MConstant.token.isNotEmpty()&&dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
             btnSubmit.setStates(8)
         } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
             btnSubmit.setStates(7)
