@@ -57,6 +57,9 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
                 .postValue(adapter.getItem(position))
             finish()
         }
+        binding.tvNocy.setOnClickListener {
+            finish()
+        }
     }
 
     override fun initData() {

@@ -21,7 +21,7 @@ object UserManger {
      * 用户登录状态
      */
     public enum class UserLoginStatus {
-        USER_LOGIN_SUCCESS, USER_LOGIN_OUT, USE_UNBIND_MOBILE, USE_CANCEL_BIND_MOBILE
+        USER_LOGIN_SUCCESS, USER_LOGIN_OUT, USE_UNBIND_MOBILE, USE_CANCEL_BIND_MOBILE, USE_BIND_MOBILE_SUCCESS
     }
 
     fun isLogin(): Boolean = MConstant.token.isNotEmpty()

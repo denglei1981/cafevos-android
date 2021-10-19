@@ -71,6 +71,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var nomalhight = 500;
     private lateinit var plateBean: PlateBean
 
+    private var isTopPost = false
+    private var isCirclePost: Boolean = false
+    private var isH5Post: Boolean = false
+    private var postType: Int = 0
+    private var h5postbean: H5PostTypeBean? = null
+    private lateinit var jsonStr: String
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -122,6 +128,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         )
         binding.etBiaoti.hint = spannableString
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
+
+        isH5Post = intent.extras?.getBoolean("isH5Post") ?: false
+        isCirclePost = intent.extras?.getBoolean("isCirclePost") ?: false
+        isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
     }
 
     override fun observe() {
@@ -154,7 +164,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                it.location.latitude.toString().toast()
                 address = it.address
                 params["address"] = address
                 params["lat"] = it.location.latitude
@@ -172,7 +181,13 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
-                    it.toString().toast()
+                    params.remove("lat")
+                    params.remove("lon")
+                    params.remove("city")
+                    params.remove("province")
+                    params.remove("cityCode")
+                    address= ""
+//                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -210,6 +225,30 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.picsrec.adapter = postVideoAdapter
         postVideoAdapter.setList(selectList)
         initlocaData()
+
+        if (isH5Post) {
+            postType = intent.extras?.getInt("postType") ?: 0
+            jsonStr = intent.extras?.getString("jsonStr") ?: ""
+            if (jsonStr.isNotEmpty()) {
+                h5postbean = JSON.parseObject(jsonStr, H5PostTypeBean::class.java)
+                params["activityId"] = h5postbean?.ext ?: ""
+            }
+        }
+        if (isCirclePost) {
+            params["circleId"] = intent.extras?.getString("circleId") ?: "0"
+            circlename = intent.extras?.getString("circleName") ?: ""
+            circlename.isNotEmpty().let {
+                buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
+            }
+        }
+
+        if (isTopPost) {
+            params["topId"] = intent.extras?.getString("topId") ?: "0"
+            params["topName"] = intent.extras?.getString("topName") ?: ""
+            (params["topName"] as String).isNotEmpty().let {
+                buttomTypeAdapter.setData(2, ButtomTypeBean(params["topName"] as String, 1, 2))
+            }
+        }
     }
 
     private fun initlocaData(){
@@ -236,18 +275,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
-            if (locaPostEntity!!.topicName.isNotEmpty()) return buttomTypeAdapter.setData(
-                2,
-                ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
-            )
-            if (locaPostEntity!!.circleName.isNotEmpty()) return buttomTypeAdapter.setData(
-                3,
-                ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
-            )
-            if (locaPostEntity!!.address.isNotEmpty()) return buttomTypeAdapter.setData(
-                4,
-                ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-            )
+            if (locaPostEntity!!.topicName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    2,
+                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
+                )
+            }
+            if (locaPostEntity!!.circleName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    3,
+                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
+                )
+            }
+            if (locaPostEntity!!.address.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    4,
+                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+                )
+            }
             if ( locaPostEntity!!.fmpath.isNotEmpty()){
                 postVideoAdapter.fmPath =  locaPostEntity!!.fmpath
                 postVideoAdapter.notifyDataSetChanged()
@@ -289,7 +334,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             buttomlabelAdapter.notifyDataSetChanged()
             params["keywords"] = buttomlabelAdapter.getItem(position).tagName
-            buttomlabelAdapter.getItem(position).tagName.toast()
         }
 
         binding.bottom.emojirec.adapter = emojiAdapter
@@ -530,9 +574,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
 
-        binding.bottom.ivEmoj.setOnClickListener {
-            "表情未开发".toast()
-        }
         binding.title.barTvOther.setOnClickListener {
             ispost()
         }
@@ -545,6 +586,25 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     position,
                     ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
                 )
+                when(buttomTypeAdapter.getItem(position).itemType){
+                    2 ->{
+                        params.remove("topID")
+                        params.remove("topName")
+                    }
+                    3->{
+                        params.remove("circleId")
+                        params.remove("circleName")
+                        circlename=""
+                    }
+                    4->{
+                        params.remove("lat")
+                        params.remove("lon")
+                        params.remove("city")
+                        params.remove("province")
+                        params.remove("cityCode")
+                        address= ""
+                    }
+                }
             }
 
         }
@@ -564,6 +624,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         override fun onClickItem(position: Int, str: String) {
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
+                            platename = str
                             params["plate"] = plateBean.plate[position].plate
                             params["actionCode"] = plateBean.plate[position].actionCode
                         }
@@ -864,7 +925,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         )
 //                        jsonStr2obj(locaPostEntity!!.localMeadle)
                         //选择的标签
-                        if (locaPostEntity!!.keywords.isNotEmpty()) {
+                        if (locaPostEntity!!.keywords?.isNotEmpty()==true) {
                             buttomlabelAdapter.data.forEach {
                                 it.isselect = it.tagName == locaPostEntity!!.keywords
                             }

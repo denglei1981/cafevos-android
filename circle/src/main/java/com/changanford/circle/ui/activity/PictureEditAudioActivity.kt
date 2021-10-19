@@ -117,7 +117,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         path = intent?.extras?.getString("path").toString()
         if (TextUtils.isEmpty(path) || !File(path).exists()) {
-            Toast.makeText(this, "视频文件不存在", Toast.LENGTH_LONG).show()
+            "视频文件不存在".toast()
             finish()
         }
         Log.i(TAG, "TANHQ===> getMyIntent() video_path:$path")
@@ -163,7 +163,6 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                         if (FileSizeUtil.getFileOrFilesSize(cutpath,3)<60){
                             progressDialog.dismiss()
                             finalPath =  cutpath
-                            "${cutpath}---${endcropTime-startCropTime}s".toast()
                             Callback()
                         }else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100){
                             //                                    String compressPath = SiliCompressor.with(EsayVideoEditActivity.this).compressVideo(cutPath, Environment.getExternalStorageDirectory().getPath() + "/Uni/video",1080,1920,1200000);
@@ -179,7 +178,6 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                                         //Finish successfully
                                         runOnUiThread {
                                             progressDialog.dismiss()
-                                            "$cutpath".toast()
                                             finalPath = cutpath
                                             Callback()
 //                                            val intent = Intent()

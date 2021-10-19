@@ -72,6 +72,12 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
             .observe(this, androidx.lifecycle.Observer {
                 when (it) {
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                        LiveDataBus.get()
+                            .with(
+                                LiveDataBusKey.USER_LOGIN_STATUS,
+                                UserManger.UserLoginStatus::class.java
+                            )
+                            .postValue(UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS)
                         showToast("绑定成功")
                         finish()
                     }

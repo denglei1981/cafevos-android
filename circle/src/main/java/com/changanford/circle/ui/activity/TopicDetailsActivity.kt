@@ -129,9 +129,9 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         }
 
         val bundle = Bundle()
-        bundle.putString("topicId", topicId)
+        bundle.putString("topId", topicId)
         bundle.putBoolean("isTopPost", true)
-        bundle.putString("topicName", topicName)
+        bundle.putString("topName", topicName)
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
             override fun checkLongBar() {

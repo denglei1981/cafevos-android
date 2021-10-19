@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
+    id 'com.alibaba.arouter'
 }
 
 def keystorePropertiesFile = rootProject.file("./keystore.properties")

@@ -32,25 +32,24 @@ class PostBarBannerAdapter :
         pageSize: Int
     ) {
         holder!!.bindData(data, position, pageSize)
+        val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
+        binding?.ivBanner?.loadImage(data?.imgUrl)
+        binding?.ivBanner?.setOnClickListener {
+            val pics = arrayListOf<MediaListBean>()
+            mList.forEach {
+                pics.add(MediaListBean("${it.imgUrl}"))
+            }
+            val bundle = Bundle()
+            bundle.putSerializable("imgList", pics)
+            bundle.putInt("count", position)
+            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+        }
     }
 
 }
 
 class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<ImageList>(itemView) {
     override fun bindData(data: ImageList?, position: Int, pageSize: Int) {
-        val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(itemView)
-        binding?.ivBanner?.loadImage(data?.imgUrl)
-        binding?.ivBanner?.setOnClickListener {
-            val pics = arrayListOf(MediaListBean().apply {
-                img_url = data?.imgUrl
-            }, MediaListBean().apply {
-                img_url = data?.imgUrl
-            })
-            val bundle = Bundle()
-            bundle.putSerializable("imgList", pics)
-            bundle.putInt("count", 0)
-            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
-        }
     }
 
 }

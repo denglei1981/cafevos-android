@@ -188,11 +188,18 @@ public class SpecialAnimaTab extends BaseTabItem {
         view1.post(new Runnable() {
             @Override
             public void run() {
-                jl = view.getX() - view1.getX() + view1.getWidth() / 2;
+                int[] location = new int[2];
+                view.getLocationOnScreen(location);
+                int x = location[0]; // view距离 屏幕左边的距离（即x轴方向）
+                int[] location1 = new int[2];
+                view1.getLocationOnScreen(location1);
+                int x1 = location1[0];
+//                jl = view.getX() - view1.getX() + view1.getWidth() / 2;
+                jl = x-x1;
                 ObjectAnimator animator1 = ObjectAnimator.ofFloat(view, "translationY", 0f, -10f, 0f);
                 Log.d("juli", jl + "");
                 ObjectAnimator animator3 = ObjectAnimator.ofFloat(ivyuanshu, "translationY", 0f, Yfloat);
-                ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivyuanshu, "translationX", 0f, jl + Xfloat);
+                ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivyuanshu, "translationX", 0f, jl+Xfloat);
                 ObjectAnimator animator4 = ObjectAnimator.ofFloat(ivyuanshu, "rotation", 0f, -60f, 0f);
                 set = new AnimatorSet();
                 set.playTogether(animator1, animator3, animator2, animator4);

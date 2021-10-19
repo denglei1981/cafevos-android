@@ -67,11 +67,11 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     } else {
                         list.add(item)
                     }
-                    if (item.isGet == "1") {
+                    if (item.isGet == "1") {//已领取
                         num++
-                        if (null == medalItem) {
-                            medalItem = item
-                        }
+                    }
+                    if (item.isGet == "0" && null == medalItem) {
+                        medalItem = item
                     }
                     userInfoBean?.ext?.medalId?.logE()
                     if (item.medalId.equals("${userInfoBean?.ext?.medalId}")) {

@@ -438,6 +438,6 @@ public class AppUtils {
     }
 
     public static String getPackageName() {
-        return "com.changan.uni";
+        return "com.changanford.evos";
     }
 }

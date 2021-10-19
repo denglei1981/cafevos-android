@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.basic.BaseLoadSirActivity
-import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
