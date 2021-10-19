@@ -70,7 +70,7 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize){
         viewModelScope.launch {
-            val responseBean=fetchRequest {
+            val responseBean=fetchRequest(true) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
