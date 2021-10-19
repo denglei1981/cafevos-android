@@ -40,6 +40,20 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             return medalFragment
         }
     }
+    var isRefresh: Boolean = false
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            isRefresh = false
+            initRefreshData(1)
+        }
+    }
 
     override fun initView() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {

@@ -39,6 +39,20 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         }
     }
 
+    var isRefresh: Boolean = false
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            isRefresh = false
+            initRefreshData(1)
+        }
+    }
 
     override fun initView() {
         binding.rcyAct.rcyCommonView.adapter = shopAdapter
