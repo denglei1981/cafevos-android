@@ -1,11 +1,10 @@
 package com.changanford.common.net
 
-import android.os.Bundle
 import com.changanford.common.MyApp
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
-
 import com.changanford.common.util.SPUtils
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.longE
 import com.google.gson.Gson
 import okhttp3.*
@@ -78,10 +77,7 @@ class DataEncryptInterceptor : Interceptor {
 //                    activity.finish()
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
-                    var bundle = Bundle()
-                    bundle.putBoolean("isClear", true)
-//                    startARouter(ARouterMyPath.SignUI, bundle)
-                    MConstant.token = ""
+                    RouterManger.param("isClear", true).startARouter(ARouterMyPath.SignUI)
                     try {
                         var pushId = SPUtils.getParam(MyApp.mContext,MConstant.PUSH_ID,"11111") as String
                         SPUtils.clear(MyApp.mContext)
