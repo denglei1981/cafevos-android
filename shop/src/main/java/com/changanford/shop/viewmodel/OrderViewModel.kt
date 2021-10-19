@@ -17,6 +17,9 @@ import kotlinx.coroutines.launch
  * @Description : OrderViewModel
  */
 class OrderViewModel: BaseViewModel() {
+    init {
+        isLogin()
+    }
     //订单列表
     var shopOrderData = MutableLiveData<ShopOrderBean?>()
     /**

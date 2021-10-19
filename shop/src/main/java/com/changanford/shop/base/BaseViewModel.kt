@@ -7,6 +7,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.CommonResponse
 import com.changanford.common.net.fetchRequest
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.api.ShopNetWorkApi
@@ -29,8 +30,11 @@ open class BaseViewModel : ViewModel() {
     /**
      * 是否登录，token不null:true登录，
      */
-    fun isLogin(): Boolean = MConstant.token.isNotEmpty()
-
+    fun isLogin():Boolean{
+        val isNotEmpty= MConstant.token.isNotEmpty()
+        if(!isNotEmpty)JumpUtils.instans?.jump(100)
+        return isNotEmpty
+    }
     fun <T> launch(showLoading: Boolean = false, block: Block<CommonResponse<T>>) {
         viewModelScope.launch {
             fetchRequest(showLoading) {

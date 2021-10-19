@@ -4,7 +4,6 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.MyApp
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
@@ -36,6 +35,7 @@ class OrderEvaluationViewModel: BaseViewModel(){
      *[evalText]评价内容
      * */
     fun orderEval(mallMallOrderId:String,evalScore:Int,anonymous:String?,evalText:String){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

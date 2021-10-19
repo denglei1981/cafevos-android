@@ -157,6 +157,7 @@ class GoodsViewModel: BaseViewModel() {
      * [states]SET,CANCEL
      * */
     fun setKillNotices(states:String,rangeId:String,listener: OnPerformListener){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -177,6 +178,7 @@ class GoodsViewModel: BaseViewModel() {
      * 评价列表
      * */
     fun getGoodsEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -196,6 +198,7 @@ class GoodsViewModel: BaseViewModel() {
      * 添加足迹
      * */
     private fun addFootprint(spuId:String){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -209,6 +212,7 @@ class GoodsViewModel: BaseViewModel() {
      * [spuId]商品id
      * */
     fun collectGoods(spuId:String,isCollection:Boolean){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -226,6 +230,7 @@ class GoodsViewModel: BaseViewModel() {
      * 获取我的积分
      * */
     fun getMyIntegral(){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

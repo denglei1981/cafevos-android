@@ -99,7 +99,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             )
         })
         viewModel.queryGoodsDetails(spuId)
-//        viewModel.addFootprint(spuId)
     }
     fun onClick(v:View){
         val vid=v.id
@@ -112,7 +111,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品
-            R.id.cb_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
+            R.id.view_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
             //分享商品
             R.id.img_share->control.share()
             //返回
