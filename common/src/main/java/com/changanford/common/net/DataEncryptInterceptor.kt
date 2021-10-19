@@ -83,17 +83,9 @@ class DataEncryptInterceptor : Interceptor {
 //                    startARouter(ARouterMyPath.SignUI, bundle)
                     MConstant.token = ""
                     try {
-                        var isfirstin =
-                            SPUtils.getParam(MyApp.mContext, "isfirstin", false) as Boolean
-                        var isPopAgreement =
-                            SPUtils.getParam(
-                                MyApp.mContext,
-                                "isPopAgreement",
-                                true
-                            ) as Boolean
+                        var pushId = SPUtils.getParam(MyApp.mContext,MConstant.PUSH_ID,"11111") as String
                         SPUtils.clear(MyApp.mContext)
-                        SPUtils.setParam(MyApp.mContext, "isfirstin", isfirstin)
-                        SPUtils.setParam(MyApp.mContext, "isPopAgreement", isPopAgreement)
+                        SPUtils.setParam(MyApp.mContext, MConstant.PUSH_ID, pushId)
 
                     } catch (e: java.lang.Exception) {
                         SPUtils.clear(MyApp.mContext)
