@@ -45,7 +45,7 @@ class OrderViewModel: BaseViewModel() {
     fun orderCreate(skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
         val busSourse=if("SECKILL"==spuPageType)1 else 0
         viewModelScope.launch {
-          fetchRequest {
+          fetchRequest (true){
                 body.clear()
                 body["skuId"]=skuId
                 body["busSourse"]=busSourse

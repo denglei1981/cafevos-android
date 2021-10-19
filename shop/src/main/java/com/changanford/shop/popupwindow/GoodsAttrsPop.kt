@@ -52,6 +52,14 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                 dataBean.skuId=skuId
                 dataBean.fbPrice=fbPrice
                 dataBean.stock=stock.toInt()
+                val skuCodeTxtArr= arrayListOf<String>()
+                for((i,item) in dataBean.attributes.withIndex()){
+                    item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {
+                        val optionName= it.optionName
+                        skuCodeTxtArr.add(optionName)
+                    }
+                }
+                dataBean.skuCodeTxts=skuCodeTxtArr
                 viewDataBinding.sku= this
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
                 val limitBuyNum:String=dataBean.limitBuyNum?:"0"
