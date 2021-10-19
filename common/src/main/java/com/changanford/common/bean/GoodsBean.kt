@@ -60,7 +60,7 @@ data class GoodsItemBean(
     val mallMallSpuSeckillRangeId: String = "0",
     val salesCount: Int = 0,
     val stockNow: Int = 0,
-    val stockPlusSalesCount: Int? = 0,
+    val stockPlusSalesCount: Int = 0,
     var timeState: String = "",
     val createBy: Any? = null,
     val createTime: Long = 0,

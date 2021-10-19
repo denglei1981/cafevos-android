@@ -22,7 +22,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsKillAreaBinding>, item: GoodsItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
-            item.stockProportion=getStockProportion(item.salesCount,item.stockNow)
+            item.stockProportion=getStockProportion(item.salesCount,item.stockPlusSalesCount)
             dataBinding.model=item
             dataBinding.executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),dataBinding.imgCover)
