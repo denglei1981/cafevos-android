@@ -20,7 +20,7 @@ class SearchActsResultAdapter :
             GlideUtils.loadBD(item.coverImg, it.ivActs)
             it.tvTips.text = item.title
 
-            it.tvHomeActAddress.text = "地点：".plus(item.cityName)
+            it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
             it.tvHomeActTimes.text = "活动截止时间:".plus(TimeUtils.formateActTime(item.endTime))
             if (item.deadLineTime <= item.serverTime) {
                 it.btnState.text = "已截止"
@@ -39,7 +39,7 @@ class SearchActsResultAdapter :
                     it.tvHomeActTimes.text =
                         "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
 
-                    it.tvHomeActAddress.text = "地点：".plus(item.cityName)
+                    it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 2 -> {

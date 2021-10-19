@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_trans_bg"
+        android:layout_marginStart="14dp"
         >
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -19,6 +19,7 @@
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/image_recommend_test"
+
             app:layout_constraintDimensionRatio="186:256"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -61,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="4dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="以后人工智能会代替人类吗"
