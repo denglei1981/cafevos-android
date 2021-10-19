@@ -159,7 +159,7 @@ data class GoodsDetailBean(
     val salesCount: Int = 0,
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
-    val shareBeanVO: ShareBean?=null,
+    val shareBeanVO: TaskShareBean?=null,
     val skuCodeRule: String = "",
     val skuVos: List<SkuVo> = listOf(),
     val spuPageType: String = "",

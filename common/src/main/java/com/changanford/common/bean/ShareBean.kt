@@ -19,11 +19,11 @@ class ShareBean(
 )
 
 data class TaskShareBean(
-    val bizId: Int,
+    val bizId: String,
     val shareDesc: String,
     val shareImg: String,
     val shareTitle: String,
     val shareUrl: String,
-    val type: Int,
+    val type: String,
     val wxminiprogramCode: String
 )

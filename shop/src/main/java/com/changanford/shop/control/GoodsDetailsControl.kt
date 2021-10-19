@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.ShareBean
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.web.ShareViewModule
@@ -168,7 +169,9 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
     }
     fun share(){
-        if(::dataBean.isInitialized)dataBean.shareBeanVO?.let { shareViewModule.share(activity,it) }
+        if(::dataBean.isInitialized)dataBean.shareBeanVO?.apply {
+           shareViewModule.share(activity, ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type))
+        }
     }
     fun onDestroy(){
         timeCount?.cancel()
