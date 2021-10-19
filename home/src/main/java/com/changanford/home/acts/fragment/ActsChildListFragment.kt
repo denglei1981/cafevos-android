@@ -68,7 +68,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         }
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                when (searchActsResultAdapter.getItem(position).jumpType) {
+                var item = searchActsResultAdapter.getItem(position)
+                when (item.jumpType) {
                     1 -> {
                         JumpUtils.instans?.jump(
                             10000,
