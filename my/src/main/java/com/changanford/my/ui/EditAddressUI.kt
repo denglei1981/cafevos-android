@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.widget.picker.CityPicker
@@ -37,6 +38,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
 
     override fun initView() {
         binding.addressToolbar.toolbarTitle.text = "添加地址"
+        binding.addressToolbar.toolbar.setNavigationOnClickListener { back() }
         body["addressId"] = "0"
         body["isDefault"] = 0
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
@@ -123,6 +125,16 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
             body["isDefault"] = if (isChecked) "1" else "0"
         }
         binding.save.setOnClickListener {
+            var name: String = binding.etAddressName.text.toString().trim()
+            var phone: String = binding.etAddressPhone.text.toString().trim()
+            if (MineUtils.compileExChar(name)) {
+                showToast("不能输入特殊字符")
+                return@setOnClickListener
+            }
+            if (!phone.startsWith("1") || phone.length != 11) {
+                showToast("请输入正确的手机号")
+                return@setOnClickListener
+            }
             viewModel.saveAddress(body)
         }
 

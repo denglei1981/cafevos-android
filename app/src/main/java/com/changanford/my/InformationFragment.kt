@@ -2,12 +2,17 @@ package com.changanford.my
 
 import android.os.Bundle
 import android.view.View
+import com.changanford.common.bean.NewsValueData
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.toastShow
+import com.changanford.home.R
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.viewmodel.ActViewModel
+import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -45,6 +50,24 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             userId = it
         }
         binding.rcyAct.rcyCommonView.adapter = infoAdapter
+
+        infoAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val item = infoAdapter.getItem(position)
+            when (view.id) {
+                R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
+                    JumpUtils.instans!!.jump(35, item.authors?.authorId)
+                }
+                R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
+                    if (item.authors != null) {
+                        var newsValueData = NewsValueData(item.artId, item.type)
+                        var values = Gson().toJson(newsValueData)
+                        JumpUtils.instans?.jump(2, values)
+                    } else {
+                        toastShow("没有作者")
+                    }
+                }
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

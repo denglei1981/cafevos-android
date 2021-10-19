@@ -35,7 +35,7 @@
             android:background="@android:color/transparent"
             android:gravity="right"
             android:hint="最长8个汉字"
-            android:maxLines="1"
+            android:maxLength="8"
             android:paddingEnd="@dimen/dp_12"
             android:textColor="#071726"
             android:textSize="@dimen/sp_15" />

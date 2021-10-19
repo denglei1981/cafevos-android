@@ -47,7 +47,7 @@ class SpecialDetailActivity :
             selectPosition = position
             when (view.id) {
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
-                    JumpUtils.instans!!.jump(35)
+                    JumpUtils.instans!!.jump(35,item.authors?.authorId)
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
