@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.changanford.common.basic.BaseFragment
+import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
@@ -25,7 +25,7 @@ import com.changanford.home.search.adapter.SearchActsResultAdapter
 /**
  *  子活动列表。
  * */
-class ActsChildListFragment : BaseFragment<FragmentActsChildBinding, ActsListViewModel>() {
+class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, ActsListViewModel>() {
 
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
@@ -101,6 +101,14 @@ class ActsChildListFragment : BaseFragment<FragmentActsChildBinding, ActsListVie
 
     var officialEnum: List<EnumBean>? = null
     var xianshangEnum: List<EnumBean>? = null
+
+    fun showEmptys() {
+        binding.llEmpty.visibility = View.VISIBLE
+    }
+
+    fun hideEmptys() {
+        binding.llEmpty.visibility = View.GONE
+    }
     override fun observe() {
         super.observe()
         viewModel.actsLiveData.observe(this, androidx.lifecycle.Observer {
@@ -108,7 +116,12 @@ class ActsChildListFragment : BaseFragment<FragmentActsChildBinding, ActsListVie
                 if (it.isLoadMore) {
                     searchActsResultAdapter.addData(it.data.dataList)
                 } else {
-                    searchActsResultAdapter.setNewInstance(it.data.dataList)
+                    if (it.data.dataList.size == 0) {
+                        showEmptys()
+                    } else {
+                        hideEmptys()
+                        searchActsResultAdapter.setNewInstance(it.data.dataList)
+                    }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     //如果不够一页,显示没有更多数据布局
@@ -151,7 +164,6 @@ class ActsChildListFragment : BaseFragment<FragmentActsChildBinding, ActsListVie
     }
 
 
-
     fun show() {
         if (homeActsDialog == null) {
             homeActsDialog = HomeActsScreenDialog(requireActivity(), this, object : ICallback {
@@ -174,6 +186,10 @@ class ActsChildListFragment : BaseFragment<FragmentActsChildBinding, ActsListVie
         xianshangEnum?.let { it1 -> homeActsDialog?.setActsTypeDatta(it1) }
         officialEnum?.let { it1 -> homeActsDialog?.setOfficalData(it1) }
         homeActsDialog?.show()
+    }
+
+    override fun onRetryBtnClick() {
+
     }
 }
 

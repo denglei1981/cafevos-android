@@ -19,7 +19,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -54,9 +53,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     val immersionBar: ImmersionBar by lazy {
         ImmersionBar.with(this)
     }
-    val actsListFragment: ActsListFragment by lazy {
-        ActsListFragment.newInstance()
-    }
+
     val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
     }

@@ -224,7 +224,7 @@ data class RecommendData(
     }
 
     fun getAddress():String{
-        return  provinceName.plus("·").plus(townName)
+        return city
     }
     override val itemType: Int
         get() = getItemTypeLocal()

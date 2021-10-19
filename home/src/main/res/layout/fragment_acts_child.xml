@@ -5,9 +5,51 @@
 
     </data>
 
-    <com.changanford.common.widget.recy.ChildRecyclerView
-        android:id="@+id/recycler_view"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_withe" />
+        >
+
+        <com.changanford.common.widget.recy.ChildRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_withe" />
+
+        <LinearLayout
+            android:id="@+id/ll_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/image_common_empty"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="没有相关活动,请扩大搜索范围"
+                android:textColor="@color/color_99"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/base_click_me_to_retry"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
 </layout>
