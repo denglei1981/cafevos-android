@@ -68,9 +68,9 @@ class OrderViewModel: BaseViewModel() {
      * [orderStatus] 0待付款,1待发货,2待收货,3已完成
      * evalStatus 0待评价
      * */
-    fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
         viewModelScope.launch {
-            val responseBean=fetchRequest(true) {
+            val responseBean=fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -94,9 +94,9 @@ class OrderViewModel: BaseViewModel() {
     /**
      * 所有订单
      * */
-    fun getAllOrderList(pageNo:Int,pageSize:Int=this.pageSize){
+    fun getAllOrderList(pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -130,9 +130,9 @@ class OrderViewModel: BaseViewModel() {
      * 订单详情
      * [orderNo]订单号
      * */
-    fun getOrderDetail(orderNo:String) {
+    fun getOrderDetail(orderNo:String,showLoading: Boolean = false) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading){
                 body.clear()
                 body["orderNo"]=orderNo
                 val randomKey = getRandomKey()

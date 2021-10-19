@@ -39,7 +39,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
     override fun initData() {
         if(arguments!=null){
             statesId= requireArguments().getInt("statesId", -1)
-            viewModel.getShopOrderList(statesId,pageNo)
+            viewModel.getShopOrderList(statesId,pageNo,showLoading = true)
         }
         viewModel.shopOrderData.observe(this,{
             it?.let {

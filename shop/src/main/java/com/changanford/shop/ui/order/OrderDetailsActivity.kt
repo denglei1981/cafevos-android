@@ -55,7 +55,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     }
 
     override fun initData() {
-        viewModel.getOrderDetail(orderNo)
+        viewModel.getOrderDetail(orderNo,true)
         viewModel.orderItemLiveData.observe(this,{
             bindingData(it)
         })

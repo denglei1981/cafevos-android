@@ -54,7 +54,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
             binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
         })
-        viewModel.getAllOrderList(pageNo)
+        viewModel.getAllOrderList(pageNo,showLoading = true)
 //        viewModel.getOrderKey()
     }
 
