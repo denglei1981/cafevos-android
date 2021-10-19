@@ -11,13 +11,12 @@ import com.changanford.shop.databinding.ItemKillDateBinding
 import com.changanford.shop.utils.ScreenUtils
 import java.text.SimpleDateFormat
 
-
 class GoodsKillDateAdapter(var selectPos:Int,val listener:SelectBackListener): BaseQuickAdapter<SeckillSession, BaseDataBindingHolder<ItemKillDateBinding>>(R.layout.item_kill_date), LoadMoreModule {
     private lateinit var lastBinding:ItemKillDateBinding
+    @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("MM月dd日")
     private val dp9 by lazy { ScreenUtils.dp2px(context,9f) }
     private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
-    @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemKillDateBinding>, item: SeckillSession) {
         val dataBinding=holder.dataBinding
         val position=holder.absoluteAdapterPosition

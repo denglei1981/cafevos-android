@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.basic.BaseLoadSirActivity
-import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
@@ -27,6 +26,7 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
+import com.luck.picture.lib.tools.ScreenUtils
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
@@ -78,7 +78,20 @@ class SpecialDetailActivity :
             viewModel.getSpecialDetail(topicId)
             setLoadSir(binding.recyclerView)
         }
+        setExpandView()
     }
+
+
+  fun setExpandView(){
+      val width: Int = ScreenUtils.getScreenWidth(this)
+      binding.layoutCollBar.tvTopic.initWidth(width)
+      binding.layoutCollBar.tvTopic.setMaxLines(3)
+      binding.layoutCollBar.tvTopic.setHasAnimation(true)
+      binding.layoutCollBar.tvTopic.setCloseInNewLine(true)
+      binding.layoutCollBar.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
+      binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
+
+  }
 
     override fun observe() {
         super.observe()

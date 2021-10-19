@@ -16,6 +16,9 @@ import com.changanford.shop.databinding.ShopActPayconfirmBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * @Author : wenke
@@ -34,6 +37,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     private var dataBean:OrderItemBean?=null
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var isPaySuccessful=false//是否支付成功
+    private var isClickSubmit=false
     override fun initView() {
         binding.topBar.setActivity(this)
     }
@@ -53,6 +57,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         })
         viewModel.responseData.observe(this,{
             ToastUtils.showLongToast(it.msg,this)
+            isClickSubmit=false
             payResults(it.isSuccess)
         })
     }
@@ -83,12 +88,21 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         binding.btnSubmit.setText(R.string.str_orderDetails)
     }
     fun btnSubmit(v:View){
-        if(null==dataBean)return
-        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){//支付
-            viewModel.fbPay(dataBean?.orderNo!!)
-        }else {
-            OrderDetailsActivity.start(this,dataBean?.orderNo)
-            if(isPaySuccessful)this.finish()
+        dataBean?.let {
+            if(!isClickSubmit){
+                isClickSubmit=true
+                if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){//支付
+                    viewModel.fbPay(it.orderNo)
+                }else {
+                    OrderDetailsActivity.start(this,it.orderNo)
+                    isClickSubmit=false
+                    if(isPaySuccessful)this.finish()
+                }
+            }
+            GlobalScope.launch {
+                delay(3000L)
+                isClickSubmit=false
+            }
         }
     }
     override fun onDestroy() {

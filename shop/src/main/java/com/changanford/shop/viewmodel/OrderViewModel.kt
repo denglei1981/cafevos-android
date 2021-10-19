@@ -3,10 +3,7 @@ package com.changanford.shop.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.OrderInfoBean
-import com.changanford.common.bean.OrderItemBean
-import com.changanford.common.bean.ShopOrderBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.base.BaseViewModel
@@ -31,6 +28,8 @@ class OrderViewModel: BaseViewModel() {
     var orderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
     //我的积分
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
+    //订单类型
+    var orderTypesLiveData: MutableLiveData<OrderTypesBean?> = MutableLiveData()
     /**
      * 下单
      * [addressId]收货地址id
@@ -176,7 +175,6 @@ class OrderViewModel: BaseViewModel() {
                 responseData.postValue(ResponseBean(true))
             }.onWithMsgFailure {
                 responseData.postValue(ResponseBean(false,msg = it))
-
             }
         }
     }
@@ -211,6 +209,23 @@ class OrderViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
                 listener?.onFinish(0)
+            }
+        }
+    }
+    /**
+     * 获取订单类型
+     * */
+    fun getOrderKey(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.getOrderKey(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                orderTypesLiveData.postValue(null)
+//                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                orderTypesLiveData.postValue(it)
             }
         }
     }

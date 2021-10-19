@@ -8,7 +8,7 @@
             type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
     <LinearLayout
-
+        android:id="@+id/layout_vip"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/dp_20"
         android:paddingStart="@dimen/dp_20"

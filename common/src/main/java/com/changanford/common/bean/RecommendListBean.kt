@@ -223,6 +223,9 @@ data class RecommendData(
         return topicStr
     }
 
+    fun getAddress():String{
+        return city
+    }
     override val itemType: Int
         get() = getItemTypeLocal()
 }

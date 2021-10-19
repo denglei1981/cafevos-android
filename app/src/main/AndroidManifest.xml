@@ -113,7 +113,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"
-            android:taskAffinity="com.changan.uni"
+            android:taskAffinity="com.changanford.evos"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- <receiver android:name="com.changan.oushangCos1.utils.tools.NetworkConnectChangedReceiver"></receiver> -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"

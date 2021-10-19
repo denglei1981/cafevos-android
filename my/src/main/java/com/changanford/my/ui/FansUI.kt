@@ -85,8 +85,13 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                 it.itemFansIcon.load(item.avatar)
                 if (type == 2) {
                     it.layout.isSelected = false
-                    it.itemText.text = "已关注"
-                    it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
+                    if (item.isMutualAttention == 1) {
+                        it.itemIcon.setImageResource(0)
+                        it.itemText.text = "相互关注"
+                    } else {
+                        it.itemText.text = "已关注"
+                        it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
+                    }
                     it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
                 } else {
                     when (item.isMutualAttention) {

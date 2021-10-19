@@ -110,4 +110,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/order/confirmReceipt")
     suspend fun confirmReceipt(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     * 获取订单类型
+    * */
+    @POST("base/config/getConfigValueByKey")
+    suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
 }

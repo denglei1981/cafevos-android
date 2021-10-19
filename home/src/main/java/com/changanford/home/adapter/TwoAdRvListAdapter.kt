@@ -1,5 +1,6 @@
 package com.changanford.home.adapter
 
+import android.text.TextUtils
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -25,7 +26,13 @@ class TwoAdRvListAdapter :
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.adImg, it.ivThumbs)
             it.tvTips.text = item.adName
-            it.tvTitle.text = item.adSubName
+            if(TextUtils.isEmpty(item.adSubName)){
+                it.tvTitle.visibility=View.GONE
+            }else{
+                it.tvTitle.visibility=View.VISIBLE
+                it.tvTitle.text = item.adSubName
+            }
+
             if (item.isVideo == 1) {
                 it.ivPlay.visibility = View.VISIBLE
             } else {

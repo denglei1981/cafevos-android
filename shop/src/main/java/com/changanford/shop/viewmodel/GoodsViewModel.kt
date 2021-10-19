@@ -41,7 +41,7 @@ class GoodsViewModel: BaseViewModel() {
      * 获取banner
      * */
     fun getBannerData(){
-        adsRepository.getAds("商城广告位")
+        adsRepository.getAds("mall_top_ad_v2")
     }
     /**
      * 获取 商城首页
@@ -168,8 +168,8 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.setKillNotices(rangeId,body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 listener.onFinish(0)
-            }.onFailure {
-                listener.onFinish(-1)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }
@@ -195,7 +195,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 添加足迹
      * */
-    fun addFootprint(spuId:String){
+    private fun addFootprint(spuId:String){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

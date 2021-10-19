@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderTypeItemBean" />
+    </data>
+
+    <com.changanford.shop.view.TypefaceTextView
+        android:id="@+id/tv_order_name"
+        android:background="@drawable/bord_ed_t_0d5dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_53"
+        android:gravity="center"
+        android:text="@{model.typeName}"
+        tools:text="@string/str_ordersGoods"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_14" />
+</layout>

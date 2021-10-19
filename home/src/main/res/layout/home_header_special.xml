@@ -90,15 +90,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
+        <com.changanford.home.widget.ExpandableTextView
             android:id="@+id/tv_topic"
             android:layout_width="0dp"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="@dimen/dp_20"
-            android:ellipsize="end"
-            android:maxLines="2"
             android:text="@{specialDetailData.summary}"
             android:textColor="#ff333333"
             android:textSize="13sp"

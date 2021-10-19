@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_right"
+        tools:visibility="visible"
+        android:visibility="gone"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_16"
         tools:src="@mipmap/shop_search"
@@ -35,6 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <com.changanford.shop.view.TypefaceTextView
+        tools:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/tv_right"
         android:textSize="@dimen/sp_14"
         android:textColor="@color/color_33"
@@ -44,7 +48,5 @@
         android:paddingStart="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
-        tools:text="@string/str_screening"
-        />
+        tools:text="@string/str_screening" />
 </androidx.constraintlayout.widget.ConstraintLayout>

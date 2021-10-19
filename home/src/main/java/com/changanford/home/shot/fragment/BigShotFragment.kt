@@ -12,6 +12,8 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -45,7 +47,6 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             return fg
         }
     }
-
     override fun initView() {
         setLoadSir(binding.refreshLayout)
         binding.recyclerViewH.adapter = bigShotUserListAdapter
@@ -116,10 +117,28 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                 showFailure(it.message)
             }
         })
+
+
+    }
+
+    private fun bus() {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+            if (selectPosition == -1) {
+                return@observe
+            }
+            val bean = bigShotPostListAdapter.getItem(selectPosition)
+            bean.isLike = it
+            if (bean.isLike == 1) {
+                bean.likesCount++
+            } else {
+                bean.likesCount--
+            }
+            bigShotPostListAdapter.notifyItemChanged(selectPosition)
+        })
     }
 
     override fun initData() {
-
+        bus()
     }
     override fun onRetryBtnClick() {
 

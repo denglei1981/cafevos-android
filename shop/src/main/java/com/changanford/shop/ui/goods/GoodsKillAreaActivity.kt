@@ -3,15 +3,18 @@ package com.changanford.shop.ui.goods
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.CountDownTimer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
 import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
+import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -22,10 +25,11 @@ import java.text.SimpleDateFormat
  * @Time : 2021/9/22
  * @Description : 秒杀专区
  */
+@SuppressLint("SimpleDateFormat")
 @Route(path = ARouterShopPath.GoodsKillAreaActivity)
 class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewModel>(),
     GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener,
-    OnRefreshLoadMoreListener {
+    OnRefreshLoadMoreListener, TopBar.OnRightClickListener {
     companion object{
         fun start(context: Context) {
             context.startActivity(Intent(context, GoodsKillAreaActivity::class.java))
@@ -37,13 +41,22 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     private val timeAdapter by lazy { GoodsKillAreaTimeAdapter(0,this) }
     private val mAdapter by lazy { GoodsKillAreaAdapter(viewModel) }
     private var pageNo=1
-    @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("HH:mm")
+    private val sfDate = SimpleDateFormat("yyyyMMdd")
+    private val totalTime:Long=30*60*1000
+    private val countDownInterval:Long=60*1000//更新当前时间的间隔时间
+    private val timeCountDownTimer=object : CountDownTimer(totalTime,countDownInterval){
+        override fun onTick(millisUntilFinished: Long) {
+            nowTime+=countDownInterval
+        }
+        override fun onFinish() {}
+    }.start()
     override fun initView() {
         binding.rvDate.adapter=dateAdapter
         binding.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter
         binding.topBar.setActivity(this)
+        binding.topBar.setOnRightClickListener(this)
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         mAdapter.setEmptyView(R.layout.view_empty)
         addObserve()
@@ -53,9 +66,22 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     }
     private fun addObserve(){
         viewModel.seckillSessionsData.observe(this,{
-            if(it.now!=null)nowTime= it.now!!
-            dateAdapter.setList(it.seckillSessions)
-            onSelectBackListener(0,it.seckillSessions[0].seckillTimeRanges)
+            it.now?.let {now-> nowTime= now }
+            it.seckillSessions.apply {
+                dateAdapter.setList(this)
+                var dateI=0
+                val nowTimeSf=sfDate.format(nowTime)
+                //筛选出当前时间
+                for((i,item)in this.withIndex()){
+                    if(nowTimeSf==sfDate.format(item.date)){
+                        dateI=i
+                        break
+                    }
+                }
+                onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
+                dateAdapter.selectPos=dateI
+                binding.rvDate.scrollToPosition(dateI)
+            }
         })
         viewModel.killGoodsListData.observe(this,{
             val dataList=it?.dataList
@@ -69,12 +95,16 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
      * 秒杀时间段数据格式化
     * */
     private fun calculateStates(seckillTimeRange:ArrayList<SeckillTimeRange>){
-        nowTime=System.currentTimeMillis()//当前时间挫
-        for(it in seckillTimeRange){
+//        nowTime=System.currentTimeMillis()//当前时间挫
+        var timeI=0
+        for((i,it) in seckillTimeRange.withIndex()){
             it.states= when {
                 nowTime<it.timeBegin -> 2  //当前时间小于开始时间则表示未开始
                 nowTime>=it.timeEnd -> 0 //当前时间大于等于结束时间表示已结束
-                else -> 1//进行中
+                else ->{//进行中
+                    timeI=i
+                    1
+                }
             }
             it.statesTxt=statesTxt[it.states]
             it.time=sf.format(it.timeBegin)
@@ -82,7 +112,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)
         //默认选中第一个
-        onSelectTimeBackListener(0,seckillTimeRange[0])
+        onSelectTimeBackListener(timeI,seckillTimeRange[timeI])
+        timeAdapter.selectPos=timeI
+        binding.rvTime.scrollToPosition(timeI)
     }
     /**
      * 秒杀日期选择回调
@@ -110,5 +142,14 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         pageNo++
         if(timeAdapter.data.size>0)viewModel.getGoodsKillList(timeAdapter.data[timeAdapter.selectPos].timeRangeId,pageNo)
         else binding.smartRl.finishLoadMore()
+    }
+
+    override fun onRightClick() {
+        JumpUtils.instans?.jump(108)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timeCountDownTimer.cancel()
     }
 }

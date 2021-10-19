@@ -3,6 +3,7 @@ package com.changanford.shop.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -52,10 +53,19 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         layoutHeader.setPadding(0,ScreenUtils.getStatusBarHeight(context)+10,0,ScreenUtils.dip2px(context,10f))
         layoutHeader.setBackgroundResource(bgColor)
         imgBack.setImageResource(backIcon)
-        imgRight.setImageResource(rightIcon)
-        tvTitle.text=titleText
-        tvTitle.setTextColor(ContextCompat.getColor(context,titleColor))
-        rightTV.text=rightTxt
+        imgRight.apply {
+            setImageResource(rightIcon)
+            visibility=if(rightIcon>0)View.VISIBLE else View.GONE
+        }
+        tvTitle.apply {
+            text=titleText
+            setTextColor(ContextCompat.getColor(context,titleColor))
+            visibility=if(TextUtils.isEmpty(titleText))View.GONE else View.VISIBLE
+        }
+        rightTV.apply {
+            text=rightTxt
+            visibility=if(TextUtils.isEmpty(rightTxt))View.GONE else View.VISIBLE
+        }
     }
 
     private fun initView() {

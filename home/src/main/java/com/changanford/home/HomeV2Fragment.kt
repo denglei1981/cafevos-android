@@ -19,7 +19,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.home.acts.fragment.ActsListFragment
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -54,9 +53,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     val immersionBar: ImmersionBar by lazy {
         ImmersionBar.with(this)
     }
-    val actsListFragment: ActsListFragment by lazy {
-        ActsListFragment.newInstance()
-    }
+
     val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
     }
@@ -106,10 +103,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }.attach().apply {
             initTab()
         }
-
-
         binding.refreshLayout.setOnRefreshListener(this)
-
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -287,7 +281,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 appIndexBackground.forEach { b -> // 背景。
                     GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
                 }
-                twoAdRvListAdapter.setNewInstance(it.data.app_index_background)
+
                 val appIndexTopic = it.data.app_index_topic
                 appIndexTopic.forEach { t -> // 话题
                     binding.recommendContent.tvTopicTitle.text = t.adSubName
@@ -299,13 +293,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                         JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
                     }
                 }
-                var appIndexBanner = it.data.app_index_banner
+                val appIndexBanner = it.data.app_index_banner
                 appIndexBanner.forEach { b-> // banner
                     GlideUtils.loadBD(b.adImg,binding.recommendContent.ivBanner)
                     binding.recommendContent.ivBanner.setOnClickListener {
                         JumpUtils.instans?.jump(b.jumpDataType,b.jumpDataValue)
                     }
                 }
+                var appIndexAds = it.data.app_index_ads
+                twoAdRvListAdapter.setNewInstance(appIndexAds)
 
             }
 
