@@ -41,10 +41,6 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         val tabs=goodsClassification?:ArrayList<GoodsTypesItemBean>().apply {
             add(GoodsTypesItemBean("0","全部"))
         }
-//        val tabs=ArrayList<GoodsTypesItemBean>().apply {
-//            add(GoodsTypesItemBean("0","全部"))
-//            if(homeData!=null)addAll(homeData.list)
-//        }
         for(it in tabs){
             val fragment=ExchangeListFragment.newInstance(it.mallMallTagId)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
@@ -60,7 +56,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
-            GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId,"SECKILL")
+            mAdapter.data[position].apply {
+                if("ON_GOING"==seckillStatus)GoodsDetailsActivity.start(mallMallSpuId)
+            }
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
     }
