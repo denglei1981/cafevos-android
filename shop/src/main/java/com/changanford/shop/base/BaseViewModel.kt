@@ -28,7 +28,7 @@ open class BaseViewModel : ViewModel() {
     }
     val responseData: MutableLiveData<ResponseBean> = MutableLiveData()
     /**
-     * 是否登录，token不null:true登录，
+     * 是否登录
      */
     fun isLogin():Boolean{
         val isNotEmpty= MConstant.token.isNotEmpty()

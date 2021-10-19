@@ -1,8 +1,6 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -34,9 +32,9 @@ import java.text.SimpleDateFormat
 @Route(path = ARouterShopPath.OrderDetailActivity)
 class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
     companion object{
-        fun start(context: Context,orderNo:String?) {
+        fun start(orderNo:String?) {
             if(MConstant.token.isEmpty()) JumpUtils.instans?.jump(100)
-            else orderNo?.let {context.startActivity(Intent(context, OrderDetailsActivity::class.java).putExtra("orderNo",orderNo))  }
+            else orderNo?.let {JumpUtils.instans?.jump(5,orderNo) }
         }
     }
     private val control by lazy { OrderControl(this,viewModel) }

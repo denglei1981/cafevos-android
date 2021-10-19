@@ -32,7 +32,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsActivity.start(requireContext(),mAdapter.data[position].orderNo)
+            OrderDetailsActivity.start(mAdapter.data[position].orderNo)
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }

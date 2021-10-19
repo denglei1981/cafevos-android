@@ -27,14 +27,14 @@ import java.text.SimpleDateFormat
 class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     //orderType -1所有订单 0 商品、1购车 2 试驾
     private val control by lazy { OrderControl(context,viewModel) }
-    private val orderTypes= arrayOf("未知0","购车订单","试驾订单","商品订单","未知4","未知5","未知6","")
+//    private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","未知4","未知5","未知6","未知7","未知8")
     @SuppressLint("SimpleDateFormat")
     private val sf = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
-            dataFormat(item)
+            dataFormat(dataBinding,item)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
@@ -56,13 +56,19 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         else -> View.GONE
                     }
                 }
-                if(!TextUtils.isEmpty(item.specifications)){
-                    recyclerView.layoutManager=FlowLayoutManager(context,false)
-                    recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
-                        val specifications=item.specifications.split(",").filter { ""!=it }
-                        setList(specifications)
+                recyclerView.apply {
+                    if(!TextUtils.isEmpty(item.specifications)){
+                        visibility=View.VISIBLE
+                        layoutManager=FlowLayoutManager(context,false)
+                        adapter=OrderGoodsAttributeAdapter().apply {
+                            val specifications=item.specifications.split(",").filter { ""!=it }
+                            setList(specifications)
+                        }
+                    }else{
+                        visibility=View.GONE
                     }
                 }
+
             }
             setOrderType(dataBinding.tvOrderType,item)
 
@@ -71,24 +77,50 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     /**
      * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
     * */
-    private fun dataFormat(item: OrderItemBean){
+    private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
+        dataBinding.tvTotleIntegral.visibility=View.VISIBLE
+        dataBinding.inGoodsInfo.apply {
+            tvCarInfo.visibility=View.GONE
+            tvGoodsNumber.visibility=View.VISIBLE
+            tvIntegral.visibility=View.VISIBLE
+        }
         if(-1==orderType){
-            val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
-            var specifications=""
-            orderBriefBean.snapshotOfAttrOption?.let {
-                val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(it, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
-                for(item in attrOption){
-                    specifications+="${item.optionName},"
-                }
-            }
             item.apply {
                 spuName=skuName
                 skuImg=orderImg
-                buyNum=orderBriefBean.buyNum
-                payType=orderBriefBean.payType
-                fbCost=orderBriefBean.fbCost
-                this.specifications=specifications
             }
+            when(item.orderType){
+                1->{//试驾
+                    dataBinding.inGoodsInfo.apply {
+                        tvGoodsNumber.visibility=View.GONE
+                        recyclerView.visibility=View.GONE
+                        tvIntegral.visibility=View.GONE
+                        tvCarInfo.visibility = View.VISIBLE
+                        tvCarInfo.text=item.orderBrief
+                    }
+                    dataBinding.tvTotleIntegral.visibility=View.GONE
+                }
+                2->{//购车
+
+                }
+                3->{//商品
+                    val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
+                    var specifications=""
+                    orderBriefBean.snapshotOfAttrOption?.let {
+                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(it, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
+                        for(item in attrOption){
+                            specifications+="${item.optionName},"
+                        }
+                    }
+                    item.apply {
+                        buyNum=orderBriefBean.buyNum
+                        payType=orderBriefBean.payType
+                        fbCost=orderBriefBean.fbCost
+                        this.specifications=specifications
+                    }
+                }
+            }
+
         }
     }
     private fun updateBtnUI(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
@@ -154,7 +186,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
         tv.apply {
             when {
                 -1==orderType -> {
-                    text=orderTypes[item.orderType]
+                    text=item.orderTypeName
                     setTextColor(ContextCompat.getColor(context,R.color.picture_color_66))
                     visibility = View.VISIBLE
                 }

@@ -97,7 +97,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                 if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){//支付
                     viewModel.fbPay(it.orderNo)
                 }else {
-                    OrderDetailsActivity.start(this,it.orderNo)
+                    OrderDetailsActivity.start(it.orderNo)
                     isClickSubmit=false
                     if(isPaySuccessful)this.finish()
                 }

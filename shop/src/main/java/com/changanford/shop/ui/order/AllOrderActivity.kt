@@ -37,7 +37,10 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         binding.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsActivity.start(this,mAdapter.data[position].orderNo)
+            mAdapter.data[position].apply {
+                JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+            }
+//            OrderDetailsActivity.start(this,mAdapter.data[position].orderNo)
         }
     }
 
