@@ -52,5 +52,6 @@
         <activity android:name=".ui.CarAuthSubmitUI" />
         <activity android:name=".ui.ConfirmCancelAccountUI" />
         <activity android:name=".ui.JiFenList" />
+        <activity android:name=".ui.TaFansUI" />
     </application>
 </manifest>

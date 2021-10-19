@@ -33,6 +33,7 @@ object ARouterMyPath {
     const val MineFollowUI = "/app/MineFollowUI" //我的发布
     const val MineMessageUI = "/my/MineMessageUI" //消息
     const val MineFansUI = "/my/MineFansUI" //我的粉丝
+    const val TaFansUI = "/my/TaFansUI" //ta的粉丝
     const val MineCollectUI = "/app/MineCollectUI" //我的收藏
     const val MineCircleUI = "/my/MineCircleUI" //我的圈子
     const val CircleMemberUI = "/my/CircleMemberUI" //圈子管理

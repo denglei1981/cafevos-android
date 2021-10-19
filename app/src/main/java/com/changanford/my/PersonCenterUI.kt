@@ -89,13 +89,13 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                                     RouterManger.param(RouterManger.KEY_TO_ID, 2)
                                         .param(RouterManger.KEY_TO_OBJ, userId)
                                         .param("title", "TA的关注")
-                                        .startARouter(ARouterMyPath.MineFansUI)
+                                        .startARouter(ARouterMyPath.TaFansUI)
                                 }
                                 fansNum.setOnClickListener {
                                     RouterManger.param(RouterManger.KEY_TO_ID, 1)
                                         .param(RouterManger.KEY_TO_OBJ, userId)
                                         .param("title", "TA的粉丝")
-                                        .startARouter(ARouterMyPath.MineFansUI)
+                                        .startARouter(ARouterMyPath.TaFansUI)
                                 }
                             }
                             binding.userDesc.text =
