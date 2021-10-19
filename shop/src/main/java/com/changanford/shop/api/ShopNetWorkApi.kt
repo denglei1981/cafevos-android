@@ -113,6 +113,6 @@ interface ShopNetWorkApi {
     /**
      * 获取订单类型
     * */
-    @POST("base/config/getConfigValueByKey")
+    @POST("/base/config/getConfigValueByKey")
     suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
 }

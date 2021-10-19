@@ -222,6 +222,8 @@ class OrderViewModel: BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
+                body["configKey"]="my_order_type"
+                body["obj"]=true
                 val randomKey = getRandomKey()
                 shopApiService.getOrderKey(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
