@@ -103,11 +103,11 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                     it.isShow = "0"
                 }
                 when (isItemShow) {
-                    "0" -> {
-                        item.isShow = "1"
-                    }
                     "1" -> {
                         item.isShow = "0"
+                    }
+                    else -> {
+                        item.isShow = "1"
                     }
                 }
                 notifyDataSetChanged()

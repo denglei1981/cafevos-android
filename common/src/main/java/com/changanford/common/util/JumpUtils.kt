@@ -200,7 +200,7 @@ class JumpUtils {
                 startARouter(ARouterCirclePath.releasactivity, true)
             }
             14 -> {//去发帖',
-//                startARouter(ARouterHomePath.HomePostActivity, bundle)
+                jump(102)
             }
             15 -> {//2级评论''
 
