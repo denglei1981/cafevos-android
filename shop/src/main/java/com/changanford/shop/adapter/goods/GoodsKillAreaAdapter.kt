@@ -38,7 +38,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
      * 计算库存比例
     * */
     private fun getStockProportion(sales:Int,stockNow:Int):String{
-        return "${sales/stockNow*100}"
+        return if(stockNow>0)"${sales/stockNow*100}" else "0"
     }
     /**
      * isSettedNotice 是否已提醒,可用值:NO,YES
