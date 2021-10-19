@@ -11,14 +11,17 @@
         tools:ignore="ProtectedPermissions" />
     <!--拍照录视频-->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera.any" />
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -30,21 +33,25 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
 
     <!--联系客服-->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <application>
         <activity android:name=".ui.viewpager.Banner" />
         <activity android:name=".ui.CaptureActivity" />
         <activity android:name=".sharelib.activity.SinaShareActivity" />
-        <activity android:name=".web.AgentWebActivity" />
+        <activity
+            android:name=".web.AgentWebActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true" />
         <activity android:name=".ui.PhotoViewActivity" />
         <activity android:name=".ui.NothingActivity" />
         <activity android:name=".sharelib.activity.QqShareActivity" />
@@ -52,7 +59,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="gwuTZYK647CVUpGD7pWF3Zt3VLNd7nZ6"/>
+            android:value="gwuTZYK647CVUpGD7pWF3Zt3VLNd7nZ6" />
         <!--<meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="56913eab3a5c4f59dd961dbc1b1b909c" />-->
