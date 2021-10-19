@@ -155,7 +155,7 @@ data class GoodsDetailBean(
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",
     val now: Long = 0,
-    val purchasedNum: Int = 0,
+    val purchasedNum: Int? = 0,
     val salesCount: Int = 0,
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
