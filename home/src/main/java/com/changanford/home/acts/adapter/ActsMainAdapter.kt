@@ -64,6 +64,7 @@ class ActsMainAdapter(
             0 -> {
                 val headerBinding = vdBinding as HomeActsHeaderBinding
                 initViewPager(headerBinding)
+                setIndicator(headerBinding)
             }
             1 -> {
                 val binding = vdBinding as HomeActsBottomBinding
@@ -152,11 +153,29 @@ class ActsMainAdapter(
                     ContextCompat.getColor(context, R.color.blue_tab),
                     ContextCompat.getColor(context, R.color.colorPrimary)
                 )
-                setIndicatorView(binding.drIndicator)
+
             }.create(adBean)
 
         }
 
+    }
+
+    /**
+     * 设置指示器
+     * */
+    private fun setIndicator(binding: HomeActsHeaderBinding) {
+        val dp6 = context.resources.getDimensionPixelOffset(R.dimen.dp_6)
+        binding.drIndicator.setIndicatorDrawable(
+            R.drawable.shape_home_banner_normal,
+            R.drawable.shape_home_banner_focus
+        )
+            .setIndicatorSize(
+                dp6,
+                dp6,
+                context.resources.getDimensionPixelOffset(R.dimen.dp_20),
+                dp6
+            )
+            .setIndicatorGap(context.resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
 
