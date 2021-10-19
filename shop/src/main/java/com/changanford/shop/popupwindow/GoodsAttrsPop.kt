@@ -47,7 +47,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity,{ code ->
             _skuCode=code
-            dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0].apply {
+            (dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]).apply {
                 dataBean.skuImg=skuImg
                 dataBean.skuId=skuId
                 dataBean.fbPrice=fbPrice

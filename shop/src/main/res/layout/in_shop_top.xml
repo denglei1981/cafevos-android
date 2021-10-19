@@ -23,6 +23,8 @@
                 app:banner_transitionEffect="cube"
                 app:banner_aspectRatio="1"/>
             <com.changanford.shop.view.TypefaceTextView
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/tvKillTitle"
                 android:layout_marginTop="@dimen/dp_38"
                 android:layout_marginStart="@dimen/dp_20"
@@ -35,6 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <com.changanford.shop.view.TypefaceTextView
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:drawablePadding="@dimen/dp_7"
                 app:drawableEndCompat="@mipmap/shop_right0"
                 android:id="@+id/tv_shopMoreKill"

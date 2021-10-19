@@ -1,5 +1,6 @@
 package com.changanford.shop
 import android.graphics.Typeface
+import android.view.View
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.util.JumpUtils
@@ -71,6 +72,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         })
         viewModel.shopHomeData.observe(this,{
             mAdapter.setList(it.indexSeckillDtoList)
+            binding.inTop.apply {
+                val visibility=if(mAdapter.data.size>0) View.VISIBLE else View.GONE
+                tvShopMoreKill.visibility=visibility
+                tvKillTitle.visibility=visibility
+            }
         })
         viewModel.classificationLiveData.observe(this,{
             bindingTab(it)
