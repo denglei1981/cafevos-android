@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -157,7 +156,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         JumpUtils.instans?.jump(20,"1")
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
-                    Log.e("okhttp","所选地址为:$it")
                     it?.let {bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))}
                 })
     }

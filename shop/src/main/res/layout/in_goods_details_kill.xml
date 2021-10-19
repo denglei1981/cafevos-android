@@ -48,8 +48,6 @@
             android:textColor="@color/color_F9E4E6"
             android:textSize="@dimen/sp_10" />
         <com.changanford.shop.view.TypefaceTextView
-            tools:visibility="visible"
-            android:visibility="gone"
             android:id="@+id/tv_limitBuyNum"
             app:layout_constraintStart_toStartOf="@id/tv_goods_integral"
             app:layout_constraintBottom_toBottomOf="@id/img_logoKill"
@@ -57,8 +55,6 @@
             android:layout_height="wrap_content"
             app:start_txt="@string/str_limited"
             app:end_txt="@string/str_a"
-            tools:text="限量20件"
-            android:text="@{model.limitBuyNum}"
             android:textColor="@color/color_withe"
             android:textSize="@dimen/sp_10" />
         <androidx.appcompat.widget.LinearLayoutCompat

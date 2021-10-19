@@ -72,8 +72,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         val purchasedNum=dataBean.purchasedNum?:0
                         tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
                         if(null==fbLine)tvFbLine.visibility= View.GONE
-                        val limitBuyNum=dataBean.limitBuyNum?:"0"
-                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
+                        //限量=库存+销量
+                        val limitBuyNum=dataBean.purchasedNum+dataBean.stock
+                        tvLimitBuyNum.setText("$limitBuyNum")
+//                        val limitBuyNum=dataBean.limitBuyNum?:"0"
+//                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
                     }
                 }
             }
