@@ -130,7 +130,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 if (item.cityName.isNullOrEmpty() && item.townName.isNullOrEmpty()) {
                     it.tvHomeActAddress.visibility = View.GONE
                 } else {
-                    it.tvHomeActAddress.text = "${item.cityName} . ${item.townName}"
+                    it.tvHomeActAddress.text = "${item.cityName ?: ""} . ${item.townName}"
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 it.tvActNum.text = ""
@@ -198,7 +198,26 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
                 holder.itemView.setOnClickListener {
                     //跳转类型(1跳转外部，2跳转内部，3常规)
-                    JumpUtils.instans?.jump(item.jumpType, item.jumpVal)
+                    when (item.jumpType) {
+                        1 -> {
+                            JumpUtils.instans?.jump(
+                                10000,
+                                item.jumpVal
+                            )
+                        }
+                        2, 3 -> {
+                            JumpUtils.instans?.jump(
+                                1,
+                                item.jumpVal
+                            )
+                        }
+                        else -> {
+                            JumpUtils.instans?.jump(
+                                item.jumpType,
+                                item.jumpVal
+                            )
+                        }
+                    }
                 }
                 it.btnEndAct.setOnClickListener {//结束
                     endAct("${item.wonderfulId})")

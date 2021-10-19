@@ -8,6 +8,8 @@ import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.my.databinding.FragmentPostBinding
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -64,6 +66,11 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
         binding.rcyPost.rcyCommonView.layoutManager = staggeredGridLayoutManager
         binding.rcyPost.rcyCommonView.adapter = postAdapter
 
+        postAdapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            bundle.putString("postsId", postAdapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

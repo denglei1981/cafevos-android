@@ -15,17 +15,13 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.databinding.UiMyPostBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.ActViewModel
-import com.huawei.hms.common.ApiException
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
 import java.lang.reflect.Method
 
 /**
@@ -74,6 +70,15 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
         postAdapter.setOnItemLongClickListener { adapter, view, position ->
             showEditDialog(position)
             true
+        }
+
+        postAdapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            bundle.putString("postsId", postAdapter.getItem(position).postsId.toString())
+            com.changanford.common.router.startARouter(
+                ARouterCirclePath.PostDetailsActivity,
+                bundle
+            )
         }
     }
 

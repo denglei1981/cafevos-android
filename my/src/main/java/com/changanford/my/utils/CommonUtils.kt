@@ -30,11 +30,11 @@ import razerdp.basepopup.BasePopupWindow
  * 登录协议
  */
 fun TextView.signAgreement() {
-    val title = "我已阅读并同意"
+    val title = "点击注册/登录，即表示已阅读并同意"
     var content = "《用户隐私协议》"
     var content1 = "《福域注册服务条款》"
 
-    var spannable = SpannableString(title + content + "和" + content1)
+    var spannable = SpannableString("$title$content、$content1")
 
     //设置颜色
     spannable.setSpan(
