@@ -100,7 +100,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 tvTagTwo.text = "线下活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
-                tvHomeActAddress.text = "地点：".plus(item.city)
+                tvHomeActAddress.text = "地点：".plus(item.getAddress())
                 tvHomeActAddress.visibility=View.VISIBLE
             }
             2 -> {
