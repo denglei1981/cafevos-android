@@ -56,9 +56,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
-            mAdapter.data[position].apply {
-                if("ON_GOING"==seckillStatus)GoodsDetailsActivity.start(mallMallSpuId)
-            }
+            GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
     }

@@ -41,6 +41,7 @@
             android:onClick="onClick"
             android:id="@+id/btn_submit"
             android:text="@string/str_submitOrder"
+            app:btn_states="9"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"

@@ -60,6 +60,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         mAdapter.setEmptyView(R.layout.view_empty)
         addObserve()
+        mAdapter.setOnItemClickListener { _, _, position ->
+            GoodsDetailsActivity.start(mAdapter.data[position].spuId)
+        }
     }
     override fun initData() {
         viewModel.getSckills()

@@ -37,8 +37,6 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.buyNum=1
         getSkuTxt(dataBean.skuVos[0].skuCode)
         val fbLine=dataBean.fbLine//划线积分
-        headerBinding.inGoodsInfo.model=dataBean
-        headerBinding.inVip.model=dataBean
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
         //品牌参数
@@ -158,6 +156,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         dataBean.skuCodeTxts=skuCodeTxtArr
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
+        headerBinding.inVip.model=dataBean
+        headerBinding.inGoodsInfo.model=dataBean
         bindingBtn()
     }
     private fun bindingBtn(){

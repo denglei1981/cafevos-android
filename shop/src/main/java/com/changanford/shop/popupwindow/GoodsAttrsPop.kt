@@ -47,16 +47,21 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity,{ code ->
             _skuCode=code
-            val skuItem=dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]
-            dataBean.skuImg=skuItem.skuImg
-            viewDataBinding.sku= skuItem
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(skuItem.skuImg),viewDataBinding.imgCover)
-            val limitBuyNum:String=dataBean.limitBuyNum?:"0"
-            val htmlStr=if(limitBuyNum!="0")"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
-            WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${skuItem.stock}件）")
-            val max: String =if(limitBuyNum!="0")limitBuyNum else skuItem.stock
-            viewDataBinding.addSubtractView.setMax(max.toInt())
-            bindingBtn(skuItem.stock.toInt(),viewDataBinding.btnSubmit)
+            dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0].apply {
+                dataBean.skuImg=skuImg
+                dataBean.skuId=skuId
+                dataBean.fbPrice=fbPrice
+                dataBean.stock=stock.toInt()
+                viewDataBinding.sku= this
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
+                val limitBuyNum:String=dataBean.limitBuyNum?:"0"
+                val htmlStr=if(limitBuyNum!="0")"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
+                WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${stock}件）")
+                val max: String =if(limitBuyNum!="0")limitBuyNum else stock
+                viewDataBinding.addSubtractView.setMax(max.toInt())
+                bindingBtn(stock.toInt(),viewDataBinding.btnSubmit)
+            }
+
         })
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE

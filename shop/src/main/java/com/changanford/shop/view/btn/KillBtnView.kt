@@ -14,10 +14,10 @@ import com.changanford.shop.R
  * @Description : KillBtnView
  */
 class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(context,attrs) {
-    private var btnStates=0//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8余额不足
+    private var btnStates=-1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8余额不足 9提交订单
     private val statesTxt= arrayOf(R.string.str_toSnapUp,R.string.str_hasGone,
         R.string.str_hasEnded, R.string.str_remindMe,R.string.str_cancelReminder,
-        R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut,R.string.str_notStart,R.string.str_lackBalance)
+        R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut,R.string.str_notStart,R.string.str_lackBalance,R.string.str_submitOrder)
     init {
         initAttributes(context, attrs)
     }
@@ -25,7 +25,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
     private fun initAttributes(context: Context, attrs: AttributeSet?) {
         //获取自定义属性
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KillBtn)
-        btnStates=typedArray.getInt(R.styleable.KillBtn_btn_states,0)
+        btnStates=typedArray.getInt(R.styleable.KillBtn_btn_states,-1)
         typeface= Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
         setStates(btnStates)
     }
@@ -63,8 +63,8 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.color_37AA74))
                 isEnabled=true
             }
-            //立即兑换
-            5->{
+            //立即兑换、提交订单
+            5,9->{
                 setBackgroundResource(R.drawable.btn_selector)
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true
