@@ -168,8 +168,6 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                 else -> text=""
             }
         }
-
-
     }
 
     /**
