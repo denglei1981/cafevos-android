@@ -70,7 +70,9 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
             //列表为null且是刷新数据或者第一次加载数据，此时显示EmptyLayout
             if (newData.isNullOrEmpty() && pageSize == 1) {
                 //清数据
+//                data.clear()
                 data.clear()
+                addData(newData ?: arrayListOf())
                 //显示EmptyLayout
                 //需要加载到Adapter自己实现到showEmptyLayout
                 showEmpty()?.let {

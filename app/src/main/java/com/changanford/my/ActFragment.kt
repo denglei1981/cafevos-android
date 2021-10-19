@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var type: String = ""
     var userId: String = ""
+    var isRefresh: Boolean = false
 
     val actAdapter: ActAdapter by lazy {
         ActAdapter()
@@ -61,6 +62,19 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyAct.smartCommonLayout
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            isRefresh = false
+            initRefreshData(1)
+        }
     }
 
     override fun initRefreshData(pageSize: Int) {
