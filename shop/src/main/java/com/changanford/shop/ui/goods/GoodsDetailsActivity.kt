@@ -98,7 +98,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 }
             )
         })
-        viewModel.queryGoodsDetails(spuId)
+        viewModel.queryGoodsDetails(spuId,true)
     }
     fun onClick(v:View){
         val vid=v.id

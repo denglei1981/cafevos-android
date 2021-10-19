@@ -104,9 +104,9 @@ class GoodsViewModel: BaseViewModel() {
      * 获取商品详情数据
      * [spuId]商品id  108
     * */
-    fun queryGoodsDetails(spuId:String){
+    fun queryGoodsDetails(spuId:String,showLoading: Boolean = false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading) {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(randomKey), body.body(randomKey))
