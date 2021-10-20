@@ -36,7 +36,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  *  新闻列表
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
-    OnRefreshListener, OnLoadMoreListener {
+    OnLoadMoreListener {
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
@@ -53,8 +53,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.smartLayout.setEnableRefresh(false)
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
 
@@ -77,9 +77,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
         }
 
-        binding.smartLayout.setOnRefreshListener(this)
+//        binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
-        onRefresh(binding.smartLayout)
+        homeRefersh()
         setLoadSir(binding.smartLayout)
 
     }
@@ -94,7 +94,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 binding.recyclerView,
                 false
             )
-            var newsBannerAdapter = NewsBannerAdapter()
+            val newsBannerAdapter = NewsBannerAdapter()
             headNewBinding?.let {
                 newsListAdapter.addHeaderView(it.root, 0)
                 it.bViewpager.setAdapter(newsBannerAdapter)
@@ -166,7 +166,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     }
                     showContent()
                     newsListAdapter.setNewInstance(dataList)
-                    binding.smartLayout.finishRefresh()
+                    (parentFragment as HomeV2Fragment).stopRefresh()
+//                    binding.smartLayout.finishRefresh()
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
@@ -202,12 +203,18 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     }
 
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        viewModel.getSpecialList()
-        viewModel.getNewsList(false)
-    }
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//        viewModel.getSpecialList()
+//        viewModel.getNewsList(false)
+//    }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         viewModel.getNewsList(true)
+    }
+
+
+    fun homeRefersh() {
+        viewModel.getSpecialList()
+        viewModel.getNewsList(false)
     }
 }
