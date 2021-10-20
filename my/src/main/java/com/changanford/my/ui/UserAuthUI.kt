@@ -359,8 +359,9 @@ class UserAuthUI : BaseMineUI<UiUniUserAuthBinding, SignViewModel>() {
             it.onSuccess {
                 ConfirmTwoBtnPop(this)
                     .apply {
-                        contentText.text = "已提交认证，等待审核"
+                        contentText.text = "提交成功，请等待审核"
                         btnConfirm.text = "确认"
+                        btnConfirm.setTextColor(Color.parseColor("#1B3B89"))
                         btnCancel.visibility = View.GONE
                         btnConfirm.setOnClickListener {
                             dismiss()

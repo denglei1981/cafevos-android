@@ -29,6 +29,8 @@ import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  *  文件名：AllMedalListUI
@@ -40,9 +42,11 @@ import razerdp.basepopup.BasePopupWindow
 @Route(path = ARouterMyPath.AllMedalUI)
 class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
-    private var medalMap: HashMap<String, ArrayList<MedalListBeanItem>> = HashMap()
+    private var medalMap: MutableMap<Int, ArrayList<MedalListBeanItem>> = TreeMap { o1, o2 ->
+        o1.compareTo(o2)
+    }
 
-    private val titles: ArrayList<String> = ArrayList()
+    private val titles: ArrayList<MedalListBeanItem> = ArrayList()
 
     private var oldPosition = 0
 
@@ -59,11 +63,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->
-                    var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalTypeName]
+                    var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalType]
                     if (null == list) {
                         list = ArrayList()
                         list.add(item)
-                        medalMap[item.medalTypeName] = list
+                        medalMap[item.medalType] = list
+                        titles.add(item)
                     } else {
                         list.add(item)
                     }
@@ -79,13 +84,15 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                         binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
                     }
                 }
-                medalMap.filterKeys { key ->
-                    titles.add(key)
-                }
                 if (num == 0) {
                     binding.imWithVipNum.text = "未获取勋章"
                 } else {
                     binding.imWithVipNum.text = "${num}枚勋章"
+                }
+                if (titles.size > 0) {
+                    var medalItem = MedalListBeanItem(medalTypeName = "全部", medalType = 0)
+                    titles.add(0, medalItem)
+                    medalMap[0] = l
                 }
                 initViewpager()
             }
@@ -115,7 +122,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MedalFragment.newInstance(medalMap[titles[position]])
+                    return MedalFragment.newInstance(medalMap[titles[position].medalType])
                 }
             }
 
@@ -161,7 +168,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
                 val itemHelpTabBinding = ItemMedalTabBinding.inflate(layoutInflater)
-                itemHelpTabBinding.tvTab.text = titles[tabPosition]
+                itemHelpTabBinding.tvTab.text = titles[tabPosition].medalTypeName
                 //解决第一次进来item显示不完的bug
                 itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
                 if (tabPosition == 0) {
