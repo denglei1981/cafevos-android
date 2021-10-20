@@ -8,7 +8,6 @@ import android.view.WindowManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.DialogBottomBean
-import com.changanford.common.bean.FeedbackTags
 import com.changanford.common.bean.FeedbackTagsItem
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -89,6 +88,10 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
             }
             if (binding.feedbackInput.text.toString().isEmpty()) {
                 ToastUtils.showLongToast("请输入问题描述",this)
+                return@setOnClickListener
+            }
+            if (binding.inputName.text.isNullOrEmpty()) {
+                ToastUtils.showLongToast("请输入正确的姓名",this)
                 return@setOnClickListener
             }
             if (!MineUtils.isMobileNO(binding.inputMobile.text.toString())) {

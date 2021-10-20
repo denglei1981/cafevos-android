@@ -209,7 +209,7 @@ interface NetWorkApi {
     suspend fun getFeedbackTag(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<FeedbackTags>
+    ): CommonResponse<ArrayList<FeedbackTagsItem>>
 
     /**
      * 添加意见反馈 所以标签

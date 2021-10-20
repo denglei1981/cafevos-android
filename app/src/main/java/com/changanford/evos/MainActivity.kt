@@ -139,7 +139,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         })
         updateViewModel = createViewModel(UpdateViewModel::class.java)
-//        updateViewModel.getUpdateInfo()
+        updateViewModel.getUpdateInfo()
         updateViewModel._updateInfo.observe(this, { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {

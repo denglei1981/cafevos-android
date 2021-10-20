@@ -138,7 +138,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="14dp"
                     android:background="@drawable/edit_feedback_input_bg"
-                    android:hint="请输入您的姓名(选填)"
+                    android:hint="请输入您的姓名(必填)"
                     android:maxLines="1"
                     android:paddingLeft="8dp"
                     android:textColor="@color/text_color_08"

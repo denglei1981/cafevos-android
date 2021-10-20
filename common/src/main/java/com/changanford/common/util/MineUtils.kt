@@ -31,6 +31,7 @@ import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_privacy
 import com.changanford.common.util.MConstant.H5_regTerms
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.CallPhoneDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -855,11 +856,15 @@ object MineUtils {
                     override fun onPermissionOk(permission: com.qw.soul.permission.bean.Permission?) {
                         phone?.let {
                             // 拨号：激活系统的拨号组件
-                            val intent = Intent() // 意图对象：动作 + 数据
-                            intent.action = Intent.ACTION_CALL // 设置动作
-                            val data = Uri.parse("tel:${phone}") // 设置数据
-                            intent.data = data
-                            activity.startActivity(intent) // 激活Activity组件
+                            CallPhoneDialog(activity,"您确定拨打:${phone}").setOnClickItemListener(object :CallPhoneDialog.OnClickItemListener{
+                                override fun onClickItem(position: Int, str: String) {
+                                    val intent = Intent() // 意图对象：动作 + 数据
+                                    intent.action = Intent.ACTION_CALL // 设置动作
+                                    val data = Uri.parse("tel:${phone}") // 设置数据
+                                    intent.data = data
+                                    activity.startActivity(intent) // 激活Activity组件
+                                }
+                            }).show()
                         }
                     }
 

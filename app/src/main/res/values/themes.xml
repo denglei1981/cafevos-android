@@ -59,4 +59,10 @@
     <style name="CustomToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">0dp</item><!-- 设置该属性边距为0dp-->
     </style>
+    <!--微信支付-->
+    <style name="Theme.AppCompat.NoActionBar.Transparent" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
