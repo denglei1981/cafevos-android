@@ -88,40 +88,49 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
-            tools:text="重庆长安福特EVOS即将在今年华丽登场啊啦啦啦啦啦啦"
             android:textColor="#ff333333"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/ll_info"
             app:layout_constraintStart_toStartOf="@+id/ll_info"
-            app:layout_constraintTop_toBottomOf="@+id/ll_info" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_info"
+            tools:text="重庆长安福特EVOS即将在今年华丽登场啊啦啦啦啦啦啦" />
 
-        <com.changanford.home.widget.ExpandableTextView
-            android:id="@+id/tv_content"
+        <WebView
+            android:id="@+id/web_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="@dimen/dp_20"
-            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，
-真的简约大气，炫酷的开机动画，全自动的语音控制。
-长安福特这一次给大家一个好大的惊喜，刚看到这款车
-的时候，我真的好喜欢，特别那一米多的中控显示屏，
-真的简约大气，炫酷的开机动画，全自动的语音控制。
-长安福特这一次给大家一个好大的惊喜"
-            android:textColor="#ff333333"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/ll_info"
-            app:layout_constraintStart_toStartOf="@+id/ll_info"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="25dp"
+            android:text="展开详情"
+            android:textColor="@color/blue_tab"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/web_content" />
 
         <LinearLayout
             android:id="@+id/ll_special"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_30"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/shape_gray_99_bg"
             app:layout_constraintStart_toStartOf="@+id/ll_info"
-            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_open"
             app:layout_constraintWidth_percent="0.62">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -154,12 +163,12 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:scaleType="centerCrop"
-            tools:src="@drawable/image_recommend_test"
             app:layout_constraintDimensionRatio="335:150"
             app:layout_constraintEnd_toEndOf="@+id/ll_info"
             app:layout_constraintStart_toStartOf="@+id/ll_info"
             app:layout_constraintTop_toBottomOf="@+id/ll_special"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@drawable/image_recommend_test"
             tools:visibility="visible" />
 
         <View

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.NewsValueData
@@ -30,6 +31,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
@@ -111,15 +113,6 @@ class NewsVideoDetailActivity :
         bus()
     }
 
-    fun setExpandView() {
-        val width: Int = ScreenUtils.getScreenWidth(this) + 40
-        inflateHeader.tvContent.initWidth(width)
-        inflateHeader.tvContent.maxLines = 3
-        inflateHeader.tvContent.setHasAnimation(true)
-        inflateHeader.tvContent.setCloseInNewLine(true)
-        inflateHeader.tvContent.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
-        inflateHeader.tvContent.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
-    }
 
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
         DataBindingUtil.inflate(
@@ -221,10 +214,16 @@ class NewsVideoDetailActivity :
     }
 
     var newsDetailData: NewsDetailData? = null
+
+    //web帮助类
+    private var webHelper: CustomWebHelper? = null
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
+        inflateHeader.ivAvatar.setOnClickListener{
+            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        }
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
         if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
@@ -234,6 +233,15 @@ class NewsVideoDetailActivity :
             inflateHeader.ivPic.visibility = View.GONE
         }
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
+        inflateHeader.tvTime.text = newsDetailData.timeStr
+
+        if(newsDetailData.specialTopicId>0){
+            inflateHeader.llSpecial.visibility=View.VISIBLE
+        }else{
+            inflateHeader.llSpecial.visibility=View.GONE
+        }
+
+
         inflateHeader.llSpecial.setOnClickListener {// 跳转到专题详情。
             JumpUtils.instans?.jump(8, newsDetailData.specialTopicId.toString())
         }
@@ -246,14 +254,12 @@ class NewsVideoDetailActivity :
                 followAction()
             }
         }
-
         binding.llComment.tvNewsToLike.setPageTitleText(
             CountUtils.formatNum(
                 newsDetailData.getLikeCount(),
                 false
             ).toString()
         )
-
         binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
         binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())
         binding.llComment.tvNewsToCollect.setPageTitleText(newsDetailData.getCollectCount())
@@ -275,8 +281,26 @@ class NewsVideoDetailActivity :
                 false
             )
         }
-        setExpandView()
-        inflateHeader.tvContent.setOriginalText(Html.fromHtml(newsDetailData.content))
+        if (TextUtils.isEmpty(newsDetailData.content)) {
+            inflateHeader.tvOpen.visibility = View.GONE
+        }
+        if (webHelper == null) {
+            webHelper = CustomWebHelper(
+                BaseApplication.curActivity,
+                inflateHeader.webContent
+            )
+        }
+        webHelper?.loadDataWithBaseURL(newsDetailData.content)
+        inflateHeader.webContent.visibility = View.GONE
+        inflateHeader.tvOpen.setOnClickListener {
+            if (inflateHeader.webContent.visibility == View.GONE) {
+                inflateHeader.webContent.visibility = View.VISIBLE
+                inflateHeader.tvOpen.text = "收起详情"
+            } else {
+                inflateHeader.webContent.visibility = View.GONE
+                inflateHeader.tvOpen.text = "展开详情"
+            }
+        }
     }
 
     // 关注或者取消
