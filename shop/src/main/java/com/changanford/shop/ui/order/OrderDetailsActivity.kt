@@ -44,6 +44,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private var orderNo:String=""
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var timeCountControl:PayTimeCountControl?=null
+    private var isInitLiveDataBus=false
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     override fun initView() {
@@ -148,7 +149,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 }
             }
         }
-        bindingAddressInfo(dataBean.addressInfo)
+        bindingAddressInfo(dataBean.addressInfo,false)
         //会员优惠
         val preferentialFb=dataBean.preferentialFb
         if(null!=preferentialFb&&"0"!=preferentialFb){
@@ -257,11 +258,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         dataBean.apply {
             if("WAIT_PAY"==orderStatus){//修改地址
                 JumpUtils.instans?.jump(20,"1")
-                LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
-                    it?.let {
-                        bindingAddressInfo(it,true)
-                    }
-                })
+                if(!isInitLiveDataBus){
+                    isInitLiveDataBus=true
+                    LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
+                        it?.let {
+                            bindingAddressInfo(it,true)
+                        }
+                    })
+                }
             }
         }
     }
