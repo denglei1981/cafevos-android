@@ -215,10 +215,18 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             setJoinType(it.isApply)
             initListener(it.name)
 
-            if (it.isOwner == 1) {
+            if (it.isOwner == 1) {//是圈主
                 binding.topContent.tvJoin.visibility = View.INVISIBLE
             } else {
-                binding.topContent.tvJoin.visibility = View.VISIBLE
+                if (it.isApply == 0 || it.isApply == 1) {//未加入和审核中
+                    binding.topContent.tvJoin.visibility = View.VISIBLE
+                } else {
+                    if (it.isViewApplyMan == 1) {//是否显示申请管理
+                        binding.topContent.tvJoin.visibility = View.VISIBLE
+                    } else {
+                        binding.topContent.tvJoin.visibility = View.INVISIBLE
+                    }
+                }
             }
 
             binding.barTitleTv.text = it.name

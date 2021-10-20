@@ -281,6 +281,11 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
+                    android:id="@+id/view_long_type"
+                    android:visibility="gone"
+                    layout="@layout/circle_details_long_type"/>
+
+                <include
                     layout="@layout/circle_line_10"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"

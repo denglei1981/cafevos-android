@@ -7,6 +7,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
+import com.changanford.circle.adapter.PostDetailsLongAdapter
+import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostGraphicBinding
@@ -79,88 +81,128 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     }
                 )
                 tvShareNum.text = mData.shareCount.toString()
-                if (mData.type == 1) {//webView布局
-                    if (!mData.city.isNullOrEmpty()) {
-                        tvOneCity.visibility = View.VISIBLE
-                        tvOneCity.text = mData.city
-                    }
-                    clImageAndText.visibility = View.VISIBLE
-                    clImage.visibility = View.GONE
-                    if (mData.isGood == 1) {
-                        MUtils.setDrawableStar(tvOneTitle, R.mipmap.circle_very_post)
-                    }
-                    tvOneTitle.text = mData.title
-                    if (mData.circleName.isNullOrEmpty()) {
-                        tvOneFrom.visibility = View.GONE
-                    } else {
-                        MUtils.postDetailsFrom(
-                            tvOneFrom,
-                            mData.circleName,
-                            mData.circleId.toString()
-                        )
-                    }
-                    tvOneTime.text = "发布于   ${mData.timeStr}"
-
-                    //webview加载文本
-                    if (webHelper == null) webHelper =
-                        CustomWebHelper(
-                            requireActivity(),
-                            binding.webView
-                        )
-                    mData.content?.let { webHelper!!.loadDataWithBaseURL(it) }
-                } else {
-                    clImageAndText.visibility = View.GONE
-                    clImage.visibility = View.VISIBLE
-
-                    if (!mData.city.isNullOrEmpty()) {
-                        tvTwoCity.visibility = View.VISIBLE
-                        tvTwoCity.text = mData.city
-                    }
-
-                    mData.imageList?.let {
-                        banner.run {
-                            setAutoPlay(true)
-                            setScrollDuration(500)
-                            setCanLoop(true)
-                            setIndicatorVisibility(View.GONE)
-                            setIndicatorGravity(IndicatorGravity.CENTER)
-                            setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
-                            setAdapter(PostBarBannerAdapter())
-                            registerOnPageChangeCallback(object :
-                                ViewPager2.OnPageChangeCallback() {
-                                override fun onPageSelected(position: Int) {
-                                    super.onPageSelected(position)
-                                    tvPage.text = "${position + 1}/${mData.imageList.size}"
-                                }
-                            }).create()
+                when (mData.type) {
+                    1 -> {//webView布局
+                        if (!mData.city.isNullOrEmpty()) {
+                            tvOneCity.visibility = View.VISIBLE
+                            tvOneCity.text = mData.city
                         }
-                        banner.refreshData(mData.imageList)
-                        tvPage.text = "1/${mData.imageList.size}"
-                        if (mData.imageList.size == 1) {
-                            tvPage.visibility = View.GONE
+                        clImageAndText.visibility = View.VISIBLE
+                        clImage.visibility = View.GONE
+                        if (mData.isGood == 1) {
+                            MUtils.setDrawableStar(tvOneTitle, R.mipmap.circle_very_post)
+                        }
+                        tvOneTitle.text = mData.title
+                        if (mData.circleName.isNullOrEmpty()) {
+                            tvOneFrom.visibility = View.GONE
+                        } else {
+                            MUtils.postDetailsFrom(
+                                tvOneFrom,
+                                mData.circleName,
+                                mData.circleId.toString()
+                            )
+                        }
+                        tvOneTime.text = "发布于   ${mData.timeStr}"
+
+                        //webview加载文本
+                        if (webHelper == null) webHelper =
+                            CustomWebHelper(
+                                requireActivity(),
+                                binding.webView
+                            )
+                        mData.content?.let { webHelper!!.loadDataWithBaseURL(it) }
+                    }
+                    2 -> {//带banner的帖子
+                        clImageAndText.visibility = View.GONE
+                        clImage.visibility = View.VISIBLE
+
+                        if (!mData.city.isNullOrEmpty()) {
+                            tvTwoCity.visibility = View.VISIBLE
+                            tvTwoCity.text = mData.city
+                        }
+
+                        mData.imageList?.let {
+                            banner.run {
+                                setAutoPlay(true)
+                                setScrollDuration(500)
+                                setCanLoop(true)
+                                setIndicatorVisibility(View.GONE)
+                                setIndicatorGravity(IndicatorGravity.CENTER)
+                                setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
+                                setAdapter(PostBarBannerAdapter())
+                                registerOnPageChangeCallback(object :
+                                    ViewPager2.OnPageChangeCallback() {
+                                    override fun onPageSelected(position: Int) {
+                                        super.onPageSelected(position)
+                                        tvPage.text = "${position + 1}/${mData.imageList.size}"
+                                    }
+                                }).create()
+                            }
+                            banner.refreshData(mData.imageList)
+                            tvPage.text = "1/${mData.imageList.size}"
+                            if (mData.imageList.size == 1) {
+                                tvPage.visibility = View.GONE
+                            }
+                        }
+
+                        if (mData.isGood == 1) {
+                            MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
+                        }
+                        tvTwoTitle.text = mData.title
+                        if (mData.circleName.isNullOrEmpty()) {
+                            tvTwoFrom.visibility = View.GONE
+                        } else {
+                            MUtils.postDetailsFrom(
+                                tvTwoFrom,
+                                mData.circleName,
+                                mData.circleId.toString()
+                            )
+                        }
+                        if (mData.topicName.isNullOrEmpty()) {
+                            tvTalkOut.visibility = View.GONE
+                        }
+                        tvTalkOut.text = mData.topicName
+                        tvTwoTime.text = "发布于   ${mData.timeStr}"
+                        tvContent.text = mData.content
+                    }
+                    else -> {
+                        clImageAndText.visibility = View.GONE
+                        clImage.visibility = View.GONE
+                        viewLongType.clImage.visibility = View.VISIBLE
+                        viewLongType.run {
+                            if (!mData.city.isNullOrEmpty()) {
+                                tvTwoCity.visibility = View.VISIBLE
+                                tvTwoCity.text = mData.city
+                            }
+
+
+                            if (mData.isGood == 1) {
+                                MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
+                            }
+                            tvTwoTitle.text = mData.title
+                            if (mData.circleName.isNullOrEmpty()) {
+                                tvTwoFrom.visibility = View.GONE
+                            } else {
+                                MUtils.postDetailsFrom(
+                                    tvTwoFrom,
+                                    mData.circleName,
+                                    mData.circleId.toString()
+                                )
+                            }
+                            if (mData.topicName.isNullOrEmpty()) {
+                                tvTalkOut.visibility = View.GONE
+                            }
+                            tvTalkOut.text = mData.topicName
+                            tvTwoTime.text = "发布于   ${mData.timeStr}"
+                            tvOneContent.text = mData.content
+                            val adapter = PostDetailsLongAdapter(requireContext())
+                            adapter.setItems(mData.imageList as ArrayList<ImageList>?)
+                            tvContent.adapter = adapter
+
                         }
                     }
-
-                    if (mData.isGood == 1) {
-                        MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
-                    }
-                    tvTwoTitle.text = mData.title
-                    if (mData.circleName.isNullOrEmpty()) {
-                        tvTwoFrom.visibility = View.GONE
-                    } else {
-                        MUtils.postDetailsFrom(
-                            tvTwoFrom,
-                            mData.circleName,
-                            mData.circleId.toString()
-                        )
-                    }
-                    if (mData.topicName.isNullOrEmpty()) {
-                        tvTalkOut.visibility = View.GONE
-                    }
-                    tvTalkOut.text = mData.topicName
-                    tvTwoTime.text = "发布于   ${mData.timeStr}"
-                    tvContent.text = mData.content
                 }
+
             }
         }
 
