@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -31,7 +32,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  *  大咖
  * */
 class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListViewModel>(),
-    OnRefreshListener, OnLoadMoreListener {
+     OnLoadMoreListener {
     private val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
         BigShotUserListAdapter()
     }
@@ -49,14 +50,15 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
     override fun initView() {
         setLoadSir(binding.refreshLayout)
+        binding.refreshLayout.setEnableRefresh(false)
         binding.recyclerViewH.adapter = bigShotUserListAdapter
         binding.recyclerViewH.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewV.adapter = bigShotPostListAdapter
         binding.recyclerViewV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        binding.refreshLayout.setOnRefreshListener(this)
+//        binding.refreshLayout.setOnRefreshListener(this)
         binding.refreshLayout.setOnLoadMoreListener(this)
-        onRefresh(binding.refreshLayout)
-
+//        onRefresh(binding.refreshLayout)
+         homeRefersh()
         bigShotUserListAdapter.setOnItemClickListener { adapter, view, position ->
             val item = bigShotUserListAdapter.getItem(position)
             JumpUtils.instans!!.jump(35,item.userId.toString())
@@ -104,11 +106,12 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         viewModel.bigShotPostLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
-                binding.refreshLayout.finishRefresh()
+
                 if (it.isLoadMore) {
                     binding.refreshLayout.finishLoadMore()
                     bigShotPostListAdapter.addData(it.data.dataList)
                 } else {
+                    (parentFragment as HomeV2Fragment).stopRefresh()
                     bigShotPostListAdapter.setNewInstance(it.data.dataList)
                 }
                 if (it.data.dataList.size < DEFAULT_PAGE_SIZE_THIRTY) { // 是否能加载更多。
@@ -145,10 +148,10 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     override fun onRetryBtnClick() {
 
     }
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        viewModel.getRecommendList()
-        viewModel.getBigShotPost(false)
-    }
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//        viewModel.getRecommendList()
+//        viewModel.getBigShotPost(false)
+//    }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         viewModel.getBigShotPost(true)
@@ -172,5 +175,8 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
 
 
-
+    fun homeRefersh() {
+        viewModel.getRecommendList()
+        viewModel.getBigShotPost(false)
+    }
 }

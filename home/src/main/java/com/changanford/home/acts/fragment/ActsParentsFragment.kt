@@ -2,7 +2,9 @@ package com.changanford.home.acts.fragment
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toastShow
+import com.changanford.home.HomeV2Fragment
 import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.bean.CircleHeadBean
@@ -10,7 +12,7 @@ import com.changanford.home.databinding.FragmentActsParentBinding
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),OnRefreshListener {
+class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>() {
 
 
     companion object {
@@ -21,14 +23,25 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
             return fg
         }
     }
+
     private val adapter by lazy {
-        ActsMainAdapter(requireContext(), this,requireActivity())
+        ActsMainAdapter(requireContext(), this, requireActivity())
     }
+
     override fun initView() {
+        binding.refreshLayout.setEnableRefresh(false)
         binding.ryActs.setStickyHeight(0)
         binding.ryActs.adapter = adapter
-        adapter.setItems(arrayListOf("",""))
+        adapter.setItems(arrayListOf("", ""))
+        binding.ryActs.setStickyListener {
+            if(it){
+                LiveDataBus.get().with("Gone").postValue("")
+            }else{
+                LiveDataBus.get().with("Visi").postValue("")
+            }
+        }
     }
+
     override fun initData() {
         viewModel.getBanner()
     }
@@ -36,11 +49,13 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     override fun onRetryBtnClick() {
 
     }
+
     override fun observe() {
         super.observe()
         viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess) {
-                binding.refreshLayout.finishRefresh()
+//                binding.refreshLayout.finishRefresh()
+                (parentFragment as HomeV2Fragment).stopRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
             } else {
                 toastShow(it.message)
@@ -48,8 +63,13 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         })
     }
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//        viewModel.getBanner()
+//        adapter.actsChildFragment.getActList(false,adapter.allUnitCode,adapter.allActsCode)
+//    }
+
+    fun homeRefersh() {
         viewModel.getBanner()
-        adapter.actsChildFragment.getActList(false,adapter.allUnitCode,adapter.allActsCode)
+        adapter.actsChildFragment.getActList(false, adapter.allUnitCode, adapter.allActsCode)
     }
 }

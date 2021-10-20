@@ -26,8 +26,30 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_auth_bg"
-                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/auth_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_17"
+                    android:layout_marginEnd="@dimen/dp_13"
+                    android:background="@drawable/shape_r_5_c_ff"
+                    android:drawableLeft="@mipmap/ic_ford_auth_status_success"
+                    android:drawablePadding="@dimen/dp_2"
+                    android:gravity="center"
+                    android:minWidth="@dimen/dp_64"
+                    android:minHeight="@dimen/dp_23"
+                    android:paddingStart="@dimen/dp_7"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingEnd="@dimen/dp_7"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:text="已认证"
+                    android:textColor="#1B3B89"
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/uni_bg" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/uni_auth_condition_rv"
@@ -118,19 +140,84 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ford_card" />
 
-                <TextView
-                    android:id="@+id/uni_hint"
+                <RelativeLayout
+                    android:id="@+id/ford_hint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:paddingBottom="4dp"
-                    android:text="请耐心等待审核，审核时间为1-3个工作日"
-                    android:textColor="#999999"
-                    android:textSize="@dimen/text_size_small"
-                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/uni_submit_btn" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/uni_submit_btn"
+                    app:layout_goneMarginTop="@dimen/dp_20">
+
+
+                    <TextView
+                        android:id="@+id/uni_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:paddingBottom="4dp"
+                        android:text="请耐心等待审核，审核时间为1-3个工作日"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/text_size_small"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/hint_update_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_32"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="信息有误？"
+                            android:textColor="#999999"
+                            android:textSize="@dimen/sp_12" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_update_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="更新认证资料"
+                            android:textColor="#1B3B89"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/hint_reason_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_32"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_reason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_20"
+                            android:layout_marginEnd="@dimen/dp_20"
+                            android:text="原因："
+                            android:textColor="#999999"
+                            android:textSize="@dimen/sp_12" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_admen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_11"
+                            android:text="点击修改资料"
+                            android:textColor="#1B3B89"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:id="@+id/line1"
@@ -138,7 +225,7 @@
                     android:layout_height="10dp"
                     android:layout_marginTop="10dp"
                     android:background="#f2f2f2"
-                    app:layout_constraintTop_toBottomOf="@+id/uni_hint" />
+                    app:layout_constraintTop_toBottomOf="@+id/ford_hint_layout" />
 
 
                 <androidx.recyclerview.widget.RecyclerView

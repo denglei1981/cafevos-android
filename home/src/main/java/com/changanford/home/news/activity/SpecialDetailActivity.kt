@@ -83,9 +83,9 @@ class SpecialDetailActivity :
 
 
   fun setExpandView(){
-      val width: Int = ScreenUtils.getScreenWidth(this)
+      val width: Int = ScreenUtils.getScreenWidth(this)+40
       binding.layoutCollBar.tvTopic.initWidth(width)
-      binding.layoutCollBar.tvTopic.setMaxLines(3)
+      binding.layoutCollBar.tvTopic.maxLines = 3
       binding.layoutCollBar.tvTopic.setHasAnimation(true)
       binding.layoutCollBar.tvTopic.setCloseInNewLine(true)
       binding.layoutCollBar.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
@@ -105,8 +105,8 @@ class SpecialDetailActivity :
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }
                 binding.specialDetailData = it.data
+                binding.layoutCollBar.tvTopic.setOriginalText(it.data.summary)
                 GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
-//                GlideUtils.loadTransformLocal(it.data.getPicUrl(), RequestOptions.bitmapTransform(BlurTransformation(25, 8)),binding.layoutCollBar.ivTopBg)
                 Glide.with(this)
                     .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 2)))

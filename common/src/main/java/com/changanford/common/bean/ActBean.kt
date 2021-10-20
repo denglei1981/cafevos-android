@@ -3,8 +3,6 @@ package com.changanford.common.bean
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  *  文件名：ActBean
@@ -68,16 +66,19 @@ data class InfoDataBean(
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
         return commentCountResult
     }
+
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
         val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
+
     fun getCommentDiscussAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("讨论")
         val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
+
     fun getContentStr(): String {
         if (!TextUtils.isEmpty(content)) {
             return content
@@ -87,6 +88,7 @@ data class InfoDataBean(
         }
         return ""
     }
+
     fun getPicCover(): String { // 获取封面。
         if (!TextUtils.isEmpty(pics)) {
             val asList = listOf(pics.split(","))
@@ -94,14 +96,16 @@ data class InfoDataBean(
         }
         return ""
     }
-    fun getSubTitleStr():String{
-        return if(!TextUtils.isEmpty(specialTopicTitle)){
+
+    fun getSubTitleStr(): String {
+        return if (!TextUtils.isEmpty(specialTopicTitle)) {
             "#".plus(specialTopicTitle).plus("#")
-        }else{
+        } else {
             summary
         }
     }
 }
+
 data class AuthorBaseVo(
     val authorId: String,
     val avatar: String = "",
@@ -233,5 +237,6 @@ data class ActDataBean(
     val wonderfulId: Int = 0,
     val wonderfulType: Int = 0,
     var serverTime: Long = 0L,
-    val createTime: Long = 0L
+    val createTime: Long = 0L,
+    val browseCount: Long = 0L
 )

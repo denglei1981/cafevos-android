@@ -3,6 +3,8 @@ import android.graphics.Typeface
 import android.view.View
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
@@ -34,7 +36,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         addObserve()
         initKill()
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
-        binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108)  }
+        binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){

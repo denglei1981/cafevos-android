@@ -186,7 +186,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     .into(ivBg)
                 ivIcon.setCircular(5)
                 ivIcon.loadImage(it.pic)
-                tvNum.text = "${it.postsCount}帖子       ${it.likesCount}热度"
+                tvNum.text = "${it.postsCount}帖子       ${it.heat}热度"
                 tvType.text = it.name
                 tvContent.text = it.description
             }

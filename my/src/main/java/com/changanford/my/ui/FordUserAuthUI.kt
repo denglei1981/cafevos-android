@@ -22,6 +22,8 @@ import com.changanford.common.util.bus.LiveDataBusKey.MINE_MEMBER_INFO_ID
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_MEMBER_INFO_TYPE
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.setFordAuthFail
+import com.changanford.common.utilext.setFordAuthSuccess
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -283,6 +285,7 @@ class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
                         btnCancel.visibility = View.GONE
                         btnConfirm.setOnClickListener {
                             dismiss()
+                            getUniInfo()
                         }
                     }.showPopupWindow()
             }
@@ -314,6 +317,11 @@ class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
      */
     fun getUniInfo() {
         binding.uniSubmitBtn.isEnabled = true
+        binding.authStatus.visibility = View.GONE
+        binding.uniSubmitBtn.visibility = View.GONE
+        binding.hintUpdateLayout.visibility = View.GONE
+        binding.hintReasonLayout.visibility = View.GONE
+
         viewModel.getUserIdCard(
             memberId,
             memberType
@@ -324,19 +332,28 @@ class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
                     "0" -> {
                         isEdit = true
                         binding.uniSubmitBtn.isEnabled = false
-                        binding.uniSubmitBtn.text = "成为${title}审核中"
                         binding.uniHint.visibility = View.VISIBLE
                     }
                     "1" -> {
                         isEdit = true
-                        binding.uniSubmitBtn.isEnabled = false
-                        binding.uniSubmitBtn.text = "您已成为${title}"
+                        binding.authStatus.setFordAuthSuccess()
+                        binding.hintUpdateLayout.visibility = View.VISIBLE
+                        binding.tvUpdateInfo.setOnClickListener {
+                            binding.uniSubmitBtn.visibility = View.VISIBLE
+                            binding.uniSubmitBtn.isEnabled = true
+                        }
                     }
                     "2" -> {
-                        binding.uniSubmitBtn.isEnabled = true
-                        binding.uniSubmitBtn.text = "重新申请成为${title}"
-//                        binding.uniHint.visibility = View.VISIBLE
-//                        binding.uniHint.text = "审核不通过，原因：${response.}"
+                        binding.authStatus.setFordAuthFail()
+                        binding.hintReasonLayout.visibility = View.VISIBLE
+                        binding.tvAdmen.setOnClickListener {
+                            binding.uniSubmitBtn.visibility = View.VISIBLE
+                            binding.uniSubmitBtn.isEnabled = true
+                        }
+                        binding.tvReason.text = "审核不通过，原因：${response.reason}"
+                    }
+                    else -> {
+                        binding.uniSubmitBtn.visibility = View.VISIBLE
                     }
                 }
                 response?.conditionList?.let {

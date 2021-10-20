@@ -76,10 +76,9 @@ class PloySearchResultActivity :
 
         var searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
-        binding.rvAuto.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvAuto.adapter = sAdapter
-        binding.layoutSearch.searchContent.setText(searchContent)
+        binding.layoutSearch.searchContent.text = searchContent
         fragmentList.add(searchActsFragment)
         fragmentList.add(searchNewsFragment)
         fragmentList.add(searchPostFragment)
@@ -92,7 +91,9 @@ class PloySearchResultActivity :
         titleList.add(getString(R.string.home_search_user))
         pagerAdapter = SearchResultViewpagerAdapter(this, fragmentList)
         binding.viewpager.adapter = pagerAdapter
-
+        if(searchType!=-1){
+            binding.viewpager.currentItem=searchType
+        }
         binding.viewpager.isSaveEnabled = false
         binding.searchTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
@@ -102,7 +103,6 @@ class PloySearchResultActivity :
         )
         binding.searchTab.tabRippleColor = null
 //        setAppbarPercent()
-
         TabLayoutMediator(binding.searchTab, binding.viewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
 

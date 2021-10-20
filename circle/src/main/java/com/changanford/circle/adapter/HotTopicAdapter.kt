@@ -18,16 +18,16 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Time on 2021/9/23
  *Purpose
  */
-class HotTopicAdapter:
-    BaseQuickAdapter<HotPicItemBean,BaseViewHolder>( R.layout.item_hot_topic),LoadMoreModule {
+class HotTopicAdapter :
+    BaseQuickAdapter<HotPicItemBean, BaseViewHolder>(R.layout.item_hot_topic), LoadMoreModule {
 
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: HotPicItemBean) {
-        val binding =DataBindingUtil.bind<ItemHotTopicBinding>(holder.itemView)
+        val binding = DataBindingUtil.bind<ItemHotTopicBinding>(holder.itemView)
         binding?.let {
             MUtils.setTopMargin(binding.llContent, 18, holder.layoutPosition)
 
-            binding.tvContent.text="${item.postsCount}帖子     ${item.likesCount}热度"
+            binding.tvContent.text = "${item.postsCount}帖子     ${item.heat}热度"
 
             binding.bean = item
         }
