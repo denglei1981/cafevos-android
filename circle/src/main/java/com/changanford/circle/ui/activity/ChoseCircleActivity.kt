@@ -27,7 +27,9 @@ class ChoseCircleActivity : BaseActivity<ChooseCircleBinding, ChooseCircleViewMo
     }
 
     override fun initData() {
-
+        binding.title.barImgBack.setOnClickListener {
+            finish()
+        }
         binding.tvNocy.setOnClickListener {
             intent.putExtra("name", binding.tvNocy.text.toString())
             setResult(Activity.RESULT_OK, intent)

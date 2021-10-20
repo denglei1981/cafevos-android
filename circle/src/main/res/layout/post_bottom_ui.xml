@@ -14,7 +14,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/typerec"
             android:visibility="visible"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,6 +35,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="#fffafbfd"
         android:paddingBottom="10dp"
+        android:paddingTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -49,6 +50,7 @@
             android:layout_marginRight="25dp"
             android:paddingBottom="10dp"
             android:layout_marginBottom="2dp"
+            android:layout_marginLeft="25dp"
             android:paddingTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/iv_pic"
@@ -85,6 +87,7 @@
                 />
             <TextView
                 android:id="@+id/tv_pic"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
@@ -125,6 +128,7 @@
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
                 app:layout_constraintTop_toTopOf="@id/iv_pic"
                 android:text="话题"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_color"/>
@@ -154,6 +158,7 @@
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
                 app:layout_constraintTop_toTopOf="@id/iv_pic"
                 android:text="圈子"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_color"/>
@@ -181,6 +186,7 @@
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
                 app:layout_constraintTop_toTopOf="@id/iv_pic"
                 android:text="定位"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_color"/>
@@ -209,6 +215,7 @@
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
                 app:layout_constraintTop_toTopOf="@id/iv_pic"
                 android:text="表情"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_color"/>

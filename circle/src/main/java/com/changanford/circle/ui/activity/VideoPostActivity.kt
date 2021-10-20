@@ -141,6 +141,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
+            if (locaPostEntity!=null){
+                viewModel.deletePost(locaPostEntity!!.postsId)
+            }
             "发布成功".toast()
             finish()
         })
@@ -186,6 +189,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params.remove("city")
                     params.remove("province")
                     params.remove("cityCode")
+                    params.remove("address")
                     address= ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
@@ -270,8 +274,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
-
+            platename = locaPostEntity!!.plateName
+            circlename = locaPostEntity!!.circleName
             if (params["plate"]!=0) {
+
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
@@ -602,6 +608,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         params.remove("city")
                         params.remove("province")
                         params.remove("cityCode")
+                        params.remove("address")
                         address= ""
                     }
                 }
@@ -843,9 +850,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getIntExtra("circleId",0)
-                        var name = data.getStringExtra("name")
-                        buttomTypeAdapter.setData(3, ButtomTypeBean(name!!, 1, 3))
+                        params["circleId"] = data.getIntExtra("circleId", 0)
+                        circlename = data.getStringExtra("name").toString()
+                        buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {

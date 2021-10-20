@@ -152,6 +152,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
+            if (locaPostEntity!=null){
+                viewModel.deletePost(locaPostEntity!!.postsId)
+            }
             "发布成功".toast()
             finish()
         })
@@ -205,6 +208,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     params.remove("city")
                     params.remove("province")
                     params.remove("cityCode")
+                    params.remove("address")
                     address= ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
@@ -290,6 +294,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
+
+            platename = locaPostEntity!!.plateName
+            circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
@@ -523,6 +530,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         params.remove("city")
                         params.remove("province")
                         params.remove("cityCode")
+                        params.remove("address")
+                        address= ""
                     }
                 }
             }
@@ -638,8 +647,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         })
                 } else if (view.id == R.id.ivFm) {
                     val array = ArrayList<String>()
-                    array.add("编辑封面")
-                    array.add("删除封面")
+                    array.add("编辑图片")
+                    array.add("删除图片")
                     HomeBottomDialog(this@LongPostAvtivity, *array.toTypedArray())
                         .setOnClickItemListener(object :
                             HomeBottomDialog.OnClickItemListener {

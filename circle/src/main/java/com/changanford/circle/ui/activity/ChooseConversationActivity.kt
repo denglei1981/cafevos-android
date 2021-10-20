@@ -60,6 +60,9 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
         binding.tvNocy.setOnClickListener {
             finish()
         }
+        binding.title.barImgBack.setOnClickListener {
+            finish()
+        }
     }
 
     override fun initData() {
