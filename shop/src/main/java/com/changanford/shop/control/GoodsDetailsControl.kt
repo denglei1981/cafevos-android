@@ -132,6 +132,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
                         getSkuTxt(_skuCode)
+//                        WCommonUtil.hideKeyboard(binding.root)
                     }
                 }
             }

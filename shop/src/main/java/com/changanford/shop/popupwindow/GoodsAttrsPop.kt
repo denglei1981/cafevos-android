@@ -33,6 +33,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         initData()
     }
     private fun initView(){
+        setKeyboardAdaptive(true)
         viewDataBinding.recyclerView.adapter=mAdapter
         viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
         viewDataBinding.btnSubmit.setOnClickListener {

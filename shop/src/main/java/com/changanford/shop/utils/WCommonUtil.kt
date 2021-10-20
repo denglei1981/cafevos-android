@@ -17,6 +17,8 @@ import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
@@ -26,6 +28,9 @@ import com.google.android.material.tabs.TabLayout
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 /**
@@ -165,5 +170,49 @@ object WCommonUtil {
             e.printStackTrace()
         }
         return stringBuilder.toString()
+    }
+    /**
+     * 隐藏软键盘
+     * @param context :上下文
+     * @param view    :一般为EditText
+     */
+    fun hideKeyboard(view: View) {
+        val manager = view.context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    /**
+     * 显示软键盘
+     * @param context :上下文
+     * @param view    :一般为EditText
+     */
+    fun showKeyboard(v: View) {
+        v.isFocusable = true
+        v.isFocusableInTouchMode = true
+        v.requestFocus()
+        val imm =
+            v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(v, InputMethodManager.SHOW_FORCED)
+    }
+    /**
+     * 格式化数字（.00表示保留两位小数 不四舍五入）
+     * */
+    fun getHeatNum(heat: Double): String {
+        val df = DecimalFormat("#.0000")
+        df.roundingMode = RoundingMode.DOWN
+
+        return df.format(heat)
+    }
+    /**
+     * [newScale]几位小数
+     * */
+    fun getHeatNum(number:String,newScale:Int): BigDecimal {
+        return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_DOWN)
+    }
+    /**
+     *以百分比方式计数，并取两位小数
+     * */
+    fun getPercentage(number:String):String {
+       return DecimalFormat("#.##%").format(number)
     }
 }

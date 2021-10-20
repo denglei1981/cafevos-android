@@ -109,7 +109,7 @@ data class GoodsItemBean(
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
-    val seckillStock: Int = 0,
+    val seckillStock: Int? = 0,
     val sekillCount: Int = 0,
 )
 class Params

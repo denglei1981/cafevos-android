@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_135"
                 android:scaleType="centerCrop"
-                android:src="@drawable/shadow_1b51d9_t_5dp"
+                android:src="@mipmap/image_h_one_default"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/rounded5TopImageStyle" />
 
@@ -109,7 +109,7 @@
                 android:paddingStart="@dimen/dp_11"
                 app:start_txt="@string/str_limited"
                 app:end_txt="@string/str_a"
-                android:text="@{model.seckillNumLimit}"
+                android:text="@{model.seckillStock}"
                 android:textColor="@color/color_74889D"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
