@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
-                    android:text="明日签到可得20U币, 20成长值"
+                    android:text="明日签到可得20F币, 20成长值"
                     android:textColor="#B9B9B9"
                     android:textSize="@dimen/text_size_small"
                     app:layout_constraintBottom_toBottomOf="parent"

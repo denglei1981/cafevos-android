@@ -187,7 +187,8 @@ data class AuthBean(
     val memberId: Int = 0,
     val memberKey: String = "",
     val memberName: String = "",
-    val auditStatus: String = ""// 0 待审 1 审核通过 2 审核不通过
+    var auditStatus: String = "",// 0 待审 1 审核通过 2 审核不通过
+    val reason: String = ""
 )
 
 data class Condition(

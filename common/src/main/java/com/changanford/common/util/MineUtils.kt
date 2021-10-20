@@ -118,11 +118,11 @@ object MineUtils {
     )
 
     /**
-     * U币弹框
+     * F币弹框
      */
     var listIntegral = arrayListOf(
-        DialogBottomBean(1, "U币规则"),
-        DialogBottomBean(1, "获取U币")
+        DialogBottomBean(1, "F币规则"),
+        DialogBottomBean(1, "获取F币")
     )
 
     /**
@@ -553,7 +553,7 @@ object MineUtils {
 
 
     /**
-     * 每日签到 U币  成长值
+     * 每日签到 F币  成长值
      */
     fun signJf(textView: TextView?, num: String, title: String) {
         var spannable = SpannableString(num + "\n" + title)
@@ -577,7 +577,7 @@ object MineUtils {
     }
 
     /**
-     * 每日签到 U币  成长值
+     * 每日签到 F币  成长值
      */
     fun signAcc(textView: TextView?, title1: String, num: String, title2: String) {
         var spannable = SpannableString(title1 + num + title2)
@@ -689,7 +689,7 @@ object MineUtils {
      * 确认订单 底部设置U币
      */
     fun orderU(textView: TextView?, total: String, date: String) {
-        var spannable = SpannableString("总计：${total}U币\n有效期截止：${date}")
+        var spannable = SpannableString("总计：${total}F币\n有效期截止：${date}")
 
         //设置颜色
         var colorSpannable = ForegroundColorSpan(Color.parseColor("#FC883B"))
@@ -728,7 +728,7 @@ object MineUtils {
      * 确认订单 U币不足
      */
     fun payOrderU(textView: CheckBox?, integralDecimal: String) {
-        var spannable = SpannableString("U币兑换   剩余${integralDecimal}币(U币不足)")
+        var spannable = SpannableString("F币兑换   剩余${integralDecimal}币(F币不足)")
 
         //设置字体大小为1.3
         var colorSpannable = ForegroundColorSpan(Color.parseColor("#FF7635"))
@@ -1047,7 +1047,7 @@ object MineUtils {
     fun cancelAccountDeleteContent(textView: TextView) {
 
         var title: String = "以下数据将被清除："
-        var content: String = "帖子数据、U币数据、圈子相关数据、经验等级数据、活动数据、勋章头像框数据"
+        var content: String = "帖子数据、F币数据、圈子相关数据、经验等级数据、活动数据、勋章头像框数据"
 
         var spannableString = SpannableString(title + content)
 

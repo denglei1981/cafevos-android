@@ -47,7 +47,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
 
         binding.toolbarJifen.toolbarSave.text = "..."
         binding.toolbarJifen.toolbarSave.setTextColor(Color.parseColor("#ffffff"))
-        binding.toolbarJifen.toolbarSave.visibility = View.VISIBLE
+        binding.toolbarJifen.toolbarSave.visibility = View.GONE
         binding.toolbarJifen.toolbarSave.textSize = 20f
         binding.toolbarJifen.toolbarSave.setOnClickListener {
             SelectDialog(
