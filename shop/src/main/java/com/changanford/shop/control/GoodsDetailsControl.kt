@@ -2,6 +2,7 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
@@ -29,13 +30,18 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private val shareViewModule by lazy { ShareViewModule() }
     var skuCode=""
+    var skuCodeInitValue=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.buyNum=1
-        getSkuTxt(dataBean.skuVos[0].skuCode)
+        //初始化skuCode
+        skuCodeInitValue="${dataBean.spuId}-"
+        dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+        skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
@@ -137,30 +143,26 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }
         }
     }
-    private fun getSkuTxt(skuCode:String?){
-        if(null!=skuCode){
-            this.skuCode=skuCode
-            val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
-            dataBean.skuId=findItem.skuId
-            dataBean.fbPrice=findItem.fbPrice
-            dataBean.stock=findItem.stock.toInt()
-            dataBean.skuCodeTxts= arrayListOf()
-            dataBean.mallMallSkuSpuSeckillRangeId=findItem.mallMallSkuSpuSeckillRangeId
-            val skuCodes=skuCode.split("-")
-            var skuCodeTxt=""
-            val skuCodeTxtArr= arrayListOf<String>()
-            for((i,item) in dataBean.attributes.withIndex()){
-                item.optionVos.find { skuCodes[i+1]== it.optionId }?.let {
-                    val optionName= it.optionName
-                    skuCodeTxtArr.add(optionName)
-                    skuCodeTxt+="$optionName  "
-                }
-            }
-            dataBean.skuCodeTxts=skuCodeTxtArr
-            headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
-        }else{
-            headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  未选择属性","#333333")
+    private fun getSkuTxt(skuCode:String){
+        this.skuCode=skuCode
+        dataBean.skuVos.find { skuCode== it.skuCode }?.apply {
+            dataBean.skuId=skuId
+            dataBean.fbPrice=fbPrice
+            dataBean.stock=stock.toInt()
+            dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
+        val skuCodes=skuCode.split("-")
+        var skuCodeTxt=""
+        val skuCodeTxtArr= arrayListOf<String>()
+        for((i,item) in dataBean.attributes.withIndex()){
+            item.optionVos.find { skuCodes[i+1]== it.optionId }?.let {
+                val optionName= it.optionName
+                skuCodeTxtArr.add(optionName)
+                skuCodeTxt+="$optionName  "
+            }
+        }
+        dataBean.skuCodeTxts=skuCodeTxtArr
+        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"  未选择属性" else "  已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn()

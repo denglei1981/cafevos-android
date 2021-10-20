@@ -107,8 +107,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         when(vid){
             //确认订单
             R.id.btn_submit->{
-                if(control.skuCode.isEmpty())control.createAttribute()
-                else OrderConfirmActivity.start(this, Gson().toJson(viewModel.goodsDetailData.value))
+                control.skuCode.apply {
+                    if(this.contains("-")&&this.split("-").find { it=="0" }!=null)control.createAttribute()
+                    else OrderConfirmActivity.start(this@GoodsDetailsActivity, Gson().toJson(viewModel.goodsDetailData.value))
+                }
             }
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,spuId)
