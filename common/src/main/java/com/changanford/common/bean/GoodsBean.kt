@@ -286,8 +286,8 @@ data class ShopOrderBean(
 )
 
 data class OrderItemBean(
-    val addressId: Int = 0,
-    val addressInfo: String = "",
+    var addressId: Int = 0,
+    var addressInfo: String = "",
     val addressName: String = "",
     var buyNum: String ="0",
     val consignee: String = "",

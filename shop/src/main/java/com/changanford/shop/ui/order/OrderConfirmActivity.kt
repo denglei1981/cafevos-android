@@ -131,7 +131,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(!isClickSubmit){
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-            viewModel.orderCreate(dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+            dataBean.apply {
+                viewModel.orderCreate(spuId,skuId,addressId,spuPageType,buyNum,consumerMsg)
+            }
         }
         GlobalScope.launch {
             delay(3000L)
@@ -157,7 +159,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         JumpUtils.instans?.jump(20,"1")
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
-                    it?.let {bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))}
+                    it?.let {
+                        bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
+                    }
                 })
     }
 }

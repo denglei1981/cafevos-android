@@ -10,6 +10,8 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
@@ -67,7 +69,10 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         //应付总额
         var totalPayName=R.string.str_copeWithTotalAmount
         binding.inOrderInfo.layoutOrderClose.visibility=View.VISIBLE
-        binding.inAddress.layoutLogistics.visibility=View.GONE
+        binding.inAddress.apply {
+            layoutLogistics.visibility=View.GONE
+            imgRight.visibility=View.GONE
+        }
         binding.inBottom.btnOrderConfirm.visibility=View.VISIBLE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
             dataBean.orderStatusName= this
@@ -92,7 +97,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         btnOrderCancle.visibility=View.VISIBLE
                         btnOrderConfirm.setText(R.string.str_immediatePayment)
                     }
-
+                    binding.inAddress.imgRight.visibility=View.VISIBLE
                 }
                 "待发货"->{
                     totalPayName=R.string.str_realPayTotalAmount
@@ -143,11 +148,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 }
             }
         }
-        Gson().fromJson(dataBean.addressInfo,ShopAddressInfoBean::class.java).apply {
-            addressInfo="$provinceName$cityName$districtName$addressName"
-            userInfo="$consignee   $phone"
-            binding.inAddress.addressInfo=this
-        }
+        bindingAddressInfo(dataBean.addressInfo)
         //会员优惠
         val preferentialFb=dataBean.preferentialFb
         if(null!=preferentialFb&&"0"!=preferentialFb){
@@ -192,6 +193,27 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             tvTotalPayFb.setText(totalPayName)
         }
     }
+    private fun bindingAddressInfo(addressInfo:String,isUpdate:Boolean=false){
+        Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
+            //更新收货地址
+            if(isUpdate){
+                viewModel.updateAddressByOrderNo(dataBean.orderNo,addressId,object :OnPerformListener{
+                    override fun onFinish(code: Int) {
+                        dataBean.addressInfo= addressInfo
+                        dataBean.addressId=addressId
+                        updateAddressInfo(this@apply)
+                    }
+                })
+            }else updateAddressInfo(this)
+        }
+    }
+    private fun updateAddressInfo(item:ShopAddressInfoBean){
+        item.apply {
+            addressInfo="$provinceName$cityName$districtName$addressName"
+            userInfo="$consignee   $phone"
+            binding.inAddress.addressInfo=this
+        }
+    }
     /**
      * 取消订单
     * */
@@ -227,6 +249,20 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             R.id.btn_order_cancle-> cancelOrder()
             //支付、确认收货、评价、再次购买
             R.id.btn_order_confirm->confirmOrder()
+            //修改收货地址
+            R.id.img_right,R.id.tv_userInfo,R.id.tv_locationInfo->updateAddress()
+        }
+    }
+    private fun updateAddress(){
+        dataBean.apply {
+            if("WAIT_PAY"==orderStatus){//修改地址
+                JumpUtils.instans?.jump(20,"1")
+                LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
+                    it?.let {
+                        bindingAddressInfo(it,true)
+                    }
+                })
+            }
         }
     }
     override fun onDestroy() {

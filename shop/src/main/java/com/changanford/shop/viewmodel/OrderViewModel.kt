@@ -42,11 +42,12 @@ class OrderViewModel: BaseViewModel() {
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * busSourse 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
-    fun orderCreate(skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
+    fun orderCreate(spuId:String,skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",payType:String="FB_PAY"){
         val busSourse=if("SECKILL"==spuPageType)1 else 0
         viewModelScope.launch {
           fetchRequest (true){
                 body.clear()
+                body["spuId"]=spuId
                 body["skuId"]=skuId
                 body["busSourse"]=busSourse
                 body["buyNum"]=buyNum
@@ -231,6 +232,24 @@ class OrderViewModel: BaseViewModel() {
 //                ToastUtils.showLongToast(it)
             }.onSuccess {
                 orderTypesLiveData.postValue(it)
+            }
+        }
+    }
+    /**
+     * 修改商品待支付状态的收货地址
+     * */
+    fun updateAddressByOrderNo(orderNo:String,addressId:Int,listener: OnPerformListener?){
+        viewModelScope.launch {
+            fetchRequest (true){
+                body.clear()
+                body["orderNo"]=orderNo
+                body["addressId"]=addressId
+                val randomKey = getRandomKey()
+                shopApiService.updateAddressByOrderNo(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                listener?.onFinish(0)
             }
         }
     }
