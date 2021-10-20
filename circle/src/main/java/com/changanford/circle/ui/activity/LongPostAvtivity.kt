@@ -654,7 +654,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             HomeBottomDialog.OnClickItemListener {
                             override fun onClickItem(mposition: Int, str: String) {
                                 when (str) {
-                                    "编辑封面" -> {
+                                    "编辑图片" -> {
                                         var bundle = Bundle()
                                         bundle.putParcelableArrayList(
                                             "picList",
@@ -675,7 +675,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                             ITEM_SELECTPIC
                                         )
                                     }
-                                    "删除封面" -> {
+                                    "删除图片" -> {
                                         longpostadapter.getItem(position).localMedias = null
                                         longpostadapter.notifyDataSetChanged()
                                     }
