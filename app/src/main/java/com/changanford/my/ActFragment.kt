@@ -11,6 +11,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
@@ -154,7 +155,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvHomeActTimes.text =
                             "截至时间：${TimeUtils.MillisTo_YMDHM(item.deadLineTime)}"
                         it.tvHomeActLookNum.visibility = View.VISIBLE
-//                        it.tvHomeActLookNum.text="${MineUtils.num(item.)}"
+                        it.tvHomeActLookNum.text = "${MineUtils.num(item.browseCount)}浏览"
                     }
                     else -> {//创建时间
                         it.tvHomeActTimes.text = "创建时间：${TimeUtils.MillisTo_YMDHM(item.createTime)}"
@@ -234,7 +235,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                 }
                 it.btnEndAct.setOnClickListener {//结束
-                    endAct("${item.wonderfulId})")
+                    endAct("${item.wonderfulId}")
                 }
             }
         }

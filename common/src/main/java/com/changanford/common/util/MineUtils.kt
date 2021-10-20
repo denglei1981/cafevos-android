@@ -195,7 +195,7 @@ object MineUtils {
         if (num in 1000..9999) {
             numB = decimalFormat.format(num.toFloat() / 1000).toString() + "K"
         } else if (num >= 10000) {
-            numB = decimalFormat.format(num.toFloat() / 10000).toString() + "万"
+            numB = decimalFormat.format(num.toFloat() / 10000).toString() + "W"
         }
         return numB
     }
