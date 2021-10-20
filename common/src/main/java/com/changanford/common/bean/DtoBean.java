@@ -9,6 +9,7 @@ public class DtoBean {
     private String beginTime ;//开始时间
 
     private String content ;//活动描述
+    private String wonderfulType;//0-线上活动，1-线下活动，2-问卷,
     private List<ContentImg> contentImgList ;//内容图片
     private List<AttributeBean.AttributeCategoryVos.AttributeListBean> attributes; //填写资料数组，数组顺序是用户填写的顺序
     private String coverImgUrl;//封面图片
@@ -38,6 +39,14 @@ public class DtoBean {
 
     public void setActivityTotalCount(Integer activityTotalCount) {
         this.activityTotalCount = activityTotalCount;
+    }
+
+    public String getWonderfulType() {
+        return wonderfulType;
+    }
+
+    public void setWonderfulType(String wonderfulType) {
+        this.wonderfulType = wonderfulType;
     }
 
     public String getBeginTime() {

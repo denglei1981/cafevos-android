@@ -50,6 +50,7 @@ import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.FileUtils;
 import com.changanford.common.util.FullyGridLayoutManager;
 import com.changanford.common.util.GlideEngine;
+import com.changanford.common.util.JumpUtils;
 import com.changanford.common.util.PictureUtil;
 import com.changanford.common.util.PictureUtils;
 import com.changanford.common.util.SoftHideKeyBoardUtil;
@@ -307,8 +308,14 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                         actType = integer + "";
                         if (integer==0) {
                             binding.tvLeixing.setText("线下活动");
+                            dtoBean.setWonderfulType("1");
+                            binding.rlAddress.setVisibility(View.VISIBLE);
+                            binding.rlAddressLine.setVisibility(View.VISIBLE);
                         }else {
                             binding.tvLeixing.setText("线上活动");
+                            dtoBean.setWonderfulType("0");
+                            binding.rlAddress.setVisibility(View.GONE);
+                            binding.rlAddressLine.setVisibility(View.GONE);
                         }
                         return null;
                     }
@@ -367,7 +374,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
 
         dtoBean.setTitle(binding.etBiaoti.getText().toString());
-        dtoBean.setContent(binding.etMiaoshu.getText().toString());
+        dtoBean.setContent(binding.etFubiaoti.getText().toString());
         if (ParamsUtils.isactupCommit(dtoBean)) {
             LoadDialog dialog = new LoadDialog(ReleaseActivity.this);
             dialog.setCancelable(false);
@@ -450,9 +457,10 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                             if (response.getCode() == 0) {
                                 ToastUtils.s(ReleaseActivity.this, "发布成功");
                                 dialog.dismiss();
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("jumpType", 1);
-                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
+                                JumpUtils.getInstans().jump(26,"");
+//                                Bundle bundle = new Bundle();
+//                                bundle.putInt("jumpType", 1);
+//                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
                                 ReleaseActivity.this.finish();
                             } else {
                                 dialog.dismiss();

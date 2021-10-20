@@ -58,6 +58,14 @@
             app:layout_constraintBottom_toBottomOf="@+id/daySign"
             app:layout_constraintRight_toLeftOf="@id/memberEnter"
             app:layout_constraintTop_toTopOf="@+id/daySign" />
+        <ImageView
+            android:id="@+id/message_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_have_bg"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="@+id/my_msg"
+            app:layout_constraintTop_toTopOf="@+id/my_msg" />
 
         <ImageView
             android:id="@+id/my_set"
