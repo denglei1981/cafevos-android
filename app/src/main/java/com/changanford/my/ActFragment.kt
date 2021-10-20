@@ -39,10 +39,10 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     companion object {
         fun newInstance(value: String, userId: String = ""): ActFragment {
-            var bundle: Bundle = Bundle()
+            val bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
             bundle.putString(RouterManger.KEY_TO_ID, userId)
-            var medalFragment = ActFragment()
+            val medalFragment = ActFragment()
             medalFragment.arguments = bundle
             return medalFragment
         }
@@ -253,9 +253,9 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 dismiss()
                 lifecycleScope.launch {
                     fetchRequest {
-                        var body = HashMap<String, Any>()
+                        val body = HashMap<String, Any>()
                         body["wonderfulId"] = wonderfulId
-                        var rkey = getRandomKey()
+                        val rkey = getRandomKey()
                         apiService.endAc(body.header(rkey), body.body(rkey))
                     }.onSuccess {
                         initRefreshData(1)

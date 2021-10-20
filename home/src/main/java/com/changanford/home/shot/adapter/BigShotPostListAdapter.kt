@@ -71,7 +71,6 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                  if(LoginUtil.isLogin()){
                      likePost(it,item)
                  }
-
             }
 
         }

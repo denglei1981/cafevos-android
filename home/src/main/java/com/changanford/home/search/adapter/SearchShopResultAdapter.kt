@@ -17,7 +17,7 @@ class SearchShopResultAdapter :
         helper.setText(R.id.tv_author_name, item.spuName)
         var tvSubTitle = helper.getView<AppCompatTextView>(R.id.tv_sub_title)
 
-        tvSubTitle.text = item.normalFb.plus("积分")
+        tvSubTitle.text = item.normalFb.plus("福币")
 
 
     }

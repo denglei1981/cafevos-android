@@ -29,13 +29,14 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *  新闻列表
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
-    OnRefreshListener {
+    OnRefreshListener, OnLoadMoreListener {
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
@@ -62,7 +63,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             selectPosition = position
             when (view.id) {
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
-                    JumpUtils.instans!!.jump(35,item.userId.toString())
+                    JumpUtils.instans!!.jump(35, item.userId.toString())
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
@@ -77,6 +78,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         }
 
         binding.smartLayout.setOnRefreshListener(this)
+        binding.smartLayout.setOnLoadMoreListener(this)
         onRefresh(binding.smartLayout)
         setLoadSir(binding.smartLayout)
 
@@ -178,7 +180,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         })
         LiveDataBus.get().withs<InfoDetailsChangeData>(NEWS_DETAIL_CHANGE).observe(this, Observer {
             // 主要是改，点赞，评论， 浏览记录。。。
-            if(isCurrentPage()){
+            if (isCurrentPage()) {
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike
@@ -188,6 +190,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
         })
     }
+
     /**
      * 当前是否可见
      */
@@ -202,5 +205,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.getSpecialList()
         viewModel.getNewsList(false)
+    }
+
+    override fun onLoadMore(refreshLayout: RefreshLayout) {
+        viewModel.getNewsList(true)
     }
 }
