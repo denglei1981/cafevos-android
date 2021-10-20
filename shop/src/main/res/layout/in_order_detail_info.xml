@@ -80,7 +80,6 @@
             android:layout_height="wrap_content"
             app:start_txt="@string/str_rmb"
             android:text="@{model.freightPrice}"
-            tools:text="￥0.0"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
     </androidx.constraintlayout.widget.ConstraintLayout>

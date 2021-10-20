@@ -84,13 +84,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //购买数量
         val buyNum=dataBean.buyNum
         //运费
-        val freightPrice=dataBean.freightPrice.toInt()
+        val freightPrice=(dataBean.freightPrice.toFloat()*100).toInt()//1元=100积分
         //单价
         val fbPrice=dataBean.fbPrice.toInt()
         //总商品价 单价*购买数量
         val totalFb=fbPrice*buyNum
         //总共支付 (商品金额+运费)
-        val totalPayFb=totalFb+freightPrice
+        val totalPayFb:Int=totalFb+freightPrice
         dataBean.totalPayFb="$totalPayFb"
         binding.inOrderInfo.apply {
             model=dataBean

@@ -174,7 +174,7 @@ data class GoodsDetailBean(
     var acountFb:Int=0,//账号积分
     val param:String?="",
     var totalPayFb:String="",//总支付积分
-    val freightPrice:String="",//运费 0为包邮
+    val freightPrice:String="0.00",//运费 0为包邮
     val collect:String="",//是否收藏 YES NO
     var addressId:Int?=0,
     var preferentialFb:String?="",
@@ -359,7 +359,7 @@ data class OrderItemBean(
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
-    val freightPrice:String="0",//运费 0为包邮
+    val freightPrice:String="0.00",//运费 0为包邮
     var otherName:String?="",
     var otherValue:String?="",
     var totalIntegral:String?="0",
