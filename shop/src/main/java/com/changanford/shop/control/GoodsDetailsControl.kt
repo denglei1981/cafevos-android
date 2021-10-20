@@ -71,7 +71,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
-                        val limitBuyNum=dataBean.purchasedNum?:0+dataBean.stock
+                        val limitBuyNum=dataBean.salesCount+dataBean.stock
                         tvLimitBuyNum.setText("$limitBuyNum")
 //                        val limitBuyNum=dataBean.limitBuyNum?:"0"
 //                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE

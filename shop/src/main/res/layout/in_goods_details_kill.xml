@@ -151,7 +151,7 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:max="@{model.stock}"
                 tools:progress="10"
-                android:progress="@{model.purchasedNum}"
+                android:progress="@{model.salesCount}"
                 android:progressDrawable="@drawable/progressbar_kill_bg"
                 android:layout_width="@dimen/dp_67"
                 android:layout_height="@dimen/dp_4"/>
