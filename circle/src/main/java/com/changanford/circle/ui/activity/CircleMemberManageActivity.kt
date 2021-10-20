@@ -143,6 +143,7 @@ class CircleMemberManageActivity :
             if (it.code == 0) {
                 page = 1
                 initData()
+                binding.tvCheckNum.text = "已经选择0人"
             }
         })
     }

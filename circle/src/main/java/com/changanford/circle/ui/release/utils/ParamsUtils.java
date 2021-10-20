@@ -38,7 +38,11 @@ public class ParamsUtils {
             ToastUtils.s(BaseApplication.INSTANT,"请选择活动时间");
             return false;
         }
-        if (TextUtils.isEmpty(dtoBean.getActivityAddr())){
+        if (TextUtils.isEmpty(dtoBean.getWonderfulType())){
+            ToastUtils.s(BaseApplication.INSTANT,"请选择活动类型");
+            return false;
+        }
+        if (dtoBean.getWonderfulType().equals("1")&&TextUtils.isEmpty(dtoBean.getActivityAddr())){
             ToastUtils.s(BaseApplication.INSTANT,"请选择活动地点");
             return false;
         }

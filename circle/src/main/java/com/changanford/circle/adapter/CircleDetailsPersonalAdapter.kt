@@ -30,6 +30,9 @@ class CircleDetailsPersonalAdapter(context: Context) :
 
         binding.ivPersonal.loadImage(
             item.avatar,
-            ImageOptions().apply { circleCrop = true })
+            ImageOptions().apply {
+                circleCrop = true
+                error = R.mipmap.head_default
+            })
     }
 }

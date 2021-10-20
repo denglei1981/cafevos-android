@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:drawablePadding="4dp"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="重庆长安福特EVOS华丽登场" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/color_33"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_two_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_two_title"
+            tools:text="来自重庆车友圈" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:drawableStart="@mipmap/circle_location_details"
+            android:drawablePadding="4dp"
+            android:textColor="@color/color_cc"
+            android:textSize="13sp"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_two_title"
+            tools:text="2021.09.25  12:25" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_one_content"
+            android:layout_width="0dp"
+            android:layout_marginTop="17dp"
+            android:textSize="14sp"
+            android:textColor="@color/color_33"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_two_from"
+            app:layout_constraintRight_toRightOf="@+id/tv_two_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_two_from"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_two_from"
+            app:layout_constraintRight_toRightOf="@+id/tv_two_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_one_content" />
+
+        <RelativeLayout
+            android:id="@+id/rl_talk"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_talk_out"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/circle_talk_20_bg"
+                android:drawableStart="@mipmap/circle_talk_hint"
+                android:drawablePadding="9dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxEms="20"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="14dp"
+                android:textColor="@color/circle_8195C8"
+                android:textSize="13sp"
+                tools:text="年轻人喜欢什么样的车" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/color_99"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/rl_talk"
+            app:layout_constraintTop_toBottomOf="@+id/rl_talk"
+            tools:text="2021.09.25  12:25" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

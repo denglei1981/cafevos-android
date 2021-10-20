@@ -16,6 +16,7 @@ data class CircleDetailBean(
     val nameColor: Any? = Any(),
     val pic: String = "",
     val postsCount: Int = 0,
+    val isViewApplyMan: Int = 0,
     val shareBeanVO: CircleShareBean? ,
     val userCount: Int = 0,
     val userId: Int = 0,

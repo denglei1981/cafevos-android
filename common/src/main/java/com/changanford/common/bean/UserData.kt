@@ -66,7 +66,16 @@ data class UserInfoBean(
     val updateTime: String,
     val userId: String,
     val userName: String
-)
+){
+    /**
+     * 处理因is开头属性转json丢失数据的问题
+     */
+    fun getIsAuth() = isAuth
+    fun getIsFollow() = isFollow
+    fun getIsLogin() = isLogin
+    fun getIsSignIn() = isSignIn
+    fun getIsUnread() = isUnread
+}
 
 data class Count(
     val collections: Int,
