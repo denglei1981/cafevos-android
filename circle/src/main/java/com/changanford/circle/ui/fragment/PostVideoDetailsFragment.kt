@@ -79,7 +79,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             tvShareNum.text = mData.shareCount.toString()
             ivHead.loadImage(
                 mData.authorBaseVo?.avatar,
-                ImageOptions().apply { circleCrop = true })
+                ImageOptions().apply {
+                    circleCrop = true
+                    error = R.mipmap.head_default
+                })
             tvName.text = mData.authorBaseVo?.nickname
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"

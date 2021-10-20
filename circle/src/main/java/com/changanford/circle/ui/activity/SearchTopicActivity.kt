@@ -31,7 +31,6 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
         HotTopicAdapter()
     }
 
-
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.llTitle, this)
         binding.ryTopic.adapter = adapter

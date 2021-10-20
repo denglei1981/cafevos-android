@@ -37,7 +37,10 @@ class PersonalAdapter :
         binding?.let {
             MUtils.setTopMargin(binding.clItem, 27, holder.layoutPosition)
 
-            binding.ivIcon.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            binding.ivIcon.loadImage(item.avatar, ImageOptions().apply {
+                circleCrop = true
+                error = R.mipmap.head_default
+            })
             binding.tvName.text = item.nickname
             if (!item.starOrderNumStr.isNullOrEmpty()) {
                 binding.tvOwner.visibility = View.VISIBLE

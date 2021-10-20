@@ -29,7 +29,7 @@ class CircleMainTopicAdapter(context: Context) :
             placeholder = R.mipmap.image_s_one_default
             error=R.mipmap.image_s_one_default
         })
-        binding.tvNum.text = "${item.postsCount}帖子 ${item.likesCount}热度"
+        binding.tvNum.text = "${item.postsCount}帖子 ${item.heat}热度"
         binding.bean = item
     }
 }
