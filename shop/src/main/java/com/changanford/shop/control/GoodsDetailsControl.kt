@@ -73,8 +73,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         model=dataBean
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
-                        val purchasedNum=dataBean.purchasedNum?:0
-                        tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
+                        val salesCount=dataBean.salesCount
+                        tvStockProportion.setText("${salesCount/dataBean.stock*100}")
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         val limitBuyNum=dataBean.salesCount+dataBean.stock
