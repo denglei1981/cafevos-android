@@ -39,7 +39,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
 //                .putExtra("spuPageType",spuPageType))
         }
     }
-    private var spuId:String="108"//商品ID
+    private var spuId:String="108"//商品IDR.id.img_share->control.share()
     private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * 创建信息： zcy on 2018/8/9.
  * 描    述：
@@ -22,6 +26,15 @@ public class DensityUtil {
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
+
+        Map<String, String> map = new TreeMap<String, String>(
+                new Comparator<String>() {
+                    public int compare(String obj1, String obj2) {
+                        // 降序排序
+                        return obj2.compareTo(obj1);
+                    }
+                });
+
         return outMetrics.widthPixels;
     }
 

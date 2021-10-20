@@ -5,10 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shap_fafbfd"
     android:id="@+id/llcon"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
+    android:paddingLeft="9dp"
+    android:paddingRight="9dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_marginRight="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/tv_mkselected"

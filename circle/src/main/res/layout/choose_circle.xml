@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
         android:id="@+id/title"
@@ -21,26 +22,17 @@
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/tvsearch"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
                 android:hint="请搜索关键词"
                 android:drawableLeft="@mipmap/c_search"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/shap_search"/>
-            <View
-                android:id="@+id/vline"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvsearch"
-                android:layout_marginTop="10dp"
-                android:background="@color/line_default_color"
-                android:layout_width="match_parent"
-                android:layout_height="1px"/>
 
             <TextView
                 android:id="@+id/tv_nocy"
@@ -51,7 +43,7 @@
                 android:paddingBottom="25dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:drawableRight="@drawable/refresh1"
+                android:drawableRight="@mipmap/circle_right_black_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="发布到广场"

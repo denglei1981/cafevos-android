@@ -10,23 +10,23 @@ import java.io.Serializable
  *  修改描述：TODO
  */
 data class MedalListBeanItem(
-    val createBy: String,
-    val createTime: String,
-    val fillCondition: String,
-    var isGet: String?,
-    var isShow: String,
-    val medalId: String,
-    val medalImage: String,
-    var medalName: String,
-    var medalType: Int,
-    val medalTypeName: String,
-    val remark: String,
-    val searchValue: String,
-    val sort: String,
-    val status: String,
-    val updateBy: String,
-    val updateTime: String,
-    val getTime: String // 获取时间
+    val createBy: String = "",
+    val createTime: String = "",
+    val fillCondition: String = "",
+    var isGet: String? = "",
+    var isShow: String = "",
+    val medalId: String = "",
+    val medalImage: String = "",
+    var medalName: String = "",
+    var medalType: Int = 0,
+    val medalTypeName: String = "",
+    val remark: String = "",
+    val searchValue: String = "",
+    val sort: String = "",
+    val status: String = "",
+    val updateBy: String = "",
+    val updateTime: String = "",
+    val getTime: String = "" // 获取时间
 ) : Serializable
 
 data class UserIdCardBeanItem(

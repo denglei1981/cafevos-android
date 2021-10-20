@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.ButtomTypeBean
+import com.changanford.circle.ext.dpToPx
 
 class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHolder>() {
     init {
@@ -22,10 +23,12 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
     override fun convert(holder: BaseViewHolder, item: ButtomTypeBean) {
         if (item.visibility==0){
             holder.itemView.visibility = View.GONE
-            holder.itemView.layoutParams.width = 0
-            holder.itemView.layoutParams.height=0
+            var params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(0,0))
+            params.setMargins(0,0, 0,0)
+            holder.itemView.layoutParams =params
         }else{
-            var params = ViewGroup.LayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT))
+            var params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT))
+            params.setMargins(0,0, dpToPx(holder.itemView.context,5f).toInt(),0)
             holder.itemView.layoutParams =params
             holder.itemView.visibility = View.VISIBLE
         }

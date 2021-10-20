@@ -79,7 +79,7 @@ class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
             back()
         }
 
-        binding.uniSubmitBtn.text = "立即申请成为${title}"
+        binding.uniSubmitBtn.text = "申请认证"
 
         //员工认证 ford_user
         when (memberType) {

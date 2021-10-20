@@ -41,7 +41,7 @@
         android:layout_marginBottom="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:drawableRight="@mipmap/right_arrow_black"
+        android:drawableRight="@mipmap/circle_right_black_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="不参与任何话题"

@@ -41,7 +41,9 @@
                 android:layout_marginStart="@dimen/dp_7"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="观星者" />
+                android:text="观星者"
+                android:textColor="#071726"
+                android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
     </LinearLayout>

@@ -1,6 +1,7 @@
 package com.changanford.home.news.activity
 
 import android.text.TextUtils
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
@@ -48,6 +49,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         binding.layoutHeader.ivMore.setOnClickListener(this)
         binding.layoutHeader.ivBack.setOnClickListener { onBackPressed() }
     }
+
     private lateinit var artId: String
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
@@ -61,6 +63,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         }
     }
+
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -106,7 +109,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         viewModel.followLiveData.observe(this, Observer {})
 
         viewModel.collectLiveData.observe(this, Observer {
-            if(it.isSuccess){
+            if (it.isSuccess) {
                 if (it.isSuccess) {
                     setCollection()
                 }
@@ -114,14 +117,14 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         })
     }
 
-    var  mCommentDialog:CommentPicsDialog?=null
+    var mCommentDialog: CommentPicsDialog? = null
     private fun showCommentDialog() {
         newsDetailData?.let {
             mCommentDialog = CommentPicsDialog(object :
                 CommentPicsDialog.CommentCountInterface {
                 override fun commentCount(count: Int) {
                 }
-            },this)
+            }, this)
             mCommentDialog!!.bizId = newsDetailData?.artId.toString()
             mCommentDialog!!.show(supportFragmentManager, "commentShortVideoDialog")
         }
@@ -140,10 +143,13 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     binding.tvPicsNum.text = "${position + 1}/${newsDetailData.imageTexts.size}"
+                    binding.homeTvContent.text = newsDetailData.imageTexts[position].description
                 }
             })
         binding.bViewpager.create(newsDetailData.imageTexts)
         binding.tvPicsNum.text = "1/${newsDetailData.imageTexts.size}"
+        binding.homeTvContent.text = newsDetailData.imageTexts[0].description
+        binding.homeTvContent.movementMethod= ScrollingMovementMethod.getInstance()
 
     }
 
@@ -153,7 +159,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, binding.layoutHeader.ivAvatar)
-        binding.layoutHeader.tvAuthor.text=author.nickname
+        binding.layoutHeader.tvAuthor.text = author.nickname
         setFollowState(binding.layoutHeader.btnFollow, author)
         binding.tvHomeTitle.text = newsDetailData.title
         binding.homeTvContent.text = newsDetailData.getShowContent()
@@ -177,6 +183,9 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 followAction()
             }
         }
+        binding.layoutHeader.ivAvatar.setOnClickListener{
+            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        }
         binding.llComment.tvNewsToLike.setPageTitleText(newsDetailData.getLikeCount())
 
         binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
@@ -193,7 +202,10 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
         }
         if (newsDetailData.isCollect == 0) {
-            binding.llComment.tvNewsToCollect.setThumb(R.drawable.icon_home_bottom_collection_white, false)
+            binding.llComment.tvNewsToCollect.setThumb(
+                R.drawable.icon_home_bottom_collection_white,
+                false
+            )
         } else {
             binding.llComment.tvNewsToCollect.setThumb(
                 R.drawable.icon_home_bottom_collection,
@@ -201,6 +213,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             )
         }
     }
+
     private fun setCommentCount() {
         // 评论成功自增1
         val commentCount = newsDetailData?.commentCount?.plus(1)
@@ -208,6 +221,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             CountUtils.formatNum(commentCount.toString(), false).toString()
 
     }
+
     private fun setCollection() {
         var collectCount = newsDetailData?.collectCount
         when (newsDetailData?.isCollect) {
@@ -238,6 +252,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             ).toString()
         )
     }
+
     private fun setLikeState() { //设置是否喜欢文章。
         var likesCount = newsDetailData?.likesCount
         when (newsDetailData?.isLike) {
@@ -249,7 +264,10 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_white, false)
+                binding.llComment.tvNewsToLike.setThumb(
+                    R.drawable.icon_home_bottom_like_white,
+                    false
+                )
             }
         }
         if (likesCount != null) {
@@ -262,6 +280,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             ).toString()
         )
     }
+
     /**
      *  设置关注状态。
      * */
@@ -269,6 +288,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         val setFollowState = SetFollowState(this)
         setFollowState.setFollowState(btnFollow, authors)
     }
+
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {

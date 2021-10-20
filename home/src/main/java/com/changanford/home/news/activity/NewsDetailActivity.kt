@@ -272,7 +272,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                isNeedNotify
+                isNeedNotify=true
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -284,7 +284,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                isNeedNotify
+                isNeedNotify=true
                 setLikeState()
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)

@@ -29,8 +29,8 @@ class ChooseCircleViewModel : BaseViewModel() {
                                 }
                             }
                             lists.addAll(it.dataList)
-                            datas.value = lists
                         }
+                        datas.value = lists
                     }
 
 
@@ -58,7 +58,6 @@ class ChooseCircleViewModel : BaseViewModel() {
                                 }
                             }
                             lists.addAll(it.dataList)
-                            datas.value = lists
                             getjoinCircle()
                         }else{
                             getjoinCircle()

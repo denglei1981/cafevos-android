@@ -148,6 +148,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
+            if (locaPostEntity!=null){
+                viewModel.deletePost(locaPostEntity!!.postsId)
+            }
             "发布成功".toast()
             finish()
         })
@@ -193,6 +196,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("city")
                     params.remove("province")
                     params.remove("cityCode")
+                    params.remove("address")
                     address= ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
@@ -279,6 +283,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
+
+            platename = locaPostEntity!!.plateName
+            circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
@@ -411,6 +418,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         params.remove("city")
                         params.remove("province")
                         params.remove("cityCode")
+                        params.remove("address")
+                        address= ""
                     }
                 }
             }

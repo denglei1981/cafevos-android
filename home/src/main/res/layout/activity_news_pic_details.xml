@@ -65,13 +65,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_tv_content"
             android:layout_width="0dp"
-            android:layout_height="38dp"
+            android:layout_height="0dp"
             android:layout_marginTop="18dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@{newsDetailData.title}"
+            android:layout_marginBottom="8dp"
+            android:text="@{newsDetailData.content}"
             android:textColor="#ffffffff"
             android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/ll_special"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
@@ -84,6 +84,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_30"
             android:layout_marginStart="8dp"
+            android:layout_marginBottom="18dp"
             android:background="@drawable/shape_home_di_blue"
             app:layout_constraintBottom_toTopOf="@+id/ll_comment"
             app:layout_constraintStart_toStartOf="@+id/home_tv_content"
@@ -118,6 +119,7 @@
             layout="@layout/include_home_comment_bg_blue"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_60"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
