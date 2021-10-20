@@ -83,8 +83,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     dataBean.otherName=getString(R.string.str_leaveMessage)
                     dataBean.otherValue=dataBean.consumerMsg?:""
                     binding.tvOrderPrompt.apply {
-                        visibility= View.VISIBLE
-                        setText(R.string.prompt_orderUpdateAddress)
+                        visibility= View.GONE
+//                        setText(R.string.prompt_orderUpdateAddress)
                     }
                     val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
                     timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
