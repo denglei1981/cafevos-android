@@ -3,25 +3,40 @@ package com.changanford.home.adapter
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.net.*
+import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
 import com.changanford.home.R
+import com.changanford.home.api.HomeNetWork
+import com.changanford.home.bean.BigShotPostBean
+import com.changanford.home.databinding.ItemBigShotItemsBinding
+import com.changanford.home.util.LoginUtil
+import com.changanford.home.util.launchWithCatch
+import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
-class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>() {
+class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
+    BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>() {
     init {
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
         addItemType(3, R.layout.item_home_acts)
-
     }
 
 
@@ -32,7 +47,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 showPics(holder, item)
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
                 if (!TextUtils.isEmpty(item.pic)) {
-                    GlideUtils.loadBD(item.pic, ivPic,R.mipmap.image_h_one_default)
+                    GlideUtils.loadBD(item.pic, ivPic, R.mipmap.image_h_one_default)
                 } else if (picLists != null) {
                     GlideUtils.loadBD(picLists[0], ivPic)
                 }
@@ -94,25 +109,25 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 tvTagTwo.text = "线上活动"
                 tvHomeActTimes.text =
                     "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
-                tvHomeActAddress.visibility=View.GONE
+                tvHomeActAddress.visibility = View.GONE
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
                 tvHomeActAddress.text = "地点：".plus(item.city)
-                tvHomeActAddress.visibility=View.VISIBLE
+                tvHomeActAddress.visibility = View.VISIBLE
             }
             2 -> {
                 tvTagTwo.text = "调查问卷"
                 tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
-                tvHomeActAddress.visibility=View.GONE
+                tvHomeActAddress.visibility = View.GONE
             }
             3 -> {
                 tvTagTwo.text = "厂家活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
-                tvHomeActAddress.visibility=View.GONE
+                tvHomeActAddress.visibility = View.GONE
             }
         }
         when (item.official) {
@@ -145,7 +160,7 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
 
         val tvNewsTag = holder.getView<TextView>(R.id.tv_news_tag)
 
-        val tvVideoTime=holder.getView<TextView>(R.id.tv_video_times)
+        val tvVideoTime = holder.getView<TextView>(R.id.tv_video_times)
 
         ivHeader.setOnClickListener {
             toUserHomePage(item)
@@ -155,10 +170,49 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
         }
 
         tvContent.text = item.getContent()
-        val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
+        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
+        setLikeState(tvLikeCount, item.isLike, false) // 设置是否喜欢。
+        tvLikeCount.setOnClickListener {
+            when (item.rtype) {
+                1 -> { // 点赞资讯。
+                    if (LoginUtil.isLogin()) {
+                        if (item.authors != null) {
+                            if (item.isLike == 0) {
+                                item.isLike = 1
+                                val likesCount = item.likeCount.plus(1)
+                                item.likeCount = likesCount
+                                tvLikeCount.setPageTitleText(
+                                    CountUtils.formatNum(
+                                        likesCount.toString(),
+                                        false
+                                    ).toString()
+                                )
+                            } else {
+                                item.isLike = 0
+                                val likesCount = item.likeCount.minus(1)
+                                item.likeCount = likesCount
+                                tvLikeCount.setPageTitleText(
+                                    CountUtils.formatNum(
+                                        likesCount.toString(),
+                                        false
+                                    ).toString()
+                                )
+                            }
+                            actionLike(item.artId)
+                            setLikeState(tvLikeCount, item.isLike, true)
+                        }
+                    }
+                }
+                2 -> {// 点赞帖子
+                        if(LoginUtil.isLogin()){
+                            likePost(tvLikeCount,item)
+                        }
+                }
+            }
+        }
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
         val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
-        tvLikeCount.text = item.getLikeCount()
+        tvLikeCount.setPageTitleText(item.getLikeCount())
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
@@ -184,25 +238,23 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         }
-
-
-        val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+        val rvUserTag = holder.getView<RecyclerView>(R.id.rv_user_tag)
         if (item.authors != null) {
             val labelAdapter = LabelAdapter(16)
-            rvUserTag.adapter=labelAdapter
+            rvUserTag.adapter = labelAdapter
             labelAdapter.setNewInstance(item.authors?.imags)
         }
         when (item.rtype) {
             1 -> {
                 tvNewsTag.visibility = View.VISIBLE
-                if(!TextUtils.isEmpty(item.artVideoTime)){
-                    tvVideoTime.text=item.artVideoTime
+                if (!TextUtils.isEmpty(item.artVideoTime)) {
+                    tvVideoTime.text = item.artVideoTime
                 }
-                tvVideoTime.visibility=View.VISIBLE
+                tvVideoTime.visibility = View.VISIBLE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE
-                tvVideoTime.visibility=View.GONE
+                tvVideoTime.visibility = View.GONE
             }
 
         }
@@ -211,4 +263,56 @@ class RecommendAdapter : BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder
     private fun toUserHomePage(item: RecommendData) {
         JumpUtils.instans!!.jump(35, item.authors?.userId.toString())
     }
+
+    // 喜欢
+    fun actionLike(artId: String) {
+        lifecycleOwner.launchWithCatch {
+            val requestBody = HashMap<String, Any>()
+            requestBody["artId"] = artId
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .actionLike(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+
+                }.onWithMsgFailure {
+
+                }
+        }
+    }
+
+    fun setLikeState(tvLikeView: DrawCenterTextView, isLike: Int, isAnim: Boolean) {
+        if (isLike == 0) {
+            tvLikeView.setThumb(R.drawable.icon_home_look_like_count, isAnim)
+        } else {
+            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, isAnim)
+        }
+    }
+
+    private fun likePost(tvLikeView: DrawCenterTextView, item:RecommendData) {
+        val activity = BaseApplication.curActivity as AppCompatActivity
+        activity.launchWithCatch {
+            val body = MyApp.mContext.createHashMap()
+            body["postsId"] = item.postsId
+            val rKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .actionPostLike(body.header(rKey), body.body(rKey)).also {
+                    if (it.code == 0) {
+                        if (item.isLike == 0) {
+                            item.isLike = 1
+                            tvLikeView.setThumb(R.drawable.icon_home_bottom_like,true)
+                            item.postsLikesCount++
+                        } else {
+                            item.isLike = 0
+                            item.postsLikesCount--
+                            tvLikeView.setThumb(R.drawable.icon_home_look_like_count,false)
+                        }
+                        tvLikeView.setPageTitleText(item.getLikeCount())
+                    } else {
+                        it.msg.toast()
+                    }
+                }
+        }
+    }
+
+
 }

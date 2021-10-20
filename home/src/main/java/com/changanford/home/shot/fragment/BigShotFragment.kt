@@ -117,8 +117,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                 showFailure(it.message)
             }
         })
-
-
+        bus()
     }
 
     private fun bus() {
@@ -138,7 +137,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
 
     override fun initData() {
-        bus()
+
     }
     override fun onRetryBtnClick() {
 
