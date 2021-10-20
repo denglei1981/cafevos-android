@@ -78,7 +78,6 @@
                 android:id="@+id/tv_integral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="12600积分"
                 app:end_txt="@string/str_integral"
                 android:text="@{model.normalFb}"
                 android:textColor="@color/color_01025C"
