@@ -49,6 +49,7 @@ import com.changanford.common.ui.dialog.LoadDialog;
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig;
 import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.FileUtils;
+import com.changanford.common.util.JumpUtils;
 import com.changanford.common.util.PictureUtils;
 import com.changanford.common.util.TimeUtils;
 import com.changanford.common.utilext.GlideUtils;
@@ -262,9 +263,11 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
                             ToastUtils.s(BaseApplication.INSTANT, response.getMsg());
                             if (response.getCode() == 0) {
                                 //跳转到个人中心我的发布中心
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("jumpType", 1);
-                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
+                                JumpUtils.getInstans().jump(26,"");
+
+//                                Bundle bundle = new Bundle();
+//                                bundle.putInt("jumpType", 1);
+//                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
                                 ReleaseUpActivity.this.finish();
 
                             } else {

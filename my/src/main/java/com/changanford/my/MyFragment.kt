@@ -168,6 +168,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         }
         binding.myHead.load(userInfoBean?.avatar, R.mipmap.my_headdefault)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
+        binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
+        binding.daySign.text = if(userInfoBean?.isSignIn == 1) "已签到" else "签到"
+        binding.daySign.isClickable = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname
             ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginTips)
         binding.myContent.text =
