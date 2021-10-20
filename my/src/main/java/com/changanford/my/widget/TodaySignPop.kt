@@ -59,13 +59,13 @@ class TodaySignPop(context: Context) : BasePopupWindow(context) {
 
 
     fun initDayBean(daySignBean: DaySignBean) {
-        MineUtils.signJf(jf, "+${daySignBean.integral}", "F币")
+        MineUtils.signJf(jf, "+${daySignBean.integral}", "福币")
         MineUtils.signJf(czz, "+${daySignBean.growth}", "成长值")
         MineUtils.signAcc(signTotal,"您已连续签到","${daySignBean.ontinuous}","天")
         MineUtils.signAcc(signAcc,"当前奖励：","${daySignBean.multiple}","倍奖励")
 //        signTotal.text = "您已连续签到${daySignBean.ontinuous}天，累计签到${daySignBean.cumulation}天"
 
-        signTo.text = "明天签到+${daySignBean.nextIntegral}积分 +${daySignBean.nextGrowth}成长值"
+        signTo.text = "明天签到+${daySignBean.nextIntegral}福币 +${daySignBean.nextGrowth}成长值"
         totalSignNum.text = "您是今天第${daySignBean.actionTimes}位签到的用户"
 
     }

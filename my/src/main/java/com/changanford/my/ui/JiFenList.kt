@@ -40,14 +40,14 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
 
     override fun initView() {
         binding.toolbarJifen.toolbar.setBackgroundResource(0)
-        binding.toolbarJifen.toolbarTitle.text = "积分明细"
+        binding.toolbarJifen.toolbarTitle.text = "福币明细"
         UserManger.getSysUserInfo()?.integral?.let {
             binding.myJifenNum.text = "${it.toInt()}"
         }
 
         binding.toolbarJifen.toolbarSave.text = "..."
         binding.toolbarJifen.toolbarSave.setTextColor(Color.parseColor("#ffffff"))
-        binding.toolbarJifen.toolbarSave.visibility = View.GONE
+        binding.toolbarJifen.toolbarSave.visibility = View.VISIBLE
         binding.toolbarJifen.toolbarSave.textSize = 20f
         binding.toolbarJifen.toolbarSave.setOnClickListener {
             SelectDialog(
