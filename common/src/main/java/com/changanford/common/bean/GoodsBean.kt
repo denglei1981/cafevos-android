@@ -182,6 +182,8 @@ data class GoodsDetailBean(
     var specifications:String?="",
     var addressInfo:String?=null,
     var skuImg:String?=null,
+    var mallMallSkuSpuSeckillRangeId:String?="0"
+
 )
 
 data class Attribute(
@@ -212,7 +214,8 @@ data class SkuVo(
     val skuId: String = "0",
     val skuImg: String = "",
     val stock: String = "0",
-    var skuTxt:String?=""
+    var skuTxt:String?="",
+    var mallMallSkuSpuSeckillRangeId:String?="0"
 )
 
 data class OptionVo(

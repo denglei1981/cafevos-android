@@ -138,13 +138,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
     }
     private fun getSkuTxt(skuCode:String?){
-        skuCode?.let {
+        if(null!=skuCode){
             this.skuCode=skuCode
             val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
             dataBean.skuId=findItem.skuId
             dataBean.fbPrice=findItem.fbPrice
             dataBean.stock=findItem.stock.toInt()
             dataBean.skuCodeTxts= arrayListOf()
+            dataBean.mallMallSkuSpuSeckillRangeId=findItem.mallMallSkuSpuSeckillRangeId
             val skuCodes=skuCode.split("-")
             var skuCodeTxt=""
             val skuCodeTxtArr= arrayListOf<String>()
@@ -157,6 +158,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }
             dataBean.skuCodeTxts=skuCodeTxtArr
             headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
+        }else{
+            headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  未选择属性","#333333")
         }
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean

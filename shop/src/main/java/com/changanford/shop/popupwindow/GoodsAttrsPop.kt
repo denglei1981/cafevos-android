@@ -55,6 +55,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                 dataBean.skuId=skuId
                 dataBean.fbPrice=fbPrice
                 dataBean.stock=stock.toInt()
+                dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                 val skuCodeTxtArr= arrayListOf<String>()
                 for((i,item) in dataBean.attributes.withIndex()){
                     item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {

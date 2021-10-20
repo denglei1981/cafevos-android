@@ -132,7 +132,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
             dataBean.apply {
-                viewModel.orderCreate(spuId,skuId,addressId,spuPageType,buyNum,consumerMsg)
+                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId)
             }
         }
         GlobalScope.launch {
