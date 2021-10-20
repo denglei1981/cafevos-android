@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -58,10 +59,25 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         RecommendFragment.newInstance()
     }
 
+    val actsParentsFragment: ActsParentsFragment by lazy{
+        ActsParentsFragment.newInstance()
+    }
+
+    val newsListFragment: NewsListFragment  by lazy{
+        NewsListFragment.newInstance()
+    }
+
+    val bigShotFragment: BigShotFragment  by lazy{
+        BigShotFragment.newInstance()
+    }
+
+
+
 
     val twoAdRvListAdapter: TwoAdRvListAdapter by lazy {
         TwoAdRvListAdapter()
     }
+    var currentPosition=0
 
     override fun initView() {
         //Tab+Fragment
@@ -72,10 +88,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
-        fragmentList.add(ActsParentsFragment.newInstance())
-        fragmentList.add(NewsListFragment.newInstance())
-        fragmentList.add(BigShotFragment.newInstance())
-
+        fragmentList.add(actsParentsFragment)
+        fragmentList.add(newsListFragment)
+        fragmentList.add(bigShotFragment)
         titleList.add(getString(R.string.home_recommend))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
@@ -95,7 +110,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             )
         )
         binding.homeTab.tabRippleColor = null
-//        setAppbarPercent()
 
         TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
@@ -106,15 +120,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.refreshLayout.setOnRefreshListener(this)
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        binding.refreshLayout.setEnableRefresh(true)
-                    }
-                    else -> {
-                        binding.refreshLayout.setEnableRefresh(false)
-                    }
-                }
+            override fun onPageSelected(position: Int) { // 不禁用刷新
+                currentPosition=position
+//                when (position) {
+//                    0 -> {
+//                        binding.refreshLayout.setEnableRefresh(true)
+//                    }
+//                    else -> {
+//                        binding.refreshLayout.setEnableRefresh(false)
+//                    }
+//                }
             }
         })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -137,7 +152,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             showPublish(binding.layoutTopBar.ivScan)
         }
         binding.recommendContent.etSearchContent.setOnClickListener {
-            JumpUtils.instans!!.jump(108)
+            toSearch()
         }
         binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
             override fun onHeaderMoving(
@@ -149,9 +164,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 maxDragHeight: Int
             ) {
                 val alphaTest = 1 - percent.coerceAtMost(1f)
-//                    binding.llTabContent.alpha = alphaTest
-//                    binding.layoutTopBar.conContent.alpha =alphaTest
-//                    binding.homeTab.alpha = alphaTest
                 when (alphaTest) {
                     0f -> {
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
@@ -170,10 +182,25 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
-//            startARouter(ARouterHomePath.PolySearchActivity)
-            JumpUtils.instans!!.jump(108)
+            toSearch()
         }
+    }
 
+    fun toSearch() {
+        when (binding.homeViewpager.currentItem) {
+            0 -> {
+                JumpUtils.instans!!.jump(108)
+            }
+            1 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
+            }
+            2 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
+            }
+            3 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
+            }
+        }
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -187,7 +214,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
-
         }
     }
 
@@ -266,11 +292,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 JumpUtils.instans!!.jump(item.jumpDataType, item.jumpDataValue)
             }
         })
-
         binding.recommendContent.tvBigTopic.setOnClickListener {
-
         }
-
     }
 
     override fun observe() {
@@ -287,39 +310,58 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     binding.recommendContent.tvTopicTitle.text = t.adSubName
                     binding.recommendContent.tvBigTopic.text = t.adName
                     binding.recommendContent.tvBigTopic.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
                     }
                     binding.recommendContent.tvTopicTitle.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
                     }
                 }
                 val appIndexBanner = it.data.app_index_banner
-                appIndexBanner.forEach { b-> // banner
-                    GlideUtils.loadBD(b.adImg,binding.recommendContent.ivBanner)
+                appIndexBanner.forEach { b -> // banner
+                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivBanner)
                     binding.recommendContent.ivBanner.setOnClickListener {
-                        JumpUtils.instans?.jump(b.jumpDataType,b.jumpDataValue)
+                        JumpUtils.instans?.jump(b.jumpDataType, b.jumpDataValue)
                     }
                 }
-                var appIndexAds = it.data.app_index_ads
+                val appIndexAds = it.data.app_index_ads
                 twoAdRvListAdapter.setNewInstance(appIndexAds)
 
             }
 
         })
+        bus()
     }
 
+
+    private fun bus() {
+        LiveDataBus.get().withs<String>("Gone").observe(this, {
+            binding.appbarLayout.setExpanded(false)
+        })
+        LiveDataBus.get().withs<String>("Visi").observe(this, {
+            binding.appbarLayout.setExpanded(true)
+        })
+    }
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
     }
 
-    fun exBand(isExpand: Boolean) {
-        binding.appbarLayout.setExpanded(isExpand)
-    }
-
-
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        recommendFragment.homeRefersh()
+        when(currentPosition){
+            0->{
+                recommendFragment.homeRefersh()
+            }
+            1->{
+                actsParentsFragment.homeRefersh()
+            }
+            2->{
+                newsListFragment.homeRefersh()
+            }
+            3->{
+                bigShotFragment.homeRefersh()
+            }
+        }
+
     }
 
 

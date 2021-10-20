@@ -57,7 +57,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             // 内容
             GlideUtils.loadBD(item.pics, it.layoutContent.ivPic)
             it.layoutContent.tvContent.text = item.content
-            it.layoutContent.tvTime.text = item.getTimeShow()
+            it.layoutContent.tvTime.text = item.timeStr
             it.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
             it.layoutCount.tvTimeLookCount.setPageTitleText(item.getViewCount())
             it.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCount())

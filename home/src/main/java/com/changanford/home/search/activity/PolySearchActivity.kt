@@ -22,6 +22,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toastShow
+import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.databinding.ActivityPolySearchBinding
@@ -67,7 +68,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         } else {
             searchType = -1
         }
-        ImmersionBar.with(this).fitsSystemWindows(true)
+        ImmersionBar.with(this)
+            .fitsSystemWindows(true)
+            .statusBarColor(R.color.color_F4)
+
         flexboxLayoutManagerHistory = FlexboxLayoutManager(this)
         flexboxLayoutManagerHistory!!.flexDirection = FlexDirection.ROW
         flexboxLayoutManagerHistory!!.justifyContent = JustifyContent.FLEX_START

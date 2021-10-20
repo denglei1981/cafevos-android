@@ -10,6 +10,7 @@ import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -103,7 +104,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.ivSearch.setOnClickListener {
-            JumpUtils.instans!!.jump(108)
+            JumpUtils.instans!!.jump(108,SearchTypeConstant.SEARCH_POST.toString())
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()

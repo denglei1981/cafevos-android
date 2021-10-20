@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.NewsValueData
@@ -31,6 +31,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
@@ -47,6 +48,7 @@ import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ScreenUtils
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
 class NewsVideoDetailActivity :
@@ -97,13 +99,6 @@ class NewsVideoDetailActivity :
 
             }
         })
-        homeNewsCommentAdapter.setOnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.iv_like, R.id.tv_like_count -> {
-                    toastShow("点我。。。")
-                }
-            }
-        }
     }
 
     override fun initData() {
@@ -117,6 +112,7 @@ class NewsVideoDetailActivity :
         }
         bus()
     }
+
 
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
         DataBindingUtil.inflate(
@@ -141,8 +137,8 @@ class NewsVideoDetailActivity :
                     toastShow("没有作者")
                 }
             }
-
         })
+
     }
 
     private fun playVideo(playUrl: String) {
@@ -218,13 +214,18 @@ class NewsVideoDetailActivity :
     }
 
     var newsDetailData: NewsDetailData? = null
+
+    //web帮助类
+    private var webHelper: CustomWebHelper? = null
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
+        inflateHeader.ivAvatar.setOnClickListener{
+            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        }
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
-        inflateHeader.tvContent.text = Html.fromHtml(newsDetailData.content)
         if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
             GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
             inflateHeader.ivPic.visibility = View.VISIBLE
@@ -232,6 +233,15 @@ class NewsVideoDetailActivity :
             inflateHeader.ivPic.visibility = View.GONE
         }
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
+        inflateHeader.tvTime.text = newsDetailData.timeStr
+
+        if(newsDetailData.specialTopicId>0){
+            inflateHeader.llSpecial.visibility=View.VISIBLE
+        }else{
+            inflateHeader.llSpecial.visibility=View.GONE
+        }
+
+
         inflateHeader.llSpecial.setOnClickListener {// 跳转到专题详情。
             JumpUtils.instans?.jump(8, newsDetailData.specialTopicId.toString())
         }
@@ -242,17 +252,14 @@ class NewsVideoDetailActivity :
                 startARouter(ARouterMyPath.SignUI)
             } else {
                 followAction()
-
             }
         }
-
         binding.llComment.tvNewsToLike.setPageTitleText(
             CountUtils.formatNum(
                 newsDetailData.getLikeCount(),
                 false
             ).toString()
         )
-
         binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
         binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())
         binding.llComment.tvNewsToCollect.setPageTitleText(newsDetailData.getCollectCount())
@@ -273,6 +280,26 @@ class NewsVideoDetailActivity :
                 R.drawable.icon_home_bottom_collection,
                 false
             )
+        }
+        if (TextUtils.isEmpty(newsDetailData.content)) {
+            inflateHeader.tvOpen.visibility = View.GONE
+        }
+        if (webHelper == null) {
+            webHelper = CustomWebHelper(
+                BaseApplication.curActivity,
+                inflateHeader.webContent
+            )
+        }
+        webHelper?.loadDataWithBaseURL(newsDetailData.content)
+        inflateHeader.webContent.visibility = View.GONE
+        inflateHeader.tvOpen.setOnClickListener {
+            if (inflateHeader.webContent.visibility == View.GONE) {
+                inflateHeader.webContent.visibility = View.VISIBLE
+                inflateHeader.tvOpen.text = "收起详情"
+            } else {
+                inflateHeader.webContent.visibility = View.GONE
+                inflateHeader.tvOpen.text = "展开详情"
+            }
         }
     }
 

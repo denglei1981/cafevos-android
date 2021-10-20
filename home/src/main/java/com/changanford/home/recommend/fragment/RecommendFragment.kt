@@ -47,11 +47,9 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
         viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
         binding.smartLayout.setOnLoadMoreListener(this)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
-//            startARouter(ARouterHomePath.NewsPicAdActivity)
             selectPosition = position
             val itemViewType = recommendAdapter.getItemViewType(position)
             val item = recommendAdapter.getItem(position)
@@ -63,11 +61,8 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                     toActs(item)
                 }
             }
-
-
         }
         setLoadSir(binding.smartLayout)
-
     }
 
     override fun observe() {
@@ -91,7 +86,6 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
 //                bundle.putString("postsId", value)
 //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
                 JumpUtils.instans!!.jump(4, item.postsId)
-
             }
         }
 
