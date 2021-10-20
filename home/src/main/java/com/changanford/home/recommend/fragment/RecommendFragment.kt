@@ -46,6 +46,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
     override fun initView() {
         viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
+        binding.smartLayout.setOnLoadMoreListener(this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
@@ -122,7 +123,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
             if (selectPosition == -1) {
                 return@observe
             }

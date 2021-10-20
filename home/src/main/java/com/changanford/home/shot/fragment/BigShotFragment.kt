@@ -53,7 +53,10 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         binding.recyclerViewH.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewV.adapter = bigShotPostListAdapter
         binding.recyclerViewV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.refreshLayout.setOnRefreshListener(this)
+        binding.refreshLayout.setOnLoadMoreListener(this)
         onRefresh(binding.refreshLayout)
+
         bigShotUserListAdapter.setOnItemClickListener { adapter, view, position ->
             val item = bigShotUserListAdapter.getItem(position)
             JumpUtils.instans!!.jump(35,item.userId.toString())
@@ -121,7 +124,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
             if (selectPosition == -1) {
                 return@observe
             }

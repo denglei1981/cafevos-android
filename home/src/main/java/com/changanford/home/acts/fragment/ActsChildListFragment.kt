@@ -173,11 +173,15 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         val screenData = result.data as ScreenData
                         cityId = screenData.cityId
                         cityName = screenData.cityName
-                        if (!TextUtils.isEmpty(screenData.official)) {
-                            officialCode = screenData.official.toInt()
+                        officialCode = if (!TextUtils.isEmpty(screenData.official)) {
+                            screenData.official.toInt()
+                        }else{
+                            -1
                         }
-                        if (!TextUtils.isEmpty(screenData.wonderfulType)) {
-                            wonderfulType = screenData.wonderfulType.toInt()
+                        wonderfulType = if (!TextUtils.isEmpty(screenData.wonderfulType)) {
+                            screenData.wonderfulType.toInt()
+                        }else{
+                            -1
                         }
                         getActList(false)
                     }
