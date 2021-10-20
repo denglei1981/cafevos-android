@@ -28,7 +28,7 @@ import razerdp.basepopup.BasePopupWindow
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private val shareViewModule by lazy { ShareViewModule() }
-    private var skuCode=""
+    var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
@@ -126,7 +126,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
-        if(::dataBean.isInitialized&&skuCode.isNotEmpty()){
+        if(::dataBean.isInitialized){
             GoodsAttrsPop(activity,this.dataBean,skuCode).apply {
                 showPopupWindow()
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
@@ -137,25 +137,27 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }
         }
     }
-    private fun getSkuTxt(skuCode:String){
-        this.skuCode=skuCode
-        val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
-        dataBean.skuId=findItem.skuId
-        dataBean.fbPrice=findItem.fbPrice
-        dataBean.stock=findItem.stock.toInt()
-        dataBean.skuCodeTxts= arrayListOf()
-        val skuCodes=skuCode.split("-")
-        var skuCodeTxt=""
-        val skuCodeTxtArr= arrayListOf<String>()
-        for((i,item) in dataBean.attributes.withIndex()){
-            item.optionVos.find { skuCodes[i+1]== it.optionId }?.let {
-                val optionName= it.optionName
-                skuCodeTxtArr.add(optionName)
-                skuCodeTxt+="$optionName  "
+    private fun getSkuTxt(skuCode:String?){
+        skuCode?.let {
+            this.skuCode=skuCode
+            val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
+            dataBean.skuId=findItem.skuId
+            dataBean.fbPrice=findItem.fbPrice
+            dataBean.stock=findItem.stock.toInt()
+            dataBean.skuCodeTxts= arrayListOf()
+            val skuCodes=skuCode.split("-")
+            var skuCodeTxt=""
+            val skuCodeTxtArr= arrayListOf<String>()
+            for((i,item) in dataBean.attributes.withIndex()){
+                item.optionVos.find { skuCodes[i+1]== it.optionId }?.let {
+                    val optionName= it.optionName
+                    skuCodeTxtArr.add(optionName)
+                    skuCodeTxt+="$optionName  "
+                }
             }
+            dataBean.skuCodeTxts=skuCodeTxtArr
+            headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
         }
-        dataBean.skuCodeTxts=skuCodeTxtArr
-        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn()

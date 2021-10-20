@@ -1,5 +1,6 @@
 package com.changanford.shop.popupwindow
 
+import android.text.TextUtils
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,7 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2021/9/22
  * @Description : GoodsAttrsPop
  */
-open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String): BasePopupWindow(activity) {
+open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String?): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
     private var skuCodeLiveData: MutableLiveData<String> = MutableLiveData()
     private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCodeLiveData) }
@@ -47,6 +48,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity,{ code ->
+            if(TextUtils.isEmpty(code))return@observe
             _skuCode=code
             (dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]).apply {
                 dataBean.skuImg=skuImg
@@ -81,6 +83,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             dataBean.buyNum= it
         })
     }
+
     private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
         val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
         if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足

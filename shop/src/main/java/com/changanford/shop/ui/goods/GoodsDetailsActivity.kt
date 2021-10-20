@@ -106,7 +106,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(R.id.img_back!=vid&&(!::control.isInitialized||viewModel.goodsDetailData.value==null))return
         when(vid){
             //确认订单
-            R.id.btn_submit->OrderConfirmActivity.start(this, Gson().toJson(viewModel.goodsDetailData.value))
+            R.id.btn_submit->{
+                if(control.skuCode.isEmpty())control.createAttribute()
+                else OrderConfirmActivity.start(this, Gson().toJson(viewModel.goodsDetailData.value))
+            }
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,spuId)
             //选择商品属性
