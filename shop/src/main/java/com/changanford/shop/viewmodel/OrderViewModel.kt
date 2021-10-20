@@ -6,6 +6,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.listener.OnPerformListener
@@ -249,6 +250,7 @@ class OrderViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
+                ToastUtils.reToast(R.string.str_addressChangedSuccessfully)
                 listener?.onFinish(0)
             }
         }
