@@ -174,7 +174,7 @@ data class GoodsDetailBean(
     var acountFb:Int=0,//账号积分
     val param:String?="",
     var totalPayFb:String="",//总支付积分
-    val freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String="0.00",//运费 0为包邮
     val collect:String="",//是否收藏 YES NO
     var addressId:Int?=0,
     var preferentialFb:String?="",

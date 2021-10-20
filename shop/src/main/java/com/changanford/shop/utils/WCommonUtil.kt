@@ -198,7 +198,7 @@ object WCommonUtil {
      * 格式化数字（.00表示保留两位小数 不四舍五入）
      * */
     fun getHeatNum(heat: Double): String {
-        val df = DecimalFormat("#.0000")
+        val df = DecimalFormat("#.00")
         df.roundingMode = RoundingMode.DOWN
 
         return df.format(heat)
