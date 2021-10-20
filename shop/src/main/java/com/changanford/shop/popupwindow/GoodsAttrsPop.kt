@@ -82,7 +82,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         })
     }
     private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
-        if(MConstant.token.isNotEmpty()&&dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
+        val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
+        if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
             btnSubmit.setStates(8)
         } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
             btnSubmit.setStates(7)

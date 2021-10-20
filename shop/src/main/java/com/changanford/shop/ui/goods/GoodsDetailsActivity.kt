@@ -10,6 +10,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.shop.BuildConfig
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
@@ -84,6 +85,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
+            if(BuildConfig.DEBUG)it.acountFb=600
             control.bindingData(it)
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
         })

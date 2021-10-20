@@ -37,10 +37,20 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
             it.apply {
                 if(!TextUtils.isEmpty(s)){
                     val nowNumber=s.toString().toInt()
-                    if(nowNumber>maxValue||nowNumber<minValue)ToastUtils.showLongToast("最多购买${maxValue}件，最少购买${minValue}件")
-                    else number=nowNumber
-                }else ToastUtils.showLongToast("最少购买${minValue}件")
-                setNumber(number)
+                    if(number!=nowNumber){
+                        if(nowNumber>maxValue||nowNumber<minValue){
+                            setNumber(number)
+                            ToastUtils.showLongToast("最多购买${maxValue}件，最少购买${minValue}件")
+                        } else {
+                            number=nowNumber
+                            postValue()
+                        }
+                    }
+                }else {
+                    number=minValue
+                    setNumber(number)
+                    ToastUtils.showLongToast("最少购买${minValue}件")
+                }
             }
         }
     }
@@ -60,6 +70,9 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     fun setNumber(newNumber:Int,isPostValue:Boolean=true){
         this.number=if(newNumber>maxValue||newNumber<minValue)minValue else newNumber
         edtNumberValue.setText("$number")
+        postValue(isPostValue)
+    }
+    private fun postValue(isPostValue:Boolean=true){
         if(isPostValue)numberLiveData.postValue(number)
     }
     fun setMax(max:Int){

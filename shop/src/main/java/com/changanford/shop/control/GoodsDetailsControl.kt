@@ -132,7 +132,6 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
                         getSkuTxt(_skuCode)
-//                        WCommonUtil.hideKeyboard(binding.root)
                     }
                 }
             }
@@ -163,7 +162,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     private fun bindingBtn(){
         binding.inBottom.btnSubmit.apply {
-            if(MConstant.token.isNotEmpty()&&dataBean.acountFb<dataBean.fbPrice.toInt()){//积分余额不足
+            val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
+            if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
                 setStates(8)
             } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
                 setStates(7)
