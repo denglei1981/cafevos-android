@@ -27,6 +27,7 @@
                 android:id="@+id/iv_avatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <LinearLayout
@@ -87,20 +88,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
-            android:text="重庆长安福特EVOS即将在今年华丽登场啊啦啦啦啦啦啦"
+            tools:text="重庆长安福特EVOS即将在今年华丽登场啊啦啦啦啦啦啦"
             android:textColor="#ff333333"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/ll_info"
             app:layout_constraintStart_toStartOf="@+id/ll_info"
             app:layout_constraintTop_toBottomOf="@+id/ll_info" />
 
-        <TextView
+        <com.changanford.home.widget.ExpandableTextView
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="@dimen/dp_20"
-            android:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，
+            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，
 真的简约大气，炫酷的开机动画，全自动的语音控制。
 长安福特这一次给大家一个好大的惊喜，刚看到这款车
 的时候，我真的好喜欢，特别那一米多的中控显示屏，
@@ -139,8 +140,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical|start"
                 android:drawableEnd="@drawable/icon_home_small_next"
+                android:gravity="center_vertical|start"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_12"
                 tools:text="@string/app_name" />
@@ -153,7 +154,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_recommend_test"
+            tools:src="@drawable/image_recommend_test"
             app:layout_constraintDimensionRatio="335:150"
             app:layout_constraintEnd_toEndOf="@+id/ll_info"
             app:layout_constraintStart_toStartOf="@+id/ll_info"
@@ -189,7 +190,6 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:drawableEnd="@drawable/icon_home_small_next"
             android:drawablePadding="4dp"
-
             android:text="@string/home_more"
             android:textColor="#ff74889d"
             android:textSize="14sp"

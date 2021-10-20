@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -137,7 +138,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             showPublish(binding.layoutTopBar.ivScan)
         }
         binding.recommendContent.etSearchContent.setOnClickListener {
-            JumpUtils.instans!!.jump(108)
+            toSearch()
         }
         binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
             override fun onHeaderMoving(
@@ -171,9 +172,27 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
 //            startARouter(ARouterHomePath.PolySearchActivity)
-            JumpUtils.instans!!.jump(108)
+
+            toSearch()
         }
 
+    }
+
+    fun toSearch() {
+        when (binding.homeViewpager.currentItem) {
+            0 -> {
+                JumpUtils.instans!!.jump(108)
+            }
+            1 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
+            }
+            2 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
+            }
+            3 -> {
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
+            }
+        }
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -287,17 +306,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     binding.recommendContent.tvTopicTitle.text = t.adSubName
                     binding.recommendContent.tvBigTopic.text = t.adName
                     binding.recommendContent.tvBigTopic.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
                     }
                     binding.recommendContent.tvTopicTitle.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType,t.jumpDataValue)
+                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
                     }
                 }
                 val appIndexBanner = it.data.app_index_banner
-                appIndexBanner.forEach { b-> // banner
-                    GlideUtils.loadBD(b.adImg,binding.recommendContent.ivBanner)
+                appIndexBanner.forEach { b -> // banner
+                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivBanner)
                     binding.recommendContent.ivBanner.setOnClickListener {
-                        JumpUtils.instans?.jump(b.jumpDataType,b.jumpDataValue)
+                        JumpUtils.instans?.jump(b.jumpDataType, b.jumpDataValue)
                     }
                 }
                 var appIndexAds = it.data.app_index_ads

@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.AuthorBaseVo
@@ -47,6 +46,7 @@ import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ScreenUtils
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
 class NewsVideoDetailActivity :
@@ -97,13 +97,6 @@ class NewsVideoDetailActivity :
 
             }
         })
-        homeNewsCommentAdapter.setOnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.iv_like, R.id.tv_like_count -> {
-                    toastShow("点我。。。")
-                }
-            }
-        }
     }
 
     override fun initData() {
@@ -116,6 +109,16 @@ class NewsVideoDetailActivity :
             ToastUtils.showShortToast("没有该资讯类型", this)
         }
         bus()
+    }
+
+    fun setExpandView() {
+        val width: Int = ScreenUtils.getScreenWidth(this) + 40
+        inflateHeader.tvContent.initWidth(width)
+        inflateHeader.tvContent.maxLines = 3
+        inflateHeader.tvContent.setHasAnimation(true)
+        inflateHeader.tvContent.setCloseInNewLine(true)
+        inflateHeader.tvContent.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
+        inflateHeader.tvContent.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
     }
 
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
@@ -141,8 +144,8 @@ class NewsVideoDetailActivity :
                     toastShow("没有作者")
                 }
             }
-
         })
+
     }
 
     private fun playVideo(playUrl: String) {
@@ -224,7 +227,6 @@ class NewsVideoDetailActivity :
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
-        inflateHeader.tvContent.text = Html.fromHtml(newsDetailData.content)
         if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
             GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
             inflateHeader.ivPic.visibility = View.VISIBLE
@@ -242,7 +244,6 @@ class NewsVideoDetailActivity :
                 startARouter(ARouterMyPath.SignUI)
             } else {
                 followAction()
-
             }
         }
 
@@ -274,6 +275,8 @@ class NewsVideoDetailActivity :
                 false
             )
         }
+        setExpandView()
+        inflateHeader.tvContent.setOriginalText(Html.fromHtml(newsDetailData.content))
     }
 
     // 关注或者取消
