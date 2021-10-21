@@ -68,7 +68,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         binding.rcyDay.adapter = dayAdapter
         var sysUser = UserManger.getSysUserInfo()
         sysUser?.integral?.let {
-            binding.tvTaskJifenNum.text = "我的积分：${it?.toInt()}"
+            binding.tvTaskJifenNum.text = "我的福币：${it?.toInt()}"
         }
 
         binding.taskFinish.setOnClickListener {
@@ -113,7 +113,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             bean?.let {
                 it.data?.apply {
                     binding.des.text =
-                        "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}积分+${nextGrowth ?: 0}成长值"
+                        "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}福币+${nextGrowth ?: 0}成长值"
                     roundList?.forEach {
                         it.isNowDay = TimeUtils.getNowDay().equals(it.date)
                         if (TimeUtils.getNowDay().equals(it.date)) {

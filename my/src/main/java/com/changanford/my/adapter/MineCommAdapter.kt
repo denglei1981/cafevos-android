@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -37,7 +36,6 @@ import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 object MineCommAdapter {
@@ -504,7 +502,7 @@ object MineCommAdapter {
                         icon.load(R.mipmap.icon_sign_bu)
                         word.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
-                            pop.contentText.text = "本次补签将消耗 ${item.integral} 积分"
+                            pop.contentText.text = "本次补签将消耗 ${item.integral} 福币"
                             pop.btnConfirm.text = "立即补签"
                             pop.btnConfirm.setOnClickListener {
                                 pop.dismiss()
