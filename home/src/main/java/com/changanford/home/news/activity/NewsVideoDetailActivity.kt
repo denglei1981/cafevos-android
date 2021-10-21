@@ -388,13 +388,9 @@ class NewsVideoDetailActivity :
             back()
         }
     }
-
     override fun onBackPressed() {
-
-
         backPressed { super.onBackPressed() }
     }
-
     /**
      *  有重试 重写此方法
      * */

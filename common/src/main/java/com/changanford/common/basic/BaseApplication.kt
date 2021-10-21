@@ -28,7 +28,6 @@ import com.changanford.common.utilext.logD
 import kotlinx.coroutines.CoroutineScope
 
 
-
 abstract class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
