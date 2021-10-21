@@ -55,26 +55,29 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
 
     override fun initData() {
+        binding.inGoodsInfo.addSubtractView.apply {
+            setMax(dataBean.stock)
+            setNumber(dataBean.buyNum,false)
+            numberLiveData.observe(this@OrderConfirmActivity,{
+                dataBean.buyNum= it
+                bindingBaseData()
+            })
+        }
         viewModel.addressList.observe(this,{ addressList ->
             //默认获取地址列表的默认收货地址
             val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
             bindingAddress(item)
         })
-        binding.inGoodsInfo.addSubtractView.numberLiveData.observe(this,{
-            dataBean.buyNum= it
-            bindingBaseData()
-        })
         val addressInfo=dataBean.addressInfo
         if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
         else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
-        bindingBaseData()
-        binding.inGoodsInfo.addSubtractView.setNumber(dataBean.buyNum)
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
             it.accountFb=dataBean.acountFb.toString()
             PayConfirmActivity.start(this,Gson().toJson(it))
             this.finish()
         })
+        bindingBaseData()
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
