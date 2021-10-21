@@ -945,21 +945,22 @@ public class VideoEditor {
      * @param durationS 需要裁剪的时长，单位秒，比如您可以从原视频的8.9秒出开始裁剪，裁剪2分钟，则这里的参数是120
      * @return
      */
-    public String executeCutVideo(String videoFile, float startS, float durationS) {
+    public String executeCutVideo(String videoFile, long startMS, long endMS) {
         if (fileExist(videoFile)) {
-
+            String start = VideoTrimmerUtil.convertSecondsToTime(startMS/1000);
+            String end = VideoTrimmerUtil.convertSecondsToTime((endMS - startMS) / 1000) ;
             String dstFile=LanSongFileUtil.createMp4FileInBox();
 
             List<String> cmdList = new ArrayList<String>();
-
+            Log.d("裁剪时间","start---"+start+"durationS--"+end);
             cmdList.add("-ss");
-            cmdList.add(String.valueOf(startS));
+            cmdList.add(start);
 
             cmdList.add("-i");
             cmdList.add(videoFile);
 
             cmdList.add("-t");
-            cmdList.add(String.valueOf(durationS));
+            cmdList.add(end);
 
             cmdList.add("-vcodec");
             cmdList.add("copy");

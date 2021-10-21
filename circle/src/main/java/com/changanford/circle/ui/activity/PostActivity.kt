@@ -71,7 +71,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private lateinit var plateBean: PlateBean
     private var nomalwith = 500;
     private var nomalhight = 500;
-
+    private var isshowemoji = true
+    private var iskeybarOpen = false
     private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
     private var isTopPost = false
     private var isCirclePost: Boolean = false
@@ -142,7 +143,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            if (isPopup) binding.bottom.emojirec.visibility = View.GONE
+            if (isPopup){
+                iskeybarOpen = true
+                binding.bottom.emojirec.visibility = View.GONE
+            } else{
+                iskeybarOpen= false
+            }
         }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -321,6 +327,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun onclick() {
+
+        binding.etBiaoti.setOnFocusChangeListener { view, b ->
+            if (b){
+                isshowemoji = false
+            }
+        }
+
+
         binding.title.barImgBack.setOnClickListener {
             if (binding.etBiaoti.text.toString().isEmpty()) {
                 finish()
@@ -381,11 +395,27 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         }
         binding.bottom.ivEmoj.setOnClickListener {
-            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
-            Timer().schedule(80) {
-                binding.bottom.emojirec.post {
-                    binding.bottom.emojirec.visibility = View.VISIBLE
+                HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+
+                            binding.bottom.emojirec.visibility = View.GONE
+                        } else {
+                            binding.bottom.emojirec.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }else if(!iskeybarOpen) {
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+                            binding.bottom.emojirec.visibility = View.GONE
+                        }
+                    }
                 }
             }
 

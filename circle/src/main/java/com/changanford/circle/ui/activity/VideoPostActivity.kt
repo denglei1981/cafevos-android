@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -43,6 +44,7 @@ import com.yalantis.ucrop.UCrop
 import android.media.MediaMetadataRetriever
 import java.io.File
 import android.graphics.Bitmap
+import cn.hchstudio.kpermissions.KPermission
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -53,6 +55,9 @@ import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.config.PictureMimeType
 import com.yw.li_model.adapter.EmojiAdapter
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 
 /**
@@ -70,6 +75,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var nomalwith = 500;
     private var nomalhight = 500;
     private lateinit var plateBean: PlateBean
+    private var iskeybarOpen = false
 
     private var isTopPost = false
     private var isCirclePost: Boolean = false
@@ -81,7 +87,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         LoadDialog(this).apply {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
-            setLoadingText("图片上传中..")
+            setLoadingText("视频上传中..")
             show()
         }
     }
@@ -136,12 +142,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     override fun observe() {
         super.observe()
-
+        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
+            Log.d("ImmersionBar", keyboardHeight.toString())
+            if (isPopup){
+                iskeybarOpen = true
+                binding.bottom.emojirec.visibility = View.GONE
+            } else{
+                iskeybarOpen= false
+            }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.CLEARVIDEOPOSTDATA).observe(this, Observer {
+            selectList.clear()
+            postVideoAdapter.notifyDataSetChanged()
+        })
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            if (locaPostEntity!=null){
+            if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
             "发布成功".toast()
@@ -150,7 +168,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         viewModel.stsBean.observe(this, Observer {
             it?.let {
                 upedimgs.clear()
-                uploadFM(it,dialog)
+                uploadFM(it, dialog)
             }
         })
         viewModel.cityCode.observe(this, Observer {
@@ -190,7 +208,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params.remove("province")
                     params.remove("cityCode")
                     params.remove("address")
-                    address= ""
+                    address = ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
 
@@ -255,7 +273,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
-    private fun initlocaData(){
+    private fun initlocaData() {
         if (locaPostEntity != null) {
 
             binding.etBiaoti.setText(locaPostEntity!!.title)
@@ -276,7 +294,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             params["city"] = locaPostEntity!!.city
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
-            if (params["plate"]!=0) {
+            if (params["plate"] != 0) {
 
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
@@ -299,8 +317,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     ButtomTypeBean(locaPostEntity!!.address, 1, 4)
                 )
             }
-            if ( locaPostEntity!!.fmpath.isNotEmpty()){
-                postVideoAdapter.fmPath =  locaPostEntity!!.fmpath
+            if (locaPostEntity!!.fmpath.isNotEmpty()) {
+                postVideoAdapter.fmPath = locaPostEntity!!.fmpath
                 postVideoAdapter.notifyDataSetChanged()
             }
             jsonStr2obj(locaPostEntity!!.localMeadle)
@@ -358,15 +376,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             override fun onItemClick(view: View?, position: Int) {
                 val emoji = emojiAdapter.getItem(position)
 
-                var index = if (binding.etBiaoti.hasFocus()){
+                var index = if (binding.etBiaoti.hasFocus()) {
                     binding.etBiaoti.selectionStart
-                }else{
+                } else {
                     binding.etContent.selectionStart
                 }
 
-                var editContent =if (binding.etBiaoti.hasFocus()){
+                var editContent = if (binding.etBiaoti.hasFocus()) {
                     binding.etBiaoti.text
-                }else{
+                } else {
                     binding.etContent.text
                 }
                 editContent?.insert(index, emoji)
@@ -406,7 +424,32 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
 
     private fun onclick() {
+        binding.bottom.ivEmoj.setOnClickListener {
+            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
+                HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+
+                            binding.bottom.emojirec.visibility = View.GONE
+                        } else {
+                            binding.bottom.emojirec.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }else if(!iskeybarOpen) {
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+                            binding.bottom.emojirec.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+
+        }
 
         binding.title.barImgBack.setOnClickListener {
             if (binding.etBiaoti.text.toString().isEmpty()) {
@@ -418,7 +461,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     }
 
                     override fun save() {
-                        var postEntity = if (locaPostEntity!=null) locaPostEntity!! else PostEntity()
+                        var postEntity =
+                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                         postEntity.content = binding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -486,7 +530,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                 selectList.clear()
                                 selectList.addAll(result)
                             }
-                            postVideoAdapter.setList(selectList)
+//                            postVideoAdapter.setList(selectList)
                             startARouterForResult(
                                 this@VideoPostActivity,
                                 ARouterCirclePath.PictureEditAudioActivity,
@@ -507,7 +551,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 array.add("选择封面")
                 if (canEditVideo) {
                     array.add("编辑视频")
-                }else{
+                } else {
                     array.add("重选视频")
                 }
                 if (!postVideoAdapter.fmPath.isNullOrEmpty()) {
@@ -530,18 +574,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                                 )
                                             }, VideoChoseFMActivity.FM_CALLBACK
                                         )
-                                    }else{
+                                    } else {
                                         PictureUtil.openGalleryOnePic(this@VideoPostActivity,
                                             object : OnResultCallbackListener<LocalMedia> {
                                                 override fun onResult(result: MutableList<LocalMedia>?) {
                                                     val localMedia = result?.get(0)
                                                     var bundle = Bundle()
                                                     var selectList = arrayListOf(localMedia)
-                                                    bundle.putParcelableArrayList("picList", selectList)
+                                                    bundle.putParcelableArrayList(
+                                                        "picList",
+                                                        selectList
+                                                    )
                                                     bundle.putInt("position", 0)
                                                     bundle.putInt("showEditType", -1)
-                                                    bundle.putBoolean("isVideo",true)
-                                                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                                                    bundle.putBoolean("isVideo", true)
+                                                    startARouter(
+                                                        ARouterCirclePath.PictureeditlActivity,
+                                                        bundle
+                                                    )
 
                                                 }
 
@@ -557,17 +607,30 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                     cxsp()
                                 }
                                 "编辑视频" -> {
-                                    startARouterForResult(
-                                        this@VideoPostActivity,
-                                        ARouterCirclePath.PictureEditAudioActivity,
-                                        Bundle().apply {
-                                            putString(
-                                                "path",
-                                                PictureUtil.getFinallyPath(selectList[0])
+                                    val permissionsGroup =
+                                        arrayOf(
+                                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        )
+                                    KPermission(this@VideoPostActivity).requestPermission(permissionsGroup, {
+                                        if (it) {
+                                            startARouterForResult(
+                                                this@VideoPostActivity,
+                                                ARouterCirclePath.PictureEditAudioActivity,
+                                                Bundle().apply {
+                                                    putString(
+                                                        "path",
+                                                        selectList[0].realPath
+                                                    )
+                                                },
+                                                PictureEditAudioActivity.EDIT_VIDEOPATH
                                             )
-                                        },
-                                        PictureEditAudioActivity.EDIT_VIDEOPATH
-                                    )
+                                        } else {
+
+                                        }
+                                    })
+
+
                                 }
                                 "删除封面" -> {
                                     postVideoAdapter.fmPath = ""
@@ -592,24 +655,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     position,
                     ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
                 )
-                when(buttomTypeAdapter.getItem(position).itemType){
-                    2 ->{
+                when (buttomTypeAdapter.getItem(position).itemType) {
+                    2 -> {
                         params.remove("topID")
                         params.remove("topName")
                     }
-                    3->{
+                    3 -> {
                         params.remove("circleId")
                         params.remove("circleName")
-                        circlename=""
+                        circlename = ""
                     }
-                    4->{
+                    4 -> {
                         params.remove("lat")
                         params.remove("lon")
                         params.remove("city")
                         params.remove("province")
                         params.remove("cityCode")
                         params.remove("address")
-                        address= ""
+                        address = ""
                     }
                 }
             }
@@ -698,19 +761,19 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
-    private fun uploadFM(stsBean: STSBean,dialog: LoadDialog) {
+    private fun uploadFM(stsBean: STSBean, dialog: LoadDialog) {
         var fmpath = postVideoAdapter.fmPath
 
         if (!fmpath.isNullOrEmpty()) {
-            upimgs(stsBean,fmpath,dialog)
+            upimgs(stsBean, fmpath, dialog)
         } else {
             //从视频中下载第一帧 返回path
-            var videofirstpic= getFristVideoPic()
-            upimgs(stsBean,videofirstpic,dialog)
+            var videofirstpic = getFristVideoPic()
+            upimgs(stsBean, videofirstpic, dialog)
         }
     }
 
-    private fun upimgs(stsBean: STSBean, fmpath:String,dialog: LoadDialog){
+    private fun upimgs(stsBean: STSBean, fmpath: String, dialog: LoadDialog) {
         var type = fmpath?.substring(fmpath.lastIndexOf(".") + 1, fmpath.length)
         Glide.with(this).asBitmap().load(fmpath)
             .skipMemoryCache(true)
@@ -858,9 +921,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {
                     canEditVideo = true
                     val videoeditpath = data?.getStringExtra("finalPath")
+                    val time = data!!.getLongExtra("time", 0)
                     selectList[0].isCut = true
                     selectList[0].cutPath = videoeditpath
-                    selectList[0].path = videoeditpath
+                    selectList[0].duration = time
                     postVideoAdapter.setList(selectList)
                     postVideoAdapter.notifyDataSetChanged()
                 }
@@ -877,13 +941,13 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postsId?.let {
             canEditVideo = false
             //监听下载的图片
-            viewModel._downloadLocalMedias.observe(this,{
+            viewModel._downloadLocalMedias.observe(this, {
                 //选择的图片重置
                 selectList.clear()
                 selectList.addAll(it)
                 //添加封面
-                if ( it.size!=0){
-                    postVideoAdapter.fmPath =  it[0].realPath
+                if (it.size != 0) {
+                    postVideoAdapter.fmPath = it[0].realPath
                     postVideoAdapter.notifyDataSetChanged()
                 }
                 //展示选择的图片
@@ -904,7 +968,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         params["type"] = locaPostEntity!!.type
                         params["keywords"] = locaPostEntity!!.keywords
                         params["circleId"] = locaPostEntity!!.circleId
-                        params["content"] = locaPostEntity!!.content?:""
+                        params["content"] = locaPostEntity!!.content ?: ""
                         params["actionCode"] = locaPostEntity!!.actionCode
                         params["title"] = locaPostEntity!!.title
                         params["address"] = locaPostEntity!!.address
@@ -914,25 +978,28 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         params["cityCode"] = locaPostEntity!!.cityCode
                         params["city"] = locaPostEntity!!.city
 
-                        if (params["plate"]!=0) {
+                        if (params["plate"] != 0) {
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                            buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+                            buttomTypeAdapter.setData(
+                                1,
+                                ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
+                            )
                         }
-                        if (locaPostEntity!!.topicName?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                        if (locaPostEntity!!.topicName?.isNotEmpty() == true) buttomTypeAdapter.setData(
                             2,
-                            ButtomTypeBean(locaPostEntity!!.topicName?:"", 1, 2)
+                            ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
                         )
-                        if (locaPostEntity!!.circleName?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                        if (locaPostEntity!!.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
                             3,
-                            ButtomTypeBean(locaPostEntity!!.circleName?:"", 1, 3)
+                            ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
                         )
-                        if (locaPostEntity!!.address?.isNotEmpty() == true)  buttomTypeAdapter.setData(
+                        if (locaPostEntity!!.address?.isNotEmpty() == true) buttomTypeAdapter.setData(
                             4,
                             ButtomTypeBean(locaPostEntity!!.address, 1, 4)
                         )
 //                        jsonStr2obj(locaPostEntity!!.localMeadle)
                         //选择的标签
-                        if (locaPostEntity!!.keywords?.isNotEmpty()==true) {
+                        if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
                             buttomlabelAdapter.data.forEach {
                                 it.isselect = it.tagName == locaPostEntity!!.keywords
                             }
@@ -944,7 +1011,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             viewModel.getPostById(it)
         }
     }
-    private fun cxsp(){
+
+    private fun cxsp() {
         PictureUtil.ChoseVideo(
             this,
             selectList.apply { clear() },
