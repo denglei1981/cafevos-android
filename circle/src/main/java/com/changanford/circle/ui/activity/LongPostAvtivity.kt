@@ -194,8 +194,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             {
                 address = it.address
                 params["address"] = address
-                params["lat"] = it.location.latitude
-                params["lon"] = it.location.longitude
+                it.location?.let {
+                    params["lat"] = it.latitude
+                    params["lon"] = it.longitude
+                }
                 params["province"] = it.province ?: address
                 viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))

@@ -83,6 +83,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var postType: Int = 0
     private var h5postbean: H5PostTypeBean? = null
     private lateinit var jsonStr: String
+
+    private lateinit var SelectlocalMedia :LocalMedia
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -151,10 +153,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 iskeybarOpen= false
             }
         }
-        LiveDataBus.get().with(LiveDataBusKey.CLEARVIDEOPOSTDATA).observe(this, Observer {
-            selectList.clear()
-            postVideoAdapter.notifyDataSetChanged()
-        })
+//        LiveDataBus.get().with(LiveDataBusKey.CLEARVIDEOPOSTDATA).observe(this, Observer {
+//            selectList.clear()
+//            postVideoAdapter.notifyDataSetChanged()
+//        })
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
                 dialog.dismiss()
@@ -327,6 +329,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun jsonStr2obj(jonson: String) {
         val media = JSON.parseArray(jonson, LocalMedia::class.java);
+        selectList.addAll(media)
         postVideoAdapter.setList(media)
         postVideoAdapter.notifyDataSetChanged()
     }
@@ -494,6 +497,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
+
                         if (locaPostEntity == null) {
                             viewModel.insertPostentity(postEntity)
                         } else {
@@ -526,19 +530,17 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-                            if (result != null) {
-                                selectList.clear()
-                                selectList.addAll(result)
+                            if (result!=null){
+                                SelectlocalMedia = result[0]
+                                startARouterForResult(
+                                    this@VideoPostActivity,
+                                    ARouterCirclePath.PictureEditAudioActivity,
+                                    Bundle().apply {
+                                        putString("path",  result[0].realPath)
+                                    },
+                                    PictureEditAudioActivity.EDIT_VIDEOPATH
+                                )
                             }
-//                            postVideoAdapter.setList(selectList)
-                            startARouterForResult(
-                                this@VideoPostActivity,
-                                ARouterCirclePath.PictureEditAudioActivity,
-                                Bundle().apply {
-                                    putString("path", selectList[0].realPath)
-                                },
-                                PictureEditAudioActivity.EDIT_VIDEOPATH
-                            )
                         }
 
                         override fun onCancel() {
@@ -738,19 +740,17 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 selectList,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-                        if (result != null) {
-                            selectList.clear()
-                            selectList.addAll(result)
+                        if (result!=null){
+                            SelectlocalMedia = result[0]
+                            startARouterForResult(
+                                this@VideoPostActivity,
+                                ARouterCirclePath.PictureEditAudioActivity,
+                                Bundle().apply {
+                                    putString("path",  result[0].realPath)
+                                },
+                                PictureEditAudioActivity.EDIT_VIDEOPATH
+                            )
                         }
-                        postVideoAdapter.setList(selectList)
-                        startARouterForResult(
-                            this@VideoPostActivity,
-                            ARouterCirclePath.PictureEditAudioActivity,
-                            Bundle().apply {
-                                putString("path", selectList[0].realPath)
-                            },
-                            PictureEditAudioActivity.EDIT_VIDEOPATH
-                        )
                     }
 
                     override fun onCancel() {
@@ -922,9 +922,13 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     canEditVideo = true
                     val videoeditpath = data?.getStringExtra("finalPath")
                     val time = data!!.getLongExtra("time", 0)
-                    selectList[0].isCut = true
-                    selectList[0].cutPath = videoeditpath
-                    selectList[0].duration = time
+                    SelectlocalMedia.apply {
+                        isCut =true
+                        cutPath =videoeditpath
+                        duration = time
+                    }
+                    selectList.clear()
+                    selectList.add(SelectlocalMedia)
                     postVideoAdapter.setList(selectList)
                     postVideoAdapter.notifyDataSetChanged()
                 }
