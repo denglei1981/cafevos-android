@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -25,6 +26,7 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
+import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
@@ -32,8 +34,13 @@ import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -42,7 +49,10 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import com.xiaomi.push.it
@@ -115,6 +125,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             {
                 postEntity = it as ArrayList<PostEntity>
             })
+        bus()
     }
 
     private fun initListener(circleName: String) {
@@ -455,4 +466,18 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         }
     }
 
+    private fun bus() {
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, {
+            if (it == 0) {
+                launchWithCatch {
+                    val body = MyApp.mContext.createHashMap()
+                    val rKey = getRandomKey()
+                    ApiClient.createApi<CircleNetWork>()
+                        .shareCallBack(body.header(rKey), body.body(rKey))
+                }
+            }
+
+        })
+    }
 }

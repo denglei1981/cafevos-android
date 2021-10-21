@@ -336,4 +336,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     * 分享
+     */
+    @POST("con/share/callback")
+    suspend fun shareCallBack(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }
