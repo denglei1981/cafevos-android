@@ -361,10 +361,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     private fun initbuttom() {
-        binding.bottom.typerec.layoutManager = LinearLayoutManager(this).apply {
+        binding.typerec.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
-        binding.bottom.typerec.adapter = buttomTypeAdapter
+        binding.typerec.adapter = buttomTypeAdapter
         buttomTypeAdapter.addData(
             arrayListOf(
                 ButtomTypeBean("选择模块", 1, 0),
@@ -605,7 +605,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             var bundle = Bundle()
                             bundle.putParcelableArrayList("picList", arrayListOf(localMedia))
                             bundle.putInt("position", 0)
-                            bundle.putInt("showEditType", 1)
+                            bundle.putInt("showEditType", 0)
                             startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
                         }
 
@@ -640,7 +640,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                         arrayListOf(localMedia)
                                     )
                                     bundle.putInt("position", 0)
-                                    bundle.putInt("showEditType", 1)
+                                    bundle.putInt("showEditType", 0)
                                     bundle.putString(
                                         "itemcontent",
                                         longpostadapter.getItem(position).content
@@ -678,7 +678,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                             arrayListOf(longpostadapter.getItem(position).localMedias)
                                         )
                                         bundle.putInt("position", position)
-                                        bundle.putInt("showEditType", 1)
+                                        bundle.putInt("showEditType", 0)
                                         bundle.putString(
                                             "itemcontent",
                                             longpostadapter.getItem(position).content
