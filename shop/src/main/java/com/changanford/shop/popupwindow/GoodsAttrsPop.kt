@@ -10,6 +10,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
+import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
@@ -23,7 +24,7 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2021/9/22
  * @Description : GoodsAttrsPop
  */
-open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String): BasePopupWindow(activity) {
+open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String,val control:GoodsDetailsControl): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
     private var skuCodeLiveData: MutableLiveData<String> = MutableLiveData()
     private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCodeLiveData) }
@@ -70,7 +71,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${stock}件）")
                     val max: String =if(limitBuyNum!="0")limitBuyNum else stock
                     viewDataBinding.addSubtractView.setMax(max.toInt())
-                    bindingBtn(stock.toInt(),viewDataBinding.btnSubmit)
+                    control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
                 }
             }
         })
@@ -83,7 +84,6 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             dataBean.buyNum= it
         })
     }
-
     private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
         val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
         if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
@@ -92,7 +92,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             btnSubmit.setStates(7)
         }else if(stock<1){//库存不足,已售罄、已抢光
             btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-        }else if(_skuCode.contains("-")&&_skuCode.split("-").find { it =="0" }!=null){
+        }else if(control.isInvalidSelectAttrs(_skuCode)){
             btnSubmit.updateEnabled(false)
         } else btnSubmit.setStates(5)
     }

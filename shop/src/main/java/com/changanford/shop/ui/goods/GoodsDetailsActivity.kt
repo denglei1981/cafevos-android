@@ -31,15 +31,11 @@ import kotlin.math.roundToInt
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
-        fun start(spuId:String, spuPageType:String?="NOMROL") {
+        fun start(spuId:String) {
             JumpUtils.instans?.jump(3,spuId)
-//            JumpUtils.instans?.jump(3,"{\"spuId\":${spuId},\"spuPageType\":\"$spuPageType\"}")
-//            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("spuId",spuId)
-//                .putExtra("spuPageType",spuPageType))
         }
     }
     private var spuId:String="108"//商品IDR.id.img_share->control.share()
-    private var spuPageType:String="NOMROL"//	商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
@@ -108,7 +104,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //确认订单
             R.id.btn_submit->{
                 control.skuCode.apply {
-                    if(this.contains("-")&&this.split("-").find { it=="0" }!=null)control.createAttribute()
+                    if(control.isInvalidSelectAttrs(this))control.createAttribute()
                     else OrderConfirmActivity.start(this@GoodsDetailsActivity, Gson().toJson(viewModel.goodsDetailData.value))
                 }
             }

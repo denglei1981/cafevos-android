@@ -18,6 +18,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
 import razerdp.basepopup.BasePopupWindow
 
@@ -30,15 +31,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private val shareViewModule by lazy { ShareViewModule() }
     var skuCode=""
-    var skuCodeInitValue=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.buyNum=1
-        //初始化skuCode
-        skuCodeInitValue="${dataBean.spuId}-"
+        //初始化 skuCode
+        var skuCodeInitValue="${dataBean.spuId}-"
         dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
         skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
         getSkuTxt(skuCodeInitValue)
@@ -133,7 +133,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun createAttribute(){
         if(::dataBean.isInitialized){
-            GoodsAttrsPop(activity,this.dataBean,skuCode).apply {
+            GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
                 showPopupWindow()
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
@@ -165,7 +165,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"  未选择属性" else "  已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
-        bindingBtn()
+//        bindingBtn()
+        bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
     }
     private fun bindingBtn(){
         binding.inBottom.btnSubmit.apply {
@@ -179,10 +180,31 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }else setStates(5)
         }
     }
+    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
+        _dataBean.apply {
+            val totalPayFb=fbPrice.toInt()*buyNum
+            if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
+                btnSubmit.setStates(8)
+            } else if(secKillInfo!=null&&now<secKillInfo?.timeBegin!!){//秒杀未开始
+                btnSubmit.setStates(7)
+            }else if(stock<1){//库存不足,已售罄、已抢光
+                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+            }else if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
+                btnSubmit.updateEnabled(false)
+            } else btnSubmit.setStates(5)
+        }
+    }
     fun share(){
         if(::dataBean.isInitialized)dataBean.shareBeanVO?.apply {
            shareViewModule.share(activity, ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type))
         }
+    }
+    /**
+     * 是否是无效选择商品属性
+     * return false 有效 、true 无效
+     * */
+    fun isInvalidSelectAttrs(skuCode:String):Boolean{
+        return skuCode.contains("-")&&skuCode.split("-").find { it =="0" }!=null
     }
     fun onDestroy(){
         timeCount?.cancel()
