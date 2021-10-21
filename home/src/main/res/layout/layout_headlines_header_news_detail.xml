@@ -59,6 +59,7 @@
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     tools:text="你是我的眼" />
+
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="match_parent"
@@ -103,6 +104,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:id="@+id/ll_special"
                 android:layout_width="0dp"
@@ -138,19 +140,19 @@
             </LinearLayout>
 
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_pic"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_ads"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="18dp"
+                android:orientation="vertical"
                 android:scaleType="centerCrop"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintDimensionRatio="335:150"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_special"
                 app:layout_constraintWidth_percent="0.96"
-                app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-                tools:src="@drawable/image_recommend_test"
                 tools:visibility="visible" />
 
 
@@ -192,7 +194,6 @@
                 android:text="@string/home_more"
                 android:textColor="#ff74889d"
                 android:textSize="14sp" />
-
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

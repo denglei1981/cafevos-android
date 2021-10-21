@@ -251,6 +251,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     tvVideoTime.text = item.artVideoTime
                 }
                 tvVideoTime.visibility = View.VISIBLE
+                tvNewsTag.text = "资讯"
             }
             else -> {
                 tvNewsTag.visibility = View.GONE

@@ -41,6 +41,7 @@ import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
+import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
@@ -72,6 +73,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         NewsRecommendListAdapter()
     }
 
+    private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+         NewsAdsListAdapter()
+    }
+
     //HTML文本
     private val webHelper by lazy {
         CustomWebHelper(this, inflateHeader.wvContent)
@@ -87,7 +92,6 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         binding.llComment.tvSpeakSomething.setOnClickListener(this)
         homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getNewsCommentList(bizId = artId, true)
-
         }
         homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -151,6 +155,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
+        inflateHeader.rvAds.adapter=newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
@@ -209,12 +214,6 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
         try {
-            if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
-                GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
-                inflateHeader.ivPic.visibility = View.VISIBLE
-            } else {
-                inflateHeader.ivPic.visibility = View.GONE
-            }
             if (TextUtils.isEmpty(newsDetailData.specialTopicTitle)) {
                 inflateHeader.llSpecial.visibility = View.GONE
             }
@@ -318,13 +317,18 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.data != null && it.data.recommendArticles.size > 0) {
-                    inflateHeader.flRecommend.visibility = View.VISIBLE
-                    newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                if (it.data != null ) {
+                    if( it.data.recommendArticles.size > 0){
+                        inflateHeader.flRecommend.visibility = View.VISIBLE
+                        newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                    }
+                    if(it.data.ads.size>0){
+                        inflateHeader.rvAds.visibility=View.VISIBLE
+                        newsAdsListAdapter.setNewInstance(it.data.ads)
+                    }
                 } else {// 隐藏热门推荐。
                     inflateHeader.flRecommend.visibility = View.GONE
                 }
-
             }
         })
 
