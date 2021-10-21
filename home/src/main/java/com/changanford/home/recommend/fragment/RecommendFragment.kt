@@ -47,7 +47,8 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
         viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
         binding.smartLayout.setOnLoadMoreListener(this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
@@ -134,6 +135,9 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
             .observe(this, Observer {
                 // 主要是改，点赞，评论， 浏览记录。。。
+                if (selectPosition == -1) {
+                    return@Observer
+                }
                 val item = recommendAdapter.getItem(selectPosition)
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike

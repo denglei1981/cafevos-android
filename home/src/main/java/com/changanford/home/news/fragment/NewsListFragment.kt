@@ -67,8 +67,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
-                        var newsValueData = NewsValueData(item.artId, item.type)
-                        var values = Gson().toJson(newsValueData)
+                        val newsValueData = NewsValueData(item.artId, item.type)
+                        val values = Gson().toJson(newsValueData)
                         JumpUtils.instans?.jump(2, values)
                     } else {
                         toastShow("没有作者")
@@ -182,6 +182,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         LiveDataBus.get().withs<InfoDetailsChangeData>(NEWS_DETAIL_CHANGE).observe(this, Observer {
             // 主要是改，点赞，评论， 浏览记录。。。
             if (isCurrentPage()) {
+                if (selectPosition == -1) {
+                    return@Observer
+                }
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike

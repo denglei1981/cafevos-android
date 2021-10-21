@@ -291,5 +291,10 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
-
+    //分享成功回调
+    @POST("/con/share/callback")
+    suspend fun ShareBack(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

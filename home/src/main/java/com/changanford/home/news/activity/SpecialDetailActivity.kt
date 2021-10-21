@@ -20,9 +20,11 @@ import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivitySpecialDetailBinding
 import com.changanford.home.news.adapter.NewsListAdapter
+import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -92,7 +94,7 @@ class SpecialDetailActivity :
       binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
 
   }
-
+    var shares: Shares?=null
     override fun observe() {
         super.observe()
         viewModel.specialDetailLiveData.observe(this, Observer {
@@ -104,6 +106,7 @@ class SpecialDetailActivity :
                 binding.layoutBar.ivMenu.setOnClickListener{i->
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }
+                 shares = it.data.shares
                 binding.specialDetailData = it.data
                 binding.layoutCollBar.tvTopic.setOriginalText(it.data.summary)
                 GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
@@ -127,6 +130,9 @@ class SpecialDetailActivity :
 
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
             .observe(this, Observer {
+                if (selectPosition == -1) {
+                    return@Observer
+                }
                 // 主要是改，点赞，评论， 浏览记录。。。
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
@@ -136,6 +142,13 @@ class SpecialDetailActivity :
                 newsListAdapter.notifyItemChanged(selectPosition + 1)// 有t
 
             })
+
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(this,shares)
+            }
+        })
 
     }
 

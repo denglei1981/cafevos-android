@@ -105,8 +105,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         SoftHideKeyBoardUtil.assistActivity(this)
         totalWebNum += 1
         localWebNum = totalWebNum
-        shareViewModule =
-            createViewModel(ShareViewModule::class.java)
+        shareViewModule = createViewModel(ShareViewModule::class.java)
         payViewModule =
             createViewModel(PayViewModule::class.java)
 //        mineSignViewModel =
