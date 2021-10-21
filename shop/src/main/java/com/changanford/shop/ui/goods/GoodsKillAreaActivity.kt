@@ -109,7 +109,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
                     nowTime<timeBegin -> 2  //当前时间小于开始时间则表示未开始
                     nowTime>=timeEnd -> 0 //当前时间大于等于结束时间表示已结束
                     else ->{//进行中
-                        timeI=i
+                        if(-1==timeI)timeI=i//同时多个进行中的状态下，默认选中第一个
                         1
                     }
                 }
