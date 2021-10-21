@@ -86,7 +86,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         visibility= View.GONE
 //                        setText(R.string.prompt_orderUpdateAddress)
                     }
-                    val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
+                    var payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
+                    if(payCountDown<0)payCountDown=waitPayCountDown
                     timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
                         override fun onFinish() {
                             //支付倒计时结束 刷新

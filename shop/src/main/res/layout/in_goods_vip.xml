@@ -18,6 +18,7 @@
         android:background="@drawable/bord_01025c_2dp">
 
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_vipTypeName"
             android:background="@drawable/shadow_01025c_l_2dp"
             android:gravity="center"
             android:layout_width="wrap_content"
