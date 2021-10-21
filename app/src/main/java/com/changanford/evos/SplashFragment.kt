@@ -2,6 +2,7 @@ package com.changanford.evos
 
 import android.media.MediaPlayer
 import android.os.Build
+import android.os.Bundle
 import android.os.SystemClock
 import android.view.SurfaceHolder
 import android.view.View
@@ -62,13 +63,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     }
 
     private fun showAds() {
+        var bundle = requireActivity().intent?.extras?: Bundle()
+
         viewModel.imgBean.observe(this, {
             firstIn()
             var imgBean = it
             if (imgBean == null || imgBean.adImg.isNullOrEmpty() || !GlideUtils.handleImgUrl(imgBean.adImg)!!
                     .startsWith("http")
             ) {
-                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity)
+                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
                 return@observe
             }
             if (imgBean.video == 1) {
@@ -116,11 +119,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                     tv.text = "跳过 ${0}"
                     viewModel.jump = true
                     it.stop()
-                    navFinishActivityTo(R.id.action_splashFragment_to_mainActivity)
+                    navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
                 }
             }
             binding.counter.setOnClickListener {
-                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity)
+                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
             }
             binding.splashimg.setOnClickListener { _ ->
                 JumpUtils.instans!!.jump(imgBean.jumpDataType, imgBean.jumpDataValue)

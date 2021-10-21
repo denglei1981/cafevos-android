@@ -22,6 +22,9 @@ import androidx.core.content.FileProvider;
 //import com.alibaba.sdk.android.push.CloudPushService;
 //import com.alibaba.sdk.android.push.CommonCallback;
 //import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.changanford.common.basic.BaseApplication;
 import com.gyf.immersionbar.ImmersionBar;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -349,49 +352,49 @@ public class AppUtils {
         }
 
     }
-//
-//    /**
-//     * 登录成功时调用
-//     *
-//     * @param userid
-//     */
-//    public static void binduserid(String userid) {
-//        CloudPushService pushService = PushServiceFactory.getCloudPushService();
-//        if (!SPUtils.isonline()){
-//            userid = "dev"+userid;
-//        }
-//        pushService.bindAccount(userid, new CommonCallback() {
-//            @Override
-//            public void onSuccess(String s) {
-//
-//            }
-//
-//            @Override
-//            public void onFailed(String s, String s1) {
-//
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 退出登录时调用
-//     *
-//     * @param userid
-//     */
-//    public static void Unbinduserid() {
-//        CloudPushService pushService = PushServiceFactory.getCloudPushService();
-//        pushService.unbindAccount(new CommonCallback() {
-//            @Override
-//            public void onSuccess(String s) {
-//
-//            }
-//
-//            @Override
-//            public void onFailed(String s, String s1) {
-//
-//            }
-//        });
-//    }
+
+    /**
+     * 登录成功时调用
+     *
+     * @param userid
+     */
+    public static void binduserid(String userid) {
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        if (MConstant.isDebug){
+            userid = "dev"+userid;
+        }
+        pushService.bindAccount(userid, new CommonCallback() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onFailed(String s, String s1) {
+
+            }
+        });
+    }
+
+    /**
+     * 退出登录时调用
+     *
+     * @param
+     */
+    public static void Unbinduserid() {
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.unbindAccount(new CommonCallback() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onFailed(String s, String s1) {
+
+            }
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean isIgnoringBatteryOptimizations() {
         boolean isIgnoring = false;

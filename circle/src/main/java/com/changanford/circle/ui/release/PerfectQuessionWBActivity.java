@@ -51,6 +51,7 @@ public class PerfectQuessionWBActivity extends BaseActivity<PerfectquessionwbBin
                 binding.tvNum.setText(s.length() + "/20");
             }
         });
+        quessionBean.setIsQuestionNecessary(0);
         binding.mcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
