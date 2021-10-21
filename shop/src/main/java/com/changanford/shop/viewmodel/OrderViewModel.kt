@@ -45,12 +45,12 @@ class OrderViewModel: BaseViewModel() {
      * busSourse 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
     fun orderCreate(skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",mallMallSkuSpuSeckillRangeId:String?=null,payType:String="FB_PAY"){
-        val busSourse=if("SECKILL"==spuPageType)1 else 0
+        val buySource=if("SECKILL"==spuPageType)1 else 0
         viewModelScope.launch {
           fetchRequest (true){
                 body.clear()
-                body["skuId"]=if(1==busSourse)skuId else mallMallSkuSpuSeckillRangeId?:skuId
-                body["busSourse"]=busSourse
+                body["skuId"]=if(1!=buySource)skuId else mallMallSkuSpuSeckillRangeId?:skuId
+                body["busSourse"]=buySource
                 body["buyNum"]=buyNum
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType

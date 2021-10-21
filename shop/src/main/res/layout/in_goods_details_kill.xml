@@ -147,7 +147,7 @@
                 android:textSize="@dimen/sp_10" />
             <ProgressBar
                 android:layout_marginStart="@dimen/dp_8"
-                android:id="@+id/pb_task"
+                android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:max="@{model.stock}"
                 tools:progress="10"
