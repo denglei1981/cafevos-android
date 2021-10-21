@@ -35,7 +35,6 @@ abstract class BaseApplication : MultiDexApplication() {
             ARouter.openLog();     // Print log
             ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
         }
-        initFFmpegBinary(this)
         ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
         //友盟预初始化,不会传数据给后台
 //        UMConfigure.preInit(INSTANT,UmengKey,
@@ -57,11 +56,6 @@ abstract class BaseApplication : MultiDexApplication() {
         }
     }
 
-    private  fun initFFmpegBinary(context: Context) {
-        if (!FFmpeg.getInstance(context).isSupported) {
-            Log.e("ZApplication", "Android cup arch not supported!")
-        }
-    }
 
     //友盟初始化
     private fun initUmeng() {
