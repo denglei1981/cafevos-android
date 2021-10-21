@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.net.Uri
+import com.changanford.common.utilext.logD
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 
 
@@ -25,14 +27,33 @@ object JumpMap {
      */
     fun openGaoDeMap(context: Activity, dLat: Double, dLon: Double, dName: String) {
         if (checkMapAppsIsExist(context, "com.autonavi.minimap")) {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setPackage("com.autonavi.minimap")
-            intent.addCategory("android.intent.category.DEFAULT")
-            intent.data =
-                Uri.parse("androidamap://route?sourceApplication=福域&sName=我的位置&dlat=$dLat&dlon=$dLon&dname=$dName&dev=0&m=0&t=0")
-            context.startActivity(intent)
+            baidu2Gaode(dLon,dLat){dLon, dLat ->
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setPackage("com.autonavi.minimap")
+                intent.addCategory("android.intent.category.DEFAULT")
+                intent.data =
+                    Uri.parse("androidamap://route?sourceApplication=福域&sName=我的位置&dlat=$dLat&dlon=$dLon&dname=$dName&dev=0&m=0&t=0")
+                context.startActivity(intent)
+            }
         } else {
             toastShow("高德地图未安装")
+        }
+    }
+
+    fun baidu2Gaode(dLon:Double,dLat:Double,result:(dLon:Double,dLat:Double)->Unit){
+        try {
+            var X_PI = Math.PI*50.0/3.0
+            var x = dLon-0.0065
+            var y = dLat-0.006
+            var z = Math.sqrt(x*x+y*y)-0.00002*Math.sin(y*X_PI)
+            var theta = Math.atan2(y,x)-0.000003*Math.cos(x*X_PI)
+            var lat = z*Math.sin(theta)
+            var lon = z*Math.cos(theta)
+            result(lon,lat)
+        }catch (e:Exception){
+            e.printStackTrace()
+            "百度转高德坐标报错".logE()
+            result(dLon,dLat)
         }
     }
 

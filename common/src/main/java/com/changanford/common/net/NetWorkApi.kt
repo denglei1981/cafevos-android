@@ -32,6 +32,13 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<AdBean>>
 
+    //分享成功回调
+    @POST("/con/share/callback")
+    suspend fun ShareBack(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
     /**--------------------------------home---------------------------------------**/
     /**
      * 调查详情/调查结果
