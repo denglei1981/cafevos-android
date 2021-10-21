@@ -46,12 +46,12 @@ android {
 //            minifyEnabled true
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            android.applicationVariants.all{ variant ->
-                variant.outputs.all{
-                    variant.getPackageApplication().outputDirectory = new File(project.rootDir.path+"/build/outapks/release")
-                    outputFileName = "${project.name}_${defaultConfig.versionName}_${variant.buildType.name}.apk"
-                }
-            }
+//            android.applicationVariants.all{ variant ->
+//                variant.outputs.all{
+//                    variant.getPackageApplication().outputDirectory = new File(project.rootDir.path+"/build/outapks/release")
+//                    outputFileName = "${project.name}_${defaultConfig.versionName}_${variant.buildType.name}.apk"
+//                }
+//            }
         }
         debug {
             signingConfig signingConfigs.keyconfig

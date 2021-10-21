@@ -23,7 +23,6 @@ import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.*
 import com.changanford.common.utilext.logD
 import kotlinx.coroutines.CoroutineScope
-import nl.bravobit.ffmpeg.FFmpeg
 
 
 abstract class BaseApplication : MultiDexApplication() {
