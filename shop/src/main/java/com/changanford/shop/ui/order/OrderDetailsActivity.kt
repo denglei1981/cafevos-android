@@ -150,12 +150,16 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             }
         }
         bindingAddressInfo(dataBean.addressInfo,false)
-        //会员优惠
+        //优惠积分
         val preferentialFb=dataBean.preferentialFb
         if(null!=preferentialFb&&"0"!=preferentialFb){
-            binding.inGoodsInfo1.tvIntegralVip.visibility=View.VISIBLE
-            binding.inGoodsInfo1.tvMemberDiscount.visibility=View.VISIBLE
+            binding.inGoodsInfo1.apply {
+                tvIntegralVip.visibility=View.VISIBLE
+                tvMemberDiscount.visibility=View.VISIBLE
+            }
         }
+        val freightPrice=dataBean.freightPrice
+        if("0"==freightPrice)dataBean.freightPrice="0.00"
         dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime)
         binding.model=dataBean
         this.dataBean=dataBean

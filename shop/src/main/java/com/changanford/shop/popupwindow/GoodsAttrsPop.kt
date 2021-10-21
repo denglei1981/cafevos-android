@@ -53,7 +53,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     dataBean.skuImg=skuImg
                     dataBean.skuId=skuId
                     dataBean.fbPrice=fbPrice
-                    dataBean.stock=stock.toInt()
+                    if(!control.isInvalidSelectAttrs(_skuCode))dataBean.stock=stock.toInt()
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                     val skuCodeTxtArr= arrayListOf<String>()
                     for((i,item) in dataBean.attributes.withIndex()){
@@ -67,11 +67,11 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
                     val limitBuyNum:String=dataBean.limitBuyNum?:"0"
                     val htmlStr=if(limitBuyNum!="0")"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
-                    WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${stock}件）")
-                    val max: String =if(limitBuyNum!="0")limitBuyNum else stock
-                    viewDataBinding.addSubtractView.setMax(max.toInt())
+                    val nowStock=dataBean.stock
+                    WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
+                    val max: Int =if(limitBuyNum!="0")limitBuyNum.toInt() else nowStock
+                    viewDataBinding.addSubtractView.setMax(max)
                     control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
-//                    bindingBtn(dataBean.stock,viewDataBinding.btnSubmit)
                 }
             }
         })

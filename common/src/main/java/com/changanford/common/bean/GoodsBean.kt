@@ -365,7 +365,7 @@ data class OrderItemBean(
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
-    val freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String="0.00",//运费 0为包邮
     var otherName:String?="",
     var otherValue:String?="",
     var totalIntegral:String?="0",
