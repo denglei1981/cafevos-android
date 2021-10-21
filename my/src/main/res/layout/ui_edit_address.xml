@@ -144,15 +144,43 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="请填写详细地址"
+        android:maxLength="100"
         android:minHeight="@dimen/dp_100"
         android:padding="@dimen/dp_8"
         android:textColor="#081725"
         android:textSize="@dimen/sp_15" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/dp_4">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_text_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#01025C"
+            android:textSize="@dimen/sp_14" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/100"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
         android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_4"
         android:layout_marginEnd="@dimen/dp_20"
         android:background="#EEEEEE" />
 

@@ -29,6 +29,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils.loadRound
 import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.my.R
 import com.changanford.my.databinding.*
 import com.changanford.my.ui.UserAuthUI
@@ -295,31 +296,20 @@ object MineCommAdapter {
      */
     class FeedbackLabelAdapter constructor(var layoutId: Int) :
         BaseQuickAdapter<FeedbackTagsItem, BaseDataBindingHolder<ItemFeedbackLabelBinding>>(layoutId) {
-        private var map: HashMap<Int, Boolean> = HashMap()
-        private var onBind = false
         var checkedPosition = -1
 
         override fun convert(
             holder: BaseDataBindingHolder<ItemFeedbackLabelBinding>,
             item: FeedbackTagsItem
         ) {
-            holder.dataBinding!!.checkbox.text = "${item.tagName}"
-            holder.dataBinding!!.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    map.clear()
-                    map.put(holder.adapterPosition, true)
-                    checkedPosition = holder.adapterPosition
-                } else {
-                    map.remove(holder.adapterPosition)
-                    if (map.size == 0) checkedPosition = -1
-                }
-                if (!onBind) {
-                    notifyDataSetChanged();
-                }
+            holder.dataBinding?.let {
+                it.checkbox.text = "${item.tagName}"
+                it.checkbox.isChecked = checkedPosition == holder.layoutPosition
             }
-            onBind = true
-            holder.dataBinding?.checkbox?.isChecked = map.containsKey(holder.adapterPosition)
-            onBind = false
+            holder.itemView.setOnClickListener {
+                checkedPosition = holder.layoutPosition
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -493,11 +483,22 @@ object MineCommAdapter {
                 line.isInvisible = holder.layoutPosition % 7 == 0
                 line2.isInvisible = holder.layoutPosition % 7 == 6
                 try {
-                    var month = item.date?.subSequence(item.date.length - 5, item.date.length-3).toString()
-                    if (Integer.valueOf(month)>9){
-                        day.text = "${month}.${item.date?.subSequence(item.date.length - 2, item.date.length)}"
-                    }else{
-                        day.text = "${month.substring(1)}.${item.date?.subSequence(item.date.length - 2, item.date.length)}"
+                    var month = item.date?.subSequence(item.date.length - 5, item.date.length - 3)
+                        .toString()
+                    if (Integer.valueOf(month) > 9) {
+                        day.text = "${month}.${
+                            item.date?.subSequence(
+                                item.date.length - 2,
+                                item.date.length
+                            )
+                        }"
+                    } else {
+                        day.text = "${month.substring(1)}.${
+                            item.date?.subSequence(
+                                item.date.length - 2,
+                                item.date.length
+                            )
+                        }"
                     }
                 } catch (e: Exception) {
                     day.text = item.date
@@ -523,6 +524,8 @@ object MineCommAdapter {
                                             )
                                         }.onSuccess {
                                             notifyItemChanged(holder.layoutPosition)
+                                        }.onWithMsgFailure {
+                                            it?.toast()
                                         }
                                     }
                                 }
