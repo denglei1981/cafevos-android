@@ -116,14 +116,16 @@ class Params
 // 秒杀时段
 data class SeckillSessionsBean(
     val now: Long? = null,
-    val seckillSessions: ArrayList<SeckillSession> = ArrayList()
+    val seckillSessions: ArrayList<SeckillSession>? = ArrayList()
 )
 
 data class SeckillSession(
     val date: Long = 0,
     val seckillTimeRanges: ArrayList<SeckillTimeRange> = ArrayList(),
     val sessionId: Int = 0,
-    val sessionName: String = ""
+    val sessionName: String = "",
+    var dateFormat: Int=0,
+    var index:Int=0,
 )
 
 data class SeckillTimeRange(

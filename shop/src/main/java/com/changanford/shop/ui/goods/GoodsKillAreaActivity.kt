@@ -68,19 +68,22 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         viewModel.getSckills()
     }
     private fun addObserve(){
-        viewModel.seckillSessionsData.observe(this,{
-            it.now?.let {now-> nowTime= now }
-            it.seckillSessions.apply {
+        viewModel.seckillSessionsData.observe(this,{item->
+            item.now?.let {now-> nowTime= now }
+            item.seckillSessions?.apply {
                 dateAdapter.setList(this)
-                var dateI=0
-                val nowTimeSf=sfDate.format(nowTime)
-                //筛选出当前时间
-                for((i,item)in this.withIndex()){
-                    if(nowTimeSf==sfDate.format(item.date)){
-                        dateI=i
-                        break
+                val nowTimeSf=sfDate.format(nowTime).toInt()
+                //将时间转换为 yyyyMMdd 格式便于筛选出当天
+                for((i,it)in this.withIndex()){
+                    it.apply {
+                        dateFormat=sfDate.format(date).toInt()
+                        index=i
                     }
                 }
+                //根据条件将日期分成两份
+                val (match, rest)=this.partition {it.dateFormat>=nowTimeSf}
+                //优先选中当天其次是当天的后一天最后才是当天的前一天
+                val dateI=if(match.isNotEmpty())match[0].index else rest[rest.size-1].index
                 onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
                 dateAdapter.selectPos=dateI
                 binding.rvDate.scrollToPosition(dateI)
@@ -114,7 +117,6 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         }
         timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)
-        //默认选中第一个
         onSelectTimeBackListener(timeI,seckillTimeRange[timeI])
         timeAdapter.selectPos=timeI
         binding.rvTime.scrollToPosition(timeI)
