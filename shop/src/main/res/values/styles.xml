@@ -15,6 +15,10 @@
     <style name="style_indexTabItemStyle" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_15</item>
     </style>
+    <style name="style_indexTabItemStyle0" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="RadingStyle" parent="@android:style/Widget.RatingBar">
         <!-- 定义星星图片 -->
         <item name="android:progressDrawable">@drawable/layer_live_rating_bar</item>

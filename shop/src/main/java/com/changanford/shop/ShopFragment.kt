@@ -3,7 +3,6 @@ import android.graphics.Typeface
 import android.view.View
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
-import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
@@ -40,7 +39,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){
-        if(fragments.size>0)return
+        fragments.clear()
+        binding.tabLayout.removeAllTabs()
         val tabs=goodsClassification?:ArrayList<GoodsTypesItemBean>().apply {
             add(GoodsTypesItemBean("0","全部"))
         }
@@ -49,7 +49,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
-        binding.viewpager.adapter= ViewPage2Adapter(requireActivity(),fragments)
+        val adapter=ViewPage2Adapter(requireActivity(),fragments)
+        binding.viewpager.adapter= adapter
         binding.viewpager.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
             tab.text = tabs[tabPosition].tagName
@@ -85,10 +86,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         })
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        viewModel.getBannerData()
-        viewModel.getShopHomeData()
-        val currentItem=binding.viewpager.currentItem
-        fragments[currentItem].startRefresh()
+        initData()
+//        val currentItem=binding.viewpager.currentItem
+//        fragments[currentItem].startRefresh()
     }
 }
 

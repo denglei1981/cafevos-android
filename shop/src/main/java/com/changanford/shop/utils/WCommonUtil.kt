@@ -47,6 +47,7 @@ object WCommonUtil {
      * */
     fun setTabSelectStyle(context: Context, tabLayout: TabLayout, size: Float, typeface: Typeface, colorID: Int) {
         val tab= tabLayout.getTabAt(0)
+        tab?.customView=null
         val textView = TextView(context)
         val selectedSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,size,context.resources.displayMetrics)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
@@ -55,6 +56,7 @@ object WCommonUtil {
         textView.text = tab!!.text
         textView.gravity= Gravity.CENTER
         tab.customView = textView
+        tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) {

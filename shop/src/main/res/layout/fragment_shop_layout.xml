@@ -49,7 +49,8 @@
                             android:layout_height="@dimen/dp_30"
                             android:paddingBottom="@dimen/dp_m_10"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/dp_7"/>
+                            android:layout_marginStart="@dimen/dp_7"
+                            app:tabTextAppearance="@style/style_indexTabItemStyle0"/>
                     </LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>
                 <androidx.viewpager2.widget.ViewPager2
