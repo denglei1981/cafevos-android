@@ -130,6 +130,9 @@ class SpecialDetailActivity :
 
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
             .observe(this, Observer {
+                if (selectPosition == -1) {
+                    return@Observer
+                }
                 // 主要是改，点赞，评论， 浏览记录。。。
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount

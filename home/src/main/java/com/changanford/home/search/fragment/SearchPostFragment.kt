@@ -108,7 +108,9 @@ class SearchPostFragment :
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
             .observe(this, Observer {
                 // 主要是改，点赞，评论， 浏览记录。。。
-
+                if (selectPosition == -1) {
+                    return@Observer
+                }
                 val item = searchPostsResultAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike

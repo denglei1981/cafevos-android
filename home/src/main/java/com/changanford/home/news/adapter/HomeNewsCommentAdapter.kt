@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
@@ -31,7 +32,7 @@ import com.changanford.home.widget.MyLinkMovementMethod
 
 
 class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment) {
+    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment) ,LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)

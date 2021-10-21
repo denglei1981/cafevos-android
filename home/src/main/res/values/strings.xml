@@ -23,5 +23,6 @@
     <string name="home_reset">重置</string>
     <string name="home_go_back_main">返回首页</string>
     <string name="home_publish">发布</string>
+    <string name="no_comment">暂无评论~</string>
 
 </resources>

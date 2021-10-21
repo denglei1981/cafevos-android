@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
@@ -56,7 +58,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     View.OnClickListener {
 
 
-    val  linearLayoutManager: LinearLayoutManager by lazy{
+    val linearLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
     var checkPosition: Int = -1
@@ -75,7 +77,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         CustomWebHelper(this, inflateHeader.wvContent)
     }
 
-    var llInfoBottom:Int =0
+    var llInfoBottom: Int = 0
     private lateinit var shareViewModule: ShareViewModule //分享
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
@@ -83,6 +85,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         binding.pbRecyclerview.adapter = homeNewsCommentAdapter
         addHeaderView()
         binding.llComment.tvSpeakSomething.setOnClickListener(this)
+        homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.getNewsCommentList(bizId = artId, true)
+
+        }
         homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val commentBean = homeNewsCommentAdapter.getItem(position)
@@ -99,14 +105,16 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
         llInfoBottom = binding.layoutTitle.llAuthorInfo.getBottom()
-        binding.pbRecyclerview.addOnScrollListener(object:RecyclerView.OnScrollListener(){
+        binding.pbRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val position: Int = linearLayoutManager.findFirstVisibleItemPosition()
-                val firstVisiableChildView = linearLayoutManager.findViewByPosition(position) as View
+                val firstVisiableChildView =
+                    linearLayoutManager.findViewByPosition(position) as View
                 val itemHeight = firstVisiableChildView.height
                 val scrollHeight = position * itemHeight - firstVisiableChildView.top
-                binding.layoutTitle.llAuthorInfo.visibility = if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.llAuthorInfo.visibility =
+                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
 
             }
         })
@@ -116,6 +124,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
 
         shareViewModule = createViewModel(ShareViewModule::class.java)
     }
+
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
@@ -189,7 +198,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
-        binding.layoutTitle.tvAuthor.text=author.nickname
+        binding.layoutTitle.tvAuthor.text = author.nickname
         setFollowState(inflateHeader.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
@@ -267,9 +276,18 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.commentsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
+                    homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
-                    homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                    if(it.data.dataList.size<=0){
+                        addFooter()
+                    }else{
+                        homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                    }
+
+                }
+                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                    homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
                 ToastUtils.showShortToast(it.message, this)
@@ -277,7 +295,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                isNeedNotify=true
+                isNeedNotify = true
                 ToastUtils.showShortToast("评论成功", this)
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
@@ -289,7 +307,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                isNeedNotify=true
+                isNeedNotify = true
                 setLikeState()
             } else {// 网络原因操作失败了。
                 ToastUtils.showShortToast(it.message, this)
@@ -299,10 +317,10 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null && it.data.recommendArticles.size > 0) {
-                    inflateHeader.flRecommend.visibility=View.VISIBLE
+                    inflateHeader.flRecommend.visibility = View.VISIBLE
                     newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                 } else {// 隐藏热门推荐。
-                    inflateHeader.flRecommend.visibility=View.GONE
+                    inflateHeader.flRecommend.visibility = View.GONE
                 }
 
             }
@@ -313,7 +331,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         })
 
         viewModel.collectLiveData.observe(this, Observer {
-            if(it.isSuccess){
+            if (it.isSuccess) {
                 if (it.isSuccess) {
                     setCollection()
                 }
@@ -323,7 +341,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,newsDetailData?.shares)
+                shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
     }
@@ -414,6 +432,9 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
+    private fun addFooter(){
+        newsRecommendListAdapter.setEmptyView(R.layout.comment_no_data)
+    }
     override fun onClick(v: View) {
         if (MConstant.token.isEmpty()) {
             startARouter(ARouterMyPath.SignUI)
