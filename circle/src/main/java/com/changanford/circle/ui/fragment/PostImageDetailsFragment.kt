@@ -8,6 +8,7 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
+import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -16,10 +17,16 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
+import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -27,6 +34,8 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.zhpan.bannerview.constants.IndicatorGravity
@@ -386,6 +395,18 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 bean.likesCount--
             }
             commentAdapter.notifyItemChanged(checkPosition)
+        })
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, {
+            if (it == 0) {
+                launchWithCatch {
+                    val body = MyApp.mContext.createHashMap()
+                    val rKey = getRandomKey()
+                    ApiClient.createApi<CircleNetWork>()
+                        .shareCallBack(body.header(rKey), body.body(rKey))
+                }
+            }
+
         })
     }
 }
