@@ -61,6 +61,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             ryComment.adapter = commentAdapter
             tvCommentNum.text = "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+            tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
             ivLike.setImageResource(
                 if (mData.isLike == 1) {
                     R.mipmap.circle_like_image
@@ -68,7 +69,6 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     R.mipmap.circle_no_like_image_v
                 }
             )
-            tvCollectionNum.text = "0"
             ivCollection.setImageResource(
                 if (mData.isCollection == 1) {
                     R.mipmap.circle_collection_image
@@ -280,9 +280,13 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (it.code == 0) {
                 if (mData.isCollection == 0) {
                     mData.isCollection = 1
+                    mData.collectCount++
                 } else {
                     mData.isCollection = 0
+                    mData.collectCount--
                 }
+                binding.tvCollectionNum.text =
+                    "${if (mData.collectCount > 0) mData.collectCount else "0"}"
                 binding.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
