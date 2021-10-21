@@ -125,7 +125,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="wxc58f18e68ac156a3" />
             </intent-filter>
         </activity>
         <activity
