@@ -20,10 +20,13 @@ import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
-import com.changanford.common.util.*
+import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MyApplicationUtil
+import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
 import kotlinx.coroutines.CoroutineScope
-import nl.bravobit.ffmpeg.FFmpeg
+
 
 
 abstract class BaseApplication : MultiDexApplication() {
