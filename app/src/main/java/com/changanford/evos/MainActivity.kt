@@ -104,10 +104,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
+        updateViewModel = createViewModel(UpdateViewModel::class.java)
         if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
             showAppPrivacy(this) {
                 checkPermission()
+                updateViewModel.getUpdateInfo()
             }
+        }else{
+            updateViewModel.getUpdateInfo()
         }
 
         getNavigator()
@@ -132,14 +136,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initData() {
+        handleViewIntent(intent)
         viewModel.getUserData()
         viewModel.user.observe(this, Observer {
             lifecycleScope.launch {
                 Db.myDb.saveData("name", it[0].name)
             }
         })
-        updateViewModel = createViewModel(UpdateViewModel::class.java)
-        updateViewModel.getUpdateInfo()
         updateViewModel._updateInfo.observe(this, { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {

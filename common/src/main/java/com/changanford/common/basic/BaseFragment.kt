@@ -86,8 +86,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
 
   open  fun observe(){}
 
-    fun navFinishActivityTo(id: Int) {
-        findNavController().navigate(id)
+    fun navFinishActivityTo(id: Int,bundle:Bundle? =null) {
+        findNavController().navigate(id,bundle)
         requireActivity().finish()
     }
 

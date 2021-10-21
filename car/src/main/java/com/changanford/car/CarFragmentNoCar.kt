@@ -69,7 +69,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
 
     private fun observeData() {
         viewModel._middleInfo.observe(this, { it ->
-            if (it?.carModels == null) {
+            if (it?.carModels.isNullOrEmpty()) {
                 binding.carRecommendLayout.root.isVisible = false
             } else {
                 binding.carRecommendLayout.root.isVisible = true

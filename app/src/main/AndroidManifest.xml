@@ -58,24 +58,6 @@
         <meta-data
             android:name="com.vivo.push.app_id"
             android:value="105514947" />
-        <!-- 消息接收监听器 （用户可自主扩展） -->
-        <receiver
-            android:name="com.changanford.common.receiver.MyMessageReceiver"
-            android:exported="false"> <!-- 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 -->
-            <intent-filter>
-                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
-            </intent-filter>
-        </receiver>
-        <activity
-            android:name="com.changanford.common.receiver.MyMessageHelpReceiver"
-            android:exported="true"></activity>
-
         <!--        <activity-->
         <!--            android:name=".PicActivity"-->
         <!--            android:exported="true"-->
