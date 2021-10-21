@@ -650,7 +650,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
             params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             buttomlabelAdapter.notifyDataSetChanged()
-            buttomlabelAdapter.getItem(position).tagName.toast()
         }
         binding.bottom.emojirec.adapter = emojiAdapter
         val emojiList = ArrayList<String>()
