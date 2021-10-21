@@ -1,17 +1,20 @@
 package com.changanford.home.bean
 
 import android.app.Activity
+import androidx.lifecycle.LifecycleOwner
 import com.alibaba.fastjson.JSON
+import com.changanford.common.net.*
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
-import com.changanford.common.util.toast.ToastUtils.showToastCenter
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
+import com.changanford.home.api.HomeNetWork
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.data.Shares
+import com.changanford.home.util.launchWithCatch
 
 
 private var shareto: String? = null
@@ -311,6 +314,8 @@ object HomeShareModel {
         shareManager.open()
     }
 
+
+
 }
 
 /**
@@ -336,28 +341,37 @@ device	string
 非必须
 分享设备id
  */
-//fun shareBackUpHttp(shareBean: Shares?, type: Int) {
-//    when (type) {
-//        0 -> {
-//            showToastCenter("分享成功啦~")
-//            if (shareBean != null) {
-//                HomeApi.shareBackApi(
-//                    shareBean.type,
-//                    shareBean.bizId,
-//                    JSON.toJSONString(shareBean),
-//                    shareto ?: "1",
-//                    System.currentTimeMillis().toString(),
-//                    MConstant.userId,
-//                    ""
-//                )
-//            }
-//
-//        }
-//        1 -> {
-//            showToastCenter("分享失败~")
-//        }
-//        2 -> {
-//            showToastCenter("分享失败~")
-//        }
-//    }
-//}
+fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: Int=0) {
+    when (type) {
+        0 -> {
+            toastShow("分享成功")
+            if (shareBean != null) {
+                lifecycleOwner.launchWithCatch {
+                    val body = HashMap<String, Any>()
+                    body["type"] = shareBean.type
+                    body["bizId"] = shareBean.bizId
+                    body["content"] = JSON.toJSONString(shareBean)
+                    body["shareTo"] = shareto ?: "1"
+                    body["shareTime"] = System.currentTimeMillis()
+                    body["userId"] = MConstant.userId
+                    body["device"] = ""
+                    val rkey = getRandomKey()
+                    ApiClient.createApi<HomeNetWork>()
+                        .ShareBack(body.header(rkey), body.body(rkey))
+                        .onSuccess {
+
+                        }.onWithMsgFailure {
+
+                        }
+                }
+            }
+
+        }
+        1 -> {
+            toastShow("分享失败")
+        }
+        2 -> {
+            toastShow("分享失败")
+        }
+    }
+}

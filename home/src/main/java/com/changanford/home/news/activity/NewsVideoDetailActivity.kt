@@ -35,6 +35,7 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
@@ -527,6 +528,13 @@ class NewsVideoDetailActivity :
             }
             // 有头布局。
             homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
+        })
+
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(this,newsDetailData?.shares)
+            }
         })
     }
 

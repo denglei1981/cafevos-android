@@ -29,10 +29,12 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
@@ -74,6 +76,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     }
 
     var llInfoBottom:Int =0
+    private lateinit var shareViewModule: ShareViewModule //分享
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.pbRecyclerview.layoutManager = linearLayoutManager
@@ -110,6 +113,8 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         binding.layoutTitle.llAuthorInfo.setOnClickListener {
             JumpUtils.instans!!.jump(35, newsDetailData?.userId.toString())
         }
+
+        shareViewModule = createViewModel(ShareViewModule::class.java)
     }
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
@@ -314,6 +319,13 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                 }
             }
         })
+
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(this,newsDetailData?.shares)
+            }
+        })
     }
 
     private fun setCommentCount() {
@@ -458,7 +470,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     fun smooth() {// todo  没有评论呢？
         val smoothScroller = TopSmoothScroller(this)
         smoothScroller.targetPosition = 1//要滑动到的位置
-        linearLayoutManager?.startSmoothScroll(smoothScroller)
+        linearLayoutManager.startSmoothScroll(smoothScroller)
     }
 
     private fun replay() {
@@ -484,7 +496,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     override fun onDestroy() {
         if (isNeedNotify) {
             newsDetailData?.let {
-                var infoDetailsChangeData = InfoDetailsChangeData(
+                val infoDetailsChangeData = InfoDetailsChangeData(
                     it.commentCount,
                     it.likesCount,
                     it.authors.isFollow,

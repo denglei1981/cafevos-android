@@ -46,7 +46,6 @@ class ShareViewModule : ViewModel() {
     fun shareBack(shareBean: ShareBean?){
         if (shareBean!=null){
             var body = HashMap<String, Any>()
-
             body["type"] = shareBean.type
             body["bizId"] = shareBean.bizId
             body["content"] = shareBean.content
