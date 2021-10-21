@@ -11,7 +11,8 @@ import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
 
-class ReleaseActivityViewModel() : BaseViewModel() {
+class
+ReleaseActivityViewModel() : BaseViewModel() {
     @JvmField
     var attributeBean = MutableLiveData<AttributeBean>()
 

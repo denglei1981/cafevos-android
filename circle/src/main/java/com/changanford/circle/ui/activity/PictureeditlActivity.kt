@@ -79,6 +79,14 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
                     intent.putExtra("position",itemposition)
                     setResult(RESULT_OK, intent)
                     finish()
+                } else if(showEditType == 1){//发布活动选择图片
+                    val intent = Intent()
+                    intent.putParcelableArrayListExtra(
+                        "picList",
+                        mediaList as ArrayList<out Parcelable?>?
+                    )
+                    setResult(RESULT_OK, intent)
+                    finish()
                 } else{
                     LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).postValue(mediaList)
                 }

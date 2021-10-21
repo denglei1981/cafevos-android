@@ -26,6 +26,9 @@ class PictureAdapterViewHolder(itemView:View,activity: Activity,type:Int,var con
         if (showedittype==-1)etcontent?.visibility =View.GONE else etcontent?.visibility = View.VISIBLE
          GlideUtils.loadFilePath(PictureUtil.getFinallyPath(data),pic)
         etcontent.setText(content)
+        if (showedittype == 1){
+            etcontent.setText(data?.contentDesc?:"")
+        }
         data?.contentDesc =etcontent.text.toString()
         tv_tiaozhen?.setOnClickListener {
             if (!DoubleUtils.isFastDoubleClick()) {

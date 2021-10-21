@@ -5,6 +5,7 @@ import com.changanford.common.bean.RoundBean
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.databinding.FragmentsignmonthBinding
@@ -21,11 +22,19 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
         binding.signview.apply {
             signDateRec.adapter = monthAdapter
             monthleft.setOnClickListener {
+                if (index<=-12){
+                    "最多可查看12个月签到记录".toast()
+                    return@setOnClickListener
+                }
                 index--
                 curTime.text = TimeUtils.getShowYearMonth(index)
                 getData(TimeUtils.getRequestYearMonth(index))
             }
             monthright.setOnClickListener {
+                if (index>=1){
+                    "最多只能查看下一个月签到".toast()
+                    return@setOnClickListener
+                }
                 index++
                 curTime.text = TimeUtils.getShowYearMonth(index)
                 getData(TimeUtils.getRequestYearMonth(index))

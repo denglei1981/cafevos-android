@@ -55,12 +55,12 @@ open class PayViewModule : ViewModel() {
         val request = PayReq()
         try {
             val jsonObject = JSONObject(wxpaystr)
-            request.partnerId = jsonObject.getString("machId")
+            request.partnerId = jsonObject.getString("partnerId")
             request.prepayId = jsonObject.getString("prepayId")
-            request.packageValue = jsonObject.getString("packagename")
+            request.packageValue = jsonObject.getString("packageValue")
             request.nonceStr = jsonObject.getString("nonceStr")
             request.timeStamp = jsonObject.getString("timeStamp")
-            request.sign = jsonObject.getString("paySign")
+            request.sign = jsonObject.getString("sign")
         } catch (e: JSONException) {
             e.printStackTrace()
         }
