@@ -3,7 +3,7 @@
     package="com.changanford.my">
 
     <application>
-        <activity android:name=".TestActivity" />
+
         <activity
             android:name=".ui.LoginUI"
             android:launchMode="singleTask" />
