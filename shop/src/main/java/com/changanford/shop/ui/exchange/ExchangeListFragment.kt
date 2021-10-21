@@ -28,7 +28,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var parentSmartRefreshLayout: SmartRefreshLayout?=null
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
-    private var typeId="0"
+    private var typeId="-1"
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!
@@ -66,8 +66,13 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
         this.parentSmartRefreshLayout=parentSmartRefreshLayout
     }
+    /**
+     * 切换tab时如果当前fragment 没有数据则自动刷新
+    * */
     fun startRefresh(){
-        pageNo=1
-        viewModel.getGoodsList(typeId,pageNo)
+        if(isAdded&&"-1"!=typeId&&mAdapter.data.size<1){
+            pageNo=1
+            viewModel.getGoodsList(typeId,pageNo)
+        }
     }
 }
