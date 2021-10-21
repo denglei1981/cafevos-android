@@ -1,6 +1,5 @@
 package com.changanford.common.bean
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.changanford.common.router.path.ARouterMyPath
 
 data class MenuBeanItem(
     val createBy: Int,
@@ -31,16 +30,6 @@ data class MenuBeanItem(
 const val MINE_ITEM_TITLE = 1 //标题
 const val MINE_ITEM_MENU = 2 //常用菜单
 
-var getMenus: ArrayList<MineMenuMultiEntity> = arrayListOf(
-    MineMenuMultiEntity(MINE_ITEM_TITLE, "我的日常任务", spanSize = 4),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "任务中心", ARouterMyPath.MineTaskListUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的积分", ARouterMyPath.MineIntegralUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "所有勋章", ARouterMyPath.AllMedalUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的爱车", ARouterMyPath.MineLoveCarListUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "我的成长值", ARouterMyPath.MineGrowUpUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "关注", ARouterMyPath.MineFansUI),
-    MineMenuMultiEntity(MINE_ITEM_MENU, "粉丝", ARouterMyPath.MineFansUI),
-)
 
 data class MineMenuMultiEntity(
     override val itemType: Int,
