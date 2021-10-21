@@ -29,7 +29,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     private val control by lazy { OrderControl(context,viewModel) }
     private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","未知4","未知5","未知6","未知7","未知8")
     @SuppressLint("SimpleDateFormat")
-    private val sf = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
+    private val simpleDateFormat = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
@@ -192,8 +192,8 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                 }
                 "WAIT_PAY"==orderStatus -> {
                     //可支付结束时间=服务器当前时间+可支付剩余时间
-                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
-                    text=sf.format(payEndTime)
+//                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
+                    text=simpleDateFormat.format(item.waitPayDuration)
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE
                 }

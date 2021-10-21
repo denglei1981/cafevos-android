@@ -356,7 +356,7 @@ data class OrderItemBean(
     val preferentialFbOfUnitPrice: Any? = null,
     val receiveTime: Any? = null,
     val sendTime: Any? = null,
-    val waitPayDuration: Int = 0,
+    val waitPayDuration: Long = 0,//待支付有效时间
     var orderType:Int=0,
     val jumpDataType: Int = 0,
     val jumpDataValue: String = "",
