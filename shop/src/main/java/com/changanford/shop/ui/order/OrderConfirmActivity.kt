@@ -51,16 +51,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             return
         }
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+        initLiveDataBus()
     }
 
     override fun initData() {
         viewModel.addressList.observe(this,{ addressList ->
-            var item:AddressBeanItem?=null
-            if(null!=addressList&&addressList.isNotEmpty()){
-                val items=addressList.filter { it.isDefault==1 }
-                item=if(items.isNotEmpty())items[0]
-                else addressList[0]
-            }
+            //默认获取地址列表的默认收货地址
+            val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
             bindingAddress(item)
         })
         binding.inGoodsInfo.addSubtractView.numberLiveData.observe(this,{
@@ -123,7 +120,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             //提交订单
             R.id.btn_submit->submitOrder()
             //选择地址
-            R.id.in_address->selectAddress()
+            R.id.in_address->JumpUtils.instans?.jump(20,"1")
         }
     }
     @DelicateCoroutinesApi
@@ -155,13 +152,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             binding.inAddress.tvAddressRemark.text="${item.consignee}   ${item.phone}"
         }
     }
-    private fun selectAddress(){
-        JumpUtils.instans?.jump(20,"1")
+    private fun initLiveDataBus(){
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
-                    it?.let {
-                        bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
-                    }
-                })
+            it?.let {
+                bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
+            }
+        })
     }
 }
