@@ -134,7 +134,8 @@ data class SeckillTimeRange(
     val timeRangeId: String = "0",
     var time:String?="",
     var states:Int=0,//状态 0 已结束  1 进行中  2未开始
-    var statesTxt:String="已结束"
+    var statesTxt:String="已结束",
+    var index:Int=0,
 )
 
 

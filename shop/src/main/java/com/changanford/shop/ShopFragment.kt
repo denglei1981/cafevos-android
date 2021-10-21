@@ -1,6 +1,7 @@
 package com.changanford.shop
 import android.graphics.Typeface
 import android.view.View
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.constant.SearchTypeConstant
@@ -41,11 +42,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
     private fun initTab(){
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
-//        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                fragments[position].startRefresh()
-//            }
-//        })
+        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                fragments[position].startRefresh()
+            }
+        })
     }
     private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){
         fragments.clear()

@@ -29,12 +29,15 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
     private var typeId="-1"
+    private var isRequest=false
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!
             viewModel.getGoodsList(typeId,pageNo)
+            isRequest=true
         }
         viewModel.goodsListData.observe(this,{
+            isRequest=false
             bindingData(it)
         })
         binding.smartRl.setOnLoadMoreListener {
@@ -70,7 +73,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
      * 切换tab时如果当前fragment 没有数据则自动刷新
     * */
     fun startRefresh(){
-        if(isAdded&&"-1"!=typeId&&mAdapter.data.size<1){
+        if(isAdded&&"-1"!=typeId&&mAdapter.data.size<1&&!isRequest){
             pageNo=1
             viewModel.getGoodsList(typeId,pageNo)
         }

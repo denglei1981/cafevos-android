@@ -35,7 +35,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
             context.startActivity(Intent(context, GoodsKillAreaActivity::class.java))
         }
     }
-    private val statesTxt by lazy { arrayOf(getString(R.string.str_hasEnded),getString(R.string.str_ongoing),getString(R.string.str_notStart)) }
+    private val statesTxtArr by lazy { arrayOf(getString(R.string.str_hasEnded),getString(R.string.str_ongoing),getString(R.string.str_notStart)) }
     private var nowTime=System.currentTimeMillis()//当前时间挫
     private val dateAdapter by lazy { GoodsKillDateAdapter(0,this) }
     private val timeAdapter by lazy { GoodsKillAreaTimeAdapter(0,this) }
@@ -82,8 +82,8 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
                 }
                 //根据条件将日期分成两份
                 val (match, rest)=this.partition {it.dateFormat>=nowTimeSf}
-                //优先选中当天其次是当天的后一天最后才是当天的前一天
-                val dateI=if(match.isNotEmpty())match[0].index else rest[rest.size-1].index
+                //优先选中当天,其次是当天后的最近一天,最后默认选第一天（今天21号 有[19,21,23]选取21、[18,23]选取23、[18,19]选取18）
+                val dateI=if(match.isNotEmpty())match[0].index else rest[0].index
                 onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
                 dateAdapter.selectPos=dateI
                 binding.rvDate.scrollToPosition(dateI)
@@ -102,18 +102,26 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     * */
     private fun calculateStates(seckillTimeRange:ArrayList<SeckillTimeRange>){
 //        nowTime=System.currentTimeMillis()//当前时间挫
-        var timeI=0
+        var timeI=-1
         for((i,it) in seckillTimeRange.withIndex()){
-            it.states= when {
-                nowTime<it.timeBegin -> 2  //当前时间小于开始时间则表示未开始
-                nowTime>=it.timeEnd -> 0 //当前时间大于等于结束时间表示已结束
-                else ->{//进行中
-                    timeI=i
-                    1
+            it.apply {
+                states= when {
+                    nowTime<timeBegin -> 2  //当前时间小于开始时间则表示未开始
+                    nowTime>=timeEnd -> 0 //当前时间大于等于结束时间表示已结束
+                    else ->{//进行中
+                        timeI=i
+                        1
+                    }
                 }
+                statesTxt=statesTxtArr[states]
+                time=sf.format(timeBegin)
+                index=i
             }
-            it.statesTxt=statesTxt[it.states]
-            it.time=sf.format(it.timeBegin)
+        }
+        //未找到正在进行中的场次
+        if(timeI==-1){
+            val (match, rest)=seckillTimeRange.partition { it.timeBegin>=nowTime}
+            timeI=if(match.isNotEmpty())match[0].index else rest[0].index
         }
         timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)
