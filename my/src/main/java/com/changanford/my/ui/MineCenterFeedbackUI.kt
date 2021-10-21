@@ -2,6 +2,7 @@ package com.changanford.my.ui
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
@@ -10,6 +11,7 @@ import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.databinding.UiCenterFeedbackBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 @Route(path = ARouterMyPath.MineCenterFeedbackUI)
@@ -24,10 +26,26 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
         }
         binding.kefu.setOnClickListener {
             MineUtils.callPhone(this, mobile)
-
         }
+        var hasFeedbacks: Int = 0
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
+            it?.let {
+                var userInfoBean: UserInfoBean =
+                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
+                hasFeedbacks = userInfoBean?.hasFeedbacks
+            }
+        })
         binding.yijian.setOnClickListener {
-            JumpUtils.instans?.jump(42)
+            JumpUtils.instans?.jump(
+                when (hasFeedbacks) {
+                    1 -> {
+                        42
+                    }
+                    else -> {
+                        11
+                    }
+                }
+            )
         }
         binding.more.setOnClickListener {
             JumpUtils.instans?.jump(39)
