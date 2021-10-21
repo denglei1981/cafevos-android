@@ -512,7 +512,7 @@ class SignViewModel : ViewModel() {
                     var rkey = getRandomKey()
                     apiService.queryUserInfo(body.header(rkey), body.body(rkey))
                 }.onSuccess {
-                    saveUserInfo(it)
+                    it?.let { saveUserInfo(it) }
                 }.onFailure {
                     saveUserInfo(null)
                 }
@@ -873,6 +873,10 @@ class SignViewModel : ViewModel() {
     private fun loginSuccess(loginBean: LoginBean?) {
         loginBean?.let {
             UserManger.saveUserInfo(loginBean)
+            it.userId?.let {
+                MConstant.userId = it
+                AppUtils.binduserid(it)
+            }
             MConstant.token = it.token
             SPUtils.putToken(it.token)
             getUserInfo()
@@ -1089,6 +1093,7 @@ class SignViewModel : ViewModel() {
      */
     fun loginOut() {
         UserManger.deleteUserInfo()
+        AppUtils.Unbinduserid()
         MConstant.token = ""
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)

@@ -120,16 +120,25 @@
         android:layout_marginEnd="@dimen/dp_20"
         android:background="#eeeeee" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login_out"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_44"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_100"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:background="@drawable/next_btn_bg"
-        android:gravity="center"
-        android:text="退出登录"
-        android:textColor="@color/white" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_login_out"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_56"
+            android:background="@drawable/shape_c_d3_r_20"
+            android:gravity="center"
+            android:text="退出登录"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 
 </LinearLayout>

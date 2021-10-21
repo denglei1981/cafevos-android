@@ -68,7 +68,7 @@ object UserManger {
                 sysUserInfoBean.userJson = JSON.toJSONString(it)
             } catch (e: Exception) {
                 sysUserInfoBean.mobile = when {
-                    it.phone.isNotEmpty() -> {
+                    it?.phone?.isNotEmpty()==true -> {
                         it.phone
                     }
                     else -> {

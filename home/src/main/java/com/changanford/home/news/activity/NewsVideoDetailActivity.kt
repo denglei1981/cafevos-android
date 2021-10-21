@@ -32,6 +32,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
@@ -145,7 +146,11 @@ class NewsVideoDetailActivity :
     private fun playVideo(playUrl: String) {
         playerHelper.startPlay(GlideUtils.defaultHandleImageUrl(playUrl))
     }
-
+    var footerView: View? = null
+    private fun addFooter() {
+        footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.homeRvContent, false)
+        homeNewsCommentAdapter.addFooterView(footerView!!)
+    }
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -159,9 +164,20 @@ class NewsVideoDetailActivity :
         viewModel.commentsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
+                    homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
-                    homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                    if (it.data.dataList.size <= 0) {
+                        addFooter()
+                    } else {
+                        footerView?.let { fv ->
+                            homeNewsCommentAdapter.removeFooterView(fv)
+                        }
+                        homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                    }
+                }
+                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                    homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
                 ToastUtils.showShortToast(it.message, this)
@@ -232,6 +248,9 @@ class NewsVideoDetailActivity :
             inflateHeader.ivPic.visibility = View.VISIBLE
         } else {
             inflateHeader.ivPic.visibility = View.GONE
+        }
+        inflateHeader.ivPic.setOnClickListener {
+
         }
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
         inflateHeader.tvTime.text = newsDetailData.timeStr

@@ -218,13 +218,13 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    queryInfo.setCanSeeResult(true);
+                    queryInfo.setCanSeeResult("YES");
                 }else {
-                    queryInfo.setCanSeeResult(false);
+                    queryInfo.setCanSeeResult("NO");
                 }
             }
         });
-        queryInfo.setCanSeeResult(true);
+        queryInfo.setCanSeeResult("YES");
     }
 
     private void isCanFB() {
@@ -249,6 +249,10 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
             @Override
             public Unit invoke(CommonResponse<STSBean> response) {
                 STSBean stsBean = response.getData();
+                if (stsBean == null){
+                    ToastUtils.s(ReleaseUpActivity.this,response.getMessage());
+                    return null;
+                }
                 uploadImgs(fmurl, stsBean, dialog);
                 return null;
             }
@@ -294,9 +298,11 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
                             ToastUtils.s(BaseApplication.INSTANT, response.getMsg());
                             if (response.getCode() == 0) {
                                 //跳转到个人中心我的发布中心
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("jumpType", 1);
-                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
+                                JumpUtils.getInstans().jump(26,"");
+
+//                                Bundle bundle = new Bundle();
+//                                bundle.putInt("jumpType", 1);
+//                                ARouter.getInstance().build(ARouterMyPath.MineFollowUI).with(bundle).navigation();
                                 ReleaseUpActivity.this.finish();
                             } else {
                                 queryInfo.setCoverImgUrl(coverImgUrl);
