@@ -45,7 +45,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
      *                          ON_GOING(code=ON_GOING, dbCode=1, message=进行中),
      *                          ENDED(code=ENDED, dbCode=2, message=已结束)
     * */
-    //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
+    //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 10已提醒
     private fun getKillStates(item: GoodsItemBean):Int{
         var killStates=2//默认已结束
         val timeState=item.timeState
@@ -54,7 +54,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
         if("ON_GOING"==timeState){
             killStates=if(stockNow<1)1 else 0
         }else if("NOT_BEGIN"==timeState){
-            killStates=if(item.isSettedNotice=="NO")3 else 4
+            killStates=if(item.isSettedNotice=="NO")3 else 10
         }
         item.killStates=killStates
         return killStates
@@ -78,7 +78,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
                     }
                 })
             }
-            //取消提醒
+            //取消提醒-暂时不做
             4->viewModel.setKillNotices("CANCEL",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
                 override fun onFinish(code: Int) {
                     if(0==code){
