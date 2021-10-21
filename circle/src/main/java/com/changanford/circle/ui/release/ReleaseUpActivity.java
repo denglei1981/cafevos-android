@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -213,8 +214,17 @@ public class ReleaseUpActivity extends BaseActivity<ReleaseupActivityBinding, Re
                 pvTime.show();
             }
         });
-
-
+        binding.checkboxCanseeresult.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    queryInfo.setCanSeeResult(true);
+                }else {
+                    queryInfo.setCanSeeResult(false);
+                }
+            }
+        });
+        queryInfo.setCanSeeResult(true);
     }
 
     private void isCanFB() {

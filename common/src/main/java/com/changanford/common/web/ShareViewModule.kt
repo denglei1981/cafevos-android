@@ -6,13 +6,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.ShareBean
-import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.*
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
@@ -23,6 +24,7 @@ import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 
@@ -53,22 +55,11 @@ class ShareViewModule : ViewModel() {
             body["userId"] = MConstant.userId
             body["device"] = ""
             var rkey = getRandomKey()
-
-//            RepositoryManager.obtainService(ApiService::class.java).ShareBack(
-//                getHeader(body, rkey),
-//                getRequestBody(body, rkey)
-//            )
-//                .compose(ResponseTransformer())
-//                .subscribe(object : ResponseObserver<BaseBean<Any>>() {
-//
-//                    override fun onFail(e: ApiException) {
-//
-//                    }
-//
-//                    override fun onSuccess(response: BaseBean<Any>) {
-//
-//                    }
-//                })
+            viewModelScope.launch {
+                fetchRequest {
+                    apiService.ShareBack(body.header(rkey),body.body(rkey))
+                }
+            }
         }
     }
     fun share(activity: Activity,shareBean: ShareBean) {
