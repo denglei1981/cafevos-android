@@ -148,9 +148,8 @@ class NewsVideoDetailActivity :
     }
     var footerView: View? = null
     private fun addFooter() {
-
         footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.homeRvContent, false)
-        newsRecommendListAdapter.addFooterView(footerView!!)
+        homeNewsCommentAdapter.addFooterView(footerView!!)
     }
     override fun observe() {
         super.observe()
@@ -249,6 +248,9 @@ class NewsVideoDetailActivity :
             inflateHeader.ivPic.visibility = View.VISIBLE
         } else {
             inflateHeader.ivPic.visibility = View.GONE
+        }
+        inflateHeader.ivPic.setOnClickListener {
+
         }
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
         inflateHeader.tvTime.text = newsDetailData.timeStr
