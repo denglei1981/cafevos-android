@@ -14,7 +14,6 @@ import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
-import com.changanford.shop.view.btn.KillBtnView
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -72,6 +71,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     val max: String =if(limitBuyNum!="0")limitBuyNum else stock
                     viewDataBinding.addSubtractView.setMax(max.toInt())
                     control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
+//                    bindingBtn(dataBean.stock,viewDataBinding.btnSubmit)
                 }
             }
         })
@@ -82,19 +82,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
             dataBean.buyNum= it
+            control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
         })
-    }
-    private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
-        val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
-        if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
-            btnSubmit.setStates(8)
-        } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
-            btnSubmit.setStates(7)
-        }else if(stock<1){//库存不足,已售罄、已抢光
-            btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-        }else if(control.isInvalidSelectAttrs(_skuCode)){
-            btnSubmit.updateEnabled(false)
-        } else btnSubmit.setStates(5)
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {

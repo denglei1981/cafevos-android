@@ -34,9 +34,18 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
         addObserve()
         initKill()
+        initTab()
         binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
         binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
         binding.smartRl.setOnRefreshListener(this)
+    }
+    private fun initTab(){
+        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
+//        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                fragments[position].startRefresh()
+//            }
+//        })
     }
     private fun bindingTab(goodsClassification:ArrayList<GoodsTypesItemBean>?){
         fragments.clear()
@@ -55,7 +64,6 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
             tab.text = tabs[tabPosition].tagName
         }.attach()
-        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT,R.color.color_01025C)
     }
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter

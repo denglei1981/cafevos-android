@@ -182,7 +182,7 @@ data class GoodsDetailBean(
     var specifications:String?="",
     var addressInfo:String?=null,
     var skuImg:String?=null,
-    var mallMallSkuSpuSeckillRangeId:String?="0"
+    var mallMallSkuSpuSeckillRangeId:String?=null
 
 )
 

@@ -165,20 +165,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"  未选择属性" else "  已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
-//        bindingBtn()
         bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
-    }
-    private fun bindingBtn(){
-        binding.inBottom.btnSubmit.apply {
-            val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
-            if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
-                setStates(8)
-            } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
-                setStates(7)
-            }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
-                setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-            }else setStates(5)
-        }
     }
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
         _dataBean.apply {

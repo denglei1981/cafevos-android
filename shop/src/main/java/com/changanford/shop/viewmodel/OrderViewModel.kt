@@ -49,12 +49,12 @@ class OrderViewModel: BaseViewModel() {
         viewModelScope.launch {
           fetchRequest (true){
                 body.clear()
+                body["skuId"]=if(1==busSourse)skuId else mallMallSkuSpuSeckillRangeId?:skuId
                 body["busSourse"]=busSourse
                 body["buyNum"]=buyNum
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType
                 body["addressId"]=addressId?:"0"
-                body["skuId"]=mallMallSkuSpuSeckillRangeId?:skuId
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {

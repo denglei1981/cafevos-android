@@ -46,17 +46,17 @@ object WCommonUtil {
      * [colorID]被选择的字体的颜色值
      * */
     fun setTabSelectStyle(context: Context, tabLayout: TabLayout, size: Float, typeface: Typeface, colorID: Int) {
-        val tab= tabLayout.getTabAt(0)
-        tab?.customView=null
         val textView = TextView(context)
         val selectedSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,size,context.resources.displayMetrics)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
         textView.setTextColor(ContextCompat.getColor(context, colorID))
         textView.typeface =typeface
-        textView.text = tab!!.text
         textView.gravity= Gravity.CENTER
-        tab.customView = textView
-        tabLayout.clearOnTabSelectedListeners()
+        tabLayout.getTabAt(0)?.apply {
+            customView=null
+            textView.text = text
+            customView = textView
+        }
         tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -64,8 +64,11 @@ object WCommonUtil {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                textView.text = tab!!.text
-                tab.customView = textView
+                tab?.apply {
+                    customView=null
+                    textView.text = text
+                    customView = textView
+                }
             }
         })
     }
