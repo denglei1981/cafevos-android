@@ -436,7 +436,6 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
 
     var footerView: View? = null
     private fun addFooter() {
-
         footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.pbRecyclerview, false)
         newsRecommendListAdapter.addFooterView(footerView!!)
     }
