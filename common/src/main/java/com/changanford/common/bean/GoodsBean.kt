@@ -152,6 +152,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
+    var originalFbPrice: String? = "0",//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),
@@ -218,7 +219,8 @@ data class SkuVo(
     val skuImg: String = "",
     val stock: String = "0",
     var skuTxt:String?="",
-    var mallMallSkuSpuSeckillRangeId:String?="0"
+    var mallMallSkuSpuSeckillRangeId:String?="0",
+    var originalFbPrice: String? = "0",//原价
 )
 
 data class OptionVo(

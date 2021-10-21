@@ -94,9 +94,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             model=dataBean
             tvAmountValue.setText("$totalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
-            //会员优惠
-//          val memberDiscount=dataBean.fbLine.toInt()*buyNum-totalFb
-//          tvMemberDiscountValue.setText("$memberDiscount")
+            //会员折扣
+            if("MEMBER_DISCOUNT"==dataBean.spuPageType){
+                //会员优惠=原价-现价 会员折扣的时候才显示
+                val memberDiscount=(dataBean.originalFbPrice?:"0").toInt()*buyNum-totalFb
+                tvMemberDiscountValue.setText("$memberDiscount")
+                tvMemberDiscountValue.visibility=View.VISIBLE
+                tvMemberDiscount.visibility=View.VISIBLE
+            }
         }
         binding.inGoodsInfo.apply {
             model=dataBean

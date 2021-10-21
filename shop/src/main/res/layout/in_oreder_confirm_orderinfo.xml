@@ -34,6 +34,8 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_marginTop="@dimen/dp_27"
             android:id="@+id/tv_memberDiscount"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +46,14 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/tv_memberDiscount_value"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:start_txt="@string/str_reduction"
             android:text="@{model.preferentialFb}"
             app:end_txt="@string/str_integral"
             android:textColor="@color/color_33"
