@@ -76,14 +76,11 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
             }
         }
-
 //        binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
         homeRefersh()
         setLoadSir(binding.smartLayout)
-
     }
-
     var headNewBinding: HeaderNewsListBinding? = null
 
     private fun addHeadView() {
@@ -108,7 +105,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     override fun onPageSelected(position: Int) {
                         var speical = it.bViewpager.data[position] as SpecialListBean
                         if (TextUtils.isEmpty(speical.title)) {
-                            it.tvSubTitle.text = "长安福特,yyds"
+                            it.tvSubTitle.text = "长安福特专题"
                         } else {
                             it.tvSubTitle.text = speical.title
                         }

@@ -90,7 +90,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.changanford.home.widget.ExpandableTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_topic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

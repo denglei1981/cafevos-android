@@ -80,20 +80,20 @@ class SpecialDetailActivity :
             viewModel.getSpecialDetail(topicId)
             setLoadSir(binding.recyclerView)
         }
-        setExpandView()
+//        setExpandView()
     }
 
 
-  fun setExpandView(){
-      val width: Int = ScreenUtils.getScreenWidth(this)+40
-      binding.layoutCollBar.tvTopic.initWidth(width)
-      binding.layoutCollBar.tvTopic.maxLines = 3
-      binding.layoutCollBar.tvTopic.setHasAnimation(true)
-      binding.layoutCollBar.tvTopic.setCloseInNewLine(true)
-      binding.layoutCollBar.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
-      binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
-
-  }
+//  fun setExpandView(){
+//      val width: Int = ScreenUtils.getScreenWidth(this)+40
+//      binding.layoutCollBar.tvTopic.initWidth(width)
+//      binding.layoutCollBar.tvTopic.maxLines = 3
+//      binding.layoutCollBar.tvTopic.setHasAnimation(true)
+//      binding.layoutCollBar.tvTopic.setCloseInNewLine(true)
+//      binding.layoutCollBar.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
+//      binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
+//
+//  }
     var shares: Shares?=null
     override fun observe() {
         super.observe()
@@ -108,7 +108,7 @@ class SpecialDetailActivity :
                 }
                  shares = it.data.shares
                 binding.specialDetailData = it.data
-                binding.layoutCollBar.tvTopic.setOriginalText(it.data.summary)
+                binding.layoutCollBar.tvTopic.text = it.data.summary
                 GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
                 Glide.with(this)
                     .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
