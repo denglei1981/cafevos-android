@@ -9,8 +9,8 @@ import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.entity.LocalMedia
 
 
-class PostVideoAdapter() :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item),
-    DraggableModule {
+class PostVideoAdapter() :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item)
+     {
 
     init {
         addChildClickViewIds(R.id.iv_delete)

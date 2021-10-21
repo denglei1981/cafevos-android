@@ -245,7 +245,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             4, GridLayoutManager.VERTICAL, false
         )
         binding.picsrec.layoutManager = manager
-        postVideoAdapter.draggableModule.isDragEnabled = true
+//        postVideoAdapter.draggableModule.isDragEnabled = true
         binding.picsrec.adapter = postVideoAdapter
         postVideoAdapter.setList(selectList)
         initlocaData()
