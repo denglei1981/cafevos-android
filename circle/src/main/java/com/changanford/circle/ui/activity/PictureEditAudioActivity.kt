@@ -5,7 +5,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
-import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
@@ -24,8 +23,6 @@ import com.changanford.circle.databinding.AudioeditBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
-import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.videoedit.*
 import com.changanford.common.util.AppUtils
@@ -40,6 +37,8 @@ import com.vincent.videocompressor.videocompressor.VideoCompress
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.lang.ref.WeakReference
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -50,7 +49,7 @@ import kotlin.math.abs
 class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(),
     RangeSeekBar.OnRangeSeekBarChangeListener {
     private val TAG = PictureEditAudioActivity::class.java.simpleName
-    private val MIN_CUT_DURATION = 3*1000L // 最小剪辑时间1s
+    private val MIN_CUT_DURATION = 3 * 1000L // 最小剪辑时间1s
 
     private val MAX_CUT_DURATION = 15 * 1000L //视频最多剪切多长时间
 
@@ -66,7 +65,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     private var averagePxMs //每px所占用的ms毫秒
             = 0f
     private lateinit var OutPutFileDirPath: String  //视频裁剪文件目录
-    private lateinit var OutMoviePath :String  //视频裁剪名称后缀
+    private lateinit var OutMoviePath: String  //视频裁剪名称后缀
     private lateinit var mExtractFrameWorkThread: ExtractFrameWorkThread
     private var leftProgress = 0L
     private var rightProgress = 0L
@@ -91,21 +90,22 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     private var isOverScaledTouchSlop = false
 
     private lateinit var animator: ValueAnimator
-    private lateinit var cutHandler:Handler
-    private lateinit var finalPath:String   //最终向外输出的文件
-    private lateinit var cutpath:String
+    private lateinit var cutHandler: Handler
+    private lateinit var finalPath: String   //最终向外输出的文件
+    private lateinit var cutpath: String
 
     val progressDialog: LoadDialog by lazy {
         LoadDialog(this)
     }
-    private val mEditor by lazy{
+    private val mEditor by lazy {
         VideoEditor()
     }
     private val mUIHandler by lazy {
         MainHandler(this)
     }
-    companion object{
-        const val EDIT_VIDEOPATH =0X4568
+
+    companion object {
+        const val EDIT_VIDEOPATH = 0X4568
     }
 
     override fun initView() {
@@ -139,9 +139,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.mRecyclerView.addOnScrollListener(mOnScrollListener)
         initEditVideo()
         initPlay()
-        binding.tvchoosetime.text= "${(rightProgress-leftProgress)/1000}s"
-        startCropTime = (leftProgress/1000).toInt()
-        endcropTime = (rightProgress/1000).toInt()
+        binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
+        startCropTime = (leftProgress / 1000).toInt()
+        endcropTime = (rightProgress / 1000).toInt()
         binding.title.barTvOther.setOnClickListener {
             oncut()
         }
@@ -153,52 +153,57 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         })
     }
 
-    fun oncut(){
-        cutHandler = object :Handler(){
+    fun oncut() {
+        Log.d(
+            "shijian",
+            "${(leftProgress / 1000).toInt()}----${((rightProgress - leftProgress) / 1000).toInt()}"
+        )
+        cutHandler = object : Handler() {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
-                if (msg.what==1){
+                if (msg.what == 1) {
                     var cutpath = msg.obj.toString()
-                    if (cutpath.isNotEmpty()){
-                        if (FileSizeUtil.getFileOrFilesSize(cutpath,3)<60){
+                    if (cutpath.isNotEmpty()) {
+                        if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 60) {
                             progressDialog.dismiss()
-                            finalPath =  cutpath
+                            finalPath = cutpath
                             Callback()
-                        }else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100){
+                        } else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100) {
                             //                                    String compressPath = SiliCompressor.with(EsayVideoEditActivity.this).compressVideo(cutPath, Environment.getExternalStorageDirectory().getPath() + "/Uni/video",1080,1920,1200000);
-                            val task: VideoCompress.VideoCompressTask = VideoCompress.compressVideoLow(
-                                cutpath,
-                                OutPutFileDirPath+OutMoviePath,
-                                object : VideoCompress.CompressListener {
-                                    override fun onStart() {
-                                        //Start Compress
-                                    }
+                            val task: VideoCompress.VideoCompressTask =
+                                VideoCompress.compressVideoLow(
+                                    cutpath,
+                                    OutPutFileDirPath + OutMoviePath,
+                                    object : VideoCompress.CompressListener {
+                                        override fun onStart() {
+                                            //Start Compress
+                                        }
 
-                                    override fun onSuccess() {
-                                        //Finish successfully
-                                        runOnUiThread {
-                                            progressDialog.dismiss()
-                                            finalPath = cutpath
-                                            Callback()
+                                        override fun onSuccess() {
+                                            //Finish successfully
+                                            runOnUiThread {
+                                                progressDialog.dismiss()
+                                                finalPath = cutpath
+                                                Callback()
 //                                            val intent = Intent()
 //                                            intent.putExtra("cutPath", mpath)
 //                                            intent.putExtra("time", ReturnTime)
 //                                            setResult(RESULT_OK, intent)
 //                                            finish()
+                                            }
                                         }
-                                    }
 
-                                    override fun onFail() {
-                                        //Failed
-                                    }
+                                        override fun onFail() {
+                                            //Failed
+                                        }
 
-                                    override fun onProgress(percent: Float) {
-                                        //Progress
-                                        progressDialog.setTvprogress(
-                                            "${percent.toInt()}%"
-                                        )
-                                    }
-                                })
+                                        override fun onProgress(percent: Float) {
+                                            //Progress
+                                            progressDialog.setTvprogress(
+                                                "${percent.toInt()}%"
+                                            )
+                                        }
+                                    })
                         }
                     }
                 }
@@ -208,7 +213,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         OutPutFileDirPath = MConstant.ftFilesDir
         OutMoviePath = "${System.currentTimeMillis()}.mp4"
         File(OutPutFileDirPath).apply {
-            if (!exists()){
+            if (!exists()) {
                 mkdirs()
             }
         }
@@ -216,8 +221,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
             progressDialog.setLoadingText("视频处理中...")
             progressDialog.show()
         }
+
         thread {
-            cutpath = mEditor.executeCutVideo(path, startCropTime.toFloat(), endcropTime.toFloat())
+            cutpath = mEditor.executeCutVideo(path, leftProgress, rightProgress)
             cutHandler.sendMessage(Message().apply {
                     what=1
                     obj =cutpath
@@ -341,7 +347,6 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     }
 
 
-
     private val handler = Handler()
     private val run: Runnable = object : Runnable {
         override fun run() {
@@ -352,7 +357,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
     private fun videoProgressUpdate() {
         val currentPosition = binding.uVideoView!!.currentPosition.toLong()
-        Log.d(TAG, "----onProgressUpdate-cp---->>>>>>>$currentPosition")
+//        Log.d(TAG, "----onProgressUpdate-cp---->>>>>>>$currentPosition")
         if (currentPosition >= rightProgress) {
             binding.uVideoView.seekTo(leftProgress.toInt())
             binding.positionIcon!!.clearAnimation()
@@ -420,9 +425,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         rightProgress = maxValue + scrollPos;
         Log.d(TAG, "-----leftProgress----->>>>>>$leftProgress");
         Log.d(TAG, "-----rightProgress----->>>>>>$rightProgress");
-        startCropTime = (leftProgress/1000).toInt()
-        endcropTime = (rightProgress/1000).toInt()
-        binding.tvchoosetime.text= "${(rightProgress-leftProgress)/1000}s"
+        startCropTime = (leftProgress / 1000).toInt()
+        endcropTime = (rightProgress / 1000).toInt()
+        binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 Log.d(TAG, "-----ACTION_DOWN---->>>>>>")
@@ -537,15 +542,21 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                 leftProgress = seekBar.selectedMinValue + scrollPos
                 rightProgress = seekBar.selectedMaxValue + scrollPos
                 Log.d(TAG, "-------leftProgress:>>>>>$leftProgress")
-                startCropTime = (leftProgress/1000).toInt()
-                endcropTime = (rightProgress/1000).toInt()
-                binding.tvchoosetime.text= "${(rightProgress-leftProgress)/1000}s"
+                startCropTime = (leftProgress / 1000).toInt()
+                endcropTime = (rightProgress / 1000).toInt()
+                val num = 1.34567
+                val df = DecimalFormat("#.###")
+                df.roundingMode = RoundingMode.CEILING
+                binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
                 binding.uVideoView.seekTo(leftProgress.toInt())
             }
             lastScrollX = scrollX
         }
     }
 
+    fun gettext(left: Long, right: Long): Long {
+        return Math.round((right - left) / 1000.0)
+    }
 
 
     override fun onDestroy() {
@@ -573,7 +584,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         super.onDestroy()
     }
 
-    fun Callback(){
+    fun Callback() {
 //        cutpath?.let {
 //            startARouter(ARouterCirclePath.VideoChoseFMActivity, Bundle().apply {
 //                putString("cutpath",cutpath)
@@ -582,9 +593,11 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
         cutpath?.let {
             var intent = Intent()
-            intent.putExtra("finalPath",finalPath)
-            setResult(Activity.RESULT_OK,intent)
+            intent.putExtra("finalPath", finalPath)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
+
+
 }

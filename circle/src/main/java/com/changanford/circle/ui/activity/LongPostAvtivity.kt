@@ -87,6 +87,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private var FMMeadia: LocalMedia? = null
     private var locaPostEntity: PostEntity? = null
     private var editText: EditText? = null
+    private var iskeybarOpen = false
 
     private var isTopPost = false
     private var isCirclePost: Boolean = false
@@ -138,7 +139,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            if (isPopup) binding.bottom.emojirec.visibility = View.GONE
+            if (isPopup){
+                iskeybarOpen = true
+                binding.bottom.emojirec.visibility = View.GONE
+            } else{
+                iskeybarOpen= false
+            }
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             FMMeadia = it as LocalMedia
@@ -491,15 +497,26 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         binding.bottom.ivEmoj.setOnClickListener {
 
-            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+            if (!headBinding.etBiaoti.hasFocus()&&iskeybarOpen){
 
-            Timer().schedule(80) {
-                binding.bottom.emojirec.post {
-                    if (binding.bottom.emojirec.isShown) {
+                HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
-                        binding.bottom.emojirec.visibility = View.GONE
-                    } else {
-                        binding.bottom.emojirec.visibility = View.VISIBLE
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+
+                            binding.bottom.emojirec.visibility = View.GONE
+                        } else {
+                            binding.bottom.emojirec.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }else if(!iskeybarOpen) {
+                Timer().schedule(80) {
+                    binding.bottom.emojirec.post {
+                        if (binding.bottom.emojirec.isShown) {
+                            binding.bottom.emojirec.visibility = View.GONE
+                        }
                     }
                 }
             }

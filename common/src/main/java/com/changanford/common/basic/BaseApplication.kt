@@ -23,6 +23,7 @@ import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.*
 import com.changanford.common.utilext.logD
 import kotlinx.coroutines.CoroutineScope
+import nl.bravobit.ffmpeg.FFmpeg
 
 
 abstract class BaseApplication : MultiDexApplication() {
@@ -34,6 +35,7 @@ abstract class BaseApplication : MultiDexApplication() {
             ARouter.openLog();     // Print log
             ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
         }
+        initFFmpegBinary(this)
         ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
         //友盟预初始化,不会传数据给后台
 //        UMConfigure.preInit(INSTANT,UmengKey,
@@ -52,6 +54,12 @@ abstract class BaseApplication : MultiDexApplication() {
             initCloudChannel(this)
             initshare()
             initUmeng()
+        }
+    }
+
+    private  fun initFFmpegBinary(context: Context) {
+        if (!FFmpeg.getInstance(context).isSupported) {
+            Log.e("ZApplication", "Android cup arch not supported!")
         }
     }
 
