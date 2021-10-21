@@ -53,7 +53,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     dataBean.skuImg=skuImg
                     dataBean.skuId=skuId
                     dataBean.fbPrice=fbPrice
-                    dataBean.originalFbPrice=originalFbPrice
+                    dataBean.orginPrice=orginPrice
                     if(!control.isInvalidSelectAttrs(_skuCode))dataBean.stock=stock.toInt()
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                     val skuCodeTxtArr= arrayListOf<String>()

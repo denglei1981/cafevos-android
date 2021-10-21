@@ -150,7 +150,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.skuId=skuId
             dataBean.fbPrice=fbPrice
             dataBean.stock=stock.toInt()
-            dataBean.originalFbPrice=originalFbPrice
+            dataBean.orginPrice=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
         val skuCodes=skuCode.split("-")

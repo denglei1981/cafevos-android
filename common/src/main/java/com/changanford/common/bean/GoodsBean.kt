@@ -152,7 +152,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    var originalFbPrice: String? = "0",//原价
+    var orginPrice: String? = "0",//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),
@@ -181,7 +181,7 @@ data class GoodsDetailBean(
     var freightPrice:String="0.00",//运费 0为包邮
     val collect:String="",//是否收藏 YES NO
     var addressId:Int?=0,
-    var preferentialFb:String?="",
+    var preferentialFb:String?="",//会员优惠
     var skuCode:String?="",
     var specifications:String?="",
     var addressInfo:String?=null,
@@ -220,7 +220,7 @@ data class SkuVo(
     val stock: String = "0",
     var skuTxt:String?="",
     var mallMallSkuSpuSeckillRangeId:String?="0",
-    var originalFbPrice: String? = "0",//原价
+    var orginPrice: String? = "0",//原价
 )
 
 data class OptionVo(
