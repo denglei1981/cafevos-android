@@ -279,12 +279,14 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                     homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
-                    if(it.data.dataList.size<=0){
+                    if (it.data.dataList.size <= 0) {
                         addFooter()
-                    }else{
+                    } else {
+                        footerView?.let { fv ->
+                            homeNewsCommentAdapter.removeFooterView(fv)
+                        }
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
-
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
@@ -432,9 +434,13 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
-    private fun addFooter(){
-        newsRecommendListAdapter.setEmptyView(R.layout.comment_no_data)
+    var footerView: View? = null
+    private fun addFooter() {
+
+        footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.pbRecyclerview, false)
+        newsRecommendListAdapter.addFooterView(footerView!!)
     }
+
     override fun onClick(v: View) {
         if (MConstant.token.isEmpty()) {
             startARouter(ARouterMyPath.SignUI)
