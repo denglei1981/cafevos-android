@@ -23,6 +23,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
+import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
@@ -113,6 +114,13 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 if (it.isSuccess) {
                     setCollection()
                 }
+            }
+        })
+
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(this,newsDetailData?.shares)
             }
         })
     }

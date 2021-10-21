@@ -3,8 +3,11 @@ package com.changanford.circle.adapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginBottom
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -67,6 +70,11 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
         binding.tvTex.addTextChangedListener(watcher)
         binding.tvTex.tag = watcher
 
+        if (holder.layoutPosition == data.size){
+            holder.getView<View>(R.id.Vlast).visibility = View.VISIBLE
+        }else{
+            holder.getView<View>(R.id.Vlast).visibility = View.GONE
+        }
     }
 
 

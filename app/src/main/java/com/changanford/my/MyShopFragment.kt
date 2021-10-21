@@ -100,7 +100,7 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
                 }
                 it.itemName.text = item.spuName
-                it.itemIntegral.text = "${item.normalFb}积分"
+                it.itemIntegral.text = "${item.normalFb}福币"
                 it.itemCollectNum.text = "${item.count}人收藏"
             }
             holder.itemView.setOnClickListener {

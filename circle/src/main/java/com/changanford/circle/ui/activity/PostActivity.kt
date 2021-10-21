@@ -623,10 +623,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun initbuttom() {
-        binding.bottom.typerec.layoutManager = LinearLayoutManager(this).apply {
+        binding.typerec.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
-        binding.bottom.typerec.adapter = buttomTypeAdapter
+        binding.typerec.adapter = buttomTypeAdapter
         buttomTypeAdapter.addData(
             arrayListOf(
                 ButtomTypeBean("选择模块", 1, 0),
@@ -650,7 +650,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
             params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             buttomlabelAdapter.notifyDataSetChanged()
-            buttomlabelAdapter.getItem(position).tagName.toast()
         }
         binding.bottom.emojirec.adapter = emojiAdapter
         val emojiList = ArrayList<String>()

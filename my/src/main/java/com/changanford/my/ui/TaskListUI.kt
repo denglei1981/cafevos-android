@@ -143,7 +143,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                     if (TimeUtils.dayTaskBefore(item.date)) {
                         it.clLayout.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
-                            pop.contentText.text = "本次补签将消耗 ${item.integral} 积分"
+                            pop.contentText.text = "本次补签将消耗 ${item.integral} 福币"
                             pop.btnConfirm.text = "立即补签"
                             pop.btnConfirm.setOnClickListener {
                                 pop.dismiss()

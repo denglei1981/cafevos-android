@@ -7,6 +7,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -65,5 +66,13 @@
             android:textColorHint="#CCCCCC"
             android:hint="输入图片描述（最多100字）"
             android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/Vlast"
+            android:visibility="gone"
+            android:layout_width="1px"
+            app:layout_constraintTop_toBottomOf="@id/tv_tex"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="50dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
