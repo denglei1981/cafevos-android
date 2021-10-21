@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_remainingTimePayment0"
-            tools:text="支付剩余时间 23:59:59"
+            android:text=" "
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12" />
         <ScrollView

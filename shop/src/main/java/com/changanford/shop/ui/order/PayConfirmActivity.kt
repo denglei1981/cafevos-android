@@ -68,13 +68,14 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         binding.model=dataBean
         binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.acountFb),"#00095B")
         var payCountDown=dataBean?.waitPayCountDown?:waitPayCountDown
-        if(payCountDown<0)payCountDown=waitPayCountDown
-        timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
-            override fun onFinish() {
-                payResults(false)
-            }
-        })
-        timeCountControl?.start()
+        if(payCountDown>0){
+            timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
+                override fun onFinish() {
+                    payResults(false)
+                }
+            })
+            timeCountControl?.start()
+        }
     }
     /**
      * [isSuccessful]支付成功、支付失败

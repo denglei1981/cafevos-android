@@ -23,6 +23,8 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             dataBinding.executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.spuImgs),dataBinding.imgGoodsCover)
             dataBinding.tvOrIntegral.visibility=if(item.lineFb==null) View.GONE else View.VISIBLE
+            dataBinding.inVip.model=item
+            dataBinding.tvIntegral.visibility=View.VISIBLE
             setTagType(item.spuPageTagType,dataBinding.tvTagType,dataBinding.inVip.lLayoutVip,dataBinding)
         }
     }
@@ -35,10 +37,12 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             "MEMBER_DISCOUNT"->{
                 vipView.visibility=View.VISIBLE
                 dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
+                dataBinding.tvIntegral.visibility=View.GONE
                 "会员折扣"
             }
             "MEMBER_EXCLUSIVE"->{
                 vipView.visibility=View.VISIBLE
+                dataBinding.tvIntegral.visibility=View.GONE
                 dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipExclusive)
                 "会员专享"
             }

@@ -87,14 +87,15 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
 //                        setText(R.string.prompt_orderUpdateAddress)
                     }
                     var payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
-                    if(payCountDown<0)payCountDown=waitPayCountDown
-                    timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
-                        override fun onFinish() {
-                            //支付倒计时结束 刷新
-                            viewModel.getOrderDetail(orderNo)
-                        }
-                    })
-                    timeCountControl?.start()
+                    if(payCountDown>0){
+                        timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
+                            override fun onFinish() {
+                                //支付倒计时结束 刷新
+                                viewModel.getOrderDetail(orderNo)
+                            }
+                        })
+                        timeCountControl?.start()
+                    }
                     binding.inBottom.apply {
                         btnOrderCancle.visibility=View.VISIBLE
                         btnOrderConfirm.setText(R.string.str_immediatePayment)
