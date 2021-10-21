@@ -72,6 +72,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.changanford.shop.view.TypefaceTextView
+            android:onClick="onClick"
             android:id="@+id/tv_userInfo"
             android:drawableStart="@mipmap/shop_location"
             android:drawablePadding="@dimen/dp_5"
@@ -84,16 +85,29 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
+            android:onClick="onClick"
             android:id="@+id/tv_locationInfo"
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_20"
             android:layout_marginStart="@dimen/dp_23"
             app:layout_constraintTop_toBottomOf="@id/tv_userInfo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_right"
             android:layout_height="wrap_content"
             tools:text="重庆市渝中区李子坝正街156号长帆江岸公馆2号楼"
             android:text="@{addressInfo.addressInfo}"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_12" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginEnd="@dimen/dp_20"
+            android:onClick="onClick"
+            android:id="@+id/img_right"
+            app:layout_constraintTop_toTopOf="@id/tv_userInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_locationInfo"
+            android:src="@mipmap/shop_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

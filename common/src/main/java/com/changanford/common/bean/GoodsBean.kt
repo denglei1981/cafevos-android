@@ -116,14 +116,16 @@ class Params
 // 秒杀时段
 data class SeckillSessionsBean(
     val now: Long? = null,
-    val seckillSessions: ArrayList<SeckillSession> = ArrayList()
+    val seckillSessions: ArrayList<SeckillSession>? = ArrayList()
 )
 
 data class SeckillSession(
     val date: Long = 0,
     val seckillTimeRanges: ArrayList<SeckillTimeRange> = ArrayList(),
     val sessionId: Int = 0,
-    val sessionName: String = ""
+    val sessionName: String = "",
+    var dateFormat: Int=0,
+    var index:Int=0,
 )
 
 data class SeckillTimeRange(
@@ -132,7 +134,8 @@ data class SeckillTimeRange(
     val timeRangeId: String = "0",
     var time:String?="",
     var states:Int=0,//状态 0 已结束  1 进行中  2未开始
-    var statesTxt:String="已结束"
+    var statesTxt:String="已结束",
+    var index:Int=0,
 )
 
 
@@ -174,7 +177,7 @@ data class GoodsDetailBean(
     var acountFb:Int=0,//账号积分
     val param:String?="",
     var totalPayFb:String="",//总支付积分
-    val freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String="0.00",//运费 0为包邮
     val collect:String="",//是否收藏 YES NO
     var addressId:Int?=0,
     var preferentialFb:String?="",
@@ -182,6 +185,8 @@ data class GoodsDetailBean(
     var specifications:String?="",
     var addressInfo:String?=null,
     var skuImg:String?=null,
+    var mallMallSkuSpuSeckillRangeId:String?=null
+
 )
 
 data class Attribute(
@@ -212,7 +217,8 @@ data class SkuVo(
     val skuId: String = "0",
     val skuImg: String = "",
     val stock: String = "0",
-    var skuTxt:String?=""
+    var skuTxt:String?="",
+    var mallMallSkuSpuSeckillRangeId:String?="0"
 )
 
 data class OptionVo(
@@ -286,8 +292,8 @@ data class ShopOrderBean(
 )
 
 data class OrderItemBean(
-    val addressId: Int = 0,
-    val addressInfo: String = "",
+    var addressId: Int = 0,
+    var addressInfo: String = "",
     val addressName: String = "",
     var buyNum: String ="0",
     val consignee: String = "",
@@ -350,7 +356,7 @@ data class OrderItemBean(
     val preferentialFbOfUnitPrice: Any? = null,
     val receiveTime: Any? = null,
     val sendTime: Any? = null,
-    val waitPayDuration: Int = 0,
+    val waitPayDuration: Long = 0,//待支付有效时间
     var orderType:Int=0,
     val jumpDataType: Int = 0,
     val jumpDataValue: String = "",
@@ -359,7 +365,7 @@ data class OrderItemBean(
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
-    val freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String="0.00",//运费 0为包邮
     var otherName:String?="",
     var otherValue:String?="",
     var totalIntegral:String?="0",

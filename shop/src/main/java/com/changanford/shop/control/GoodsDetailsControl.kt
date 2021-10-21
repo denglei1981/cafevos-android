@@ -2,6 +2,7 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.CommentItem
@@ -17,6 +18,7 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
 import razerdp.basepopup.BasePopupWindow
 
@@ -28,14 +30,18 @@ import razerdp.basepopup.BasePopupWindow
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private val shareViewModule by lazy { ShareViewModule() }
-    private var skuCode=""
+    var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.buyNum=1
-        getSkuTxt(dataBean.skuVos[0].skuCode)
+        //初始化 skuCode
+        var skuCodeInitValue="${dataBean.spuId}-"
+        dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+        skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
@@ -47,7 +53,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
-        if(freightPrice!="0.00")WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
+        if(freightPrice!="0.00"&&"0"!=freightPrice)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
@@ -67,8 +73,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         model=dataBean
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
-                        val purchasedNum=dataBean.purchasedNum?:0
-                        tvStockProportion.setText("${purchasedNum/dataBean.stock*100}")
+                        val salesCount=dataBean.salesCount
+                        tvStockProportion.setText("${salesCount/dataBean.stock*100}")
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         val limitBuyNum=dataBean.salesCount+dataBean.stock
@@ -126,8 +132,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
-        if(::dataBean.isInitialized&&skuCode.isNotEmpty()){
-            GoodsAttrsPop(activity,this.dataBean,skuCode).apply {
+        if(::dataBean.isInitialized){
+            GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
                 showPopupWindow()
                 onDismissListener=object : BasePopupWindow.OnDismissListener() {
                     override fun onDismiss() {
@@ -139,11 +145,12 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     private fun getSkuTxt(skuCode:String){
         this.skuCode=skuCode
-        val findItem=dataBean.skuVos.find { skuCode== it.skuCode }?:dataBean.skuVos[0]
-        dataBean.skuId=findItem.skuId
-        dataBean.fbPrice=findItem.fbPrice
-        dataBean.stock=findItem.stock.toInt()
-        dataBean.skuCodeTxts= arrayListOf()
+        dataBean.skuVos.find { skuCode== it.skuCode }?.apply {
+            dataBean.skuId=skuId
+            dataBean.fbPrice=fbPrice
+            dataBean.stock=stock.toInt()
+            dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
+        }
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
         val skuCodeTxtArr= arrayListOf<String>()
@@ -155,27 +162,36 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }
         }
         dataBean.skuCodeTxts=skuCodeTxtArr
-        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt("  已选：${skuCodeTxt}","#333333")
+        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"  未选择属性" else "  已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
-        bindingBtn()
+        bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
     }
-    private fun bindingBtn(){
-        binding.inBottom.btnSubmit.apply {
-            val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
-            if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
-                setStates(8)
-            } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
-                setStates(7)
-            }else if(dataBean.stock<1){//库存不足,已售罄、已抢光
-                setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-            }else setStates(5)
+    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
+        _dataBean.apply {
+            val totalPayFb=fbPrice.toInt()*buyNum
+            if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
+                btnSubmit.setStates(8)
+            } else if(secKillInfo!=null&&now<secKillInfo?.timeBegin!!){//秒杀未开始
+                btnSubmit.setStates(7)
+            }else if(stock<1){//库存不足,已售罄、已抢光
+                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+            }else if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
+                btnSubmit.updateEnabled(false)
+            } else btnSubmit.setStates(5)
         }
     }
     fun share(){
         if(::dataBean.isInitialized)dataBean.shareBeanVO?.apply {
            shareViewModule.share(activity, ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type))
         }
+    }
+    /**
+     * 是否是无效选择商品属性
+     * return false 有效 、true 无效
+     * */
+    fun isInvalidSelectAttrs(skuCode:String):Boolean{
+        return skuCode.contains("-")&&skuCode.split("-").find { it =="0" }!=null
     }
     fun onDestroy(){
         timeCount?.cancel()

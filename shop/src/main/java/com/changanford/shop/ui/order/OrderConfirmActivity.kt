@@ -83,8 +83,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private fun bindingBaseData(){
         //购买数量
         val buyNum=dataBean.buyNum
-        //运费
-        val freightPrice=(dataBean.freightPrice.toFloat()*100).toInt()//1元=100积分
+        //运费 1元=100积分
+        val freightPrice=(dataBean.freightPrice.toFloat()*100).toInt()
         //单价
         val fbPrice=dataBean.fbPrice.toInt()
         //总商品价 单价*购买数量
@@ -93,6 +93,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         val totalPayFb:Int=totalFb+freightPrice
         dataBean.totalPayFb="$totalPayFb"
         binding.inOrderInfo.apply {
+            if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
             model=dataBean
             tvAmountValue.setText("$totalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
@@ -130,7 +131,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(!isClickSubmit){
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-            viewModel.orderCreate(dataBean.skuId,dataBean.addressId,dataBean.spuPageType,dataBean.buyNum,consumerMsg)
+            dataBean.apply {
+                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId)
+            }
         }
         GlobalScope.launch {
             delay(3000L)
@@ -156,7 +159,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         JumpUtils.instans?.jump(20,"1")
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
-                    it?.let {bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))}
+                    it?.let {
+                        bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
+                    }
                 })
     }
 }

@@ -28,13 +28,16 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var parentSmartRefreshLayout: SmartRefreshLayout?=null
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
-    private var typeId="0"
+    private var typeId="-1"
+    private var isRequest=false
     override fun initView() {
         if(arguments!=null){
             typeId=arguments?.getString("typeId","0")!!
             viewModel.getGoodsList(typeId,pageNo)
+            isRequest=true
         }
         viewModel.goodsListData.observe(this,{
+            isRequest=false
             bindingData(it)
         })
         binding.smartRl.setOnLoadMoreListener {
@@ -47,7 +50,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
             val itemData=mAdapter.data[position]
-            GoodsDetailsActivity.start(itemData.mallMallSpuId,itemData.spuPageTagType)
+            GoodsDetailsActivity.start(itemData.mallMallSpuId)
         }
     }
     private fun bindingData(it:GoodsList?){
@@ -55,17 +58,24 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
         } else if(it?.dataList != null)mAdapter.addData(it.dataList)
-        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
-        else {
-            binding.smartRl.finishLoadMore()
-            binding.smartRl.setEnableLoadMore(true)
-        }
+//        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+//        else {
+//            binding.smartRl.finishLoadMore()
+//            binding.smartRl.setEnableLoadMore(true)
+//        }
+        if(null==it|| it.dataList.isEmpty())pageNo--
+        binding.smartRl.finishLoadMore()
     }
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
         this.parentSmartRefreshLayout=parentSmartRefreshLayout
     }
+    /**
+     * 切换tab时如果当前fragment 没有数据则自动刷新
+    * */
     fun startRefresh(){
-        pageNo=1
-        viewModel.getGoodsList(typeId,pageNo)
+        if(isAdded&&"-1"!=typeId&&mAdapter.data.size<1&&!isRequest){
+            pageNo=1
+            viewModel.getGoodsList(typeId,pageNo)
+        }
     }
 }

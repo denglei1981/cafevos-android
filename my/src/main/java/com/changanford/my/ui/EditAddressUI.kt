@@ -94,6 +94,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                 body["consignee"] = t1.toString()
                 body["phone"] = t2.toString()
                 body["addressName"] = t4.toString()
+                binding.tvTextNum.text = "${t4.length}"
                 t1.isNotEmpty() && t2.isNotEmpty() && t3.isNotEmpty() && t4.isNotEmpty()
             }).subscribe {
             binding.save.isEnabled = it

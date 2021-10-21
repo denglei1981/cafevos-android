@@ -68,7 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_select"
-            tools:text="@string/str_goods_typeX"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView

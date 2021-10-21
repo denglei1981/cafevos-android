@@ -3,13 +3,14 @@ package com.changanford.shop.ui.exchange
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.adapter.ExchangeAdapter
 import com.changanford.shop.databinding.FragmentShopExchangeBinding
+import com.changanford.shop.viewmodel.GoodsViewModel
 
 /**
  * @Author : wenke
  * @Time : 2021/9/8
  * @Description : ExchangeFragment
  */
-class ExchangeFragment: BaseFragment<FragmentShopExchangeBinding, ExchangeViewModel>() {
+class ExchangeFragment: BaseFragment<FragmentShopExchangeBinding, GoodsViewModel>() {
     companion object {
         fun newInstance(): ExchangeFragment {
             return ExchangeFragment()

@@ -115,4 +115,9 @@ interface ShopNetWorkApi {
     * */
     @POST("/base/config/getConfigValueByKey")
     suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
+    /**
+     * 修改商品待支付状态的收货地址
+     * */
+    @POST("/mall/updateAdrrByOrderNo")
+    suspend fun updateAddressByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
 }

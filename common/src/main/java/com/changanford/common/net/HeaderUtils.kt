@@ -49,7 +49,7 @@ fun getHeader(
         map["token"] = token
     }
     //设置默认token
-//    map["token"] = "user:token:app:248:qq-3d88a3dc70b949b7731b4c7b0b81b3ee"
+//    map["token"] = "user:token:app:39:evos-6cb6460a0afe2dc639cccbd33ebdf873"
     map["timestamp"] = timestamp
     map["os"] = "Android"//操作系统 （ios、Android、wp）
     map["osVersion"] = if(MConstant.isPopAgreement) "" else DeviceUtils.getDeviceVersion()//操作系统版本号

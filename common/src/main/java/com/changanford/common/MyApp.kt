@@ -66,12 +66,13 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
         UserManger.getSysUserInfo()?.let {
             MConstant.token = "${it.token}"
+            MConstant.mine_phone = "${it.mobile}"
         }
         initLoadSir()// 初始化界面管理类。
     }
 
     override fun getCameraXConfig(): CameraXConfig {
-      return  Camera2Config.defaultConfig()
+        return Camera2Config.defaultConfig()
     }
 
     private fun initLoadSir() {

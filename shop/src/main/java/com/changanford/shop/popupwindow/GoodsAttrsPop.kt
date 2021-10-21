@@ -10,10 +10,10 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
+import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
-import com.changanford.shop.view.btn.KillBtnView
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -23,7 +23,7 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2021/9/22
  * @Description : GoodsAttrsPop
  */
-open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String): BasePopupWindow(activity) {
+open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String,val control:GoodsDetailsControl): BasePopupWindow(activity) {
     private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
     private var skuCodeLiveData: MutableLiveData<String> = MutableLiveData()
     private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCodeLiveData) }
@@ -47,30 +47,33 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity,{ code ->
-            _skuCode=code
-            (dataBean.skuVos.find { it.skuCode==code }?:dataBean.skuVos[0]).apply {
-                dataBean.skuImg=skuImg
-                dataBean.skuId=skuId
-                dataBean.fbPrice=fbPrice
-                dataBean.stock=stock.toInt()
-                val skuCodeTxtArr= arrayListOf<String>()
-                for((i,item) in dataBean.attributes.withIndex()){
-                    item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {
-                        val optionName= it.optionName
-                        skuCodeTxtArr.add(optionName)
+            dataBean.skuVos.apply {
+                _skuCode=code
+                (this.find { it.skuCode==code }?:this.find { it.fbPrice==dataBean.fbPrice }?:this[0]).apply {
+                    dataBean.skuImg=skuImg
+                    dataBean.skuId=skuId
+                    dataBean.fbPrice=fbPrice
+                    if(!control.isInvalidSelectAttrs(_skuCode))dataBean.stock=stock.toInt()
+                    dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
+                    val skuCodeTxtArr= arrayListOf<String>()
+                    for((i,item) in dataBean.attributes.withIndex()){
+                        item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {
+                            val optionName= it.optionName
+                            skuCodeTxtArr.add(optionName)
+                        }
                     }
+                    dataBean.skuCodeTxts=skuCodeTxtArr
+                    viewDataBinding.sku= this
+                    GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
+                    val limitBuyNum:String=dataBean.limitBuyNum?:"0"
+                    val htmlStr=if(limitBuyNum!="0")"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
+                    val nowStock=dataBean.stock
+                    WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
+                    val max: Int =if(limitBuyNum!="0")limitBuyNum.toInt() else nowStock
+                    viewDataBinding.addSubtractView.setMax(max)
+                    control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
                 }
-                dataBean.skuCodeTxts=skuCodeTxtArr
-                viewDataBinding.sku= this
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
-                val limitBuyNum:String=dataBean.limitBuyNum?:"0"
-                val htmlStr=if(limitBuyNum!="0")"<font color=\"#00095B\">限购${dataBean.limitBuyNum}件</font> " else ""
-                WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${stock}件）")
-                val max: String =if(limitBuyNum!="0")limitBuyNum else stock
-                viewDataBinding.addSubtractView.setMax(max.toInt())
-                bindingBtn(stock.toInt(),viewDataBinding.btnSubmit)
             }
-
         })
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
@@ -79,17 +82,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
             dataBean.buyNum= it
+            control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
         })
-    }
-    private fun bindingBtn(stock:Int,btnSubmit: KillBtnView){
-        val totalPayFb=dataBean.fbPrice.toInt()*dataBean.buyNum
-        if(MConstant.token.isNotEmpty()&&dataBean.acountFb<totalPayFb){//积分余额不足
-            btnSubmit.setStates(8)
-        } else if(dataBean.secKillInfo!=null&&dataBean.now<dataBean.secKillInfo?.timeBegin!!){//秒杀未开始
-            btnSubmit.setStates(7)
-        }else if(stock<1){//库存不足,已售罄、已抢光
-            btnSubmit.setStates(if("SECKILL"==dataBean.spuPageType)1 else 6,true)
-        }else btnSubmit.setStates(5)
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {
