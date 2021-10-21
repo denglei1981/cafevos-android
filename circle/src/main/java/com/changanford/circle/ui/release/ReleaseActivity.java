@@ -801,7 +801,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
                             Bundle bundle2 = new Bundle();
                             bundle2.putInt("position", position);
-                            bundle2.putInt("showEditType", -1);
+                            bundle2.putInt("showEditType", 1);
                             bundle2.putParcelableArrayList("picList",
                                     (ArrayList<? extends Parcelable>) mediaList);
                             ARouterNavigationKt.startARouterForResult(ReleaseActivity.this, ARouterCirclePath.PictureeditlActivity, bundle2, CompleCUTBACK);
@@ -1164,7 +1164,7 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 //                Intent intent = new Intent(ReleaseActivity.this, PictureeditlActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("position", 0);
-                bundle.putInt("showEditType", -1);
+                bundle.putInt("showEditType", 1);
                 bundle.putParcelableArrayList("picList",
                         (ArrayList<? extends Parcelable>) mediaList);
                 ARouterNavigationKt.startARouterForResult(ReleaseActivity.this, ARouterCirclePath.PictureeditlActivity, bundle, CompleCUTBACK);

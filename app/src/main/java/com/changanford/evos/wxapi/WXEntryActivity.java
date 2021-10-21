@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.changanford.common.sharelib.event.ShareResultType;
 import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
@@ -127,10 +128,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 switch (errorCode) {
                     case BaseResp.ErrCode.ERR_OK: //分享成功
                     case BaseResp.ErrCode.ERR_USER_CANCEL:
-//                        result = ShareResultType.SHARE_SUCCESS;
+                        result = ShareResultType.SHARE_SUCCESS;
                         break;
                     default:
-//                        result = ShareResultType.SHARE_FAIL;
+                        result = ShareResultType.SHARE_FAIL;
                         break;
                 }
                 LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK, Integer.class).postValue(result);

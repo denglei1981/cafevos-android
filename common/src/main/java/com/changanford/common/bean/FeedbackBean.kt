@@ -10,7 +10,6 @@ import java.io.Serializable
  *  修改描述：TODO
  */
 
-class FeedbackTags : ArrayList<FeedbackTagsItem>()
 
 data class FeedbackTagsItem(
     val tagId: Int,

@@ -6,6 +6,7 @@ import java.util.List;
 public class QueryInfo implements Serializable {
     private String coverImgUrl;  //封面图
     private String deadlineTime; //截止时间
+    private Boolean canSeeResult;//用户是否可以查看结果
     private String title;  //标题
     private List<QuessionBean> questionList;  //问题（前端传入顺序作为问卷顺序）
 
@@ -31,6 +32,14 @@ public class QueryInfo implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Boolean getCanSeeResult() {
+        return canSeeResult;
+    }
+
+    public void setCanSeeResult(Boolean canSeeResult) {
+        this.canSeeResult = canSeeResult;
     }
 
     public List<QuessionBean> getQuestionList() {

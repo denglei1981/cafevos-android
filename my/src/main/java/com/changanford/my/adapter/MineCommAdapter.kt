@@ -493,7 +493,12 @@ object MineCommAdapter {
                 line.isInvisible = holder.layoutPosition % 7 == 0
                 line2.isInvisible = holder.layoutPosition % 7 == 6
                 try {
-                    day.text = item.date?.subSequence(item.date.length - 2, item.date.length)
+                    var month = item.date?.subSequence(item.date.length - 5, item.date.length-3).toString()
+                    if (Integer.valueOf(month)>9){
+                        day.text = "${month}.${item.date?.subSequence(item.date.length - 2, item.date.length)}"
+                    }else{
+                        day.text = "${month.substring(1)}.${item.date?.subSequence(item.date.length - 2, item.date.length)}"
+                    }
                 } catch (e: Exception) {
                     day.text = item.date
                 }

@@ -119,7 +119,7 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
