@@ -109,6 +109,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     }
 
     private fun getData() {
+        viewModel.getUserInfo()
         viewModel.weekSignDetail() { bean ->
             dayAdapter.data.clear()
             bean?.let {
@@ -159,7 +160,6 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                                         )
                                     }.onSuccess {
                                         getData()
-                                        viewModel.getUserInfo()
                                     }.onWithMsgFailure {
                                         it?.let {
                                             showToast(it)

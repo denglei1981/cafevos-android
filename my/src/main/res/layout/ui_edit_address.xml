@@ -148,6 +148,7 @@
         android:minHeight="@dimen/dp_100"
         android:padding="@dimen/dp_8"
         android:textColor="#081725"
+        android:textColorHint="#999999"
         android:textSize="@dimen/sp_15" />
 
     <LinearLayout

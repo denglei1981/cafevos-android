@@ -63,10 +63,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     var historyList: MutableList<SearchRecordEntity>? = null
     override fun initView() {
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
-        if (!TextUtils.isEmpty(searchTypStr)) {
-            searchType = searchTypStr?.toIntOrNull()!!
+        searchType = if (!TextUtils.isEmpty(searchTypStr)) {
+            searchTypStr?.toIntOrNull()!!
         } else {
-            searchType = -1
+            -1
         }
         ImmersionBar.with(this)
             .fitsSystemWindows(true)

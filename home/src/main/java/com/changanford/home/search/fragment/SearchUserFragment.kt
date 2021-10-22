@@ -82,7 +82,7 @@ class SearchUserFragment :
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(SearchTypeConstant.SEARCH_USER, it, true)
+            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_USER, it, true)
         }
     }
     fun outRefresh(keyWord: String) { // 暴露给外部的耍新
@@ -91,7 +91,7 @@ class SearchUserFragment :
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(SearchTypeConstant.SEARCH_USER, it, false)
+            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_USER, it, false)
         }
     }
 

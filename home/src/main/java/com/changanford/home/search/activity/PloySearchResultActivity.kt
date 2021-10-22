@@ -1,13 +1,7 @@
 package com.changanford.home.search.activity
 
-import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,12 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.startARouter
-import com.changanford.common.util.HideKeyboardUtil
-import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.databinding.ActivityPloySearchResultBinding
