@@ -256,7 +256,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
     }
 
-    fun easyViewPager(){
+    private fun easyViewPager(){
         try {
             val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
             recyclerViewField.isAccessible = true
