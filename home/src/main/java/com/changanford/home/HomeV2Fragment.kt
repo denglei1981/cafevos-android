@@ -1,6 +1,7 @@
 package com.changanford.home
 
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,6 +9,7 @@ import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -37,6 +39,8 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
+import java.lang.Exception
+import java.lang.reflect.Field
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -80,11 +84,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     override fun initView() {
         //Tab+Fragment
+
         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
         ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
+        easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
         fragmentList.add(actsParentsFragment)
@@ -250,6 +256,18 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
     }
 
+    fun easyViewPager(){
+        try {
+            val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+            recyclerViewField.isAccessible = true
+            val recyclerView: RecyclerView = recyclerViewField.get(binding.homeViewpager) as RecyclerView
+            val touchSlopField: Field = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+            touchSlopField.isAccessible = true
+            val touchSlop = touchSlopField.get(recyclerView) as Int
+            touchSlopField.set(recyclerView, touchSlop * 4) //6 is empirical value
+        } catch (ignore: Exception) {
+        }
+    }
     private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
@@ -294,6 +312,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.tvBigTopic.setOnClickListener {
         }
     }
+
 
     override fun observe() {
         super.observe()
