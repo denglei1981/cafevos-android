@@ -244,7 +244,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             getString(R.string.str_confirmGoods)->control.confirmGoods(dataBean)
             //立即支付
             getString(R.string.str_immediatePayment)->control.toPay(dataBean)
-
         }
     }
     fun onClick(v:View){
