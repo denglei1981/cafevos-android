@@ -36,7 +36,7 @@ class PolySearchNewsResultViewModel : BaseViewModel() {
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             var hashMap = HashMap<String, Any>()
             hashMap["skwKeyword"] = skwKeyword
-            hashMap["skwType"] = SearchTypeConstant.SEARCH_NEWS
+            hashMap["skwType"] = SearchTypeConstant.SEARCH_ACTION_NEWS
             requestBody["queryParams"] = hashMap
             val rkey = getRandomKey()
 

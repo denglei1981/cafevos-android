@@ -39,7 +39,7 @@ class PolySearchActsResultViewModel : BaseViewModel() {
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             var hashMap = HashMap<String, Any>()
             hashMap["skwKeyword"] = skwKeyword
-            hashMap["skwType"] = SearchTypeConstant.SEARCH_ACTS
+            hashMap["skwType"] = SearchTypeConstant.SEARCH_ACTION_ACTS
             requestBody["queryParams"] = hashMap
             val rkey = getRandomKey()
 

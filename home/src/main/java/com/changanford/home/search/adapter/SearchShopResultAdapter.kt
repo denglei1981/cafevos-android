@@ -10,12 +10,12 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class SearchShopResultAdapter :
     BaseQuickAdapter<SearchShopBean, BaseViewHolder>(R.layout.item_search_result_shop) {
-    override fun convert(helper: BaseViewHolder, item: SearchShopBean) {
+    override fun convert(holder: BaseViewHolder, item: SearchShopBean) {
 
-        val ivShopping = helper.getView<ShapeableImageView>(R.id.iv_shopping)
+        val ivShopping = holder.getView<ShapeableImageView>(R.id.iv_shopping)
         GlideUtils.loadBD(item.spuImgs, ivShopping)
-        helper.setText(R.id.tv_author_name, item.spuName)
-        var tvSubTitle = helper.getView<AppCompatTextView>(R.id.tv_sub_title)
+        holder.setText(R.id.tv_author_name, item.spuName)
+        var tvSubTitle = holder.getView<AppCompatTextView>(R.id.tv_sub_title)
 
         tvSubTitle.text = item.normalFb.plus("福币")
 
