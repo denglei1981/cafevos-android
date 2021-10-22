@@ -54,7 +54,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     val immersionBar: ImmersionBar by lazy {
         ImmersionBar.with(this)
     }
-
     val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
     }
@@ -198,7 +197,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
             }
             3 -> {
-                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_USER.toString())
             }
         }
     }
