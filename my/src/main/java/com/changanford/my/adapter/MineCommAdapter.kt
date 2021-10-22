@@ -26,6 +26,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadRound
 import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
 import com.changanford.common.utilext.load
@@ -37,6 +38,7 @@ import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 object MineCommAdapter {
@@ -392,6 +394,8 @@ object MineCommAdapter {
             position: Int
         ) {
             val binding = vdBinding as ItemFeedbackRecordBinding
+            GlideUtils.loadCircle(item.headImg, binding.itemHeadIcon, R.mipmap.head_default)
+
             binding.tvDelete.setOnClickListener {
                 AlertThreeFilletDialog(mContext).builder().setMsg("确定是否要删除该内容吗？")
                     .setNegativeButton(
