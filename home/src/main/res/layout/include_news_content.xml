@@ -32,6 +32,7 @@
             android:layout_marginTop="@dimen/dp_12"
             android:textColor="#ff9fabb7"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content"
             tools:text="2021-08-12 15:30" />
@@ -40,26 +41,30 @@
             android:id="@+id/tv_topic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="#ff74889d"
             android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_pic"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
             tools:text="#驭见美好之旅#" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_pic"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="4dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_recommend_test"
             app:layout_constraintDimensionRatio="335:150"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_topic"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@drawable/image_recommend_test"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -72,13 +77,13 @@
             android:paddingStart="4dp"
             android:paddingTop="@dimen/dp_2"
             android:paddingEnd="4dp"
-            android:visibility="gone"
             android:paddingBottom="@dimen/dp_2"
-            tools:text="资讯"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+            app:layout_constraintTop_toTopOf="@+id/iv_pic"
+            tools:text="资讯" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -87,17 +92,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_4"
             android:paddingStart="4dp"
             android:paddingTop="@dimen/dp_2"
             android:paddingEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
             android:paddingBottom="@dimen/dp_2"
-            tools:text="10:12"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="@dimen/dp_4"
-            />
+            tools:text="10:12" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

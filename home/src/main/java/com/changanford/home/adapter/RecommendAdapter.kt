@@ -95,9 +95,6 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
         GlideUtils.loadBD(item.wonderfulPic, ivActs)
         tvTips.text = item.title
-
-
-
         tvHomeActTimes.text = "活动截止时间:".plus(item.deadLineTime)
         if (item.deadLineTime <= item.serverTime) {
             btnState.text = "已截止"
@@ -169,7 +166,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             toUserHomePage(item)
         }
 
-        tvContent.text = item.getContent()
+        tvContent.text = item.getTopic()
         val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
         setLikeState(tvLikeCount, item.isLike, false) // 设置是否喜欢。
         tvLikeCount.setOnClickListener {
@@ -216,10 +213,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
-        if (TextUtils.isEmpty(item.getTopic())) {
+        if (TextUtils.isEmpty(item.getContent())) {
             tvTopic.text = ""
         } else {
-            tvTopic.text = "#${item.getTopic()}#"
+            tvTopic.text = item.getContent()
         }
         when (item.authors?.isFollow) {
             0 -> { // 未关注
