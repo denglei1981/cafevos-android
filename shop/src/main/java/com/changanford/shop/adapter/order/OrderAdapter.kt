@@ -156,7 +156,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_confirmGoods)
-                            setOnClickListener {confirmGoods(item)}
+                            setOnClickListener {confirmGoods(position,item)}
                         }
                     }
                     //已完成,已关闭->可再次购买
@@ -207,11 +207,17 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     /**
      * 确认收货
      * */
-    private fun confirmGoods(item: OrderItemBean){
+    private fun confirmGoods(position:Int,item: OrderItemBean){
         control.confirmGoods(item,object :OnPerformListener{
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
-                this@OrderAdapter.notifyDataSetChanged()
+                this@OrderAdapter.apply {
+                    if(2==orderSource){
+                        data.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    notifyDataSetChanged()
+                }
             }
         })
     }
