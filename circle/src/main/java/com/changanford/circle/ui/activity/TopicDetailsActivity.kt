@@ -112,7 +112,6 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             {
                 postEntity = it as ArrayList<PostEntity>
             })
-        bus()
     }
 
     override fun initData() {
@@ -298,18 +297,4 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 
-    private fun bus() {
-        //分享
-        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, {
-            if (it == 0) {
-                launchWithCatch {
-                    val body = MyApp.mContext.createHashMap()
-                    val rKey = getRandomKey()
-                    ApiClient.createApi<CircleNetWork>()
-                        .shareCallBack(body.header(rKey), body.body(rKey))
-                }
-            }
-
-        })
-    }
 }

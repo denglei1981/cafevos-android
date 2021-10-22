@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -80,6 +81,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private var circleId = ""
     private var isOpenMenuPop = false
+    private var shareBeanVO: CircleShareBean? = null
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
@@ -125,7 +127,6 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             {
                 postEntity = it as ArrayList<PostEntity>
             })
-        bus()
     }
 
     private fun initListener(circleName: String) {
@@ -242,6 +243,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
             binding.barTitleTv.text = it.name
             binding.shareImg.setOnClickListener { _ ->
+                shareBeanVO = it.shareBeanVO
                 CircleShareModel.shareDialog(
                     this,
                     0,
@@ -466,18 +468,5 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         }
     }
 
-    private fun bus() {
-        //分享
-        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, {
-            if (it == 0) {
-                launchWithCatch {
-                    val body = MyApp.mContext.createHashMap()
-                    val rKey = getRandomKey()
-                    ApiClient.createApi<CircleNetWork>()
-                        .shareCallBack(body.header(rKey), body.body(rKey))
-                }
-            }
 
-        })
-    }
 }
