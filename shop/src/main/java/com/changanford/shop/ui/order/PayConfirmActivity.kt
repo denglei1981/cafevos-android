@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.content.Context
 import android.content.Intent
+import android.view.KeyEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -16,6 +17,8 @@ import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
 import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
+import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
@@ -28,7 +31,8 @@ import kotlinx.coroutines.launch
  * @Description : 确认支付
  */
 @Route(path = ARouterShopPath.PayConfirmActivity)
-class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(){
+class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(),
+    TopBar.OnBackClickListener {
     companion object{
         fun start(context: Context, orderInfo:String) {
             if(MConstant.token.isEmpty()) JumpUtils.instans?.jump(100)
@@ -42,7 +46,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     private var isPaySuccessful=false//是否支付成功
     private var isClickSubmit=false
     override fun initView() {
-        binding.topBar.setActivity(this)
+        binding.topBar.setOnBackClickListener(this)
     }
     override fun initData() {
         val orderInfo=intent.getStringExtra("orderInfo")
@@ -114,5 +118,16 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         super.onDestroy()
         timeCountControl?.cancel()
     }
-    fun onBack(v: View)=this.finish()
+
+    override fun onBackClick() {
+        if(isPaySuccessful)GoodsDetailsActivity.start(this,true)
+        this.finish()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackClick()
+        }
+        return false
+    }
 }

@@ -6,6 +6,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
@@ -198,7 +199,7 @@ class GoodsViewModel: BaseViewModel() {
      * 添加足迹
      * */
     private fun addFootprint(spuId:String){
-//        if(!isLogin())return
+        if(MConstant.token.isEmpty())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()

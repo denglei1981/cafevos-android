@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -50,13 +51,15 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
+        Log.e("wenke","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
         initLiveDataBus()
     }
 
     override fun initData() {
         binding.inGoodsInfo.addSubtractView.apply {
-            setMax(dataBean.stock)
+            val limitBuyNum=(dataBean.limitBuyNum?:"0").toInt()
+            setMax(if(0==limitBuyNum)dataBean.stock else limitBuyNum)
             setNumber(dataBean.buyNum,false)
             numberLiveData.observe(this@OrderConfirmActivity,{
                 dataBean.buyNum= it

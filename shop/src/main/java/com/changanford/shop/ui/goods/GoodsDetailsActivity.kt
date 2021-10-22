@@ -1,6 +1,9 @@
 package com.changanford.shop.ui.goods
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -34,6 +37,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         fun start(spuId:String) {
             JumpUtils.instans?.jump(3,spuId)
         }
+        fun start(context: Context,isRefresh:Boolean) {
+            context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("isRefresh",isRefresh))
+        }
     }
     private var spuId:String="108"//商品IDR.id.img_share->control.share()
     private lateinit var control: GoodsDetailsControl
@@ -65,13 +71,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             this.finish()
             return
         }
-//        spuPageType=spuPageTypes.lastOrNull { it==intent.getStringExtra("spuPageType") }?:"NOMROL"
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         initTab()
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
+        viewModel.queryGoodsDetails(spuId,true)
     }
     private  fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
@@ -80,8 +86,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
-//            if(BuildConfig.DEBUG)it.acountFb=600
             control.bindingData(it)
+            initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
         })
         viewModel.collectionGoodsStates.observe(this,{
@@ -95,7 +101,15 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 }
             )
         })
-        viewModel.queryGoodsDetails(spuId,true)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.apply {
+            val isRefresh=getBooleanExtra("isRefresh",false)
+            if("0"!=spuId&&isRefresh)viewModel.queryGoodsDetails(spuId,false)
+            Log.e("okhttp","isRefresh:$isRefresh")
+        }
     }
     fun onClick(v:View){
         val vid=v.id
