@@ -105,12 +105,13 @@ data class GoodsItemBean(
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val recommend: String = "",
-    val robbedPercentage: String = "",
+    var robbedPercentage: String = "",
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
     val seckillStock: Int? = 0,
-    val sekillCount: Int = 0,
+    var sekillCount: Int = 0,
+    var totalStock:Int=1,
 )
 class Params
 // 秒杀时段
