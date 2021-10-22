@@ -129,6 +129,10 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                     "2"->{
 
                     }
+                    //订单列表的再次购买
+                    "3"->{
+
+                    }
                 }
             }
         }

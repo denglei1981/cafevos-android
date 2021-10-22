@@ -74,7 +74,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
             it.accountFb=dataBean.acountFb.toString()
-            it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
+            val source=it.source
+            if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
             PayConfirmActivity.start(this,Gson().toJson(it))
             this.finish()
         })
@@ -85,7 +86,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //购买数量
         val buyNum=dataBean.buyNum
         //运费 1元=100积分
-        val freightPrice=(dataBean.freightPrice.toFloat()*100).toInt()
+        val freightPrice=((dataBean.freightPrice?:"0.00").toFloat()*100).toInt()
         //单价
         val fbPrice=dataBean.fbPrice.toInt()
         //总商品价 单价*购买数量

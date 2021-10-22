@@ -83,7 +83,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
                 //根据条件将日期分成两份
                 val (match, rest)=this.partition {it.dateFormat>=nowTimeSf}
                 //优先选中当天,其次是当天后的最近一天,最后默认选第一天（今天21号 有[19,21,23]选取21、[18,23]选取23、[18,19]选取18）
-                val dateI=if(match.isNotEmpty())match[0].index else rest[0].index
+                val dateI=if(match.isNotEmpty())match[0].index else if(rest.isNotEmpty())rest[0].index else 0
                 onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
                 dateAdapter.selectPos=dateI
                 binding.rvDate.scrollToPosition(dateI)
@@ -121,7 +121,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         //未找到正在进行中的场次
         if(timeI==-1){
             val (match, rest)=seckillTimeRange.partition { it.timeBegin>=nowTime}
-            timeI=if(match.isNotEmpty())match[0].index else rest[0].index
+            timeI=if(match.isNotEmpty())match[0].index else if(rest.isNotEmpty()) rest[0].index else 0
         }
         timeAdapter.selectPos=0
         timeAdapter.setList(seckillTimeRange)

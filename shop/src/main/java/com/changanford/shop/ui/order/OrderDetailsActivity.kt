@@ -25,6 +25,7 @@ import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * @Author : wenke
@@ -106,7 +107,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
+                    val otherValue=simpleDateFormat.format(dataBean.updateTime)
+                    dataBean.otherValue=otherValue
                     binding.tvOrderPrompt.apply {
                         visibility= View.VISIBLE
                         setText(R.string.prompt_waitSend)

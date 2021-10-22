@@ -178,7 +178,7 @@ data class GoodsDetailBean(
     var acountFb:Int=0,//账号积分
     val param:String?="",
     var totalPayFb:String="",//总支付积分
-    var freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String?="0.00",//运费 0为包邮
     val collect:String="",//是否收藏 YES NO
     var addressId:Int?=0,
     var preferentialFb:String?="",//会员优惠
@@ -306,7 +306,7 @@ data class OrderItemBean(
     val createBy: String = "",
     val createTime: String = "",
     val dataState: String = "",
-    val discount: Int = 0,
+    val discount: String = "0",
     val discountScale: Int = 0,
     val evalStatus: String? = "",
     var fbCost: String? = "0",
@@ -352,7 +352,7 @@ data class OrderItemBean(
     val cost:String?="0",
     var waitPayCountDown:Long?=0,
     var acountFb:String="0",
-    val busSourse: Int = 0,
+    val busSourse: String = "0",
     val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
     val payTime: Any? = null,
@@ -368,11 +368,12 @@ data class OrderItemBean(
     var orderStatusName: String? = "",
     val skuName: String = "",
     var logisticsInfo:String?="",//物流信息
-    var freightPrice:String="0.00",//运费 0为包邮
+    var freightPrice:String?="0.00",//运费 0为包邮
     var otherName:String?="",
     var otherValue:String?="",
     var totalIntegral:String?="0",
     var orderTypeName:String?="",
+    var orginPrice:String?="0",
 )
 data class OrderInfoBean(
     val orderNo:String,
