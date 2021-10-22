@@ -36,7 +36,7 @@ data class PostsDetailBean(
     val plate: Int,
     val postsId: String,
     val publishTime: Long,
-    val shareCount: Int,
+    var shareCount: Int,
     val sortOrder: Int,
     val status: Int,
     val title: String,

@@ -279,7 +279,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     activity as AppCompatActivity,
                     0,
                     mData.shares,
-                    null,
+                    ReportDislikeBody(2, mData.postsId),
                     null,
                     mData.authorBaseVo?.nickname,
                     mData.topicName
@@ -396,6 +396,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 bean.likesCount--
             }
             commentAdapter.notifyItemChanged(checkPosition)
+        })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this,{
+            mData.shareCount++
+            binding.bottomView.tvShareNum.text = mData.shareCount.toString()
         })
     }
 }

@@ -191,7 +191,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     activity as AppCompatActivity,
                     0,
                     mData.shares,
-                    null,
+                    ReportDislikeBody(2, mData.postsId),
                     null,
                     mData.authorBaseVo?.nickname,
                     mData.topicName
@@ -340,6 +340,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             commentAdapter.notifyItemChanged(checkPosition)
         })
 
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this,{
+            mData.shareCount++
+            binding.tvShareNum.text = mData.shareCount.toString()
+        })
     }
 
     override fun onResume() {

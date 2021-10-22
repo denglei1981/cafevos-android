@@ -1,39 +1,35 @@
 package com.changanford.circle.viewmodel
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.alibaba.fastjson.JSON
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.utils.launchWithCatch
+import com.changanford.circle.widget.dialog.DislikeDialog
+import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
-import com.huawei.hms.common.ApiException
-import com.xiaomi.push.it
-import org.json.JSONObject
 
 private var shareto: String? = null
 
 /**
- * @Author: hpb
- * @Date: 2020/5/22
- * @Des: 首页分析封装
+ * @Author: lcw
+ * @Date: 2021/10/22
+ * @Des: 社区分享封装
  */
 object CircleShareModel {
 
@@ -115,10 +111,10 @@ object CircleShareModel {
 
                     }
                     5 -> {
-//                        ReportDialog(activity as AppCompatActivity, body).show()
+                        ReportDialog(activity, body).show()
                     }
                     6 -> {
-//                        DislikeDialog(activity as AppCompatActivity, body).show()
+                        DislikeDialog(activity, body).show()
                     }
                     7 -> {
 //                        toastShow("结束发布")
@@ -131,52 +127,50 @@ object CircleShareModel {
                     }
                     10 -> {//加精
                         if (is_good == 2) {
-//                            HomeApi.postSetGood(shareBean.bizId,
-//                                object : ResponseObserver<BaseBean<Any>>() {
-//                                    override fun onSuccess(response: BaseBean<Any>) {
-//                                        toastShow("申请提交成功")
-//                                        LiveDataBus.get().with("post_sqjj").value =
-//                                            System.currentTimeMillis()
-//                                    }
-//
-//                                    override fun onFail(e: ApiException) {
-//                                        toastShow(e.msg)
-//                                    }
-//                                })
+                            activity.launchWithCatch {
+                                val bodyPostSet = MyApp.mContext.createHashMap()
+                                bodyPostSet["postsId"] = shareBean.bizId
+
+                                val rKey = getRandomKey()
+                                ApiClient.createApi<CircleNetWork>()
+                                    .postSetGood(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
+                                    .also {
+                                        it.msg.toast()
+                                    }
+                            }
                         }
                     }
                     11 -> {//编辑
                         val bundle = Bundle()
 //                        bundle.putString("postsId", shareBean.bizId)
-//                        startARouter(ARouterHomePath.EditPostActivity, bundle)
+//                        startARouter(ARouterCirclePath.EditPostActivity, bundle)
                     }
                     12 -> {//删除
-//                        HomeApi.postDelete(
-//                            arrayOf(shareBean.bizId),
-//                            object : ResponseObserver<BaseBean<Any>>() {
-//                                override fun onSuccess(response: BaseBean<Any>) {
-//                                    LiveDataBus.get().with("post_delete_position").value =
-//                                        System.currentTimeMillis()
-//                                }
-//
-//                                override fun onFail(e: ApiException) {
-//                                    toastShow(e.msg)
-//                                }
-//                            })
+                        activity.launchWithCatch {
+                            val bodyDetails = MyApp.mContext.createHashMap()
+                            bodyDetails["postIds"] = arrayOf(shareBean.bizId)
+
+                            val rKey = getRandomKey()
+                            ApiClient.createApi<CircleNetWork>()
+                                .postDelete(bodyDetails.header(rKey), bodyDetails.body(rKey)).also {
+                                    LiveDataBus.get().with(CircleLiveBusKey.DELETE_CIRCLE_POST)
+                                        .postValue(false)
+                                }
+                        }
                     }
                     13 -> {//屏蔽
-//                        HomeApi.postPrivate(
-//                            shareBean.bizId,
-//                            object : ResponseObserver<BaseBean<Any>>() {
-//                                override fun onSuccess(response: BaseBean<Any>) {
-//                                    LiveDataBus.get().with("post_delete_position").value =
-//                                        System.currentTimeMillis()
-//                                }
-//
-//                                override fun onFail(e: ApiException) {
-//                                    toastShow(e.msg)
-//                                }
-//                            })
+                        activity.launchWithCatch {
+                            val bodyDetails = MyApp.mContext.createHashMap()
+                            bodyDetails["postsId"] = shareBean.bizId
+
+                            val rKey = getRandomKey()
+                            ApiClient.createApi<CircleNetWork>()
+                                .postPrivate(bodyDetails.header(rKey), bodyDetails.body(rKey))
+                                .also {
+                                    LiveDataBus.get().with(CircleLiveBusKey.DELETE_CIRCLE_POST)
+                                        .postValue(false)
+                                }
+                        }
                     }
                 }
             }
@@ -192,24 +186,25 @@ private fun bus(activity: AppCompatActivity, shareBeanVO: CircleShareBean) {
     //分享
 //    LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(activity, {
 //        if (it == 0) {
-            activity.launchWithCatch {
-                val body = MyApp.mContext.createHashMap()
-                shareBeanVO.let { bean ->
-                    body["type"] = bean.type.toInt()
-                    body["bizId"] = bean.bizId.toLong()
-                    body["content"] = bean.shareDesc
-                    shareto?.let { shareto ->
-                        body["shareTo"] = shareto.toInt()
-                    }
-                    body["shareTime"] = System.currentTimeMillis().toString()
-                    body["userId"] = MConstant.userId.toInt()
+    activity.launchWithCatch {
+        val body = MyApp.mContext.createHashMap()
+        shareBeanVO.let { bean ->
+            body["type"] = bean.type.toInt()
+            body["bizId"] = bean.bizId.toLong()
+            body["content"] = bean.shareDesc
+            shareto?.let { shareto ->
+                body["shareTo"] = shareto.toInt()
+            }
+            body["shareTime"] = System.currentTimeMillis().toString()
+            body["userId"] = MConstant.userId.toInt()
 
-                }
-                val rKey = getRandomKey()
-                ApiClient.createApi<CircleNetWork>()
-                    .shareCallBack(body.header(rKey), body.body(rKey))
-//            }
         }
+        val rKey = getRandomKey()
+        ApiClient.createApi<CircleNetWork>()
+            .shareCallBack(body.header(rKey), body.body(rKey))
+        LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
+//            }
+    }
 
 //    }
 //)

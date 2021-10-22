@@ -2,6 +2,7 @@
 <resources>
     <color name="circle_white">#FFFFFF</color>
     <color name="circle_app_color">#00095B</color>
+    <color name="color_fc88_a10">#A100095B</color>
     <color name="circle_FAFBFD">#FAFBFD</color>
     <color name="circle_1B3B89">#1B3B89</color>
     <color name="circle_8195C8">#8195C8</color>

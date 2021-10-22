@@ -131,5 +131,10 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
 
             checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
         })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+            checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1,adapter.itemCount) }
+        })
     }
 }
