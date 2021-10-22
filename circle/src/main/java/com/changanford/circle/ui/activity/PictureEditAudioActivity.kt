@@ -39,6 +39,8 @@ import java.io.File
 import java.lang.ref.WeakReference
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.concurrent.schedule
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -151,6 +153,10 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
             finish()
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     fun oncut() {
@@ -471,7 +477,13 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
             }
         })
         //first
-        videoStart()
+        binding.uVideoView.start()
+        Timer().schedule(800) {
+            binding.uVideoView.post {
+                binding.uVideoView.pause()
+            }
+        }
+//        videoStart()
 
         // 获取开始时间
 
@@ -560,17 +572,17 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
 
     override fun onDestroy() {
-        if (animator != null) {
+        if (:: animator.isInitialized && animator!= null) {
             animator.cancel()
         }
         if (binding.uVideoView != null) {
             binding.uVideoView.stopPlayback()
         }
-        if (mExtractVideoInfoUtil != null) {
+        if ( :: mExtractVideoInfoUtil.isInitialized && mExtractVideoInfoUtil != null) {
             mExtractVideoInfoUtil.release()
         }
         binding.mRecyclerView.removeOnScrollListener(mOnScrollListener)
-        if (mExtractFrameWorkThread != null) {
+        if (:: mExtractFrameWorkThread.isInitialized && mExtractFrameWorkThread != null) {
             mExtractFrameWorkThread.stopExtract()
         }
         mUIHandler.removeCallbacksAndMessages(null)

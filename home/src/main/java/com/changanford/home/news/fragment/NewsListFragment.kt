@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
@@ -30,7 +29,6 @@ import com.changanford.home.news.request.FindNewsListViewModel
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *  新闻列表
@@ -76,14 +74,11 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
             }
         }
-
 //        binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
         homeRefersh()
         setLoadSir(binding.smartLayout)
-
     }
-
     var headNewBinding: HeaderNewsListBinding? = null
 
     private fun addHeadView() {
@@ -108,7 +103,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     override fun onPageSelected(position: Int) {
                         var speical = it.bViewpager.data[position] as SpecialListBean
                         if (TextUtils.isEmpty(speical.title)) {
-                            it.tvSubTitle.text = "长安福特,yyds"
+                            it.tvSubTitle.text = "长安福特专题"
                         } else {
                             it.tvSubTitle.text = speical.title
                         }

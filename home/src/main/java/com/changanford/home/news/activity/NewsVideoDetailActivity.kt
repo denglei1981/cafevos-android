@@ -41,6 +41,7 @@ import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
+import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
@@ -67,6 +68,10 @@ class NewsVideoDetailActivity :
     }
     private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)
+    }
+
+    private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+        NewsAdsListAdapter()
     }
 
     override fun initView() {
@@ -128,6 +133,7 @@ class NewsVideoDetailActivity :
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
+        inflateHeader.rvAds.adapter=newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
@@ -185,12 +191,15 @@ class NewsVideoDetailActivity :
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.data != null && it.data.recommendArticles.size > 0) {
-                    newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
-                    inflateHeader.grRecommend.visibility = View.VISIBLE
-                } else {// 隐藏热门推荐。
-                    inflateHeader.grRecommend.visibility = View.GONE
-
+                if (it.data != null ) {
+                    if(it.data.recommendArticles.size > 0){
+                        newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                        inflateHeader.grRecommend.visibility = View.VISIBLE
+                    }
+                    if(it.data.ads.size>0){
+                        inflateHeader.rvAds.visibility=View.VISIBLE
+                        newsAdsListAdapter.setNewInstance(it.data.ads)
+                    }
                 }
             }
         })
@@ -243,15 +252,8 @@ class NewsVideoDetailActivity :
         }
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
-        if (!TextUtils.isEmpty(newsDetailData.getPicUrl())) {
-            GlideUtils.loadBD(newsDetailData.getPicUrl(), inflateHeader.ivPic)
-            inflateHeader.ivPic.visibility = View.VISIBLE
-        } else {
-            inflateHeader.ivPic.visibility = View.GONE
-        }
-        inflateHeader.ivPic.setOnClickListener {
 
-        }
+
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
         inflateHeader.tvTime.text = newsDetailData.timeStr
 
