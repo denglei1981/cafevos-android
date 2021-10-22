@@ -87,7 +87,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         visibility= View.GONE
 //                        setText(R.string.prompt_orderUpdateAddress)
                     }
-                    var payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
+                    val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
                     if(payCountDown>0){
                         timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
                             override fun onFinish() {
@@ -107,7 +107,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
-                    val otherValue=simpleDateFormat.format(dataBean.updateTime)
+                    val otherValue=simpleDateFormat.format(dataBean.payTime)
                     dataBean.otherValue=otherValue
                     binding.tvOrderPrompt.apply {
                         visibility= View.VISIBLE
@@ -120,7 +120,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
@@ -130,7 +130,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.orderTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
@@ -140,7 +140,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.updateTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.payTime)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
