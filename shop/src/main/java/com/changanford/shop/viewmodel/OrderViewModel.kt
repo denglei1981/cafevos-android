@@ -39,24 +39,36 @@ class OrderViewModel: BaseViewModel() {
      * [addressId]收货地址id
      * [buyNum]数量
      * [consumerMsg]买家留言
-     * [payType]支付方式(积分),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付)
+     * [payType]支付方式(积分),可用值:FB_PAY
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * [mallMallSkuSpuSeckillRangeId]秒杀的skuId
      * [mallMallHaggleUserGoodsId]发起砍价id
-     * busSourse 业务来源 0普通商品 1秒杀商品 2砍价商品
+     * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品
      * */
-    fun orderCreate(skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,payType:String="FB_PAY"){
-        val buySource=if("SECKILL"==spuPageType)1 else 0
+    fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,payType:String="FB_PAY"){
+        body.clear()
+        var buySource=0
+        var skuId=_skuId
+        when(spuPageType){
+            //秒杀
+            "SECKILL"->{
+                buySource=1
+                skuId=mallMallSkuSpuSeckillRangeId?:skuId
+            }
+            //砍价
+            "2"->{
+                buySource=2
+                body["mallMallHaggleUserGoodsId"]=mallMallHaggleUserGoodsId?:"0"
+            }
+        }
         viewModelScope.launch {
           fetchRequest (true){
-                body.clear()
-                body["skuId"]=if(1!=buySource)skuId else mallMallSkuSpuSeckillRangeId?:skuId
+                body["skuId"]=skuId
                 body["busSourse"]=buySource
                 body["buyNum"]=buyNum
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType
                 body["addressId"]=addressId?:"0"
-                if(null!=mallMallHaggleUserGoodsId)body["mallMallHaggleUserGoodsId"]=addressId?:"0"
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
