@@ -52,25 +52,21 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         }
         tvContent.text = item.title
         val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
-        val tvCommentCount = holder.getView<DrawCenterTextView>(R.id.tv_comment_count)
-        val tvLookCount = holder.getView<DrawCenterTextView>(R.id.tv_time_look_count)
+        val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
+        val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
-
-
-
         tvLikeCount.setPageTitleText(item.likesCount.toString())
         setLikeState(tvLikeCount,item,false)
-        tvCommentCount.setPageTitleText(item.getCommentCountResult())
-        tvLookCount.setPageTitleText(item.viewsCount.toString())
-
-        tvTime.text = item.timeStr
+        tvCommentCount.text = item.getCommentCountResult()
+        tvLookCount.text = item.getTimeAdnViewCount()
+        tvTime.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
-        if (TextUtils.isEmpty(item.specialTopicTitle)) {
+        if (TextUtils.isEmpty(item.summary)) {
             tvTopic.visibility = View.GONE
             tvTopic.text = ""
         } else {
             tvTopic.visibility = View.VISIBLE
-            tvTopic.text = "#${item.specialTopicTitle}#"
+            tvTopic.text = item.summary
         }
         val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
         if (item.authors != null) {
@@ -105,11 +101,9 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
         }
-
     }
-
     // 关注。
-    fun getFollow(followId: String, type: Int) {
+    private fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -122,10 +116,8 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
         }
     }
-
-
     // 喜欢
-    fun actionLike(artId: String) {
+    private fun actionLike(artId: String) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["artId"] = artId
@@ -161,12 +153,12 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
-        when (followType) {
+        followType = when (followType) {
             1 -> {
-                followType = 2
+                2
             }
             else -> {
-                followType = 1
+                1
             }
         }
         authorBaseVo.isFollow = followType
