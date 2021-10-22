@@ -60,7 +60,7 @@ data class GoodsItemBean(
     val mallMallSpuSeckillRangeId: String = "0",
     val salesCount: Int = 0,
     val stockNow: Int = 0,
-    val stockPlusSalesCount: String = "0",
+    val stockPlusSalesCount: Int = 1,
     var timeState: String = "",
     val createBy: Any? = null,
     val createTime: Long = 0,
@@ -161,6 +161,7 @@ data class GoodsDetailBean(
     val now: Long = 0,
     val purchasedNum: Int? = 0,
     val salesCount: Int = 0,
+    var totalStock:Int?=0,//总库存
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
     val shareBeanVO: TaskShareBean?=null,

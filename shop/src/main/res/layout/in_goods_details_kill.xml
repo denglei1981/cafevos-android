@@ -149,7 +149,7 @@
                 android:layout_marginStart="@dimen/dp_8"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:max="@{model.stock}"
+                android:max="@{model.totalStock}"
                 tools:progress="10"
                 android:progress="@{model.salesCount}"
                 android:progressDrawable="@drawable/progressbar_kill_bg"

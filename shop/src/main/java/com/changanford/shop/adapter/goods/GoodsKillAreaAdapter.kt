@@ -20,16 +20,16 @@ import com.changanford.shop.viewmodel.GoodsViewModel
 class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGoodsKillAreaBinding>>(R.layout.item_goods_kill_area), LoadMoreModule {
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsKillAreaBinding>, item: GoodsItemBean) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
-            item.stockProportion=getStockProportion(item.salesCount,item.stockPlusSalesCount.toInt())
-            dataBinding.model=item
-            dataBinding.executePendingBindings()
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),dataBinding.imgCover)
-            dataBinding.tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
-            dataBinding.btnStates.setStates(getKillStates(item))
-            dataBinding.btnStates.setOnClickListener {
-                clickBtn(dataBinding,item)
+        holder.dataBinding?.apply {
+            item.stockProportion=getStockProportion(item.salesCount, item.stockPlusSalesCount)
+            model=item
+            executePendingBindings()
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),imgCover)
+            tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
+            tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
+            btnStates.setStates(getKillStates(item))
+            btnStates.setOnClickListener {
+                clickBtn(this,item)
             }
         }
     }
