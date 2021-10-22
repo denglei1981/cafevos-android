@@ -64,7 +64,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.2"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text="2021.08.31点亮\n车迷级勋章"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_10"

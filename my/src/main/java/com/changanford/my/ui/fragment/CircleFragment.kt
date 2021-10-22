@@ -32,6 +32,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  */
 class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 
+    var isRefresh: Boolean = false //回到当前页面刷新列表
+
     val circleAdapter: CircleAdapter by lazy {
         CircleAdapter()
     }
@@ -86,6 +88,14 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
             1 -> {
                 viewModel.myMangerCircle()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            isRefresh = false
+            initRefreshData(1)
         }
     }
 
@@ -148,6 +158,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             )
                             operation.text = "去编辑"
                             operation.setOnClickListener {
+                                isRefresh = true
                                 RouterManger.param(RouterManger.KEY_TO_ITEM, item)
                                     .startARouter(ARouterCirclePath.CreateCircleActivity)
                             }
@@ -163,6 +174,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             )
                             operation.text = "去审核"
                             operation.setOnClickListener {
+                                isRefresh = true
                                 RouterManger.param(RouterManger.KEY_TO_ITEM, item.name)
                                     .param(RouterManger.KEY_TO_ID, item.circleId.toString())
                                     .startARouter(ARouterMyPath.CircleMemberUI)
@@ -172,10 +184,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             status.visibility = View.GONE
                         }
                     }
-                    holder.itemView.setOnClickListener {
-                        JumpUtils.instans?.jump(6, item.circleId.toString())
-                    }
                 }
+            }
+            holder.itemView.setOnClickListener {
+                JumpUtils.instans?.jump(6, item.circleId.toString())
             }
         }
     }

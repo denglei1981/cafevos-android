@@ -158,7 +158,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                                             body.body(rkey)
                                         )
                                     }.onSuccess {
-                                        notifyItemChanged(holder.layoutPosition)
+                                        getData()
                                         viewModel.getUserInfo()
                                     }.onWithMsgFailure {
                                         it?.let {
