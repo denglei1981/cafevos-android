@@ -724,7 +724,10 @@ class JumpUtils {
                 bundle.putString(JumpConstant.SEARCH_TYPE, value)
                 startARouter(ARouterHomePath.PolySearchActivity,bundle = bundle)
             }
-
+            109->{// 商品订单确认
+                bundle.putString("goodsInfo", value)
+                startARouter(ARouterShopPath.PayConfirmActivity,isNeedLogin = true,bundle = bundle)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

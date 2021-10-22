@@ -119,7 +119,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             R.id.btn_submit->{
                 control.skuCode.apply {
                     if(control.isInvalidSelectAttrs(this))control.createAttribute()
-                    else OrderConfirmActivity.start(this@GoodsDetailsActivity, Gson().toJson(viewModel.goodsDetailData.value))
+                    else OrderConfirmActivity.start(Gson().toJson(viewModel.goodsDetailData.value))
                 }
             }
             //查看评价

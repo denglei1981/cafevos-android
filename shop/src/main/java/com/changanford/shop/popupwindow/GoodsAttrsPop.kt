@@ -38,7 +38,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
         viewDataBinding.btnSubmit.setOnClickListener {
             dismiss()
-            OrderConfirmActivity.start(activity,Gson().toJson(dataBean))
+            OrderConfirmActivity.start(Gson().toJson(dataBean))
         }
     }
     private fun initData(){

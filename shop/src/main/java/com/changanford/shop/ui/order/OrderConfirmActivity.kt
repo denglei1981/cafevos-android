@@ -1,8 +1,6 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -36,9 +34,10 @@ import kotlinx.coroutines.launch
 @Route(path = ARouterShopPath.OrderConfirmActivity)
 class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(){
     companion object{
-        fun start(context: Context, goodsInfo:String) {
+        fun start(goodsInfo:String) {
             if(MConstant.token.isEmpty())JumpUtils.instans?.jump(100)
-            else context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
+            else JumpUtils.instans?.jump(109,goodsInfo)
+//            else context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
         }
     }
     private lateinit var dataBean:GoodsDetailBean

@@ -34,7 +34,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         val goodsBean= GoodsDetailBean(spuId = item.mallMallSpuId,spuName =item.spuName, buyNum = item.buyNum.toInt(),fbPrice = item.fbOfUnitPrice,
             freightPrice = item.freightPrice,preferentialFb = item.preferentialFb,acountFb = (item.totalIntegral?:"0").toInt(),skuCode = item.skuCode,
             skuCodeTxts = skuCodeTxt, addressInfo = item.addressInfo,addressId = item.addressId,skuId = item.mallMallSkuId,skuImg = item.skuImg,)
-        OrderConfirmActivity.start(context,Gson().toJson(goodsBean))
+        OrderConfirmActivity.start(Gson().toJson(goodsBean))
     }
     /**
      * 确认收货
