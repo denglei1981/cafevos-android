@@ -4,8 +4,15 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.fastjson.JSON
+import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.ReportDislikeBody
+import com.changanford.circle.utils.launchWithCatch
+import com.changanford.common.MyApp
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
@@ -13,9 +20,12 @@ import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.huawei.hms.common.ApiException
+import com.xiaomi.push.it
 import org.json.JSONObject
 
 private var shareto: String? = null
@@ -29,7 +39,7 @@ object CircleShareModel {
 
     @JvmStatic
     fun shareDialog(
-        activity: Activity?,
+        activity: AppCompatActivity?,
         type: Int,
         shareBean: CircleShareBean?,
         body: ReportDislikeBody? = null,
@@ -85,18 +95,23 @@ object CircleShareModel {
                 when (plamForm) {
                     0 -> {
                         shareto = "2"
+                        bus(activity, shareBean)
                     }
                     1 -> {
                         shareto = "1"
+                        bus(activity, shareBean)
                     }
                     2 -> {
                         shareto = "4"
+                        bus(activity, shareBean)
                     }
                     3 -> {
                         shareto = "3"
+                        bus(activity, shareBean)
                     }
                     4 -> {
                         shareto = "6"
+                        bus(activity, shareBean)
 
                     }
                     5 -> {
@@ -171,6 +186,34 @@ object CircleShareModel {
         shareManager.open()
     }
 
+}
+
+private fun bus(activity: AppCompatActivity, shareBeanVO: CircleShareBean) {
+    //分享
+//    LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(activity, {
+//        if (it == 0) {
+            activity.launchWithCatch {
+                val body = MyApp.mContext.createHashMap()
+                shareBeanVO.let { bean ->
+                    body["type"] = bean.type
+                    body["bizId"] = bean.bizId
+                    body["content"] = bean.shareDesc
+                    shareto?.let { shareto ->
+                        body["shareto"] = shareto
+                    }
+                    body["shareTime"] = System.currentTimeMillis()
+                    body["userId"] = MConstant.userId
+                    body["device"] = ""
+
+                }
+                val rKey = getRandomKey()
+                ApiClient.createApi<CircleNetWork>()
+                    .shareCallBack(body.header(rKey), body.body(rKey))
+//            }
+        }
+
+//    }
+//)
 }
 
 /**
