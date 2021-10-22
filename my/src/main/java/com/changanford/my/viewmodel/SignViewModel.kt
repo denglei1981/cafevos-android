@@ -1095,6 +1095,8 @@ class SignViewModel : ViewModel() {
         UserManger.deleteUserInfo()
         AppUtils.Unbinduserid()
         MConstant.token = ""
+        MConstant.mine_phone = ""
+        MConstant.userId = ""
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
     }
