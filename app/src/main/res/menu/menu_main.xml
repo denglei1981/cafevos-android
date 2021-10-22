@@ -23,33 +23,4 @@
         android:icon="@mipmap/ic_launcher"
         android:title="@string/app_my" />
 
-    <!--<item
-        android:id="@+id/nav1"
-        android:icon="@drawable/bt_home"
-        app:showAsAction="always"
-
-        android:title="@string/app_home" />
-    <item
-        android:id="@+id/nav2"
-        android:icon="@drawable/bt_circle"
-        app:showAsAction="always"
-        android:title="@string/app_circle" />
-    <item
-        android:id="@+id/nav3"
-        android:icon="@drawable/bt_car"
-        app:showAsAction="always"
-
-        android:title="@string/app_car" />
-    <item
-        android:id="@+id/nav4"
-        android:icon="@drawable/bt_shop"
-        app:showAsAction="always"
-
-        android:title="@string/app_shop" />
-    <item
-        android:id="@+id/nav5"
-        android:icon="@drawable/bt_my"
-        app:showAsAction="always"
-
-        android:title="@string/app_my" />-->
 </menu>

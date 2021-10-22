@@ -11,5 +11,3 @@
         android:label="@string/second_fragment_label"/>
 
 </navigation>
-
-<!--    android:name="com.changanford.evos.demo.DemoFragment2"-->

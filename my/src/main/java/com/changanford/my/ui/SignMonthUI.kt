@@ -5,11 +5,14 @@ import com.changanford.common.bean.RoundBean
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.databinding.FragmentsignmonthBinding
 import com.changanford.my.viewmodel.SignViewModel
+import kotlin.math.abs
 
 @Route(path = ARouterMyPath.SignMonth)
 class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
@@ -40,6 +43,12 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
                 getData(TimeUtils.getRequestYearMonth(index))
             }
         }
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_FIX).observe(this,{
+            var pos = it as Int
+            dateList[pos].isSignIn = 1
+            monthAdapter.notifyItemChanged(pos)
+            viewModel.getUserInfo()
+        })
     }
 
     override fun initData() {
@@ -53,6 +62,7 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
             bean?.let {
                 dateList.clear()
                 it.data?.apply {
+                    monthAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt())
                     binding.signview.apply {
                         smCzz.text = totalGrowth
                         smJf.text = totalIntegral

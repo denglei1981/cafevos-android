@@ -507,6 +507,18 @@ public class TimeUtils {
         }
     }
 
+    public static boolean isToday(String pastDay) {
+        String cur = MillisToDayStr(System.currentTimeMillis());
+        try {
+            cur = cur.replace("-", "");
+            pastDay = pastDay.replace("-", "");
+            return Long.valueOf(cur) - Long.valueOf(pastDay) == 0L;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean dayTaskBefore(String pastDay) {
         String cur = MillisToDayStr(System.currentTimeMillis());
         try {

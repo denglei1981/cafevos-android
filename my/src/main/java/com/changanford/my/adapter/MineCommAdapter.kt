@@ -26,6 +26,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadRound
 import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
@@ -477,6 +478,7 @@ object MineCommAdapter {
 
     class MonthSignAdapter :
         BaseQuickAdapter<RoundBean, BaseDataBindingHolder<ItemSignmonthdayBinding>>(R.layout.item_signmonthday) {
+        var reissueIntegral = 0
         override fun convert(
             holder: BaseDataBindingHolder<ItemSignmonthdayBinding>,
             item: RoundBean
@@ -509,10 +511,20 @@ object MineCommAdapter {
                 }
                 if (TimeUtils.dayBefore(item.date)) {//在之前
                     if (item.isSignIn == 0) {//没有
+                        if (TimeUtils.isToday(item.date)){//今天没签到
+                            icon.load(R.mipmap.icon_sign_unreachday)
+                            word.text = item.integral?.let {
+                                when (it > 0) {
+                                    true -> "+${it}"
+                                    else -> "$it"
+                                }
+                            }.toString()
+                            word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.signunreach))
+                        }
                         icon.load(R.mipmap.icon_sign_bu)
                         word.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
-                            pop.contentText.text = "本次补签将消耗 ${item.integral} 福币"
+                            pop.contentText.text = "本次补签将消耗 ${reissueIntegral} 福币"
                             pop.btnConfirm.text = "立即补签"
                             pop.btnConfirm.setOnClickListener {
                                 pop.dismiss()
@@ -527,7 +539,7 @@ object MineCommAdapter {
                                                 body.body(rkey)
                                             )
                                         }.onSuccess {
-                                            notifyItemChanged(holder.layoutPosition)
+                                            LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_FIX).postValue(holder.layoutPosition)
                                         }.onWithMsgFailure {
                                             it?.toast()
                                         }
