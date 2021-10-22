@@ -726,7 +726,7 @@ class JumpUtils {
             }
             109->{// 商品订单确认
                 bundle.putString("goodsInfo", value)
-                startARouter(ARouterShopPath.PayConfirmActivity,isNeedLogin = true,bundle = bundle)
+                startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
             }
             10000 -> {
                 //外部H5

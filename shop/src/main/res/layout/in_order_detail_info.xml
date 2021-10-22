@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             tools:text="1300积分"
             app:end_txt="@string/str_integral"
-            android:text="@{model.fbCost}"
+            android:text="@{model.fbOfOrderPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView

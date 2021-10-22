@@ -310,7 +310,7 @@ data class OrderItemBean(
     val discountScale: Int = 0,
     val evalStatus: String? = "",
     var fbCost: String? = "0",
-    val fbOfOrderPrice: Int = 0,
+    val fbOfOrderPrice: String = "0",
     val fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",//是否砍价订单
     val mallMallDiscountScaleId: Int = 0,
