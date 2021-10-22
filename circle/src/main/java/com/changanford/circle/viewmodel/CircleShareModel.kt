@@ -195,15 +195,14 @@ private fun bus(activity: AppCompatActivity, shareBeanVO: CircleShareBean) {
             activity.launchWithCatch {
                 val body = MyApp.mContext.createHashMap()
                 shareBeanVO.let { bean ->
-                    body["type"] = bean.type
-                    body["bizId"] = bean.bizId
+                    body["type"] = bean.type.toInt()
+                    body["bizId"] = bean.bizId.toLong()
                     body["content"] = bean.shareDesc
                     shareto?.let { shareto ->
-                        body["shareto"] = shareto
+                        body["shareTo"] = shareto.toInt()
                     }
-                    body["shareTime"] = System.currentTimeMillis()
-                    body["userId"] = MConstant.userId
-                    body["device"] = ""
+                    body["shareTime"] = System.currentTimeMillis().toString()
+                    body["userId"] = MConstant.userId.toInt()
 
                 }
                 val rKey = getRandomKey()
