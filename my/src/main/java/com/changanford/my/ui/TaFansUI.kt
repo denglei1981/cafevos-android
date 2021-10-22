@@ -83,7 +83,7 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
         override fun convert(holder: BaseDataBindingHolder<ItemFansBinding>, item: FansItemBean) {
             holder.dataBinding?.let {
                 it.itemFansName.text = item.nickname
-                it.itemFansIcon.load(item.avatar, R.mipmap.image_h_one_default)
+                it.itemFansIcon.load(item.avatar)
                 when (item.isFollow) {
                     1 -> {
                         it.layout.isSelected = false

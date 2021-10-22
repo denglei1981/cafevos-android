@@ -16,7 +16,6 @@ import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
@@ -792,9 +791,6 @@ class JumpUtils {
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
-                    it?.let {
-                        UserManger.updateIntegral(it.integral)
-                    }
                     var bundle = Bundle()
                     bundle.putString("signInfo", JSON.toJSONString(it))
                     startARouter(ARouterMyPath.SignTransparentUI, bundle)
