@@ -25,6 +25,14 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/text_14_color_00_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的福币"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
                 android:id="@+id/my_jifen_num"
                 style="@style/text_14_color_00_style"
                 android:layout_width="wrap_content"
@@ -33,14 +41,22 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_23" />
 
-            <TextView
-                style="@style/text_14_color_00_style"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/multiple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我的积分"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_r_9_c_ff_20"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_60"
+                android:minHeight="@dimen/dp_17"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingEnd="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="1倍加速"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_14" />
-
+                android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
 

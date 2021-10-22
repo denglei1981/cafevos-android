@@ -64,7 +64,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->
-            var recommendUser = bigShotUserListAdapter.getItem(position)
+            val recommendUser = bigShotUserListAdapter.getItem(position)
             if(!TextUtils.isEmpty(MConstant.token)){
                 when(view.id){
                     R.id.btn_follow->{
@@ -106,7 +106,6 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         viewModel.bigShotPostLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
-
                 if (it.isLoadMore) {
                     binding.refreshLayout.finishLoadMore()
                     bigShotPostListAdapter.addData(it.data.dataList)

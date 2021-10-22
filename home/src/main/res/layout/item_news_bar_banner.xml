@@ -14,6 +14,7 @@
             android:id="@+id/iv_banner"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:padding="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/image_second_floor"
             app:layout_constraintDimensionRatio="335:175"

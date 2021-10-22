@@ -157,7 +157,7 @@
             <TextView
                 android:id="@+id/textView16"
                 style="@style/commonTextView.Small.Light"
-                android:text="积分"
+                android:text="福币"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/sm_jf"
                 app:layout_constraintStart_toStartOf="@+id/sm_jf"

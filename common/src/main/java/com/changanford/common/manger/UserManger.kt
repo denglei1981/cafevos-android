@@ -5,7 +5,6 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.LoginBean
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.MConstant
-
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.util.room.UserDatabase
 
@@ -68,7 +67,7 @@ object UserManger {
                 sysUserInfoBean.userJson = JSON.toJSONString(it)
             } catch (e: Exception) {
                 sysUserInfoBean.mobile = when {
-                    it?.phone?.isNotEmpty()==true -> {
+                    it?.phone?.isNotEmpty() == true -> {
                         it.phone
                     }
                     else -> {
@@ -81,6 +80,14 @@ object UserManger {
                 sysUserInfoBean.userJson = JSON.toJSONString(it)
             }
             database.insert(sysUserInfoBean)
+        }
+    }
+
+    fun updateIntegral(integral: Int) {
+        var infoBean: SysUserInfoBean = getSysUserInfo()
+        infoBean?.let {
+            var database = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
+            database.updateIntegral(it.uid, "$integral")
         }
     }
 

@@ -65,6 +65,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         LanSoEditor.initSDK(this, "ft")
         LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
         UserManger.getSysUserInfo()?.let {
+            MConstant.userId = it.uid
             MConstant.token = "${it.token}"
             MConstant.mine_phone = "${it.mobile}"
         }
