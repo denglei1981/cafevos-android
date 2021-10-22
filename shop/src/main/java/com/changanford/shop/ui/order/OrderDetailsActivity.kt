@@ -241,7 +241,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //评价
             getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
             //确认收货
-            getString(R.string.str_eval)->control.confirmGoods(dataBean)
+            getString(R.string.str_confirmGoods)->control.confirmGoods(dataBean)
             //立即支付
             getString(R.string.str_immediatePayment)->control.toPay(dataBean)
 
