@@ -21,6 +21,7 @@ import com.changanford.my.R
 import com.changanford.my.adapter.GrowUpAndJifenViewHolder
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiJifenBinding
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
@@ -33,6 +34,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  */
 @Route(path = ARouterMyPath.MineIntegralUI)
 class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
+    var rulesDesc: String = ""
 
     val jfAdapter: JifenAdapter by lazy {
         JifenAdapter()
@@ -48,7 +50,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
         binding.toolbarJifen.toolbarSave.text = "..."
         binding.toolbarJifen.toolbarSave.setTextColor(Color.parseColor("#ffffff"))
         binding.toolbarJifen.toolbarSave.visibility = View.VISIBLE
-        binding.toolbarJifen.toolbarSave.textSize = 20f
+        binding.toolbarJifen.toolbarSave.textSize = 24f
         binding.toolbarJifen.toolbarSave.setOnClickListener {
             SelectDialog(
                 this,
@@ -82,9 +84,29 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
                     jfAdapter.setEmptyView(empty)
                 }
             } else {
+                it.extend?.let {
+                    binding.multiple.text = "${it.multiple}倍加速"
+                    rulesDesc = "${it.rulesDesc}"
+                }
+
                 completeRefresh(it.dataList, jfAdapter, it.total)
             }
         })
+
+        binding.multiple.setOnClickListener {
+            showDialog()
+        }
+    }
+
+    private fun showDialog() {
+        ConfirmTwoBtnPop(this).apply {
+            btnCancel.visibility = View.GONE
+            contentText.text = rulesDesc
+            btnConfirm.text = "我知道了"
+            btnConfirm.setOnClickListener {
+                dismiss()
+            }
+        }.showPopupWindow()
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

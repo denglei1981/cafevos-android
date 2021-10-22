@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/dp_285"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_r_5_c_ff"
-    android:minWidth="@dimen/dp_285"
     android:minHeight="@dimen/dp_155"
     android:orientation="vertical">
 
@@ -18,6 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
             android:text="是否确定取消关注"
             android:textColor="#081725"
             android:textSize="@dimen/sp_15" />
