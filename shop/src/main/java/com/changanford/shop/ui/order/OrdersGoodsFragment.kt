@@ -25,7 +25,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             return fragment
         }
     }
-    private val mAdapter by lazy { OrderAdapter(0,viewModel=viewModel) }
+    private val mAdapter by lazy { OrderAdapter(-1,viewModel=viewModel) }
     private var pageNo=1
     private var statesId=-1
     override fun initView() {
@@ -39,6 +39,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
     override fun initData() {
         if(arguments!=null){
             statesId= requireArguments().getInt("statesId", -1)
+            mAdapter.orderSource=statesId
             viewModel.getShopOrderList(statesId,pageNo,showLoading = true)
         }
         viewModel.shopOrderData.observe(this,{
