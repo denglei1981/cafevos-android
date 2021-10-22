@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.net.*
@@ -22,6 +23,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.home.R
+import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
@@ -218,21 +220,16 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         } else {
             tvTopic.text = item.getContent()
         }
-        when (item.authors?.isFollow) {
-            0 -> { // 未关注
-                btnFollow.text = "关注"
-                btnFollow.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.color_gray_f2f4f9
-                    )
-                )
-                btnFollow.setTextColor(ContextCompat.getColor(context, R.color.blue_tab))
-            }
-            1 -> {//  已经关注
-                btnFollow.text = "已关注"
-                btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
-                btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
+        item.authors?.let {
+            setFollowState(btnFollow,it)
+        }
+
+        btnFollow.setOnClickListener {
+            // 判断是否登录。
+            if (LoginUtil.isLogin()) {
+                if (item.authors != null) {
+                    followAction(btnFollow, item.authors!!, holder.adapterPosition)
+                }
             }
         }
         val rvUserTag = holder.getView<RecyclerView>(R.id.rv_user_tag)
@@ -260,6 +257,44 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     private fun toUserHomePage(item: RecommendData) {
         JumpUtils.instans!!.jump(35, item.authors?.userId.toString())
+    }
+    /**
+     *  设置关注状态。
+     * */
+    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+        val setFollowState = SetFollowState(context)
+        authors.let {
+            setFollowState.setFollowState(btnFollow, it, true)
+        }
+    }
+    // 关注或者取消
+    private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+        var followType = authorBaseVo.isFollow
+        followType = when (followType) {
+            1 -> {
+                2
+            }
+            else -> {
+                1
+            }
+        }
+        authorBaseVo.isFollow = followType
+        setFollowState(btnFollow, authorBaseVo)
+        getFollow(authorBaseVo.authorId, followType)
+    }
+    // 关注。
+    private fun getFollow(followId: String, type: Int) {
+        lifecycleOwner.launchWithCatch {
+            val requestBody = HashMap<String, Any>()
+            requestBody["followId"] = followId
+            requestBody["type"] = type
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                }.onWithMsgFailure {
+                }
+        }
     }
 
     // 喜欢
