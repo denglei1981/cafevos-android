@@ -111,11 +111,11 @@ public class QqShareActivity extends AppCompatActivity implements IUiListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == Constants.REQUEST_QQ_SHARE || requestCode == Constants.REQUEST_QZONE_SHARE){
-            if (resultCode == 0) {
+//            if (resultCode == 0) {
                 Tencent.handleResultData(data, this);
-            }else{
-                finish();
-            }
+//            }else{
+//                finish();
+//            }
 
         }
     }

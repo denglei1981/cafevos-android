@@ -9,11 +9,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="4dp"
             android:maxLines="1"
             android:text="年轻人喜欢什么样的车"
             android:textColor="#ffffffff"
             android:textSize="15sp"
+            android:layout_marginEnd="@dimen/dp_8"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toBottomOf="@+id/iv_top_bg"
             motion:layout_constraintStart_toEndOf="@+id/iv_header" />
         <Constraint
@@ -69,10 +71,12 @@
             android:id="@+id/tv_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:maxLines="1"
             android:text="年轻人喜欢什么样的车"
             android:textColor="@color/color_00"
             android:textSize="15sp"
+            android:layout_marginEnd="@dimen/dp_8"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent" />

@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.RoundBean
-import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
@@ -66,10 +65,12 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             orientation = RecyclerView.HORIZONTAL
         }
         binding.rcyDay.adapter = dayAdapter
-        var sysUser = UserManger.getSysUserInfo()
-        sysUser?.integral?.let {
-            binding.tvTaskJifenNum.text = "我的福币：${it?.toInt()}"
-        }
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, Observer {
+            it?.let {
+                binding.tvTaskJifenNum.text = "我的福币：${it.integral?.toInt()}"
+            }
+        })
+
 
         binding.taskFinish.setOnClickListener {
             JumpUtils.instans?.jump(37)
@@ -149,20 +150,19 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                                 pop.dismiss()
                                 BaseApplication.currentViewModelScope.launch {
                                     fetchRequest(showLoading = true) {
-                                        fetchRequest {
-                                            var body = HashMap<String, String>()
-                                            body["date"] = item.date
-                                            var rkey = getRandomKey()
-                                            apiService.signReissue(
-                                                body.header(rkey),
-                                                body.body(rkey)
-                                            )
-                                        }.onSuccess {
-                                            notifyItemChanged(holder.layoutPosition)
-                                        }.onWithMsgFailure {
-                                            it?.let {
-                                                showToast(it)
-                                            }
+                                        var body = HashMap<String, String>()
+                                        body["date"] = item.date
+                                        var rkey = getRandomKey()
+                                        apiService.signReissue(
+                                            body.header(rkey),
+                                            body.body(rkey)
+                                        )
+                                    }.onSuccess {
+                                        getData()
+                                        viewModel.getUserInfo()
+                                    }.onWithMsgFailure {
+                                        it?.let {
+                                            showToast(it)
                                         }
                                     }
                                 }

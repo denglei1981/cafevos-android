@@ -91,8 +91,8 @@ data class InfoDataBean(
 
     fun getPicCover(): String { // 获取封面。
         if (!TextUtils.isEmpty(pics)) {
-            val asList = listOf(pics.split(","))
-            return asList[0].toString()
+            val asList =pics.split(",")
+            return asList[0]
         }
         return ""
     }
@@ -103,6 +103,13 @@ data class InfoDataBean(
         } else {
             summary
         }
+    }
+
+    var timeAndViewCountResult: String = ""
+    fun getTimeAdnViewCount(): String {
+        val viewCountStr = CountUtils.formatNum(viewsCount.toString(), false).toString()
+        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览量")
+        return timeAndViewCountResult
     }
 }
 

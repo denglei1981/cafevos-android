@@ -345,4 +345,67 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     * 申请加精
+     */
+    @POST("con/posts/setGood")
+    suspend fun postSetGood(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 删除帖子
+     */
+    @POST("con/posts/delete")
+    suspend fun postDelete(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 下架(设置仅自己可见)
+     */
+    @POST("con/posts/setPrivate")
+    suspend fun postPrivate(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *不喜欢原因
+     */
+    @POST("con/reason/dislikeReason")
+    suspend fun getDislikeReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<String>>
+
+    /**
+     * 帖子不喜欢
+     */
+    @POST("con/posts/addDislike")
+    suspend fun dislikePost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *举报原因
+     */
+    @POST("con/reason/tipOffReason")
+    suspend fun getTipOffReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<String>>
+
+    /**
+     * 帖子举报
+     */
+    @POST("con/posts/addTipOffs")
+    suspend fun reportPost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

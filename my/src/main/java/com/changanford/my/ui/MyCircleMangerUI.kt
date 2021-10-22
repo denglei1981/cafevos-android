@@ -60,6 +60,16 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         viewModel.circleNum.observe(this, Observer {
             initViewpager(it)
         })
+
+        LiveDataBus.get()
+            .with(LiveDataBusKey.MINE_REFRESH_CIRCLE_STATUS, Boolean::class.java)
+            .observe(this, Observer {
+                if (it) {
+                    //重置
+                    isCheck = false
+                    click()
+                }
+            })
     }
 
     override fun initData() {

@@ -7,12 +7,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.databinding.ItemMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
@@ -22,9 +20,7 @@ import com.changanford.my.R
 import com.changanford.my.databinding.FmMedalBinding
 import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.viewmodel.SignViewModel
-import com.huawei.hms.scankit.p.dd
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -60,7 +56,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                     item.isGet.isNullOrEmpty() -> {//未获取
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
-                        it.tvMedalDes.text = "暂未点亮"
+                        it.tvMedalDes.text = "暂未点亮\n${item.remark}"
                     }
                     else -> {//已获取
                         it.btnGetMedal.visibility = View.GONE
@@ -70,7 +66,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                                 item.getTime,
                                 "yyyy-MM-dd"
                             )
-                        }点亮"
+                        }点亮\n${item.remark}"
                     }
                 }
             }

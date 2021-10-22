@@ -62,6 +62,9 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.CLOSE_POST_DETAILS).observe(this, {
             finish()
         })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+            finish()
+        })
     }
 
     //点击区域接口

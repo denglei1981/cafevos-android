@@ -195,7 +195,7 @@ data class RecommendData(
             }
 
         }
-        var viewCountStr = CountUtils.formatNum(viewCount.toString(), false).toString()
+        val viewCountStr = CountUtils.formatNum(viewCount.toString(), false).toString()
 
 
         timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览量")
@@ -211,7 +211,7 @@ data class RecommendData(
         var topicStr: String = ""
         when (rtype) {
             1 -> {
-                topicStr = artSpecialTopicTitle
+                topicStr = artTitle
             }
             2 -> {
                 topicStr = postsKeywords

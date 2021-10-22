@@ -114,19 +114,16 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                     checkMap["${it.userId}"] = false
                 }
             }
-            if (index == 1) {
-                it?.dataList?.let {
-                    circleAdapter.addData(it)
-                }
-            } else {
-                completeRefresh(it?.dataList, circleAdapter)
-            }
+            completeRefresh(it?.dataList, circleAdapter)
         })
 
         LiveDataBus.get()
             .with(LiveDataBusKey.MINE_DELETE_CIRCLE_USER, MangerCircleCheck::class.java)
             .observe(this, Observer {
                 it?.let { c ->
+                    if (circleAdapter.data.size == 0) {
+                        return@Observer
+                    }
                     circleCheck = c
                     binding.bottomLayout.visibility = if (c.isShow) View.VISIBLE else View.GONE
 
@@ -186,6 +183,20 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
         binding.checkboxAll.setOnCheckedChangeListener { _, isChecked ->
             circleAdapter.allCheck(isChecked)
         }
+
+        viewModel.agreeStatus.observe(this, Observer {
+            if ("true" == it) {
+                showToast("操作成功")
+                LiveDataBus.get()
+                    .with(LiveDataBusKey.MINE_REFRESH_CIRCLE_STATUS, Boolean::class.java)
+                    .postValue(true)
+                initRefreshData(1)
+            } else {
+                it?.let {
+                    showToast(it)
+                }
+            }
+        })
     }
 
     override fun initRefreshData(pageSize: Int) {
@@ -280,6 +291,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
         body["userIds"] = circleAdapter.getUserId()
         if ("3" == pass) {
             body.toString().logE()
+            viewModel.agree(body)
             return
         }
         ConfirmTwoBtnPop(requireContext()).apply {
@@ -336,7 +348,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             }
             checkBox.isChecked = checkMap[item.userId]!!
             icon.setOnClickListener {
-                RouterManger.param("value",item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
+                RouterManger.param("value", item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
             }
         }
 

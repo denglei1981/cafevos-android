@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.api.CircleNetWork
@@ -153,7 +154,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             moreImg.setOnClickListener {
                 CircleShareModel.shareDialog(
-                    activity,
+                    activity as AppCompatActivity,
                     when {
                         MConstant.userId == mData.userId && mData.type == 1 -> 5//自己的帖子没有编辑按钮
                         MConstant.userId == mData.userId -> 3//是自己的帖子
@@ -187,10 +188,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvShareNum.setOnClickListener {
                 CircleShareModel.shareDialog(
-                    activity,
+                    activity as AppCompatActivity,
                     0,
                     mData.shares,
-                    null,
+                    ReportDislikeBody(2, mData.postsId),
                     null,
                     mData.authorBaseVo?.nickname,
                     mData.topicName
@@ -338,17 +339,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })
-        //分享
-        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, {
-            if (it == 0) {
-                launchWithCatch {
-                    val body = MyApp.mContext.createHashMap()
-                    val rKey = getRandomKey()
-                    ApiClient.createApi<CircleNetWork>()
-                        .shareCallBack(body.header(rKey), body.body(rKey))
-                }
-            }
 
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this,{
+            mData.shareCount++
+            binding.tvShareNum.text = mData.shareCount.toString()
         })
     }
 

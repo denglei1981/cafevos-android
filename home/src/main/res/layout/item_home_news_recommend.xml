@@ -17,7 +17,7 @@
             android:layout_width="@dimen/dp_85"
             android:layout_height="@dimen/dp_65"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_recommend_test"
+            tools:src="@drawable/image_recommend_test"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -150,6 +150,8 @@ object LiveDataBusKey {
 
     const val MINE_DELETE_CIRCLE_USER = "mine:delete_circle_user"//删除圈子成员
 
+    const val MINE_REFRESH_CIRCLE_STATUS = "mine:refresh_circle_status" //审核后，刷新状态
+
     const val MINE_CAR_CARD_NUM = "mine:mine_card_num"//添加车牌成功
 
     const val MINE_UNI_CARD_CHOOSE_CAR = "mine:uni_card_choose_car" // 购卡选择车辆
@@ -226,14 +228,14 @@ object LiveDataBusKey {
 
     const val USER_LOGIN_STATUS = "sys:user_login_status"
 
-    const val PICTURESEDITED ="picturesedited"  //图片编辑页面点击下一步
-    const val LONGPOSTFM ="LONGPOSTFM"  //发长图图片编辑页面返回封面
+    const val PICTURESEDITED = "picturesedited"  //图片编辑页面点击下一步
+    const val LONGPOSTFM = "LONGPOSTFM"  //发长图图片编辑页面返回封面
     const val LIVE_OPEN_TWO_LEVEL = "LIVE_OPEN_TWO_LEVEL" // 二楼打开
 
-    const val Conversation= "Conversation" //选择话题回调
+    const val Conversation = "Conversation" //选择话题回调
 
 
-    const val  NEWS_DETAIL_CHANGE="NEWS_DETAIL_CHANGE"//详情数据更改。。。
+    const val NEWS_DETAIL_CHANGE = "NEWS_DETAIL_CHANGE"//详情数据更改。。。
 
 }
 

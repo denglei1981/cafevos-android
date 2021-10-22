@@ -117,5 +117,10 @@ class CircleDetailsMainFragment :
                 page = 1
                 viewModel.getData(type, page)
             })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+            checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1,adapter.itemCount) }
+        })
     }
 }

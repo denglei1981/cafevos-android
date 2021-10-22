@@ -14,4 +14,6 @@ object CircleLiveBusKey {
     const val POST_EDIT = "postEdit"
     const val REFRESH_MANAGEMENT_CIRCLE = "refreshManagementCircle"
     const val REFRESH_CIRCLE_BOTTOM_FRAGMENT = "refreshCircleBottomFragment"
+    const val ADD_SHARE_COUNT = "addShareCount"
+    const val DELETE_CIRCLE_POST = "deleteCirclePost"
 }

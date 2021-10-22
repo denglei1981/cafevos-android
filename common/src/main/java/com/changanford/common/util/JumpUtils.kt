@@ -16,6 +16,7 @@ import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
@@ -126,13 +127,14 @@ class JumpUtils {
 
     }
 
-    fun jump(jumpData:JumpDataBean?){
-        if (jumpData == null){
+    fun jump(jumpData: JumpDataBean?) {
+        if (jumpData == null) {
             return
         }
-        jump(jumpData.jumpDataType,jumpData.jumpDataValue)
+        jump(jumpData.jumpDataType, jumpData.jumpDataValue)
 
     }
+
     fun jump(type: Int?, value: String? = "") {
         if (type == null) {
             return
@@ -155,7 +157,7 @@ class JumpUtils {
             }
             3 -> {//商品详情
                 if (value != null) {
-                    bundle.putString("spuId",value)
+                    bundle.putString("spuId", value)
 //                    val json = JSON.parseObject(value)
 //                    bundle.putString("spuId", json.getString("spuId"))
 //                    bundle.putString("spuPageType", json.getString("spuPageType"))
@@ -170,7 +172,7 @@ class JumpUtils {
                 if (value != null) {
                     bundle.putString("orderNo", value)
                 }
-                startARouter(ARouterShopPath.OrderDetailActivity, bundle,true)
+                startARouter(ARouterShopPath.OrderDetailActivity, bundle, true)
             }
             6 -> {//圈子详情
                 bundle.putString("circleId", value)
@@ -325,7 +327,7 @@ class JumpUtils {
 
             }
             36 -> {//聚合订单列表页
-                startARouter(ARouterShopPath.AllOrderActivity, bundle,true)
+                startARouter(ARouterShopPath.AllOrderActivity, bundle, true)
             }
             37 -> {//签到
                 when {
@@ -429,8 +431,11 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                if(!TextUtils.isEmpty(value))bundle.putInt("states", value!!.toInt())//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
-                startARouter(ARouterShopPath.OrderGoodsActivity,bundle,true)
+                if (!TextUtils.isEmpty(value)) bundle.putInt(
+                    "states",
+                    value!!.toInt()
+                )//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
+                startARouter(ARouterShopPath.OrderGoodsActivity, bundle, true)
             }
             53 -> {//AR说明书跳转类型
                 when {
@@ -720,9 +725,9 @@ class JumpUtils {
                     }
                 }
             }
-            108->{// 聚合搜索。
+            108 -> {// 聚合搜索。
                 bundle.putString(JumpConstant.SEARCH_TYPE, value)
-                startARouter(ARouterHomePath.PolySearchActivity,bundle = bundle)
+                startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
             109->{// 商品订单确认
                 bundle.putString("goodsInfo", value)
@@ -787,6 +792,9 @@ class JumpUtils {
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
+                    it?.let {
+                        UserManger.updateIntegral(it.integral)
+                    }
                     var bundle = Bundle()
                     bundle.putString("signInfo", JSON.toJSONString(it))
                     startARouter(ARouterMyPath.SignTransparentUI, bundle)
