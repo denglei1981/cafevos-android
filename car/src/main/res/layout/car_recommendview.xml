@@ -26,6 +26,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2"
         app:srcCompat="@mipmap/rightarrow" />
+    <LinearLayout
+        android:id="@+id/carRecommend1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/cr1img"
+            tools:src="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/cr1txt"
+            android:layout_width="wrap_content"
+            tools:text="@string/app_name"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/color_0A0A0C"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/carRecommendRec"

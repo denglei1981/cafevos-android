@@ -8,6 +8,7 @@ import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 
 
@@ -73,9 +74,19 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 binding.carRecommendLayout.root.isVisible = false
             } else {
                 binding.carRecommendLayout.root.isVisible = true
-                carRecommendAdapter.data.clear()
-                carRecommendAdapter.data.addAll(it.carModels)
-                carRecommendAdapter.notifyDataSetChanged()
+                if (it.carModels.size==1){
+                    binding.carRecommendLayout.carRecommendRec.isVisible = false
+                    binding.carRecommendLayout.carRecommend1.isVisible = true
+                    binding.carRecommendLayout.cr1img.load(it.carModels[0].carModelPic)
+                    binding.carRecommendLayout.cr1txt.text = it.carModels[0].spuName
+                    binding.carRecommendLayout.cr1img.setOnClickListener {v-> JumpUtils.instans?.jump(it.carModels[0].jumpDataType,it.carModels[0].jumpDataValue) }
+                }else {
+                    binding.carRecommendLayout.carRecommendRec.isVisible = true
+                    binding.carRecommendLayout.carRecommend1.isVisible = false
+                    carRecommendAdapter.data.clear()
+                    carRecommendAdapter.data.addAll(it.carModels)
+                    carRecommendAdapter.notifyDataSetChanged()
+                }
             }
             if (it?.carModelMoreJump == null){
                 binding.carRecommendLayout.imageView2.isVisible = false
