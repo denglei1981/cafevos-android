@@ -188,6 +188,7 @@ data class GoodsDetailBean(
     var skuImg:String?=null,
     var mallMallSkuSpuSeckillRangeId:String?=null,
     val mallMallHaggleUserGoodsId: String? = null,
+    var source:String?="0",
 )
 
 data class Attribute(
@@ -373,7 +374,12 @@ data class OrderItemBean(
     var totalIntegral:String?="0",
     var orderTypeName:String?="",
 )
-data class OrderInfoBean(val orderNo:String,val cost:String?="0",var accountFb:String?="")
+data class OrderInfoBean(
+    val orderNo:String,
+    val cost:String?="0",
+    var accountFb:String?="",
+    var source:String?="0",//1商品详情（原生）
+)
 data class ShopAddressInfoBean(
     val addressId: Int = 0,
     val addressName: String = "",

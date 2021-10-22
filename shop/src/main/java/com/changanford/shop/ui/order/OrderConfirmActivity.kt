@@ -74,6 +74,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
             it.accountFb=dataBean.acountFb.toString()
+            it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
             PayConfirmActivity.start(this,Gson().toJson(it))
             this.finish()
         })

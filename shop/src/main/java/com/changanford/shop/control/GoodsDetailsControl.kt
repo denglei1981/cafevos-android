@@ -36,6 +36,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
+        dataBean.source="1"//标记为原生
         dataBean.buyNum=1
         //初始化 skuCode
         var skuCodeInitValue="${dataBean.spuId}-"
