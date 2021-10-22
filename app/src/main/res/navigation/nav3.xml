@@ -11,6 +11,5 @@
         android:label="car_fragment"/>
 
 </navigation>
-    <!--        android:name="com.changanford.evos.demo.DemoFragment3"-->
 
 

@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/dp50"
-    android:background="@mipmap/my_bg">
+    android:background="@drawable/bg_start_end_my">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

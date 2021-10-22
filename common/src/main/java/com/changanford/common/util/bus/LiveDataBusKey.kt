@@ -189,6 +189,7 @@ object LiveDataBusKey {
     const val MINE_UNI_SERVICE_DEALER_SUCCESS = "mine:uni_service_dealer_success" // 专属经销商购买成功
 
     const val MINE_CANCEL_ACCOUNT = "mine:cancel_account" //取消注销申请，注销成功
+    const val MINE_SIGN_FIX = "mine:sign_fix" //补签成功，刷新数据
 
     /**
      * 车主认证，crm提交资料成功
