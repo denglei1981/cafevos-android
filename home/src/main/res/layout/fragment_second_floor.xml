@@ -67,12 +67,14 @@
                         android:orientation="vertical"
                         app:layout_collapseMode="pin"
                         app:layout_collapseParallaxMultiplier="0.8">
+
                         <include
                             android:id="@+id/layout_top_bar"
                             layout="@layout/include_top_bar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
+
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/home_tab"
                         android:layout_width="match_parent"
@@ -93,12 +95,15 @@
 
                 </com.google.android.material.appbar.AppBarLayout>
 
+
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/home_viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/dp_44"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

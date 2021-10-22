@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
+import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -49,6 +50,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return currentNavController?.value?.navigateUp() ?: false
 
     }
+
+
 
     private fun initBottomNavigation() {
         val navigationController: NavigationController = binding.homeBottomNavi.custom()
