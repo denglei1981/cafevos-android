@@ -186,8 +186,8 @@ data class GoodsDetailBean(
     var specifications:String?="",
     var addressInfo:String?=null,
     var skuImg:String?=null,
-    var mallMallSkuSpuSeckillRangeId:String?=null
-
+    var mallMallSkuSpuSeckillRangeId:String?=null,
+    val mallMallHaggleUserGoodsId: String? = null,
 )
 
 data class Attribute(
@@ -316,7 +316,7 @@ data class OrderItemBean(
     val mallMallHaggleActivityId: Int = 0,
     val mallMallHaggleSkuId: Int = 0,
     val mallMallHaggleSpuId: Int = 0,
-    val mallMallHaggleUserGoodsId: Int = 0,
+    val mallMallHaggleUserGoodsId: String = "0",
     val mallMallOrderId: String ="0",
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,

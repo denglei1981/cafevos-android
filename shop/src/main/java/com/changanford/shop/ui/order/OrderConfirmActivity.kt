@@ -2,7 +2,6 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -50,7 +49,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
-        Log.e("wenke","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
         initLiveDataBus()
     }
@@ -139,7 +137,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
             dataBean.apply {
-                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId)
+                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId)
             }
         }
         GlobalScope.launch {
