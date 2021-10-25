@@ -74,7 +74,7 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
 //            startARouter(ARouterMyPath.MineFeedbackUI)
 //        }
 
-        binding.mineToolbar.toolbarTitle.text = "我要反馈"
+        binding.mineToolbar.toolbarTitle.text = "意见反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
         }
