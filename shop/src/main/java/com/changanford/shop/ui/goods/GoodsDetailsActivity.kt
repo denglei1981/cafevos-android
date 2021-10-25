@@ -65,6 +65,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
+        binding.inEmpty.imgBack.setOnClickListener { this.finish() }
         spuId=intent.getStringExtra("spuId")?:"0"
         if("0"==spuId){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
@@ -86,9 +87,21 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
+            binding.inEmpty.layoutEmpty.visibility=View.GONE
             control.bindingData(it)
             initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
+        })
+        //
+        viewModel.responseData.observe(this,{
+            it.apply {
+                if(!isSuccess){
+                    binding.inEmpty.apply {
+                        layoutEmpty.visibility=View.VISIBLE
+                        tvEmptyContent.setText(msg)
+                    }
+                }
+            }
         })
         viewModel.collectionGoodsStates.observe(this,{
             isCollection= it

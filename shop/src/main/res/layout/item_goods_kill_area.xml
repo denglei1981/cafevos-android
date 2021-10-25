@@ -69,7 +69,6 @@
                 android:layout_marginStart="@dimen/dp_4"
                 android:textSize="@dimen/sp_10"
                 android:text="@{model.stockProportion}"
-                app:end_txt="@string/str_percent"
                 app:start_txt="@string/str_hasBeenRobbed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

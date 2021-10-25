@@ -109,7 +109,7 @@ data class GoodsItemBean(
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
-    val seckillStock: Int? = 0,
+    var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
     var totalStock:Int=1,
 )
@@ -160,7 +160,7 @@ data class GoodsDetailBean(
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",
     val now: Long = 0,
-    val purchasedNum: Int? = 0,
+    var purchasedNum: Int? = 0,
     val salesCount: Int = 0,
     var totalStock:Int?=0,//总库存
     val secKillInfo: SecKillInfo? = null,
@@ -313,7 +313,7 @@ data class OrderItemBean(
     val evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: String = "0",
-    val fbOfUnitPrice: String ="0",
+    var fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",//是否砍价订单
     val mallMallDiscountScaleId: Int = 0,
     val mallMallHaggleActivityId: Int = 0,

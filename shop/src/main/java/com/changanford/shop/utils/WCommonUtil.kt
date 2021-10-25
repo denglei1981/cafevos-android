@@ -203,7 +203,7 @@ object WCommonUtil {
      * 格式化数字（.00表示保留两位小数 不四舍五入）
      * */
     fun getHeatNum(heat: Double): String {
-        val df = DecimalFormat("#.00")
+        val df = DecimalFormat("0.00")
         df.roundingMode = RoundingMode.DOWN
 
         return df.format(heat)
@@ -215,9 +215,18 @@ object WCommonUtil {
         return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_DOWN)
     }
     /**
-     *以百分比方式计数，并取两位小数
+     *以百分比方式计数 并保留两位小数
      * */
-    fun getPercentage(number:String):String {
-       return DecimalFormat("#.##%").format(number)
+    fun getPercentage(number:Double):String {
+       return DecimalFormat("0.00%").format(number)
+    }
+    /**
+     *以百分比方式计数
+     * s1分子
+     * s2分母
+     * */
+    fun getPercentage(s1:Double,s2:Double):String {
+        return if(s2>0) DecimalFormat("0%").format(s1/s2)
+        else "0%"
     }
 }

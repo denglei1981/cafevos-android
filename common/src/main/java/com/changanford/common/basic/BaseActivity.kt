@@ -19,6 +19,10 @@ import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
+import android.app.ActivityManager.RunningAppProcessInfo
+
+import android.app.ActivityManager
+import android.content.Context
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -148,5 +152,28 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             val im = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
         }
+    }
+
+    /**
+     * 判断app是否处于前台
+     *
+     * @return
+     */
+    open fun isAppOnForeground(): Boolean {
+        val activityManager = applicationContext
+            .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val packageName = applicationContext.packageName
+        /**
+         * 获取Android设备中所有正在运行的App
+         */
+        val appProcesses = activityManager
+            .runningAppProcesses ?: return false
+        for (appProcess in appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName == packageName && appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true
+            }
+        }
+        return false
     }
 }

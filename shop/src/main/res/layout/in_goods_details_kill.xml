@@ -141,7 +141,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:start_txt="@string/str_hasBeenRobbed"
-                app:end_txt="@string/str_percent"
                 android:text="@{model.stockProportion}"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_10" />

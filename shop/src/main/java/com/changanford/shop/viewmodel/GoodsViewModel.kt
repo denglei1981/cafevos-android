@@ -10,6 +10,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
+import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.listener.OnPerformListener
 import kotlinx.coroutines.launch
 
@@ -112,7 +113,8 @@ class GoodsViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsDetails(spuId,body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it,MyApp.mContext)
+//                ToastUtils.showLongToast(it,MyApp.mContext)
+                responseData.postValue(ResponseBean(false,msg = it))
             }.onSuccess {
                 addFootprint(spuId)
 //                if(BuildConfig.DEBUG&&it?.acountFb!!<1) it.acountFb =1000

@@ -33,6 +33,12 @@ import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 
+import android.net.ConnectivityManager
+
+import android.content.IntentFilter
+import com.changanford.evos.utils.NetworkStateReceiver
+
+
 @Route(path = ARouterHomePath.MainActivity)
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -199,6 +205,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         })
+        registerConnChange()
     }
 
     private lateinit var currentNavController: LiveData<NavController>
@@ -324,6 +331,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unRegisterConnChange()
+    }
+    var networkStateReceiver = NetworkStateReceiver()
+    private fun registerConnChange(){
+        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(networkStateReceiver, intentFilter)
+    }
+    private fun unRegisterConnChange(){
+        unregisterReceiver(networkStateReceiver)
     }
 }
 

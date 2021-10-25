@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.R
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
@@ -13,6 +14,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement
@@ -34,8 +36,10 @@ import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.functions.Function3
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -263,6 +267,43 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         super.onDestroy()
         subscribe?.let {
             it.dispose()
+        }
+        timer?.cancel()
+        timerTask?.cancel()
+        timer = null
+        timerTask = null
+    }
+    var isForeground = true
+    var timer :Timer? = null
+    var timerTask :MyTimerTask? = null
+    inner class MyTimerTask :TimerTask(){
+        override fun run() {
+            if (!isAppOnForeground()) {
+                //由前台切换到后台
+                isForeground = false
+                lifecycleScope.launch(Dispatchers.Main) {
+                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
+                }
+                timer?.cancel()
+                timer = null
+                timerTask = null
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try {
+            timer = Timer()
+            timerTask = MyTimerTask()
+            timer?.schedule(timerTask,50,50)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+        if (!isForeground) {
+            //由后台切换到前台
+            isForeground = true
         }
     }
 }
