@@ -120,19 +120,17 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     }
 
     override fun onBackClick() {
-        if(isPaySuccessful){
-            orderInfoBean?.let {
-                when(it.source){
-                    //商品详情
-                    "1"->GoodsDetailsActivity.start(this,true)
-                    //H5商品砍价
-                    "2"->{
+        orderInfoBean?.let {
+            when(it.source){
+                //商品详情
+                "1"->GoodsDetailsActivity.start(this,true)
+                //H5商品砍价
+                "2"->{
+                    if(isPaySuccessful){}
+                }
+                //订单列表的再次购买
+                "3"->{
 
-                    }
-                    //订单列表的再次购买
-                    "3"->{
-
-                    }
                 }
             }
         }

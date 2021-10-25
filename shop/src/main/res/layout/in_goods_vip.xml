@@ -14,9 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dp_16"
-        android:minWidth="@dimen/dp_120"
         android:background="@drawable/bord_01025c_2dp">
-
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_vipTypeName"
             android:background="@drawable/shadow_01025c_l_2dp"
@@ -35,7 +33,6 @@
             android:paddingEnd="@dimen/dp_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="11600积分"
             android:text="@{model.vipFb}"
             app:end_txt="@string/str_integral"
             android:textColor="@color/color_01025C"
