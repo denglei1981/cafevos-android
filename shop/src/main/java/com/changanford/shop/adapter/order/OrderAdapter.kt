@@ -113,10 +113,13 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             specifications+="${item.optionName},"
                         }
                     }
+                    //单价=总价/数量（运费默认为0）
+                    val fbOfUnitPrice=orderBriefBean.fbCost.toInt()/orderBriefBean.buyNum.toInt()
                     item.apply {
-                        buyNum=orderBriefBean.buyNum
+                        this.buyNum=orderBriefBean.buyNum
                         payType=orderBriefBean.payType
-                        fbCost=orderBriefBean.fbCost
+                        this.fbCost=orderBriefBean.fbCost
+                        this.fbOfUnitPrice="$fbOfUnitPrice"
                         this.specifications=specifications
                     }
                 }
