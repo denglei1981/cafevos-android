@@ -372,17 +372,21 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             initData()
         })
         viewModel.followBean.observe(this, {
-            val isFol = mData.authorBaseVo?.isFollow
-            mData.authorBaseVo?.isFollow = if (isFol == 1) 0 else 1
-            binding.tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
-                "已关注"
+            if (it.code == 0) {
+                val isFol = mData.authorBaseVo?.isFollow
+                mData.authorBaseVo?.isFollow = if (isFol == 1) 0 else 1
+                binding.tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
+                    "已关注"
+                } else {
+                    "关注"
+                }
+                if (mData.authorBaseVo?.isFollow == 1)
+                    "关注成功".toast()
+                else
+                    "已取消关注".toast()
             } else {
-                "关注"
+                it.msg.toast()
             }
-            if (mData.authorBaseVo?.isFollow == 1)
-                "关注成功".toast()
-            else
-                "已取消关注".toast()
         })
     }
 
@@ -397,7 +401,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this,{
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
         })
