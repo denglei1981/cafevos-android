@@ -36,6 +36,7 @@ import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
@@ -157,6 +158,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (locaPostEntity!=null){
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
+            startARouter(ARouterMyPath.MineFollowUI, true)
             "发布成功".toast()
             finish()
         })
@@ -180,18 +182,29 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                address = it.address
+                address = it.address?:it.name?:""
                 params["address"] = address
-                params["lat"] = it.location.latitude
-                params["lon"] = it.location.longitude
+                it.location?.let { mit->
+                    params["lat"] = mit.latitude
+                    params["lon"] = mit.longitude
+                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+                }
                 params["province"] = it.province ?: address
-                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
 
             })
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
+           plateBean?.plate?.forEach {
+               if (it.name == "社区"){
+                   buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                   buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                   platename = it.name
+                   params["plate"] = it.plate
+                   params["actionCode"] = it.actionCode
+               }
+           }
 
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)

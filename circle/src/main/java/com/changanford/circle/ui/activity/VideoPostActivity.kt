@@ -50,6 +50,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.room.PostEntity
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.*
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
@@ -165,6 +166,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
+            startARouter(ARouterMyPath.MineFollowUI, true)
             "发布成功".toast()
             finish()
         })
@@ -188,19 +190,29 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                address = it.address
+                address = it.address?:it.name?:""
                 params["address"] = address
-                params["lat"] = it.location.latitude
-                params["lon"] = it.location.longitude
+                it.location?.let { mit->
+                    params["lat"] = mit.latitude
+                    params["lon"] = mit.longitude
+                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+                }
                 params["province"] = it.province ?: address
-                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
 
             })
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
-
+            plateBean?.plate?.forEach {
+                if (it.name == "社区"){
+                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    platename = it.name
+                    params["plate"] = it.plate
+                    params["actionCode"] = it.actionCode
+                }
+            }
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
@@ -557,9 +569,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 } else {
                     array.add("重选视频")
                 }
-                if (!postVideoAdapter.fmPath.isNullOrEmpty()) {
-                    array.add("删除封面")
-                }
+//                if (!postVideoAdapter.fmPath.isNullOrEmpty()) {
+//                    array.add("删除封面")
+//                }
                 HomeBottomDialog(this, *array.toTypedArray())
                     .setOnClickItemListener(object :
                         HomeBottomDialog.OnClickItemListener {
@@ -635,10 +647,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
                                     })
                                 }
-                                "删除封面" -> {
-                                    postVideoAdapter.fmPath = ""
-                                    postVideoAdapter.notifyDataSetChanged()
-                                }
+//                                "删除封面" -> {
+//                                    postVideoAdapter.fmPath = ""
+//                                    postVideoAdapter.notifyDataSetChanged()
+//                                }
                             }
                         }
                     }).show()
