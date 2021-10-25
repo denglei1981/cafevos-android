@@ -9,10 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.SnapshotOfAttrOption
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
-import com.changanford.shop.adapter.FlowLayoutManager
-import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.listener.OnPerformListener
@@ -41,39 +38,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             dataBinding.executePendingBindings()
             updateBtnUI(position,dataBinding,item)
             dataBinding.tvTotleIntegral.setHtmlTxt(context.getString(R.string.str_Xfb,item.fbCost),"#00095B")
-            dataBinding.inGoodsInfo.apply {
-//                val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
-//                if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
-                tvOrderType.apply {
-                    visibility = when {
-                        "YES"==item.seckill -> {//秒杀
-                            setText(R.string.str_seckill)
-                            View.VISIBLE
-                        }
-                        "YES"==item.haggleOrder -> {//砍价
-                            setText(R.string.str_bargaining)
-                            View.VISIBLE
-                        }
-                        else -> View.GONE
-                    }
-                }
-                recyclerView.apply {
-                    if(!TextUtils.isEmpty(item.specifications)){
-                        visibility=View.VISIBLE
-                        layoutManager=FlowLayoutManager(context,false)
-                        adapter=OrderGoodsAttributeAdapter().apply {
-                            val specifications=item.specifications.split(",").filter { ""!=it }
-                            setList(specifications)
-                        }
-                    }else{
-                        visibility=View.GONE
-                    }
-                }
-                model=item
-            }
+            control.bindingGoodsInfo(dataBinding.inGoodsInfo,item)
             setOrderType(dataBinding.tvOrderType,item)
-
         }
     }
     /**
