@@ -6,6 +6,8 @@ import com.changanford.circle.bean.CircleMainBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.net.*
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -31,6 +33,7 @@ class CircleViewModel : PostRoomViewModel() {
                 }
 
         }, error = {
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
             it.message?.toast()
         })
     }

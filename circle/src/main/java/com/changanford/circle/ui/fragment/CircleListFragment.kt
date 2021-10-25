@@ -2,21 +2,19 @@ package com.changanford.circle.ui.fragment
 
 import android.Manifest
 import android.os.Bundle
-import android.view.View
-import cn.hchstudio.kpermissions.KPermission
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.FragmentCircleListBinding
-import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.location.LocationUtils
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 /**
  *Author lcw
@@ -37,18 +35,12 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
 
     private var type = 0
     private var page = 1
-    private val permissionsGroup =
-        arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
 
     private val adapter by lazy {
         CircleListAdapter()
     }
 
     override fun initView() {
-//        MUtils.scrollStopLoadImage(binding.ryCircle)
 
         arguments?.getInt("type", 0)?.let {
             type = it
@@ -74,29 +66,47 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     override fun initData() {
-        KPermission(requireActivity()).requestPermission(permissionsGroup, {
-            if (it) {
-                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                    override fun onReceiveLocation(location: BDLocation) {
-                        val latitude = location.latitude //获取纬度信息
-                        val longitude = location.longitude //获取经度信息
-                        viewModel.getData(
-                            type,
-                            longitude.toString(),
-                            latitude.toString(),
-                            page
-                        )
-                    }
-                })
-            } else {
-                viewModel.getData(
-                    type,
-                    "",
-                    "",
-                    page
-                )
+        if (type == 1) {
+            binding.refreshLayout.post {
+                SoulPermission.getInstance()
+                    .checkAndRequestPermission(
+                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                        object : CheckRequestPermissionListener {
+                            override fun onPermissionOk(permission: Permission) {
+                                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                                    override fun onReceiveLocation(location: BDLocation) {
+                                        val latitude = location.latitude //获取纬度信息
+                                        val longitude = location.longitude //获取经度信息
+                                        viewModel.getData(
+                                            type,
+                                            longitude.toString(),
+                                            latitude.toString(),
+                                            page
+                                        )
+                                    }
+                                })
+                            }
+
+                            override fun onPermissionDenied(permission: Permission) {
+                                viewModel.getData(
+                                    type,
+                                    "",
+                                    "",
+                                    page
+                                )
+                            }
+                        })
             }
-        })
+
+        } else {
+            viewModel.getData(
+                type,
+                "",
+                "",
+                page
+            )
+        }
+
     }
 
     override fun observe() {

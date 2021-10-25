@@ -1,7 +1,6 @@
 package com.changanford.circle
 
 import android.Manifest
-import cn.hchstudio.kpermissions.KPermission
 import com.alibaba.fastjson.JSON
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -24,6 +23,9 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.logD
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 /**
  * 社区
@@ -31,12 +33,6 @@ import com.changanford.common.utilext.logD
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
-
-    private val permissionsGroup =
-        arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
 
     private val circleAdapter by lazy {
         CircleMainAdapter(requireContext(), childFragmentManager)
@@ -48,6 +44,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
     }
 
     override fun initView() {
+        bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
             {
@@ -58,15 +55,15 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
                 CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
                     override fun checkLongBar() {
-                       startARouter(ARouterCirclePath.LongPostAvtivity,true)
+                        startARouter(ARouterCirclePath.LongPostAvtivity, true)
                     }
 
                     override fun checkPic() {
-                        startARouter(ARouterCirclePath.PostActivity,true)
+                        startARouter(ARouterCirclePath.PostActivity, true)
                     }
 
                     override fun checkVideo() {
-                        startARouter(ARouterCirclePath.VideoPostActivity,true)
+                        startARouter(ARouterCirclePath.VideoPostActivity, true)
                     }
 
                 }).run {
@@ -84,15 +81,15 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                             requireContext(),
                             object : CircleMainMenuPop.CheckPostType {
                                 override fun checkLongBar() {
-                                    startARouter(ARouterCirclePath.LongPostAvtivity,true)
+                                    startARouter(ARouterCirclePath.LongPostAvtivity, true)
                                 }
 
                                 override fun checkPic() {
-                                    startARouter(ARouterCirclePath.PostActivity,true)
+                                    startARouter(ARouterCirclePath.PostActivity, true)
                                 }
 
                                 override fun checkVideo() {
-                                    startARouter(ARouterCirclePath.VideoPostActivity,true)
+                                    startARouter(ARouterCirclePath.VideoPostActivity, true)
                                 }
 
                             }).run {
@@ -104,7 +101,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             }
         }
         binding.ivSearch.setOnClickListener {
-            JumpUtils.instans!!.jump(108,SearchTypeConstant.SEARCH_POST.toString())
+            JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()
@@ -120,20 +117,30 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
     }
 
     override fun initData() {
-        KPermission(requireActivity()).requestPermission(permissionsGroup, {
-            if (it) {
-                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                    override fun onReceiveLocation(location: BDLocation) {
-                        val latitude = location.latitude //获取纬度信息
-                        val longitude = location.longitude //获取经度信息
-                        viewModel.communityIndex(longitude, latitude)
-                    }
-                })
-            } else {
-                viewModel.communityIndex()
+        binding.refreshLayout.post {
+            SoulPermission.getInstance()
+                .checkAndRequestPermission(
+                    Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                    object : CheckRequestPermissionListener {
+                        override fun onPermissionOk(permission: Permission) {
+                            getLocationData()
+                        }
+
+                        override fun onPermissionDenied(permission: Permission) {
+                            viewModel.communityIndex()
+                        }
+                    })
+        }
+    }
+
+    private fun getLocationData() {
+        LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+            override fun onReceiveLocation(location: BDLocation) {
+                val latitude = location.latitude //获取纬度信息
+                val longitude = location.longitude //获取经度信息
+                viewModel.communityIndex(longitude, latitude)
             }
         })
-
     }
 
     override fun observe() {
@@ -157,6 +164,12 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                     }
                 }
             }
+            binding.refreshLayout.finishRefresh()
+        })
+    }
+
+    private fun bus(){
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this,{
             binding.refreshLayout.finishRefresh()
         })
     }
