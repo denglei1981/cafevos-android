@@ -39,6 +39,13 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+    /*退出登录*/
+    @POST("login/logout")
+    suspend fun loginOut(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
     /**--------------------------------home---------------------------------------**/
     /**
      * 调查详情/调查结果

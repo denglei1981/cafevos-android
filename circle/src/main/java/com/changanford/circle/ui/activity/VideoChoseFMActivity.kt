@@ -31,6 +31,8 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import java.lang.ref.WeakReference
+import java.util.*
+import kotlin.concurrent.schedule
 
 /**
  * 视频选择封面
@@ -187,6 +189,11 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
 //                        )
                         activity.binding.ivImg.seekTo(activity.mSelStartTime.toInt() * 1000)
                         activity.binding.ivImg.start()
+                        Timer().schedule(100) {
+                            activity.binding.ivImg.post {
+                                activity.binding.ivImg.pause()
+                            }
+                        }
 //                        sendEmptyMessageDelayed(
 //                            SEL_TIME,
 //                            1000
