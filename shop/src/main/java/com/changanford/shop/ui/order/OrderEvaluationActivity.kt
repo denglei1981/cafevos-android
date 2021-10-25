@@ -61,7 +61,7 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
            this.finish()
         })
         btnSubmit.setOnClickListener {
-            val anonymous=if(binding.checkBox.isChecked)"YesNoNumInDBEnum.YES" else "YesNoNumInDBEnum.NO"
+            val anonymous=if(binding.checkBox.isChecked)"YES" else "NO"
             viewModel.orderEval(orderNo,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
         }
     }
