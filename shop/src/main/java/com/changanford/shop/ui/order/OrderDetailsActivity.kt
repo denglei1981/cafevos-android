@@ -176,7 +176,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         binding.inGoodsInfo.apply {
             model=dataBean
             inGoodsInfo.apply {
-                model=dataBean
+//                val preferentialFbOfUnitPrice=dataBean.preferentialFbOfUnitPrice
+//                if(null==preferentialFbOfUnitPrice)dataBean.preferentialFbOfUnitPrice=dataBean.fbOfUnitPrice
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
                 tvOrderType.apply {
                     visibility = when {
@@ -196,6 +197,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     val skuCodeTxt=dataBean.specifications.split(",").filter { ""!=it }
                     setList(skuCodeTxt)
                 }
+                model=dataBean
             }
         }
         binding.inBottom.apply {

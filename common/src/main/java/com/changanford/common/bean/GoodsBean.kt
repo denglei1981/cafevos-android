@@ -359,7 +359,7 @@ data class OrderItemBean(
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
     val sendTime: Long? = 0,
-    val preferentialFbOfUnitPrice: Any? = null,
+    var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType:Int=0,

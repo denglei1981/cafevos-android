@@ -42,7 +42,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             updateBtnUI(position,dataBinding,item)
             dataBinding.tvTotleIntegral.setHtmlTxt(context.getString(R.string.str_Xfb,item.fbCost),"#00095B")
             dataBinding.inGoodsInfo.apply {
-                model=item
+//                val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
+//                if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
                 tvOrderType.apply {
                     visibility = when {
@@ -69,7 +70,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         visibility=View.GONE
                     }
                 }
-
+                model=item
             }
             setOrderType(dataBinding.tvOrderType,item)
 
