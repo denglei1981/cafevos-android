@@ -162,8 +162,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (locaPostEntity!=null){
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
-            startARouter(ARouterMyPath.MineFollowUI, true)
             "发布成功".toast()
+            startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
         viewModel.stsBean.observe(this, Observer {
