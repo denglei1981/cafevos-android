@@ -152,4 +152,5 @@
     <string name="str_reduction">-</string>
     <string name="str_noDatanow">暂时没有数据哦~</string>
     <string name="str_loading">加载中...</string>
+    <string name="str_evaluationSuccess">评价成功</string>
 </resources>

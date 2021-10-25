@@ -51,6 +51,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
         initLiveDataBus()
+//        val speChat="[`~@#\$%^&*|{}\\[\\]<>/~@#￥%&*|{}【】‘]"
+//        WCommonUtil.setEditTextInhibitInputSpeChat(binding.inGoodsInfo.edtLeaveMsg,speChat)
     }
 
     override fun initData() {

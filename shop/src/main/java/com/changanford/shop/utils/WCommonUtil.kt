@@ -10,10 +10,7 @@ import android.graphics.Shader
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
-import android.text.Editable
-import android.text.Html
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
@@ -31,6 +28,8 @@ import java.io.InputStreamReader
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 /**
@@ -228,5 +227,18 @@ object WCommonUtil {
     fun getPercentage(s1:Double,s2:Double):String {
         return if(s2>0) DecimalFormat("0%").format(s1/s2)
         else "0%"
+    }
+
+    /**
+     * 禁止EditText输入特殊字符([`~!@#$%^&*()+=|{}':;',\[\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？])
+     * @param editText
+     */
+    fun setEditTextInhibitInputSpeChat(editText: EditText,speChat:String?="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]") {
+        val filter = InputFilter { source, _, _, _, _, _ ->
+            val pattern: Pattern = Pattern.compile(speChat)
+            val matcher: Matcher = pattern.matcher(source.toString())
+            if (matcher.find()) "" else null
+        }
+        editText.filters = arrayOf(filter)
     }
 }
