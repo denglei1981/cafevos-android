@@ -76,9 +76,9 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
                         val totalStock=dataBean.salesCount+dataBean.stock
                         //库存百分比
-                        val stockProportion=if(totalStock>0)dataBean.salesCount/totalStock*100 else 0
+                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble())
                         dataBean.totalStock=totalStock
-                        dataBean.stockProportion="$stockProportion"
+                        dataBean.stockProportion=stockProportion
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         tvLimitBuyNum.setText("$totalStock")

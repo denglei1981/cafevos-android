@@ -21,7 +21,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsKillAreaBinding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
-            item.stockProportion=getStockProportion(item.salesCount, item.stockPlusSalesCount)
+            item.stockProportion= WCommonUtil.getPercentage(item.salesCount.toDouble(),item.stockPlusSalesCount.toDouble())
             model=item
             executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),imgCover)
@@ -32,12 +32,6 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
                 clickBtn(this,item)
             }
         }
-    }
-    /**
-     * 计算库存比例
-    * */
-    private fun getStockProportion(sales:Int,stockNow:Int):String{
-        return if(stockNow>0)"${sales/stockNow*100}" else "0"
     }
     /**
      * isSettedNotice 是否已提醒,可用值:NO,YES
