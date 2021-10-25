@@ -31,12 +31,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_price"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:end_txt="@string/str_integral"
             tools:text="1300积分"
-            android:text="@{model.fbPrice}"
+            android:text="@{model.orginPrice}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_18" />
         <com.changanford.shop.view.TypefaceTextView
