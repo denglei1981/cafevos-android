@@ -20,6 +20,7 @@ import com.changanford.common.utilext.toast
 class CircleDetailsViewModel : BaseViewModel() {
 
     val tabList = arrayListOf("推荐", "最新", "精华")
+    val circleType= arrayListOf("4","2","3")
 
     val circleBean = MutableLiveData<PostBean>()
 
