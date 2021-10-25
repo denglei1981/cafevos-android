@@ -66,6 +66,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     }
     @SuppressLint("SetTextI18n")
     private fun bindingData(dataBean:OrderItemBean){
+        timeCountControl?.cancel()
         val evalStatus=dataBean.evalStatus
         val orderStatus=dataBean.orderStatus
         //应付总额
@@ -229,6 +230,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun cancelOrder(){
         control.cancelOrder(dataBean,object :OnPerformListener{
             override fun onFinish(code: Int) {
+                timeCountControl?.cancel()
                 binding.inBottom.btnOrderCancle.visibility=View.GONE
                 viewModel.getOrderDetail(orderNo)
             }
