@@ -393,15 +393,19 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         binding.bottom.labelrec.adapter = buttomlabelAdapter
 
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            buttomlabelAdapter.getItem(position).isselect = true
-            buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
-                if (index != position) {
-                    buttomlabelBean.isselect = false
+            if (buttomlabelAdapter.getItem(position).isselect){
+                buttomlabelAdapter.getItem(position).isselect = false
+                params.remove("keywords")
+            }else{
+                buttomlabelAdapter.getItem(position).isselect = true
+                buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
+                    if (index != position) {
+                        buttomlabelBean.isselect = false
+                    }
                 }
+                params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             }
             buttomlabelAdapter.notifyDataSetChanged()
-            params["keywords"] = buttomlabelAdapter.getItem(position).tagName
-            buttomlabelAdapter.getItem(position).tagName.toast()
         }
 
         binding.bottom.emojirec.adapter = emojiAdapter
@@ -778,7 +782,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             content.isNullOrEmpty() -> {
                 "请输入正文内容".toast()
             }
-            !params.containsKey("plate") -> {
+            platename.isEmpty() -> {
                 "请选择模块".toast()
             }
             else -> {
