@@ -170,7 +170,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                 if (item.applyerCount > 0) View.VISIBLE else View.GONE
                             holder.setText(
                                 R.id.item_reason,
-                                "有${item.applyerCount}申请加入圈子"
+                                "有${item.applyerCount}人申请加入圈子"
                             )
                             operation.text = "去审核"
                             operation.setOnClickListener {

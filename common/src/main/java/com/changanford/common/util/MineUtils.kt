@@ -21,6 +21,7 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.changanford.common.MyApp
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.bean.WeekBean
@@ -30,6 +31,8 @@ import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_privacy
 import com.changanford.common.util.MConstant.H5_regTerms
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.CallPhoneDialog
 import com.luck.picture.lib.entity.LocalMedia
@@ -856,15 +859,16 @@ object MineUtils {
                     override fun onPermissionOk(permission: com.qw.soul.permission.bean.Permission?) {
                         phone?.let {
                             // 拨号：激活系统的拨号组件
-                            CallPhoneDialog(activity,"您确定拨打:${phone}").setOnClickItemListener(object :CallPhoneDialog.OnClickItemListener{
-                                override fun onClickItem(position: Int, str: String) {
-                                    val intent = Intent() // 意图对象：动作 + 数据
-                                    intent.action = Intent.ACTION_CALL // 设置动作
-                                    val data = Uri.parse("tel:${phone}") // 设置数据
-                                    intent.data = data
-                                    activity.startActivity(intent) // 激活Activity组件
-                                }
-                            }).show()
+                            CallPhoneDialog(activity, "您确定拨打:${phone}").setOnClickItemListener(
+                                object : CallPhoneDialog.OnClickItemListener {
+                                    override fun onClickItem(position: Int, str: String) {
+                                        val intent = Intent() // 意图对象：动作 + 数据
+                                        intent.action = Intent.ACTION_CALL // 设置动作
+                                        val data = Uri.parse("tel:${phone}") // 设置数据
+                                        intent.data = data
+                                        activity.startActivity(intent) // 激活Activity组件
+                                    }
+                                }).show()
                         }
                     }
 
@@ -1097,4 +1101,17 @@ object MineUtils {
      * 车牌转码
      */
 //    fun urlPlateNumEncode(plateNum: String?): String = SPUtils.urlPlateNumEncode(plateNum)
+
+    /**
+     * 获取绑定手机jumpDataType true跳转 false 不跳转
+     */
+    fun getBindMobileJumpDataType(): Boolean {
+        UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getNoLiveDataUser()
+            ?.let {
+                if (it.bindMobileJumpType == LiveDataBusKey.MINE_SIGN_OTHER_CODE) {
+                    return true
+                }
+            }
+        return false
+    }
 }

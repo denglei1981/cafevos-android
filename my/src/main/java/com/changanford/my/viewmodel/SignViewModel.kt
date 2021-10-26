@@ -13,7 +13,6 @@ import com.changanford.common.net.*
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toast
@@ -1080,12 +1079,7 @@ class SignViewModel : ViewModel() {
      * 获取绑定手机jumpDataType true跳转 false 不跳转
      */
     fun getBindMobileJumpDataType(): Boolean {
-        userDatabase.getUniUserInfoDao().getNoLiveDataUser()?.let {
-            if (it.bindMobileJumpType == LiveDataBusKey.MINE_SIGN_OTHER_CODE) {
-                return true
-            }
-        }
-        return false
+        return MineUtils.getBindMobileJumpDataType()
     }
 
     /**
@@ -1101,7 +1095,7 @@ class SignViewModel : ViewModel() {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 var rkey = getRandomKey()
-                apiService.loginOut(body.header(rkey),body.body(rkey))
+                apiService.loginOut(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 UserManger.deleteUserInfo()
                 AppUtils.Unbinduserid()
