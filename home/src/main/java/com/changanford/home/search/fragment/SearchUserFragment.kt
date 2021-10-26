@@ -1,11 +1,7 @@
 package com.changanford.home.search.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
@@ -37,15 +33,12 @@ class SearchUserFragment :
     }
 
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = searchUserResultAdapter
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
-        searchUserResultAdapter.setOnItemClickListener(object :OnItemClickListener{
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                  JumpUtils.instans!!.jump(35) // 跳转到他人主页。
-            }
-        })
+        searchUserResultAdapter.setOnItemClickListener { adapter, view, position ->
+            var item = searchUserResultAdapter.getItem(position)
+            JumpUtils.instans!!.jump(35,item.userId) // 跳转到他人主页。
+        }
 
     }
 

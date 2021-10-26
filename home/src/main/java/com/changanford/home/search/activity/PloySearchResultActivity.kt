@@ -64,7 +64,7 @@ class PloySearchResultActivity :
             .fitsSystemWindows(true)
             .statusBarColor(R.color.color_ee)
 
-        var searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
+        val searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
         binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvAuto.adapter = sAdapter
@@ -92,7 +92,6 @@ class PloySearchResultActivity :
             )
         )
         binding.searchTab.tabRippleColor = null
-//        setAppbarPercent()
         TabLayoutMediator(binding.searchTab, binding.viewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
 
