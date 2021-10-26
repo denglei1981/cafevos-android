@@ -103,10 +103,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             //会员折扣
             if("MEMBER_DISCOUNT"==dataBean.spuPageType){
                 //会员优惠=原价-现价 会员折扣的时候才显示
-                val memberDiscount=(dataBean.orginPrice?:"0").toInt()*buyNum-totalFb
-                dataBean.preferentialFb="$memberDiscount"
-                tvMemberDiscountValue.visibility=View.VISIBLE
-                tvMemberDiscount.visibility=View.VISIBLE
+                (dataBean.orginPrice?:"0").toInt()*buyNum-totalFb.apply {
+                    if(this>0){
+                        dataBean.preferentialFb="$this"
+                        tvMemberDiscountValue.visibility=View.VISIBLE
+                        tvMemberDiscount.visibility=View.VISIBLE
+                    }
+                }
             }
             model=dataBean
         }
