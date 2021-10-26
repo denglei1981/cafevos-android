@@ -19,10 +19,12 @@ import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 /**
  * @Author : wenke
@@ -157,6 +159,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         //优惠积分
         val preferentialFb=dataBean.preferentialFb
         if(null!=preferentialFb&&"0"!=preferentialFb){
+            //取绝对值 因接口有时返回带-有时不带
+            dataBean.preferentialFb="${abs(preferentialFb.toInt())}"
             binding.inGoodsInfo1.apply {
                 tvIntegralVip.visibility=View.VISIBLE
                 tvMemberDiscount.visibility=View.VISIBLE
@@ -198,7 +202,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun updateAddressInfo(item:ShopAddressInfoBean){
         item.apply {
             addressInfo="$provinceName$cityName$districtName$addressName"
-            userInfo="$consignee   $phone"
+            userInfo="$consignee   ${WCommonUtil.formatMobilePhone(phone)}"
             binding.inAddress.addressInfo=this
         }
     }

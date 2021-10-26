@@ -241,4 +241,15 @@ object WCommonUtil {
         }
         editText.filters = arrayOf(filter)
     }
+    /**
+     * 格式化手机号 中间四位加*
+    * */
+    fun formatMobilePhone(mobile:String?):String{
+        mobile?.apply {
+          if(this.length>=7){
+              return this.replace(this.substring(3,7),"****")
+          }
+        }
+        return mobile?:""
+    }
 }

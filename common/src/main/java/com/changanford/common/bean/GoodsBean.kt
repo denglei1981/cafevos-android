@@ -337,7 +337,7 @@ data class OrderItemBean(
     val params: Params = Params(),
     var payType: String = "",
     val phone: String = "",
-    val preferentialFb: String? = "0",
+    var preferentialFb: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
     val seckill: String = "",//是否秒杀
