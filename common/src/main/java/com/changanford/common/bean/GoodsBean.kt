@@ -58,7 +58,7 @@ data class GoodsItemBean(
     val imgUrl: String = "",
     var isSettedNotice: String = "",
     val mallMallSpuSeckillRangeId: String = "0",
-    val salesCount: Int = 0,
+    var salesCount: Int = 0,
     val stockNow: Int = 0,
     val stockPlusSalesCount: Int = 1,
     var timeState: String = "",

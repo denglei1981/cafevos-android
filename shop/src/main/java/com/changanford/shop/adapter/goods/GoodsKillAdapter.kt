@@ -22,15 +22,13 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             val position=holder.absoluteAdapterPosition
             val status=item.seckillStatus
             item.seckillStatus=getsStatus(status)
+            //总库存=销量+当前库存
+            val totalStock:Int=(item.seckillStock?:0)+item.sekillCount
+            item.seckillStock=totalStock
+            //秒杀结束 强制已卖完则 销量=总库存
+            item.sekillCount=if("ENDED"==status)totalStock else item.sekillCount
             //当前销量
             val sekillCount=item.sekillCount
-            //总库存
-            val totalStock:Int=(item.seckillStock?:0)+sekillCount
-            item.seckillStock=totalStock
-//            //秒杀结束 强制已卖完则 销量=总库存
-//            if("ENDED"==status){
-//
-//            }
             val robbedPercentage=WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble())
             item.robbedPercentage=robbedPercentage
             val spuImg=item.spuImgs
