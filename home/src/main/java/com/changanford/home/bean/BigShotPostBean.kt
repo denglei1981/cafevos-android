@@ -52,7 +52,7 @@ data class BigShotPostBean(
     var topTime: Any,
     var topicId: Int,
     var topicName: Any,
-    var type: Int,
+    var type: Int,//帖子类型 1 图文 2 图片 3 视频
     var updateBy: Any,
     var updateTime: Long,
     var userId: Int,

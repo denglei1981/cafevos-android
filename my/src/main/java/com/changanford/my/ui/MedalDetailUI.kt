@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
@@ -21,7 +20,6 @@ import com.changanford.my.databinding.ItemMedalBannerBinding
 import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.databinding.UiMedalDetailBinding
 import com.changanford.my.viewmodel.SignViewModel
-import com.xiaomi.push.it
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.listener.OnPageChangeListener
 import razerdp.basepopup.BasePopupWindow
@@ -60,7 +58,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                 .addBannerLifecycleObserver(this)
                 .setBannerGalleryEffect(30, 18)
                 .addOnPageChangeListener(this)
-                .currentItem = indexMedalItem
+                .currentItem = indexMedalItem + 1
             //更多使用方法仔细阅读文档，或者查看demo
         }
 

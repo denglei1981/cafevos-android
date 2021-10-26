@@ -42,8 +42,8 @@ class SearchShopFragment: BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolyS
 
     var searchContent: String? = null
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+//        binding.recyclerView.layoutManager =
+//            LinearLayoutManager(, LinearLayoutManager.VERTICAL, false)
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         binding.recyclerView.adapter = searchShopResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
@@ -104,10 +104,7 @@ class SearchShopFragment: BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolyS
 
     }
 
-    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
-        searchContent = keyWord
-        onRefresh(binding.smartLayout)
-    }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(it, false)

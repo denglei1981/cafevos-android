@@ -72,7 +72,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             }
             holder.itemView.setOnClickListener {
                 RouterManger.param(RouterManger.KEY_TO_OBJ, list)
-                    .param(RouterManger.KEY_TO_ID, holder.layoutPosition + 1)
+                    .param(RouterManger.KEY_TO_ID, holder.layoutPosition)
                     .startARouter(ARouterMyPath.MedalDetailUI)
             }
         }
