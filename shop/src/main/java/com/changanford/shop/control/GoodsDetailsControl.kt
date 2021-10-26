@@ -17,6 +17,7 @@ import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
+import com.changanford.shop.utils.DateTimeUtil
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -99,8 +100,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         itemData?.let{
             headerBinding.inComment.apply {
                 layoutComment.visibility=View.VISIBLE
-                tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
+                tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar)
+//                it.evalTimeTxt=simpleDateFormat.format(it.evalTime?:0)
+                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model=it
             }
         }
