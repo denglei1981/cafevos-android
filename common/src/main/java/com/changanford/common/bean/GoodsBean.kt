@@ -191,6 +191,7 @@ data class GoodsDetailBean(
     var mallMallSkuSpuSeckillRangeId:String?=null,
     val mallMallHaggleUserGoodsId: String? = null,
     var source:String?="0",
+    var isAgree:Boolean=false,//是否同意协议
 )
 
 data class Attribute(

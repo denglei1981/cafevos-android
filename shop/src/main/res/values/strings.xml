@@ -153,4 +153,6 @@
     <string name="str_noDatanow">暂时没有数据哦~</string>
     <string name="str_loading">加载中...</string>
     <string name="str_evaluationSuccess">评价成功</string>
+    <string name="str_haveAgreedAndAccepted">我已同意并接受</string>
+    <string name="str_fuyuAPPStoreTermsService">《福域APP商城服务条款》</string>
 </resources>

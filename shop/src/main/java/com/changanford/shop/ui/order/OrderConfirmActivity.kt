@@ -52,6 +52,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+        dataBean.isAgree=false
         initLiveDataBus()
 //        val speChat="[`~@#\$%^&*|{}\\[\\]<>/~@#￥%&*|{}【】‘]"
 //        WCommonUtil.setEditTextInhibitInputSpeChat(binding.inGoodsInfo.edtLeaveMsg,speChat)
@@ -133,7 +134,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inBottom.apply {
             model=dataBean
             tvAcountFb.setText("${dataBean.acountFb}")
-            btnSubmit.updateEnabled(null!=dataBean.addressId&&dataBean.totalPayFb.toInt()<=dataBean.acountFb)
+            updateBtnUi()
+        }
+    }
+    private fun updateBtnUi(){
+        dataBean.apply {
+            binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
         }
     }
     fun onClick(v:View){
@@ -142,6 +148,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.btn_submit->submitOrder()
             //选择地址
             R.id.in_address->JumpUtils.instans?.jump(20,"1")
+            //服务协议
+            R.id.tv_agreement->JumpUtils.instans?.jump(1,MConstant.H5_SHOP_AGREEMENT)
+            //协议勾选
+            R.id.checkBox->{
+                dataBean.isAgree=binding.checkBox.isChecked
+                updateBtnUi()
+            }
         }
     }
     @DelicateCoroutinesApi
