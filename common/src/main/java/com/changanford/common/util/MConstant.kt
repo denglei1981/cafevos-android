@@ -123,5 +123,5 @@ object MConstant {
     /**
      *《福域APP商城服务条款》
     * */
-    val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/"
+    val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
 }

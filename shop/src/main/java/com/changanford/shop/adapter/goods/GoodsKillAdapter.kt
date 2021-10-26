@@ -21,7 +21,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
             val status=item.seckillStatus
-            item.seckillStatus=getsStatus(status)
+            item.seckillStatuTxt=getsStatus(status)
             //总库存=销量+当前库存
             val totalStock:Int=(item.seckillStock?:0)+item.sekillCount
             item.seckillStock=totalStock

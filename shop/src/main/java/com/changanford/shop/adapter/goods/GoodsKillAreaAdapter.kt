@@ -21,11 +21,11 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsKillAreaBinding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
+            btnStates.setStates(getKillStates(item))
             item.stockProportion= WCommonUtil.getPercentage(item.salesCount.toDouble(),item.stockPlusSalesCount.toDouble())
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),imgCover)
             tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
-            btnStates.setStates(getKillStates(item))
             btnStates.setOnClickListener {
                 clickBtn(this,item)
             }

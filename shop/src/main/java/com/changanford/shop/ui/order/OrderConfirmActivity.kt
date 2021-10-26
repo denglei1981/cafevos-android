@@ -180,7 +180,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             binding.inBottom.btnSubmit.updateEnabled(false)
         }else{
             dataBean.addressId=item.addressId
-            binding.inBottom.btnSubmit.updateEnabled(dataBean.totalPayFb.toInt()<=dataBean.acountFb)
+            updateBtnUi()
             binding.inAddress.tvAddressRemark.visibility=View.VISIBLE
             binding.inAddress.tvAddress.text="${item.provinceName}${item.cityName}${item.districtName}${item.addressName}"
             binding.inAddress.tvAddressRemark.text="${item.consignee}   ${item.phone}"

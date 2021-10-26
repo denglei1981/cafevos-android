@@ -57,7 +57,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true
             }
-            //取消提醒,已提醒
+            //取消提醒,已设置提醒
             4,10->{
                 setBackgroundResource(R.drawable.shadow_dff6e9_15dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_37AA74))

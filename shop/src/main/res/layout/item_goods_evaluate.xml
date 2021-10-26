@@ -33,7 +33,7 @@
             android:layout_marginTop="@dimen/dp_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="E**9"
+            tools:text="@string/str_anonymousUsers"
             android:text="@{model.nickName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_12" />

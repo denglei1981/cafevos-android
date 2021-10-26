@@ -96,7 +96,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
         })
-        //
         viewModel.responseData.observe(this,{
             it.apply {
                 if(!isSuccess){

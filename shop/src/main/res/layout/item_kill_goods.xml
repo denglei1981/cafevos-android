@@ -122,7 +122,7 @@
             android:paddingStart="@dimen/dp_3"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/white"
-            android:text="@{model.seckillStatus}"
+            android:text="@{model.seckillStatuTxt}"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginStart="@dimen/dp_13"
             app:layout_constraintStart_toStartOf="parent"

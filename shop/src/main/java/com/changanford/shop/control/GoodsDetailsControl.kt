@@ -21,6 +21,7 @@ import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
 import razerdp.basepopup.BasePopupWindow
+import java.text.SimpleDateFormat
 
 /**
  * @Author : wenke
@@ -34,6 +35,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
+    private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.purchasedNum=dataBean.salesCount
@@ -99,8 +101,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         itemData?.let{
             headerBinding.inComment.apply {
                 layoutComment.visibility=View.VISIBLE
-                tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
+                tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar)
+                it.evalTimeTxt=sfDate.format(it.evalTime?:0)
+//                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model=it
             }
         }
