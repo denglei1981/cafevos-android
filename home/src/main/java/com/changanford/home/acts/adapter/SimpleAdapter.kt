@@ -42,7 +42,6 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<CircleHeadBean>(i
                 e.printStackTrace()
                 toastShow(e.message.toString())
             }
-
         }
     }
 
