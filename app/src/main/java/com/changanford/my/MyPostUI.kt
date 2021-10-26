@@ -121,6 +121,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
                         viewModel.postSetGood("${post.postsId}") {
                             it.onSuccess {
                                 showToast("申请提交成功")
+                                initRefreshData(1)
                             }
                             it.onWithMsgFailure {
                                 it?.let {
@@ -145,6 +146,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
                                 startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
                             }
                         }
+                        finish()
                     }
                     3 -> {//删除
                         deleteItem(ids)
@@ -184,6 +186,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
         viewModel.deletePost(ids) {
             it.onSuccess {
                 showToast("删除成功")
+                initRefreshData(1)
             }
             it.onWithMsgFailure {
                 it?.let {
@@ -207,6 +210,21 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
             response.onSuccess {
                 completeRefresh(it?.dataList, postAdapter, total)
             }
+        }
+    }
+
+    var isRefresh: Boolean = false
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            isRefresh = false
+            initRefreshData(1)
         }
     }
 }
