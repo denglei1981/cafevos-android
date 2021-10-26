@@ -10,8 +10,6 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.bean.PostDataBean
-import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
@@ -22,7 +20,6 @@ import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
-import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.util.LoginUtil
 import com.changanford.home.util.launchWithCatch
 import com.google.android.material.button.MaterialButton
@@ -30,8 +27,9 @@ import com.google.android.material.button.MaterialButton
 class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<BigShotPostBean, BaseDataBindingHolder<ItemBigShotItemsBinding>>(R.layout.item_big_shot_items) {
     init {
-        addChildClickViewIds(R.id.tv_author_name,R.id.iv_header)
+        addChildClickViewIds(R.id.tv_author_name, R.id.iv_header)
     }
+
     override fun convert(
         holder: BaseDataBindingHolder<ItemBigShotItemsBinding>,
         item: BigShotPostBean
@@ -41,36 +39,44 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             // 作者信息
             if (item.authorBaseVo != null) {// 假数据的作者为空。。
                 GlideUtils.loadBD(item.authorBaseVo?.avatar, it.layoutHeader.ivHeader)
-                if(!TextUtils.isEmpty(item.authorBaseVo?.memberIcon)){
+                if (!TextUtils.isEmpty(item.authorBaseVo?.memberIcon)) {
                     GlideUtils.loadBD(item.authorBaseVo?.memberIcon, it.layoutHeader.ivVip)
-                    it.layoutHeader.ivVip.visibility= View.VISIBLE
-                }else{
-                    it.layoutHeader.ivVip.visibility=View.GONE
+                    it.layoutHeader.ivVip.visibility = View.VISIBLE
+                } else {
+                    it.layoutHeader.ivVip.visibility = View.GONE
                 }
                 it.layoutHeader.tvAuthorName.text = item.authorBaseVo?.nickname
                 it.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
-                setFollowState(it.layoutHeader.btnFollow,item.authorBaseVo!!)
+                setFollowState(it.layoutHeader.btnFollow, item.authorBaseVo!!)
                 it.layoutHeader.btnFollow.setOnClickListener {
                     item.authorBaseVo?.let { it1 -> followAction(it as MaterialButton, it1) }
                 }
             }
             // 内容
             GlideUtils.loadBD(item.pics, it.layoutContent.ivPic)
-            it.layoutContent.tvContent.text = item.content
+            it.layoutContent.tvContent.text = item.title
             it.layoutContent.tvTime.text = item.timeStr
             it.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
             it.layoutCount.tvTimeLookCount.setPageTitleText(item.getViewCount())
             it.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCount())
-            val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+            val rvUserTag = holder.getView<RecyclerView>(R.id.rv_user_tag)
             if (item.authorBaseVo != null) {
                 val labelAdapter = LabelAdapter(16)
-                rvUserTag.adapter=labelAdapter
+                rvUserTag.adapter = labelAdapter
                 labelAdapter.setNewInstance(item.authorBaseVo?.imags)
             }
-            it.layoutCount.tvLikeCount.setOnClickListener {l->
-                 if(LoginUtil.isLogin()){
-                     likePost(it,item)
-                 }
+            it.layoutCount.tvLikeCount.setOnClickListener { l ->
+                if (LoginUtil.isLogin()) {
+                    likePost(it, item)
+                }
+            }
+            when (item.type) {
+                3 -> {
+                    it.layoutContent.ivPlay.visibility = View.VISIBLE
+                }
+                else -> {
+                    it.layoutContent.ivPlay.visibility = View.GONE
+                }
             }
 
         }
@@ -91,12 +97,14 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
         setFollowState(btnFollow, authorBaseVo)
         getFollow(authorBaseVo.authorId, followType)
     }
+
     fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }
     }
+
     // 关注。
     fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
@@ -125,12 +133,18 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            binding.layoutCount.tvLikeCount.setThumb(R.drawable.icon_home_bottom_like,true)
+                            binding.layoutCount.tvLikeCount.setThumb(
+                                R.drawable.icon_home_bottom_like,
+                                true
+                            )
                             item.likesCount++
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.layoutCount.tvLikeCount.setThumb(R.drawable.icon_home_look_like_count,false)
+                            binding.layoutCount.tvLikeCount.setThumb(
+                                R.drawable.icon_home_look_like_count,
+                                false
+                            )
                         }
                         binding.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
                     } else {
