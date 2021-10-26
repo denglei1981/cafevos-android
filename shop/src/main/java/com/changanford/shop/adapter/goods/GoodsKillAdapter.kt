@@ -21,6 +21,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
             val status=item.seckillStatus
+            item.seckillStatus=getsStatus(status)
             //当前销量
             val sekillCount=item.sekillCount
             //总库存
@@ -32,7 +33,6 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
 //            }
             val robbedPercentage=WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble())
             item.robbedPercentage=robbedPercentage
-            item.seckillStatus=getsStatus(status)
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
             GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),dataBinding.imgCover)
