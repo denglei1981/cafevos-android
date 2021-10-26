@@ -39,8 +39,7 @@ class SearchActsFragment :
     private var selectPosition: Int = -1;// 记录选中的 条目
     var searchContent: String? = null
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         binding.recyclerView.adapter = searchActsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)

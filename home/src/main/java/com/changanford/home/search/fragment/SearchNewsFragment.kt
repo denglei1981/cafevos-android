@@ -47,8 +47,7 @@ class SearchNewsFragment :
 
     var searchContent: String? = null
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         binding.recyclerView.adapter = searchNewsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)

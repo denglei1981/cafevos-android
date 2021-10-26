@@ -92,7 +92,6 @@ class PloySearchResultActivity :
             )
         )
         binding.searchTab.tabRippleColor = null
-//        setAppbarPercent()
         TabLayoutMediator(binding.searchTab, binding.viewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
 
