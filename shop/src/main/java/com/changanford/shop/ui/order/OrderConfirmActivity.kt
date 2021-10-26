@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -49,8 +50,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
+        Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+        dataBean.isAgree=false
         initLiveDataBus()
+//        val speChat="[`~@#\$%^&*|{}\\[\\]<>/~@#￥%&*|{}【】‘]"
+//        WCommonUtil.setEditTextInhibitInputSpeChat(binding.inGoodsInfo.edtLeaveMsg,speChat)
     }
 
     override fun initData() {
@@ -87,7 +92,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         val buyNum=dataBean.buyNum
         //运费 1元=100积分
         val freightPrice=((dataBean.freightPrice?:"0.00").toFloat()*100).toInt()
-        //单价
+        //单价（现价）
         val fbPrice=dataBean.fbPrice.toInt()
         //总商品价 单价*购买数量
         val totalFb=fbPrice*buyNum
@@ -96,15 +101,22 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         dataBean.totalPayFb="$totalPayFb"
         binding.inOrderInfo.apply {
             if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
-            tvAmountValue.setText("$totalFb")
+            //单价（原价）
+            val originalPrice=(dataBean.orginPrice?:dataBean.fbPrice).toInt()
+            //原总商品价 单价*购买数量
+            val totalOriginalFb=originalPrice*buyNum
+            tvAmountValue.setText("$totalOriginalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
             //会员折扣
             if("MEMBER_DISCOUNT"==dataBean.spuPageType){
-                //会员优惠=原价-现价 会员折扣的时候才显示
-                val memberDiscount=(dataBean.orginPrice?:"0").toInt()*buyNum-totalFb
-                dataBean.preferentialFb="$memberDiscount"
-                tvMemberDiscountValue.visibility=View.VISIBLE
-                tvMemberDiscount.visibility=View.VISIBLE
+                //会员优惠=原总价-现总价
+                (totalOriginalFb-totalFb).apply {
+                    if(this>0){
+                        dataBean.preferentialFb="$this"
+                        tvMemberDiscountValue.visibility=View.VISIBLE
+                        tvMemberDiscount.visibility=View.VISIBLE
+                    }
+                }
             }
             model=dataBean
         }
@@ -122,7 +134,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inBottom.apply {
             model=dataBean
             tvAcountFb.setText("${dataBean.acountFb}")
-            btnSubmit.updateEnabled(null!=dataBean.addressId&&dataBean.totalPayFb.toInt()<=dataBean.acountFb)
+            updateBtnUi()
+        }
+    }
+    private fun updateBtnUi(){
+        dataBean.apply {
+            binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
         }
     }
     fun onClick(v:View){
@@ -131,6 +148,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.btn_submit->submitOrder()
             //选择地址
             R.id.in_address->JumpUtils.instans?.jump(20,"1")
+            //服务协议
+            R.id.tv_agreement->JumpUtils.instans?.jump(1,MConstant.H5_SHOP_AGREEMENT)
+            //协议勾选
+            R.id.checkBox->{
+                dataBean.isAgree=binding.checkBox.isChecked
+                updateBtnUi()
+            }
         }
     }
     @DelicateCoroutinesApi

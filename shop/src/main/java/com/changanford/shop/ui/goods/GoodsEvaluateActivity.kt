@@ -38,11 +38,11 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     override fun initData() {
         viewModel.getGoodsEvalList(spuId,pageNo)
         viewModel.commentLiveData.observe(this,{
-            it?.let {
-                binding.ratingBar.rating= it.totalEvalScore.toFloat()
-                val dataList=it.pageList?.dataList
+            it?.apply {
+                val dataList=pageList?.dataList
                 if(1==pageNo)mAdapter.setList(dataList)
                 else dataList?.let { it1 -> mAdapter.addData(it1) }
+                binding.model=this
             }
             binding.smartRl.apply {
                 finishLoadMore()

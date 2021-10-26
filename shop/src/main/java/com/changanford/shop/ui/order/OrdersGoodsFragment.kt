@@ -40,7 +40,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         if(arguments!=null){
             statesId= requireArguments().getInt("statesId", -1)
             mAdapter.orderSource=statesId
-            viewModel.getShopOrderList(statesId,pageNo,showLoading = true)
+            viewModel.getShopOrderList(statesId,pageNo,showLoading = -1==statesId)
         }
         viewModel.shopOrderData.observe(this,{
             it?.let {

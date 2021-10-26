@@ -520,6 +520,7 @@ object MineCommAdapter {
                                 }
                             }.toString()
                             word.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.signunreach))
+                            return
                         }
                         icon.load(R.mipmap.icon_sign_bu)
                         word.setOnClickListener {

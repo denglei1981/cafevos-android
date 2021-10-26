@@ -120,4 +120,8 @@ object MConstant {
 
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
+    /**
+     *《福域APP商城服务条款》
+    * */
+    val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/"
 }

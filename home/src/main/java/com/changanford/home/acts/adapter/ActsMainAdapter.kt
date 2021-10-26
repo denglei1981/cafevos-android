@@ -40,10 +40,11 @@ class ActsMainAdapter(
     Pair(R.layout.home_acts_bottom, 1),
 ) {
     private val params = arrayOf("综合排序", "全部活动")
+
     //， 排序，活动状态  ，发布方,线上线下
-    var shaixuanList = arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
+    var shaixuanList =
+        arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
     var adBean = ArrayList<CircleHeadBean>()
-    var isSetAdBean = false
     var zonghescreens = MutableLiveData<List<EnumBean>>() //综合排序等
     var screenstype = MutableLiveData<MutableList<EnumBean>>()  //进行中等
     var guanfang = MutableLiveData<List<EnumBean>>()  //官方
@@ -54,17 +55,18 @@ class ActsMainAdapter(
 
     var allActsCode: String = ""// 进行中
     var allUnitCode: String = ""// 综合排序code
+    var headerBinding: HomeActsHeaderBinding? = null
 
-
-    val actsChildFragment :ActsChildListFragment by lazy {
+    val actsChildFragment: ActsChildListFragment by lazy {
         ActsChildListFragment.newInstance()
     }
+
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int, viewType: Int) {
         when (viewType) {
             0 -> {
-                val headerBinding = vdBinding as HomeActsHeaderBinding
-                initViewPager(headerBinding)
-                setIndicator(headerBinding)
+                headerBinding = vdBinding as HomeActsHeaderBinding
+                initViewPager(headerBinding!!)
+                setIndicator(headerBinding!!)
             }
             1 -> {
                 val binding = vdBinding as HomeActsBottomBinding
@@ -73,6 +75,7 @@ class ActsMainAdapter(
                         override fun getItemCount(): Int {
                             return 1
                         }
+
                         override fun createFragment(position: Int): Fragment {
                             return actsChildFragment
                         }
@@ -105,8 +108,10 @@ class ActsMainAdapter(
                             }
                         }
                     }
+
                     override fun onTabUnselected(tab: TabLayout.Tab?) {
                     }
+
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         when (tab?.position) {
                             0 -> {
@@ -121,10 +126,12 @@ class ActsMainAdapter(
             }
         }
     }
+
     private class TabViewHolder(view: View) {
         init {
             view.tag = this
         }
+
         val textView: TextView = view.findViewById(R.id.text_view)
         val img: ImageView = view.findViewById(R.id.img)
     }
@@ -135,28 +142,25 @@ class ActsMainAdapter(
 
     fun setViewPagerData(list: ArrayList<CircleHeadBean>) {
         this.adBean = list
-        isSetAdBean = true
-        notifyItemChanged(0, 0)
+        headerBinding?.bViewpager?.refreshData(list)
+//        notifyItemChanged(0, 0)
     }
 
     private fun initViewPager(binding: HomeActsHeaderBinding) {
-        if(isSetAdBean){
-            binding.bViewpager.apply {
-                setAutoPlay(true)
-                setScrollDuration(500)
-                setCanLoop(true)
-                setAdapter(SimpleAdapter())
-                setIndicatorView(binding.drIndicator)
-                setRoundCorner(20)
-                setOnPageClickListener { }
-                setIndicatorSliderColor(
-                    ContextCompat.getColor(context, R.color.blue_tab),
-                    ContextCompat.getColor(context, R.color.colorPrimary)
-                )
+        binding.bViewpager.apply {
+            setAutoPlay(true)
+            setScrollDuration(500)
+            setCanLoop(true)
+            setAdapter(SimpleAdapter())
+            setIndicatorView(binding.drIndicator)
+            setRoundCorner(20)
+            setOnPageClickListener { }
+            setIndicatorSliderColor(
+                ContextCompat.getColor(context, R.color.blue_tab),
+                ContextCompat.getColor(context, R.color.colorPrimary)
+            )
+        }.create()
 
-            }.create(adBean)
-
-        }
 
     }
 
@@ -177,7 +181,6 @@ class ActsMainAdapter(
             )
             .setIndicatorGap(context.resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
-
 
     /**
      *  查询活动枚举。
@@ -214,6 +217,7 @@ class ActsMainAdapter(
                 }
         }
     }
+
     fun setUnitPopu(binding: HomeActsBottomBinding, list: MutableList<EnumBean>) {
         if (unitPop == null) {
             unitPop = UnitActsPop(context,
@@ -224,7 +228,11 @@ class ActsMainAdapter(
                             ?.customView?.findViewById<TextView>(R.id.text_view)
                             ?.text = allEnum?.message
                         allUnitCode = allEnum?.code.toString()
-                        actsChildFragment.getActList(false,orderType = allUnitCode,activityTimeStatus = allActsCode)
+                        actsChildFragment.getActList(
+                            false,
+                            orderType = allUnitCode,
+                            activityTimeStatus = allActsCode
+                        )
                     }
                 })
         }
@@ -233,11 +241,12 @@ class ActsMainAdapter(
         unitPop?.setAlignBackground(true)
         unitPop?.setOnDismissListener(object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
-                binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation = 0f
+                binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation =
+                    0f
             }
         })
         unitPop?.setOnPopupWindowShowListener {
-            binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation =180f
+            binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation = 180f
 
         }
         unitPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
@@ -254,7 +263,11 @@ class ActsMainAdapter(
                                 ?.customView?.findViewById<TextView>(R.id.text_view)
                                 ?.text = allEnum?.message
                             allActsCode = allEnum?.code.toString()
-                            actsChildFragment.getActList(false,orderType = allUnitCode,activityTimeStatus = allActsCode)
+                            actsChildFragment.getActList(
+                                false,
+                                orderType = allUnitCode,
+                                activityTimeStatus = allActsCode
+                            )
                         }
                     }
                 })
@@ -265,7 +278,8 @@ class ActsMainAdapter(
         allActsPop?.onDismissListener = object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
 //                binding.layoutHomeScreen.ivDown.rotation = 0f
-                binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.rotation = 0f
+                binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.rotation =
+                    0f
             }
         }
         allActsPop?.setOnPopupWindowShowListener {
@@ -274,7 +288,6 @@ class ActsMainAdapter(
         }
         allActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
-
 
 
 }

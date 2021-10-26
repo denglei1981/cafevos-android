@@ -58,7 +58,7 @@ data class GoodsItemBean(
     val imgUrl: String = "",
     var isSettedNotice: String = "",
     val mallMallSpuSeckillRangeId: String = "0",
-    val salesCount: Int = 0,
+    var salesCount: Int = 0,
     val stockNow: Int = 0,
     val stockPlusSalesCount: Int = 1,
     var timeState: String = "",
@@ -191,6 +191,7 @@ data class GoodsDetailBean(
     var mallMallSkuSpuSeckillRangeId:String?=null,
     val mallMallHaggleUserGoodsId: String? = null,
     var source:String?="0",
+    var isAgree:Boolean=false,//是否同意协议
 )
 
 data class Attribute(
@@ -236,7 +237,7 @@ data class OptionVo(
 data class CommentBean(
     val pageList: PageList?,
     val totalEvalNum: Int = 0,
-    val totalEvalScore: String ="0"
+    val totalEvalScore: Float =0f
 )
 
 data class PageList(
@@ -337,7 +338,7 @@ data class OrderItemBean(
     val params: Params = Params(),
     var payType: String = "",
     val phone: String = "",
-    val preferentialFb: String? = "0",
+    var preferentialFb: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
     val seckill: String = "",//是否秒杀
@@ -359,7 +360,7 @@ data class OrderItemBean(
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
     val sendTime: Long? = 0,
-    val preferentialFbOfUnitPrice: Any? = null,
+    var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType:Int=0,

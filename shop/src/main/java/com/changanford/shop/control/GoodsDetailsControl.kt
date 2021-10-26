@@ -96,12 +96,12 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     @SuppressLint("SetTextI18n")
     fun bindingComment(itemData: CommentItem?){
-        if(null!=itemData){
+        itemData?.let{
             headerBinding.inComment.apply {
-                model=itemData
                 layoutComment.visibility=View.VISIBLE
                 tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, 0)
                 GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar)
+                model=it
             }
         }
     }
