@@ -1,6 +1,7 @@
 package com.changanford.circle
 
 import android.Manifest
+import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSON
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -10,16 +11,21 @@ import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.manger.UserManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.logD
@@ -33,7 +39,6 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
-
     private val circleAdapter by lazy {
         CircleMainAdapter(requireContext(), childFragmentManager)
     }
@@ -51,54 +56,65 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-            if (postEntity?.size == 0) {
 
-                CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
-                    override fun checkLongBar() {
-                        startARouter(ARouterCirclePath.LongPostAvtivity, true)
-                    }
+            if (MConstant.token.isNotEmpty()){
+                if (!MineUtils.getBindMobileJumpDataType()){
+                    if (postEntity?.size == 0) {
 
-                    override fun checkPic() {
-                        startARouter(ARouterCirclePath.PostActivity, true)
-                    }
+                        CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
+                            override fun checkLongBar() {
+                                startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                            }
 
-                    override fun checkVideo() {
-                        startARouter(ARouterCirclePath.VideoPostActivity, true)
-                    }
+                            override fun checkPic() {
 
-                }).run {
-                    setBlurBackgroundEnable(false)
-                    showPopupWindow(it)
-                    initData()
-                }
-            } else {
-                JSON.toJSONString(postEntity).logD()
-                AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
-                    .setNegativeButton("继续编辑") {
-                        startARouter(ARouterMyPath.MyPostDraftUI)
-                    }.setPositiveButton("不使用草稿") {
-                        CircleMainMenuPop(
-                            requireContext(),
-                            object : CircleMainMenuPop.CheckPostType {
-                                override fun checkLongBar() {
-                                    startARouter(ARouterCirclePath.LongPostAvtivity, true)
-                                }
+                                startARouter(ARouterCirclePath.PostActivity, true)
+                            }
 
-                                override fun checkPic() {
-                                    startARouter(ARouterCirclePath.PostActivity, true)
-                                }
+                            override fun checkVideo() {
+                                startARouter(ARouterCirclePath.VideoPostActivity, true)
+                            }
 
-                                override fun checkVideo() {
-                                    startARouter(ARouterCirclePath.VideoPostActivity, true)
-                                }
-
-                            }).run {
+                        }).run {
                             setBlurBackgroundEnable(false)
-                            showPopupWindow(binding.ivMenu)
+                            showPopupWindow(it)
                             initData()
                         }
-                    }.show()
+                    } else {
+                        JSON.toJSONString(postEntity).logD()
+                        AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
+                            .setNegativeButton("继续编辑") {
+                                startARouter(ARouterMyPath.MyPostDraftUI)
+                            }.setPositiveButton("不使用草稿") {
+                                CircleMainMenuPop(
+                                    requireContext(),
+                                    object : CircleMainMenuPop.CheckPostType {
+                                        override fun checkLongBar() {
+                                            startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                                        }
+
+                                        override fun checkPic() {
+                                            startARouter(ARouterCirclePath.PostActivity, true)
+                                        }
+
+                                        override fun checkVideo() {
+                                            startARouter(ARouterCirclePath.VideoPostActivity, true)
+                                        }
+
+                                    }).run {
+                                    setBlurBackgroundEnable(false)
+                                    showPopupWindow(binding.ivMenu)
+                                    initData()
+                                }
+                            }.show()
+                    }
+                }else{
+                    BindDialog(binding.ivMenu.context).show()
+                }
+            }else{
+                startARouter(ARouterMyPath.SignUI)
             }
+
         }
         binding.ivSearch.setOnClickListener {
             JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
@@ -168,8 +184,8 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
         })
     }
 
-    private fun bus(){
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this,{
+    private fun bus() {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this, {
             binding.refreshLayout.finishRefresh()
         })
     }

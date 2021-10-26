@@ -3,15 +3,18 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
@@ -41,7 +44,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("isRefresh",isRefresh))
         }
     }
-    private var spuId:String="108"//商品IDR.id.img_share->control.share()
+    private var spuId:String="0"//商品IDR.id.img_share->control.share()
     private lateinit var control: GoodsDetailsControl
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
@@ -65,6 +68,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(hasFocus&&0==topBarH) initH()
     }
     override fun initView() {
+        addLiveDataBus()
         binding.inEmpty.imgBack.setOnClickListener { this.finish() }
         spuId=intent.getStringExtra("spuId")?:"0"
         if("0"==spuId){
@@ -92,7 +96,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
         })
-        //
         viewModel.responseData.observe(this,{
             it.apply {
                 if(!isSuccess){
@@ -121,11 +124,14 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         intent?.apply {
             val isRefresh=getBooleanExtra("isRefresh",false)
             if("0"!=spuId&&isRefresh)viewModel.queryGoodsDetails(spuId,false)
-            Log.e("okhttp","isRefresh:$isRefresh")
         }
     }
     fun onClick(v:View){
         val vid=v.id
+        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.img_share!=vid){
+            JumpUtils.instans?.jump(100)
+            return
+        }
         if(R.id.img_back!=vid&&(!::control.isInitialized||viewModel.goodsDetailData.value==null))return
         when(vid){
             //确认订单
@@ -232,5 +238,14 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     override fun onDestroy() {
         super.onDestroy()
         if(::control.isInitialized)control.onDestroy()
+    }
+    private fun addLiveDataBus(){
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this,{
+                if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
+                     if("0"!=spuId)viewModel.queryGoodsDetails(spuId,false)
+                }
+            })
     }
 }

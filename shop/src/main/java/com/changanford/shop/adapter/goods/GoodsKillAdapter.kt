@@ -20,14 +20,17 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
+            val status=item.seckillStatus
+            item.seckillStatuTxt=getsStatus(status)
+            //总库存=销量+当前库存
+            val totalStock:Int=(item.seckillStock?:0)+item.sekillCount
+            item.seckillStock=totalStock
+            //秒杀结束 强制已卖完则 销量=总库存
+            item.sekillCount=if("ENDED"==status)totalStock else item.sekillCount
             //当前销量
             val sekillCount=item.sekillCount
-            //总库存
-            val totalStock:Int=(item.seckillStock?:0)+sekillCount
-            item.seckillStock=totalStock
             val robbedPercentage=WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble())
             item.robbedPercentage=robbedPercentage
-            item.seckillStatus=getsSeckillStatus(item.seckillStatus)
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
             GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),dataBinding.imgCover)
@@ -48,8 +51,8 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
      * 	TimeStateEnum.ON_GOING(code=ON_GOING, dbCode=1, message=进行中),
      * 	TimeStateEnum.ENDED(code=ENDED, dbCode=2, message=已结束)
     * */
-    private fun getsSeckillStatus(seckillStatus:String):String{
-        return when(seckillStatus){
+    private fun getsStatus(status:String):String{
+        return when(status){
             "NOT_BEGIN"->"未开始"
             "ON_GOING"->"进行中"
             else ->"已结束"

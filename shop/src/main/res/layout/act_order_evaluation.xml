@@ -78,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="5.0好评"
+                android:text=" "
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_14" />
 

@@ -57,8 +57,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="-1300积分"
             app:end_txt="@string/str_integral"
+            app:start_txt="@string/str_reduction"
             android:text="@{model.preferentialFb}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />

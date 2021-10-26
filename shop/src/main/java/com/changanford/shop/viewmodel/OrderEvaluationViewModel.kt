@@ -29,21 +29,20 @@ class OrderEvaluationViewModel: BaseViewModel(){
     }
     /**
      * 订单评价
-     * [mallMallOrderId]订单id
+     * [orderNo]订单id
      * [evalScore]评分(满分5分)
-     *[anonymous]是否匿名,可用值:YesNoNumInDBEnum.YES,YesNoNumInDBEnum.NO
+     *[anonymous]是否匿名,可用值:YES,NO
      *[evalText]评价内容
      * */
-    fun orderEval(mallMallOrderId:String,evalScore:Int,anonymous:String?,evalText:String){
+    fun orderEval(orderNo:String,evalScore:Int,anonymous:String?,evalText:String){
         if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["mallMallOrderId"] = mallMallOrderId
+                body["orderNo"] = orderNo
                 body["evalScore"] = evalScore
                 body["evalText"] = evalText
-                body["anonymous"] = anonymous?:"YesNoNumInDBEnum.NO"
-                body["evalType"] = "MallEvalTypeEnum.CONSUMER"
+                body["anonymous"] = anonymous?:"NO"
                 val rkey = getRandomKey()
                 shopApiService.orderEval(body.header(rkey), body.body(rkey))
             }.onSuccess {

@@ -38,6 +38,8 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             this.finish()
             return
         }
+//        val speChat="[`~@#\$%^&*|{}\\[\\].<>/~@#￥%&*|{}【】‘]"
+//        WCommonUtil.setEditTextInhibitInputSpeChat(binding.edtContent,speChat)
         val evaluationContent=binding.edtContent
         val contentLength=binding.tvContentLength
         viewModel.orderFormState.observe(this,{
@@ -58,10 +60,11 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             viewModel.evalDataChanged(evaluationContent.text.toString(),rating.toInt())
         }
         viewModel.responseData.observe(this,{
+            ToastUtils.reToast(R.string.str_evaluationSuccess)
            this.finish()
         })
         btnSubmit.setOnClickListener {
-            val anonymous=if(binding.checkBox.isChecked)"YesNoNumInDBEnum.YES" else "YesNoNumInDBEnum.NO"
+            val anonymous=if(binding.checkBox.isChecked)"YES" else "NO"
             viewModel.orderEval(orderNo,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
         }
     }

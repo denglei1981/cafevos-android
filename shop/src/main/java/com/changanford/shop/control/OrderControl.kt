@@ -2,10 +2,16 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
+import android.view.View
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
+import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
+import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
@@ -19,6 +25,42 @@ import com.google.gson.Gson
  * @Description : OrderControl
  */
 class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
+    /**
+     * 绑定订单商品基础信息
+     * */
+    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,item: OrderItemBean){
+        dataBinding.apply {
+//            val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
+//            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
+            tvOrderType.apply {
+                visibility = when {
+                    "YES"==item.seckill -> {//秒杀
+                        setText(R.string.str_seckill)
+                        View.VISIBLE
+                    }
+                    "YES"==item.haggleOrder -> {//砍价
+                        setText(R.string.str_bargaining)
+                        View.VISIBLE
+                    }
+                    else -> View.GONE
+                }
+            }
+            recyclerView.apply {
+                if(!TextUtils.isEmpty(item.specifications)){
+                    visibility= View.VISIBLE
+                    layoutManager= FlowLayoutManager(context,false)
+                    adapter= OrderGoodsAttributeAdapter().apply {
+                        val specifications=item.specifications.split(",").filter { ""!=it }
+                        setList(specifications)
+                    }
+                }else{
+                    visibility= View.GONE
+                }
+            }
+            model=item
+        }
+    }
     /**
      * 去支付
      * */
@@ -36,7 +78,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
 //        val goodsBean= GoodsDetailBean(spuId = item.mallMallSpuId,spuName =item.spuName, buyNum = item.buyNum.toInt(),fbPrice = item.fbOfUnitPrice,
 //            freightPrice = item.freightPrice?:"0.00",preferentialFb = item.preferentialFb,acountFb = (item.totalIntegral?:"0").toInt(),skuCode = item.skuCode,
 //            skuCodeTxts = skuCodeTxt, addressInfo = item.addressInfo,addressId = item.addressId,skuId = item.mallMallSkuId,skuImg = item.skuImg,source = "3",
-//            spuPageType =spuPageType,orginPrice = item.orginPrice)
+//            spuPageType =spuPageType,orginPrice = item.fbOfUnitPrice)
 //        OrderConfirmActivity.start(Gson().toJson(goodsBean))
     }
     /**

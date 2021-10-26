@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.fbPrice}"
+            android:text="@{model.orginPrice}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_14" />
       <com.changanford.shop.view.AddSubtractView

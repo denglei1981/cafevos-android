@@ -21,16 +21,16 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsKillAreaBinding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
+            btnStates.setStates(getKillStates(item))
             item.stockProportion= WCommonUtil.getPercentage(item.salesCount.toDouble(),item.stockPlusSalesCount.toDouble())
-            model=item
-            executePendingBindings()
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),imgCover)
             tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
-            btnStates.setStates(getKillStates(item))
             btnStates.setOnClickListener {
                 clickBtn(this,item)
             }
+            model=item
+            executePendingBindings()
         }
     }
     /**
@@ -41,15 +41,28 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     * */
     //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 10已提醒
     private fun getKillStates(item: GoodsItemBean):Int{
-        var killStates=2//默认已结束
+        val killStates: Int
         val timeState=item.timeState
+        var salesCount=item.salesCount
         //库存
         val stockNow=item.stockNow
-        if("ON_GOING"==timeState){
-            killStates=if(stockNow<1)1 else 0
-        }else if("NOT_BEGIN"==timeState){
-            killStates=if(item.isSettedNotice=="NO")3 else 10
+        when (timeState) {
+            //进行中
+            "ON_GOING" -> {
+                killStates=if(stockNow<1)1 else 0
+            }
+            //未开始
+            "NOT_BEGIN" -> {
+                killStates=if(item.isSettedNotice=="NO")3 else 10
+            }
+            //已结束
+            else -> {
+                killStates=2
+                //强制 销量=总库存
+                salesCount=item.stockPlusSalesCount
+            }
         }
+        item.salesCount=salesCount
         item.killStates=killStates
         return killStates
     }

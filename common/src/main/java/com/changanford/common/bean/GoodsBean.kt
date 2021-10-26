@@ -58,7 +58,7 @@ data class GoodsItemBean(
     val imgUrl: String = "",
     var isSettedNotice: String = "",
     val mallMallSpuSeckillRangeId: String = "0",
-    val salesCount: Int = 0,
+    var salesCount: Int = 0,
     val stockNow: Int = 0,
     val stockPlusSalesCount: Int = 1,
     var timeState: String = "",
@@ -66,7 +66,7 @@ data class GoodsItemBean(
     val createTime: Long = 0,
     val dataState: String = "",
     val detailsHtml: String = "",
-    val evalCount: Any? = null,
+    val evalCount: String? = "0",
     val evalScoreSum: Any? = null,
     val hot: Any? = null,
     val isRecommend: String = "",
@@ -109,6 +109,7 @@ data class GoodsItemBean(
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
+    var seckillStatuTxt: String = "",
     var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
     var totalStock:Int=1,
@@ -191,6 +192,8 @@ data class GoodsDetailBean(
     var mallMallSkuSpuSeckillRangeId:String?=null,
     val mallMallHaggleUserGoodsId: String? = null,
     var source:String?="0",
+    var evalCount:String?="0",
+    var isAgree:Boolean=false,//是否同意协议
 )
 
 data class Attribute(
@@ -236,7 +239,7 @@ data class OptionVo(
 data class CommentBean(
     val pageList: PageList?,
     val totalEvalNum: Int = 0,
-    val totalEvalScore: String ="0"
+    val totalEvalScore: Float =0f
 )
 
 data class PageList(
@@ -257,14 +260,15 @@ data class CommentItem(
     val evalScore: Int = 0,
     val evalStatus: String = "",
     val evalText: String = "",
-    val evalTime: String = "",
+    var evalTime: Long? = 0,
+    var evalTimeTxt: String? = "0",
     val evalType: String = "",
     val mallMallOrderEvalId: Int = 0,
     val mallMallOrderId: Int = 0,
     val mallMallSkuId: Int = 0,
     val mallMallSpuId: Int = 0,
     val memo: String = "",
-    val nickName: String = "",
+    var nickName: String = "",
     val `operator`: String = "",
     val orderNo: String = "",
     val params: Params = Params(),
@@ -337,7 +341,7 @@ data class OrderItemBean(
     val params: Params = Params(),
     var payType: String = "",
     val phone: String = "",
-    val preferentialFb: String? = "0",
+    var preferentialFb: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
     val seckill: String = "",//是否秒杀
@@ -359,7 +363,7 @@ data class OrderItemBean(
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
     val sendTime: Long? = 0,
-    val preferentialFbOfUnitPrice: Any? = null,
+    var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType:Int=0,

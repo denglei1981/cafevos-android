@@ -13,19 +13,18 @@ import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
-import com.changanford.shop.adapter.FlowLayoutManager
-import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 /**
  * @Author : wenke
@@ -57,12 +56,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             return
         }
     }
-
     override fun initData() {
-        viewModel.getOrderDetail(orderNo,true)
         viewModel.orderItemLiveData.observe(this,{
             bindingData(it)
         })
+    }
+    override fun onStart() {
+        super.onStart()
+        viewModel.getOrderDetail(orderNo,!::dataBean.isInitialized)
     }
     @SuppressLint("SetTextI18n")
     private fun bindingData(dataBean:OrderItemBean){
@@ -158,6 +159,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         //优惠积分
         val preferentialFb=dataBean.preferentialFb
         if(null!=preferentialFb&&"0"!=preferentialFb){
+            //取绝对值 因接口有时返回带-有时不带
+            dataBean.preferentialFb="${abs(preferentialFb.toInt())}"
             binding.inGoodsInfo1.apply {
                 tvIntegralVip.visibility=View.VISIBLE
                 tvMemberDiscount.visibility=View.VISIBLE
@@ -167,7 +170,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         if("0"==freightPrice)dataBean.freightPrice="0.00"
         dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime?:0)
         binding.model=dataBean
-        this.dataBean=dataBean
         binding.inGoodsInfo1.model=dataBean
         binding.inOrderInfo.apply {
             model=dataBean
@@ -175,33 +177,13 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             model=dataBean
-            inGoodsInfo.apply {
-                model=dataBean
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),inGoodsInfo.imgGoodsCover)
-                tvOrderType.apply {
-                    visibility = when {
-                        "YES"==dataBean.seckill -> {//秒杀
-                            setText(R.string.str_seckill)
-                            View.VISIBLE
-                        }
-                        "YES"==dataBean.haggleOrder -> {//砍价
-                            setText(R.string.str_bargaining)
-                            View.VISIBLE
-                        }
-                        else -> View.GONE
-                    }
-                }
-                recyclerView.layoutManager= FlowLayoutManager(this@OrderDetailsActivity,false)
-                recyclerView.adapter=OrderGoodsAttributeAdapter().apply {
-                    val skuCodeTxt=dataBean.specifications.split(",").filter { ""!=it }
-                    setList(skuCodeTxt)
-                }
-            }
+            control.bindingGoodsInfo(inGoodsInfo,dataBean)
         }
         binding.inBottom.apply {
             model=dataBean
             tvTotalPayFb.setText(totalPayName)
         }
+        this.dataBean=dataBean
     }
     private fun bindingAddressInfo(addressInfo:String,isUpdate:Boolean=false){
         Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
@@ -220,7 +202,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun updateAddressInfo(item:ShopAddressInfoBean){
         item.apply {
             addressInfo="$provinceName$cityName$districtName$addressName"
-            userInfo="$consignee   $phone"
+            userInfo="$consignee   ${WCommonUtil.formatMobilePhone(phone)}"
             binding.inAddress.addressInfo=this
         }
     }
@@ -236,6 +218,16 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             }
         })
     }
+    /**
+     * 确认收货
+    * */
+    private fun confirmGoods(){
+        control.confirmGoods(dataBean,object :OnPerformListener{
+            override fun onFinish(code: Int) {
+                viewModel.getOrderDetail(orderNo)
+            }
+        })
+    }
     private fun confirmOrder(){
         when(binding.inBottom.btnOrderConfirm.text){
             //再次购买
@@ -243,7 +235,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //评价
             getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
             //确认收货
-            getString(R.string.str_confirmGoods)->control.confirmGoods(dataBean)
+            getString(R.string.str_confirmGoods)->confirmGoods()
             //立即支付
             getString(R.string.str_immediatePayment)->control.toPay(dataBean)
         }
@@ -261,6 +253,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             R.id.img_right,R.id.tv_userInfo,R.id.tv_locationInfo->updateAddress()
         }
     }
+
     private fun updateAddress(){
         dataBean.apply {
             if("WAIT_PAY"==orderStatus){//修改地址
