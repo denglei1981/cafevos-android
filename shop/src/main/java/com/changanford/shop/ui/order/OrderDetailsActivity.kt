@@ -54,12 +54,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             return
         }
     }
-
     override fun initData() {
-        viewModel.getOrderDetail(orderNo,true)
         viewModel.orderItemLiveData.observe(this,{
             bindingData(it)
         })
+    }
+    override fun onStart() {
+        super.onStart()
+        viewModel.getOrderDetail(orderNo,!::dataBean.isInitialized)
     }
     @SuppressLint("SetTextI18n")
     private fun bindingData(dataBean:OrderItemBean){
@@ -164,7 +166,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         if("0"==freightPrice)dataBean.freightPrice="0.00"
         dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime?:0)
         binding.model=dataBean
-        this.dataBean=dataBean
         binding.inGoodsInfo1.model=dataBean
         binding.inOrderInfo.apply {
             model=dataBean
@@ -178,6 +179,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             model=dataBean
             tvTotalPayFb.setText(totalPayName)
         }
+        this.dataBean=dataBean
     }
     private fun bindingAddressInfo(addressInfo:String,isUpdate:Boolean=false){
         Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
@@ -212,6 +214,16 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             }
         })
     }
+    /**
+     * 确认收货
+    * */
+    private fun confirmGoods(){
+        control.confirmGoods(dataBean,object :OnPerformListener{
+            override fun onFinish(code: Int) {
+                viewModel.getOrderDetail(orderNo)
+            }
+        })
+    }
     private fun confirmOrder(){
         when(binding.inBottom.btnOrderConfirm.text){
             //再次购买
@@ -219,7 +231,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //评价
             getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
             //确认收货
-            getString(R.string.str_confirmGoods)->control.confirmGoods(dataBean)
+            getString(R.string.str_confirmGoods)->confirmGoods()
             //立即支付
             getString(R.string.str_immediatePayment)->control.toPay(dataBean)
         }
@@ -237,6 +249,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             R.id.img_right,R.id.tv_userInfo,R.id.tv_locationInfo->updateAddress()
         }
     }
+
     private fun updateAddress(){
         dataBean.apply {
             if("WAIT_PAY"==orderStatus){//修改地址
