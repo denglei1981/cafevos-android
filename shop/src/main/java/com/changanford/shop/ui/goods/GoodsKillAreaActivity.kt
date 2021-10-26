@@ -61,7 +61,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         mAdapter.setEmptyView(R.layout.view_empty)
         addObserve()
         mAdapter.setOnItemClickListener { _, _, position ->
-            if("ENDED"!=mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
+            if("ON_GOING"==mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
         }
     }
     override fun initData() {

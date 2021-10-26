@@ -52,7 +52,9 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_commodityGrade"
                     android:id="@+id/ratingBar"
                     android:minHeight="@dimen/dp_16"
-                    style="@style/AndRatingBarStyle"/>
+                    style="@style/AndRatingBarStyle"
+                    android:rating="@{model.totalEvalScore}"
+                    android:stepSize="0.1"/>
                 <com.changanford.shop.view.TypefaceTextView
                     android:id="@+id/tv_score"
                     android:layout_marginStart="@dimen/dp_3"

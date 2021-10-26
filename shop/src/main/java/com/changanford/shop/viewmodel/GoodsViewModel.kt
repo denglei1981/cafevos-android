@@ -194,6 +194,8 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentLiveData.postValue(it)
+            }.onWithMsgFailure {
+                commentLiveData.postValue(null)
             }
         }
     }

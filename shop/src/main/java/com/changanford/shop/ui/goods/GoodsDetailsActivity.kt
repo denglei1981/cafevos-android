@@ -3,7 +3,6 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -126,7 +125,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         intent?.apply {
             val isRefresh=getBooleanExtra("isRefresh",false)
             if("0"!=spuId&&isRefresh)viewModel.queryGoodsDetails(spuId,false)
-            Log.e("okhttp","isRefresh:$isRefresh")
         }
     }
     fun onClick(v:View){

@@ -236,7 +236,7 @@ data class OptionVo(
 data class CommentBean(
     val pageList: PageList?,
     val totalEvalNum: Int = 0,
-    val totalEvalScore: String ="0"
+    val totalEvalScore: Float =0f
 )
 
 data class PageList(
