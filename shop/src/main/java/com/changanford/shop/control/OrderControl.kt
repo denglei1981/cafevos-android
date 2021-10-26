@@ -96,6 +96,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
                             ToastUtils.showShortToast(R.string.str_goodsSuccessfully,context)
+                            item.orderStatusName=""
                             item.orderStatus="FINISH"
                             listener?.onFinish(0)
                             dismiss()
@@ -119,6 +120,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
                             ToastUtils.showShortToast(R.string.str_orderCancelledSuccessfully,context)
+                            item.orderStatusName=""
                             item.orderStatus="CLOSED"
                             listener?.onFinish(0)
                             dismiss()
