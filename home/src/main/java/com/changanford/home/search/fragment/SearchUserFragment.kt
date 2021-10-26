@@ -36,7 +36,8 @@ class SearchUserFragment :
         binding.recyclerView.adapter = searchUserResultAdapter
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         searchUserResultAdapter.setOnItemClickListener { adapter, view, position ->
-            JumpUtils.instans!!.jump(35) // 跳转到他人主页。
+            var item = searchUserResultAdapter.getItem(position)
+            JumpUtils.instans!!.jump(35,item.userId) // 跳转到他人主页。
         }
 
     }

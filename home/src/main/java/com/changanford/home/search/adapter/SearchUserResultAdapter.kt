@@ -8,6 +8,7 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultUserBinding
 import com.changanford.home.util.LoginUtil
@@ -33,6 +34,11 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
                         followAction(it as MaterialButton, item, holder.adapterPosition)
                 }
             }
+//            if (item.ex != null) {
+//                val labelAdapter = LabelAdapter(16)
+//                rvUserTag.adapter=labelAdapter
+//                labelAdapter.setNewInstance(item.authors?.imags)
+//            }
         }
 
     }
@@ -65,7 +71,6 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
                 }
         }
     }
-
     /**
      *  设置关注状态。
      * */
