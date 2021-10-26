@@ -51,6 +51,7 @@
             android:layout_height="@dimen/dp_32"
             android:gravity="center_vertical">
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:textStyle="bold"
                 android:id="@+id/checkBox"
                 android:onClick="onClick"
                 android:textSize="@dimen/sp_12"
@@ -64,11 +65,12 @@
                 android:gravity="center_vertical"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_agreement"
+                android:textStyle="bold"
                 android:onClick="onClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_fuyuAPPStoreTermsService"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <include

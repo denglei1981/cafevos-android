@@ -109,6 +109,7 @@ data class GoodsItemBean(
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
+    var seckillStatuTxt: String = "",
     var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
     var totalStock:Int=1,
