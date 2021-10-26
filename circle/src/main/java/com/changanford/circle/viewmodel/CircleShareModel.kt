@@ -13,6 +13,8 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
@@ -111,10 +113,18 @@ object CircleShareModel {
 
                     }
                     5 -> {
-                        ReportDialog(activity, body).show()
+                        if (MConstant.userId.isNotEmpty()) {
+                            ReportDialog(activity, body).show()
+                        } else {
+                            startARouter(ARouterMyPath.SignUI)//跳转登录
+                        }
                     }
                     6 -> {
-                        DislikeDialog(activity, body).show()
+                        if (MConstant.userId.isNotEmpty()) {
+                            DislikeDialog(activity, body).show()
+                        } else {
+                            startARouter(ARouterMyPath.SignUI)//跳转登录
+                        }
                     }
                     7 -> {
 //                        toastShow("结束发布")
@@ -189,14 +199,14 @@ private fun bus(activity: AppCompatActivity, shareBeanVO: CircleShareBean) {
     activity.launchWithCatch {
         val body = MyApp.mContext.createHashMap()
         shareBeanVO.let { bean ->
-            body["type"] = bean.type.toInt()
-            body["bizId"] = bean.bizId.toLong()
+            body["type"] = bean.type
+            body["bizId"] = bean.bizId
             body["content"] = bean.shareDesc
             shareto?.let { shareto ->
-                body["shareTo"] = shareto.toInt()
+                body["shareTo"] = shareto
             }
             body["shareTime"] = System.currentTimeMillis().toString()
-            body["userId"] = MConstant.userId.toInt()
+            body["userId"] = MConstant.userId
 
         }
         val rKey = getRandomKey()

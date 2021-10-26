@@ -11,5 +11,4 @@
         android:label="AboutFragment"/>
 
 </navigation>
-<!--    android:name="com.changanford.evos.demo.DemoFragment5"-->
 

@@ -66,6 +66,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     }
     @SuppressLint("SetTextI18n")
     private fun bindingData(dataBean:OrderItemBean){
+        timeCountControl?.cancel()
         val evalStatus=dataBean.evalStatus
         val orderStatus=dataBean.orderStatus
         //应付总额
@@ -107,7 +108,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
-                    val otherValue=simpleDateFormat.format(dataBean.payTime)
+                    val otherValue=simpleDateFormat.format(dataBean.payTime?:0)
                     dataBean.otherValue=otherValue
                     binding.tvOrderPrompt.apply {
                         visibility= View.VISIBLE
@@ -120,7 +121,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
@@ -130,7 +131,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
@@ -140,7 +141,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.payTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.payTime?:0)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
@@ -164,7 +165,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         }
         val freightPrice=dataBean.freightPrice
         if("0"==freightPrice)dataBean.freightPrice="0.00"
-        dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime)
+        dataBean.orderTimeTxt=simpleDateFormat.format(dataBean.orderTime?:0)
         binding.model=dataBean
         this.dataBean=dataBean
         binding.inGoodsInfo1.model=dataBean
@@ -229,6 +230,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun cancelOrder(){
         control.cancelOrder(dataBean,object :OnPerformListener{
             override fun onFinish(code: Int) {
+                timeCountControl?.cancel()
                 binding.inBottom.btnOrderCancle.visibility=View.GONE
                 viewModel.getOrderDetail(orderNo)
             }
@@ -241,10 +243,9 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //评价
             getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
             //确认收货
-            getString(R.string.str_eval)->control.confirmGoods(dataBean)
+            getString(R.string.str_confirmGoods)->control.confirmGoods(dataBean)
             //立即支付
             getString(R.string.str_immediatePayment)->control.toPay(dataBean)
-
         }
     }
     fun onClick(v:View){

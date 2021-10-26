@@ -1097,7 +1097,18 @@ class SignViewModel : ViewModel() {
         MConstant.token = ""
         MConstant.mine_phone = ""
         MConstant.userId = ""
-        LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.loginOut(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                UserManger.deleteUserInfo()
+                AppUtils.Unbinduserid()
+                MConstant.token = ""
+                LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                    .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
+            }
+        }
     }
 }

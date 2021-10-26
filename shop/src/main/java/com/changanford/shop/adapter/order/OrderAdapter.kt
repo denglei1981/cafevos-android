@@ -24,8 +24,8 @@ import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 
 
-class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
-    //orderType -1所有订单 0 商品、1购车 2 试驾
+class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
+    //orderSource -2所有订单
     private val control by lazy { OrderControl(context,viewModel) }
     private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","未知4","未知5","未知6","未知7","未知8")
     @SuppressLint("SimpleDateFormat")
@@ -34,11 +34,12 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
+            val position=holder.absoluteAdapterPosition
             dataFormat(dataBinding,item)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
-            updateBtnUI(dataBinding,item)
+            updateBtnUI(position,dataBinding,item)
             dataBinding.tvTotleIntegral.setHtmlTxt(context.getString(R.string.str_Xfb,item.fbCost),"#00095B")
             dataBinding.inGoodsInfo.apply {
                 model=item
@@ -84,7 +85,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
             tvGoodsNumber.visibility=View.VISIBLE
             tvIntegral.visibility=View.VISIBLE
         }
-        if(-1==orderType){
+        if(-2==orderSource){
             item.apply {
                 spuName=skuName
                 skuImg=orderImg
@@ -112,10 +113,13 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                             specifications+="${item.optionName},"
                         }
                     }
+                    //单价=总价/数量（运费默认为0）
+                    val fbOfUnitPrice=orderBriefBean.fbCost.toInt()/orderBriefBean.buyNum.toInt()
                     item.apply {
-                        buyNum=orderBriefBean.buyNum
+                        this.buyNum=orderBriefBean.buyNum
                         payType=orderBriefBean.payType
-                        fbCost=orderBriefBean.fbCost
+                        this.fbCost=orderBriefBean.fbCost
+                        this.fbOfUnitPrice="$fbOfUnitPrice"
                         this.specifications=specifications
                     }
                 }
@@ -123,9 +127,9 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
 
         }
     }
-    private fun updateBtnUI(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
+    private fun updateBtnUI(position:Int,dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
         dataBinding.btnCancel.visibility=View.GONE
-        if(-1!=orderType){ //聚合订单将不展示操作按钮
+        if(-2!=orderSource){ //聚合订单将不展示操作按钮
             val evalStatus=item.evalStatus
             if(null!=evalStatus&&"WAIT_EVAL"==evalStatus){//待评价
                 dataBinding.btnConfirm.apply {
@@ -145,7 +149,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         dataBinding.btnCancel.apply {
                             visibility=View.VISIBLE
                             //取消订单
-                            setOnClickListener {cancelOrder(item)}
+                            setOnClickListener {cancelOrder(position,item)}
                         }
                     }
                     //待发货
@@ -155,7 +159,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_confirmGoods)
-                            setOnClickListener {confirmGoods(item)}
+                            setOnClickListener {confirmGoods(position,item)}
                         }
                     }
                     //已完成,已关闭->可再次购买
@@ -185,7 +189,7 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
         val orderStatus=item.orderStatus
         tv.apply {
             when {
-                -1==orderType -> {
+                -2==orderSource -> {
                     text=item.orderTypeName?:orderTypes[item.orderType]
                     setTextColor(ContextCompat.getColor(context,R.color.picture_color_66))
                     visibility = View.VISIBLE
@@ -206,11 +210,17 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     /**
      * 确认收货
      * */
-    private fun confirmGoods(item: OrderItemBean){
+    private fun confirmGoods(position:Int,item: OrderItemBean){
         control.confirmGoods(item,object :OnPerformListener{
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
-                this@OrderAdapter.notifyDataSetChanged()
+                this@OrderAdapter.apply {
+                    if(2==orderSource){
+                        data.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    notifyDataSetChanged()
+                }
             }
         })
     }
@@ -218,11 +228,18 @@ class OrderAdapter(private val orderType:Int=-1,var nowTime:Long?=0,val viewMode
     /**
      * 取消订单
     * */
-    private fun cancelOrder(item: OrderItemBean){
+    private fun cancelOrder(position:Int,item: OrderItemBean){
         control.cancelOrder(item,object :OnPerformListener{
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
-                this@OrderAdapter.notifyDataSetChanged()
+                this@OrderAdapter.apply {
+                    if(0==orderSource){
+                        data.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    notifyDataSetChanged()
+                }
+
             }
         })
     }

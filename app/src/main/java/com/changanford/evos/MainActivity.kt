@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
-import android.view.Menu
-import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -20,15 +18,10 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.*
-import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
-import com.changanford.common.util.location.LocationUtils
-import com.changanford.common.util.permission.PermissionUtil
 import com.changanford.common.util.room.Db
-import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
@@ -39,6 +32,12 @@ import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
+
+import android.net.ConnectivityManager
+
+import android.content.IntentFilter
+import com.changanford.evos.utils.NetworkStateReceiver
+
 
 @Route(path = ARouterHomePath.MainActivity)
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -110,7 +109,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         updateViewModel = createViewModel(UpdateViewModel::class.java)
         if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
             showAppPrivacy(this) {
-                checkPermission()
                 updateViewModel.getUpdateInfo()
             }
         }else{
@@ -207,6 +205,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         })
+        registerConnChange()
     }
 
     private lateinit var currentNavController: LiveData<NavController>
@@ -264,22 +263,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         R.id.shopFragment,
         R.id.myFragment
     )
-
-    private fun checkPermission() {
-        //请求应用需要的所有权限
-        val checkPermissionFirst: Boolean = PermissionUtil.run {
-            ALBUM_READ && ALBUM_WRITE && CAMERA && LOCATION
-        }
-        if (!checkPermissionFirst) {
-            PermissionUtil.applyPermissions(this)
-        }
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.LOCATION_RESULT).observe(this, {
-            LocationUtils.init()
-        })
-        LocationUtils.mLongitude.observe(this, {
-            "$it".logD()
-        })
-    }
 
     // 设置底部导航显示或者隐藏
     private fun setHomBottomNavi(visibleState: Int) {
@@ -348,6 +331,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unRegisterConnChange()
+    }
+    var networkStateReceiver = NetworkStateReceiver()
+    private fun registerConnChange(){
+        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(networkStateReceiver, intentFilter)
+    }
+    private fun unRegisterConnChange(){
+        unregisterReceiver(networkStateReceiver)
     }
 }
 

@@ -60,7 +60,7 @@ data class GoodsItemBean(
     val mallMallSpuSeckillRangeId: String = "0",
     val salesCount: Int = 0,
     val stockNow: Int = 0,
-    val stockPlusSalesCount: String = "0",
+    val stockPlusSalesCount: Int = 1,
     var timeState: String = "",
     val createBy: Any? = null,
     val createTime: Long = 0,
@@ -105,12 +105,13 @@ data class GoodsItemBean(
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val recommend: String = "",
-    val robbedPercentage: String = "",
+    var robbedPercentage: String = "",
     val seckillFb: String = "0",
     var seckillNumLimit: String? = "0",
     var seckillStatus: String = "",
-    val seckillStock: Int? = 0,
-    val sekillCount: Int = 0,
+    var seckillStock: Int? = 0,
+    var sekillCount: Int = 0,
+    var totalStock:Int=1,
 )
 class Params
 // 秒杀时段
@@ -159,8 +160,9 @@ data class GoodsDetailBean(
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",
     val now: Long = 0,
-    val purchasedNum: Int? = 0,
+    var purchasedNum: Int? = 0,
     val salesCount: Int = 0,
+    var totalStock:Int?=0,//总库存
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
     val shareBeanVO: TaskShareBean?=null,
@@ -311,7 +313,7 @@ data class OrderItemBean(
     val evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: String = "0",
-    val fbOfUnitPrice: String ="0",
+    var fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",//是否砍价订单
     val mallMallDiscountScaleId: Int = 0,
     val mallMallHaggleActivityId: Int = 0,

@@ -478,7 +478,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         })
         //first
         binding.uVideoView.start()
-        Timer().schedule(800) {
+        Timer().schedule(300) {
             binding.uVideoView.post {
                 binding.uVideoView.pause()
             }

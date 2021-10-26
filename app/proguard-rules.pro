@@ -74,7 +74,14 @@
 
 # Bean
 -keep class com.changanford.common.net.CommonResponse{*;}
+-keep class com.changanford.home.base.response.UpdateUiState{*;}
 -keep class **.bean.**{*;}
+-keep class **.entity.**{*;}
+-keep class com.changanford.home.data.**{*;}
+-keep class com.changanford.home.news.data.**{*;}
+-keep class com.changanford.home.search.data.**{*;}
+-keep class com.changanford.common.room.PostEntity{*;}
+-keep class com.changanford.common.util.room.SysUserInfoBean{*;}
 
 #反射
 -keep class * implements androidx.viewbinding.ViewBinding {*;}

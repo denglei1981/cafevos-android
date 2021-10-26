@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,5 +24,9 @@
         <include
             android:id="@+id/in_header"
             layout="@layout/topbar_goods_details"/>
+        <include
+            tools:visibility="gone"
+            android:id="@+id/in_empty"
+            layout="@layout/in_goods_empty" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

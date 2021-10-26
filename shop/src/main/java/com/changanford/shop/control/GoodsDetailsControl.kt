@@ -36,6 +36,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     lateinit var dataBean: GoodsDetailBean
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
+        dataBean.purchasedNum=dataBean.salesCount
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
         //初始化 skuCode
@@ -74,13 +75,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         model=dataBean
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
+                        val totalStock=dataBean.salesCount+dataBean.stock
                         //库存百分比
-                        val stockProportion=dataBean.salesCount/dataBean.stock*100
-                        dataBean.stockProportion="$stockProportion"
+                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble())
+                        dataBean.totalStock=totalStock
+                        dataBean.stockProportion=stockProportion
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
-                        val limitBuyNum=dataBean.salesCount+dataBean.stock
-                        tvLimitBuyNum.setText("$limitBuyNum")
+                        tvLimitBuyNum.setText("$totalStock")
 //                        val limitBuyNum=dataBean.limitBuyNum?:"0"
 //                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
                     }

@@ -9,14 +9,7 @@
         android:id="@+id/fragment1"
         android:name="com.changanford.home.HomeV2Fragment"
         android:label="@string/first_fragment_label">
-        <action
-            android:id="@+id/action_fragment1_to_demoDetail"
-            app:destination="@id/demoDetail" />
     </fragment>
-    <fragment
-        android:id="@+id/demoDetail"
-        android:name="com.changanford.evos.demo.DemoDetail"
-        android:label="DemoDetail" />
 
 
-</navigation><!--    android:name="com.changanford.evos.demo.DemoFragment1"-->
+</navigation>

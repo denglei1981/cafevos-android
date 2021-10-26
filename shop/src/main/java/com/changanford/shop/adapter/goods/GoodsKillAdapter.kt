@@ -10,6 +10,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemKillGoodsBinding
 import com.changanford.shop.utils.ScreenUtils
+import com.changanford.shop.utils.WCommonUtil
 
 
 class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemKillGoodsBinding>>(R.layout.item_kill_goods), LoadMoreModule {
@@ -19,9 +20,14 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
+            //当前销量
+            val sekillCount=item.sekillCount
+            //总库存
+            val totalStock:Int=(item.seckillStock?:0)+sekillCount
+            item.seckillStock=totalStock
+            val robbedPercentage=WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble())
+            item.robbedPercentage=robbedPercentage
             item.seckillStatus=getsSeckillStatus(item.seckillStatus)
-            dataBinding.model=item
-            dataBinding.executePendingBindings()
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
             GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),dataBinding.imgCover)
@@ -33,6 +39,8 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)
                 else -> ScreenUtils.setMargin(holder.itemView,0,0,9,0)
             }
+            dataBinding.model=item
+            dataBinding.executePendingBindings()
         }
     }
     /**

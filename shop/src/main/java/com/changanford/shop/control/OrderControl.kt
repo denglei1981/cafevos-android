@@ -2,14 +2,13 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.order.OrderConfirmActivity
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -27,17 +26,18 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         PayConfirmActivity.start(context, Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
     }
     /**
-     * 再次购买->创建订单页面
+     * 再次购买->商品详情
      * */
     fun onceAgainToBuy(item: OrderItemBean){
-        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }
-        val busSourse=item.busSourse
-        val spuPageType=if("2"==busSourse)"2" else if("1"==busSourse)"SECKILL" else if("1"==item.discount)"MEMBER_DISCOUNT" else "NOMROL"
-        val goodsBean= GoodsDetailBean(spuId = item.mallMallSpuId,spuName =item.spuName, buyNum = item.buyNum.toInt(),fbPrice = item.fbOfUnitPrice,
-            freightPrice = item.freightPrice?:"0.00",preferentialFb = item.preferentialFb,acountFb = (item.totalIntegral?:"0").toInt(),skuCode = item.skuCode,
-            skuCodeTxts = skuCodeTxt, addressInfo = item.addressInfo,addressId = item.addressId,skuId = item.mallMallSkuId,skuImg = item.skuImg,source = "3",
-            spuPageType =spuPageType,orginPrice = item.orginPrice)
-        OrderConfirmActivity.start(Gson().toJson(goodsBean))
+        GoodsDetailsActivity.start(item.mallMallSpuId)
+//        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }
+//        val busSourse=item.busSourse
+//        val spuPageType=if("2"==busSourse)"2" else if("1"==busSourse)"SECKILL" else if("1"==item.discount)"MEMBER_DISCOUNT" else "NOMROL"
+//        val goodsBean= GoodsDetailBean(spuId = item.mallMallSpuId,spuName =item.spuName, buyNum = item.buyNum.toInt(),fbPrice = item.fbOfUnitPrice,
+//            freightPrice = item.freightPrice?:"0.00",preferentialFb = item.preferentialFb,acountFb = (item.totalIntegral?:"0").toInt(),skuCode = item.skuCode,
+//            skuCodeTxts = skuCodeTxt, addressInfo = item.addressInfo,addressId = item.addressId,skuId = item.mallMallSkuId,skuImg = item.skuImg,source = "3",
+//            spuPageType =spuPageType,orginPrice = item.orginPrice)
+//        OrderConfirmActivity.start(Gson().toJson(goodsBean))
     }
     /**
      * 确认收货

@@ -11,5 +11,4 @@
         android:label="fragment_circle_list"/>
 
 </navigation>
-<!--    android:name="com.changanford.evos.demo.DemoFragment4"-->
 

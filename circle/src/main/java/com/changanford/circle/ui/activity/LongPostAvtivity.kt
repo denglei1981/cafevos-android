@@ -40,6 +40,7 @@ import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
@@ -162,6 +163,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
             "发布成功".toast()
+            startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
         viewModel.stsBean.observe(this, Observer {
@@ -192,21 +194,29 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                address = it.address
+                address = it.address?:it.name?:""
                 params["address"] = address
-                it.location?.let {
-                    params["lat"] = it.latitude
-                    params["lon"] = it.longitude
+                it.location?.let { mit->
+                    params["lat"] = mit.latitude
+                    params["lon"] = mit.longitude
+                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
 
             })
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
-
+            plateBean?.plate?.forEach {
+                if (it.name == "社区"){
+                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    platename = it.name
+                    params["plate"] = it.plate
+                    params["actionCode"] = it.actionCode
+                }
+            }
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
@@ -308,6 +318,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (params["plate"] != 0) {
                 buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+
             }
             if (locaPostEntity!!.topicName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
