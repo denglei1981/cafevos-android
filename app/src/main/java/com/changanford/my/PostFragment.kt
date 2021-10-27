@@ -65,7 +65,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             type = it
         }
 
-        userId = UserManger.getSysUserInfo().uid
+        userId = UserManger.getSysUserInfo()?.uid?:""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
         }

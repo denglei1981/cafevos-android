@@ -54,7 +54,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
     override fun initView() {
         var num: Int = 0
-        var sysUserInfoBean: SysUserInfoBean = UserManger.getSysUserInfo()
+        var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
         var userInfoBean: UserInfoBean? = null
         sysUserInfoBean?.userJson?.let {
             userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)

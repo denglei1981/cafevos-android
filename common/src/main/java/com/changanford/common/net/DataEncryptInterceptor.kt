@@ -1,8 +1,11 @@
 package com.changanford.common.net
 
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.longE
@@ -72,9 +75,9 @@ class DataEncryptInterceptor : Interceptor {
                 }
 
                 if (commonResponse.code == StatusCode.REDIRECT_NOT_FOUND_PAGE) {
-//                    val activity = BaseApplication.curActivity
-//                    startARouter(ARouterCarControlPath.NothingActivity)
-//                    activity.finish()
+                    val activity = BaseApplication.curActivity
+                    startARouter(ARouterCarControlPath.NothingActivity)
+                    activity.finish()
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
                     RouterManger.param("isClear", true).startARouter(ARouterMyPath.SignUI)

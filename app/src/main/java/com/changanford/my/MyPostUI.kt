@@ -54,7 +54,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
         binding.postToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
         }
-        userId = UserManger.getSysUserInfo().uid
+        userId = UserManger.getSysUserInfo()?.uid?:""
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true

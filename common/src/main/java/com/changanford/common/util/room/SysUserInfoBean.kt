@@ -31,7 +31,7 @@ class SysUserInfoBean constructor() {
 
     @NonNull
     @ColumnInfo(name = "uni_user_id")
-    lateinit var uid: String
+    var uid: String = ""
 
     @ColumnInfo(name = "user_mobile")
     var mobile: String? = ""

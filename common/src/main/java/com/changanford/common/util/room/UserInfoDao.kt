@@ -57,6 +57,6 @@ interface UserInfoDao {
     fun getUser(): LiveData<SysUserInfoBean>
 
     @Query("SELECT * FROM table_sys_uni_user LIMIT 1")
-    fun getNoLiveDataUser(): SysUserInfoBean
+    fun getNoLiveDataUser(): SysUserInfoBean?
 
 }
