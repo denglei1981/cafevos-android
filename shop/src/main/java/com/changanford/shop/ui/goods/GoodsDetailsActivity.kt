@@ -240,6 +240,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(::control.isInitialized)control.onDestroy()
     }
     private fun addLiveDataBus(){
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this,  {
+            if (it==0&&::control.isInitialized) control.shareBack()
+        })
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this,{
@@ -247,5 +250,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                      if("0"!=spuId)viewModel.queryGoodsDetails(spuId,false)
                 }
             })
+
     }
 }

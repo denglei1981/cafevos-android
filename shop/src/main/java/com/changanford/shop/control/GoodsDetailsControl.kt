@@ -9,6 +9,7 @@ import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.web.ShareViewModule
 import com.changanford.shop.R
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat
 class GoodsDetailsControl(val activity: AppCompatActivity, val binding: ActivityGoodsDetailsBinding,
                           private val headerBinding: HeaderGoodsDetailsBinding,val viewModel: GoodsViewModel) {
     private val shareViewModule by lazy { ShareViewModule() }
+    private lateinit var shareBean: ShareBean
     var skuCode=""
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
@@ -192,7 +194,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     fun share(){
         if(::dataBean.isInitialized)dataBean.shareBeanVO?.apply {
-           shareViewModule.share(activity, ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type))
+            shareBean=ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type)
+           shareViewModule.share(activity,shareBean)
+        }
+    }
+    fun shareBack(){
+        if(::shareBean.isInitialized){
+            ToastUtils.reToast(R.string.str_shareSuccess)
+            shareViewModule.shareBack(shareBean)
         }
     }
     /**

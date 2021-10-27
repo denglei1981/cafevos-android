@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.MyApp
-import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.net.body
@@ -23,7 +22,6 @@ import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
@@ -64,8 +62,6 @@ class ShareViewModule : ViewModel() {
                     apiService.ShareBack(body.header(rkey),body.body(rkey))
                 }
             }
-            //商品分享成功需提示
-            if("6"==shareBean.type)ToastUtils.reToast(R.string.str_shareSuccess)
         }
     }
     fun share(activity: Activity,shareBean: ShareBean) {
