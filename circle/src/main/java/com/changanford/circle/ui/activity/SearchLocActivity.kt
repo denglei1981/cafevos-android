@@ -86,7 +86,7 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
     }
 
     override fun initView() {
-        AppUtils.setStatusBarPaddingTop(binding.rltitle, this)
+        AppUtils.setStatusBarPaddingTop(binding.commTitleBar, this)
         mPoiSearch = PoiSearch.newInstance()
         mPoiSearch.setOnGetPoiSearchResultListener(this)
         locaAdapter = LocaAdapter()

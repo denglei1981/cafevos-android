@@ -477,13 +477,13 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
             }
         })
         //first
-        binding.uVideoView.start()
-        Timer().schedule(300) {
-            binding.uVideoView.post {
-                binding.uVideoView.pause()
-            }
-        }
-//        videoStart()
+//        binding.uVideoView.start()
+//        Timer().schedule(300) {
+//            binding.uVideoView.post {
+//                binding.uVideoView.pause()
+//            }
+//        }
+        videoStart()
 
         // 获取开始时间
 
