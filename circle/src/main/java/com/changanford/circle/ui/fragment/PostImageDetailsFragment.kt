@@ -49,6 +49,8 @@ import com.zhpan.bannerview.constants.IndicatorGravity
 class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     BaseFragment<ActivityPostGraphicBinding, PostGraphicViewModel>() {
 
+    constructor():this(PostsDetailBean())
+
     private var page = 1
     private var checkPosition = 0
 
