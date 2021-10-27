@@ -26,6 +26,9 @@
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
+        <package android:name="com.tencent.mm" />
+        <package android:name="com.sina.weibo" />
+        <package android:name="com.tencent.mobileqq" />
     </queries>
     <!--适配Android R包可见性 结束-->
     <application
