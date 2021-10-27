@@ -42,12 +42,14 @@ class FindNewsListViewModel : BaseViewModel() {
      * */
 
     fun getNewsList(isLoadMore: Boolean) {
-        if (!isLoadMore) {
+        if (isLoadMore) {
+            pageNo += 1
+        }else{
             pageNo = 1
         }
         launch(block = {
             val requestBody = HashMap<String, Any>()
-            requestBody["pageNo"] = 1
+            requestBody["pageNo"] = pageNo
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
@@ -55,7 +57,7 @@ class FindNewsListViewModel : BaseViewModel() {
                 .onSuccess {
                     val updateUiState = UpdateUiState<NewsListMainBean>(it, true, isLoadMore, "")
                     newsListLiveData.value = updateUiState
-                    pageNo += 1
+
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<NewsListMainBean>(false, "", isLoadMore)
                     newsListLiveData.value = updateUiState
@@ -80,7 +82,5 @@ class FindNewsListViewModel : BaseViewModel() {
                 }
         })
     }
-
-
 
 }

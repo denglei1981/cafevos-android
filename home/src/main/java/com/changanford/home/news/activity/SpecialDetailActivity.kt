@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.InfoDataBean
-import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.JumpUtils
@@ -27,8 +26,6 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.google.android.material.appbar.AppBarLayout
-import com.google.gson.Gson
-import com.luck.picture.lib.tools.ScreenUtils
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
@@ -53,9 +50,9 @@ class SpecialDetailActivity :
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
-                        var newsValueData = NewsValueData(item.artId, item.type)
-                        var values = Gson().toJson(newsValueData)
-                        JumpUtils.instans?.jump(2, values)
+//                        var newsValueData = NewsValueData(item.artId, item.type)
+//                        var values = Gson().toJson(newsValueData)
+                        JumpUtils.instans?.jump(2, item.artId)
                     } else {
                         toastShow("没有作者")
                     }

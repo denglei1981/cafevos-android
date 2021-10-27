@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.changanford.common.bean.JumpDataBean
-import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
@@ -22,7 +21,6 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
-import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -148,11 +146,11 @@ class JumpUtils {
 
             2 -> {//资讯详情
 
-                var gson = Gson()
-                var newsValueData = gson.fromJson(value, NewsValueData::class.java)
-                gotoNewsDetails(newsValueData)
-//                bundle.putString("artId", value)
-//                startARouter(ARouterHomePath.InfoDetailActivity, bundle)
+//                val gson = Gson()
+//                val newsValueData = gson.fromJson(value, NewsValueData::class.java)
+//                gotoNewsDetails(newsValueData)
+                bundle.putString("artId", value)
+                startARouter(ARouterHomePath.InfoDetailActivity, bundle)
             }
             3 -> {//商品详情
                 if (value != null) {
@@ -908,20 +906,20 @@ class JumpUtils {
         return gps
     }
 
-    fun gotoNewsDetails(newsValueData: NewsValueData) {////资讯类型 1图文 2 图片 3 视频
-        val bundle = Bundle()
-        bundle.putString(JumpConstant.NEWS_ART_ID, newsValueData.artId)
-        when (newsValueData.type) {
-            1 -> {
-                startARouter(ARouterHomePath.NewsDetailActivity, bundle)
-            }
-            2 -> {
-                startARouter(ARouterHomePath.NewsPicsActivity, bundle)
-            }
-            3 -> {
-                startARouter(ARouterHomePath.NewsVideoDetailActivity, bundle)
-            }
-        }
-    }
+//    fun gotoNewsDetails(newsValueData: NewsValueData) {////资讯类型 1图文 2 图片 3 视频
+//        val bundle = Bundle()
+//        bundle.putString(JumpConstant.NEWS_ART_ID, newsValueData.artId)
+//        when (newsValueData.type) {
+//            1 -> {
+//                startARouter(ARouterHomePath.NewsDetailActivity, bundle)
+//            }
+//            2 -> {
+//                startARouter(ARouterHomePath.NewsPicsActivity, bundle)
+//            }
+//            3 -> {
+//                startARouter(ARouterHomePath.NewsVideoDetailActivity, bundle)
+//            }
+//        }
+//    }
 
 }

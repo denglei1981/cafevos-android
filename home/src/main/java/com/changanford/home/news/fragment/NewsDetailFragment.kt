@@ -1,4 +1,4 @@
-package com.changanford.home.news.activity
+package com.changanford.home.news.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,14 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
@@ -24,7 +22,6 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
@@ -47,18 +44,17 @@ import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
-import com.google.gson.Gson
 
 /**
  *  图文详情。。。
  * */
-@Route(path = ARouterHomePath.NewsDetailActivity)
-class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailViewModel>(),
+
+class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailViewModel>(),
     View.OnClickListener {
 
 
     val linearLayoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
     var checkPosition: Int = -1
 
@@ -74,16 +70,24 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
          NewsAdsListAdapter()
     }
-
+    companion object {
+        fun newInstance(artId:String): NewsDetailFragment {
+            val fg = NewsDetailFragment()
+            val bundle = Bundle()
+            bundle.putString(JumpConstant.NEWS_ART_ID,artId)
+            fg.arguments = bundle
+            return fg
+        }
+    }
     //HTML文本
     private val webHelper by lazy {
-        CustomWebHelper(this, inflateHeader.wvContent)
+        CustomWebHelper(requireActivity(), inflateHeader.wvContent)
     }
 
     var llInfoBottom: Int = 0
     private lateinit var shareViewModule: ShareViewModule //分享
     override fun initView() {
-        StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
+        StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, requireActivity())
         binding.pbRecyclerview.layoutManager = linearLayoutManager
         binding.pbRecyclerview.adapter = homeNewsCommentAdapter
         addHeaderView()
@@ -103,7 +107,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         binding.layoutTitle.ivBack.setOnClickListener {
-            onBackPressed()
+            requireActivity().finish()
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
         llInfoBottom = binding.layoutTitle.llAuthorInfo.getBottom()
@@ -128,14 +132,15 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     }
 
     override fun initData() {
-        artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
+        artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             if (!TextUtils.isEmpty(artId)) {
                 viewModel.getNewsDetail(artId)
                 viewModel.getNewsCommentList(artId, false)
                 viewModel.getArtAdditional(artId)
             } else {
-                ToastUtils.showShortToast("没有该资讯类型", this)
+//                ToastUtils.showShortToast(, this)
+                toastShow("没有该资讯类型")
             }
             bus()
         }
@@ -143,7 +148,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
 
     private val inflateHeader: LayoutHeadlinesHeaderNewsDetailBinding by lazy {
         DataBindingUtil.inflate(
-            LayoutInflater.from(this),
+            LayoutInflater.from(requireContext()),
             R.layout.layout_headlines_header_news_detail,
             binding.pbRecyclerview,
             false
@@ -189,7 +194,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
      *  设置关注状态。
      * */
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState(this)
+        val setFollowState = SetFollowState(requireContext())
         setFollowState.setFollowState(btnFollow, authors)
 
     }
@@ -267,7 +272,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             if (it.isSuccess) {
                 showHeadInfo(it.data)
             } else {
-                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
         })
         viewModel.commentsLiveData.observe(this, Observer {
@@ -289,28 +294,27 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
-                ToastUtils.showShortToast(it.message, this)
+//                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
-                ToastUtils.showShortToast("评论成功", this)
+                toastShow("评论成功")
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
                 setCommentCount()
             } else {
-                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
-
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
                 setLikeState()
             } else {// 网络原因操作失败了。
-                ToastUtils.showShortToast(it.message, this)
-
+                toastShow(it.message)
             }
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
@@ -470,7 +474,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             R.id.tv_news_to_share -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
-                        this,
+                        requireActivity(),
                         0,
                         it.shares,
                         null,
@@ -483,7 +487,7 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
             R.id.iv_more -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
-                        this,
+                        requireActivity(),
                         1,
                         it.shares,
                         ReportDislikeBody(1, it.artId.toString()),
@@ -496,13 +500,13 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
     }
 
     fun smooth() {// todo  没有评论呢？
-        val smoothScroller = TopSmoothScroller(this)
+        val smoothScroller = TopSmoothScroller(requireContext())
         smoothScroller.targetPosition = 1//要滑动到的位置
         linearLayoutManager.startSmoothScroll(smoothScroller)
     }
 
     private fun replay() {
-        val replyDialog = ReplyDialog(this, object : ReplyDialog.ReplyListener {
+        val replyDialog = ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
             override fun getContent(content: String) {
                 viewModel.addNewsComment(artId, content)
             }
