@@ -9,7 +9,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_comment"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_20"
