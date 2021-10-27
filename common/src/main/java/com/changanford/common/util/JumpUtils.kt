@@ -94,6 +94,7 @@ import kotlinx.coroutines.launch
 '50 ' | =>｜U享卡 uniCardId  我的爱车(列表页，不自动跳转)
 '51 ' |=>｜跳转到U享卡片切换页面,（为其他车辆购买U享卡）
 '52'|=>|商城订单列表
+'55'|=>|月签到详情
 '59'|toast消息|弹出一个toast内容
 '60'|{"content":"弹框的内容","buttons":[{"btName":"按钮内容","jumpData":{"jumpDataType":"xx","jumpDataValue":"xx"}}]}|弹出一个弹框，内容，按钮及跳转在value中返回
 '61'|=>|扫一扫（1.1.1版本）
@@ -396,7 +397,10 @@ class JumpUtils {
                 "此功能暂未开放".toast()
 //                startARouter(ARouterMyPath.MineLoveCarListUI)
             }
+            55 -> {//月签到详情
+                startARouter(ARouterMyPath.SignMonth)
 
+            }
             59 -> {
                 value?.let {
                     it.toast()
