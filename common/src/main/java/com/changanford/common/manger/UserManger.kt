@@ -52,7 +52,7 @@ object UserManger {
             var database = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
             var sysUserInfoBean = SysUserInfoBean(it.userId, "")
             try {
-                sysUserInfoBean = database.getNoLiveDataUser()
+                sysUserInfoBean = database.getNoLiveDataUser()?:SysUserInfoBean(it.userId, "")
                 sysUserInfoBean.mobile = when {
                     it.phone.isNotEmpty() -> {
                         it.phone
@@ -84,7 +84,7 @@ object UserManger {
     }
 
     fun updateIntegral(integral: Int) {
-        var infoBean: SysUserInfoBean = getSysUserInfo()
+        var infoBean: SysUserInfoBean? = getSysUserInfo()
         infoBean?.let {
             var database = UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
             database.updateIntegral(it.uid, "$integral")
@@ -100,7 +100,7 @@ object UserManger {
     /**
      * 没有liveData监听
      */
-    fun getSysUserInfo(): SysUserInfoBean {
+    fun getSysUserInfo(): SysUserInfoBean? {
         return UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao()
             .getNoLiveDataUser()
     }

@@ -52,7 +52,7 @@ class PersonalAdapter :
             labelAdapter.setItems(item.imags)
             binding.ryImage.adapter = labelAdapter
 
-            if (isApply == "2" && item.userId == UserManger.getSysUserInfo().uid) {
+            if (isApply == "2" && item.userId == UserManger.getSysUserInfo()?.uid?:"") {
                 binding.tvOut.visibility = View.VISIBLE
             } else {
                 binding.tvOut.visibility = View.GONE
