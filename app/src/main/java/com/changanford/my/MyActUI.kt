@@ -34,6 +34,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, EmptyViewModel>() {
         binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
             JumpUtils.instans?.jump(13)
+            finish()
         }
         initViewpager()
     }

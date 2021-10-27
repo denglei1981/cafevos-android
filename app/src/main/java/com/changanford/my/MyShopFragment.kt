@@ -67,19 +67,22 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
+        var total: Int = 0
         when (type) {
             "collectShop" -> {
                 viewModel.queryShopCollect(pageSize) {
                     it?.data?.let {
-                        completeRefresh(it.dataList, shopAdapter, it.total)
+                        total = it.total
                     }
+                    completeRefresh(it?.data?.dataList, shopAdapter, total)
                 }
             }
             "footShop" -> {
                 viewModel.queryShopFoot(pageSize) {
                     it?.data?.let {
-                        completeRefresh(it.dataList, shopAdapter, it.total)
+                        total = it.total
                     }
+                    completeRefresh(it.data?.dataList, shopAdapter, total)
                 }
             }
         }
