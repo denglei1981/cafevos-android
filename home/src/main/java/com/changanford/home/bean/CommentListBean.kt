@@ -9,24 +9,25 @@ import java.io.Serializable
  * @Des:
  */
 data class CommentListBean(
-    val avatar: String,
-    var childCount: Int,
-    val content: String,
-    val createTime: String,
-    val groupId: String,
-    val id: String,
-    var isLike: Int,
-    val headFrameImage: String,
-    var likesCount: Int,
-    val nickname: String,
-    val phoneModel: String,
-    val role: String,
-    val timeStr: String,
-    val userId: String,
-    val memberIcon: String,
-    val imags: List<Imag>,
-    val parentVo: List<CommentParentVo>,
+    val avatar: String="",
+    var childCount: Int=0,
+    val content: String="",
+    val createTime: String="",
+    val groupId: String="",
+    val id: String="",
+    var isLike: Int=0,
+    val headFrameImage: String="",
+    var likesCount: Int=0,
+    val nickname: String="",
+    val phoneModel: String="",
+    val role: String="",
+    val timeStr: String="",
+    val userId: String="",
+    val memberIcon: String="",
+    val imags: List<Imag> = arrayListOf(),
+    val parentVo: List<CommentParentVo> = arrayListOf(),
     var isOpenParent: Boolean = false,
+    var typeNull:Int=0 // 没有数据1
 ) : Serializable {
     override fun toString(): String {
         return "CommentListBean(avatar='$avatar', childCount=$childCount, content='$content', createTime='$createTime', groupId='$groupId', id='$id', isLike=$isLike, likesCount=$likesCount, nickname='$nickname', phoneModel='$phoneModel', role='$role', timeStr='$timeStr', userId=$userId)"

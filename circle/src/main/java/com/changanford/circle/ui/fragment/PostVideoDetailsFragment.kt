@@ -46,6 +46,8 @@ import com.xiaomi.push.it
 class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     BaseFragment<ActivityPostVideoDetailsBinding, PostGraphicViewModel>() {
 
+    constructor():this(PostsDetailBean())
+
     private lateinit var playerHelper: DKPlayerHelper //播放器帮助类
 
     private var page = 1

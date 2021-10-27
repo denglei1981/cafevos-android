@@ -56,7 +56,7 @@ class UserVipUI : BaseMineUI<UiAllVipBinding, SignViewModel>() {
     }
 
     private fun initAdapter(datas: ArrayList<UserIdCardBeanItem>?) {
-        var sysUserInfoBean: SysUserInfoBean = UserManger.getSysUserInfo()
+        var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
         var userInfoBean: UserInfoBean? = null
         sysUserInfoBean?.userJson?.let {
             userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)

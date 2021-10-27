@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import com.alibaba.fastjson.JSON
+import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.changanford.common.bean.JumpDataBean
@@ -18,6 +19,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.*
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -58,7 +60,6 @@ import kotlinx.coroutines.launch
 '12去发布调查',
 '13去发布活动',
 '14去发帖',
-'152级评论''
 '16任务中心,
 '17车主认证',
 '18绑定手机号',
@@ -74,7 +75,6 @@ import kotlinx.coroutines.launch
 '28我的圈子',
 '29我的勋章,
 '30积分纪录,
-'31‘积分详情',
 '32‘成长值',
 '34用户个人信息页面,
 '35他人主页',
@@ -83,7 +83,6 @@ import kotlinx.coroutines.launch
 '38我的足迹
 '39常见问题
 '40我的粉丝
-'41我的爱车
 '42意见反馈记录
 '43公民认证详情页
 '44邀请新用户
@@ -95,28 +94,12 @@ import kotlinx.coroutines.launch
 '50 ' | =>｜U享卡 uniCardId  我的爱车(列表页，不自动跳转)
 '51 ' |=>｜跳转到U享卡片切换页面,（为其他车辆购买U享卡）
 '52'|=>|商城订单列表
-'53'|=>|AR说明书
-'54'|=>|车主认证列表
-'55'|=>|5G
-'56'|=>|车控（需登录，适用车主点开通incall等按钮，传对应vin，开发内部使用，不适用运营配置）
-'57'|=> |车控（需登录，运营配置，用于首页、我的等其他按钮，规则为有默认车传默认车vin，没有默认车跳车控输入vin页面）
-'58'|{"orderId":"sssss","uniCardId":"xxxxx","vin":"xxxx"} |跳转到购买的某一uni卡详情页
 '59'|toast消息|弹出一个toast内容
 '60'|{"content":"弹框的内容","buttons":[{"btName":"按钮内容","jumpData":{"jumpDataType":"xx","jumpDataValue":"xx"}}]}|弹出一个弹框，内容，按钮及跳转在value中返回
 '61'|=>|扫一扫（1.1.1版本）
-'62'|{"uniCardId":112,"uniDistributorSharedId":11} | 跳转到专属U享卡 (1.1.2)uniCardId：经销商专属Uni卡分销ID，uniDistributorSharedId：经销商专属Uni卡分销分享ID
-'63'|{"uniCardId":"highestLevelUniCardId的值", "value":"vin码","type":1}|跳转Uni卡立即升级功能,type:区别车辆类型，=1 输入vin进入下单页面，=2 车辆认证列表进入下单页面,升级卡的话type=2
-'64'|{"isUni":true,"value":"orderId的值","plateNum":"licenseNo的值"}|跳转修改车牌号方法，isUni是否是中间页U享卡的卡片修改车牌号，区别车辆列表
-'65'|=>|跳转到车联网增值服务订单(判断默认车是否开通车控，未开通提示：)
-'66'|=>|跳透明车间功能（先调用车辆列表判断是否有车，无车-跳车主认证；有一个车还要判断是否有车牌号，
-'67'|=>|跳转蓝牙钥匙推送(1.1.7版本)
-'68'|=>|跳转蓝牙钥匙界面(1.1.7版本)
 '69'|经纬度和名称{"latY":39.916527,"lngX":116.397128,"name":"北京市天安门"}|跳转到选择高德百度地图弹框，逻辑和专属经销商一致(1.1.7版本)
-'70'| 跳转incall页面（跳转incall的认证,可传value,不传value默认{"vin":"","crmAuthState":0,"targetPage":"authen","isIncall":false}）
-'71'|在线客服链接|跳转新版意见反馈页面
-'72'|=>|备件查询功能（先调用车辆列表判断是否有车，无车-跳车主认证；有一个车直接跳订单列表；有多个车跳车辆列表页，点击列表某个车跳订单列表）
+'71'|=>|跳转新版意见反馈页面
 '73'|=>|需要位置权限的H5
-'74'|=>|汽车保险弹框
  */
 class JumpUtils {
 
@@ -212,12 +195,12 @@ class JumpUtils {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
-                    getBindMobileJumpDataType() -> {
-//                        BindingPhoneDialog(BaseApplication.curActivity).show()
-//                        startARouter(ARouterMyPath.MineBindMobileUI)
+                    MineUtils.getBindMobileJumpDataType() -> {
+                        startARouter(ARouterMyPath.MineBindMobileUI)
                     }
                     else -> {
-                        startARouter(ARouterMyPath.UniCarAuthUI)
+                        "此功能暂未开放".toast()
+//                        startARouter(ARouterMyPath.UniCarAuthUI)
                     }
                 }
             }
@@ -404,91 +387,16 @@ class JumpUtils {
             48 -> {//秒杀列表
                 startARouter(ARouterShopPath.GoodsKillAreaActivity)
             }
-            49 -> {// uniCardId |跳转到购买某类U享卡页面
-                //1、isDealer：true 是专属经销商卡
-                //2、uniDistributorShareId ：专属经销商卡 分享id
-                //3、isShowRight 需要显示右边 车辆列表 ，
-                //4、value uni卡id（uniCardId）
-                startARouter(ARouterMyPath.UniBindCarVinUI, bundle)
-            }
-            50 -> {// U享卡 uniCardId  我的爱车
-                //1、isDealer：true 是专属经销商卡
-                //2、uniDistributorShareId ：专属经销商卡 分享id
-                //3、value uni卡id（uniCardId）
-                startARouter(ARouterMyPath.UniChooseCarUI, bundle)
-            }
-            51 -> {// 跳转到U享卡片切换页面
-                when {
-                    MConstant.token.isNullOrEmpty() -> {
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                    else -> {
-                        startARouter(ARouterCarControlPath.UniCardDetailsActivity, bundle)
-                    }
-                }
-            }
             52 -> {//商城订单列表
                 if (!TextUtils.isEmpty(value)) bundle.putInt("states", value!!.toInt()
                 )//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
                 startARouter(ARouterShopPath.OrderGoodsActivity, bundle, true)
             }
-            53 -> {//AR说明书跳转类型
-                when {
-                    MConstant.token.isNullOrEmpty() -> {
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                    else -> {
-//                        startARouter(ARouterHomePath.ARListActivity)
-                    }
-                }
-//                if (MConstant.token.isEmpty()) {
-//                    startARouter(ARouterMyPath.SignUI)
-//                    return
-//                } else if (!NEArInsight.isArSupport(BaseApplication.INSTANT)) {
-//                    toastShow("手机不支持...")
-//                } else {
-//                    handleDownload("2295")
-//                }
-            }
             54 -> {// 车主认证列表(车主认证部分)
-                startARouter(ARouterMyPath.MineLoveCarListUI)
-            }
-            55 -> {//5G
-                startARouter(ARouterMyPath.SignMonth)
-
-            }
-            56 -> {//incall（crm有认证车辆）
-                //无网络
+                "此功能暂未开放".toast()
+//                startARouter(ARouterMyPath.MineLoveCarListUI)
             }
 
-
-            //'71'|在线客服链接|跳转新版意见反馈页面|有意见反馈跳列表，无意见反馈跳添加页面
-//            71 -> {
-//                /**
-//                 * 需要参数，在线客服H5链接（string），是否有意见反馈（意见反馈 等于1 已提交意见反馈）
-//                 * {"hasFeedback":"1","onlineH5":"https://www.baidu.com"}
-//                 */
-//                startARouter(ARouterMyPath.MineCenterFeedbackUI, bundle)
-//            }
-
-            57 -> {//配置incall广告
-            }
-            58 -> {//{"orderId":"sssss","uniCardId":"xxxxx","vin":"xxxx"} |跳转到购买的某一uni卡详情页
-                if (!value.isNullOrEmpty()) {
-                    try {//不是json格式的数据
-                        var json = JSON.parseObject(value)
-                        var orderId = json.getString("orderId") ?: ""
-                        var uniCardId = json.getString("uniCardId") ?: ""
-                        var vin = json.getString("vin") ?: ""
-                        bundle.putString("orderId", orderId)
-                        bundle.putString("uniCardId", uniCardId)
-                        bundle.putString("vin", vin)
-                        startARouter(ARouterCarControlPath.UniCarRightsActivity, bundle)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
             59 -> {
                 value?.let {
                     it.toast()
@@ -520,17 +428,17 @@ class JumpUtils {
                             }
 
                         }
-//                        AlertThreeFilletDialog(BaseApplication.curActivity).builder()
-//                            .setMsg(content)
-//                            .setCancelable(true)
-//                            .setNegativeButton(
-//                                button1, R.color.color_7174
-//                            ) {
-//                                jump(jumpDataType1, jumpDataValue1)
-//                            }
-//                            .setPositiveButton(button2, R.color.black) {
-//                                jump(jumpDataType2, jumpDataValue2)
-//                            }.show()
+                        AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                            .setMsg(content)
+                            .setCancelable(true)
+                            .setNegativeButton(
+                                button1, R.color.color_7174
+                            ) {
+                                jump(jumpDataType1, jumpDataValue1)
+                            }
+                            .setPositiveButton(button2, R.color.black) {
+                                jump(jumpDataType2, jumpDataValue2)
+                            }.show()
                     } catch (e: Exception) {
                         "数据错误".toast()
                     }
@@ -549,57 +457,8 @@ class JumpUtils {
                     }
                 )
             }
-            62 -> {//专属U享卡页面
-                if (MConstant.token.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.SignUI)
-                    return
-                }
-                val json = JSON.parseObject(value)
-                val uniCardId = json.getString("uniCardId") ?: ""
-                val uniDistributorShareId = json.getString("uniDistributorShareId") ?: ""
-                bundle.putString("uniCardId", uniCardId)
-                bundle.putString("uniDistributorShareId", uniDistributorShareId)
-                startARouter(ARouterCarControlPath.ExclusiveBrickCardActivity, bundle)
-            }
-            63 -> {//2020.12.02|增加跳转Uni卡立即升级功能(1.1.3c车控一级融合)
-                val json = JSON.parseObject(value)
-                val highestLevelUniCardId = json.getString("highestLevelUniCardId")
-                val vin = json.getString("value")
-//                val type = json.getIntValue("type")
-//                CommonUtils.startUniCarPayOrder(vin, highestLevelUniCardId, 2, false, null)
-            }
-            64 -> {
-                if (MConstant.token.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.SignUI)
-                    return
-                }
-                val json = JSON.parseObject(value)
-                var bundle = Bundle()
-                bundle.putBoolean("isUni", json.getBoolean("isUni"))
-                bundle.putString("value", json.getString("value"))
-                bundle.putString("plateNum", json.getString("plateNum"))
-                startARouter(ARouterMyPath.AddCardNumTransparentUI, bundle)
-            }
-            65 -> {
-
-            }
-            //透明车间
-            //'66'|=>|跳透明车间功能（先调用车辆列表判断是否有车，无车-跳车主认证；有一个车还要判断是否有车牌号，
-            // 没有车牌号跳添加车牌号页面，有车牌号跳h5；有多个车跳列表页，
-            // 点击列表判断是否有车牌号，没有车牌号跳添加车牌号页面，有车牌号跳h5）
-            //1.有无车的判断只考虑CRM车主认证，不考虑incall认证
-            //2.无车用户车主如果有认证审核中、或者审核失败的记录，进入到我的爱车页
-            66 -> {
-            }
-            67 -> {//蓝牙钥匙推送
-            }
-            68 -> {//跳转蓝牙钥匙界面
-
-            }
             69 -> {
                 showMapDialog(value)
-            }
-            70 -> {
             }
             71 -> {////'71'|在线客服链接|跳转新版意见反馈页面|有意见反馈跳列表，无意见反馈跳添加页面
                 /**
@@ -615,26 +474,13 @@ class JumpUtils {
 //                    }
 //                }
             }
-            72 -> {//备件查询功能（先调用车辆列表判断是否有车，无车-跳车主认证；有一个车直接跳订单列表；有多个车跳车辆列表页，点击列表某个车跳订单列表）
-                when {
-                    MConstant.token.isNullOrEmpty() -> {//登录页面
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                    else -> {
-                        //查询认证成功的车辆列表
-
-                    }
-                }
-            }
             73 -> { //新增跳转类型73，需要位置权限的H5页面
                 if (isOPen(BaseApplication.curActivity)) {
                     SoulPermission.getInstance().checkAndRequestPermission(
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         object : CheckRequestPermissionListener {
                             override fun onPermissionOk(permission: Permission?) {
-//                                if (!FastClickUtils.isFastClick()) {
-//                                    startARouter(ARouterHomePath.AgentWebActivity, bundle)
-//                                }
+                                startARouter(ARouterHomePath.AgentWebActivity, bundle)
                             }
 
                             override fun onPermissionDenied(permission: Permission?) {
@@ -646,23 +492,6 @@ class JumpUtils {
                     toastShow("手机没有打开定位权限,请手动去设置页打开权限")
                 }
 
-            }
-            74 -> {
-                when {
-                    MConstant.token.isNullOrEmpty() -> {//登录页面
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                }
-            }
-            75 -> {//经销商积分
-                when {
-                    MConstant.token.isNullOrEmpty() -> {
-                        startARouter(ARouterMyPath.SignUI)
-                    }
-                    else -> {
-                        startARouter(ARouterMyPath.DealerTotalListUI)
-                    }
-                }
             }
             99 -> {//不跳转
             }
@@ -710,11 +539,9 @@ class JumpUtils {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
-//                    getBindMobileJumpDataType() -> {
-//                        BindingPhoneDialog(BaseApplication.curActivity).show()
-
-//                        startARouter(ARouterMyPath.MineBindMobileUI)
-//                    }
+                    MineUtils.getBindMobileJumpDataType() -> {
+                        startARouter(ARouterMyPath.MineBindMobileUI)
+                    }
                     else -> {
                         startARouter(ARouterHomePath.AgentWebActivity, bundle)
                     }
@@ -765,24 +592,6 @@ class JumpUtils {
             private set
     }
 
-
-    /**
-     * 获取绑定手机jumpDataType true跳转 false 不跳转
-     */
-    private fun getBindMobileJumpDataType(): Boolean {
-//        if (!MConstant.mine_bind_mobile_jump_data.isNullOrEmpty() &&
-//            MConstant.mine_bind_mobile_jump_data == LiveDataBusKey.MINE_SIGN_OTHER_CODE.toString()
-//        ) {
-//            return true
-//        }
-        return false
-    }
-
-    /**
-     * 处理AR下载
-     */
-    private fun handleDownload(arid: String) {
-    }
 
     /**
      * 每日签到

@@ -95,32 +95,27 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/nick_name" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/user_vip"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_11"
-                        android:background="@drawable/shape_r_8_c_5c_10"
-                        android:paddingStart="@dimen/dp_6"
-                        android:paddingTop="@dimen/dp_3"
-                        android:paddingEnd="@dimen/dp_6"
-                        android:paddingBottom="@dimen/dp_3"
-                        android:text=""
-                        android:textColor="#1B3B89"
-                        android:textSize="@dimen/sp_10"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginTop="@dimen/dp_2"
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="@+id/nick_name"
                         app:layout_constraintTop_toBottomOf="@+id/nick_name" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/user_desc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginEnd="@dimen/dp_20"
                         android:textColor="#71747B"
                         android:textSize="@dimen/sp_12"
                         app:layout_constraintLeft_toLeftOf="@+id/nick_name"
-                        app:layout_constraintTop_toBottomOf="@+id/user_vip" />
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/user_vip"
+                        app:layout_goneMarginTop="@dimen/dp_10" />
 
                     <include
                         android:id="@+id/follow_layout"

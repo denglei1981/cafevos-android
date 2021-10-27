@@ -7,6 +7,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.utilext.CleanDataUtils
@@ -53,6 +54,7 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
         binding.setFord.setOnClickListener {
             startARouter(ARouterMyPath.AboutUI)
         }
+        binding.setVersion.text = "V${DeviceUtils.getversionName()}"
 
         var cache = CleanDataUtils.getTotalCacheSize(this)
         if (!cache.contains("0.00")) {

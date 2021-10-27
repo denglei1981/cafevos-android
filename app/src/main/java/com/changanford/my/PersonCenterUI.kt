@@ -17,8 +17,10 @@ import com.changanford.common.databinding.ItemPersonMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.load
+import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiPersonCenterBinding
 import com.changanford.my.viewmodel.SignViewModel
@@ -69,7 +71,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                             binding.contentLayout.visibility = View.VISIBLE
                             binding.clearLayout.hintLayout.visibility = View.GONE
 
-                            if (user.userId == userId) {
+                            if (user.userId == MConstant.userId) {
                                 binding.btnFollow.visibility = View.GONE
                             }
                             binding.headIcon.load(user.avatar, R.mipmap.my_headdefault)
@@ -102,9 +104,21 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                                 if (user.brief.isNullOrEmpty()) "这个人很赖~" else user.brief
                             binding.btnFollow.text = if (user.isFollow == 0) "关注" else "已关注"
 
-                            binding.userVip.visibility =
-                                if (user.ext?.medalName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-                            binding.userVip.text = user.ext?.memberName
+                            user.ext?.let {
+                                //用户图标
+                                it.imags?.let { imgs ->
+                                    binding.userVip.visibility = View.VISIBLE
+                                    binding.userVip.layoutManager =
+                                        LinearLayoutManager(
+                                            this,
+                                            LinearLayoutManager.HORIZONTAL,
+                                            false
+                                        )
+                                    binding.userVip.adapter = LabelAdapter(20).apply {
+                                        addData(imgs)
+                                    }
+                                }
+                            }
                         }
                     }
                 }

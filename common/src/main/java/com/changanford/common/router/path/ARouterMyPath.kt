@@ -73,11 +73,6 @@ object ARouterMyPath {
     const val AccountSafeUI = "/my/AccountSafeUI"
 
 
-    /*-------------------U享卡--------------------*/
-    const val UniBindCarVinUI = "/my/UniBindCarVinUI" // U享卡上传VIN
-    const val UniChooseCarUI = "/my/UniChooseCarUI" //购卡选车
-    const val UniCardBuyUI = "/my/UniCardBuyUI" // uni购买记录 购卡记录、使用记录
-    const val UniCardSuccessUI = "/my/UniCardSuccessUI" //U享卡购买成功
 
 //    const val UniCardBuyLogUI = "/my/UniCardBuyLogUI" //购卡记录、使用记录
 

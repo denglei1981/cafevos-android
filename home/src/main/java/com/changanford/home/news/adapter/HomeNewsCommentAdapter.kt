@@ -37,6 +37,14 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)
         binding?.let {
+
+            if(item.typeNull==1){
+                it.tvNoComment.visibility=View.VISIBLE
+                it.conComment.visibility=View.GONE
+                return@let
+            }
+            it.tvNoComment.visibility=View.GONE
+            it.conComment.visibility=View.VISIBLE
             GlideUtils.loadBD(item.avatar, it.ivHead)
             binding.bean=item
             it.tvName.text = item.nickname

@@ -67,7 +67,7 @@ class NewsVideoDetailActivity :
         HomeNewsCommentAdapter(this)
     }
 
-    private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+    private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
         NewsAdsListAdapter()
     }
 
@@ -130,15 +130,12 @@ class NewsVideoDetailActivity :
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
-        inflateHeader.rvAds.adapter=newsAdsListAdapter
+        inflateHeader.rvAds.adapter = newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
                 if (item.authors != null) {
-//                    val newsValueData = NewsValueData(item.artId, item.type)
-//                    val values = Gson().toJson(newsValueData)
                     JumpUtils.instans?.jump(2, item.artId)
-
                 } else {
                     toastShow("没有作者")
                 }
@@ -150,11 +147,13 @@ class NewsVideoDetailActivity :
     private fun playVideo(playUrl: String) {
         playerHelper.startPlay(GlideUtils.defaultHandleImageUrl(playUrl))
     }
+
     var footerView: View? = null
     private fun addFooter() {
         footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.homeRvContent, false)
-        homeNewsCommentAdapter.addFooterView(footerView!!)
+        homeNewsCommentAdapter.addFooterView(footerView!!, 0)
     }
+
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -172,30 +171,32 @@ class NewsVideoDetailActivity :
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
                     if (it.data.dataList.size <= 0) {
-                        addFooter()
-                    } else {
-                        footerView?.let { fv ->
-                            homeNewsCommentAdapter.removeFooterView(fv)
+                        if (footerView == null) {
+                            addFooter()
                         }
+                    } else {
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                        if (footerView != null) {
+                            homeNewsCommentAdapter.removeFooterView(footerView!!)
+                        }
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
-                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.data != null ) {
-                    if(it.data.recommendArticles.size > 0){
+                if (it.data != null) {
+                    if (it.data.recommendArticles.size > 0) {
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
                     }
-                    if(it.data.ads.size>0){
-                        inflateHeader.rvAds.visibility=View.VISIBLE
+                    if (it.data.ads.size > 0) {
+                        inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }
                 }
@@ -245,8 +246,8 @@ class NewsVideoDetailActivity :
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
-        inflateHeader.ivAvatar.setOnClickListener{
-            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        inflateHeader.ivAvatar.setOnClickListener {
+            JumpUtils.instans?.jump(35, newsDetailData.userId)
         }
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
@@ -255,10 +256,10 @@ class NewsVideoDetailActivity :
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
         inflateHeader.tvTime.text = newsDetailData.timeStr
 
-        if(newsDetailData.specialTopicId>0){
-            inflateHeader.llSpecial.visibility=View.VISIBLE
-        }else{
-            inflateHeader.llSpecial.visibility=View.GONE
+        if (newsDetailData.specialTopicId > 0) {
+            inflateHeader.llSpecial.visibility = View.VISIBLE
+        } else {
+            inflateHeader.llSpecial.visibility = View.GONE
         }
 
 
@@ -388,9 +389,11 @@ class NewsVideoDetailActivity :
             back()
         }
     }
+
     override fun onBackPressed() {
         backPressed { super.onBackPressed() }
     }
+
     /**
      *  有重试 重写此方法
      * */
@@ -533,7 +536,6 @@ class NewsVideoDetailActivity :
             if (checkPosition == -1) {
                 return@observe
             }
-            ToastUtils.showShortToast("checkPosition=" + checkPosition, this)
             val bean = homeNewsCommentAdapter.getItem(checkPosition)
             bean.isLike = it
             if (bean.isLike == 1) {
@@ -548,7 +550,7 @@ class NewsVideoDetailActivity :
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,newsDetailData?.shares)
+                shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
     }

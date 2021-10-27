@@ -53,7 +53,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
         }
-        userId = UserManger.getSysUserInfo().uid
+        userId = UserManger.getSysUserInfo()?.uid?:""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
         }
