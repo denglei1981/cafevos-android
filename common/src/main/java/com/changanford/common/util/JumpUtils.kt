@@ -90,7 +90,7 @@ import kotlinx.coroutines.launch
 '45'  |wonderid |编辑已发布的活动
 '46'  |queryId |问卷编辑
 '47'  |messageType(1->系统消息 2->互动消息 3->交易消息) |消息列表
-'48 ' | =>| U享卡购买记录
+'48 ' | =>| 秒杀列表
 '49 ' | uniCardId |跳转到购买某类U享卡页面
 '50 ' | =>｜U享卡 uniCardId  我的爱车(列表页，不自动跳转)
 '51 ' |=>｜跳转到U享卡片切换页面,（为其他车辆购买U享卡）
@@ -401,8 +401,8 @@ class JumpUtils {
                     }
                 }
             }
-            48 -> {//U享卡购买记录
-                startARouter(ARouterMyPath.UniCardBuyUI)
+            48 -> {//秒杀列表
+                startARouter(ARouterShopPath.GoodsKillAreaActivity)
             }
             49 -> {// uniCardId |跳转到购买某类U享卡页面
                 //1、isDealer：true 是专属经销商卡
@@ -428,9 +428,7 @@ class JumpUtils {
                 }
             }
             52 -> {//商城订单列表
-                if (!TextUtils.isEmpty(value)) bundle.putInt(
-                    "states",
-                    value!!.toInt()
+                if (!TextUtils.isEmpty(value)) bundle.putInt("states", value!!.toInt()
                 )//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
                 startARouter(ARouterShopPath.OrderGoodsActivity, bundle, true)
             }
@@ -727,8 +725,16 @@ class JumpUtils {
                 startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
             109->{// 商品订单确认
-                bundle.putString("goodsInfo", value)
-                startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
+                if(!TextUtils.isEmpty(value)){
+                    bundle.putString("goodsInfo", value)
+                    startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
+                }
+            }
+            110->{// 支付确认
+                if(!TextUtils.isEmpty(value)){
+                    bundle.putString("orderInfo", value)
+                    startARouter(ARouterShopPath.PayConfirmActivity, bundle,true)
+                }
             }
             10000 -> {
                 //外部H5

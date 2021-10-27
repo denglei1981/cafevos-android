@@ -35,9 +35,7 @@ import kotlinx.coroutines.launch
 class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(){
     companion object{
         fun start(goodsInfo:String) {
-            if(MConstant.token.isEmpty())JumpUtils.instans?.jump(100)
-            else JumpUtils.instans?.jump(109,goodsInfo)
-//            else context.startActivity(Intent(context, OrderConfirmActivity::class.java).putExtra("goodsInfo",goodsInfo))
+            JumpUtils.instans?.jump(109,goodsInfo)
         }
     }
     private lateinit var dataBean:GoodsDetailBean
@@ -81,7 +79,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             it.accountFb=dataBean.acountFb.toString()
             val source=it.source
             if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
-            PayConfirmActivity.start(this,Gson().toJson(it))
+            PayConfirmActivity.start(Gson().toJson(it))
             this.finish()
         })
         bindingBaseData()

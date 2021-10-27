@@ -65,7 +65,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
      * 去支付
      * */
     fun toPay(item: OrderItemBean){
-        PayConfirmActivity.start(context, Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
+        PayConfirmActivity.start(Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
     }
     /**
      * 再次购买->商品详情
