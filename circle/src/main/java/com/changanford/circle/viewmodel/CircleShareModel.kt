@@ -9,10 +9,12 @@ import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.widget.dialog.DislikeDialog
 import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.sharelib.bean.IMediaObject
@@ -43,7 +45,8 @@ object CircleShareModel {
         body: ReportDislikeBody? = null,
         is_good: Int? = null,
         userName: String? = null,
-        topicName: String? = null
+        topicName: String? = null,
+        postType: Int? = null
     ) {
         if (activity == null || shareBean == null) return
         val data1 = SharePlamFormData()
@@ -152,8 +155,24 @@ object CircleShareModel {
                     }
                     11 -> {//编辑
                         val bundle = Bundle()
-//                        bundle.putString("postsId", shareBean.bizId)
-//                        startARouter(ARouterCirclePath.EditPostActivity, bundle)
+                        bundle.putString("postsId", shareBean.bizId)
+                        when (postType) {
+                            2 -> {//图文
+                                RouterManger.startARouter(ARouterCirclePath.PostActivity, bundle)
+                            }
+                            3 -> {//视频
+                                RouterManger.startARouter(
+                                    ARouterCirclePath.VideoPostActivity,
+                                    bundle
+                                )
+                            }
+                            4 -> {//长图页
+                                RouterManger.startARouter(
+                                    ARouterCirclePath.LongPostAvtivity,
+                                    bundle
+                                )
+                            }
+                        }
                     }
                     12 -> {//删除
                         activity.launchWithCatch {
