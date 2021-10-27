@@ -38,8 +38,9 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         binding.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
-                if(3==orderType) OrderDetailsActivity.start(orderNo)
-                else JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+//                if(3==orderType) OrderDetailsActivity.start(orderNo)
+//                else JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
             }
         }
     }
