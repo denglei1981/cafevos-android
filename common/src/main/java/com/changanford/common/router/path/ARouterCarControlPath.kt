@@ -6,10 +6,6 @@ package com.changanford.common.router.path
 object ARouterCarControlPath {
 
     ////////////////////  Activity路由  /////////////////
-    const val ARActivity = "/carControl/ARActivity"
-    const val UniCardDetailsActivity = "/carControl/UniCardDetailsActivity"
-    const val UniCarRightsActivity = "/carControl/UniCarRightsActivity"
-    const val UniCarRightsDetailActivity = "/carControl/UniCarRightsDetailActivity"
     const val NothingActivity = "/carControl/NothingActivity"
     const val ExclusiveBrickCardActivity = "/carControl/ExclusiveBrickCardActivity"
     ////////////////////  Fragment路由  /////////////////
