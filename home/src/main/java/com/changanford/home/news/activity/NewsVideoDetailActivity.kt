@@ -51,7 +51,6 @@ import com.changanford.home.widget.TopSmoothScroller
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ScreenUtils
 
 @Route(path = ARouterHomePath.NewsVideoDetailActivity)
 class NewsVideoDetailActivity :
