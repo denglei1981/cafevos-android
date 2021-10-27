@@ -14,7 +14,6 @@ import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
 import com.changanford.shop.listener.OnTimeCountListener
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -116,20 +115,20 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     }
 
     override fun onBackClick() {
-        orderInfoBean?.let {
-            when(it.source){
-                //商品详情
-                "1"->GoodsDetailsActivity.start(this,true)
-                //H5商品砍价
-                "2"->{
-                    if(isPaySuccessful){}
-                }
-                //订单列表的再次购买
-                "3"->{
-
-                }
-            }
-        }
+//        orderInfoBean?.let {
+//            when(it.source){
+//                //商品详情
+//                "1"->GoodsDetailsActivity.start(this,true)
+//                //H5商品砍价
+//                "2"->{
+//                    if(isPaySuccessful){}
+//                }
+//                //订单列表的再次购买
+//                "3"->{
+//
+//                }
+//            }
+//        }
         this.finish()
     }
 

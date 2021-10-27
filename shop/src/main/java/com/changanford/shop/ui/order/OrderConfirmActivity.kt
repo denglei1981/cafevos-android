@@ -80,6 +80,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val source=it.source
             if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
             PayConfirmActivity.start(Gson().toJson(it))
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java).postValue(it.source)
             this.finish()
         })
         bindingBaseData()

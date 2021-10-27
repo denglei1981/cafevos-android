@@ -84,7 +84,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
         viewModel.queryGoodsDetails(spuId,true)
     }
-    private  fun initTab(){
+    private fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
         WCommonUtil.setTabSelectStyle(this,tabLayout,15f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
         tabClick()
@@ -240,11 +240,16 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(::control.isInitialized)control.onDestroy()
     }
     private fun addLiveDataBus(){
+        //下单回调
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this,  {
+            if("2"!=it&&"0"!=spuId)viewModel.queryGoodsDetails(spuId,false)
+        })
+        //分享回调
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this,  {
             if (it==0&&::control.isInitialized) control.shareBack()
         })
-        LiveDataBus.get()
-            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this,{
                 if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
                      if("0"!=spuId)viewModel.queryGoodsDetails(spuId,false)

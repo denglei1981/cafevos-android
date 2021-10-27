@@ -238,5 +238,6 @@ object LiveDataBusKey {
 
     const val NEWS_DETAIL_CHANGE = "NEWS_DETAIL_CHANGE"//详情数据更改。。。
 
+    const val SHOP_CREATE_ORDER_BACK = "shop_create_order_back"//商品创建订单回调
 }
 
