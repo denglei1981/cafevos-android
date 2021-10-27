@@ -188,7 +188,7 @@ class GoodsViewModel: BaseViewModel() {
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
-                    it["spuId"] = spuId
+                    it["mallMallSpuId"] = spuId
                 }
                 val randomKey = getRandomKey()
                 shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
