@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="关于长安福特"
+            android:text="关于福域"
             android:textColor="#071726"
             android:textSize="@dimen/sp_15" />
 
