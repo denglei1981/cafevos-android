@@ -104,7 +104,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             headerBinding.inComment.apply {
                 layoutComment.visibility=View.VISIBLE
                 tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar)
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar,R.mipmap.ic_launcher_round)
                 it.evalTimeTxt=sfDate.format(it.evalTime?:0)
 //                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model=it

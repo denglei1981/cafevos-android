@@ -20,11 +20,10 @@ class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<
             item.apply {
                 evalTimeTxt=sfDate.format(evalTime?:0)
                 nickName=if("YES"!=anonymous)nickName else anonymousUsers
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(avater),it.imgAvatar)
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(avater),it.imgAvatar,R.mipmap.ic_launcher_round)
                 it.model=item
                 it.executePendingBindings()
             }
         }
-
     }
 }
