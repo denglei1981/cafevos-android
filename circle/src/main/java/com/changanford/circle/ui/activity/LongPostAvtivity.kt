@@ -210,8 +210,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             plateBean = it
             plateBean?.plate?.forEach {
                 if (it.name == "社区"){
-                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
-                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    buttomTypeAdapter?.setData(0,ButtomTypeBean("",0,0))
+                    buttomTypeAdapter?.setData(1,ButtomTypeBean(it.name,1,1))
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
