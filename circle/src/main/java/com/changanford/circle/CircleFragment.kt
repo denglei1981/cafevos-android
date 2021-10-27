@@ -1,6 +1,7 @@
 package com.changanford.circle
 
 import android.Manifest
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSON
 import com.baidu.location.BDAbstractLocationListener
@@ -32,6 +33,11 @@ import com.changanford.common.utilext.logD
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import android.content.Intent
+import com.alibaba.android.arouter.launcher.ARouter
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterHomePath.SplashActivity
+
 
 /**
  * 社区
@@ -48,6 +54,15 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
         super.onDestroyView()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (null != savedInstanceState) {
+            ARouter.getInstance().build(SplashActivity)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .navigation()
+        }
+    }
+
     override fun initView() {
         bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
@@ -57,25 +72,27 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
             })
         binding.ivMenu.setOnClickListener {
 
-            if (MConstant.token.isNotEmpty()){
-                if (!MineUtils.getBindMobileJumpDataType()){
+            if (MConstant.token.isNotEmpty()) {
+                if (!MineUtils.getBindMobileJumpDataType()) {
                     if (postEntity?.size == 0) {
 
-                        CircleMainMenuPop(requireContext(), object : CircleMainMenuPop.CheckPostType {
-                            override fun checkLongBar() {
-                                startARouter(ARouterCirclePath.LongPostAvtivity, true)
-                            }
+                        CircleMainMenuPop(
+                            requireContext(),
+                            object : CircleMainMenuPop.CheckPostType {
+                                override fun checkLongBar() {
+                                    startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                                }
 
-                            override fun checkPic() {
+                                override fun checkPic() {
 
-                                startARouter(ARouterCirclePath.PostActivity, true)
-                            }
+                                    startARouter(ARouterCirclePath.PostActivity, true)
+                                }
 
-                            override fun checkVideo() {
-                                startARouter(ARouterCirclePath.VideoPostActivity, true)
-                            }
+                                override fun checkVideo() {
+                                    startARouter(ARouterCirclePath.VideoPostActivity, true)
+                                }
 
-                        }).run {
+                            }).run {
                             setBlurBackgroundEnable(false)
                             showPopupWindow(it)
                             initData()
@@ -108,10 +125,10 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                                 }
                             }.show()
                     }
-                }else{
+                } else {
                     BindDialog(binding.ivMenu.context).show()
                 }
-            }else{
+            } else {
                 startARouter(ARouterMyPath.SignUI)
             }
 
