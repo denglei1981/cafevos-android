@@ -30,6 +30,7 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
@@ -161,11 +162,7 @@ class NewsVideoDetailFragment :
     private fun playVideo(playUrl: String) {
         playerHelper.startPlay(GlideUtils.defaultHandleImageUrl(playUrl))
     }
-    var footerView: View? = null
-    private fun addFooter() {
-        footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.homeRvContent, false)
-        homeNewsCommentAdapter.addFooterView(footerView!!)
-    }
+    var tips = ""
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -184,15 +181,18 @@ class NewsVideoDetailFragment :
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
                     if (it.data.dataList.size <= 0) {
-                        addFooter()
+                        val commentListBean = CommentListBean(typeNull = 1)
+                        val comList = arrayListOf(commentListBean)
+                        homeNewsCommentAdapter.setList(comList)
+                        tips = "暂无评论~"
                     } else {
-                        footerView?.let { fv ->
-                            homeNewsCommentAdapter.removeFooterView(fv)
-                        }
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                    if (tips == "暂无评论~") {
+                        homeNewsCommentAdapter.loadMoreModule.loadMoreEnd(true)
+                    }
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {

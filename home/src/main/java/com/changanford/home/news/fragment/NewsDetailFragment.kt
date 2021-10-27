@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
@@ -30,6 +31,7 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
+import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
@@ -43,6 +45,7 @@ import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
+import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
 
 /**
@@ -67,24 +70,29 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         NewsRecommendListAdapter()
     }
 
-    private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
-         NewsAdsListAdapter()
+    private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+        NewsAdsListAdapter()
     }
+
     companion object {
-        fun newInstance(artId:String): NewsDetailFragment {
+        fun newInstance(artId: String): NewsDetailFragment {
             val fg = NewsDetailFragment()
             val bundle = Bundle()
-            bundle.putString(JumpConstant.NEWS_ART_ID,artId)
+            bundle.putString(JumpConstant.NEWS_ART_ID, artId)
             fg.arguments = bundle
             return fg
         }
     }
+
     //HTML文本
     private val webHelper by lazy {
         CustomWebHelper(requireActivity(), inflateHeader.wvContent)
     }
 
     var llInfoBottom: Int = 0
+    private val customLoadMoreView: CustomLoadMoreView by lazy {
+        CustomLoadMoreView()
+    }
     private lateinit var shareViewModule: ShareViewModule //分享
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, requireActivity())
@@ -95,6 +103,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getNewsCommentList(bizId = artId, true)
         }
+        homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val commentBean = homeNewsCommentAdapter.getItem(position)
@@ -158,13 +167,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
-        inflateHeader.rvAds.adapter=newsAdsListAdapter
+        inflateHeader.rvAds.adapter = newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
                 if (item.authors != null) {
-//                    val newsValueData = NewsValueData(item.artId, item.type)
-//                    val values = Gson().toJson(newsValueData)
                     JumpUtils.instans?.jump(2, item.artId)
                 } else {
                     toastShow("没有作者")
@@ -266,6 +273,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
+    var tips = ""
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -282,19 +290,21 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     homeNewsCommentAdapter.addData(it.data.dataList)
                 } else {
                     if (it.data.dataList.size <= 0) {
-                        addFooter()
+                        val commentListBean = CommentListBean(typeNull = 1)
+                        val comList = arrayListOf(commentListBean)
+                        homeNewsCommentAdapter.setList(comList)
+                        tips = "暂无评论~"
                     } else {
-                        footerView?.let { fv ->
-                            homeNewsCommentAdapter.removeFooterView(fv)
-                        }
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                    if (tips == "暂无评论~") {
+                        homeNewsCommentAdapter.loadMoreModule.loadMoreEnd(true)
+                    }
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
-//                ToastUtils.showShortToast(it.message, this)
                 toastShow(it.message)
             }
         })
@@ -319,13 +329,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.data != null ) {
-                    if( it.data.recommendArticles.size > 0){
+                if (it.data != null) {
+                    if (it.data.recommendArticles.size > 0) {
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                     }
-                    if(it.data.ads.size>0){
-                        inflateHeader.rvAds.visibility=View.VISIBLE
+                    if (it.data.ads.size > 0) {
+                        inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }
                 } else {// 隐藏热门推荐。
@@ -333,11 +343,8 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
             }
         })
-
         viewModel.followLiveData.observe(this, Observer {
-
         })
-
         viewModel.collectLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.isSuccess) {
@@ -440,11 +447,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
-    var footerView: View? = null
-    private fun addFooter() {
-        footerView = layoutInflater.inflate(R.layout.comment_no_data, binding.pbRecyclerview, false)
-        newsRecommendListAdapter.addFooterView(footerView!!)
-    }
 
     override fun onClick(v: View) {
         if (MConstant.token.isEmpty()) {
