@@ -1,4 +1,4 @@
-package com.changanford.home.news.activity
+package com.changanford.home.news.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -7,15 +7,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.basic.BaseLoadSirActivity
+import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
@@ -25,7 +23,6 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
@@ -50,9 +47,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 
-@Route(path = ARouterHomePath.NewsVideoDetailActivity)
-class NewsVideoDetailActivity :
-    BaseLoadSirActivity<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>(),
+class NewsVideoDetailFragment :
+    BaseLoadSirFragment<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>(),
     View.OnClickListener {
     private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
     private lateinit var artId: String
@@ -71,22 +67,37 @@ class NewsVideoDetailActivity :
         NewsAdsListAdapter()
     }
 
+    companion object {
+        fun newInstance(artId:String): NewsVideoDetailFragment {
+            val fg = NewsVideoDetailFragment()
+            val bundle = Bundle()
+            bundle.putString(JumpConstant.NEWS_ART_ID,artId)
+            fg.arguments = bundle
+            return fg
+        }
+    }
+
     override fun initView() {
-        StatusBarUtil.setStatusBarMarginTop(binding.homesDkVideo, this)
-        StatusBarUtil.setStatusBarMarginTop(binding.ivBack, this)
-        StatusBarUtil.setStatusBarMarginTop(binding.ivMore, this)
+        StatusBarUtil.setStatusBarMarginTop(binding.homesDkVideo, requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.ivBack, requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.ivMore, requireActivity())
         ImmersionBar.with(this)
             .statusBarColor(R.color.black)
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
 
         binding.homeRvContent.adapter = homeNewsCommentAdapter
-        playerHelper = DKPlayerHelperBig(this, binding.homesDkVideo)
+        playerHelper = DKPlayerHelperBig(requireActivity(), binding.homesDkVideo)
         binding.ivBack.setOnClickListener {
-            onBackPressed()
+//            onBackPressed()
+
+            backPressed {
+                requireActivity().finish()
+            }
+//            requireActivity().finish()
         }
         addHeaderView()
         binding.llComment.tvSpeakSomething.setOnClickListener(this)
@@ -106,13 +117,14 @@ class NewsVideoDetailActivity :
     }
 
     override fun initData() {
-        artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
+        artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             viewModel.getNewsDetail(artId)
             viewModel.getNewsCommentList(artId, false)
             viewModel.getArtAdditional(artId)
         } else {
-            ToastUtils.showShortToast("没有该资讯类型", this)
+
+            toastShow("没有该资讯类型")
         }
         bus()
     }
@@ -120,7 +132,7 @@ class NewsVideoDetailActivity :
 
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
         DataBindingUtil.inflate(
-            LayoutInflater.from(this),
+            LayoutInflater.from(requireContext()),
             R.layout.include_home_pic_video_news_content,
             binding.homeRvContent,
             false
@@ -135,10 +147,9 @@ class NewsVideoDetailActivity :
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
                 if (item.authors != null) {
-//                    val newsValueData = NewsValueData(item.artId, item.type)
+                    //                    val newsValueData = NewsValueData(item.artId, item.type)
 //                    val values = Gson().toJson(newsValueData)
                     JumpUtils.instans?.jump(2, item.artId)
-
                 } else {
                     toastShow("没有作者")
                 }
@@ -162,7 +173,8 @@ class NewsVideoDetailActivity :
                 showHeadInfo(it.data)
                 playVideo(it.data.videoUrl)
             } else {
-                ToastUtils.showShortToast(it.message, this)
+//                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
         })
         viewModel.commentsLiveData.observe(this, Observer {
@@ -184,7 +196,7 @@ class NewsVideoDetailActivity :
                     homeNewsCommentAdapter.loadMoreModule.loadMoreEnd()
                 }
             } else {
-                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
@@ -203,12 +215,13 @@ class NewsVideoDetailActivity :
         })
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                ToastUtils.showShortToast("评论成功", this)
+
+                toastShow("评论成功")
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
                 setCommentCount()
             } else {
-                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
             }
 
         })
@@ -217,7 +230,8 @@ class NewsVideoDetailActivity :
                 isNeedNotify = true
             } else {// 网络原因操作失败了。
                 //
-                ToastUtils.showShortToast(it.message, this)
+//                ToastUtils.showShortToast(it.message, this)
+                toastShow(it.message)
                 setLikeState()
             }
         })
@@ -342,7 +356,7 @@ class NewsVideoDetailActivity :
     }
 
     fun smooth() {// todo  没有评论呢？
-        val smoothScroller = TopSmoothScroller(this)
+        val smoothScroller = TopSmoothScroller(requireActivity())
         smoothScroller.targetPosition = 1//要滑动到的位置
         linearLayoutManager?.startSmoothScroll(smoothScroller)
     }
@@ -351,7 +365,7 @@ class NewsVideoDetailActivity :
      *  设置关注状态。
      * */
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState(this)
+        val setFollowState = SetFollowState(requireActivity())
         setFollowState.setFollowState(btnFollow, authors)
     }
 
@@ -382,15 +396,15 @@ class NewsVideoDetailActivity :
         playerHelper.release()
     }
 
-    //点击系统返回需要判断是否全屏，切换全屏状态
-    private fun backPressed(back: () -> Unit) {
-        playerHelper.backPressed {
-            back()
-        }
-    }
-    override fun onBackPressed() {
-        backPressed { super.onBackPressed() }
-    }
+//    //点击系统返回需要判断是否全屏，切换全屏状态
+//    private fun backPressed(back: () -> Unit) {
+//        playerHelper.backPressed {
+//            back()
+//        }
+//    }
+//    fun onBackPressed() {
+//        backPressed { super.onBackPressed() }
+//    }
     /**
      *  有重试 重写此方法
      * */
@@ -399,7 +413,7 @@ class NewsVideoDetailActivity :
     }
 
     private fun replay() {
-        val replyDialog = ReplyDialog(this, object : ReplyDialog.ReplyListener {
+        val replyDialog = ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
             override fun getContent(content: String) {
                 viewModel.addNewsComment(artId, content)
             }
@@ -435,7 +449,7 @@ class NewsVideoDetailActivity :
             R.id.tv_news_to_share -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
-                        this,
+                        requireActivity(),
                         0,
                         it.shares,
                         null,
@@ -447,7 +461,7 @@ class NewsVideoDetailActivity :
             R.id.iv_more -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
-                        this,
+                        requireActivity(),
                         1,
                         it.shares,
                         ReportDislikeBody(1, it.artId.toString()),
@@ -526,14 +540,19 @@ class NewsVideoDetailActivity :
         )
 
     }
-
+    //点击系统返回需要判断是否全屏，切换全屏状态
+    fun backPressed(back: () -> Unit) {
+        playerHelper.backPressed {
+            back()
+        }
+    }
 
     private fun bus() {
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
             if (checkPosition == -1) {
                 return@observe
             }
-            ToastUtils.showShortToast("checkPosition=" + checkPosition, this)
+
             val bean = homeNewsCommentAdapter.getItem(checkPosition)
             bean.isLike = it
             if (bean.isLike == 1) {

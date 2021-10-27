@@ -16,8 +16,8 @@ class HomeV2ViewModel : BaseViewModel() {
     //app_index_ads
     fun getTwoBanner() {
         launch(false, {
-            var body = HashMap<String, Any>()
-            var rkey = getRandomKey()
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
             body["posCodes"] = "app_index_background,app_index_banner,app_index_topic,app_index_ads"
             ApiClient.createApi<HomeNetWork>()
                 .getTwoBanner(body.header(rkey), body.body(rkey))

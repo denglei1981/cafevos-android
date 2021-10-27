@@ -15,4 +15,5 @@ object ARouterHomePath {
     const val NewsPicAdActivity="/home/NewsPicAdActivity"
     const val NewsVideoDetailActivity="/home/NewsVideoDetailActivity"
     const val NewsDetailActivity="/home/NewsDetailActivity"
+    const val InfoDetailActivity="/home/InfoDetailActivity"
 }
