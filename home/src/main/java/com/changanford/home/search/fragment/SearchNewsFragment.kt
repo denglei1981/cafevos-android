@@ -3,11 +3,9 @@ package com.changanford.home.search.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.bean.NewsValueData
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -19,7 +17,6 @@ import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchNewsResultAdapter
 import com.changanford.home.search.request.PolySearchNewsResultViewModel
-import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -67,9 +64,9 @@ class SearchNewsFragment :
                 val item = searchNewsResultAdapter.getItem(position)
                 selectPosition = position
                 if (item.authors != null) {
-                    var newsValueData = NewsValueData(item.artId, item.type)
-                    var values = Gson().toJson(newsValueData)
-                    JumpUtils.instans?.jump(2, values)
+//                    var newsValueData = NewsValueData(item.artId, item.type)
+//                    var values = Gson().toJson(newsValueData)
+                    JumpUtils.instans?.jump(2, item.artId)
                 } else {
                     toastShow("没有作者")
                 }

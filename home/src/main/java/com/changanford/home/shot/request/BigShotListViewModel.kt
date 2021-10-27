@@ -48,7 +48,7 @@ class BigShotListViewModel : BaseViewModel() {
         }
         launch(false, {
             val requestBody = HashMap<String, Any>()
-            requestBody["pageNo"] = 1
+            requestBody["pageNo"] = pageNo
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()

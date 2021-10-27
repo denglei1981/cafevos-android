@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.bean.NewsValueData
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
@@ -26,7 +25,6 @@ import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
-import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 
@@ -65,9 +63,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
-                        val newsValueData = NewsValueData(item.artId, item.type)
-                        val values = Gson().toJson(newsValueData)
-                        JumpUtils.instans?.jump(2, values)
+//                        val newsValueData = NewsValueData(item.artId, item.type)
+//                        val values = Gson().toJson(newsValueData)
+                        JumpUtils.instans?.jump(2, item.artId)
                     } else {
                         toastShow("没有作者")
                     }

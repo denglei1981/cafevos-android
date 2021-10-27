@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.bean.NewsValueData
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
@@ -18,7 +17,6 @@ import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.recommend.request.RecommendViewModel
-import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 
@@ -75,9 +73,9 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
         when (item.rtype) {//  val rtype: Int, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
             1 -> {
                 if (item.authors != null) {
-                    val newsValueData = NewsValueData(item.artId, item.artType)
-                    val values = Gson().toJson(newsValueData)
-                    JumpUtils.instans?.jump(2, values)
+//                    val newsValueData = NewsValueData(item.artId, item.artType)
+//                    val values = Gson().toJson(newsValueData)
+                    JumpUtils.instans?.jump(2, item.artId)
                 } else {
                     toastShow("没有作者")
                 }
