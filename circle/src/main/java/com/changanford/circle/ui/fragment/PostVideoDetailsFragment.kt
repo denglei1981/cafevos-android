@@ -167,7 +167,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     ReportDislikeBody(2, mData.postsId),
                     mData.isGood,   //是否加精
                     mData.authorBaseVo?.nickname,
-                    mData.topicName
+                    mData.topicName,mData.type
                 )
             }
             ivCloseComment.setOnClickListener {
