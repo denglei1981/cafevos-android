@@ -372,10 +372,11 @@
         android:id="@+id/tvclose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@drawable/bg_bt_blue_corner39"
         android:gravity="center"
         android:padding="10dp"
+        android:layout_margin="@dimen/dp_20"
         android:text="取消"
-        android:textColor="#ff333333"
+        android:textColor="@color/white"
         android:textSize="15sp" />
 </LinearLayout>
