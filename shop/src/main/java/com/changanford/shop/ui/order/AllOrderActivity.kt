@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.ActOrderAllBinding
 import com.changanford.shop.popupwindow.OrderScreeningPop
@@ -36,6 +37,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         })
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         binding.recyclerView.adapter=mAdapter
+        mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
 //                if(3==orderType) OrderDetailsActivity.start(orderNo)
