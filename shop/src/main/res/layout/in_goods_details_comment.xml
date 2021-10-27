@@ -95,6 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="服务好，很满意。"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
     </androidx.constraintlayout.widget.ConstraintLayout>
