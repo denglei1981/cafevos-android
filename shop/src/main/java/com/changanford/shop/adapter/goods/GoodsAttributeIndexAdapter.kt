@@ -22,7 +22,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
             dataBinding.executePendingBindings()
             if(::skuCodes.isInitialized){
                 val pos=position+1
-                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],object :GoodsAttributeAdapter.OnSelectedBackListener{
+                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,object :GoodsAttributeAdapter.OnSelectedBackListener{
                     override fun onSelectedBackListener(pos: Int, item: OptionVo) {
                         item.optionId.also { skuCodes[pos] = it }
                         updateSkuCode()
