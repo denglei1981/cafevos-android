@@ -43,6 +43,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     }
     private fun initData(){
         viewDataBinding.model=dataBean
+        mAdapter.skuVos=dataBean.skuVos
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)

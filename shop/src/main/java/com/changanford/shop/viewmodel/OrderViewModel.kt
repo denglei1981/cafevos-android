@@ -58,7 +58,9 @@ class OrderViewModel: BaseViewModel() {
             //砍价
             "2"->{
                 buySource=2
-                body["mallMallHaggleUserGoodsId"]=mallMallHaggleUserGoodsId?:"0"
+                mallMallHaggleUserGoodsId?.let {
+                    if("0"!=it)body["mallMallHaggleUserGoodsId"]= it
+                }
             }
         }
         viewModelScope.launch {

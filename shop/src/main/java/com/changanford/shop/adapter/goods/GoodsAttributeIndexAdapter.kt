@@ -6,11 +6,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.OptionVo
+import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 
-class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
+class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>,var skuVos:List<SkuVo>?=null): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
     private lateinit var skuCodes:ArrayList<String>//"108-1-31-43"[108,1,31,43]
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>, item: Attribute) {
