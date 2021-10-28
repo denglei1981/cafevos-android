@@ -202,4 +202,9 @@ dependencies {
     // 加载状态框架
     implementation 'com.kingja.loadsir:loadsir:1.3.8'
 
+    //侧滑删除
+    api 'com.yanzhenjie.recyclerview:support:1.3.2'
+    api 'com.github.WangcWj:WeSwipe:1.0.2'
+
+
 }

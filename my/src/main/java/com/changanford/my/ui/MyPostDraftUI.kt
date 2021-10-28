@@ -3,9 +3,9 @@ package com.changanford.my.ui
 import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
+import cn.we.swipe.helper.WeSwipe
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
@@ -14,11 +14,11 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
 import com.changanford.my.BaseMineUI
-import com.changanford.my.R
-import com.changanford.my.databinding.ItemPostDraftBinding
 import com.changanford.my.databinding.UiPostDraftBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
+import com.changanford.my.widget.MViewHolder
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.yanzhenjie.recyclerview.*
 
 /**
  *  文件名：MyPostDraftUI
@@ -34,36 +34,17 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
     var isShowCheck: Boolean = false
 
     var adapter =
-        object : BaseQuickAdapter<PostEntity, BaseDataBindingHolder<ItemPostDraftBinding>>(
-            R.layout.item_post_draft
+        object : BaseQuickAdapter<PostEntity, MViewHolder>(
+            com.changanford.my.R.layout.item_post_draft
         ) {
-            override fun convert(
-                holder: BaseDataBindingHolder<ItemPostDraftBinding>,
-                item: PostEntity
-            ) {
-                holder.dataBinding?.let {
-                    it.itemTitle.text = item.title
-                    it.itemTime.text = "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"
-                    it.checkbox.visibility = if (isShowCheck) View.VISIBLE else View.GONE
-                    it.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                        checkMap[item.postsId] = isChecked
-                    }
-                    it.checkbox.isChecked = checkMap[item.postsId]!!
+            override fun convert(holder: MViewHolder, item: PostEntity) {
+                holder.title.text = item.title
+                holder.time.text = "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"
+                holder.checkBox.visibility = if (isShowCheck) View.VISIBLE else View.GONE
+                holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    checkMap[item.postsId] = isChecked
                 }
-                holder.itemView.setOnLongClickListener {
-                    ConfirmTwoBtnPop(this@MyPostDraftUI)
-                        .apply {
-                            contentText.text = "是否确定删除？\n\n删除后将无法找回，请谨慎操作"
-                            btnConfirm.setOnClickListener {
-                                dismiss()
-                                viewModel.deletePost(item.postsId)
-                            }
-                            btnCancel.setOnClickListener {
-                                dismiss()
-                            }
-                        }.showPopupWindow()
-                    true
-                }
+                holder.checkBox.isChecked = checkMap[item.postsId]!!
                 holder.itemView.setOnClickListener {
                     when (item.type) {
                         "2" -> {
@@ -80,12 +61,26 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                         }
                     }
                 }
+                holder.slide.setOnClickListener {
+                    ConfirmTwoBtnPop(this@MyPostDraftUI)
+                        .apply {
+                            contentText.text = "是否确定删除？\n\n删除后将无法找回，请谨慎操作"
+                            btnConfirm.setOnClickListener {
+                                dismiss()
+                                viewModel.deletePost(item.postsId)
+                            }
+                            btnCancel.setOnClickListener {
+                                dismiss()
+                            }
+                        }.showPopupWindow()
+                }
             }
         }
 
     override fun initView() {
         binding.draftToolbar.toolbarTitle.text = "我的草稿"
         binding.draftToolbar.toolbarSave.apply {
+            visibility = View.GONE
             text = "编辑"
             setTextColor(Color.parseColor("#1B3B89"))
             setOnClickListener {
@@ -121,8 +116,10 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                     }
                 }.showPopupWindow()
         }
-
-        binding.rcyPostDraft.rcyCommonView.adapter = adapter
+        binding.rcyPostDraft.rcyCommonView.apply {
+            adapter = this@MyPostDraftUI.adapter
+            WeSwipe.attach(this)
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -147,6 +144,13 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                     checkMap[it.postsId] = false
                 }
             }
+            if (it?.size!! > 0) {
+                binding.draftToolbar.toolbarSave.visibility = View.VISIBLE
+            } else {
+                binding.draftToolbar.toolbarSave.visibility = View.GONE
+                binding.bottomLayout.visibility = View.GONE
+                binding.draftToolbar.toolbarSave.text = "编辑"
+            }
             completeRefresh(it, adapter)
         })
     }
@@ -165,4 +169,48 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
             }
         }
     }
+
+
+//    private fun initSlide() {
+//        // srvWarn.setItemViewSwipeEnabled(true);// 开启滑动删除。默认关闭。
+//        binding.rcyCommonView.isItemViewSwipeEnabled = true
+//        binding.rcyCommonView.layoutManager = LinearLayoutManager(
+//            this,
+//            LinearLayoutManager.VERTICAL,
+//            false
+//        )
+//
+//        // 创建菜单：
+//        val mSwipeMenuCreator =
+//            SwipeMenuCreator { leftMenu, rightMenu, position ->
+//                // 2 删除
+//                val deleteItem = SwipeMenuItem(this)
+//                deleteItem
+//                    .setText("删除")
+//                    .setBackgroundColor(Color.parseColor("#01025C"))
+//                    .setTextColor(Color.WHITE) // 文字颜色。
+//                    .setTextSize(15) // 文字大小。
+//                    .setWidth(72)
+//                    .height = ViewGroup.LayoutParams.MATCH_PARENT
+//                rightMenu.addMenuItem(deleteItem)
+//                // 注意：哪边不想要菜单，那么不要添加即可。
+//            }
+//        binding.rcyCommonView.setSwipeMenuCreator(mSwipeMenuCreator)
+//
+//        // 设置监听器。
+//        val mMenuItemClickListener: OnItemMenuClickListener =
+//            OnItemMenuClickListener { menuBridge, adapterPosition ->
+//                // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+////                menuBridge.closeMenu()
+//                val direction = menuBridge.direction // 左侧还是右侧菜单。
+//                val adapterPosition: Int = adapterPosition
+//                val menuPosition = menuBridge.position // 菜单在RecyclerView的Item中的Position。
+//            }
+//        // 菜单点击监听。
+//        binding.rcyCommonView.setOnItemMenuClickListener(mMenuItemClickListener)
+//
+//        // 必须 最后执行
+//        binding.rcyCommonView.adapter = adapter
+//
+//    }
 }
