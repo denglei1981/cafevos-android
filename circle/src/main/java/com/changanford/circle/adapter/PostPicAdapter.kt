@@ -1,5 +1,6 @@
 package com.changanford.circle.adapter
 
+import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -40,6 +41,11 @@ class PostPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseVi
             holder.setImageResource(R.id.img, R.mipmap.add_image)
             holder.setGone(R.id.fm_tv, true)
             holder.setGone(R.id.iv_delete,true)
+            if (getDefItemCount()==10){
+                holder.itemView.visibility=View.GONE
+            }else{
+                holder.itemView.visibility=View.VISIBLE
+            }
         }else{
             var path = PictureUtil.getFinallyPath(item)
             GlideUtils.loadRoundLocal(
