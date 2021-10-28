@@ -87,12 +87,12 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 if (item.authors != null) {
                     if(item.isLike==0){
                         item.isLike=1
-                        var likesCount = item.likesCount.plus(1)
+                        val likesCount = item.likesCount.plus(1)
                         item.likesCount=likesCount
                         tvLikeCount.setPageTitleText( CountUtils.formatNum(likesCount.toString(), false).toString())
                     }else{
                         item.isLike=0
-                        var likesCount = item.likesCount.minus(1)
+                        val likesCount = item.likesCount.minus(1)
                         item.likesCount=likesCount
                         tvLikeCount.setPageTitleText( CountUtils.formatNum(likesCount.toString(), false).toString())
                     }
