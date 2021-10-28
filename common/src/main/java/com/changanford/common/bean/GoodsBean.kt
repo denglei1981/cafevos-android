@@ -194,6 +194,7 @@ data class GoodsDetailBean(
     var source:String?="0",
     var evalCount:String?="0",
     var isAgree:Boolean=false,//是否同意协议
+    var killStates:Int=0,//秒杀状态
 )
 
 data class Attribute(

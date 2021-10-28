@@ -2,6 +2,7 @@ package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.text.TextUtils
 import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -13,7 +14,7 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 
-class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
+class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, var currentSkuCode:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
@@ -47,14 +48,36 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
      * 是否存在该sku选项
      * */
     private fun isExistSku(optionId:String):Boolean{
-        skuVos?.apply {
-            for (item in this){
-                if(item.skuCode.split("-")[pos]==optionId){
-                    return true
+        if(TextUtils.isEmpty(currentSkuCode)||isInvalidSelectAttrs(currentSkuCode)){
+            skuVos?.apply {
+                for (item in this){
+                    if(item.skuCode.split("-")[pos]==optionId){
+                        return true
+                    }
                 }
             }
+        }else{//根据optionId得到skuCode组合
+            val skuCode=getTemporarySkuCode(optionId)
+            skuVos?.find { skuCode==it.skuCode }?.let { return true }
         }
         return false
+    }
+    private fun getTemporarySkuCode(optionId:String):String{
+        var skuCode=""
+        if(currentSkuCode.contains("-")){
+            val skuCodeArr= currentSkuCode.split("-").toMutableList()
+            skuCodeArr[pos]=optionId//更新
+            skuCodeArr.forEach{ skuCode+="$it-" }
+            skuCode=skuCode.substring(0,skuCode.length-1)
+        }
+        return skuCode
+    }
+    /**
+     * 是否是无效选择商品属性
+     * return false 有效 、true 无效
+     * */
+   private fun isInvalidSelectAttrs(skuCode:String):Boolean{
+        return skuCode.contains("-")&&skuCode.split("-").find { it =="0" }!=null
     }
     private fun selectRb(rb:RadioButton){
         if(::lastRb.isInitialized)lastRb.isChecked=false

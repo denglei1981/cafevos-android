@@ -23,7 +23,9 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
         holder.dataBinding?.apply {
             btnStates.setStates(getKillStates(item))
             item.stockProportion= WCommonUtil.getPercentage(item.salesCount.toDouble(),item.stockPlusSalesCount.toDouble())
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.imgUrl),imgCover)
+            val imgUrl=item.imgUrl
+            val imgPath=if(imgUrl.contains(","))imgUrl.split(",")[0] else imgUrl
+            GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),imgCover)
             tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
             btnStates.setOnClickListener {

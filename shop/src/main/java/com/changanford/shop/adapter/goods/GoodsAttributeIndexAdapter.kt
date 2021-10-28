@@ -23,7 +23,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
             dataBinding.executePendingBindings()
             if(::skuCodes.isInitialized){
                 val pos=position+1
-                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,object :GoodsAttributeAdapter.OnSelectedBackListener{
+                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,currentSkuCode,object :GoodsAttributeAdapter.OnSelectedBackListener{
                     override fun onSelectedBackListener(pos: Int, item: OptionVo) {
                         item.optionId.also { skuCodes[pos] = it }
                         updateSkuCode()
@@ -35,6 +35,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
         }
     }
     fun setSkuCodes(skuCode:String?){
+        currentSkuCode=skuCode?:""
         if(null!=skuCode&&skuCode.contains("-"))skuCodes= skuCode.split("-") as ArrayList<String>
     }
     fun getSkuCodes():ArrayList<String>{
@@ -45,5 +46,6 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
         skuCodes.forEach{ currentSkuCode+="$it-" }
         currentSkuCode=currentSkuCode.substring(0,currentSkuCode.length-1)
         skuCodeLiveData.postValue(currentSkuCode)
+        notifyDataSetChanged()
     }
 }

@@ -84,7 +84,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
         viewModel.queryGoodsDetails(spuId,true)
         //去掉行高
-        headerBinding.tvDetails.lineHeight=0
+//        headerBinding.tvDetails.lineHeight=1
+//        headerBinding.tvDetails.setLineSpacing(0f,1f)
     }
     private fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))

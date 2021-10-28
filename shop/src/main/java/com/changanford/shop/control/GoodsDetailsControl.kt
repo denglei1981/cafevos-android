@@ -47,7 +47,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         var skuCodeInitValue="${dataBean.spuId}-"
         dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
         skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
-        getSkuTxt(skuCodeInitValue)
+//        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
@@ -93,6 +93,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 }
             }
         }
+        getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
     }
     /**
@@ -123,10 +124,17 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             var remainingTime=startTime-nowTime//当前时间小于开始时间说明未开始
             if(remainingTime>0){//未开始
                 tvKillStates.setText(R.string.str_fromStart)
+                dataBean.killStates=7
             }else{//已开始、已结束
                 //距离结束剩余时间
                 remainingTime=endTime-nowTime
-                tvKillStates.setText(if(remainingTime>0)R.string.str_fromEnd else R.string.str_hasEnded)
+                if(remainingTime>0){//进行中
+                    dataBean.killStates=5
+                    tvKillStates.setText(R.string.str_fromEnd)
+                }else{//已结束
+                    dataBean.killStates=2
+                    tvKillStates.setText(R.string.str_hasEnded)
+                }
             }
             if(remainingTime<=0)return
             timeCount= KllTimeCountControl(remainingTime,tvKillH,tvKillM,tvKillS,object :
@@ -182,7 +190,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
-            if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
+            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
+            else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
                 btnSubmit.setStates(8)
             } else if(secKillInfo!=null&&now<secKillInfo?.timeBegin!!){//秒杀未开始
                 btnSubmit.setStates(7)
