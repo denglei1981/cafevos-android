@@ -124,7 +124,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             OrderGoodsAttributeAdapter().apply {
                 rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false)
                 rvGoodsProperty.adapter= this
-                setList(dataBean.skuCodeTxts)
+                setList(dataBean.skuCodeTxts?.filter { ""!=it })
             }
 //            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)
