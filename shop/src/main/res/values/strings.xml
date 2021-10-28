@@ -79,7 +79,7 @@
     <string name="str_postEvaluation">发布评价</string>
     <string name="str_orderScore">订单评分</string>
     <string name="str_anonymousSubmissions">匿名提交</string>
-    <string name="str_xeb">/200</string>
+    <string name="str_xeb">/500</string>
     <string name="str_pleaseEnterComments">请输入评论内容</string>
     <string name="str_badReview">差评</string>
     <string name="str_mediumReview">中评</string>
