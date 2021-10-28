@@ -68,8 +68,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
-                2->{//购车
-
+                2->{//购车 - orderBrief数据结构待定
+                    dataBinding.inGoodsInfo.apply {
+                        tvGoodsNumber.visibility=View.GONE
+                        recyclerView.visibility=View.GONE
+                        tvIntegral.visibility=View.GONE
+                        tvCarInfo.visibility = View.VISIBLE
+                        tvCarInfo.text=item.orderBrief
+                    }
+                    dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
                 3->{//商品
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
