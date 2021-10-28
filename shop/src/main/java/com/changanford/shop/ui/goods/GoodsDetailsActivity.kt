@@ -83,6 +83,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
         viewModel.queryGoodsDetails(spuId,true)
+        //去掉行高
+        headerBinding.tvDetails.lineHeight=0
     }
     private fun initTab(){
         for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))

@@ -1,7 +1,9 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.widget.RadioButton
+import androidx.annotation.RequiresApi
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -13,6 +15,7 @@ import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
         val dataBinding=holder.dataBinding
@@ -24,7 +27,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
                     true
                 }else false
                 isEnabled=if(isExistSku(optionId)){
-                    background.alpha=255
+                    dataBinding.radioButton.setTextAppearance(R.style.rb_goods0)
                     setOnClickListener {
                         selectRb(dataBinding.radioButton)
                         selectedOptionId=item.optionId
@@ -32,7 +35,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
                     }
                     true
                 }else {
-                    background.alpha=150
+                    dataBinding.radioButton.setTextAppearance(R.style.rb_goods1)
                     false
                 }
             }

@@ -10,5 +10,13 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:id="@+id/radioButton"
         android:text="@{model.optionName}"
-        style="@style/rb_goods"/>
+        android:gravity="center"
+        android:textSize="@dimen/sp_14"
+        android:button="@null"
+        android:background="@drawable/radiobutton_bt_goods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/dp_70"
+        android:minHeight="@dimen/dp_32"
+        style="@style/rb_goods0"/>
 </layout>

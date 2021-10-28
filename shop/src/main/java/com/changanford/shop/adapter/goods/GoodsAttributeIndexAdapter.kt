@@ -13,6 +13,7 @@ import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>,var skuVos:List<SkuVo>?=null): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
     private lateinit var skuCodes:ArrayList<String>//"108-1-31-43"[108,1,31,43]
+    private var currentSkuCode=""//当前skuCode
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>, item: Attribute) {
         val dataBinding=holder.dataBinding
@@ -40,11 +41,9 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
         return skuCodes
     }
     fun updateSkuCode(){
-        var skuCode=""
-        skuCodes.forEach{
-            skuCode+="$it-"
-        }
-        skuCode=skuCode.substring(0,skuCode.length-1)
-        skuCodeLiveData.postValue(skuCode)
+        currentSkuCode=""
+        skuCodes.forEach{ currentSkuCode+="$it-" }
+        currentSkuCode=currentSkuCode.substring(0,currentSkuCode.length-1)
+        skuCodeLiveData.postValue(currentSkuCode)
     }
 }
