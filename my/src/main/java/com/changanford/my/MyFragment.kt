@@ -232,6 +232,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.getUserInfo()
+        viewModel.getMenuList()
     }
 }
 

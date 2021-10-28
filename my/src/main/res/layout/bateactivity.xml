@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/title"
+            layout="@layout/comm_bar_title_view"/>
+        <TextView
+            android:id="@+id/tv_ceshi"
+            android:text="测试环境"
+            android:textSize="15sp"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/textblack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/rightarrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/text_colorv6" />
+
+        <TextView
+            android:id="@+id/tv_yufabu"
+            android:text="预发布环境"
+            android:padding="@dimen/dp_10"
+            android:visibility="gone"
+            android:textColor="@color/textblack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/rightarrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/text_colorv6" />
+
+        <TextView
+            android:id="@+id/tv_zhengshi"
+            android:text="正式环境"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/textblack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/rightarrow" />
+    </LinearLayout>
+</layout>

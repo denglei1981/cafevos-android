@@ -360,7 +360,7 @@ public class AppUtils {
      */
     public static void binduserid(String userid) {
         CloudPushService pushService = PushServiceFactory.getCloudPushService();
-        if (MConstant.isDebug){
+        if (MConstant.INSTANCE.isDebug()){
             userid = "dev"+userid;
         }
         pushService.bindAccount(userid, new CommonCallback() {
