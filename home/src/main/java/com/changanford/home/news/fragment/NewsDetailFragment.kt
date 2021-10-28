@@ -295,6 +295,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                         homeNewsCommentAdapter.setList(comList)
                         tips = "暂无评论~"
                     } else {
+                        tips=""
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }

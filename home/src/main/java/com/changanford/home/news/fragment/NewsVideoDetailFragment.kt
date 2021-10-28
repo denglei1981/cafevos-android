@@ -44,6 +44,7 @@ import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
+import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
@@ -67,7 +68,9 @@ class NewsVideoDetailFragment :
     private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
         NewsAdsListAdapter()
     }
-
+    private val customLoadMoreView: CustomLoadMoreView by lazy {
+        CustomLoadMoreView()
+    }
     companion object {
         fun newInstance(artId:String): NewsVideoDetailFragment {
             val fg = NewsVideoDetailFragment()
@@ -89,7 +92,7 @@ class NewsVideoDetailFragment :
             .init()
         linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
-
+        homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         binding.homeRvContent.adapter = homeNewsCommentAdapter
         playerHelper = DKPlayerHelperBig(requireActivity(), binding.homesDkVideo)
         binding.ivBack.setOnClickListener {
@@ -124,13 +127,10 @@ class NewsVideoDetailFragment :
             viewModel.getNewsCommentList(artId, false)
             viewModel.getArtAdditional(artId)
         } else {
-
             toastShow("没有该资讯类型")
         }
         bus()
     }
-
-
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
         DataBindingUtil.inflate(
             LayoutInflater.from(requireContext()),
@@ -148,8 +148,6 @@ class NewsVideoDetailFragment :
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
                 if (item.authors != null) {
-                    //                    val newsValueData = NewsValueData(item.artId, item.type)
-//                    val values = Gson().toJson(newsValueData)
                     JumpUtils.instans?.jump(2, item.artId)
                 } else {
                     toastShow("没有作者")
@@ -186,6 +184,7 @@ class NewsVideoDetailFragment :
                         homeNewsCommentAdapter.setList(comList)
                         tips = "暂无评论~"
                     } else {
+                        tips=""
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
