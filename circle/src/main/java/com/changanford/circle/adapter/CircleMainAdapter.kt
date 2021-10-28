@@ -104,7 +104,7 @@ class CircleMainAdapter(
             })
             allCircleAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
-                    if (allCircleAdapter.getItem(position)?.name == "全部") {
+                    if (allCircleAdapter.getItem(position)?.circleId == 0) {
                         startARouter(ARouterCirclePath.CircleListActivity)
                     } else {
                         val bundle = Bundle()

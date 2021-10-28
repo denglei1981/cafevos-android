@@ -71,6 +71,7 @@ object ARouterMyPath {
     const val MedalDetailUI = "/my/MedalDetailUI"
     const val MineMedalUI = "/my/MineMedalUI"
     const val AccountSafeUI = "/my/AccountSafeUI"
+    const val BateActivity = "/my/BateActivity"
 
 
 
