@@ -96,7 +96,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         viewModel.bigShotsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
-                bigShotUserListAdapter.addData(it.data)
+                bigShotUserListAdapter.setNewInstance(it.data as? MutableList<BigShotRecommendBean>)
             } else {
                 binding.refreshLayout.finishRefresh()
                 showFailure(it.message)
