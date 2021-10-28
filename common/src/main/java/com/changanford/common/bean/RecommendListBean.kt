@@ -214,7 +214,7 @@ data class RecommendData(
                 topicStr = artTitle
             }
             2 -> {
-                topicStr = postsKeywords
+                topicStr = postsTitle
             }
             3 -> {
                 topicStr = artSpecialTopicTitle
