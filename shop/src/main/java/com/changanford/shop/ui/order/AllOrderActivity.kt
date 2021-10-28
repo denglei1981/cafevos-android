@@ -54,6 +54,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
                 if(1==pageNo)mAdapter.setList(it.dataList)
                 else mAdapter.addData(it.dataList)
             }
+            if(null==it|| it.dataList.isEmpty())pageNo--
             binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
         })

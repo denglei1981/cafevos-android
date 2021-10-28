@@ -7,6 +7,7 @@ import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
@@ -48,8 +49,17 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
                 if(1==pageNo)mAdapter.setList(it.dataList)
                 else mAdapter.addData(it.dataList)
             }
-            binding.smartRl.finishLoadMore()
-            binding.smartRl.finishRefresh()
+            if(null==it|| it.dataList.isEmpty())pageNo--
+            binding.smartRl.apply {
+                when(state){
+                    RefreshState.Refreshing->finishRefresh()
+                    RefreshState.Loading->finishLoadMore()
+                    else -> {
+                        finishRefresh()
+                        finishLoadMore()
+                    }
+                }
+            }
         })
     }
 
