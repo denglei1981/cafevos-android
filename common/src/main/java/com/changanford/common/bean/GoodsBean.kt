@@ -162,7 +162,7 @@ data class GoodsDetailBean(
     val limitBuyNum: String? = "0",
     val now: Long = 0,
     var purchasedNum: Int? = 0,
-    val salesCount: Int = 0,
+    var salesCount: Int = 0,
     var totalStock:Int?=0,//总库存
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",

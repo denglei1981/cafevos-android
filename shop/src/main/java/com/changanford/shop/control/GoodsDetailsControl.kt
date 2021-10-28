@@ -76,10 +76,13 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inVip.layoutVip.visibility=View.GONE
                     headerBinding.inKill.apply {
-                        model=dataBean
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
                         val totalStock=dataBean.salesCount+dataBean.stock
+                        if(dataBean.killStates==2){
+                            dataBean.salesCount=totalStock
+                            dataBean.purchasedNum=dataBean.salesCount
+                        }
                         //库存百分比
                         val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble())
                         dataBean.totalStock=totalStock
@@ -89,6 +92,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         tvLimitBuyNum.setText("$totalStock")
 //                        val limitBuyNum=dataBean.limitBuyNum?:"0"
 //                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
+                        model=dataBean
                     }
                 }
             }
