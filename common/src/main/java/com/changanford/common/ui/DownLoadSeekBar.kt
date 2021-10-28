@@ -40,7 +40,7 @@ class DownLoadSeekBar : AppCompatSeekBar {
     ) : super(context!!, attrs, defStyleAttr) {
         AppCompatSeekBar(context, attrs, defStyleAttr)
         mThumbSize = resources.getDimensionPixelSize(R.dimen.sp_12)
-        mTextPaint.setColor(resources.getColor(R.color.appblue))
+        mTextPaint.setColor(resources.getColor(R.color.text_01025C))
         mTextPaint.setTextSize(resources.getDimensionPixelSize(R.dimen.sp_12).toFloat())
         mTextPaint.setTypeface(Typeface.DEFAULT)
         mTextPaint.setTextAlign(Paint.Align.CENTER)

@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
@@ -17,8 +18,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 @Route(path = ARouterMyPath.MineCenterFeedbackUI)
 class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>() {
     private var adapter = MineCommAdapter.FeedbackAdapter(R.layout.item_feedback_list)
-    var holidayHotline: String = "951998"//服务热线
-    var mobile: String = "951999"//节假日热线
+    var mobile: String = "4008877766"//节假日热线
     override fun initView() {
         binding.mineToolbar.toolbarTitle.text = "帮助与反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
@@ -66,6 +66,13 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
 
     override fun initRefreshData(pageNo: Int) {
         super.initRefreshData(pageNo)
+        viewModel.querySettingPhone {
+            it.onSuccess {
+                it?.mobile?.let {
+                    this.mobile = it
+                }
+            }
+        }
         viewModel.getFeedbackQ()
         viewModel._feedBackBean.observe(this, {
             if (!it.dataList.isNullOrEmpty()) {

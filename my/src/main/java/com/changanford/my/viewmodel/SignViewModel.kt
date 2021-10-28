@@ -366,6 +366,21 @@ class SignViewModel : ViewModel() {
         }
 
     }
+    /**
+     * 查询联系电话
+     */
+    fun querySettingPhone(result: (CommonResponse<SettingPhoneBean>) -> Unit) {
+
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["configKey"] = "service.hotline"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.querySettingPhone(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 
     fun monthSignDetail(date: String, result: (CommonResponse<MonthSignBean>) -> Unit) {
         viewModelScope.launch {

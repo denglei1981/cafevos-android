@@ -242,3 +242,10 @@ data class MyShopBean(
     val spuImgs: String = "",
     val mallMallSpuId: String
 )
+
+data class SettingPhoneBean(
+    val date: String,
+    val desc: String,
+    val holidayHotline: String?,//服务热线
+    val mobile: String? //24小时服务
+)
