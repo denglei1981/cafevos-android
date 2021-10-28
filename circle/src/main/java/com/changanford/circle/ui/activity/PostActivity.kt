@@ -585,6 +585,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
+                postPicAdapter.notifyDataSetChanged()
                 binding.mscr.smoothScrollTo(0, 0);
             }
         }

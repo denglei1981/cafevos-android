@@ -297,4 +297,41 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+
+    /**
+     *举报原因
+     */
+    @POST("con/reason/tipOffReason")
+    suspend fun getTipOffReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<String>>
+
+    /**
+     * 资讯举报
+     */
+    @POST("/con/article/addTipOffs")
+    suspend fun reportPost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *不喜欢原因
+     */
+    @POST("con/reason/dislikeReason")
+    suspend fun getDislikeReason(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<String>>
+
+    /**
+     * 帖子不喜欢
+     */
+    @POST("con/posts/addDislike")
+    suspend fun dislikePost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

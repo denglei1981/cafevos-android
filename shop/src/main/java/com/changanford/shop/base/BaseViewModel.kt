@@ -39,7 +39,6 @@ open class BaseViewModel : ViewModel() {
         viewModelScope.launch {
             fetchRequest(showLoading) {
                 block.invoke()
-
             }
         }
     }
