@@ -1,9 +1,12 @@
 package com.changanford.home.bean
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.alibaba.fastjson.JSON
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.sharelib.bean.IMediaObject
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
@@ -14,6 +17,8 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.data.Shares
+import com.changanford.home.news.dialog.DislikeDialog
+import com.changanford.home.news.dialog.ReportDialog
 import com.changanford.home.util.launchWithCatch
 
 
@@ -243,10 +248,18 @@ object HomeShareModel {
 //                        )
                     }
                     5 -> {
-//                        ReportDialog(activity as AppCompatActivity, body).show()
+                        if (MConstant.userId.isNotEmpty()) {
+                            ReportDialog(activity as AppCompatActivity, body).show()
+                        } else {
+                            startARouter(ARouterMyPath.SignUI)//跳转登录
+                        }
                     }
                     6 -> {
-//                        DislikeDialog(activity as AppCompatActivity, body).show()
+                        if (MConstant.userId.isNotEmpty()) {
+                            DislikeDialog(activity as AppCompatActivity, body).show()
+                        } else {
+                            startARouter(ARouterMyPath.SignUI)//跳转登录
+                        }
                     }
                     7 -> {
                         toastShow("结束发布")
