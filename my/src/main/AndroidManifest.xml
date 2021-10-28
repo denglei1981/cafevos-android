@@ -53,5 +53,6 @@
         <activity android:name=".ui.ConfirmCancelAccountUI" />
         <activity android:name=".ui.JiFenList" />
         <activity android:name=".ui.TaFansUI" />
+        <activity android:name=".ui.BateActivity" />
     </application>
 </manifest>

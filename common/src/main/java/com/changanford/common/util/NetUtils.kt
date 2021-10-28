@@ -13,12 +13,12 @@ import androidx.core.content.ContextCompat
  * 获取网络状态工具类
  */
 object NetUtils {
-    const val NETWORK_NONE = "无网络" // 没有网络连接
+    const val NETWORK_NONE = "notconnect" // 没有网络连接
     const val NETWORK_WIFI = "WIFI" // wifi连接
     const val NETWORK_2G = "2G" // 2G
     const val NETWORK_3G = "3G" // 3G
     const val NETWORK_4G = "4G" // 4G
-    const val NETWORK_MOBILE = "手机流量" // 手机流量
+    const val NETWORK_MOBILE = "mobile" // 手机流量
     const val NETWORK_UNKUNOWN = "Unknown" // 手机流量
 
     /**

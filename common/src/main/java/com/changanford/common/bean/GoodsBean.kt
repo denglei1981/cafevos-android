@@ -420,7 +420,8 @@ data class OrderBriefBean(
     val buyNum: String ="0",
     val fbCost: String = "0",
     val payType: String = "",
-    val snapshotOfAttrOption: String?=""
+    val snapshotOfAttrOption: String?="",
+    var fbOfUnitPrice:String?="0",
 )
 
 data class SnapshotOfAttrOption(

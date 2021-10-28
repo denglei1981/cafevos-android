@@ -14,6 +14,7 @@ import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.ui.order.OrderEvaluationActivity
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -87,13 +88,13 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             specifications+="${item.optionName},"
                         }
                     }
-                    //单价=总价/数量（运费默认为0） fbCost返回的可能为小数
-                    val fbOfUnitPrice:Int=(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt()).toInt()
+                    //单价
+                    val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                     item.apply {
                         this.buyNum=orderBriefBean.buyNum
                         payType=orderBriefBean.payType
-                        this.fbCost=orderBriefBean.fbCost
-                        this.fbOfUnitPrice="$fbOfUnitPrice"
+                        this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
+                        this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
                         this.specifications=specifications
                     }
                 }

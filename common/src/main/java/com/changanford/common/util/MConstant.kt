@@ -1,6 +1,7 @@
 package com.changanford.common.util
 
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import java.io.File
 
 /**********************************************************************************
@@ -25,9 +26,13 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    //    const val BASE_URL = "https://csapi.uniplanet.cn"
-    const val BASE_URL = "https://evosapiqa.changanford.cn"
-    const val isDebug = true
+    val BASE_URL by lazy { if (isCanQeck) if (isDebug)"https://evosapiqa.changanford.cn" else  "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn"}
+    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug)"https://evosh5qa.changanford.cn/common/#" else  "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#"}
+    //这里修改默认的环境，isCanQeck字段为true时生效
+    val isDebug by lazy { if (isCanQeck) SPUtils.getParam(BaseApplication.INSTANT, ISDEBUG, true) as Boolean else false}
+    const val ISDEBUG = "isdebug"//SP保存测试环境
+    const val isCanQeck = true //打线上包时只需要切换它为false
+
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
     const val IMGURLTAG = "image_url_tag"
@@ -47,10 +52,6 @@ object MConstant {
 
     val saveIMGpath by lazy {
         rootPath + File.separator + "android" + File.separator + "ftfilesdir" + File.separator + System.currentTimeMillis() + ".jpg"
-    }
-
-    val H5_BASE_URL_CSCIR by lazy {
-        "https://evosh5qa.changanford.cn/common/#"
     }
 
     /**

@@ -4,10 +4,13 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.DeviceUtils
+import com.changanford.common.util.FastClickUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.utilext.CleanDataUtils
@@ -50,6 +53,13 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
 
         binding.setSafe.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.AccountSafeUI)
+        }
+        binding.setbg.setOnClickListener {
+            if (MConstant.isCanQeck) {
+                if (FastClickUtils.fastRepeatClick()) {
+                    startARouter(ARouterMyPath.BateActivity)
+                }
+            }
         }
         binding.setFord.setOnClickListener {
             startARouter(ARouterMyPath.AboutUI)
