@@ -345,6 +345,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.followLiveData.observe(this, Observer {
+            if(it.isSuccess){
+                isNeedNotify = true
+            }else{
+                toastShow(it.message)
+            }
         })
         viewModel.collectLiveData.observe(this, Observer {
             if (it.isSuccess) {

@@ -12,6 +12,7 @@ import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.adapter.LabelAdapter
@@ -34,8 +35,9 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
             R.id.tv_time_look_count,
             R.id.tv_comment_count,
 
-        )
+            )
     }
+
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
@@ -56,7 +58,7 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
         tvLikeCount.setPageTitleText(item.likesCount.toString())
-        setLikeState(tvLikeCount,item,false)
+        setLikeState(tvLikeCount, item, false)
         tvCommentCount.text = item.getCommentCountResult()
         tvLookCount.text = item.getTimeAdnViewCount()
         tvTime.text = item.getTimeAdnViewCount()
@@ -68,10 +70,10 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
             tvTopic.visibility = View.VISIBLE
             tvTopic.text = item.summary
         }
-        val rvUserTag=holder.getView<RecyclerView>(R.id.rv_user_tag)
+        val rvUserTag = holder.getView<RecyclerView>(R.id.rv_user_tag)
         if (item.authors != null) {
             val labelAdapter = LabelAdapter(16)
-            rvUserTag.adapter=labelAdapter
+            rvUserTag.adapter = labelAdapter
             labelAdapter.setNewInstance(item.authors?.imags)
         }
         btnFollow.setOnClickListener {
@@ -82,28 +84,39 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
         }
-        tvLikeCount.setOnClickListener{
+        tvLikeCount.setOnClickListener {
             if (LoginUtil.isLogin()) {
                 if (item.authors != null) {
-                    if(item.isLike==0){
-                        item.isLike=1
+                    if (item.isLike == 0) {
+                        item.isLike = 1
                         val likesCount = item.likesCount.plus(1)
-                        item.likesCount=likesCount
-                        tvLikeCount.setPageTitleText( CountUtils.formatNum(likesCount.toString(), false).toString())
-                    }else{
-                        item.isLike=0
+                        item.likesCount = likesCount
+                        tvLikeCount.setPageTitleText(
+                            CountUtils.formatNum(
+                                likesCount.toString(),
+                                false
+                            ).toString()
+                        )
+                    } else {
+                        item.isLike = 0
                         val likesCount = item.likesCount.minus(1)
-                        item.likesCount=likesCount
-                        tvLikeCount.setPageTitleText( CountUtils.formatNum(likesCount.toString(), false).toString())
+                        item.likesCount = likesCount
+                        tvLikeCount.setPageTitleText(
+                            CountUtils.formatNum(
+                                likesCount.toString(),
+                                false
+                            ).toString()
+                        )
                     }
                     actionLike(item.artId)
-                    setLikeState(tvLikeCount,item,true)
+                    setLikeState(tvLikeCount, item, true)
                 }
             }
         }
     }
+
     // 关注。
-    private fun getFollow(followId: String, type: Int) {
+    private fun getFollow(authorBaseVo: AuthorBaseVo,followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -112,9 +125,22 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    notifyAtt(followId, type)
                 }.onWithMsgFailure {
+                    if (it != null) {
+                        toastShow(it)
+                    }
                 }
         }
+    }
+    //关注
+     fun notifyAtt(userId: String, isFollow: Int) {
+        for (data in this.data) {
+            if (data.userId == userId) {
+                data.authors?.isFollow = isFollow
+            }
+        }
+        this.notifyDataSetChanged()
     }
     // 喜欢
     private fun actionLike(artId: String) {
@@ -127,17 +153,19 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 .onSuccess {
 
                 }.onWithMsgFailure {
-
+                    if (it != null) {
+                        toastShow(it)
+                    }
                 }
         }
     }
-    fun setLikeState(tvLikeView:DrawCenterTextView,item: InfoDataBean,isAnim:Boolean){
-        if(item.isLike==0){
-            tvLikeView.setThumb(R.drawable.icon_home_look_like_count,isAnim)
-        }else{
-            tvLikeView.setThumb(R.drawable.icon_home_bottom_like,isAnim)
-        }
 
+    fun setLikeState(tvLikeView: DrawCenterTextView, item: InfoDataBean, isAnim: Boolean) {
+        if (item.isLike == 0) {
+            tvLikeView.setThumb(R.drawable.icon_home_look_like_count, isAnim)
+        } else {
+            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, isAnim)
+        }
     }
 
     /**
@@ -153,16 +181,8 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
-        followType = when (followType) {
-            1 -> {
-                2
-            }
-            else -> {
-                1
-            }
-        }
+        followType = if (followType == 1) 2 else 1
         authorBaseVo.isFollow = followType
-        setFollowState(btnFollow, authorBaseVo)
-        getFollow(authorBaseVo.authorId, followType)
+        getFollow( authorBaseVo,authorBaseVo.authorId, followType)
     }
 }

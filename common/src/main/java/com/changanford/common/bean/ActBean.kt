@@ -48,7 +48,7 @@ data class InfoDataBean(
     val title: String = "",
     val type: Int = 0,//资讯类型 1图文 2 图片 3 视频
     val updateTime: String = "",
-    val userId: Int = 0,
+    val userId: String = "",
     val videoTime: String = "",
     val videoUrl: String = "",
     val viewsCount: Long = 0L,
@@ -127,7 +127,7 @@ data class AuthorBaseVo(
     // 一下三个参数是用户搜索的。
     val headFrameName: String = "",
     val headFrameImage: String = "",
-    val userId: String
+    val userId: String=""
 ) {
     fun getMemberNames(): String {
         return if (TextUtils.isEmpty(memberName)) {

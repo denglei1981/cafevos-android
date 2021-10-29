@@ -181,9 +181,11 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike
-                item.authors?.isFollow = it.isFollow
                 item.commentCount = it.msgCount
                 newsListAdapter.notifyItemChanged(selectPosition + 1)// 有t
+                if (item.authors?.isFollow != it.isFollow) { // 关注不相同，以详情的为准。。
+                    newsListAdapter.notifyAtt(item.userId, it.isFollow)
+                }
             }
         })
     }
