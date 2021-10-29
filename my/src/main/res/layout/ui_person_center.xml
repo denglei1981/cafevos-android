@@ -149,6 +149,7 @@
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_44"
+                android:layout_marginTop="@dimen/dp_20"
                 android:background="@color/white"
                 app:layout_scrollFlags="scroll"
                 app:tabIndicator="@null"

@@ -24,8 +24,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
 
-class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
+class NewsListAdapter(
+    private val lifecycleOwner: LifecycleOwner
+) :
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
+
+    var isShowFollow: Boolean = true
+
     init {
         addChildClickViewIds(
             R.id.layout_content,
@@ -49,6 +54,7 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+        btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
         item.authors?.let {
             setFollowState(btnFollow, it)
         }
@@ -116,7 +122,7 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
     }
 
     // 关注。
-    private fun getFollow(authorBaseVo: AuthorBaseVo,followId: String, type: Int) {
+    private fun getFollow(authorBaseVo: AuthorBaseVo, followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -133,8 +139,9 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
         }
     }
+
     //关注
-     fun notifyAtt(userId: String, isFollow: Int) {
+    fun notifyAtt(userId: String, isFollow: Int) {
         for (data in this.data) {
             if (data.userId == userId) {
                 data.authors?.isFollow = isFollow
@@ -142,6 +149,7 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         }
         this.notifyDataSetChanged()
     }
+
     // 喜欢
     private fun actionLike(artId: String) {
         lifecycleOwner.launchWithCatch {
@@ -183,6 +191,6 @@ class NewsListAdapter(private val lifecycleOwner: LifecycleOwner) :
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
         authorBaseVo.isFollow = followType
-        getFollow( authorBaseVo,authorBaseVo.authorId, followType)
+        getFollow(authorBaseVo, authorBaseVo.authorId, followType)
     }
 }
