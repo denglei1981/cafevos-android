@@ -18,4 +18,5 @@ object CircleLiveBusKey {
     const val DELETE_CIRCLE_POST = "deleteCirclePost"
     const val REFRESH_CIRCLE_MAIN = "refreshCircleMain"
     const val REFRESH_FOLLOW_USER = "refreshFollowUser"
+    const val REFRESH_CHILD_COUNT = "refreshChildCount"
 }

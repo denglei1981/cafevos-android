@@ -408,5 +408,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
         })
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this,{
+            val bean =commentAdapter.getItem(checkPosition)
+            bean.let { _->
+                bean.childCount=it
+            }
+            commentAdapter.notifyItemChanged(checkPosition)
+        })
     }
 }
