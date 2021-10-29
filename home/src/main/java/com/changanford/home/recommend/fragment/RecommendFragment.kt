@@ -139,21 +139,28 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                 val item = recommendAdapter.getItem(selectPosition)
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike
-//                item.authors?.isFollow = it.isFollow
                 item.commentCount = it.msgCount
                 recommendAdapter.notifyItemChanged(selectPosition)// 有t
                 if (item.authors?.isFollow != it.isFollow) {
                     // 关注不相同，以详情的为准。。
                     if (item.authors != null) {
-                        recommendAdapter.notifyAtt(item.authors!!.userId, it.isFollow)
+                        recommendAdapter.notifyAtt(item.authors!!.authorId, it.isFollow)
                     }
                 }
             })
 
-
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, {
+            if (selectPosition == -1) {
+                return@observe
+            }
+            val bean = recommendAdapter.getItem(selectPosition)
+            if (bean.authors?.isFollow != it) { // 关注不相同，以详情的为准。。
+                if (bean.authors != null) {
+                    recommendAdapter.notifyAtt(bean.authors!!.authorId, it)
+                }
+            }
+        })
     }
-
-
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
             if (it.isSuccess) {

@@ -258,7 +258,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     }
 
     private fun toUserHomePage(item: RecommendData) {
-        JumpUtils.instans!!.jump(35, item.authors?.userId.toString())
+        JumpUtils.instans!!.jump(35, item.authors?.authorId.toString())
     }
     /**
      *  设置关注状态。
@@ -294,11 +294,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     }
     //关注
     fun notifyAtt(userId: String, isFollow: Int) {
-        var count=0
         for (data in this.data) {
-            count+=1
-            LogUtil.d(count.toString().plus(data.authors.toString()))
-            if (data.authors?.userId == userId) {
+            if (data.authors?.authorId == userId) {
                 data.authors?.isFollow = isFollow
             }
         }

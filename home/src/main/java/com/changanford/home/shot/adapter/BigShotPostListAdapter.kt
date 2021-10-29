@@ -85,18 +85,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo) {
-//        var followType = authorBaseVo.isFollow
-//        when (followType) {
-//            1 -> {
-//                followType = 2
-//            }
-//            else -> {
-//                followType = 1
-//            }
-//        }
-//        authorBaseVo.isFollow = followType
-//        setFollowState(btnFollow, authorBaseVo)
-//        getFollow(authorBaseVo.authorId, followType)
+
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
         authorBaseVo.isFollow = followType
@@ -130,7 +119,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
     //关注
     fun notifyAtt(userId: String, isFollow: Int) {
         for (data in this.data) {
-            if (data.authorBaseVo?.userId == userId) {
+            if (data.authorBaseVo?.authorId == userId) {
                 data.authorBaseVo?.isFollow = isFollow
             }
         }
