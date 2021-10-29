@@ -322,15 +322,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
-            followType = when (followType) {
-
-                1 -> {
-                    2
-                }
-                else -> {
-                    1
-                }
-            }
+            followType = if (followType==1) 2 else 1
             it.authors.isFollow = followType;
             setFollowState(binding.layoutHeader.btnFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)

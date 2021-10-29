@@ -26,11 +26,9 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
  * */
 class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
     OnLoadMoreListener {
-
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
-
     companion object {
         fun newInstance(): RecommendFragment {
             val fg = RecommendFragment()
@@ -45,8 +43,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
         viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
         binding.smartLayout.setOnLoadMoreListener(this)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
