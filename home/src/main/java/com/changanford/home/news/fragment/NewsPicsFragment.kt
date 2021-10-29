@@ -52,17 +52,19 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         ImmersionBar.with(this).statusBarColor(R.color.white).init()
         binding.layoutHeader.ivMore.setOnClickListener(this)
 
-        binding.layoutHeader.ivBack.setOnClickListener { requireActivity().finish()}
+        binding.layoutHeader.ivBack.setOnClickListener { requireActivity().finish() }
     }
+
     companion object {
-        fun newInstance(artId:String): NewsPicsFragment {
+        fun newInstance(artId: String): NewsPicsFragment {
             val fg = NewsPicsFragment()
             val bundle = Bundle()
-            bundle.putString(JumpConstant.NEWS_ART_ID,artId)
+            bundle.putString(JumpConstant.NEWS_ART_ID, artId)
             fg.arguments = bundle
             return fg
         }
     }
+
     private lateinit var artId: String
     override fun initData() {
         artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
@@ -125,7 +127,9 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         })
         viewModel.followLiveData.observe(this, Observer {
-
+            if (it.isSuccess) {
+                isNeedNotify = true
+            }
         })
 
         viewModel.collectLiveData.observe(this, Observer {
@@ -139,7 +143,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,newsDetailData?.shares)
+                shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
     }
@@ -176,7 +180,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         binding.bViewpager.create(newsDetailData.imageTexts)
         binding.tvPicsNum.text = "1/${newsDetailData.imageTexts.size}"
         binding.homeTvContent.text = newsDetailData.imageTexts[0].description
-        binding.homeTvContent.movementMethod= ScrollingMovementMethod.getInstance()
+        binding.homeTvContent.movementMethod = ScrollingMovementMethod.getInstance()
 
     }
 
@@ -210,8 +214,8 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 followAction()
             }
         }
-        binding.layoutHeader.ivAvatar.setOnClickListener{
-            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        binding.layoutHeader.ivAvatar.setOnClickListener {
+            JumpUtils.instans?.jump(35, newsDetailData.userId)
         }
         binding.llComment.tvNewsToLike.setPageTitleText(newsDetailData.getLikeCount())
 
@@ -312,7 +316,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
      *  设置关注状态。
      * */
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState( requireActivity())
+        val setFollowState = SetFollowState(requireActivity())
         setFollowState.setFollowState(btnFollow, authors)
     }
 
@@ -390,7 +394,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     }
 
     private fun replay() {
-        val replyDialog = ReplyDialog( requireActivity(), object : ReplyDialog.ReplyListener {
+        val replyDialog = ReplyDialog(requireActivity(), object : ReplyDialog.ReplyListener {
             override fun getContent(content: String) {
                 viewModel.addNewsComment(artId, content)
             }
@@ -402,7 +406,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     override fun onDestroy() {
         if (isNeedNotify) {
             newsDetailData?.let {
-                var infoDetailsChangeData = InfoDetailsChangeData(
+                val infoDetailsChangeData = InfoDetailsChangeData(
                     it.commentCount,
                     it.likesCount,
                     it.authors.isFollow,
