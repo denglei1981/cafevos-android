@@ -51,7 +51,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         StatusBarUtil.setStatusBarMarginTop(binding.layoutHeader.conHomeBar, requireActivity())
         ImmersionBar.with(this).statusBarColor(R.color.white).init()
         binding.layoutHeader.ivMore.setOnClickListener(this)
-
         binding.layoutHeader.ivBack.setOnClickListener { requireActivity().finish() }
     }
 
@@ -68,7 +67,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private lateinit var artId: String
     override fun initData() {
         artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
-
         if (!TextUtils.isEmpty(artId)) {
             if (!TextUtils.isEmpty(artId)) {
                 viewModel.getNewsDetail(artId)
