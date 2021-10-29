@@ -116,7 +116,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 layoutComment.visibility=View.VISIBLE
                 if("YES"==it.anonymous)it.nickName=activity.getString(R.string.str_anonymousUsers)
                 tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar,R.mipmap.ic_launcher_round)
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar,R.mipmap.head_default)
                 it.evalTimeTxt=sfDate.format(it.evalTime?:0)
 //                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model=it
