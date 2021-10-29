@@ -66,7 +66,7 @@ object MyApplicationUtil {
             versionName += ":Test"
         }
         CrashReport.setAppVersion(context, versionName)
-        CrashReport.initCrashReport(context, "xxxxxxxx", false)
+        CrashReport.initCrashReport(context, "61884b6924", false)
         val token: String = MConstant.token
         if (!TextUtils.isEmpty(token)) {
             CrashReport.setUserId(token)
