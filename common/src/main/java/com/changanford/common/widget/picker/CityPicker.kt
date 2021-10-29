@@ -1,6 +1,7 @@
 package com.changanford.common.widget.picker
 
 import android.app.Activity
+import android.graphics.Color
 import androidx.annotation.StyleRes
 import com.changanford.common.widget.picker.annotation.AddressMode
 import com.changanford.common.widget.picker.annotation.AddressMode.PROVINCE_CITY_COUNTY
@@ -33,6 +34,13 @@ class CityPicker : LinkagePicker {
     override fun initData() {
         super.initData()
         titleView.text = "地址选择"
+        titleView.setTextColor(Color.parseColor("#071726"))
+        titleView.textSize = 16F
+        okView.setTextColor(Color.parseColor("#01025C"))
+        okView.textSize = 15F
+        cancelView.setTextColor(Color.parseColor("#71747B"))
+        cancelView.textSize = 15F
+
         if (onAddressLoadListener != null) {
             onAddressLoadListener!!.onAddressLoadStarted()
         }

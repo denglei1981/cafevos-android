@@ -39,7 +39,7 @@
         android:background="@drawable/dialog_item_bg_only"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/text_color_08"
-        android:textSize="16sp" />
+        android:textColor="@color/color_00095B"
+        android:textSize="@dimen/sp_15" />
 
 </LinearLayout>

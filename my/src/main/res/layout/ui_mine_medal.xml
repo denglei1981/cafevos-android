@@ -45,6 +45,5 @@
         android:layout_marginStart="@dimen/dp_25"
         android:layout_marginEnd="@dimen/dp_25"
         android:layout_marginBottom="@dimen/dp_48"
-        android:enabled="false"
         android:text="去点亮勋章" />
 </LinearLayout>

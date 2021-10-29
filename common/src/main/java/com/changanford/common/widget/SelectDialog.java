@@ -232,8 +232,8 @@ public class SelectDialog extends Dialog implements OnClickListener {
                 TextView dialogItemButton = (TextView) holder.getView(R.id.dialog_item_bt);
                 dialogItemButton.setText(dialogBottomBean.getTitle());
                 if (!mUseCustomColor) {
-                    mFirstItemColor = mActivity.getResources().getColor(R.color.text_color_08);
-                    mOtherItemColor = mActivity.getResources().getColor(R.color.text_color_08);
+                    mFirstItemColor = mActivity.getResources().getColor(R.color.color_33);
+                    mOtherItemColor = mActivity.getResources().getColor(R.color.color_33);
                 }
                 if (1 == mName.size()) {
                     dialogItemButton.setTextColor(mFirstItemColor);

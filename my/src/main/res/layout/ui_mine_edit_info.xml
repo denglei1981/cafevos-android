@@ -28,9 +28,11 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/helay"
                     android:layout_width="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:layout_height="wrap_content">
+                    android:paddingBottom="@dimen/dp_15"
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <TextView
                         android:id="@+id/edit_name_title"
                         android:layout_width="wrap_content"
@@ -47,7 +49,7 @@
                         android:id="@+id/edit_icon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginRight="24dp"
                         android:src="@mipmap/ic_launcher"
                         app:layout_constraintRight_toRightOf="parent"
@@ -153,11 +155,12 @@
                     app:right_text="请选择"
                     app:right_text_color="@color/color_33"
                     app:show_bottom_line="true" />
+
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_email"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
+                    android:layout_marginTop="@dimen/dp_10"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_hobby"
@@ -263,7 +266,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_19"
-                    android:drawableRight="@mipmap/arrow_right_5c"
+                    android:drawableRight="@mipmap/ic_arrow_right_user_info"
                     android:drawablePadding="@dimen/dp_6"
                     android:padding="@dimen/dp_4"
                     android:text="长安福特员工认证"

@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dp_20"
-                        android:background="@drawable/shape_r_8_c_5c_10"
+                        android:background="@drawable/shape_r_8_c_5c_13"
                         android:gravity="center"
                         android:minWidth="@dimen/dp_50"
                         android:minHeight="@dimen/dp_25"
