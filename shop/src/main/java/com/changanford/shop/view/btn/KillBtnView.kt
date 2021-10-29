@@ -2,7 +2,6 @@ package com.changanford.shop.view.btn
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
@@ -26,7 +25,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         //获取自定义属性
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KillBtn)
         btnStates=typedArray.getInt(R.styleable.KillBtn_btn_states,-1)
-        typeface= Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
+//        typeface= Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
         setStates(btnStates)
     }
     fun setStates(states:Int,isDetailkill:Boolean=false){
