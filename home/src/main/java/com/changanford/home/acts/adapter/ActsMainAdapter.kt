@@ -28,6 +28,7 @@ import com.changanford.home.databinding.HomeActsHeaderBinding
 import com.changanford.home.util.launchWithCatch
 import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
+import com.zhpan.bannerview.constants.PageStyle
 import razerdp.basepopup.BasePopupWindow
 
 class ActsMainAdapter(
@@ -154,6 +155,7 @@ class ActsMainAdapter(
             setAdapter(SimpleAdapter())
             setIndicatorView(binding.drIndicator)
             setRoundCorner(20)
+                .setPageStyle(PageStyle.MULTI_PAGE_SCALE)
             setOnPageClickListener { }
             setIndicatorSliderColor(
                 ContextCompat.getColor(context, R.color.blue_tab),

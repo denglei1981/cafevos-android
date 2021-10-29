@@ -38,6 +38,7 @@ import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
 import com.zhpan.bannerview.constants.IndicatorGravity
+import com.zhpan.bannerview.constants.PageStyle
 
 /**
  *  图片详情。
@@ -168,6 +169,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             .setIndicatorGravity(IndicatorGravity.END)
             .setIndicatorVisibility(View.GONE)
             .setScrollDuration(500)
+            .setPageStyle(PageStyle.MULTI_PAGE_SCALE)
             .registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {

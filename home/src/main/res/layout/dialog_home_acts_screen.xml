@@ -93,7 +93,9 @@
             android:layout_marginTop="@dimen/dp_23"
             android:backgroundTint="@color/color_f1"
             android:text="@string/home_reset"
+            android:textStyle="bold"
             app:cornerRadius="@dimen/dp_20"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/home_btn_sure"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,8 +109,10 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_23"
             android:layout_marginEnd="@dimen/dp_23"
+            android:textStyle="bold"
             android:backgroundTint="@color/blue_tab"
             android:text="@string/home_sure"
+            android:textSize="15sp"
             android:textColor="@color/white"
             app:cornerRadius="@dimen/dp_20"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -116,12 +120,11 @@
             app:layout_constraintStart_toEndOf="@+id/btn_rest"
             app:layout_constraintTop_toBottomOf="@+id/tv_city_title" />
 
-
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gr_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:constraint_referenced_ids="tv_city_any,tv_city_title" />
 
 
