@@ -59,6 +59,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                         it.tvMedalDes.text = "暂未点亮\n${item.remark}"
                     }
                     else -> {//已获取
+                        var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
                         it.tvMedalDes.text = "${
@@ -66,7 +67,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                                 item.getTime,
                                 "yyyy-MM-dd"
                             )
-                        }点亮\n${item.remark}"
+                        }点亮\n$r"
                     }
                 }
             }

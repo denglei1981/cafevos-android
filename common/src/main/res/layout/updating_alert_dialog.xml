@@ -80,7 +80,7 @@
             android:background="@drawable/orange_light_bg"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="#FB873B"
+            android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>
 

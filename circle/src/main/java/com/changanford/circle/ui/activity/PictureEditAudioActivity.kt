@@ -53,7 +53,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     private val TAG = PictureEditAudioActivity::class.java.simpleName
     private val MIN_CUT_DURATION = 3 * 1000L // 最小剪辑时间1s
 
-    private val MAX_CUT_DURATION = 15 * 1000L //视频最多剪切多长时间
+    private val MAX_CUT_DURATION = 60 * 1000L //视频最多剪切多长时间
 
     private val MAX_COUNT_RANGE = 10 //seekBar的区域内一共有多少张图片
     private lateinit var mExtractVideoInfoUtil: ExtractVideoInfoUtil

@@ -45,7 +45,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application>
-        <activity android:name=".ui.viewpager.Banner" />
         <activity android:name=".ui.CaptureActivity" />
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity
