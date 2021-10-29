@@ -96,6 +96,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
                         this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
                         this.specifications=specifications
+                        this.orginPrice=orginPrice
+                        this.busSourse= busSourse
                     }
                 }
             }

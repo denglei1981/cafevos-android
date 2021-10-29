@@ -34,12 +34,12 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
 //            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
             GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
             tvOrderType.apply {
-                visibility = when {
-                    "YES"==item.seckill -> {//秒杀
+                visibility = when(item.busSourse) {
+                    "1" -> {//秒杀
                         setText(R.string.str_seckill)
                         View.VISIBLE
                     }
-                    "YES"==item.haggleOrder -> {//砍价
+                    "2" -> {//砍价
                         setText(R.string.str_bargaining)
                         View.VISIBLE
                     }

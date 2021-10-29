@@ -139,7 +139,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
      * */
     override fun onSelectTimeBackListener(position: Int, seckillTimeRanges: SeckillTimeRange) {
         pageNo=1
-        viewModel.getGoodsKillList(seckillTimeRanges.timeRangeId,pageNo)
+        viewModel.getGoodsKillList(seckillTimeRanges.timeRangeId,pageNo,showLoading = true)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

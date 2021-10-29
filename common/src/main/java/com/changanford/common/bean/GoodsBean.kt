@@ -362,7 +362,7 @@ data class OrderItemBean(
     val cost:String?="0",
     var waitPayCountDown:Long?=0,
     var acountFb:String="0",
-    val busSourse: String = "0",
+    var busSourse: String = "0",
     val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
@@ -420,12 +420,13 @@ data class AddressValueObj(
     val provinceName: String = ""
 )
 data class OrderBriefBean(
-    val busSourse: Int = 0,
+    val busSourse: String = "0",
     val buyNum: String ="0",
     val fbCost: String = "0",
     val payType: String = "",
     val snapshotOfAttrOption: String?="",
     var fbOfUnitPrice:String?="0",
+    var orginPrice:String?="0",
 )
 
 data class SnapshotOfAttrOption(
