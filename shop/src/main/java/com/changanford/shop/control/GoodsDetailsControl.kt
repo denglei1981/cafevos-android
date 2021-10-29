@@ -79,7 +79,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
                         val totalStock=dataBean.salesCount+dataBean.stock
-                        if(dataBean.killStates==2){
+                        if(dataBean.killStates==2){//已结束
                             dataBean.salesCount=totalStock
                             dataBean.purchasedNum=dataBean.salesCount
                         }
@@ -156,11 +156,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun createAttribute(){
         if(::dataBean.isInitialized){
-            GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
-                showPopupWindow()
-                onDismissListener=object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        getSkuTxt(_skuCode)
+            val spuPageType=dataBean.spuPageType
+            if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
+                GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
+                    showPopupWindow()
+                    onDismissListener=object : BasePopupWindow.OnDismissListener() {
+                        override fun onDismiss() {
+                            getSkuTxt(_skuCode)
+                        }
                     }
                 }
             }
