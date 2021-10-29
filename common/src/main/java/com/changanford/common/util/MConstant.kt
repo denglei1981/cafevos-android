@@ -26,10 +26,17 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    val BASE_URL by lazy { if (isCanQeck) if (isDebug)"https://evosapiqa.changanford.cn" else  "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn"}
-    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug)"https://evosh5qa.changanford.cn/common/#" else  "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#"}
+    val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
+    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+
     //这里修改默认的环境，isCanQeck字段为true时生效
-    val isDebug by lazy { if (isCanQeck) SPUtils.getParam(BaseApplication.INSTANT, ISDEBUG, true) as Boolean else false}
+    val isDebug by lazy {
+        if (isCanQeck) SPUtils.getParam(
+            BaseApplication.INSTANT,
+            ISDEBUG,
+            true
+        ) as Boolean else false
+    }
     const val ISDEBUG = "isdebug"//SP保存测试环境
     const val isCanQeck = true //打线上包时只需要切换它为false
 
@@ -119,10 +126,13 @@ object MConstant {
      */
     var H5_MINE_INTEGRAL = "${H5_BASE_URL_CSCIR}/taskExplain"
 
+    //福币规则：/#/richTextAp?key=user_agreement_fuUb
+    var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/#/richTextAp?key=user_agreement_fuUb"
+
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
     /**
      *《福域APP商城服务条款》
-    * */
+     * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
 }
