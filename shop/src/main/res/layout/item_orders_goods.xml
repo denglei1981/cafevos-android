@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             tools:visibility="visible"
             android:visibility="invisible"
             android:id="@+id/btn_confirm"
@@ -82,6 +83,7 @@
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12" />
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             tools:visibility="visible"
             android:visibility="invisible"
             android:id="@+id/btn_cancel"
