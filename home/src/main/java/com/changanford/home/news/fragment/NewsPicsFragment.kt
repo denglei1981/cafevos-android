@@ -124,7 +124,9 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 setLikeState()
             }
         })
-        viewModel.followLiveData.observe(this, Observer {})
+        viewModel.followLiveData.observe(this, Observer {
+
+        })
 
         viewModel.collectLiveData.observe(this, Observer {
             if (it.isSuccess) {
