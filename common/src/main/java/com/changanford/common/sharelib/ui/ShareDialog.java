@@ -194,7 +194,7 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
             case 4://显示举报、不喜欢、屏蔽
                 llbuttom.setVisibility(View.VISIBLE);
                 ll_act.setVisibility(View.VISIBLE);
-                ll_pb.setVisibility(View.VISIBLE);
+                ll_pb.setVisibility(View.INVISIBLE);
                 break;
             case 5://显示加精、删除
                 llbuttom.setVisibility(View.VISIBLE);

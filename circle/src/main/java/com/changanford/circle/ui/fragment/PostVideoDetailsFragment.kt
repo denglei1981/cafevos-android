@@ -7,24 +7,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
-import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
-import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityPostVideoDetailsBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.activity.PostDetailsActivity
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
-import com.changanford.circle.viewmodel.PostVideoDetailsViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
-import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -32,11 +26,8 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.DKPlayerHelper
-import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
-import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -320,6 +311,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     "关注成功".toast()
                 else
                     "已取消关注".toast()
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER).postValue(mData.authorBaseVo?.isFollow)
             }else{
                 it.msg.toast()
             }
@@ -349,6 +341,13 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             mData.shareCount++
             binding.tvShareNum.text = mData.shareCount.toString()
+        })
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this,{
+            val bean =commentAdapter.getItem(checkPosition)
+            bean.let { _->
+                bean.childCount=it
+            }
+            commentAdapter.notifyItemChanged(checkPosition)
         })
     }
 

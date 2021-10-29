@@ -15,6 +15,7 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
@@ -22,6 +23,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
@@ -256,7 +258,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     }
 
     private fun toUserHomePage(item: RecommendData) {
-        JumpUtils.instans!!.jump(35, item.authors?.userId.toString())
+        JumpUtils.instans!!.jump(35, item.authors?.authorId.toString())
     }
     /**
      *  设置关注状态。
@@ -270,16 +272,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
-        followType = when (followType) {
-            1 -> {
-                2
-            }
-            else -> {
-                1
-            }
-        }
-        authorBaseVo.isFollow = followType
-        setFollowState(btnFollow, authorBaseVo)
+        followType = if (followType == 1) 2 else 1
+//        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
     // 关注。
@@ -292,9 +286,20 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    notifyAtt(followId, type)
                 }.onWithMsgFailure {
+                    it?.let { it1 -> toastShow(it1) }
                 }
         }
+    }
+    //关注
+    fun notifyAtt(userId: String, isFollow: Int) {
+        for (data in this.data) {
+            if (data.authors?.authorId == userId) {
+                data.authors?.isFollow = isFollow
+            }
+        }
+        this.notifyDataSetChanged()
     }
 
     // 喜欢
@@ -308,7 +313,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 .onSuccess {
 
                 }.onWithMsgFailure {
-
+                    it?.let { it1 -> toastShow(it1) }
                 }
         }
     }
@@ -320,6 +325,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             tvLikeView.setThumb(R.drawable.icon_home_bottom_like, isAnim)
         }
     }
+
+
 
     private fun likePost(tvLikeView: DrawCenterTextView, item:RecommendData) {
         val activity = BaseApplication.curActivity as AppCompatActivity

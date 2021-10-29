@@ -366,6 +366,7 @@ class SignViewModel : ViewModel() {
         }
 
     }
+
     /**
      * 查询联系电话
      */
@@ -1101,23 +1102,29 @@ class SignViewModel : ViewModel() {
      * 退出登录
      */
     fun loginOut() {
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.loginOut(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                clearLoginUserInfo()
+            }.onFailure {
+                clearLoginUserInfo()
+            }
+        }
+    }
+
+    /**
+     * 清楚登录信息
+     */
+    private fun clearLoginUserInfo() {
         UserManger.deleteUserInfo()
         AppUtils.Unbinduserid()
         MConstant.token = ""
         MConstant.mine_phone = ""
         MConstant.userId = ""
-        viewModelScope.launch {
-            fetchRequest {
-                var body = HashMap<String, Any>()
-                var rkey = getRandomKey()
-                apiService.loginOut(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                UserManger.deleteUserInfo()
-                AppUtils.Unbinduserid()
-                MConstant.token = ""
-                LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-                    .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
-            }
-        }
+        LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
     }
 }

@@ -345,6 +345,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.followLiveData.observe(this, Observer {
+            if(it.isSuccess){
+                isNeedNotify = true
+            }else{
+                toastShow(it.message)
+            }
         })
         viewModel.collectLiveData.observe(this, Observer {
             if (it.isSuccess) {
@@ -353,7 +358,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
             }
         })
-
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
@@ -434,21 +438,12 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
-            when (followType) {
-                1 -> {
-                    followType = 2
-                }
-                else -> {
-                    followType = 1
-                }
-            }
+            followType = if (followType==1) 2 else 1
             it.authors.isFollow = followType;
             setFollowState(inflateHeader.btFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
         }
     }
-
-
     override fun onClick(v: View) {
         if (MConstant.token.isEmpty()) {
             startARouter(ARouterMyPath.SignUI)

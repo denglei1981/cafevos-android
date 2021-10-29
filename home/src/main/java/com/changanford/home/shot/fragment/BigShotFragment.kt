@@ -139,6 +139,19 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
             bigShotPostListAdapter.notifyItemChanged(selectPosition)
         })
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, {
+            if (selectPosition == -1) {
+                return@observe
+            }
+            val bean = bigShotPostListAdapter.getItem(selectPosition)
+            if (bean.authorBaseVo?.isFollow != it) { // 关注不相同，以详情的为准。。
+                if(bean.authorBaseVo!=null){
+                    bigShotPostListAdapter.notifyAtt(bean.authorBaseVo!!.authorId, it)
+                }
+            }
+        })
+
+
     }
 
     override fun initData() {

@@ -17,7 +17,10 @@ import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
-import com.changanford.common.router.path.*
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
@@ -303,7 +306,7 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineEditInfoUI, true)
 
             }
-            35 -> {//他人主页
+            35 -> {//他人主页 需要userId
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle, true)
 
             }

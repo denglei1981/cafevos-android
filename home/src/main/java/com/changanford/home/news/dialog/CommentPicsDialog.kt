@@ -195,7 +195,7 @@ open class CommentPicsDialog(
     }
 
     override fun onRetryBtnClick() {
-
+        getCommentList()
     }
 
     private fun replay(pid: String) {

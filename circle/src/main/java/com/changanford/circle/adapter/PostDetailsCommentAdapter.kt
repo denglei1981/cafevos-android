@@ -1,6 +1,8 @@
 package com.changanford.circle.adapter
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -28,6 +30,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
 
+    @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.let {
@@ -66,6 +69,12 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                             }
                         }
                 }
+            }
+            if (item.childCount == 0) {
+                binding.tvChildCount.visibility = View.GONE
+            } else {
+                binding.tvChildCount.visibility = View.VISIBLE
+                binding.tvChildCount.text = "${item.childCount}回复"
             }
             binding.ivHead.setOnClickListener {
                 val bundle = Bundle()

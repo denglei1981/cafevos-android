@@ -275,10 +275,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         if (isTopPost) {
-            params["topId"] = intent.extras?.getString("topId") ?: "0"
-            params["topName"] = intent.extras?.getString("topName") ?: ""
-            (params["topName"] as String).isNotEmpty().let {
-                buttomTypeAdapter.setData(2, ButtomTypeBean(params["topName"] as String, 1, 2))
+            params["topicId"] = intent.extras?.getString("topId") ?: "0"
+            params["topicName"] = intent.extras?.getString("topName") ?: ""
+            (params["topicName"] as String).isNotEmpty().let {
+                buttomTypeAdapter.setData(2, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
         }
     }
@@ -447,8 +447,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 )
                 when(buttomTypeAdapter.getItem(position).itemType){
                     2 ->{
-                        params.remove("topID")
-                        params.remove("topName")
+                        params.remove("topicId")
+                        params.remove("topicName")
                     }
                     3->{
                         params.remove("circleId")

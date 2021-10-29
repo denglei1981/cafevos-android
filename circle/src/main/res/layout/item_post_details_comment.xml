@@ -8,6 +8,7 @@
         <variable
             name="bean"
             type="com.changanford.circle.bean.CommentListBean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,6 +83,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
@@ -92,6 +94,22 @@
             app:layout_constraintRight_toRightOf="@+id/ll_like"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
             tools:text="期待！我们一起冲冲冲！" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_child_count"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/circle_child_count"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/circle_666666"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            tools:text="5回复" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
