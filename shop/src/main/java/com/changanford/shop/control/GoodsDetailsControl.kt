@@ -40,6 +40,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
+        dataBean.price=dataBean.orginPrice
         dataBean.purchasedNum=dataBean.salesCount
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
@@ -50,7 +51,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
 //        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
-        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
+        val detailsHtml=dataBean.detailsHtml
+        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         //品牌参数
         val param=dataBean.param
         if(null!=param){
@@ -63,7 +65,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
-            "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
+            "MEMBER_EXCLUSIVE"->{
+                memberExclusive(dataBean)
+                headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
+            }
             "MEMBER_DISCOUNT"-> {
                 headerBinding.inDiscount.apply {
                     lLayoutVip.visibility=View.VISIBLE
@@ -176,8 +181,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.fbPrice=fbPrice
             dataBean.stock=stock.toInt()
             dataBean.orginPrice=orginPrice
+            dataBean.price=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
+        memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
         val skuCodeTxtArr= arrayListOf<String>()
@@ -193,6 +200,15 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
+    }
+    /**
+     * 处理专享数据-并且是折扣数据
+    * */
+    fun memberExclusive(_dataBean:GoodsDetailBean){
+        val secondarySpuPageTagType=_dataBean.secondarySpuPageTagType
+        if("MEMBER_DISCOUNT"==secondarySpuPageTagType){
+            _dataBean.price=_dataBean.fbPrice
+        }
     }
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
         _dataBean.apply {

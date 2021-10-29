@@ -113,6 +113,7 @@ data class GoodsItemBean(
     var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
     var totalStock:Int=1,
+    var secondarySpuPageTagType:String?="",
 )
 class Params
 // 秒杀时段
@@ -154,6 +155,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
+    var price: String? = "0",
     var orginPrice: String? = "0",//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
@@ -195,6 +197,7 @@ data class GoodsDetailBean(
     var evalCount:String?="0",
     var isAgree:Boolean=false,//是否同意协议
     var killStates:Int=0,//秒杀状态
+    var secondarySpuPageTagType:String?="",
 )
 
 data class Attribute(

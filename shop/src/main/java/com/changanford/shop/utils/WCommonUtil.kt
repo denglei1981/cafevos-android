@@ -131,6 +131,22 @@ object WCommonUtil {
         text.invalidate()
     }
     /**
+     * html空格字符处理
+     * */
+    fun htmlToStr(str:String):String{
+        return "${htmlToString(str).trimEnd()}".replace("\n\n","\n")
+    }
+    /**
+     * 将html转为str
+     * */
+    private fun htmlToString(str: String): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(str)
+        }
+    }
+    /**
      * 将html转为str
      * */
     fun htmlToString(textView: TextView,str: String) {

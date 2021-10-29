@@ -45,7 +45,6 @@ public class MImageGetter implements Html.ImageGetter {
                 drawable.setLevel(1);
                 textView.invalidate();
                 textView.setText(textView.getText());
-//                Log.e("okhttp","h:"+h+">>>w:"+w+">>>bitmap.getWidth():"+bitmap.getWidth()+">>bitmap.getHeight():"+bitmap.getHeight());
             }
         });
         return drawable;

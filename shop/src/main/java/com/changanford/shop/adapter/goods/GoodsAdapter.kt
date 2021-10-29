@@ -8,7 +8,6 @@ import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsBinding
-import com.changanford.shop.view.TypefaceTextView
 
 
 class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGoodsBinding>>(R.layout.item_goods){
@@ -27,30 +26,32 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             dataBinding.tvOrIntegral.visibility=if(item.lineFb==null) View.GONE else View.VISIBLE
             dataBinding.inVip.model=item
             dataBinding.tvIntegral.visibility=View.VISIBLE
-            setTagType(item.spuPageTagType,dataBinding.tvTagType,dataBinding.inVip.lLayoutVip,dataBinding)
+            setTagType(item,dataBinding)
         }
     }
-    private fun setTagType(tagType:String,tvTagType:TypefaceTextView,vipView: View,dataBinding:ItemGoodsBinding){
-        vipView.visibility=View.GONE
-        tvTagType.visibility=View.VISIBLE
-        tvTagType.text=when(tagType){
+    private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){
+        val tagType=item.spuPageTagType
+        dataBinding.inVip.lLayoutVip.visibility=View.GONE
+        dataBinding.tvTagType.visibility=View.VISIBLE
+        dataBinding.tvTagType.text=when(tagType){
             "NEW_PRODUCTS"->"新品"
             "HOT_SALE"->"热销"
             "MEMBER_DISCOUNT"->{
-                vipView.visibility=View.VISIBLE
+                dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
                 dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
                 dataBinding.tvIntegral.visibility=View.GONE
                 "会员折扣"
             }
             "MEMBER_EXCLUSIVE"->{
-                vipView.visibility=View.VISIBLE
+                dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
                 dataBinding.tvIntegral.visibility=View.GONE
-                dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipExclusive)
+                val secondarySpuPageTagType=item.secondarySpuPageTagType
+                dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
                 "会员专享"
             }
             "SECKILL"->"秒杀"
             else ->{
-                tvTagType.visibility=View.GONE
+                dataBinding.tvTagType.visibility=View.GONE
                 ""
             }
         }
