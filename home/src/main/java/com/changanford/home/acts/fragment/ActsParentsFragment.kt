@@ -9,8 +9,6 @@ import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.databinding.FragmentActsParentBinding
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>() {
 
