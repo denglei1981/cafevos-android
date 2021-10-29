@@ -84,7 +84,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                             dataBean.purchasedNum=dataBean.salesCount
                         }
                         //库存百分比
-                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble())
+                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble(),0)
                         dataBean.totalStock=totalStock
                         dataBean.stockProportion=stockProportion
                         if(null==fbLine)tvFbLine.visibility= View.GONE

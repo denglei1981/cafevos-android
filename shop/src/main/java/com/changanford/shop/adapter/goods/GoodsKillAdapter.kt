@@ -29,7 +29,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             item.sekillCount=if("ENDED"==status)totalStock else item.sekillCount
             //当前销量
             val sekillCount=item.sekillCount
-            val robbedPercentage=WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble())
+            val robbedPercentage= WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble(),0)
             item.robbedPercentage=robbedPercentage
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg

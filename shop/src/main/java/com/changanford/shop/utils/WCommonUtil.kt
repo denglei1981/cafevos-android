@@ -228,7 +228,16 @@ object WCommonUtil {
         return if(s2>0) DecimalFormat("0%").format(s1/s2)
         else "0%"
     }
-
+    /**
+     *以百分比方式计数
+     * s1分子
+     * s2分母
+     * 向下取整
+     * */
+    fun getPercentage(s1:Double,s2:Double,newScale:Int):String {
+        return if(s2>0) "${getHeatNum("${s1/s2*100}",newScale)}%"
+        else "0%"
+    }
     /**
      * 禁止EditText输入特殊字符([`~!@#$%^&*()+=|{}':;',\[\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？])
      * @param editText
