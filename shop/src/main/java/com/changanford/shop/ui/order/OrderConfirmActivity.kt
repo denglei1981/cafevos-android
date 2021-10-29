@@ -106,8 +106,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val totalOriginalFb=originalPrice*buyNum
             tvAmountValue.setText("$totalOriginalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
+            val spuPageType=dataBean.spuPageType
             //会员折扣
-            if("MEMBER_DISCOUNT"==dataBean.spuPageType){
+            if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType){
                 //会员优惠=原总价-现总价
                 (totalOriginalFb-totalFb).apply {
                     if(this>0){
@@ -124,7 +125,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             OrderGoodsAttributeAdapter().apply {
                 rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false)
                 rvGoodsProperty.adapter= this
-                setList(dataBean.skuCodeTxts)
+                setList(dataBean.skuCodeTxts?.filter { ""!=it })
             }
 //            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)

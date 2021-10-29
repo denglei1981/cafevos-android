@@ -39,7 +39,6 @@ import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 object MineCommAdapter {
@@ -60,6 +59,7 @@ object MineCommAdapter {
                             it.des.text = "未满足"
                             it.des.setTextColor(Color.parseColor("#999999"))
                             it.des.setOnClickListener(null)
+                            it.des.setCompoundDrawablesWithIntrinsicBounds(0,0,0,R.mipmap.arrow_right_5c)
                         } else {
                             it.des.text = "${item.noConditionName}"
                             it.des.setTextColor(Color.parseColor("#01025C"))
@@ -76,6 +76,7 @@ object MineCommAdapter {
                         it.des.text = "已满足"
                         it.des.setTextColor(Color.parseColor("#999999"))
                         it.des.setOnClickListener(null)
+                        it.des.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0)
                     }
                 }
             }

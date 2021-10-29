@@ -132,4 +132,8 @@
     <color name="color_fc88">#FC883B</color>
     <color name="color_00_a30">#4D000000</color>
     <color name="color_66black">#66000000</color>
+
+    <color name="color_fefefe">#FEFEFE</color>
+    <color name="color_7_2D384C">#2D384C</color>
+
 </resources>

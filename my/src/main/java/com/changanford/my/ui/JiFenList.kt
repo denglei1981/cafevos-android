@@ -61,7 +61,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
                 SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
                     when (i) {
                         0 -> {
-                            JumpUtils.instans?.jump(1, MConstant.H5_MINE_INTEGRAL)
+                            JumpUtils.instans?.jump(1, MConstant.H5_MINE_FORD_AGREEMENT)
                         }
                         1 -> {
                             if (viewModel.getBindMobileJumpDataType()) {

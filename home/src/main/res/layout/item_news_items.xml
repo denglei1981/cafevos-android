@@ -29,7 +29,7 @@
         layout="@layout/include_home_recommend_count"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_44"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_content"

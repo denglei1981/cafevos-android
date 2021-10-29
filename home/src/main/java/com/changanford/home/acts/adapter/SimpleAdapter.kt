@@ -3,6 +3,7 @@ package com.changanford.home.acts.adapter
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -35,10 +36,11 @@ class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<CircleHeadBean>(i
     override fun bindData(data: CircleHeadBean?, position: Int, pageSize: Int) {
         val binding = DataBindingUtil.bind<ItemHomeBarBannerBinding>(itemView)
         binding?.ivBanner?.load(data?.adImg)
+//        binding?.ivBanner?.let { GlideUtils.loadBD(data?.adImg, it) }
         binding?.ivBanner?.setOnClickListener {
-            try{
-                JumpUtils.instans?.jump(data?.jumpDataType,data?.jumpDataValue)
-            }catch (e:Exception){
+            try {
+                JumpUtils.instans?.jump(data?.jumpDataType, data?.jumpDataValue)
+            } catch (e: Exception) {
                 e.printStackTrace()
                 toastShow(e.message.toString())
             }

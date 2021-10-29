@@ -116,7 +116,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         setText(R.string.prompt_waitSend)
                     }
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
-                    binding.inBottom.btnOrderConfirm.visibility=View.GONE
+                    binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                 }
                 "待收货"->{
                     totalPayName=R.string.str_realPayTotalAmount

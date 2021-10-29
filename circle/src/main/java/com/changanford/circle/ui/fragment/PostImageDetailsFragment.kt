@@ -386,6 +386,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     "关注成功".toast()
                 else
                     "已取消关注".toast()
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER).postValue(mData.authorBaseVo?.isFollow)
             } else {
                 it.msg.toast()
             }
@@ -406,6 +407,13 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
+        })
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this,{
+            val bean =commentAdapter.getItem(checkPosition)
+            bean.let { _->
+                bean.childCount=it
+            }
+            commentAdapter.notifyItemChanged(checkPosition)
         })
     }
 }

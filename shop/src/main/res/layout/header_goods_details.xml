@@ -66,15 +66,18 @@
             android:text="@string/str_goodsDetails"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />
+<!--                android:letterSpacing="0.032"
+            android:lineSpacingExtra="@dimen/dp_2"-->
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_details"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:letterSpacing="0.032"
-            android:lineSpacingExtra="@dimen/dp_2"
             android:textColor="@color/color_33"
+            android:letterSpacing="0"
+            android:lineSpacingExtra="@dimen/dp_0"
+            android:lineHeight="@dimen/sp_14"
             android:textSize="@dimen/sp_14"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

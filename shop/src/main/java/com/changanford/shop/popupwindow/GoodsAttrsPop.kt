@@ -43,6 +43,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     }
     private fun initData(){
         viewDataBinding.model=dataBean
+        mAdapter.skuVos=dataBean.skuVos
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
@@ -54,6 +55,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     dataBean.skuId=skuId
                     dataBean.fbPrice=fbPrice
                     dataBean.orginPrice=orginPrice
+                    dataBean.price=orginPrice
+                    control.memberExclusive(dataBean)
                     if(!control.isInvalidSelectAttrs(_skuCode))dataBean.stock=stock.toInt()
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                     val skuCodeTxtArr= arrayListOf<String>()

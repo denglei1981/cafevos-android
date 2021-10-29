@@ -176,6 +176,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         viewModel.addCommendBean.observe(this, {
             page = 1
             initData()
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CHILD_COUNT).postValue(commentAdapter.itemCount)
         })
     }
 }

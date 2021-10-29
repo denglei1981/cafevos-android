@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -18,7 +17,6 @@ import com.changanford.my.R
 import com.changanford.my.databinding.UiFansBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -133,7 +131,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     // 1 关注 2 取消关注
     fun cancel(followId: String, type: String) {
         if (type == "1") {
-            lifecycleScope.launch { viewModel.cancelFans(followId, type) }
+            viewModel.cancelFans(followId, type)
         } else {
             QuickPopupBuilder.with(this)
                 .contentView(R.layout.pop_two_btn)

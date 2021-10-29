@@ -156,4 +156,5 @@
     <string name="str_haveAgreedAndAccepted">我已同意并接受</string>
     <string name="str_fuyuAPPStoreTermsService">《福域APP商城服务条款》</string>
     <string name="str_anonymousUsers">匿名用户</string>
+    <string name="str_noOrder">您还没有相关订单哦~</string>
 </resources>

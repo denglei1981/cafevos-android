@@ -27,6 +27,7 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.zhpan.bannerview.constants.PageStyle
 
 /**
  *  新闻列表
@@ -95,6 +96,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
                 it.bViewpager.create()
+                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
                 it.bViewpager.setScrollDuration(500)
                 it.bViewpager.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
@@ -181,9 +183,11 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 val item = newsListAdapter.getItem(selectPosition)
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike
-                item.authors?.isFollow = it.isFollow
                 item.commentCount = it.msgCount
                 newsListAdapter.notifyItemChanged(selectPosition + 1)// 有t
+                if (item.authors?.isFollow != it.isFollow) { // 关注不相同，以详情的为准。。
+                    newsListAdapter.notifyAtt(item.userId, it.isFollow)
+                }
             }
         })
     }

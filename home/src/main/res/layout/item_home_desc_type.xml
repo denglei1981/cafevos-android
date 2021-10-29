@@ -3,7 +3,7 @@
 android:id="@+id/tv_sex"
 android:layout_width="match_parent"
 android:layout_height="@dimen/dp_44"
-android:layout_marginStart="12dp"
+android:layout_marginStart="20dp"
 android:gravity="center_vertical|start"
 android:textColor="@color/black" />
 

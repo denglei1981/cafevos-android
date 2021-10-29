@@ -131,6 +131,22 @@ object WCommonUtil {
         text.invalidate()
     }
     /**
+     * html空格字符处理
+     * */
+    fun htmlToStr(str:String):String{
+        return "${htmlToString(str).trimEnd()}".replace("\n\n","\n")
+    }
+    /**
+     * 将html转为str
+     * */
+    private fun htmlToString(str: String): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(str)
+        }
+    }
+    /**
      * 将html转为str
      * */
     fun htmlToString(textView: TextView,str: String) {
@@ -228,7 +244,16 @@ object WCommonUtil {
         return if(s2>0) DecimalFormat("0%").format(s1/s2)
         else "0%"
     }
-
+    /**
+     *以百分比方式计数
+     * s1分子
+     * s2分母
+     * 向下取整
+     * */
+    fun getPercentage(s1:Double,s2:Double,newScale:Int):String {
+        return if(s2>0) "${getHeatNum("${s1/s2*100}",newScale)}%"
+        else "0%"
+    }
     /**
      * 禁止EditText输入特殊字符([`~!@#$%^&*()+=|{}':;',\[\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？])
      * @param editText

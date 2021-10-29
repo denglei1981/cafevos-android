@@ -40,6 +40,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
+        dataBean.price=dataBean.orginPrice
         dataBean.purchasedNum=dataBean.salesCount
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
@@ -47,23 +48,28 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         var skuCodeInitValue="${dataBean.spuId}-"
         dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
         skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
-        getSkuTxt(skuCodeInitValue)
+//        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
-        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,dataBean.detailsHtml)
         //品牌参数
         val param=dataBean.param
         if(null!=param){
             WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvParameter,"参数 <font color=\"#333333\">$param</font>")
             headerBinding.inGoodsInfo.tvParameter.visibility=View.VISIBLE
         }
+        //详情
+        val detailsHtml=dataBean.detailsHtml
+        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
-            "MEMBER_EXCLUSIVE"->headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
+            "MEMBER_EXCLUSIVE"->{
+                memberExclusive(dataBean)
+                headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
+            }
             "MEMBER_DISCOUNT"-> {
                 headerBinding.inDiscount.apply {
                     lLayoutVip.visibility=View.VISIBLE
@@ -76,12 +82,15 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE
                     headerBinding.inVip.layoutVip.visibility=View.GONE
                     headerBinding.inKill.apply {
-                        model=dataBean
                         layoutKill.visibility= View.VISIBLE
                         initTimeCount(dataBean.now,secKillInfo.timeBegin,secKillInfo.timeEnd)
                         val totalStock=dataBean.salesCount+dataBean.stock
+                        if(dataBean.killStates==2){//已结束
+                            dataBean.salesCount=totalStock
+                            dataBean.purchasedNum=dataBean.salesCount
+                        }
                         //库存百分比
-                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble())
+                        val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble(),0)
                         dataBean.totalStock=totalStock
                         dataBean.stockProportion=stockProportion
                         if(null==fbLine)tvFbLine.visibility= View.GONE
@@ -89,10 +98,12 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         tvLimitBuyNum.setText("$totalStock")
 //                        val limitBuyNum=dataBean.limitBuyNum?:"0"
 //                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
+                        model=dataBean
                     }
                 }
             }
         }
+        getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
     }
     /**
@@ -105,7 +116,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 layoutComment.visibility=View.VISIBLE
                 if("YES"==it.anonymous)it.nickName=activity.getString(R.string.str_anonymousUsers)
                 tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar,R.mipmap.ic_launcher_round)
+                GlideUtils.loadBD(GlideUtils.handleImgUrl(itemData.avater),imgGoodsCommentAvatar,R.mipmap.head_default)
                 it.evalTimeTxt=sfDate.format(it.evalTime?:0)
 //                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model=it
@@ -123,10 +134,17 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             var remainingTime=startTime-nowTime//当前时间小于开始时间说明未开始
             if(remainingTime>0){//未开始
                 tvKillStates.setText(R.string.str_fromStart)
+                dataBean.killStates=7
             }else{//已开始、已结束
                 //距离结束剩余时间
                 remainingTime=endTime-nowTime
-                tvKillStates.setText(if(remainingTime>0)R.string.str_fromEnd else R.string.str_hasEnded)
+                if(remainingTime>0){//进行中
+                    dataBean.killStates=5
+                    tvKillStates.setText(R.string.str_fromEnd)
+                }else{//已结束
+                    dataBean.killStates=2
+                    tvKillStates.setText(R.string.str_hasEnded)
+                }
             }
             if(remainingTime<=0)return
             timeCount= KllTimeCountControl(remainingTime,tvKillH,tvKillM,tvKillS,object :
@@ -144,11 +162,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun createAttribute(){
         if(::dataBean.isInitialized){
-            GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
-                showPopupWindow()
-                onDismissListener=object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        getSkuTxt(_skuCode)
+            val spuPageType=dataBean.spuPageType
+            if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
+                GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
+                    showPopupWindow()
+                    onDismissListener=object : BasePopupWindow.OnDismissListener() {
+                        override fun onDismiss() {
+                            getSkuTxt(_skuCode)
+                        }
                     }
                 }
             }
@@ -161,8 +182,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.fbPrice=fbPrice
             dataBean.stock=stock.toInt()
             dataBean.orginPrice=orginPrice
+            dataBean.price=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
+        memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
         val skuCodeTxtArr= arrayListOf<String>()
@@ -179,10 +202,19 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
     }
+    /**
+     * 处理专享数据-并且是折扣数据
+    * */
+    fun memberExclusive(_dataBean:GoodsDetailBean){
+        if("MEMBER_EXCLUSIVE"==_dataBean.spuPageType&&"MEMBER_DISCOUNT"==_dataBean.secondarySpuPageTagType){
+            _dataBean.price=_dataBean.fbPrice
+        }
+    }
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
-            if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
+            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
+            else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
                 btnSubmit.setStates(8)
             } else if(secKillInfo!=null&&now<secKillInfo?.timeBegin!!){//秒杀未开始
                 btnSubmit.setStates(7)

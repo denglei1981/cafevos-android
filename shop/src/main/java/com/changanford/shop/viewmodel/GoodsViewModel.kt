@@ -127,7 +127,7 @@ class GoodsViewModel: BaseViewModel() {
      * */
     fun getSckills(){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(true) {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.getSckills(body.header(randomKey), body.body(randomKey))
@@ -140,9 +140,9 @@ class GoodsViewModel: BaseViewModel() {
      * 获取秒杀列表
      * [seckillRangeId]时段id
      * */
-    fun getGoodsKillList(seckillRangeId:String,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getGoodsKillList(seckillRangeId:String,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading){
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize

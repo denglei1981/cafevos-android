@@ -6,12 +6,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.OptionVo
+import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 
-class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
+class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<String>,var skuVos:ArrayList<SkuVo>?=null): BaseQuickAdapter<Attribute, BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>>(R.layout.item_goods_attribute_index){
     private lateinit var skuCodes:ArrayList<String>//"108-1-31-43"[108,1,31,43]
+    private var skuCode=""//当前skuCode
+    private val adapterMap = HashMap<Int,GoodsAttributeAdapter>()
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeIndexBinding>, item: Attribute) {
         val dataBinding=holder.dataBinding
@@ -21,29 +24,34 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
             dataBinding.executePendingBindings()
             if(::skuCodes.isInitialized){
                 val pos=position+1
-                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],object :GoodsAttributeAdapter.OnSelectedBackListener{
+                val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,skuCode,object :GoodsAttributeAdapter.OnSelectedBackListener{
                     override fun onSelectedBackListener(pos: Int, item: OptionVo) {
                         item.optionId.also { skuCodes[pos] = it }
-                        updateSkuCode()
+                        updateSkuCode(pos)
                     }
                 })
                 dataBinding.recyclerView.adapter=mAdapter
                 mAdapter.setList(item.optionVos)
+                adapterMap[pos]=mAdapter
             }
         }
     }
     fun setSkuCodes(skuCode:String?){
+        this.skuCode=skuCode?:""
         if(null!=skuCode&&skuCode.contains("-"))skuCodes= skuCode.split("-") as ArrayList<String>
     }
     fun getSkuCodes():ArrayList<String>{
         return skuCodes
     }
-    fun updateSkuCode(){
-        var skuCode=""
-        skuCodes.forEach{
-            skuCode+="$it-"
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateSkuCode(pos:Int){
+        skuCode=""
+        skuCodes.forEach{ skuCode+="$it-" }
         skuCode=skuCode.substring(0,skuCode.length-1)
         skuCodeLiveData.postValue(skuCode)
+        adapterMap.keys.forEach {
+            if(pos!=it)adapterMap[it]?.updateAdapter(skuCode)
+        }
+
     }
 }

@@ -14,11 +14,11 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
 import com.changanford.my.BaseMineUI
+import com.changanford.my.R
 import com.changanford.my.databinding.UiPostDraftBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.widget.MViewHolder
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.yanzhenjie.recyclerview.*
 
 /**
  *  文件名：MyPostDraftUI
@@ -131,8 +131,8 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
     }
 
     override fun showEmpty(): View? {
-        emptyBinding.viewStatusIcon.visibility = View.GONE
-        emptyBinding.viewStatusText.text = "取消发送或发送失败的帖子可以被存为草稿"
+        emptyBinding.viewStatusIcon.setImageResource(R.mipmap.ic_post_draft_nodata)
+        emptyBinding.viewStatusText.text = "您的草稿箱暂时还没有草稿哦~"
         return super.showEmpty()
     }
 

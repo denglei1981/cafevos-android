@@ -8,14 +8,10 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_8"
-        android:background="#FFFFFF"
-        app:cardBackgroundColor="#F1F1F1"
-        app:cardCornerRadius="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_8">
+        android:background="@drawable/shape_medal_item_bg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -83,5 +79,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </layout>

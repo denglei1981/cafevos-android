@@ -28,6 +28,7 @@
                 android:layout_width="@dimen/dp_75"
                 android:layout_height="@dimen/dp_75"
                 android:scaleType="centerCrop"
+                android:layout_marginBottom="12dp"
                 android:src="@drawable/image_recommed_default"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +43,7 @@
                 android:contentDescription="@string/app_name"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_head"
                 app:layout_constraintCircle="@id/iv_head"
-                app:layout_constraintCircleAngle="120"
+                app:layout_constraintCircleAngle="135"
                 app:layout_constraintCircleRadius="38dp"
                 app:layout_constraintEnd_toEndOf="@+id/iv_head"
                 tools:src="@drawable/icon_home_big_vip" />

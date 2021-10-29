@@ -113,6 +113,7 @@ data class GoodsItemBean(
     var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
     var totalStock:Int=1,
+    var secondarySpuPageTagType:String?="",
 )
 class Params
 // 秒杀时段
@@ -154,6 +155,7 @@ data class GoodsHomeBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
+    var price: String? = "0",
     var orginPrice: String? = "0",//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
@@ -162,13 +164,13 @@ data class GoodsDetailBean(
     val limitBuyNum: String? = "0",
     val now: Long = 0,
     var purchasedNum: Int? = 0,
-    val salesCount: Int = 0,
+    var salesCount: Int = 0,
     var totalStock:Int?=0,//总库存
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
     val shareBeanVO: TaskShareBean?=null,
     val skuCodeRule: String = "",
-    val skuVos: List<SkuVo> = listOf(),
+    var skuVos: ArrayList<SkuVo> = ArrayList(),
     val spuPageType: String = "",
     var stock: Int = 0,
     val mallOrderEval:CommentItem?=null,
@@ -194,6 +196,8 @@ data class GoodsDetailBean(
     var source:String?="0",
     var evalCount:String?="0",
     var isAgree:Boolean=false,//是否同意协议
+    var killStates:Int=0,//秒杀状态
+    var secondarySpuPageTagType:String?="",
 )
 
 data class Attribute(
@@ -319,10 +323,10 @@ data class OrderItemBean(
     val fbOfOrderPrice: String = "0",
     var fbOfUnitPrice: String ="0",
     val haggleOrder: String = "",//是否砍价订单
-    val mallMallDiscountScaleId: Int = 0,
-    val mallMallHaggleActivityId: Int = 0,
-    val mallMallHaggleSkuId: Int = 0,
-    val mallMallHaggleSpuId: Int = 0,
+    val mallMallDiscountScaleId: String = "0",
+    val mallMallHaggleActivityId: String = "0",
+    val mallMallHaggleSkuId: String = "0",
+    val mallMallHaggleSpuId: String = "0",
     val mallMallHaggleUserGoodsId: String = "0",
     val mallMallOrderId: String ="0",
     val mallMallSeckillRangeId: Int = 0,
@@ -358,7 +362,7 @@ data class OrderItemBean(
     val cost:String?="0",
     var waitPayCountDown:Long?=0,
     var acountFb:String="0",
-    val busSourse: String = "0",
+    var busSourse: String = "0",
     val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
@@ -416,12 +420,13 @@ data class AddressValueObj(
     val provinceName: String = ""
 )
 data class OrderBriefBean(
-    val busSourse: Int = 0,
+    val busSourse: String = "0",
     val buyNum: String ="0",
     val fbCost: String = "0",
     val payType: String = "",
     val snapshotOfAttrOption: String?="",
     var fbOfUnitPrice:String?="0",
+    var orginPrice:String?="0",
 )
 
 data class SnapshotOfAttrOption(

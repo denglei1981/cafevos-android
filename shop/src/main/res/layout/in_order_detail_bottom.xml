@@ -37,6 +37,7 @@
             android:textSize="@dimen/sp_14"
             style="@style/style_txt_ellipsize"/>
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:onClick="onClick"
             android:id="@+id/btn_order_cancle"
             android:visibility="gone"
@@ -51,6 +52,7 @@
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"/>
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:onClick="onClick"
             android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_5"

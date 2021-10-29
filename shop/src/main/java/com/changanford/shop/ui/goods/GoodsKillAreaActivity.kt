@@ -8,13 +8,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
 import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
-import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -28,8 +26,7 @@ import java.text.SimpleDateFormat
 @SuppressLint("SimpleDateFormat")
 @Route(path = ARouterShopPath.GoodsKillAreaActivity)
 class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewModel>(),
-    GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener,
-    OnRefreshLoadMoreListener, TopBar.OnRightClickListener {
+    GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener, OnRefreshLoadMoreListener{
     companion object{
         fun start(context: Context) {
             context.startActivity(Intent(context, GoodsKillAreaActivity::class.java))
@@ -56,12 +53,12 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         binding.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter
         binding.topBar.setActivity(this)
-        binding.topBar.setOnRightClickListener(this)
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         mAdapter.setEmptyView(R.layout.view_empty)
         addObserve()
         mAdapter.setOnItemClickListener { _, _, position ->
-            if("ON_GOING"==mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
+            GoodsDetailsActivity.start(mAdapter.data[position].spuId)
+//            if("ON_GOING"==mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
         }
     }
     override fun initData() {
@@ -142,7 +139,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
      * */
     override fun onSelectTimeBackListener(position: Int, seckillTimeRanges: SeckillTimeRange) {
         pageNo=1
-        viewModel.getGoodsKillList(seckillTimeRanges.timeRangeId,pageNo)
+        viewModel.getGoodsKillList(seckillTimeRanges.timeRangeId,pageNo,showLoading = true)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -156,11 +153,6 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         if(timeAdapter.data.size>0)viewModel.getGoodsKillList(timeAdapter.data[timeAdapter.selectPos].timeRangeId,pageNo)
         else binding.smartRl.finishLoadMore()
     }
-
-    override fun onRightClick() {
-        JumpUtils.instans?.jump(108)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         timeCountDownTimer.cancel()

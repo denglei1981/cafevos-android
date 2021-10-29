@@ -31,7 +31,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
     private var statesId=-1
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
-        mAdapter.setEmptyView(R.layout.view_empty)
+        mAdapter.setEmptyView(R.layout.view_empty_order)
         mAdapter.setOnItemClickListener { _, _, position ->
             OrderDetailsActivity.start(mAdapter.data[position].orderNo)
         }

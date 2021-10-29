@@ -5,11 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
+import android.os.Build;
 import android.text.Html;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -33,11 +35,12 @@ public class MImageGetter implements Html.ImageGetter {
     public Drawable getDrawable(String source) {
         final LevelListDrawable drawable = new LevelListDrawable();
         Glide.with(c).asBitmap().load(source).into(new SimpleTarget<Bitmap>() {
+            @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
-            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(c.getResources(),resource);
+            public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(c.getResources(),bitmap);
                 drawable.addLevel(1, 1, bitmapDrawable);
-                int h=w*resource.getHeight()/resource.getWidth();
+                int h=w*bitmap.getHeight()/bitmap.getWidth();
                 drawable.setBounds(0, 0, w,h);
                 drawable.setLevel(1);
                 textView.invalidate();

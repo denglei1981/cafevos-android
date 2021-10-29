@@ -14,6 +14,7 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.adapter.LabelAdapter
@@ -81,23 +82,13 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
         }
     }
-
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo) {
         var followType = authorBaseVo.isFollow
-        when (followType) {
-            1 -> {
-                followType = 2
-            }
-            else -> {
-                followType = 1
-            }
-        }
-        authorBaseVo.isFollow = followType
-        setFollowState(btnFollow, authorBaseVo)
+        followType = if (followType == 1) 2 else 1
+//        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
-
     fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
@@ -115,18 +106,28 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    notifyAtt(followId, type)
                 }.onWithMsgFailure {
+                    toastShow(it.toString())
                 }
         }
     }
 
+    //关注
+    fun notifyAtt(userId: String, isFollow: Int) {
+        for (data in this.data) {
+            if (data.authorBaseVo?.authorId == userId) {
+                data.authorBaseVo?.isFollow = isFollow
+            }
+        }
+        this.notifyDataSetChanged()
+    }
 
     private fun likePost(binding: ItemBigShotItemsBinding, item: BigShotPostBean) {
         val activity = BaseApplication.curActivity as AppCompatActivity
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
             body["postsId"] = item.postsId
-
             val rKey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .actionPostLike(body.header(rKey), body.body(rKey)).also {
