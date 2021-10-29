@@ -168,7 +168,7 @@ data class GoodsDetailBean(
     val secondName: String = "",
     val shareBeanVO: TaskShareBean?=null,
     val skuCodeRule: String = "",
-    val skuVos: List<SkuVo> = listOf(),
+    var skuVos: ArrayList<SkuVo> = ArrayList(),
     val spuPageType: String = "",
     var stock: Int = 0,
     val mallOrderEval:CommentItem?=null,
