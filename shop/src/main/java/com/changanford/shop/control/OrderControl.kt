@@ -6,6 +6,8 @@ import android.text.TextUtils
 import android.view.View
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
@@ -71,7 +73,13 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
      * 再次购买->商品详情
      * */
     fun onceAgainToBuy(item: OrderItemBean){
-        GoodsDetailsActivity.start(item.mallMallSpuId)
+        item.apply {
+            if("2"==busSourse){
+                //砍价
+                JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))
+            }else  GoodsDetailsActivity.start(mallMallSpuId)
+        }
+
 //        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }
 //        val busSourse=item.busSourse
 //        val spuPageType=if("2"==busSourse)"2" else if("1"==busSourse)"SECKILL" else if("1"==item.discount)"MEMBER_DISCOUNT" else "NOMROL"

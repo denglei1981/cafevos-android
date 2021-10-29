@@ -135,4 +135,9 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
+    /**
+     * %s
+     *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
+     * */
+    val H5_SHOP_BARGAINING = "${H5_BASE_URL_CSCIR}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
 }
