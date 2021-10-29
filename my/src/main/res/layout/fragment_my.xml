@@ -113,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:layout_marginLeft="@dimen/dp_8"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/my_name"
             app:layout_constraintLeft_toRightOf="@+id/my_name"
             app:layout_constraintRight_toRightOf="@id/my_head"

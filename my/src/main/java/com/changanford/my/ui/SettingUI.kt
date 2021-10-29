@@ -4,7 +4,6 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
@@ -43,7 +42,6 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
             confirmPop.btnConfirm.setOnClickListener {
                 confirmPop.dismiss()
                 viewModel.loginOut()
-                finish()
             }
             confirmPop.btnCancel.setOnClickListener {
                 confirmPop.dismiss()
@@ -52,7 +50,7 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
         }
 
         binding.setSafe.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.AccountSafeUI)
+            RouterManger.needLogin(true).startARouter(ARouterMyPath.AccountSafeUI)
         }
         binding.setbg.setOnClickListener {
             if (MConstant.isCanQeck) {
@@ -88,6 +86,16 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this, Observer {
                 finish()
+            })
+
+        LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, Observer {
+                //退出登录
+                it?.let {
+                    if (it == UserManger.UserLoginStatus.USER_LOGIN_OUT) {
+                        finish()
+                    }
+                }
             })
 
     }
