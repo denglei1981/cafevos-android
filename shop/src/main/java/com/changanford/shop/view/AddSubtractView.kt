@@ -59,10 +59,12 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
             // +
             R.id.tv_addNumber->{
                 if(number<maxValue) number++
+                else ToastUtils.showLongToast("已超出限购数量")
             }
             //-
             R.id.tv_reduction->{
                 if(number>minValue)number--
+                else ToastUtils.showLongToast("最少购买${minValue}件")
             }
         }
         setNumber(number)
