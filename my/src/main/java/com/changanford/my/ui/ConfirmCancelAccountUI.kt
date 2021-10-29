@@ -61,6 +61,17 @@ class ConfirmCancelAccountUI :
                 countDownTimer.start()
             }
         })
+
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, Observer {
+                //退出登录
+                it?.let {
+                    if (it == UserManger.UserLoginStatus.USER_LOGIN_OUT) {
+                        back()
+                    }
+                }
+            })
     }
 
 
@@ -111,7 +122,6 @@ class ConfirmCancelAccountUI :
             it.onSuccess {
                 showToast("申请注销成功")
                 viewModel.loginOut()
-                back()
             }
             it.onWithMsgFailure {
                 it?.let {

@@ -139,10 +139,15 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                 val item = recommendAdapter.getItem(selectPosition)
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike
-                item.authors?.isFollow = it.isFollow
+//                item.authors?.isFollow = it.isFollow
                 item.commentCount = it.msgCount
                 recommendAdapter.notifyItemChanged(selectPosition)// 有t
-
+                if (item.authors?.isFollow != it.isFollow) {
+                    // 关注不相同，以详情的为准。。
+                    if (item.authors != null) {
+                        recommendAdapter.notifyAtt(item.authors!!.userId, it.isFollow)
+                    }
+                }
             })
 
 
