@@ -196,6 +196,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 )
             }
         }
+        binding.myIconRv.isVisible = false
         userInfoBean?.ext?.let {
             //用户图标
             it.imags?.let {

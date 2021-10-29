@@ -7,6 +7,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
+import com.gofo.widget.SwipeHelper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -80,12 +81,12 @@ fun getAESBody(body: Map<String, Any>, key: String): String {
     return JSON.toJSON(hashMap).toString()
 }
 
+const val newWay = false
 fun handlePubKey(pubKey: String, key: String): String {
-    var jniInterface = JNIInterface()
     if (pubKey.isNullOrEmpty() || pubKey.length <= 8) {
         return "publicKey Error!"
     }
-    var encPubKey = jniInterface.testApi(pubKey)
+    var encPubKey = if (newWay) SwipeHelper().stringFromJNI(pubKey) else JNIInterface().testApi(pubKey)
     val seccode = RsaUtils.encryptByPublicKey(encPubKey, key)
     return seccode
 }
