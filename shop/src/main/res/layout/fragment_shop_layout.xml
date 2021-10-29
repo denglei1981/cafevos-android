@@ -50,6 +50,7 @@
                             android:paddingBottom="@dimen/dp_m_10"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/dp_7"
+                            app:tabTextColor="@color/color_9394A0"
                             app:tabTextAppearance="@style/style_indexTabItemStyle0"/>
                     </LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>

@@ -37,7 +37,7 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
         })
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         binding.recyclerView.adapter=mAdapter
-        mAdapter.setEmptyView(R.layout.view_empty)
+        mAdapter.setEmptyView(R.layout.view_empty_order)
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
 //                if(3==orderType) OrderDetailsActivity.start(orderNo)

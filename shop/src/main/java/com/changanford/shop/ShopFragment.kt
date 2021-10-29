@@ -81,7 +81,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
-            BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),5f))
+            BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),2.5f))
         })
         viewModel.shopHomeData.observe(this,{
             mAdapter.setList(it.indexSeckillDtoList)
