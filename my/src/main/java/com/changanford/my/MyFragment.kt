@@ -169,13 +169,14 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.myHead.load(userInfoBean?.avatar, R.mipmap.my_headdefault)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
-        binding.daySign.text = if(userInfoBean?.isSignIn == 1) "已签到" else "签到"
+        binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"
         binding.daySign.isClickable = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname
             ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginTips)
-        binding.myContent.text =
-            userInfoBean?.brief
-                ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginSubTips)
+        binding.myContent.visibility = if (UserManger.isLogin()) View.GONE else View.VISIBLE
+//        binding.myContent.text =
+//            userInfoBean?.brief
+//                ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginSubTips)
         binding.myScore.text = "${userInfoBean?.ext?.totalIntegral ?: "0"}"//积分
         binding.myScoreAcc.text = "${userInfoBean?.ext?.multiple ?: "1"} 倍加速"
         binding.myStateLayout.apply {
