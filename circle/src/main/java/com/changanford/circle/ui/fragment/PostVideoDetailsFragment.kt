@@ -320,6 +320,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     "关注成功".toast()
                 else
                     "已取消关注".toast()
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER).postValue(mData.authorBaseVo?.isFollow)
             }else{
                 it.msg.toast()
             }

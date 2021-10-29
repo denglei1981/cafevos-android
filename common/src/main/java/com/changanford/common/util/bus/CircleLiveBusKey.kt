@@ -17,4 +17,5 @@ object CircleLiveBusKey {
     const val ADD_SHARE_COUNT = "addShareCount"
     const val DELETE_CIRCLE_POST = "deleteCirclePost"
     const val REFRESH_CIRCLE_MAIN = "refreshCircleMain"
+    const val REFRESH_FOLLOW_USER = "refreshFollowUser"
 }
