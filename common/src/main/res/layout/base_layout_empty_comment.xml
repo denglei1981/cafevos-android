@@ -10,10 +10,9 @@
         android:id="@+id/tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_kong_sf"
         android:drawablePadding="13dp"
         android:gravity="center"
-        android:text="还没人评论"
+        android:text="暂无评论~"
         android:textColor="@color/color_99"
         android:textSize="12sp" />
 </LinearLayout>

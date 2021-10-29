@@ -27,6 +27,7 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.zhpan.bannerview.constants.PageStyle
 
 /**
  *  新闻列表
@@ -95,6 +96,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
                 it.bViewpager.create()
+                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
                 it.bViewpager.setScrollDuration(500)
                 it.bViewpager.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
