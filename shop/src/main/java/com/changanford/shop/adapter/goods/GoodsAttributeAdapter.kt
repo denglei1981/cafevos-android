@@ -2,7 +2,6 @@ package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.text.TextUtils
 import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,6 +15,7 @@ import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, var currentSkuCode:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
+    private var isUpdate=false
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
@@ -48,17 +48,20 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
      * 是否存在该sku选项
      * */
     private fun isExistSku(optionId:String):Boolean{
-        if(TextUtils.isEmpty(currentSkuCode)||isInvalidSelectAttrs(currentSkuCode)){
-            skuVos?.apply {
-                for (item in this){
-                    if(item.skuCode.split("-")[pos]==optionId){
-                        return true
+//        Log.e("okhttp","$pos>>>currentSkuCode:$currentSkuCode")
+        skuVos?.apply {
+            for (item in this){
+                //skuVos是否包含 optionId可选属性
+                if(item.skuCode.split("-")[pos]==optionId){
+                    if(isUpdate){
+                        //查询 optionId 的组合可能性是否也在 skuVos中
+                        val skuCode=getTemporarySkuCode(optionId)
+                        skuVos?.find { skuCode==it.skuCode }?.let { return true }
+                        break
                     }
+                    return true
                 }
             }
-        }else{//根据optionId得到skuCode组合
-            val skuCode=getTemporarySkuCode(optionId)
-            skuVos?.find { skuCode==it.skuCode }?.let { return true }
         }
         return false
     }
@@ -72,12 +75,10 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         }
         return skuCode
     }
-    /**
-     * 是否是无效选择商品属性
-     * return false 有效 、true 无效
-     * */
-   private fun isInvalidSelectAttrs(skuCode:String):Boolean{
-        return skuCode.contains("-")&&skuCode.split("-").find { it =="0" }!=null
+    fun updateAdapter(skuCode: String){
+        isUpdate=true
+        currentSkuCode=skuCode
+        notifyDataSetChanged()
     }
     private fun selectRb(rb:RadioButton){
         if(::lastRb.isInitialized)lastRb.isChecked=false
