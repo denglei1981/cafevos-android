@@ -362,7 +362,7 @@ object PictureUtil {
         activity: Activity,
         datas: ArrayList<LocalMedia>?=null,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
-        videoMaxSecond: Int = 4 * 60,//秒
+        videoMaxSecond: Int = 10 * 60,//秒
         videoMinSecond: Int = 3
     ) {
         PictureSelector.create(activity)
