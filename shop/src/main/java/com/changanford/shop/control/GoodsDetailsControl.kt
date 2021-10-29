@@ -51,14 +51,15 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
 //        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
-        val detailsHtml=dataBean.detailsHtml
-        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         //品牌参数
         val param=dataBean.param
         if(null!=param){
             WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvParameter,"参数 <font color=\"#333333\">$param</font>")
             headerBinding.inGoodsInfo.tvParameter.visibility=View.VISIBLE
         }
+        //详情
+        val detailsHtml=dataBean.detailsHtml
+        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
@@ -205,8 +206,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 处理专享数据-并且是折扣数据
     * */
     fun memberExclusive(_dataBean:GoodsDetailBean){
-        val secondarySpuPageTagType=_dataBean.secondarySpuPageTagType
-        if("MEMBER_DISCOUNT"==secondarySpuPageTagType){
+        if("MEMBER_EXCLUSIVE"==_dataBean.spuPageType&&"MEMBER_DISCOUNT"==_dataBean.secondarySpuPageTagType){
             _dataBean.price=_dataBean.fbPrice
         }
     }
