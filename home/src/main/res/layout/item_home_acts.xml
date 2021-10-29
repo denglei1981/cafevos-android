@@ -96,7 +96,7 @@
             android:id="@+id/tv_tag_two"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_home_unfollow_bg"
             android:gravity="center"

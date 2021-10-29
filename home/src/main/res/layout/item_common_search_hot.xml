@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -13,8 +14,8 @@
         android:gravity="center_vertical"
         android:maxLength="10"
         android:maxLines="1"
-        android:text="速度与激情9"
-        android:textColor="#ff333333"
+        tools:text="速度与激情9"
+        android:textColor="#333333"
         android:textSize="13sp" />
 
 

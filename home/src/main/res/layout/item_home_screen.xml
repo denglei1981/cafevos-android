@@ -13,6 +13,8 @@
         android:backgroundTint="@color/color_gray_f2f4f9"
         android:text="线上活动"
         android:textColor="@color/color_blue_ff00695b"
-        app:cornerRadius="@dimen/dp_20" />
+        app:cornerRadius="@dimen/dp_20"
+        app:strokeColor="@color/color_ee"
+        app:strokeWidth="1px" />
 
 </LinearLayout>

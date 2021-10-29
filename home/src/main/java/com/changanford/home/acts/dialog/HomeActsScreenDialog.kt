@@ -34,8 +34,8 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
     BaseAppCompatDialog(acts) {
     lateinit var mDatabind: DialogHomeActsScreenBinding
     lateinit var callback: ICallback
-    var cityName:String=""
-    var cityId:String=""
+    var cityName: String = ""
+    var cityId: String = ""
     private val homeActsScreenItemAdapter: HomeActsScreenItemAdapter by lazy {
         HomeActsScreenItemAdapter(
             arrayListOf()
@@ -110,25 +110,26 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             homeActsTypeItemAdapter.setChooseTypes("")
             showCity(false)
             mDatabind.tvCityAny.text = "不限城市"
-            cityName=""
-            cityId=""
+            cityName = ""
+            cityId = ""
         }
         mDatabind.homeBtnSure.setOnClickListener {
             // 没有sm 活动
             val chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
             val chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
             val screenData = ScreenData(cityName, cityId, chooseOfficalType, chooseActType)
-            callback.onResult(ResultData(ResultData.OK,screenData))
+            callback.onResult(ResultData(ResultData.OK, screenData))
             dismiss()
 
 
         }
     }
+
     fun showCity(isVisible: Boolean) {
         if (isVisible) {
             mDatabind.grCity.visibility = View.VISIBLE
         } else {
-            mDatabind.grCity.visibility = View.GONE
+            mDatabind.grCity.visibility = View.INVISIBLE
         }
 
     }
@@ -162,14 +163,15 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
 
         }
     }
+
     var cityPicker: CityPicker? = null
     fun chooseCity() { // 选择城市。。
         cityPicker = CityPicker(acts as Activity).apply {
-            setAddressMode(provinces,PROVINCE_CITY)
+            setAddressMode(provinces, PROVINCE_CITY)
             //
             setDefaultValue("重庆市", "重庆市", "渝中区")
         }
-        cityPicker?.setOnAddressPickedListener(object :OnAddressPickedListener{
+        cityPicker?.setOnAddressPickedListener(object : OnAddressPickedListener {
             override fun onAddressPicked(
                 province: ProvinceEntity?,
                 city: CityEntity?,
@@ -186,8 +188,8 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
 //                    body["city"] = it.code
 //                    body["cityName"] = "${it.name}"
                     cityA += it.name
-                    cityName=it.name
-                    cityId=it.code
+                    cityName = it.name
+                    cityId = it.code
                 }
 //                county?.let {
 ////                    body["district"] = it.code

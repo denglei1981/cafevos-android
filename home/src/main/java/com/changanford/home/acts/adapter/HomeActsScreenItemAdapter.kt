@@ -29,18 +29,18 @@ class HomeActsScreenItemAdapter(list: MutableList<EnumBean>) :
             btnCheck.setBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.blue_tab
+                    R.color.color_gray_f2f4f9
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.white))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_app_color))
         } else {
             btnCheck.setBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.color_gray_f2f4f9
+                    R.color.white
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.blue_tab))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_black_081725))
         }
 
     }
