@@ -13,7 +13,7 @@
         android:drawableTop="@mipmap/ic_kong_sf"
         android:drawablePadding="13dp"
         android:gravity="center"
-        android:text="还没人评论，我要抢沙发"
+        android:text="还没人评论"
         android:textColor="@color/color_99"
         android:textSize="12sp" />
 </LinearLayout>
