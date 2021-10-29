@@ -123,17 +123,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/shape_gray_99_bg"
+                android:background="@drawable/shape_gray_74_bg"
                 android:drawablePadding="2dp"
                 android:gravity="center"
                 android:minWidth="45dp"
                 android:visibility="@{bean.childCount==0?View.GONE:View.VISIBLE}"
                 android:text="@{bean.getChildCounts}"
-                android:textColor="@color/text_gray_ac"
+                android:textColor="@color/color_gray_666"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintStart_toStartOf="@+id/tv_content"
                 app:layout_constraintTop_toBottomOf="@+id/tv_content"
-                tools:text="回复" />
+                tools:text="回复"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

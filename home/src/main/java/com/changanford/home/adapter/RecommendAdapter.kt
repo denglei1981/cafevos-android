@@ -273,7 +273,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-        authorBaseVo.isFollow = followType
+//        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
     // 关注。

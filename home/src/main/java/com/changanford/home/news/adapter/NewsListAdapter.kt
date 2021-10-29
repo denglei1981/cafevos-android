@@ -122,7 +122,7 @@ class NewsListAdapter(
     }
 
     // 关注。
-    private fun getFollow(authorBaseVo: AuthorBaseVo, followId: String, type: Int) {
+    private fun getFollow( followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -190,7 +190,7 @@ class NewsListAdapter(
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-        authorBaseVo.isFollow = followType
-        getFollow(authorBaseVo, authorBaseVo.authorId, followType)
+//        authorBaseVo.isFollow = followType
+        getFollow(authorBaseVo.authorId, followType)
     }
 }
