@@ -287,9 +287,9 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             if (it.isSuccess) {
                 if (it.isLoadMore) {
                     homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
-                    homeNewsCommentAdapter.addData(it.data.dataList)
+                    it.data.dataList?.let { it1 -> homeNewsCommentAdapter.addData(it1) }
                 } else {
-                    if (it.data.dataList.size <= 0) {
+                    if (it.data.dataList==null||it.data.dataList?.size!! <= 0) {
                         val commentListBean = CommentListBean(typeNull = 1)
                         val comList = arrayListOf(commentListBean)
                         homeNewsCommentAdapter.setList(comList)
@@ -299,7 +299,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
-                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                if (it.data.dataList==null||it.data.dataList?.size!! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     if (tips == "暂无评论~") {
                         homeNewsCommentAdapter.loadMoreModule.loadMoreEnd(true)
                     }
@@ -331,11 +331,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null) {
-                    if (it.data.recommendArticles.size > 0) {
+                    if (it.data.recommendArticles!=null&&it.data.recommendArticles?.size!! > 0) {
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                     }
-                    if (it.data.ads.size > 0) {
+                    if (it.data.ads!=null&&it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }

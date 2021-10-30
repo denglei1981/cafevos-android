@@ -52,6 +52,7 @@ import com.google.gson.Gson
 /**
  *  图文详情。。。
  * */
+@Deprecated("用fragment了")
 @Route(path = ARouterHomePath.NewsDetailActivity)
 class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailViewModel>(),
     View.OnClickListener {
@@ -316,11 +317,11 @@ class NewsDetailActivity : BaseActivity<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null ) {
-                    if( it.data.recommendArticles.size > 0){
+                    if( it.data.recommendArticles?.size!! > 0){
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                     }
-                    if(it.data.ads.size>0){
+                    if(it.data.ads!!.size>0){
                         inflateHeader.rvAds.visibility=View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }

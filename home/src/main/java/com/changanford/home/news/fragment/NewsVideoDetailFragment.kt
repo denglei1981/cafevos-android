@@ -201,11 +201,11 @@ class NewsVideoDetailFragment :
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null ) {
-                    if(it.data.recommendArticles.size > 0){
+                    if(it.data.recommendArticles!=null&&it.data.recommendArticles?.size!! > 0){
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
                     }
-                    if(it.data.ads.size>0){
+                    if(it.data.ads!=null&&it.data.ads?.size!!>0){
                         inflateHeader.rvAds.visibility=View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }
