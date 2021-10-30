@@ -232,8 +232,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     fun play(videoUrl: String) {
-        binding.splashVideo.visibility = View.VISIBLE
-        binding.splashVideo.holder.addCallback(object : SurfaceHolder.Callback {
+        binding.loginVideo.visibility = View.VISIBLE
+        binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
             }
 
@@ -251,7 +251,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
         })
         player.setOnPreparedListener {
-            player.setDisplay(binding.splashVideo.holder)
+            player.setDisplay(binding.loginVideo.holder)
             player.start()
         }
         player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
