@@ -88,9 +88,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
 //        //秒杀情况下 原价=现价
-//        if("SECKILL"==dataBean.spuPageType){
-//            dataBean.orginPrice=dataBean.fbPrice
-//        }
+        if("SECKILL"==dataBean.spuPageType){
+            dataBean.orginPrice=dataBean.fbPrice
+        }
         //购买数量
         val buyNum=dataBean.buyNum
         //运费 1元=100积分
