@@ -741,7 +741,7 @@ interface NetWorkApi {
     suspend fun loginBg(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<CircleTagBean>
+    ): CommonResponse<LoginVideoBean>
 
 
     //圈子审核 人数查询

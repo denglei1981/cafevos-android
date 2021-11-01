@@ -217,16 +217,19 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun initData() {
         //images/video/aa5d58f5ea473c2be60299a27fe5bb2a.mp4
-        play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["configKey"] = "login_background"
-                body["obj"] = true
+                body["obj"] = "true"
                 var rkey = getRandomKey()
-                apiService.agreeJoinTags(body.header(rkey), body.body(rkey))
+                apiService.loginBg(body.header(rkey), body.body(rkey))
             }.onSuccess {
-
+                it?.video?.let {
+                    play(it)
+                }
+            }.onFailure {
+//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
             }
         }
     }
@@ -257,6 +260,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
+        player.isLooping = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

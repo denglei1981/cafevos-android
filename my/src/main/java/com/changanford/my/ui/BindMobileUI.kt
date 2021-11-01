@@ -99,16 +99,19 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
     }
 
     override fun initData() {
-        play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["configKey"] = "login_background"
                 body["obj"] = true
                 var rkey = getRandomKey()
-                apiService.agreeJoinTags(body.header(rkey), body.body(rkey))
+                apiService.loginBg(body.header(rkey), body.body(rkey))
             }.onSuccess {
-
+                it?.video?.let {
+                    play(it)
+                }
+            }.onFailure {
+//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
             }
         }
     }
@@ -139,6 +142,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
+        player.isLooping = true
     }
 
 
