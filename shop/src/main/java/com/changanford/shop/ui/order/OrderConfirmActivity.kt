@@ -87,6 +87,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
+//        //秒杀情况下 原价=现价
+//        if("SECKILL"==dataBean.spuPageType){
+//            dataBean.orginPrice=dataBean.fbPrice
+//        }
         //购买数量
         val buyNum=dataBean.buyNum
         //运费 1元=100积分
@@ -121,15 +125,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             model=dataBean
         }
         binding.inGoodsInfo.apply {
-            model=dataBean
             OrderGoodsAttributeAdapter().apply {
                 rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false)
                 rvGoodsProperty.adapter= this
                 setList(dataBean.skuCodeTxts?.filter { ""!=it })
             }
-//            val skuItem=dataBean.skuVos.find { it.skuId==dataBean.skuId }?:dataBean.skuVos[0]
             GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)
-            //if(freightPrice!=0)tvDistributionType
+//            if(freightPrice!=0)tvDistributionType
+            model=dataBean
         }
         binding.inBottom.apply {
             model=dataBean

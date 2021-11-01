@@ -147,6 +147,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 }
             }
             if(remainingTime<=0)return
+            timeCount?.cancel()
             timeCount= KllTimeCountControl(remainingTime,tvKillH,tvKillM,tvKillS,object :
                 OnTimeCountListener {
                 override fun onFinish() {
