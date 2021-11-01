@@ -211,6 +211,6 @@ dependencies {
 
 
     //lottie 动画
-//    api 'com.airbnb.android:lottie:4.0.0'
+    api 'com.airbnb.android:lottie:4.0.0'
 
 }

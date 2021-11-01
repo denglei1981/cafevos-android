@@ -38,8 +38,10 @@ import com.changanford.home.util.AnimScaleInUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import com.scwang.smart.refresh.header.listener.OnTwoLevelListener
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import java.lang.Exception
@@ -102,12 +104,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         titleList.add(getString(R.string.home_big_shot))
         pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
         binding.homeViewpager.adapter = pagerAdapter
-
         binding.homeViewpager.isSaveEnabled = false
         binding.recommendContent.llBack.setOnClickListener {
             binding.header.finishTwoLevel()
         }
-
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
@@ -172,25 +172,41 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 when (alphaTest) {
                     0f -> {
                         // 打开二楼
-                        move()
+//                        move()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
                         LiveDataBus.get()
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
                             .postValue(true)
                     }
                     1f -> { // 关闭，
-                        moveCancel()
+//                        moveCancel()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
                         LiveDataBus.get()
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
                             .postValue(false)
                     }
                 }
+            }
 
+            override fun onStateChanged(
+                refreshLayout: RefreshLayout,
+                oldState: RefreshState,
+                newState: RefreshState
+            ) {
+                super.onStateChanged(refreshLayout, oldState, newState)
+                if (oldState == RefreshState.TwoLevel) {
+                    binding.classics.animate().alpha(0f).duration = 2000L
+                }
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
             toSearch()
+        }
+        binding.header.openTwoLevel(true)
+
+        binding.header.setOnTwoLevelListener { refreshLayout ->
+            binding.classics.animate().alpha(1f).duration = 2000L
+            true
         }
     }
 
@@ -212,7 +228,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
-        var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
+        val mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
@@ -304,7 +320,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         publishPopup.showAsDropDown(publishLocationView)
     }
 
-
     override fun initData() {
         viewModel.getTwoBanner()
         binding.recommendContent.rvBanner.adapter = twoAdRvListAdapter
@@ -367,6 +382,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
+
+    }
+
+    fun openTwoLevel() { // 主动打开二楼。。。
+        binding.header.openTwoLevel(true)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

@@ -172,6 +172,7 @@ class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, Reco
                     showContent()
                     recommendAdapter.setNewInstance(dataList)
                     (parentFragment as HomeV2Fragment).stopRefresh()
+                    (parentFragment as HomeV2Fragment).openTwoLevel()
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
