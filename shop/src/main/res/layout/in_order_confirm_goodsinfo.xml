@@ -21,7 +21,7 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           android:scaleType="centerCrop"
-          android:src="@drawable/shadow_1b51d9_5dp"
+          android:src="@mipmap/image_h_one_default"
           android:layout_width="@dimen/dp_90"
           android:layout_height="@dimen/dp_90"
           app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
