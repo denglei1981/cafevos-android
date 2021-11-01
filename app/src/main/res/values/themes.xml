@@ -25,12 +25,8 @@
 
     <!-- 应用启动页(StartingWindow)的theme -->
     <style name="AppTheme.StartingWindowTheme" parent="Theme.EVOS">
-        <!--        <item name="android:colorBackgroundCacheHint">@null</item>-->
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash</item>
+<!--        <item name="android:windowBackground">@drawable/splash</item>-->
         <item name="android:windowFullscreen">true</item>
-        <!--也可以设置成一张图片 -->
     </style>
 
     <style name="Theme.EVOS.NoActionBar" parent="Theme.EVOS">

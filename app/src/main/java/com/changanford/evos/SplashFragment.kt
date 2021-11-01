@@ -16,6 +16,8 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.evos.databinding.FragmentSplashBinding
+import java.util.*
+import kotlin.concurrent.schedule
 import kotlin.math.ceil
 
 class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
