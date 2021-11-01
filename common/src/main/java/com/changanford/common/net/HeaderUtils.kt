@@ -109,8 +109,16 @@ fun String.body(): RequestBody {
 fun aesEncrypt(content: String, key: String): String = AESUtil.encrypts(content, key)
 fun rsaEncrypt(key: String): String = handlePubKey(MConstant.pubKey, key)
 fun sign(content: String): String = MD5Utils.encode_big(
-    content.plus("hyzh-unistar-5KWJKH291IvadR")
+    plusSalt(content)
 )
 fun signMD(content: String): String = MD5Utils.encode_big(
     content.plus("hyzh-unistar-12340101")
 )
+fun plusSalt(content:String):String{
+    return if (MConstant.isDebug){
+        content.plus("hyzh-unistar-FGG1333HBCFDAH44")
+    } else {
+        content.plus("hyzh-unistar-8KWAKH291IpaFB")
+    }
+
+}

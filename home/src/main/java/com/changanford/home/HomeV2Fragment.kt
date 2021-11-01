@@ -1,8 +1,10 @@
 package com.changanford.home
 
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
@@ -32,6 +34,7 @@ import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
+import com.changanford.home.util.AnimScaleInUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
@@ -62,25 +65,22 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         RecommendFragment.newInstance()
     }
 
-    val actsParentsFragment: ActsParentsFragment by lazy{
+    val actsParentsFragment: ActsParentsFragment by lazy {
         ActsParentsFragment.newInstance()
     }
 
-    val newsListFragment: NewsListFragment  by lazy{
+    val newsListFragment: NewsListFragment by lazy {
         NewsListFragment.newInstance()
     }
 
-    val bigShotFragment: BigShotFragment  by lazy{
+    val bigShotFragment: BigShotFragment by lazy {
         BigShotFragment.newInstance()
     }
-
-
-
 
     val twoAdRvListAdapter: TwoAdRvListAdapter by lazy {
         TwoAdRvListAdapter()
     }
-    var currentPosition=0
+    var currentPosition = 0
 
     override fun initView() {
         //Tab+Fragment
@@ -104,7 +104,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeViewpager.adapter = pagerAdapter
 
         binding.homeViewpager.isSaveEnabled = false
-        binding.recommendContent.tvGoBack.setOnClickListener {
+        binding.recommendContent.llBack.setOnClickListener {
             binding.header.finishTwoLevel()
         }
 
@@ -126,7 +126,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) { // 不禁用刷新
-                currentPosition=position
+                currentPosition = position
 //                when (position) {
 //                    0 -> {
 //                        binding.refreshLayout.setEnableRefresh(true)
@@ -171,12 +171,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 val alphaTest = 1 - percent.coerceAtMost(1f)
                 when (alphaTest) {
                     0f -> {
+                        // 打开二楼
+                        move()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
                         LiveDataBus.get()
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
                             .postValue(true)
                     }
-                    1f -> {
+                    1f -> { // 关闭，
+                        moveCancel()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
                         LiveDataBus.get()
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
@@ -256,11 +259,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
     }
 
-    private fun easyViewPager(){
+    private fun easyViewPager() {
         try {
             val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
             recyclerViewField.isAccessible = true
-            val recyclerView: RecyclerView = recyclerViewField.get(binding.homeViewpager) as RecyclerView
+            val recyclerView: RecyclerView =
+                recyclerViewField.get(binding.homeViewpager) as RecyclerView
             val touchSlopField: Field = RecyclerView::class.java.getDeclaredField("mTouchSlop")
             touchSlopField.isAccessible = true
             val touchSlop = touchSlopField.get(recyclerView) as Int
@@ -268,6 +272,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         } catch (ignore: Exception) {
         }
     }
+
     private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
@@ -365,21 +370,44 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        when(currentPosition){
-            0->{
+        when (currentPosition) {
+            0 -> {
                 recommendFragment.homeRefersh()
             }
-            1->{
+            1 -> {
                 actsParentsFragment.homeRefersh()
             }
-            2->{
+            2 -> {
                 newsListFragment.homeRefersh()
             }
-            3->{
+            3 -> {
                 bigShotFragment.homeRefersh()
             }
         }
 
+    }
+
+    private var animator: ObjectAnimator? = null // 手指移动动画。
+    fun move() {
+        val seek = binding.recommendContent.llBack.height.toFloat()
+        animator = ObjectAnimator.ofFloat(
+            binding.recommendContent.ivGoHome,
+            "translationY",
+            0.0f,
+            -seek,
+            30f,
+            20f
+        )
+        animator?.duration = 5000 //动画时间
+        animator?.interpolator = BounceInterpolator() //实现反复移动的效果
+        animator?.repeatCount = -1 //设置动画重复次数
+        animator?.startDelay = 1000 //设置动画延时执行
+        animator?.start() //启动动画
+
+    }
+
+    fun moveCancel() {
+        animator?.cancel()
     }
 
 

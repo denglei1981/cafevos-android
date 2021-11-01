@@ -73,7 +73,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
         viewModel.imgBean.observe(this, {
             firstIn()
-            var imgBean = it
+            val imgBean = it
             if (imgBean == null || imgBean.adImg.isNullOrEmpty() || !GlideUtils.handleImgUrl(imgBean.adImg)!!
                     .startsWith("http")
             ) {

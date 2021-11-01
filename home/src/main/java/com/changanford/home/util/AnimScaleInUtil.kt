@@ -5,6 +5,10 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.ScaleAnimation
+import android.view.animation.TranslateAnimation
+
+
+
 
 /**
  *Author lcw
@@ -42,4 +46,20 @@ object AnimScaleInUtil {
         set.addAnimation(animation1)
         view?.startAnimation(set)
     }
+
+
+   fun animMove(sTouchView:View?){
+//       val touchPivotX: Float = sTouchView.getLeft().toFloat()
+//       val touchPivotY: Float = sTouchView.getTop().toFloat()
+//       val indexPivotX: Float = sTargetView.getLeft().toFloat()
+//       val indexPivotY: Float = sTargetView.getTop().toFloat()
+//
+//       val translateAnimation =
+//           TranslateAnimation(-touchPivotX + indexPivotX, 0, indexPivotY - touchPivotY, 0)
+//       translateAnimation.repeatCount = Animation.INFINITE
+//       translateAnimation.repeatMode = Animation.REVERSE
+//       view?.startAnimation(translateAnimation)
+   }
+
+
 }
