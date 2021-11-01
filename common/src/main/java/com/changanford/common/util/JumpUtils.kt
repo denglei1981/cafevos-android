@@ -24,6 +24,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
@@ -390,6 +391,14 @@ class JumpUtils {
             }
             48 -> {//秒杀列表
                 startARouter(ARouterShopPath.GoodsKillAreaActivity)
+            }
+            49->{
+                RouterManger
+                    .needLogin(true)
+                    .param(LiveDataBusKey.MINE_MEMBER_INFO_TYPE, "ford_user")
+                    .param(LiveDataBusKey.MINE_MEMBER_INFO_ID, 8)
+                    .param("title", "福特员工")
+                    .startARouter(ARouterMyPath.FordUserAuthUI)
             }
             52 -> {//商城订单列表
                 if (!TextUtils.isEmpty(value)) bundle.putInt("states", value!!.toInt()
