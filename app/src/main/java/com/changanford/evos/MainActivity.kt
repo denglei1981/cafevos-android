@@ -50,8 +50,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     }
 
-
-
     private fun initBottomNavigation() {
         val navigationController: NavigationController = binding.homeBottomNavi.custom()
             .addItem(
