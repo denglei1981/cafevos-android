@@ -74,10 +74,10 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
                 ToastUtils.showLongToast("请输入昵称",this)
                 return@setOnClickListener
             }
-            if (MineUtils.compileExChar(nickName)) {
-                ToastUtils.showLongToast("不能输入特殊字符",this)
-                return@setOnClickListener
-            }
+//            if (MineUtils.compileExChar(nickName)) {
+//                ToastUtils.showLongToast("不能输入特殊字符",this)
+//                return@setOnClickListener
+//            }
             viewModel.nameNick(nickName) {
                     LiveDataBus.get().with("MineNickName").postValue(nickName)
                     finish()

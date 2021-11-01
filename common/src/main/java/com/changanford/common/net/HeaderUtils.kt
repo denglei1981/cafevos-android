@@ -44,7 +44,7 @@ fun getHeader(
     map["seccode"] = handlePubKey(MConstant.pubKey, key)
     map["codelab"] = key
     map["sign"] = MD5Utils.encode_big(
-        getAESBody(body, key).plus(timestamp).plus("hyzh-unistar-5KWJKH291IvadR")
+        plusSalt(getAESBody(body, key).plus(timestamp))
     )
     if (null != token && token.isNotEmpty()) {
         map["token"] = token
