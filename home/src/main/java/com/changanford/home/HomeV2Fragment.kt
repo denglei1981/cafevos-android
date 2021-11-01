@@ -195,8 +195,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             ) {
                 super.onStateChanged(refreshLayout, oldState, newState)
                 if (oldState == RefreshState.TwoLevel) {
-                    binding.classics.animate().alpha(0f).duration = 2000L
+                    binding.classics.animate().alpha(1f).duration = 2000L
                 }
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                refreshLayout.finishRefresh()
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                refreshLayout.finishLoadMore()
+
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
@@ -205,7 +214,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.header.openTwoLevel(true)
 
         binding.header.setOnTwoLevelListener { refreshLayout ->
-            binding.classics.animate().alpha(1f).duration = 2000L
+            binding.classics.animate().alpha(0f).duration = 2000L
             true
         }
     }
