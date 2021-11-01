@@ -73,5 +73,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // 加载状态框架
-    implementation 'com.kingja.loadsir:loadsir:1.3.8'
+//    implementation 'com.kingja.loadsir:loadsir:1.3.8'
+
+
+    //lottie 动画
+//    implementation 'com.airbnb.android:lottie:4.0.0'
 }

@@ -109,17 +109,25 @@
             app:layout_constraintStart_toStartOf="@+id/tv_tips"
             app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
 
-        <TextView
-            android:id="@+id/tv_go_back"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_88"
-            android:background="@drawable/shape_purple_99_corners6"
-            android:gravity="center"
-            android:text="@string/home_go_back_main"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
+        <FrameLayout
+            android:id="@+id/ll_back"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_go_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/home_go_back_main"
+                android:gravity="center"
+                android:src="@drawable/icon_home_down_back_main"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </FrameLayout>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_big_topic"
             android:layout_width="0dp"
@@ -169,7 +177,7 @@
             android:layout_marginBottom="4dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/tv_go_back"
+            app:layout_constraintBottom_toTopOf="@+id/ll_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
