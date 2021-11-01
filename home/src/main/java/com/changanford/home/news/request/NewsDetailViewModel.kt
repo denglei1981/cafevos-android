@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -159,6 +160,9 @@ class NewsDetailViewModel : BaseViewModel() {
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<Any>(false, it)
                     collectLiveData.postValue(updateUiState)
+                    if (it != null) {
+                        toastShow(it)
+                    }
                 }
         })
     }
@@ -175,6 +179,9 @@ class NewsDetailViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<NewsExpandData>(it, true, "")
                     recommendNewsLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
+                    if (it != null) {
+                        toastShow(it)
+                    }
                 }
         })
     }
