@@ -319,6 +319,9 @@ class JumpUtils {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+                    MineUtils.getBindMobileJumpDataType() -> {
+                        startARouter(ARouterMyPath.MineBindMobileUI)
+                    }
                     else -> {
                         mineDaySign()
                     }
