@@ -21,7 +21,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:scaleType="centerCrop"
                 android:id="@+id/img_goodsCover"
-                android:background="@drawable/shadow_1b51d9_5dp"
+                android:src="@mipmap/image_h_one_default"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -18,7 +18,7 @@
             android:id="@+id/img_goods_cover"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
-            android:src="@mipmap/image_s_one_default"
+            android:src="@mipmap/image_h_one_default"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.shop.view.TypefaceTextView

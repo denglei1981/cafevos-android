@@ -133,6 +133,8 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.getSckills(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 seckillSessionsData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
             }
         }
     }

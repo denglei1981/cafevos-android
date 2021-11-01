@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.util.MConstant
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.control.GoodsDetailsControl
@@ -68,7 +68,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     }
                     dataBean.skuCodeTxts=skuCodeTxtArr
                     viewDataBinding.sku= this
-                    GlideUtils.loadBD(GlideUtils.handleImgUrl(skuImg),viewDataBinding.imgCover)
+                    viewDataBinding.imgCover.load(skuImg)
                     val limitBuyNum:Int=(dataBean.limitBuyNum?:"0").toInt()
                     val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock=dataBean.stock

@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
 import com.changanford.shop.listener.OnPerformListener
@@ -25,7 +25,7 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             item.stockProportion= WCommonUtil.getPercentage(item.salesCount.toDouble(),item.stockPlusSalesCount.toDouble(),0)
             val imgUrl=item.imgUrl
             val imgPath=if(imgUrl.contains(","))imgUrl.split(",")[0] else imgUrl
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),imgCover)
+            imgCover.load(imgPath)
             tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
             btnStates.setOnClickListener {
