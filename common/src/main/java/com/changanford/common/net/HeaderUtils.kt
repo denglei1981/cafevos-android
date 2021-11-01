@@ -2,7 +2,6 @@ package com.changanford.common.net
 
 import android.util.Log
 import com.alibaba.fastjson.JSON
-import com.changan.nativelib.JNIInterface
 import com.changanford.common.MyApp
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -81,12 +80,11 @@ fun getAESBody(body: Map<String, Any>, key: String): String {
     return JSON.toJSON(hashMap).toString()
 }
 
-const val newWay = true
 fun handlePubKey(pubKey: String, key: String): String {
     if (pubKey.isNullOrEmpty() || pubKey.length <= 8) {
         return "publicKey Error!"
     }
-    var encPubKey = if (newWay) SwipeHelper().stringFromJNI(pubKey) else JNIInterface().testApi(pubKey)
+    var encPubKey = SwipeHelper().stringFromJNI(pubKey)
     val seccode = RsaUtils.encryptByPublicKey(encPubKey, key)
     return seccode
 }
