@@ -2,7 +2,7 @@ package com.changanford.common.net
 
 
 import com.changanford.common.util.MConstant.BASE_URL
-import com.changanford.common.util.MConstant.isDebug
+import com.changanford.common.util.MConstant.isShowLog
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -43,7 +43,7 @@ object ApiClient {
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .apply {
-                if (isDebug) {
+                if (isShowLog) {
                     this.addInterceptor(HttpLoggingInterceptor().apply {
                         this.level = HttpLoggingInterceptor.Level.BODY
                     })

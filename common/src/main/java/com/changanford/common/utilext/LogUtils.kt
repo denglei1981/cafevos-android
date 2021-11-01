@@ -1,7 +1,7 @@
 package com.changanford.common.utilext
 
 import android.util.Log
-import com.changanford.common.util.MConstant.isDebug
+import com.changanford.common.util.MConstant.isShowLog
 import com.changanford.common.util.longLog
 
 
@@ -16,43 +16,43 @@ import com.changanford.common.util.longLog
  */
 
 fun String.logE() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.e("EVOSLog", this)
     }
 }
 
-fun String.longE(){
-    if(isDebug){
-        longLog("EVOSLog",this)
+fun String.longE() {
+    if (isShowLog) {
+        longLog("EVOSLog", this)
     }
 }
 
 fun String.logD() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.d("EVOSLog", this)
     }
 }
 
 fun String.logW() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.w("EVOSLog", this)
     }
 }
 
 fun Int.logE() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.e("EVOSLog", "$this")
     }
 }
 
 fun Int.logD() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.d("EVOSLog", "$this")
     }
 }
 
 fun Int.logW() {
-    if (isDebug) {
+    if (isShowLog) {
         Log.w("EVOSLog", "$this")
     }
 }

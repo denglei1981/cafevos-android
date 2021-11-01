@@ -6,7 +6,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
-import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
@@ -171,10 +170,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         })
 
         binding.tvFordAuth.setOnClickListener {
-            RouterManger.param(LiveDataBusKey.MINE_MEMBER_INFO_TYPE, "ford_user")
-                .param(LiveDataBusKey.MINE_MEMBER_INFO_ID, 8)
-                .param("title", "福特员工")
-                .startARouter(ARouterMyPath.FordUserAuthUI)
+            JumpUtils.instans?.jump(49)
         }
     }
 
