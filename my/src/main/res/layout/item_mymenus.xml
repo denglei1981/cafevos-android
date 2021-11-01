@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/toolImg"
-        android:layout_width="@dimen/dp_25"
-        android:layout_height="@dimen/dp_25"
+        android:layout_width="@dimen/dp_26"
+        android:layout_height="@dimen/dp_26"
         android:adjustViewBounds="true"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_20"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/toolName"
-        style="@style/commonTextView.Small.Black"
+        style="@style/commonTextView.Normal.Black"
         android:layout_marginStart="20dp"
         tools:text="我的订单"
         app:layout_constraintBottom_toBottomOf="@+id/toolImg"
@@ -31,10 +31,10 @@
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_10"
+        android:layout_height="@dimen/dp_18"
         android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/my_rightarrow" />
+        android:src="@mipmap/right_arrow_black" />
 </androidx.constraintlayout.widget.ConstraintLayout>

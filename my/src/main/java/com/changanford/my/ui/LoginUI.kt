@@ -67,12 +67,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 var json = JSONObject(p0.toString())
                 var openId = json.getString("openid")
                 var accessToken = json.getString("access_token")
-                lifecycleScope.launch {
-                    viewModel.otherLogin(
-                        "qq", "$accessToken,$openId",
-                        SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
-                    )
-                }
+                viewModel.otherLogin(
+                    "qq", "$accessToken,$openId",
+                    SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -180,11 +178,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         //三方微信返回
         LiveDataBus.get().with(MINE_SIGN_WX_CODE, String::class.java)
             .observe(this, androidx.lifecycle.Observer {
-                lifecycleScope.launch {
-                    viewModel.otherLogin(
-                        "weixin", it, SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
-                    )
-                }
+                viewModel.otherLogin(
+                    "weixin", it, SPUtils.getParam(this@LoginUI, PUSH_ID, "11111") as String
+                )
             })
 
         viewModel.smsSuccess.observe(this, androidx.lifecycle.Observer {

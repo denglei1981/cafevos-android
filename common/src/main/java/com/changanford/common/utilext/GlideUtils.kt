@@ -83,7 +83,8 @@ object GlideUtils {
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
-     fun defaultHandleImageUrl(preUrl: String?): String =
+
+    fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
@@ -150,6 +151,8 @@ object GlideUtils {
             }
         }.into(imageView)
     }
+
+
 
     /**
      * 普通加载
