@@ -20,6 +20,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
@@ -83,6 +84,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         TwoAdRvListAdapter()
     }
     var currentPosition = 0
+
 
     override fun initView() {
         //Tab+Fragment
@@ -195,8 +197,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             ) {
                 super.onStateChanged(refreshLayout, oldState, newState)
                 if (oldState == RefreshState.TwoLevel) {
-                    binding.classics.animate().alpha(0f).duration = 2000L
+                    binding.classics.animate().alpha(1f).duration = 2000L
                 }
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                refreshLayout.finishRefresh()
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                refreshLayout.finishLoadMore()
+
             }
         })
         binding.layoutTopBar.ivSearch.setOnClickListener {
@@ -205,7 +216,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.header.openTwoLevel(true)
 
         binding.header.setOnTwoLevelListener { refreshLayout ->
-            binding.classics.animate().alpha(1f).duration = 2000L
+            binding.classics.animate().alpha(0f).duration = 2000L
             true
         }
     }
@@ -363,7 +374,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
                 val appIndexAds = it.data.app_index_ads
                 twoAdRvListAdapter.setNewInstance(appIndexAds)
-
             }
 
         })
@@ -382,13 +392,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
-
     }
-
     fun openTwoLevel() { // 主动打开二楼。。。
-        binding.header.openTwoLevel(true)
+        if (MConstant.isFirstOpenTwoLevel) {
+            binding.header.openTwoLevel(true)
+            MConstant.isFirstOpenTwoLevel = false
+        }
     }
-
     override fun onRefresh(refreshLayout: RefreshLayout) {
         when (currentPosition) {
             0 -> {

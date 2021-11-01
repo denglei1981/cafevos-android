@@ -140,4 +140,6 @@ object MConstant {
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
     val H5_SHOP_BARGAINING = "${H5_BASE_URL_CSCIR}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+
+    var  isFirstOpenTwoLevel=true // 是首次打开二楼
 }
