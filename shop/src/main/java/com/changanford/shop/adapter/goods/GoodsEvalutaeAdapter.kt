@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CommentItem
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
 import java.text.SimpleDateFormat
@@ -20,7 +20,7 @@ class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<
             item.apply {
                 evalTimeTxt=sfDate.format(evalTime?:0)
                 nickName=if("YES"!=anonymous)nickName else anonymousUsers
-                GlideUtils.loadBD(GlideUtils.handleImgUrl(avater),it.imgAvatar,R.mipmap.head_default)
+                it.imgAvatar.load(avater,R.mipmap.head_default)
                 it.model=item
                 it.executePendingBindings()
             }

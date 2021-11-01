@@ -26,7 +26,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
             android:scaleType="centerCrop"
-            tools:src="@drawable/shadow_1b51d9_5dp"
+            android:src="@mipmap/image_h_one_default"
             android:layout_width="@dimen/dp_110"
             android:layout_height="@dimen/dp_110"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>

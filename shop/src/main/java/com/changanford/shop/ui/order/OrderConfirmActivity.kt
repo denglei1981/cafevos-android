@@ -14,7 +14,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
@@ -87,10 +87,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
-//        //秒杀情况下 原价=现价
-//        if("SECKILL"==dataBean.spuPageType){
-//            dataBean.orginPrice=dataBean.fbPrice
-//        }
+        //秒杀情况下 原价=现价
+        if("SECKILL"==dataBean.spuPageType){
+            dataBean.orginPrice=dataBean.fbPrice
+        }
         //购买数量
         val buyNum=dataBean.buyNum
         //运费 1元=100积分
@@ -130,7 +130,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 rvGoodsProperty.adapter= this
                 setList(dataBean.skuCodeTxts?.filter { ""!=it })
             }
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(dataBean.skuImg),imgGoodsCover)
+            imgGoodsCover.load(dataBean.skuImg)
 //            if(freightPrice!=0)tvDistributionType
             model=dataBean
         }

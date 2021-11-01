@@ -44,7 +44,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private var orderNo:String=""
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var timeCountControl:PayTimeCountControl?=null
-    private var isInitLiveDataBus=false
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     override fun initView() {
@@ -60,6 +59,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         viewModel.orderItemLiveData.observe(this,{
             bindingData(it)
         })
+        addLiveDataBus()
     }
     override fun onStart() {
         super.onStart()
@@ -250,24 +250,18 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //支付、确认收货、评价、再次购买
             R.id.btn_order_confirm->confirmOrder()
             //修改收货地址
-            R.id.img_right,R.id.tv_userInfo,R.id.tv_locationInfo->updateAddress()
+            R.id.img_right,R.id.tv_userInfo,R.id.tv_locationInfo->if("WAIT_PAY"==dataBean.orderStatus)JumpUtils.instans?.jump(20,"1")
         }
     }
-
-    private fun updateAddress(){
-        dataBean.apply {
-            if("WAIT_PAY"==orderStatus){//修改地址
-                JumpUtils.instans?.jump(20,"1")
-                if(!isInitLiveDataBus){
-                    isInitLiveDataBus=true
-                    LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
-                        it?.let {
-                            bindingAddressInfo(it,true)
-                        }
-                    })
-                }
+    /**
+     * 点击地址列表的回调监听
+    * */
+    private fun addLiveDataBus(){
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
+            it?.let {
+                bindingAddressInfo(it,true)
             }
-        }
+        })
     }
     override fun onDestroy() {
         super.onDestroy()

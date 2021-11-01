@@ -9,7 +9,7 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
@@ -34,7 +34,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         dataBinding.apply {
 //            val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
 //            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.skuImg),imgGoodsCover)
+            imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
                 visibility = when(item.busSourse) {
                     "1" -> {//秒杀
