@@ -33,7 +33,7 @@
             android:maxLines="1"
             android:text="@{bean.description}"
             android:textColor="@color/color_33"
-            android:textSize="13sp"
+            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/iv_icon"
             app:layout_constraintTop_toTopOf="@+id/iv_icon"
@@ -61,7 +61,7 @@
                 android:paddingEnd="8dp"
                 android:text="@{bean.name}"
                 android:textColor="@color/circle_8195C8"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 tools:ignore="RtlSymmetry,SmallSp"
                 tools:text="年轻人喜欢什么样的车" />
         </RelativeLayout>
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/circle_74889D"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintLeft_toLeftOf="parent"
             tools:text="20万讨论 12亿阅读" />

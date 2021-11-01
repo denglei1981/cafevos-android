@@ -1,5 +1,9 @@
 package com.changanford.car
 
+import android.content.Context
+import android.util.DisplayMetrics
+import android.view.WindowManager
+import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.changanford.car.adapter.CarAuthAdapter
 import com.changanford.car.adapter.CarRecommendAdapter
@@ -10,6 +14,8 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.xiaomi.push.it
 
 
 class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
@@ -60,6 +66,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 binding.carTopViewPager.isVisible = false
                 return@observe
             }
+            setVPHeight()
             binding.carTopViewPager.isVisible = true
             topBannerList.clear()
             topBannerList.addAll(it)
@@ -72,8 +79,10 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         viewModel._middleInfo.observe(this, { it ->
             if (it?.carModels.isNullOrEmpty()) {
                 binding.carRecommendLayout.root.isVisible = false
+                setMinBottom(0)
             } else {
                 binding.carRecommendLayout.root.isVisible = true
+                setMinBottom(50)
                 if (it.carModels.size==1){
                     binding.carRecommendLayout.carRecommendRec.isVisible = false
                     binding.carRecommendLayout.carRecommend1.isVisible = true
@@ -102,5 +111,23 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 carAuthAdapter.data.addAll(cars)
             }
         })
+    }
+    fun setVPHeight(){
+        var params = binding.carTopViewPager.layoutParams
+        var service = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        var outMetrics = DisplayMetrics()
+        service?.defaultDisplay.getRealMetrics(outMetrics)
+        params.height =  outMetrics.heightPixels
+        binding.carTopViewPager.layoutParams = params
+    }
+    fun setMinBottom(height:Int){
+        var params = binding.scrollLayout.layoutParams as SmartRefreshLayout.LayoutParams
+        params.bottomMargin = height
+        binding.scrollLayout.layoutParams = params
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initData()
     }
 }

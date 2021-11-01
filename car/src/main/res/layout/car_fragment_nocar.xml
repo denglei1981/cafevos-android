@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:id="@+id/refresh_layout"
     app:srlEnableLoadMore="false"
+    app:srlEnableRefresh="false"
     xmlns:tools="http://schemas.android.com/tools">
 
 <androidx.core.widget.NestedScrollView
+    android:id="@+id/scroll_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/dp50">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

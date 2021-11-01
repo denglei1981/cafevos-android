@@ -128,6 +128,8 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         viewModel.followLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
+            }else{
+                toastShow(it.message)
             }
         })
 
