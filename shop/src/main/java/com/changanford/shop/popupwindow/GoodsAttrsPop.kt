@@ -75,7 +75,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
                     val max: Int =if(limitBuyNum!=0) limitBuyNum else nowStock
                     viewDataBinding.addSubtractView.setMax(max)
-                    control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
+                    control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
                 }
             }
         })
@@ -86,7 +86,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
             dataBean.buyNum= it
-            control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit)
+            control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
         })
     }
     //动画

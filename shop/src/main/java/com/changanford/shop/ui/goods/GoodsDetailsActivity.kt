@@ -95,6 +95,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             binding.inEmpty.layoutEmpty.visibility=View.GONE
+//            if(BuildConfig.DEBUG)it.acountFb=0
             control.bindingData(it)
             initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
