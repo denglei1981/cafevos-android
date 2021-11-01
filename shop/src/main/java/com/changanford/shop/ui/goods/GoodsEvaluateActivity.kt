@@ -5,8 +5,6 @@ import android.content.Intent
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsEvalutaeAdapter
 import com.changanford.shop.databinding.ActGoodsEvaluateBinding
@@ -24,8 +22,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     OnRefreshLoadMoreListener {
     companion object{
         fun start(context: Context, spuId:String) {
-            if(MConstant.token.isEmpty())JumpUtils.instans?.jump(100)
-            else context.startActivity(Intent(context,GoodsEvaluateActivity::class.java).putExtra("spuId",spuId))
+            context.startActivity(Intent(context,GoodsEvaluateActivity::class.java).putExtra("spuId",spuId))
         }
     }
     private val mAdapter by lazy { GoodsEvalutaeAdapter() }

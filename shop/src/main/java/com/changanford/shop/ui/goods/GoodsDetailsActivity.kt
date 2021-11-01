@@ -95,6 +95,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             binding.inEmpty.layoutEmpty.visibility=View.GONE
+//            if(BuildConfig.DEBUG)it.acountFb=0
             control.bindingData(it)
             initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
@@ -131,7 +132,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     fun onClick(v:View){
         val vid=v.id
-        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.img_share!=vid){
+        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.img_share!=vid&&R.id.tv_goodsCommentLookAll!=vid){
             JumpUtils.instans?.jump(100)
             return
         }
@@ -149,7 +150,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品
-            R.id.view_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
+            R.id.view_collect,R.id.img_collection->{
+                if(isCollection)viewModel.cancelCollectGoods(spuId)
+                else viewModel.collectGoods(spuId)
+            }
             //分享商品
             R.id.img_share->control.share()
             //返回

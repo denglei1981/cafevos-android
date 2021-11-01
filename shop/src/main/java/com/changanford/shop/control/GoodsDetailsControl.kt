@@ -147,6 +147,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 }
             }
             if(remainingTime<=0)return
+            timeCount?.cancel()
             timeCount= KllTimeCountControl(remainingTime,tvKillH,tvKillM,tvKillS,object :
                 OnTimeCountListener {
                 override fun onFinish() {
@@ -210,19 +211,22 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             _dataBean.price=_dataBean.fbPrice
         }
     }
-    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView){
+    /**
+     * [source]来源 0详情 1属性弹窗
+    * */
+    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,source:Int=0){
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
             if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
-            else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
-                btnSubmit.setStates(8)
-            } else if(secKillInfo!=null&&now<secKillInfo?.timeBegin!!){//秒杀未开始
-                btnSubmit.setStates(7)
-            }else if(stock<1){//库存不足,已售罄、已抢光
-                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
-            }else if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
-                btnSubmit.updateEnabled(false)
-            } else btnSubmit.setStates(5)
+            else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
+                if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
+                    btnSubmit.updateEnabled(false)
+                } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//积分余额不足
+                    btnSubmit.setStates(8)
+                }else if(stock<1){//库存不足,已售罄、已抢光
+                    btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+                } else btnSubmit.setStates(5)
+            }else btnSubmit.setStates(5)
         }
     }
     fun share(){

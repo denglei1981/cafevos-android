@@ -81,7 +81,7 @@ fun getAESBody(body: Map<String, Any>, key: String): String {
     return JSON.toJSON(hashMap).toString()
 }
 
-const val newWay = false
+const val newWay = true
 fun handlePubKey(pubKey: String, key: String): String {
     if (pubKey.isNullOrEmpty() || pubKey.length <= 8) {
         return "publicKey Error!"

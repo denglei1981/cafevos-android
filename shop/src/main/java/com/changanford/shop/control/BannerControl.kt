@@ -19,7 +19,7 @@ object BannerControl {
     }
     fun bindingBanner(banner: BGABanner, advertList:MutableList<AdBean>?, round:Int) {
         if(null==advertList||advertList.size<1){
-//            banner.visibility= View.GONE
+            banner.visibility= View.GONE
             return
         }
         banner.visibility= View.VISIBLE

@@ -9,6 +9,7 @@ import android.view.View
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouterFinish
+import com.changanford.common.util.GifLoadOneTimeGif
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
@@ -32,14 +33,19 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     }
 
     override fun initData() {
-        viewModel.getKey()
-        viewModel.key.observe(this) {
-            showCounter()
-            MConstant.pubKey = it
-            viewModel.getDbAds()
-            viewModel.adService("app_launch")
-        }
-        showAds()
+        GifLoadOneTimeGif.loadOneTimeGif(requireContext(),R.drawable.splashgif,binding.splashimg,1,object :GifLoadOneTimeGif.GifListener{
+            override fun gifPlayComplete() {
+                viewModel.getKey()
+                viewModel.key.observe(this@SplashFragment) {
+                    showCounter()
+                    MConstant.pubKey = it
+                    viewModel.getDbAds()
+                    viewModel.adService("app_launch")
+                }
+                showAds()
+            }
+        })
+
     }
 
     /**
