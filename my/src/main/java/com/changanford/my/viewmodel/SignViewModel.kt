@@ -503,18 +503,23 @@ class SignViewModel : ViewModel() {
     }
 
 
-    suspend fun otherLogin(type: String, code: String, pushId: String) {
-        var other = fetchRequest(showLoading = true) {
-            var body = HashMap<String, String>()
-            body["type"] = type
-            body["code"] = code
-            body["pushId"] = pushId
-            var rkey = getRandomKey()
-            apiService.otherOauthSign(body.header(rkey), body.body(rkey))
-        }
-        if (other.code == 0) {
-            other.data?.let {
-                loginSuccess(it)
+    fun otherLogin(type: String, code: String, pushId: String) {
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                var body = HashMap<String, String>()
+                body["type"] = type
+                body["code"] = code
+                body["pushId"] = pushId
+                var rkey = getRandomKey()
+                apiService.otherOauthSign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    loginSuccess(it)
+                }
+            }.onWithMsgFailure {
+                it?.let {
+                    it.toast()
+                }
             }
         }
     }

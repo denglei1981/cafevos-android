@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_3"
             android:layout_marginTop="@dimen/dp_2"
-            android:layout_marginEnd="@dimen/dp_18"
+            android:layout_marginEnd="@dimen/dp_10"
             android:text="10/10"
             android:textColor="#999999"
             android:textSize="@dimen/sp_10"
