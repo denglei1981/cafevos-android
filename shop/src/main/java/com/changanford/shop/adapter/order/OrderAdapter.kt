@@ -98,6 +98,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         this.specifications=specifications
                         this.orginPrice=orderBriefBean.orginPrice
                         this.busSourse= orderBriefBean.busSourse
+                        this.hagglePrice=orderBriefBean.hagglePrice
                     }
                 }
             }

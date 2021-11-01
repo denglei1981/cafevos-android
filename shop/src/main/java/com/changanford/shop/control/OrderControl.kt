@@ -34,6 +34,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         dataBinding.apply {
 //            val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
 //            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
+            //砍价订单
+            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
+                item.fbOfUnitPrice=item.hagglePrice!!
+            }
             imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
                 visibility = when(item.busSourse) {
