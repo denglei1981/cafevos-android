@@ -50,16 +50,16 @@ class TaskContentAdapter() :
             it.taskTitle.text = item.taskName
             it.taskTitleDes.text = item.taskBrief
             it.itemNum.text = "+${item.taskScore}"
-            if (item.taskAbcCount > 0) {
-
-            } else if (item.taskAllCount > 1) {
+            it.progress.visibility = if (item.taskAllCount == 0) View.INVISIBLE else View.VISIBLE
+            if (item.taskAllCount > 1) {
                 it.progress.max = item.taskAllCount
                 it.progress.progress = item.taskDoneCount
                 it.taskTitleInfo.text = "${item.taskDoneCount}/${item.taskAllCount}"
             } else {
                 it.progress.max = 1
                 it.progress.progress = if (item.taskIsDone == 1) 1 else 0
-                it.taskTitleInfo.text = "${if (item.taskIsDone == 1) 1 else 0}/1"
+                it.taskTitleInfo.text =
+                    if (item.taskAllCount == 0) "已完成${item.taskIsDone}次" else "${if (item.taskIsDone == 1) 1 else 0}/1"
             }
             it.itemTaskDes.text = ("奖励: " + item.taskScore + "福币/次 | "
                     + item.taskGrowthValue + "成长值/次") //奖励: 50积分 | 200成长值
