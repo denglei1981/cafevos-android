@@ -55,7 +55,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             recyclerView.apply {
                 if(!TextUtils.isEmpty(item.specifications)){
                     visibility= View.VISIBLE
-                    layoutManager= FlowLayoutManager(context,false)
+                    layoutManager= FlowLayoutManager(context,false,true)
                     adapter= OrderGoodsAttributeAdapter().apply {
                         val specifications=item.specifications.split(",").filter { ""!=it }
                         setList(specifications)

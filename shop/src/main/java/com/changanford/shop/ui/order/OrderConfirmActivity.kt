@@ -126,7 +126,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         binding.inGoodsInfo.apply {
             OrderGoodsAttributeAdapter().apply {
-                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false)
+                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false,true)
                 rvGoodsProperty.adapter= this
                 setList(dataBean.skuCodeTxts?.filter { ""!=it })
             }
