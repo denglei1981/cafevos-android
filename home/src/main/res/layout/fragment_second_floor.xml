@@ -23,7 +23,8 @@
             <com.scwang.smart.refresh.header.TwoLevelHeader
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <include
                     android:id="@+id/recommend_content"

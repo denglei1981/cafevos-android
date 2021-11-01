@@ -71,8 +71,8 @@ class CircleMainAdapter(
 
                 binding.ryCircle.adapter = allCircleAdapter
 
-                initTopMagicIndicator(binding)
-                initTopTabAndViewPager(binding)
+//                initTopMagicIndicator(binding)
+//                initTopTabAndViewPager(binding)
 
                 binding.ryTopic.adapter = topicAdapter
 
