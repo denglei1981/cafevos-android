@@ -65,6 +65,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         }
         return false
     }
+
     private fun getTemporarySkuCode(optionId:String):String{
         var skuCode=""
         if(currentSkuCode.contains("-")){
@@ -76,9 +77,12 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         return skuCode
     }
     fun updateAdapter(skuCode: String){
-        isUpdate=true
         currentSkuCode=skuCode
+        isUpdate=isLegalSkuCode(currentSkuCode)<2
         notifyDataSetChanged()
+    }
+    private fun isLegalSkuCode(_skuCode:String?):Int{
+        return _skuCode?.split("-")?.filter { "0"==it }?.size?:0
     }
     private fun selectRb(rb:RadioButton){
         if(::lastRb.isInitialized)lastRb.isChecked=false

@@ -8,6 +8,7 @@ import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.OptionVo
 import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 
@@ -30,6 +31,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
                         updateSkuCode(pos)
                     }
                 })
+                dataBinding.recyclerView.layoutManager=FlowLayoutManager(context,true)
                 dataBinding.recyclerView.adapter=mAdapter
                 mAdapter.setList(item.optionVos)
                 adapterMap[pos]=mAdapter
