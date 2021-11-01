@@ -271,7 +271,7 @@
                     android:padding="@dimen/dp_4"
                     android:text="长安福特员工认证"
                     android:textColor="#01025C"
-                    android:textSize="@dimen/sp_13"
+                    android:textSize="@dimen/sp_15"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_reg_time" />

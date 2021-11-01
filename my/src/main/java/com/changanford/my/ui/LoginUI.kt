@@ -1,11 +1,15 @@
 package com.changanford.my.ui
 
 import android.content.Intent
+import android.media.MediaPlayer
+import android.view.SurfaceHolder
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.MConstant
@@ -14,6 +18,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
@@ -54,6 +59,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     private lateinit var tencent: Tencent
     private lateinit var wxApi: IWXAPI
+    var player = MediaPlayer()
 
     var qqCallback = object : IUiListener {
         override fun onComplete(p0: Any?) {
@@ -210,7 +216,51 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
 
     override fun initData() {
+        //images/video/aa5d58f5ea473c2be60299a27fe5bb2a.mp4
+        lifecycleScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["configKey"] = "login_background"
+                body["obj"] = "true"
+                var rkey = getRandomKey()
+                apiService.loginBg(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.video?.let {
+                    play(it)
+                }
+            }.onFailure {
+//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
+            }
+        }
+    }
 
+    fun play(videoUrl: String) {
+        binding.loginVideo.visibility = View.VISIBLE
+        binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
+            override fun surfaceCreated(holder: SurfaceHolder) {
+            }
+
+            override fun surfaceChanged(
+                holder: SurfaceHolder,
+                format: Int,
+                width: Int,
+                height: Int
+            ) {
+                player.setDisplay(holder)
+            }
+
+            override fun surfaceDestroyed(holder: SurfaceHolder) {
+            }
+
+        })
+        player.setOnPreparedListener {
+            player.setDisplay(binding.loginVideo.holder)
+            player.start()
+        }
+        player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
+        player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+        player.prepareAsync()
+        player.isLooping = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -272,11 +322,17 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         timerTask?.cancel()
         timer = null
         timerTask = null
+
+        if (player.isPlaying)
+            player.stop()
+        player.release()
     }
+
     var isForeground = true
-    var timer :Timer? = null
-    var timerTask :MyTimerTask? = null
-    inner class MyTimerTask :TimerTask(){
+    var timer: Timer? = null
+    var timerTask: MyTimerTask? = null
+
+    inner class MyTimerTask : TimerTask() {
         override fun run() {
             if (!isAppOnForeground()) {
                 //由前台切换到后台
@@ -296,8 +352,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         try {
             timer = Timer()
             timerTask = MyTimerTask()
-            timer?.schedule(timerTask,50,50)
-        }catch (e:Exception){
+            timer?.schedule(timerTask, 50, 50)
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 

@@ -1,7 +1,6 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -736,6 +735,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleTagBean>
+
+
+    @POST("base/config/getConfigValueByKey")
+    suspend fun loginBg(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<LoginVideoBean>
 
 
     //圈子审核 人数查询
