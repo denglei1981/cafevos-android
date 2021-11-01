@@ -5,7 +5,7 @@ import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsBinding
 
@@ -22,7 +22,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             dataBinding.executePendingBindings()
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),dataBinding.imgGoodsCover)
+            dataBinding.imgGoodsCover.load(imgPath)
             dataBinding.tvOrIntegral.visibility=if(item.lineFb==null) View.GONE else View.VISIBLE
             dataBinding.inVip.model=item
             dataBinding.tvIntegral.visibility=View.VISIBLE

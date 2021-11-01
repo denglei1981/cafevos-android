@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemKillGoodsBinding
 import com.changanford.shop.utils.ScreenUtils
@@ -33,7 +33,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             item.robbedPercentage=robbedPercentage
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(imgPath),dataBinding.imgCover)
+            dataBinding.imgCover.load(imgPath)
             dataBinding.tvOrIntegral.visibility=if(null!=item.lineFb) View.VISIBLE else View.GONE
 //            val seckillNumLimit=item.seckillNumLimit?:"0"
 //            dataBinding.tvSeckillNumLimit.visibility=if("0"!=seckillNumLimit)View.VISIBLE else View.INVISIBLE
