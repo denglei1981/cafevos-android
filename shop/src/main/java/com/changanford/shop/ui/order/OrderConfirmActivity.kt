@@ -87,7 +87,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
-//        //秒杀情况下 原价=现价
+        //秒杀情况下 原价=现价
         if("SECKILL"==dataBean.spuPageType){
             dataBean.orginPrice=dataBean.fbPrice
         }
