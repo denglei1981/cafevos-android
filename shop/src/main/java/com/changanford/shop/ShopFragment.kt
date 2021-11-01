@@ -28,6 +28,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), OnRefreshListener {
     private  val fragments= arrayListOf<ExchangeListFragment>()
     private val mAdapter by lazy { GoodsKillAdapter() }
+    private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -82,6 +83,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private fun addObserve(){
         viewModel.advertisingList.observe(this,{
             BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),2.5f))
+            ScreenUtils.setMargin(binding.inTop.tvKillTitle,0,if(null!=it&&it.size>0)dp38 else 0,9,0)
         })
         viewModel.shopHomeData.observe(this,{
             mAdapter.setList(it.indexSeckillDtoList)
