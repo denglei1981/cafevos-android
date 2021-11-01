@@ -128,7 +128,7 @@ object MConstant {
     var H5_MINE_INTEGRAL = "${H5_BASE_URL_CSCIR}/taskExplain"
 
     //福币规则：/#/richTextAp?key=user_agreement_fuUb
-    var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/#/richTextAp?key=user_agreement_fuUb"
+    var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_fuUb"
 
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
