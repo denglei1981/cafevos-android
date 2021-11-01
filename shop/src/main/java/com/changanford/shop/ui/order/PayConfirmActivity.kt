@@ -68,6 +68,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.acountFb),"#00095B")
         val payCountDown=dataBean?.waitPayCountDown?:waitPayCountDown
         if(payCountDown>0){
+            timeCountControl?.cancel()
             timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
                 override fun onFinish() {
                     payResults(false)
