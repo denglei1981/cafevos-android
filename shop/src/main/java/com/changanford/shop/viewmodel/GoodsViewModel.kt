@@ -181,7 +181,6 @@ class GoodsViewModel: BaseViewModel() {
      * 评价列表
      * */
     fun getGoodsEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
-        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
