@@ -216,7 +216,7 @@ class GoodsViewModel: BaseViewModel() {
      * 收藏商品
      * [spuId]商品id
      * */
-    fun collectGoods(spuId:String,isCollection:Boolean){
+    fun collectGoods(spuId:String){
         if(!isLogin())return
         viewModelScope.launch {
             fetchRequest {
@@ -224,10 +224,31 @@ class GoodsViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.collectGoods(spuId,body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it,MyApp.mContext)
+                ToastUtils.showLongToast(it)
             }.onSuccess {
-                ToastUtils.showShortToast(if(isCollection)R.string.str_cancelledCollection else R.string.str_collectionSuccess,MyApp.mContext)
-                collectionGoodsStates.postValue(!isCollection)
+                ToastUtils.reToast(R.string.str_collectionSuccess)
+                collectionGoodsStates.postValue(true)
+            }
+        }
+    }
+    /**
+     * 取消收藏商品
+     * [spuId]商品id
+     * */
+    fun cancelCollectGoods(spuId:String){
+        if(!isLogin())return
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["collectionType"]=5
+                body["spuId"]=spuId
+                val randomKey = getRandomKey()
+                shopApiService.cancelCollectGoods(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                ToastUtils.reToast(R.string.str_cancelledCollection)
+                collectionGoodsStates.postValue(false)
             }
         }
     }

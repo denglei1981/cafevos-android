@@ -149,7 +149,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品
-            R.id.view_collect,R.id.img_collection->viewModel.collectGoods(spuId,isCollection)
+            R.id.view_collect,R.id.img_collection->{
+                if(isCollection)viewModel.cancelCollectGoods(spuId)
+                else viewModel.collectGoods(spuId)
+            }
             //分享商品
             R.id.img_share->control.share()
             //返回

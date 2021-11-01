@@ -86,6 +86,12 @@ interface ShopNetWorkApi {
     @POST("/mall/collectGoods/{spuId}")
     suspend fun collectGoods(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
+     *取消收藏商品
+     * */
+    @POST("/userCollection/cancleMyCollections")
+    suspend fun cancelCollectGoods(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+
+    /**
      *订单详情
      * */
     @POST("/mall/order/detail")
