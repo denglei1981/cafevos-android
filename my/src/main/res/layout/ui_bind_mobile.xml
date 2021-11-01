@@ -1,130 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <com.changanford.common.ui.FullVideoView
+            android:id="@+id/login_video"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/im_bg"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_250"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_login_top_bg" />
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/im_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_250"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_login_top_bg"
+                    android:visibility="gone" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/text_18_color_ff_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_33"
-                android:text="绑定手机号" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_login_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_67"
-                android:layout_marginTop="@dimen/dp_135"
-                android:text="Hello， \n欢迎来到福域"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_25" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_240"
-                android:background="@drawable/shape_top_r_5_c_ff">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_login_mobile"
-                    style="@style/login_mobile_et_style"
-                    android:layout_marginStart="@dimen/dp_47"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:layout_marginEnd="@dimen/dp_47"
-                    android:background="@drawable/edittext_bg"
-                    android:hint="请输入手机号码"
-                    android:inputType="phone"
-                    android:maxLength="11"
-                    android:textColorHint="#999999"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_login_sms_code"
-                    style="@style/login_mobile_et_style"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/dp_47"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:background="@drawable/edittext_bg"
-                    android:hint="请输入验证码"
-                    android:inputType="number"
-                    android:maxLength="8"
-                    android:textColorHint="#999999"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/btn_get_sms"
-                    app:layout_constraintTop_toBottomOf="@+id/et_login_mobile" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_18_color_ff_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_33"
+                    android:text="绑定手机号" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_get_sms"
-                    android:layout_width="@dimen/dp_102"
-                    android:layout_height="@dimen/dp_34"
-                    android:layout_marginEnd="@dimen/dp_47"
-                    android:background="@drawable/shape_login_sms_r_16_c_89"
-                    android:gravity="center"
-                    android:text="获取验证码"
-                    android:textColor="#1B3B89"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintBottom_toBottomOf="@+id/et_login_sms_code"
-                    app:layout_constraintLeft_toRightOf="@+id/et_login_sms_code"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/et_login_sms_code" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_login_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_67"
+                    android:layout_marginTop="@dimen/dp_135"
+                    android:text="Hello，欢迎来到福域"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_25" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_login"
-                    style="@style/login_btn_style"
-                    android:layout_marginStart="@dimen/dp_47"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_47"
-                    android:text="立即绑定"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_login_sms_code" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_no_bind"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_48"
-                    android:layout_marginStart="@dimen/dp_47"
-                    android:layout_marginTop="@dimen/dp_22"
-                    android:layout_marginEnd="@dimen/dp_47"
-                    android:text="暂不绑定"
-                    android:textColor="#1B3B89"
-                    android:textSize="@dimen/sp_15"
-                    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="@dimen/dp_20"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_login"
-                    app:strokeColor="#1B3B89"
-                    app:strokeWidth="@dimen/dp_1" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
-    </androidx.core.widget.NestedScrollView>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_295">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_login_mobile"
+                        style="@style/login_mobile_et_style"
+                        android:layout_marginStart="@dimen/dp_47"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:layout_marginEnd="@dimen/dp_47"
+                        android:background="@drawable/et_input_r_20_c_f"
+                        android:hint="请输入手机号码"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:paddingStart="@dimen/dp_18"
+                        android:textColor="#01025C"
+                        android:textColorHint="#999999"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_sms_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_44"
+                        android:layout_marginStart="@dimen/dp_47"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:layout_marginEnd="@dimen/dp_47"
+                        android:background="@drawable/et_input_r_20_c_f"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_login_mobile">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/et_login_sms_code"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/dp_40"
+                            android:layout_marginTop="@dimen/dp_0"
+                            android:layout_marginEnd="@dimen/dp_0"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入验证码"
+                            android:inputType="number"
+                            android:maxLength="8"
+                            android:paddingStart="@dimen/dp_18"
+                            android:textColor="#01025C"
+                            android:textColorHint="#999999"
+                            android:textSize="@dimen/sp_14" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/btn_get_sms"
+                            android:layout_width="@dimen/dp_102"
+                            android:layout_height="@dimen/dp_34"
+                            android:layout_marginEnd="@dimen/dp_17"
+                            android:gravity="center"
+                            android:text="获取验证码"
+                            android:textColor="@color/color_01025C"
+                            android:textSize="@dimen/sp_14" />
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_login"
+                        style="@style/login_btn_style"
+                        android:layout_marginStart="@dimen/dp_47"
+                        android:layout_marginTop="@dimen/dp_36"
+                        android:layout_marginEnd="@dimen/dp_47"
+                        android:background="@drawable/shape_r_20_c_ff"
+                        android:text="立即绑定"
+                        android:textColor="#801B3B89"
+                        android:textSize="@dimen/sp_15"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_sms_layout" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_no_bind"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_48"
+                        android:layout_marginStart="@dimen/dp_47"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:layout_marginEnd="@dimen/dp_47"
+                        android:text="暂不绑定"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/sp_15"
+                        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+                        app:backgroundTint="@android:color/transparent"
+                        app:cornerRadius="@dimen/dp_20"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+                        app:strokeColor="#FFFFFF"
+                        app:strokeWidth="@dimen/dp_1" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+
 </layout>

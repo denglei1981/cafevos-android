@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
@@ -35,6 +36,7 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
             back()
         }
         binding.btnLoginOut.isEnabled = UserManger.isLogin()
+        binding.btnLoginOut.visibility = if (UserManger.isLogin()) View.VISIBLE else View.GONE
 
         binding.btnLoginOut.setOnClickListener {
             var confirmPop = ConfirmTwoBtnPop(this)

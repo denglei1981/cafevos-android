@@ -45,7 +45,7 @@ fun TextView.signAgreement() {
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                ds.color = Color.parseColor("#1B3B89")
+                ds.color = Color.parseColor("#ffffff")
                 ds.isUnderlineText = false //去除超链接的下划线
             }
         }, title.length,
@@ -61,7 +61,7 @@ fun TextView.signAgreement() {
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                ds.color = Color.parseColor("#1B3B89")
+                ds.color = Color.parseColor("#ffffff")
                 ds.isUnderlineText = false //去除超链接的下划线
             }
         }, title.length + content.length + 1,

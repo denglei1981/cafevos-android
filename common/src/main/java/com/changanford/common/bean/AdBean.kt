@@ -23,3 +23,5 @@ class AdBean : Serializable {
     val video: Int? = 0//":0,
     val videoTime: String? = ""//":null}
 }
+
+class LoginVideoBean(val video: String? = "")
