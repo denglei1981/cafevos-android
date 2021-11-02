@@ -150,7 +150,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
             layoutPoints.put(i, rect);
 
             left = left + w;
-
+//            Log.e("wenke","top + h:"+(top + h)+">>maxTop:"+maxTop);
             if (top + h >= maxTop) {
                 maxTop = top + h;
             }
@@ -162,7 +162,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
         mContentHeight = maxTop - getPaddingTop();
 
         height = mContentHeight + getPaddingTop() + getPaddingBottom();
-
+//        Log.e("wenke","maxTop:"+maxTop+">>mContentHeight:"+mContentHeight);
         switch (heightMode) {
             case View.MeasureSpec.EXACTLY:
                 height = heightSize;
@@ -177,7 +177,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
         }
 
         totalHeight = height - getPaddingTop() - getPaddingBottom();
-        Log.e("wenke","singleLine:"+singleLine+">>>fistH:"+fistH+">>>height:"+height);
+//        Log.e("wenke","singleLine:"+singleLine+">>>fistH:"+fistH+">>>height:"+height);
         setMeasuredDimension(widthSize, singleLine?fistH:height);
     }
 }
