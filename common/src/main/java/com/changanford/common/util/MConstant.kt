@@ -50,6 +50,12 @@ object MConstant {
     const val isAppAlive = true
     var isPopAgreement = true//是否要弹隐私弹框，true未同意协议
 
+    //登录背景保存地址
+    const val loginBgVideoPath = "loginBg.mp4"
+
+    //是否保存成功
+    var isDownLoginBgSuccess: Boolean = false
+
     val rootPath by lazy {
         MyApp.mContext.getExternalFilesDir("")?.absolutePath
     }

@@ -3,14 +3,11 @@ package com.changanford.my.ui
 import android.media.MediaPlayer
 import android.view.SurfaceHolder
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiBindMobileBinding
@@ -22,8 +19,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.launch
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -96,27 +91,20 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnNoBind.setOnClickListener {
             back()
         }
+
+        viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                play(it)
+            }
+        })
     }
 
     override fun initData() {
-        lifecycleScope.launch {
-            fetchRequest {
-                var body = HashMap<String, Any>()
-                body["configKey"] = "login_background"
-                body["obj"] = true
-                var rkey = getRandomKey()
-                apiService.loginBg(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                it?.video?.let {
-                    play(it)
-                }
-            }.onFailure {
-//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
-            }
-        }
+        viewModel.downLoginBgUrl()
     }
 
     fun play(videoUrl: String) {
+        "${videoUrl}".logE()
         binding.loginVideo.visibility = View.VISIBLE
         binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
@@ -139,7 +127,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
             player.setDisplay(binding.loginVideo.holder)
             player.start()
         }
-        player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
+        player.setDataSource(videoUrl)
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
         player.isLooping = true

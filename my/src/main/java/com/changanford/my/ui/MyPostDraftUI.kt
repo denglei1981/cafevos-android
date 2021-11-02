@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import cn.we.swipe.helper.WeSwipe
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
@@ -15,9 +16,9 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
+import com.changanford.my.databinding.ItemPostDraftBinding
 import com.changanford.my.databinding.UiPostDraftBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
-import com.changanford.my.widget.MViewHolder
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -34,17 +35,36 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
     var isShowCheck: Boolean = false
 
     var adapter =
-        object : BaseQuickAdapter<PostEntity, MViewHolder>(
-            com.changanford.my.R.layout.item_post_draft
+        object : BaseQuickAdapter<PostEntity, BaseDataBindingHolder<ItemPostDraftBinding>>(
+            R.layout.item_post_draft
         ) {
-            override fun convert(holder: MViewHolder, item: PostEntity) {
-                holder.title.text = item.title
-                holder.time.text = "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"
-                holder.checkBox.visibility = if (isShowCheck) View.VISIBLE else View.GONE
-                holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                    checkMap[item.postsId] = isChecked
+            override fun convert(
+                holder: BaseDataBindingHolder<ItemPostDraftBinding>,
+                item: PostEntity
+            ) {
+                holder.dataBinding?.let { holder ->
+                    holder.itemTitle.text = item.title
+                    holder.itemTime.text =
+                        "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"
+                    holder.checkbox.visibility = if (isShowCheck) View.VISIBLE else View.GONE
+                    holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
+                        checkMap[item.postsId] = isChecked
+                    }
+                    holder.checkbox.isChecked = checkMap[item.postsId]!!
+                    holder.itemSlide.setOnClickListener {
+                        ConfirmTwoBtnPop(this@MyPostDraftUI)
+                            .apply {
+                                contentText.text = "是否确定删除？\n\n删除后将无法找回，请谨慎操作"
+                                btnConfirm.setOnClickListener {
+                                    dismiss()
+                                    viewModel.deletePost(item.postsId)
+                                }
+                                btnCancel.setOnClickListener {
+                                    dismiss()
+                                }
+                            }.showPopupWindow()
+                    }
                 }
-                holder.checkBox.isChecked = checkMap[item.postsId]!!
                 holder.itemView.setOnClickListener {
                     when (item.type) {
                         "2" -> {
@@ -60,19 +80,6 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                                 .startARouter(ARouterCirclePath.LongPostAvtivity)
                         }
                     }
-                }
-                holder.slide.setOnClickListener {
-                    ConfirmTwoBtnPop(this@MyPostDraftUI)
-                        .apply {
-                            contentText.text = "是否确定删除？\n\n删除后将无法找回，请谨慎操作"
-                            btnConfirm.setOnClickListener {
-                                dismiss()
-                                viewModel.deletePost(item.postsId)
-                            }
-                            btnCancel.setOnClickListener {
-                                dismiss()
-                            }
-                        }.showPopupWindow()
                 }
             }
         }

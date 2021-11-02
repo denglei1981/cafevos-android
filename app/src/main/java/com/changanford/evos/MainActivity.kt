@@ -1,6 +1,8 @@
 package com.changanford.evos
 
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
@@ -13,7 +15,6 @@ import androidx.navigation.Navigation
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
-
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
@@ -22,23 +23,18 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
+import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.view.SpecialAnimaTab
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
-
-import android.net.ConnectivityManager
-
-import android.content.IntentFilter
-import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.evos.utils.NetworkStateReceiver
-import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -122,6 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
             showAppPrivacy(this) {
                 updateViewModel.getUpdateInfo()
+                viewModel.requestDownLogin()
             }
         } else {
             updateViewModel.getUpdateInfo()

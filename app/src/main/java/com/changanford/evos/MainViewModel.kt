@@ -4,11 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.User
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.utilext.logE
+import com.changanford.my.utils.downLoginBg
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -45,8 +43,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-
-
-
-
+    fun requestDownLogin() {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = java.util.HashMap<String, Any>()
+                body["configKey"] = "login_background"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.loginBg(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.video?.let {
+                    downLoginBg(it)
+                }
+            }.onFailure {
+            }
+        }
+    }
 }
