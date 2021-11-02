@@ -64,20 +64,21 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                                 }
                             }.showPopupWindow()
                     }
-                }
-                holder.itemView.setOnClickListener {
-                    when (item.type) {
-                        "2" -> {
-                            RouterManger.param("postEntity", item)
-                                .startARouter(ARouterCirclePath.PostActivity)
-                        }
-                        "3" -> {
-                            RouterManger.param("postEntity", item)
-                                .startARouter(ARouterCirclePath.VideoPostActivity)
-                        }
-                        "4" -> {
-                            RouterManger.param("postEntity", item)
-                                .startARouter(ARouterCirclePath.LongPostAvtivity)
+
+                    holder.llContent.setOnClickListener {
+                        when (item.type) {
+                            "2" -> {
+                                RouterManger.param("postEntity", item)
+                                    .startARouter(ARouterCirclePath.PostActivity)
+                            }
+                            "3" -> {
+                                RouterManger.param("postEntity", item)
+                                    .startARouter(ARouterCirclePath.VideoPostActivity)
+                            }
+                            "4" -> {
+                                RouterManger.param("postEntity", item)
+                                    .startARouter(ARouterCirclePath.LongPostAvtivity)
+                            }
                         }
                     }
                 }
