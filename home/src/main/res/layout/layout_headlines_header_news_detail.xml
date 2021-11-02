@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -133,7 +134,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:drawableEnd="@drawable/icon_home_small_next"
+                    android:drawableEnd="@drawable/home_right_blue"
                     android:gravity="center_vertical|start"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12"
@@ -172,6 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            tools:visibility="visible"
             android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -190,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/dp_14"
-                android:drawableEnd="@drawable/icon_home_small_next"
+                android:drawableEnd="@drawable/home_right_blue"
                 android:drawablePadding="4dp"
                 android:text="@string/home_more"
                 android:textColor="#ff74889d"

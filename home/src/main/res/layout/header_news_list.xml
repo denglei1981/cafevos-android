@@ -19,6 +19,7 @@
             android:text="专题"
             android:textColor="#ff0f1524"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,8 +27,7 @@
             android:id="@+id/tv_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/icon_home_small_next"
-            android:drawablePadding="4dp"
+            android:drawableEnd="@drawable/home_right_gray"
             android:text="@string/home_more"
             android:textColor="#ff999999"
             android:textSize="12sp"

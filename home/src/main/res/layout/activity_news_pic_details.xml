@@ -26,6 +26,7 @@
 
         <TextView
             android:id="@+id/tv_home_title"
+            style="@style/AppText.lineSpace.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_18"

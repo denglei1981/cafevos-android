@@ -51,6 +51,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/icon_home_play"
             android:layout_marginBottom="@dimen/dp_2"
+            style="@style/AppText.lineSpace"
             app:layout_constraintBottom_toBottomOf="@+id/iv_thumbs"
             app:layout_constraintEnd_toEndOf="@+id/iv_thumbs"
             app:layout_constraintStart_toStartOf="@+id/iv_thumbs"
