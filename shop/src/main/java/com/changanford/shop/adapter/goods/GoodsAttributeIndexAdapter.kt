@@ -1,7 +1,6 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -69,7 +68,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
 //                }
 //            }
 //        }
-        Log.e("okhttp","skuCodes:$skuCodes>>>skuCode:$skuCode>>>size:${newSkuVo?.size}>>newSkuVo:$newSkuVo")
+//        Log.e("okhttp","skuCodes:$skuCodes>>>skuCode:$skuCode>>>size:${newSkuVo?.size}>>newSkuVo:$newSkuVo")
         adapterMap.keys.forEach {
             if(pos!= it){
                 adapterMap[it]?.apply {
