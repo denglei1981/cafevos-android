@@ -198,7 +198,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             plateBean = it
            plateBean?.plate?.forEach {
                if (it.name == "社区"){
-                   buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,0,0))
+                   buttomTypeAdapter?.setData(0,ButtomTypeBean("",0,0))
                    buttomTypeAdapter?.setData(1,ButtomTypeBean(it.name,1,1))
                    platename = it.name
                    params["plate"] = it.plate
@@ -228,7 +228,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         viewModel.keywords.observe(this, Observer {
             buttomlabelAdapter.addData(it)
-            handleEditPost()
             if (locaPostEntity != null) {
                 if (locaPostEntity!!.keywords.isNotEmpty()) {
                     buttomlabelAdapter.data.forEach {
@@ -236,6 +235,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }
                     buttomlabelAdapter.notifyDataSetChanged()
                 }
+            }else{
+                handleEditPost()
             }
         })
 
@@ -349,9 +350,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
 
         binding.title.barImgBack.setOnClickListener {
+            var postsId = intent?.getStringExtra("postsId")
             if (binding.etBiaoti.text.toString().isEmpty()) {
                 finish()
             } else {
+                if (!postsId.isNullOrEmpty()){
+                    finish()
+                    return@setOnClickListener
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                     override fun con() {
 
@@ -849,7 +855,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         binding.etBiaoti.setText(locaPostEntity!!.title)
                         binding.etContent.setText(locaPostEntity!!.content)
                         params["plate"] = locaPostEntity!!.plate
-                        params["topicId"] = locaPostEntity!!.topicId
+                        params["topicId"] = locaPostEntity!!.topicId.toInt()
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
                         params["keywords"] = locaPostEntity!!.keywords

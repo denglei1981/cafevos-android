@@ -85,7 +85,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var postType: Int = 0
     private var h5postbean: H5PostTypeBean? = null
     private lateinit var jsonStr: String
-
     private lateinit var SelectlocalMedia: LocalMedia
     private val dialog by lazy {
         LoadDialog(this).apply {
@@ -207,7 +206,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             plateBean?.plate?.forEach {
                 if (it.name == "社区"){
                     buttomTypeAdapter?.setData(0,ButtomTypeBean("",0,0))
-                    buttomTypeAdapter?.setData(0,ButtomTypeBean(it.name,1,1))
+                    buttomTypeAdapter?.setData(1,ButtomTypeBean(it.name,1,1))
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
@@ -473,9 +472,14 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         binding.title.barImgBack.setOnClickListener {
+            var postsId = intent?.getStringExtra("postsId")
             if (binding.etBiaoti.text.toString().isEmpty()) {
                 finish()
             } else {
+                if (!postsId.isNullOrEmpty()){
+                    finish()
+                    return@setOnClickListener
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                     override fun con() {
 
@@ -985,7 +989,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         binding.etBiaoti.setText(locaPostEntity!!.title)
                         binding.etContent.setText(locaPostEntity!!.content)
                         params["plate"] = locaPostEntity!!.plate
-                        params["topicId"] = locaPostEntity!!.topicId
+                        params["topicId"] = locaPostEntity!!.topicId.toInt()
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
                         params["keywords"] = locaPostEntity!!.keywords
