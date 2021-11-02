@@ -44,6 +44,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="@dimen/dp_16"
             android:ellipsize="end"
+            style="@style/AppText.lineSpace"
             android:maxLines="2"
             tools:text="专题描述显示两排专题描述显示两排专题描显示两排专题描述显示两排"
             android:textColor="#ff999999"

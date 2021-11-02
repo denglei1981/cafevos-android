@@ -19,6 +19,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="#ff2d2d2d"
+            style="@style/AppText.lineSpace"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,13 +46,14 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
+            style="@style/AppText.lineSpace"
             android:textColor="#ff74889d"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/iv_pic"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content"
-            tools:text="#驭见美好之旅#" />
+            tools:text="#驭见美好之旅d收视率福建省福建省垃圾分类放暑假了房间里司法拘留是积分两件事法律纠纷 sjflj#" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_pic"
@@ -59,7 +61,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="18dp"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="335:150"
+            app:layout_constraintDimensionRatio="669:388"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_topic"
