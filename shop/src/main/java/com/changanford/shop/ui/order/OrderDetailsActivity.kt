@@ -1,6 +1,7 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -78,13 +79,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             imgRight.visibility=View.GONE
         }
         binding.inBottom.btnOrderConfirm.visibility=View.VISIBLE
+        binding.inOrderInfo.tvOther.visibility=View.VISIBLE
+        binding.inOrderInfo.tvOtherValue.visibility=View.VISIBLE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
             dataBean.orderStatusName= this
             when(this){
                 "待付款","待支付"->{
-                    //留言
-                    dataBean.otherName=getString(R.string.str_leaveMessage)
-                    dataBean.otherValue=dataBean.consumerMsg?:""
+                    binding.inOrderInfo.tvOther.visibility=View.GONE
+                    binding.inOrderInfo.tvOtherValue.visibility=View.GONE
                     binding.tvOrderPrompt.apply {
                         visibility= View.GONE
 //                        setText(R.string.prompt_orderUpdateAddress)
@@ -172,8 +174,14 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         binding.model=dataBean
         binding.inGoodsInfo1.model=dataBean
         binding.inOrderInfo.apply {
-            model=dataBean
+            //支付方式
             if("FB_PAY"!=dataBean.payType)tvPaymentValue.setText(R.string.str_other)
+            //留言
+            if(TextUtils.isEmpty(dataBean.consumerMsg)){
+                tvLeaveMessage.visibility=View.GONE
+                tvLeaveMessageValue.visibility=View.GONE
+            }
+            model=dataBean
         }
         binding.inGoodsInfo.apply {
             model=dataBean
