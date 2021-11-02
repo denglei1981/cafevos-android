@@ -34,6 +34,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         dataBinding.apply {
 //            val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
 //            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
+            //砍价订单
+            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
+                item.fbOfUnitPrice=item.hagglePrice!!
+            }
             imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
                 visibility = when(item.busSourse) {
@@ -51,7 +55,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             recyclerView.apply {
                 if(!TextUtils.isEmpty(item.specifications)){
                     visibility= View.VISIBLE
-                    layoutManager= FlowLayoutManager(context,false)
+                    layoutManager= FlowLayoutManager(context,false,true)
                     adapter= OrderGoodsAttributeAdapter().apply {
                         val specifications=item.specifications.split(",").filter { ""!=it }
                         setList(specifications)

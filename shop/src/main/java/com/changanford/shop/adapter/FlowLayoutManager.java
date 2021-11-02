@@ -24,8 +24,13 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
     private int mContentHeight;
     private int mOffset;
     private boolean mIsFullyLayout;
-
+    private boolean singleLine=false;//是否显示单行
+    private int fistH=0;
     public FlowLayoutManager(Context context, boolean isFullyLayout) {
+        mIsFullyLayout = isFullyLayout;
+    }
+    public FlowLayoutManager(Context context, boolean isFullyLayout,boolean singleLine) {
+        this.singleLine=singleLine;
         mIsFullyLayout = isFullyLayout;
     }
 
@@ -89,7 +94,6 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
     public void onAdapterChanged(RecyclerView.Adapter oldAdapter, RecyclerView.Adapter newAdapter) {
         removeAllViews();
     }
-
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
         super.onMeasure(recycler, state, widthSpec, heightSpec);
@@ -150,7 +154,9 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
             if (top + h >= maxTop) {
                 maxTop = top + h;
             }
-
+            if(fistH<1){
+                fistH=maxTop;
+            }
         }
 
         mContentHeight = maxTop - getPaddingTop();
@@ -171,7 +177,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
         }
 
         totalHeight = height - getPaddingTop() - getPaddingBottom();
-
-        setMeasuredDimension(widthSize, height);
+        Log.e("wenke","singleLine:"+singleLine+">>>fistH:"+fistH+">>>height:"+height);
+        setMeasuredDimension(widthSize, singleLine?fistH:height);
     }
 }

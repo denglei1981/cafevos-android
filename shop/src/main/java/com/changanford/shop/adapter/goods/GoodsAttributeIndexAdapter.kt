@@ -8,6 +8,7 @@ import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.OptionVo
 import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
 
 
@@ -30,6 +31,7 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
                         updateSkuCode(pos)
                     }
                 })
+                dataBinding.recyclerView.layoutManager=FlowLayoutManager(context,true)
                 dataBinding.recyclerView.adapter=mAdapter
                 mAdapter.setList(item.optionVos)
                 adapterMap[pos]=mAdapter
@@ -43,14 +45,37 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
     fun getSkuCodes():ArrayList<String>{
         return skuCodes
     }
+    /**
+     * ["227","75","95","99","106","108"]
+    * */
     @SuppressLint("NotifyDataSetChanged")
     fun updateSkuCode(pos:Int){
         skuCode=""
         skuCodes.forEach{ skuCode+="$it-" }
         skuCode=skuCode.substring(0,skuCode.length-1)
         skuCodeLiveData.postValue(skuCode)
+        var newSkuVo:List<SkuVo>?=skuVos
+
+        //筛选有效组合(能更当前点击选中的optionId搭配)
+        skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { it.skuCodeArr[pos]==this }}
+
+//        if(skuCodes.any { "0" == it }){
+//            for(i in 1 until skuCodes.size){
+//                skuCodes[i].apply {
+//                    if("0"!=this){
+//                        newSkuVo=newSkuVo?.filter { it.skuCodeArr[i]==this }
+//                    }
+//                }
+//            }
+//        }
+//        Log.e("okhttp","skuCodes:$skuCodes>>>skuCode:$skuCode>>>size:${newSkuVo?.size}>>newSkuVo:$newSkuVo")
         adapterMap.keys.forEach {
-            if(pos!=it)adapterMap[it]?.updateAdapter(skuCode)
+            if(pos!= it){
+                adapterMap[it]?.apply {
+                    skuVos=newSkuVo
+                    updateAdapter(skuCode)
+                }
+            }
         }
 
     }

@@ -39,6 +39,7 @@ object MConstant {
     }
     const val ISDEBUG = "isdebug"//SP保存测试环境
     const val isCanQeck = true //打线上包时只需要切换它为false
+    val isShowLog: Boolean by lazy { isDebug } //是否打印日志
 
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"
@@ -127,7 +128,7 @@ object MConstant {
     var H5_MINE_INTEGRAL = "${H5_BASE_URL_CSCIR}/taskExplain"
 
     //福币规则：/#/richTextAp?key=user_agreement_fuUb
-    var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/#/richTextAp?key=user_agreement_fuUb"
+    var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_fuUb"
 
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
@@ -135,11 +136,13 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
+
     /**
      * %s
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
-    val H5_SHOP_BARGAINING = "${H5_BASE_URL_CSCIR}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+    val H5_SHOP_BARGAINING =
+        "${H5_BASE_URL_CSCIR}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
 
-    var  isFirstOpenTwoLevel=true // 是首次打开二楼
+    var isFirstOpenTwoLevel = true // 是首次打开二楼
 }

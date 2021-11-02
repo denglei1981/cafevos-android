@@ -153,7 +153,6 @@ object GlideUtils {
     }
 
 
-
     /**
      * 普通加载
      */
@@ -252,6 +251,21 @@ object GlideUtils {
                         )
                 }
             }
+            .into(imageView)
+    }
+
+    fun loadGif(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        Glide
+            .with(imageView.context)
+            .asGif()
+            .error(errorDefaultRes)
+            .load(url)
+            .placeholder(R.drawable.image_recommed_default)
+            .fallback(errorDefaultRes)
             .into(imageView)
     }
 }

@@ -231,6 +231,7 @@ data class SkuVo(
     var skuTxt:String?="",
     var mallMallSkuSpuSeckillRangeId:String?="0",
     var orginPrice: String? = "0",//原价
+    var skuCodeArr:List<String> = listOf(),
 )
 
 data class OptionVo(
@@ -384,6 +385,7 @@ data class OrderItemBean(
     var totalIntegral:String?="0",
     var orderTypeName:String?="",
     var orginPrice:String?="0",
+    var hagglePrice:String?=null,//砍价的原价
 )
 data class OrderInfoBean(
     val orderNo:String,
@@ -427,6 +429,7 @@ data class OrderBriefBean(
     val snapshotOfAttrOption: String?="",
     var fbOfUnitPrice:String?="0",
     var orginPrice:String?="0",
+    var hagglePrice:String?=null,//砍价的原价
 )
 
 data class SnapshotOfAttrOption(

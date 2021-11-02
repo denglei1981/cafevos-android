@@ -351,7 +351,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             if (it.isSuccess) {
                 val appIndexBackground = it.data.app_index_background  // 背景广告
                 appIndexBackground.forEach { b -> // 背景。
+//                    val endsWithGif = b.adImg.endsWith(".gif")
                     GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+//                    if(endsWithGif){
+//                        GlideUtils.loadGif(b.adImg, binding.recommendContent.ivHome)
+//                    }else{
+//                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+//                    }
                 }
 
                 val appIndexTopic = it.data.app_index_topic

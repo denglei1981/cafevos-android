@@ -10,7 +10,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/dp_5">
+        android:paddingEnd="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5">
         <com.changanford.shop.view.TypefaceTextView
             android:background="@drawable/shadow_e8ebf3_12dp"
             android:paddingStart="@dimen/dp_10"

@@ -6,17 +6,26 @@
             name="model"
             type="com.changanford.common.bean.OptionVo" />
     </data>
-    <androidx.appcompat.widget.AppCompatRadioButton
-        android:layout_marginEnd="@dimen/dp_10"
-        android:id="@+id/radioButton"
-        android:text="@{model.optionName}"
-        android:gravity="center"
-        android:textSize="@dimen/sp_14"
-        android:button="@null"
-        android:background="@drawable/radiobutton_bt_goods"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="@dimen/dp_70"
-        android:minHeight="@dimen/dp_32"
-        style="@style/rb_goods0"/>
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/radioButton"
+            android:text="@{model.optionName}"
+            android:gravity="center"
+            android:textSize="@dimen/sp_14"
+            android:button="@null"
+            android:background="@drawable/radiobutton_bt_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_5"
+            android:minWidth="@dimen/dp_70"
+            android:minHeight="@dimen/dp_32"
+            style="@style/rb_goods0"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

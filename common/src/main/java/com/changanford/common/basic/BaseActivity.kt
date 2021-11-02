@@ -23,6 +23,8 @@ import android.app.ActivityManager.RunningAppProcessInfo
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.res.Configuration
+import android.util.DisplayMetrics
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -47,6 +49,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         setContentView(binding.root)
         initViewModel()
         curActivity = this
+        handleTextSize()
 //        makeStateBarTransparent(true)
         initView(savedInstanceState)
         initView()
@@ -55,7 +58,17 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initData()
         observe()
     }
-
+    private fun handleTextSize(){
+        // 加载系统默认设置，字体不随用户设置变化
+        var res = super.getResources()
+        var config = Configuration()
+        config.setToDefaults()
+        var metrics = DisplayMetrics()
+        var manager = curActivity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        manager.defaultDisplay.getRealMetrics(metrics)
+        metrics.scaledDensity = config.fontScale * metrics.density
+        res.updateConfiguration(config,metrics)
+    }
     override fun initView(savedInstanceState: Bundle?) {
 
     }
