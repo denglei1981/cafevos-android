@@ -31,6 +31,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/message_status"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_8"
+            android:background="@drawable/message_have_bg"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/dp_5"
+            app:layout_constraintLeft_toRightOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <ImageView
             android:id="@+id/imageView6"

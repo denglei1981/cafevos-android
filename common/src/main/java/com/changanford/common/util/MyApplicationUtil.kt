@@ -153,7 +153,7 @@ object MyApplicationUtil {
          */
         var notification = BasicCustomPushNotification();
         notification.remindType = BasicCustomPushNotification.REMIND_TYPE_SOUND;//设置提醒方式为声音
-        notification.statusBarDrawable = R.mipmap.ic_launcher;//设置状态栏图标
+        notification.statusBarDrawable = R.mipmap.fordicon;//设置状态栏图标
         var res = CustomNotificationBuilder.getInstance()
             .setCustomNotification(1, notification);//注册该通知,并设置ID为1
 

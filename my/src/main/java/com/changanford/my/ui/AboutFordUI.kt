@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
@@ -8,6 +9,7 @@ import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiAboutBinding
@@ -63,9 +65,22 @@ class AboutFordUI : BaseMineUI<UiAboutBinding, EmptyViewModel>() {
                 "没有更新".toast()
             }
         }
+        if (MConstant.newApk) {
+            binding.include.messageStatus.isVisible = true
+        }
     }
+    private lateinit var updateViewModel: UpdateViewModel
 
     override fun initData() {
+        updateViewModel = createViewModel(UpdateViewModel::class.java)
+        updateViewModel._updateInfo.observe(this, { info ->
+            info?.downloadUrl?.let {
+                binding.include.messageStatus.isVisible = true
+                MConstant.newApk = true
+                MConstant.newApkUrl = it
+            }
+        })
+        updateViewModel.getUpdateInfo()
     }
 
 }
