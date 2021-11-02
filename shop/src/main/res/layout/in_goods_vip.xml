@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -14,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dp_16"
-        android:background="@drawable/bord_01025c_2dp">
+        android:background="@drawable/bord_01025c_2dp"
+        android:gravity="center_vertical">
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_vipTypeName"
             android:background="@drawable/shadow_01025c_l_2dp"
@@ -27,10 +27,13 @@
             android:textSize="@dimen/sp_11" />
 
         <com.changanford.shop.view.TypefaceTextView
+            android:gravity="center"
             android:id="@+id/tv_vipIntegral"
             android:textStyle="bold"
-            android:paddingStart="@dimen/dp_5"
+            android:paddingStart="@dimen/dp_3"
             android:paddingEnd="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model.vipFb}"
