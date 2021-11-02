@@ -6,6 +6,8 @@
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
+
+        <import type="android.view.View"/>
     </data>
     <LinearLayout
         android:id="@+id/layout_vip"
@@ -48,6 +50,7 @@
             android:layout_height="wrap_content"
             app:text_flags="0x10"
             tools:text="1600"
+            android:visibility="@{model.getLineFbEmpty?View.GONE:View.VISIBLE}"
             android:text="@{model.fbLine}"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_12" />

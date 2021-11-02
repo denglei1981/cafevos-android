@@ -75,9 +75,8 @@ kapt {
         arg("AROUTER_MODULE_NAME", project.getName())
     }
 }
-
+def versions_glide = "4.12.0"
 dependencies {
-
     api(project(":base"))
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':picture_library')
@@ -211,5 +210,9 @@ dependencies {
 
     //lottie 动画
     api 'com.airbnb.android:lottie:4.0.0'
+
+    api "com.github.bumptech.glide:glide:$versions_glide"
+    api "jp.wasabeef:glide-transformations:4.3.0"
+    kapt "com.github.bumptech.glide:compiler:$versions_glide"
 
 }

@@ -2,6 +2,7 @@ package com.changanford.common.utilext
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.support.rastermill.FrameSequenceDrawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import com.changanford.common.util.gif.GlideApp
 
 
 /**********************************************************************************
@@ -257,15 +259,23 @@ object GlideUtils {
     fun loadGif(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+        @DrawableRes errorDefaultRes: Int = R.drawable.image_recommed_default
     ) {
         Glide
             .with(imageView.context)
             .asGif()
             .error(errorDefaultRes)
-            .load(url)
+            .load(defaultHandleImageUrl(url))
             .placeholder(R.drawable.image_recommed_default)
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
             .fallback(errorDefaultRes)
             .into(imageView)
+//        GlideApp.with(imageView.context)
+//            .asGif2()
+//            .placeholder(errorDefaultRes)
+//            .error(errorDefaultRes)
+//            .load(defaultHandleImageUrl(url))
+//            .diskCacheStrategy(DiskCacheStrategy.DATA)
+//            .into(imageView)
     }
 }

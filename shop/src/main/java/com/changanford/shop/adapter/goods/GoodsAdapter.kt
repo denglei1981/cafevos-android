@@ -20,7 +20,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
             dataBinding.imgGoodsCover.load(imgPath)
-            dataBinding.tvOrIntegral.visibility=if(item.lineFb==null) View.GONE else View.VISIBLE
+            dataBinding.tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
             dataBinding.inVip.model=item
             dataBinding.tvIntegral.visibility=View.VISIBLE
             setTagType(item,dataBinding)

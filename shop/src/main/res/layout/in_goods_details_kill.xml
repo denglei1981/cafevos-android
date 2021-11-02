@@ -6,6 +6,7 @@
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
+        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_kill"
@@ -43,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1600"
+            android:visibility="@{model.getLineFbEmpty?View.GONE:View.VISIBLE}"
             android:text="@{model.fbLine}"
             app:text_flags="0x10"
             android:textColor="@color/color_F9E4E6"

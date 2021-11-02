@@ -4,7 +4,7 @@ data class TwoAdData(
     val app_index_topic: MutableList<AdBean>,
     val app_index_ads: MutableList<AdBean>,
     val app_index_banner: MutableList<AdBean>,
-    val app_index_background: MutableList<AdBean>
+    val app_index_background: MutableList<AdBean>?
 )
 
 data class AdBean(
@@ -29,4 +29,9 @@ data class AdBean(
     var tagIds: Any,
     var tagNames: Any,
     var videoTime: Any
-)
+) {
+    fun getImg(): String {
+        val split = adImg.split(",")
+        return split[0];
+    }
+}

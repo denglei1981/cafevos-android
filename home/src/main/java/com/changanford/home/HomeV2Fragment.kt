@@ -219,7 +219,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             binding.classics.animate().alpha(0f).duration = 2000L
             true
         }
-        binding.homeViewpager.offscreenPageLimit=1
+        binding.homeViewpager.offscreenPageLimit = 1
     }
 
     fun toSearch() {
@@ -351,9 +351,18 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         viewModel.twoBannerLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 val appIndexBackground = it.data.app_index_background  // 背景广告
-                appIndexBackground.forEach { b -> // 背景。
+                binding.recommendContent.ivHome.setOnClickListener {
+                    if(appIndexBackground!=null&&appIndexBackground.size>0){
+                        val adBean = appIndexBackground[0]
+                        JumpUtils.instans!!.jump(adBean.jumpDataType,adBean.jumpDataValue)
+                    }
+                }
+
+                appIndexBackground?.forEach { b -> // 背景。
 //                    val endsWithGif = b.adImg.endsWith(".gif")
-                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+//                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+                    GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
+
 //                    if(endsWithGif){
 //                        GlideUtils.loadGif(b.adImg, binding.recommendContent.ivHome)
 //                    }else{
@@ -400,12 +409,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
     }
+
     fun openTwoLevel() { // 主动打开二楼。。。
         if (MConstant.isFirstOpenTwoLevel) {
             binding.header.openTwoLevel(true)
             MConstant.isFirstOpenTwoLevel = false
         }
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         when (currentPosition) {
             0 -> {

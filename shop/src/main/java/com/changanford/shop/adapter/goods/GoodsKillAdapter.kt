@@ -34,7 +34,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             val spuImg=item.spuImgs
             val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
             dataBinding.imgCover.load(imgPath)
-            dataBinding.tvOrIntegral.visibility=if(null!=item.lineFb) View.VISIBLE else View.GONE
+            dataBinding.tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
 //            val seckillNumLimit=item.seckillNumLimit?:"0"
 //            dataBinding.tvSeckillNumLimit.visibility=if("0"!=seckillNumLimit)View.VISIBLE else View.INVISIBLE
             when (position) {

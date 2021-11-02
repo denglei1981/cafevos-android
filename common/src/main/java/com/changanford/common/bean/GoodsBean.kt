@@ -1,11 +1,14 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
+
 /**
  * @Author : wenke
  * @Time : 2021/9/28
  * @Description : 商城
  */
 class Extend
+
 //商品分类
 class GoodsClassification : ArrayList<GoodsTypesItemBean>()
 
@@ -13,6 +16,7 @@ data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
 )
+
 data class GoodsList(
     val dataList: List<GoodsItemBean> = listOf(),
     val pageNo: Int = 0,
@@ -74,7 +78,7 @@ data class GoodsItemBean(
     val limitIdentity: String? = null,
     val limitPhone: String? = null,
     val limitSeckill: String? = null,
-    val lineFb: String? = null,
+    val lineFb: String = "",
     val mallMallBrandId: Int = 0,
     val mallMallCategoryId: Int = 0,
     val mallMallSpuId: String = "0",
@@ -98,9 +102,9 @@ data class GoodsItemBean(
     val stock: Int = 0,
     val updateBy: Any? = null,
     val updateTime: Long = 0,
-    val vipFb: String ="0",
-    var stockProportion:String="0",//库存百分比 0-100
-    var killStates:Int=0,//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
+    val vipFb: String = "0",
+    var stockProportion: String = "0",//库存百分比 0-100
+    var killStates: Int = 0,//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
     val beginTime: Long = 0,
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
@@ -112,10 +116,22 @@ data class GoodsItemBean(
     var seckillStatuTxt: String = "",
     var seckillStock: Int? = 0,
     var sekillCount: Int = 0,
-    var totalStock:Int=1,
-    var secondarySpuPageTagType:String?="",
-)
+    var totalStock: Int = 1,
+    var secondarySpuPageTagType: String? = "",
+) {
+    fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
+        if (TextUtils.isEmpty(lineFb)) {
+            return true
+        }
+        if (lineFb.toInt() == 0) {
+            return true
+        }
+        return false
+    }
+}
+
 class Params
+
 // 秒杀时段
 data class SeckillSessionsBean(
     val now: Long? = null,
@@ -127,31 +143,32 @@ data class SeckillSession(
     val seckillTimeRanges: ArrayList<SeckillTimeRange> = ArrayList(),
     val sessionId: Int = 0,
     val sessionName: String = "",
-    var dateFormat: Int=0,
-    var index:Int=0,
+    var dateFormat: Int = 0,
+    var index: Int = 0,
 )
 
 data class SeckillTimeRange(
     val timeBegin: Long = 0,
     val timeEnd: Long = 0,
     val timeRangeId: String = "0",
-    var time:String?="",
-    var states:Int=0,//状态 0 已结束  1 进行中  2未开始
-    var statesTxt:String="已结束",
-    var index:Int=0,
+    var time: String? = "",
+    var states: Int = 0,//状态 0 已结束  1 进行中  2未开始
+    var statesTxt: String = "已结束",
+    var index: Int = 0,
 )
 
 
 /**
  * 商城首页商品列表
-* */
+ * */
 data class GoodsHomeBean(
     val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
     val responsePageBean: GoodsList? = null,
 )
+
 /**
  * 商品详情
-* */
+ * */
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
@@ -165,40 +182,50 @@ data class GoodsDetailBean(
     val now: Long = 0,
     var purchasedNum: Int? = 0,
     var salesCount: Int = 0,
-    var totalStock:Int?=0,//总库存
+    var totalStock: Int? = 0,//总库存
     val secKillInfo: SecKillInfo? = null,
     val secondName: String = "",
-    val shareBeanVO: TaskShareBean?=null,
+    val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",
     var skuVos: ArrayList<SkuVo> = ArrayList(),
     val spuPageType: String = "",
     var stock: Int = 0,
-    val mallOrderEval:CommentItem?=null,
-    var stockProportion:String="0",//库存百分比 0-100
-    val spuName:String?="",
-    val spuId:String="",
-    var skuId: String="",
-    var buyNum:Int=1,//购买数量
-    var skuCodeTxts:List<String>?= listOf(),
-    var acountFb:Int=0,//账号积分
-    val param:String?="",
-    var totalPayFb:String="",//总支付积分
-    var freightPrice:String?="0.00",//运费 0为包邮
-    val collect:String="",//是否收藏 YES NO
-    var addressId:Int?=0,
-    var preferentialFb:String?="",//会员优惠
-    var skuCode:String?="",
-    var specifications:String?="",
-    var addressInfo:String?=null,
-    var skuImg:String?=null,
-    var mallMallSkuSpuSeckillRangeId:String?=null,
+    val mallOrderEval: CommentItem? = null,
+    var stockProportion: String = "0",//库存百分比 0-100
+    val spuName: String? = "",
+    val spuId: String = "",
+    var skuId: String = "",
+    var buyNum: Int = 1,//购买数量
+    var skuCodeTxts: List<String>? = listOf(),
+    var acountFb: Int = 0,//账号积分
+    val param: String? = "",
+    var totalPayFb: String = "",//总支付积分
+    var freightPrice: String? = "0.00",//运费 0为包邮
+    val collect: String = "",//是否收藏 YES NO
+    var addressId: Int? = 0,
+    var preferentialFb: String? = "",//会员优惠
+    var skuCode: String? = "",
+    var specifications: String? = "",
+    var addressInfo: String? = null,
+    var skuImg: String? = null,
+    var mallMallSkuSpuSeckillRangeId: String? = null,
     val mallMallHaggleUserGoodsId: String? = null,
-    var source:String?="0",
-    var evalCount:String?="0",
-    var isAgree:Boolean=false,//是否同意协议
-    var killStates:Int=0,//秒杀状态
-    var secondarySpuPageTagType:String?="",
-)
+    var source: String? = "0",
+    var evalCount: String? = "0",
+    var isAgree: Boolean = false,//是否同意协议
+    var killStates: Int = 0,//秒杀状态
+    var secondarySpuPageTagType: String? = "",
+){
+    fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
+        if (TextUtils.isEmpty(fbLine)) {
+            return true
+        }
+        if (fbLine?.toInt() == 0) {
+            return true
+        }
+        return false
+    }
+}
 
 data class Attribute(
     val attributeId: Int = 0,
@@ -208,7 +235,7 @@ data class Attribute(
 
 data class SecKillInfo(
     val timeBegin: Long = 0,
-    val timeEnd: Long =0
+    val timeEnd: Long = 0
 )
 
 data class ShareBeanVO(
@@ -228,23 +255,24 @@ data class SkuVo(
     val skuId: String = "0",
     val skuImg: String = "",
     val stock: String = "0",
-    var skuTxt:String?="",
-    var mallMallSkuSpuSeckillRangeId:String?="0",
+    var skuTxt: String? = "",
+    var mallMallSkuSpuSeckillRangeId: String? = "0",
     var orginPrice: String? = "0",//原价
-    var skuCodeArr:List<String> = listOf(),
+    var skuCodeArr: List<String> = listOf(),
 )
 
 data class OptionVo(
     val optionId: String = "0",
     val optionName: String = ""
 )
+
 /**
  * 评价
-* */
+ * */
 data class CommentBean(
     val pageList: PageList?,
     val totalEvalNum: Int = 0,
-    val totalEvalScore: Float =0f
+    val totalEvalScore: Float = 0f
 )
 
 data class PageList(
@@ -285,31 +313,34 @@ data class CommentItem(
     val updateTime: String = "",
     val userId: Int = 0
 )
+
 /**
  * 商品首页
-* */
+ * */
 data class ShopHomeBean(
     val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
     val mallIndexDto: MallIndexDto = MallIndexDto()
 )
+
 class MallIndexDto
+
 /**
  * 订单列表
-* */
+ * */
 data class ShopOrderBean(
     val dataList: List<OrderItemBean> = listOf(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
     val totalPage: Int = 0,
-    var nowTime:Long?=0,
+    var nowTime: Long? = 0,
 )
 
 data class OrderItemBean(
     var addressId: Int = 0,
     var addressInfo: String = "",
     val addressName: String = "",
-    var buyNum: String ="0",
+    var buyNum: String = "0",
     val consignee: String = "",
     val consumerMsg: String? = "",
     val courierCompany: String = "",
@@ -322,14 +353,14 @@ data class OrderItemBean(
     val evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: String = "0",
-    var fbOfUnitPrice: String ="0",
+    var fbOfUnitPrice: String = "0",
     val haggleOrder: String = "",//是否砍价订单
     val mallMallDiscountScaleId: String = "0",
     val mallMallHaggleActivityId: String = "0",
     val mallMallHaggleSkuId: String = "0",
     val mallMallHaggleSpuId: String = "0",
     val mallMallHaggleUserGoodsId: String = "0",
-    val mallMallOrderId: String ="0",
+    val mallMallOrderId: String = "0",
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
@@ -360,9 +391,9 @@ data class OrderItemBean(
     val updateBy: String = "",
     val updateTime: Long? = 0,
     val userId: Int = 0,
-    val cost:String?="0",
-    var waitPayCountDown:Long?=0,
-    var acountFb:String="0",
+    val cost: String? = "0",
+    var waitPayCountDown: Long? = 0,
+    var acountFb: String = "0",
     var busSourse: String = "0",
     val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
@@ -371,28 +402,30 @@ data class OrderItemBean(
     var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
-    var orderType:Int=0,
+    var orderType: Int = 0,
     val jumpDataType: Int = 0,
     val jumpDataValue: String = "",
     val orderBrief: String = "",
     val orderImg: String = "",
     var orderStatusName: String? = "",
     val skuName: String = "",
-    var logisticsInfo:String?="",//物流信息
-    var freightPrice:String?="0.00",//运费 0为包邮
-    var otherName:String?="",
-    var otherValue:String?="",
-    var totalIntegral:String?="0",
-    var orderTypeName:String?="",
-    var orginPrice:String?="0",
-    var hagglePrice:String?=null,//砍价的原价
+    var logisticsInfo: String? = "",//物流信息
+    var freightPrice: String? = "0.00",//运费 0为包邮
+    var otherName: String? = "",
+    var otherValue: String? = "",
+    var totalIntegral: String? = "0",
+    var orderTypeName: String? = "",
+    var orginPrice: String? = "0",
+    var hagglePrice: String? = null,//砍价的原价
 )
+
 data class OrderInfoBean(
-    val orderNo:String,
-    val cost:String?="0",
-    var accountFb:String?="",
-    var source:String?="0",//1商品详情（原生）
+    val orderNo: String,
+    val cost: String? = "0",
+    var accountFb: String? = "",
+    var source: String? = "0",//1商品详情（原生）
 )
+
 data class ShopAddressInfoBean(
     val addressId: Int = 0,
     val addressName: String = "",
@@ -408,8 +441,8 @@ data class ShopAddressInfoBean(
     val provinceName: String = "",
     val status: Int = 0,
     val userId: Int = 0,
-    var userInfo:String?="$consignee   $phone",
-    var addressInfo: String?="$provinceName$cityName$districtName$addressName"
+    var userInfo: String? = "$consignee   $phone",
+    var addressInfo: String? = "$provinceName$cityName$districtName$addressName"
 )
 
 data class AddressValueObj(
@@ -421,15 +454,16 @@ data class AddressValueObj(
     val province: Int = 0,
     val provinceName: String = ""
 )
+
 data class OrderBriefBean(
     val busSourse: String = "0",
-    val buyNum: String ="0",
+    val buyNum: String = "0",
     val fbCost: String = "0",
     val payType: String = "",
-    val snapshotOfAttrOption: String?="",
-    var fbOfUnitPrice:String?="0",
-    var orginPrice:String?="0",
-    var hagglePrice:String?=null,//砍价的原价
+    val snapshotOfAttrOption: String? = "",
+    var fbOfUnitPrice: String? = "0",
+    var orginPrice: String? = "0",
+    var hagglePrice: String? = null,//砍价的原价
 )
 
 data class SnapshotOfAttrOption(
@@ -437,9 +471,10 @@ data class SnapshotOfAttrOption(
     val mallMallOptionId: String = "0",
     val optionName: String = ""
 )
+
 class OrderTypesBean : ArrayList<OrderTypeItemBean>()
 data class OrderTypeItemBean(
-    val jumpDataType: Int=0,
-    val jumpDataValue: String?="",
-    val typeName: String?="",
+    val jumpDataType: Int = 0,
+    val jumpDataValue: String? = "",
+    val typeName: String? = "",
 )
