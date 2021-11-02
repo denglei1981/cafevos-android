@@ -22,6 +22,7 @@ import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     lateinit var menuBean: ArrayList<MenuBeanItem>
@@ -190,10 +191,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 textView9.text = userInfoBean?.ext?.growSeriesName
                 textView11.text =
                     "${userInfoBean?.ext?.totalGrowth}/${userInfoBean?.ext?.nextSeriesMinGrow}"
-                myScorelevel.setProgressWithAnimation(
-                    ((userInfoBean?.ext?.totalGrowth
-                        ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toFloat()
-                )
+//                myScorelevel.setProgressWithAnimation(
+//                    ((userInfoBean?.ext?.totalGrowth
+//                        ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toFloat()
+//                )
+                myScorelevel.progress = ((userInfoBean?.ext?.totalGrowth
+                    ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toInt()
             }
         }
         binding.myIconRv.isVisible = false

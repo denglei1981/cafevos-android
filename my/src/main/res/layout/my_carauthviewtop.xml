@@ -43,14 +43,20 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
-    <com.changanford.common.ui.HorizontalProgressBar
+    <ProgressBar
         android:id="@+id/my_scorelevel"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_5"
+        android:layout_height="@dimen/dp_6"
         android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        tools:progress="10"
+        android:progress="0"
+        android:progressDrawable="@drawable/progressbar_bg"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/textView11"
@@ -65,8 +71,8 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/dp_10"
-        android:background="@color/linebg"
         android:layout_marginBottom="@dimen/dp_10"
+        android:background="@color/linebg"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@id/textView11" />
