@@ -24,7 +24,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 /**
  *  推荐列表
  * */
-class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
+open class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
     OnLoadMoreListener {
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)

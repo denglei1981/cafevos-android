@@ -189,9 +189,9 @@ class ActsMainAdapter(
      * */
     fun getEnum(binding: HomeActsBottomBinding, className: String) {
         lifecycleOwner.launchWithCatch {
-            var body = HashMap<String, Any>()
+            val body = HashMap<String, Any>()
             body["className"] = className
-            var rkey = getRandomKey()
+            val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getEnum(body.header(rkey), body.body(rkey))
                 .onSuccess {

@@ -48,11 +48,15 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getBanner()
+    }
+
     override fun observe() {
         super.observe()
         viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess) {
-//                binding.refreshLayout.finishRefresh()
                 (parentFragment as HomeV2Fragment).stopRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
             } else {
@@ -60,11 +64,6 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
             }
         })
     }
-
-//    override fun onRefresh(refreshLayout: RefreshLayout) {
-//        viewModel.getBanner()
-//        adapter.actsChildFragment.getActList(false,adapter.allUnitCode,adapter.allActsCode)
-//    }
 
     fun homeRefersh() {
         viewModel.getBanner()
