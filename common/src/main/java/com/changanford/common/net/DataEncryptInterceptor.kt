@@ -6,6 +6,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.longE
@@ -80,10 +81,12 @@ class DataEncryptInterceptor : Interceptor {
                     activity.finish()
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
+                    AppUtils.Unbinduserid()
                     RouterManger.param("isClear", true).startARouter(ARouterMyPath.SignUI)
                     try {
                         var isfirstin =
                             SPUtils.getParam(MyApp.mContext, "isfirstin", false) as Boolean
+                        var isDebug = SPUtils.getParam(BaseApplication.INSTANT, MConstant.ISDEBUG, true) as Boolean
                         var isPopAgreement =
                             SPUtils.getParam(
                                 MyApp.mContext,
@@ -93,6 +96,7 @@ class DataEncryptInterceptor : Interceptor {
                         var pushId = SPUtils.getParam(MyApp.mContext,MConstant.PUSH_ID,"11111") as String
                         SPUtils.clear(MyApp.mContext)
                         SPUtils.setParam(MyApp.mContext, MConstant.PUSH_ID, pushId)
+                        SPUtils.setParam(MyApp.mContext, MConstant.ISDEBUG, isDebug)
                         SPUtils.setParam(MyApp.mContext, "isfirstin", isfirstin)
                         SPUtils.setParam(MyApp.mContext, "isPopAgreement", isPopAgreement)
 

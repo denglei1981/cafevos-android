@@ -56,7 +56,7 @@ class SplashViewModel : ViewModel() {
                 apiService.getKey("".body())
             }.onSuccess {
                 if (it != null) {
-                    if (MConstant.pubKey.isNullOrEmpty()) {
+                    if (MConstant.pubKey.isNotEmpty()) {
                         key.postValue(it)
                     }
                     MConstant.pubKey = it
@@ -87,7 +87,7 @@ class SplashViewModel : ViewModel() {
             }
             if (request.code == 0) {//处理成功和失败
                 var config = request.data
-                if (config != null && !config.imgCdn.isNullOrEmpty()) {
+                if (config?.imgCdn?.isNotEmpty()==true) {
                     Db.myDb.saveData("imgCdn", config.imgCdn)
                     MConstant.imgcdn = config.imgCdn
                 }
