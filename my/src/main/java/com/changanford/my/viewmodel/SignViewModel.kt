@@ -15,9 +15,13 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.interf.UploadPicCallback
+import com.changanford.my.utils.downLoginBg
+import com.changanford.my.utils.getDiskCacheDir
+import com.changanford.my.utils.getDiskCachePath
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -1101,6 +1105,38 @@ class SignViewModel : ViewModel() {
      */
     fun getBindMobileJumpDataType(): Boolean {
         return MineUtils.getBindMobileJumpDataType()
+    }
+
+    var loginBgPath: MutableLiveData<String> = MutableLiveData()
+
+    fun downLoginBgUrl() {
+        if (MConstant.isDownLoginBgSuccess) {
+            loginBgPath.postValue("${
+                getDiskCachePath(BaseApplication.INSTANT)?.let {
+                    getDiskCacheDir(
+                        it,
+                        "loginBg.mp4"
+                    )
+                }
+            }")
+        } else {
+            viewModelScope.launch {
+                fetchRequest {
+                    var body = java.util.HashMap<String, Any>()
+                    body["configKey"] = "login_background"
+                    body["obj"] = true
+                    var rkey = getRandomKey()
+                    apiService.loginBg(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    it?.video?.let {
+                        loginBgPath.postValue(GlideUtils.handleImgUrl(it))
+                        downLoginBg(it)
+                    }
+                }.onFailure {
+//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
+                }
+            }
+        }
     }
 
     /**

@@ -83,6 +83,7 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
                         }
                     }
                 }
+                MConstant.isDownLoginBgSuccess = false
             }
         }
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)

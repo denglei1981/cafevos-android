@@ -18,7 +18,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
@@ -201,6 +201,12 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     }
                 }
             })
+
+        viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                play(it)
+            }
+        })
     }
 
     /**
@@ -212,25 +218,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
 
     override fun initData() {
-        //images/video/aa5d58f5ea473c2be60299a27fe5bb2a.mp4
-        lifecycleScope.launch {
-            fetchRequest {
-                var body = HashMap<String, Any>()
-                body["configKey"] = "login_background"
-                body["obj"] = "true"
-                var rkey = getRandomKey()
-                apiService.loginBg(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                it?.video?.let {
-                    play(it)
-                }
-            }.onFailure {
-//                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
-            }
-        }
+        viewModel.downLoginBgUrl()
     }
 
     fun play(videoUrl: String) {
+        "${videoUrl}".logE()
         binding.loginVideo.visibility = View.VISIBLE
         binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
@@ -253,7 +245,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             player.setDisplay(binding.loginVideo.holder)
             player.start()
         }
-        player.setDataSource(GlideUtils.handleImgUrl(videoUrl))
+        player.setDataSource(videoUrl)
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
         player.isLooping = true

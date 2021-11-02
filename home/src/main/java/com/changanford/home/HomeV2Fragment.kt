@@ -219,6 +219,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             binding.classics.animate().alpha(0f).duration = 2000L
             true
         }
+        binding.homeViewpager.offscreenPageLimit=1
     }
 
     fun toSearch() {

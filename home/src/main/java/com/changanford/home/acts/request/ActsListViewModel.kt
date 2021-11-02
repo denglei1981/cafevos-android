@@ -144,8 +144,8 @@ class ActsListViewModel : BaseViewModel() {
     val bannerLiveData = MutableLiveData<UpdateUiState<List<CircleHeadBean>>>() //
     fun getBanner() {
         launch(false, {
-            var body = HashMap<String, Any>()
-            var rkey = getRandomKey()
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
             body["posCode"] = "activiity_list_topad"
             ApiClient.createApi<HomeNetWork>()
                 .adsLists(body.header(rkey), body.body(rkey))
@@ -154,7 +154,9 @@ class ActsListViewModel : BaseViewModel() {
                     bannerLiveData.postValue(updateUiState)
 
                 }.onWithMsgFailure {
-
+                    if (it != null) {
+                        toastShow(it)
+                    }
                 }.onFailure {
 //                    val updateUiState = UpdateUiState<String>(false, it)
 //                    bannerLiveData.postValue(updateUiState)
