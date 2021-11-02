@@ -452,9 +452,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private fun onclick() {
 
         binding.title.barImgBack.setOnClickListener {
+            var postsId = intent?.getStringExtra("postsId")
             if (headBinding.etBiaoti.text.toString().isEmpty()) {
                 finish()
             } else {
+                if (!postsId.isNullOrEmpty()){
+                    finish()
+                    return@setOnClickListener
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                     override fun con() {
 
@@ -1046,7 +1051,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         headBinding.etContent.setText(locaPostEntity!!.content)
                         params["plate"] = locaPostEntity!!.plate
                         platename = locaPostEntity!!.plateName
-                        params["topicId"] = locaPostEntity!!.topicId?:""
+                        params["topicId"] = locaPostEntity!!.topicId.toInt()
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
                         params["keywords"] = locaPostEntity!!.keywords
@@ -1066,10 +1071,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         params["city"] = locaPostEntity!!.city
                         if (params["plate"] != 0) {
                             buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                            buttomTypeAdapter.setData(
-                                1,
-                                ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
-                            )
+                            buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
                         }
                         if (locaPostEntity!!.topicName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(

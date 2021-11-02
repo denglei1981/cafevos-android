@@ -51,6 +51,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/icon_home_play"
             android:layout_marginBottom="@dimen/dp_2"
+
             app:layout_constraintBottom_toBottomOf="@+id/iv_thumbs"
             app:layout_constraintEnd_toEndOf="@+id/iv_thumbs"
             app:layout_constraintStart_toStartOf="@+id/iv_thumbs"
@@ -64,6 +65,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:ellipsize="end"
+            style="@style/AppText.lineSpace"
             android:maxLines="2"
             android:text="以后人工智能会代替人类吗"
             android:textColor="#fffefefe"
