@@ -35,9 +35,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:clipToPadding="false"
-
                         android:orientation="horizontal"
-                        android:paddingBottom="10dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_big_shot_state" />
 
