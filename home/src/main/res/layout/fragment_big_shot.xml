@@ -26,22 +26,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="vertical">
 
                     <com.changanford.home.widget.RecyclerViewAtViewPager2
                         android:id="@+id/recycler_view_h"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
-                        android:padding="10dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_big_shot_state" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_12"
+                        android:layout_marginTop="30dp"
                         android:background="@color/color_f6" />
 
                     <androidx.recyclerview.widget.RecyclerView

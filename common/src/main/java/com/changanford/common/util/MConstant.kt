@@ -39,7 +39,7 @@ object MConstant {
     }
     const val ISDEBUG = "isdebug"//SP保存测试环境
     const val isCanQeck = true //打线上包时只需要切换它为false
-    val isShowLog: Boolean by lazy { isDebug } //是否打印日志
+    val isShowLog: Boolean = isCanQeck //是否打印日志
 
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
     const val APP_MD5_KEY = "J5i6UkJi8voBEEyE1g5q"

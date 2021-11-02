@@ -9,7 +9,6 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDexApplication
 import com.alibaba.sdk.android.push.CommonCallback
 import com.alibaba.sdk.android.push.huawei.HuaWeiRegister
@@ -61,7 +60,7 @@ object MyApplicationUtil {
         val strategy = CrashReport.UserStrategy(context)
         strategy.isUploadProcess = processName == null || processName == packageName
 //         初始化Bugly
-        var versionName = "${BuildConfig.VERSION_NAME}"
+        var versionName = DeviceUtils.getversionName()
         if (MConstant.isDebug) {
             versionName += ":Test"
         }

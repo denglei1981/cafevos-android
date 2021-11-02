@@ -54,28 +54,17 @@ dependencies {
 
     implementation(project(":common"))
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
-//    implementation  'com.androidkun:XTabLayout:1.1.5'
-    // room 数据库。
-//    api"android.arch.persistence.room:runtime:$rootProject.room_version"
-//    kapt"android.arch.persistence.room:compiler:$rootProject.room_version"
-    //查看数据库的插件。
-//    debugImplementation 'com.idescout.sql:sqlscout-server:4.1'
-//    releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
-//    kapt deps.room.compiler
-
-
-//    implementation "androidx.room:room-runtime:2.3.0"
-//    annotationProcessor "androidx.room:room-compiler:2.3.0"
     api "androidx.room:room-runtime:2.3.0"
     api "androidx.room:room-ktx:2.3.0"
     kapt("androidx.room:room-compiler:2.3.0")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    // 加载状态框架
-//    implementation 'com.kingja.loadsir:loadsir:1.3.8'
 
 
-    //lottie 动画
-//    implementation 'com.airbnb.android:lottie:4.0.0'
+
+
+
+
+
 }

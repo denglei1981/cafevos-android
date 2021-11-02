@@ -1,9 +1,13 @@
 package com.changanford.common.basic
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -57,6 +61,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
             initViewModel()
             rootView = binding.root
         }
+        handleTextSize()
         return rootView
     }
 
@@ -72,6 +77,18 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment(), Base
             observe()
             isNavigationViewInit = true
         }
+    }
+
+    private fun handleTextSize(){
+        // 加载系统默认设置，字体不随用户设置变化
+        var res = super.getResources()
+        var config = Configuration()
+        config.setToDefaults()
+        var metrics = DisplayMetrics()
+        var manager = BaseApplication.INSTANT?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        manager.defaultDisplay.getRealMetrics(metrics)
+        metrics.scaledDensity = config.fontScale * metrics.density
+        res.updateConfiguration(config,metrics)
     }
 
     private fun initViewModel() {

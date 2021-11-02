@@ -46,6 +46,15 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
+    /**
+     * 获取用户拉新分享地址接口
+     */
+    @POST("/user/inviteNewSubscriber")
+    suspend fun inviteShare(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<TaskShareBean>
+
     /**--------------------------------home---------------------------------------**/
     /**
      * 调查详情/调查结果
