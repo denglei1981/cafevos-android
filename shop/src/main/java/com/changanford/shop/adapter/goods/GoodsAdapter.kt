@@ -11,9 +11,6 @@ import com.changanford.shop.databinding.ItemGoodsBinding
 
 
 class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGoodsBinding>>(R.layout.item_goods){
-    init {
-        this.setEmptyView(R.layout.view_empty)
-    }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsBinding>, item: GoodsItemBean) {
         val dataBinding=holder.dataBinding

@@ -185,7 +185,7 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun fbPay(orderNo:String,fordPayType:String="INTEGRAL") {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(true){
                 body.clear()
                 body["orderNo"]=orderNo
                 body["fordPayType"]=fordPayType
