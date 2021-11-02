@@ -36,6 +36,7 @@ import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 import android.net.ConnectivityManager
 
 import android.content.IntentFilter
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.evos.utils.NetworkStateReceiver
 import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener
 
@@ -101,23 +102,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             )
             .build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
-        navigationController.addSimpleTabItemSelectedListener(object :SimpleTabItemSelectedListener{
-            override fun onSelected(index: Int, old: Int) {
-                when(index){
-                    0->{
-                        toastShow("发现")
-                    }
-                    4->{
-                        toastShow("我的")
-                    }
-                }
-            }
 
-        })
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when(destination.navigatorName){
-
-
+            when (destination.id) {
+                R.id.carFragment, R.id.myFragment -> {
+                    StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                }
+                else -> {
+                    StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.white)
+                }
             }
 
         }
@@ -130,7 +123,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             showAppPrivacy(this) {
                 updateViewModel.getUpdateInfo()
             }
-        }else{
+        } else {
             updateViewModel.getUpdateInfo()
         }
 
@@ -356,12 +349,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         super.onDestroy()
         unRegisterConnChange()
     }
+
     var networkStateReceiver = NetworkStateReceiver()
-    private fun registerConnChange(){
+    private fun registerConnChange() {
         val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(networkStateReceiver, intentFilter)
     }
-    private fun unRegisterConnChange(){
+
+    private fun unRegisterConnChange() {
         unregisterReceiver(networkStateReceiver)
     }
 }
