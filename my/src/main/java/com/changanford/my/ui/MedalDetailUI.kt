@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
@@ -58,6 +59,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                 .addBannerLifecycleObserver(this)
                 .setBannerGalleryEffect(30, 18)
                 .addOnPageChangeListener(this)
+                .setIndicator(binding.indicator, false)
                 .currentItem = indexMedalItem + 1
             //更多使用方法仔细阅读文档，或者查看demo
         }
@@ -122,6 +124,19 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
 
             var medalName: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_title)
             medalName.text = data.medalName
+
+            var medalAd: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_ad)
+            medalAd.text = "${data.remark}"
+            var medalTime: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_time)
+            medalTime.text = "暂未点亮"
+            data?.getTime?.let {
+                medalTime.text = "${
+                    TimeUtils.InputTimetamp(
+                        it,
+                        "yyyy-MM-dd"
+                    )
+                }点亮"
+            }
         }
 
         inner class BannerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
