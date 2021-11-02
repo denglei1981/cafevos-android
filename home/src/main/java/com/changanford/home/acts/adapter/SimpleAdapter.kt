@@ -35,8 +35,8 @@ class SimpleAdapter : BaseBannerAdapter<CircleHeadBean, PostBarBannerViewHolder>
 class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<CircleHeadBean>(itemView) {
     override fun bindData(data: CircleHeadBean?, position: Int, pageSize: Int) {
         val binding = DataBindingUtil.bind<ItemHomeBarBannerBinding>(itemView)
-        binding?.ivBanner?.load(data?.adImg)
-//        binding?.ivBanner?.let { GlideUtils.loadBD(data?.adImg, it) }
+//        binding?.ivBanner?.load(data?.adImg)
+        binding?.ivBanner?.let { GlideUtils.loadBD(data?.adImg, it) }
         binding?.ivBanner?.setOnClickListener {
             try {
                 JumpUtils.instans?.jump(data?.jumpDataType, data?.jumpDataValue)

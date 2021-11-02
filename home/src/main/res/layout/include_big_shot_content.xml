@@ -12,6 +12,7 @@
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="2"
+        style="@style/AppText.lineSpace"
         android:textColor="#ff2d2d2d"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

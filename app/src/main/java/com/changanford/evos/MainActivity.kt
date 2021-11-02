@@ -37,6 +37,7 @@ import android.net.ConnectivityManager
 
 import android.content.IntentFilter
 import com.changanford.evos.utils.NetworkStateReceiver
+import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -100,6 +101,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             )
             .build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
+        navigationController.addSimpleTabItemSelectedListener(object :SimpleTabItemSelectedListener{
+            override fun onSelected(index: Int, old: Int) {
+                when(index){
+                    0->{
+                        toastShow("发现")
+                    }
+                    4->{
+                        toastShow("我的")
+                    }
+                }
+            }
+
+        })
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when(destination.navigatorName){
+
+
+            }
+
+        }
     }
 
     override fun initView() {
@@ -219,7 +240,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 ToastUtils.s(BaseApplication.INSTANT, "再按一次退出福域")
                 exitTime = System.currentTimeMillis()
             } else {
-                var intent = Intent()
+                val intent = Intent()
                 intent.action = Intent.ACTION_MAIN;
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK; //如果是服务里调用，必须加入new task标识
                 intent.addCategory(Intent.CATEGORY_HOME);
