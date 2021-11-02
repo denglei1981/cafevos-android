@@ -14,6 +14,7 @@ import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.changanford.common.bean.JumpDataBean
+import com.changanford.common.bean.ShareBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
@@ -27,12 +28,14 @@ import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.web.ShareViewModule
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 
@@ -641,7 +644,22 @@ class JumpUtils {
     private fun toShare() {
         var body = HashMap<String, Any>()
         var rkey = getRandomKey()
-
+        currentViewModelScope?.launch {
+            fetchRequest {
+                apiService.inviteShare(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    var shareBean =
+                        ShareBean(it.shareUrl, it.shareImg, it.shareTitle, it.shareDesc, "", "")
+                    ShareViewModule().share(
+                        BaseApplication.curActivity,
+                        shareBean = shareBean
+                    )
+                }
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        }
 //        RepositoryManager.obtainService(ApiService::class.java).inviteShare(
 //            getHeader(body, rkey),
 //            getRequestBody(body, rkey)

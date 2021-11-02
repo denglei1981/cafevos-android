@@ -41,18 +41,18 @@ public class GlideImageDownload implements IShareImageDownLoad {
                bitmap =Glide.with(context)
                        .asBitmap() //必须
                        .load(url)
-                       .error( R.mipmap.ic_launcher)
+                       .error( R.mipmap.fordicon)
                        .apply(options)
                        .into(800, 800)
                        .get();
            }catch (Exception e){
-               bitmap = BitmapFactory.decodeResource(BaseApplication.INSTANT.getResources(),R.mipmap.ic_launcher);
+               bitmap = BitmapFactory.decodeResource(BaseApplication.INSTANT.getResources(),R.mipmap.fordicon);
            }
             return bitmap;
         } else {
             return Glide.with(context)
                     .asBitmap() //必须
-                    .load(R.mipmap.ic_launcher)
+                    .load(R.mipmap.fordicon)
                     .apply(options)
                     .into(800, 800)
                     .get();

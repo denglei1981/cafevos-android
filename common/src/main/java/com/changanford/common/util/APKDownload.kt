@@ -58,7 +58,7 @@ class APKDownload {
             BaseApplication.INSTANT,
             "福域",
             "正在下载更新",
-            R.mipmap.ic_launcher
+            R.mipmap.fordicon
         )
         var request: DownloadManager.Request = DownloadManager.Request(Uri.parse(url))
         request.setAllowedOverRoaming(true)//是否允许漫游
