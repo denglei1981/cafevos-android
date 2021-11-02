@@ -48,17 +48,17 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
      * 是否存在该sku选项
      * */
     private fun isExistSku(optionId:String):Boolean{
-//        Log.e("okhttp","$pos>>>currentSkuCode:$currentSkuCode")
+//        Log.e("okhttp","$pos>>>currentSkuCode:$currentSkuCode>>>${skuVos?.size}")
         skuVos?.apply {
             for (item in this){
                 //skuVos是否包含 optionId可选属性
-                if(item.skuCode.split("-")[pos]==optionId){
-                    if(isUpdate){
-                        //查询 optionId 的组合可能性是否也在 skuVos中
-                        val skuCode=getTemporarySkuCode(optionId)
-                        skuVos?.find { skuCode==it.skuCode }?.let { return true }
-                        break
-                    }
+                if(item.skuCodeArr[pos]==optionId){
+//                    if(isUpdate){
+//                        //查询 optionId 的组合可能性是否也在 skuVos中
+//                        val skuCode=getTemporarySkuCode(optionId)
+//                        skuVos?.find { skuCode==it.skuCode }?.let { return true }
+//                        break
+//                    }
                     return true
                 }
             }
@@ -78,7 +78,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
     }
     fun updateAdapter(skuCode: String){
         currentSkuCode=skuCode
-        isUpdate=isLegalSkuCode(currentSkuCode)<2
+//        isUpdate=isLegalSkuCode(currentSkuCode)<2
         notifyDataSetChanged()
     }
     private fun isLegalSkuCode(_skuCode:String?):Int{

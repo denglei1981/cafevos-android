@@ -231,6 +231,7 @@ data class SkuVo(
     var skuTxt:String?="",
     var mallMallSkuSpuSeckillRangeId:String?="0",
     var orginPrice: String? = "0",//原价
+    var skuCodeArr:List<String> = listOf(),
 )
 
 data class OptionVo(
