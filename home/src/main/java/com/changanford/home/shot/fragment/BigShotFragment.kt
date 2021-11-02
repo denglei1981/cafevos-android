@@ -17,16 +17,13 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
 import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.databinding.FragmentBigShotBinding
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
 import com.changanford.home.shot.request.BigShotListViewModel
-import com.google.android.material.button.MaterialButton
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *  大咖
