@@ -245,10 +245,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
-            mTabText?.textSize = 18f
+            mTabText?.textSize = 20f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.textSize = 15f
+            mTabText?.textSize = 17f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
@@ -274,11 +274,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.paint.isFakeBoldText = true
-                mTabText.textSize = 18f
+                mTabText.textSize = 20f
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.textSize = 16f
+                mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
             //更改选中项样式
