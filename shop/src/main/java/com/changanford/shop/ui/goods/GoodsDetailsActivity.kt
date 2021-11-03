@@ -52,7 +52,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
-    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
+//    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
     private var topBarH =0
     private var commentH=300f
     private var detailsH =0f

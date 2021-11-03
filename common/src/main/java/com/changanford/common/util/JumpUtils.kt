@@ -573,11 +573,19 @@ class JumpUtils {
                 startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
             109->{// 商品订单确认 需要绑定手机号
-                if(MineUtils.getBindMobileJumpDataType()){
-                    startARouter(ARouterMyPath.MineBindMobileUI,true)
-                } else if(!TextUtils.isEmpty(value)){
-                    bundle.putString("goodsInfo", value)
-                    startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
+                when {
+                    MConstant.token.isNullOrEmpty() -> {
+                        startARouter(ARouterMyPath.SignUI)
+                    }
+                    MineUtils.getBindMobileJumpDataType() -> {
+                        startARouter(ARouterMyPath.MineBindMobileUI)
+                    }
+                    else -> {
+                        if(!TextUtils.isEmpty(value)){
+                            bundle.putString("goodsInfo", value)
+                            startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
+                        }
+                    }
                 }
             }
             110->{// 支付确认
