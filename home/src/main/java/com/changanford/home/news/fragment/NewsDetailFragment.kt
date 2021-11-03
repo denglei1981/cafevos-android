@@ -107,6 +107,9 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val commentBean = homeNewsCommentAdapter.getItem(position)
+                if (commentBean.typeNull == 1) {
+                    return
+                }
                 val bundle = Bundle()
                 bundle.putString("groupId", commentBean.groupId)
                 bundle.putInt("type", 1)// 1 资讯 2 帖子
@@ -289,17 +292,17 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
                     it.data.dataList?.let { it1 -> homeNewsCommentAdapter.addData(it1) }
                 } else {
-                    if (it.data.dataList==null||it.data.dataList?.size!! <= 0) {
+                    if (it.data.dataList == null || it.data.dataList?.size!! <= 0) {
                         val commentListBean = CommentListBean(typeNull = 1)
                         val comList = arrayListOf(commentListBean)
                         homeNewsCommentAdapter.setList(comList)
                         tips = "暂无评论~"
                     } else {
-                        tips=""
+                        tips = ""
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
-                if (it.data.dataList==null||it.data.dataList?.size!! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                if (it.data.dataList == null || it.data.dataList?.size!! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     if (tips == "暂无评论~") {
                         homeNewsCommentAdapter.loadMoreModule.loadMoreEnd(true)
                     }
@@ -331,11 +334,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.data != null) {
-                    if (it.data.recommendArticles!=null&&it.data.recommendArticles?.size!! > 0) {
+                    if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                     }
-                    if (it.data.ads!=null&&it.data.ads?.size!! > 0) {
+                    if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }
@@ -345,9 +348,9 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.followLiveData.observe(this, Observer {
-            if(it.isSuccess){
+            if (it.isSuccess) {
                 isNeedNotify = true
-            }else{
+            } else {
                 toastShow(it.message)
             }
         })
@@ -438,12 +441,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
-            followType = if (followType==1) 2 else 1
+            followType = if (followType == 1) 2 else 1
             it.authors.isFollow = followType;
             setFollowState(inflateHeader.btFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
         }
     }
+
     override fun onClick(v: View) {
         if (MConstant.token.isEmpty()) {
             startARouter(ARouterMyPath.SignUI)

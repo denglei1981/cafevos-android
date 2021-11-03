@@ -65,17 +65,18 @@ class NewsVideoDetailFragment :
         HomeNewsCommentAdapter(this)
     }
 
-    private  val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+    private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
         NewsAdsListAdapter()
     }
     private val customLoadMoreView: CustomLoadMoreView by lazy {
         CustomLoadMoreView()
     }
+
     companion object {
-        fun newInstance(artId:String): NewsVideoDetailFragment {
+        fun newInstance(artId: String): NewsVideoDetailFragment {
             val fg = NewsVideoDetailFragment()
             val bundle = Bundle()
-            bundle.putString(JumpConstant.NEWS_ART_ID,artId)
+            bundle.putString(JumpConstant.NEWS_ART_ID, artId)
             fg.arguments = bundle
             return fg
         }
@@ -90,7 +91,8 @@ class NewsVideoDetailFragment :
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         binding.homeRvContent.adapter = homeNewsCommentAdapter
@@ -109,6 +111,9 @@ class NewsVideoDetailFragment :
         homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val commentBean = homeNewsCommentAdapter.getItem(position)
+                if (commentBean.typeNull == 1) {
+                    return
+                }
                 val bundle = Bundle()
                 bundle.putString("groupId", commentBean.groupId)
                 bundle.putInt("type", 1)// 1 资讯 2 帖子
@@ -131,6 +136,7 @@ class NewsVideoDetailFragment :
         }
         bus()
     }
+
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {
         DataBindingUtil.inflate(
             LayoutInflater.from(requireContext()),
@@ -143,7 +149,7 @@ class NewsVideoDetailFragment :
     private fun addHeaderView() {
         homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
-        inflateHeader.rvAds.adapter=newsAdsListAdapter
+        inflateHeader.rvAds.adapter = newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = newsRecommendListAdapter.getItem(position)
@@ -160,6 +166,7 @@ class NewsVideoDetailFragment :
     private fun playVideo(playUrl: String) {
         playerHelper.startPlay(GlideUtils.defaultHandleImageUrl(playUrl))
     }
+
     var tips = ""
     override fun observe() {
         super.observe()
@@ -184,7 +191,7 @@ class NewsVideoDetailFragment :
                         homeNewsCommentAdapter.setList(comList)
                         tips = "暂无评论~"
                     } else {
-                        tips=""
+                        tips = ""
                         homeNewsCommentAdapter.setNewInstance(it.data.dataList)
                     }
                 }
@@ -200,13 +207,13 @@ class NewsVideoDetailFragment :
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.data != null ) {
-                    if(it.data.recommendArticles!=null&&it.data.recommendArticles?.size!! > 0){
+                if (it.data != null) {
+                    if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
                     }
-                    if(it.data.ads!=null&&it.data.ads?.size!!>0){
-                        inflateHeader.rvAds.visibility=View.VISIBLE
+                    if (it.data.ads != null && it.data.ads?.size!! > 0) {
+                        inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
                     }
                 }
@@ -258,8 +265,8 @@ class NewsVideoDetailFragment :
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
-        inflateHeader.ivAvatar.setOnClickListener{
-            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        inflateHeader.ivAvatar.setOnClickListener {
+            JumpUtils.instans?.jump(35, newsDetailData.userId)
         }
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvHomeTitle.text = newsDetailData.title
@@ -268,10 +275,10 @@ class NewsVideoDetailFragment :
         inflateHeader.tvTopicName.text = newsDetailData.specialTopicTitle
         inflateHeader.tvTime.text = newsDetailData.timeStr
 
-        if(newsDetailData.specialTopicId>0){
-            inflateHeader.llSpecial.visibility=View.VISIBLE
-        }else{
-            inflateHeader.llSpecial.visibility=View.GONE
+        if (newsDetailData.specialTopicId > 0) {
+            inflateHeader.llSpecial.visibility = View.VISIBLE
+        } else {
+            inflateHeader.llSpecial.visibility = View.GONE
         }
 
 
@@ -539,6 +546,7 @@ class NewsVideoDetailFragment :
         )
 
     }
+
     //点击系统返回需要判断是否全屏，切换全屏状态
     fun backPressed(back: () -> Unit) {
         playerHelper.backPressed {
@@ -566,7 +574,7 @@ class NewsVideoDetailFragment :
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,newsDetailData?.shares)
+                shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
     }
