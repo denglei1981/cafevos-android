@@ -164,8 +164,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 dialog.builder().setPositiveButton("立即更新") {
                     toastShow("正在下载")
                     if (!MConstant.isDownloading) {
-                        var updatingAlertDialog = UpdatingAlertDialog(this)
-                        var apkDownload = APKDownload()
+                        val updatingAlertDialog = UpdatingAlertDialog(this)
+                        val apkDownload = APKDownload()
                         updatingAlertDialog.builder().setPositiveButton("取消下载") {
                             apkDownload.cancel()
                             if (info.isForceUpdate == 1) {
