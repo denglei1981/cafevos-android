@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.CommentItem
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
@@ -52,7 +51,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
-//    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
+    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
     private var topBarH =0
     private var commentH=300f
     private var detailsH =0f
@@ -84,13 +83,12 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
+        initTab()
         viewModel.queryGoodsDetails(spuId,true)
     }
-    private fun initTab(itemData: CommentItem?){
+    private fun initTab(){
         tabLayout.removeAllTabs()
-        val tabs=if(itemData!=null)arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details)) else
-            arrayOf(getString(R.string.str_goods),getString(R.string.str_details))
-        for(it in tabs)tabLayout.addTab(tabLayout.newTab().setText(it))
+        for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
         tabClick()
     }
     override fun initData() {
@@ -98,7 +96,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             binding.inEmpty.layoutEmpty.visibility=View.GONE
             control.bindingData(it)
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
-            initTab(it.mallOrderEval)
             GlobalScope.launch {
                 delay(1000L)
                 initH()
