@@ -35,7 +35,6 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 
@@ -573,8 +572,10 @@ class JumpUtils {
                 bundle.putString(JumpConstant.SEARCH_TYPE, value)
                 startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
-            109->{// 商品订单确认
-                if(!TextUtils.isEmpty(value)){
+            109->{// 商品订单确认 需要绑定手机号
+                if(MineUtils.getBindMobileJumpDataType()){
+                    startARouter(ARouterMyPath.MineBindMobileUI,true)
+                } else if(!TextUtils.isEmpty(value)){
                     bundle.putString("goodsInfo", value)
                     startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
                 }
