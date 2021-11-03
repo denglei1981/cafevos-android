@@ -393,10 +393,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 for (j in childfragments.indices) {
                     val fragment = childfragments[j]
                     if (fragment.javaClass.isAssignableFrom(clazz)) {
-                        Log.i(
-                            "evis",
-                            "getFragment1: $fragment"
-                        )
+//                        Log.i(
+//                            "evis",
+//                            "getFragment1: $fragment"
+//                        )
                         return fragment
                     }
                 }
