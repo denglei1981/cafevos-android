@@ -2,7 +2,6 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -92,7 +91,6 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         val tabs=if(itemData!=null)arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details)) else
             arrayOf(getString(R.string.str_goods),getString(R.string.str_details))
         for(it in tabs)tabLayout.addTab(tabLayout.newTab().setText(it))
-        WCommonUtil.setTabSelectStyle(this,tabLayout,15f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
         tabClick()
     }
     override fun initData() {
