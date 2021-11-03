@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -29,7 +30,18 @@ import java.util.UUID;
 
 
 public class DeviceUtils {
-
+    public static int getNavigationBarHeight() {
+        int height = 0;
+        try{
+            Resources resources = MyApp.mContext.getResources();
+            int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+            height = resources.getDimensionPixelSize(resourceId);
+        }catch (Exception e){
+            height = 0;
+        }
+        Log.v("dbw", "Navi height:" + height);
+        return height;
+    }
     public static String getMetaData(Context context, String key) {
         String value = null;
         try {

@@ -11,6 +11,7 @@ import com.changanford.car.adapter.CarTopBannerAdapter
 import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
+import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
@@ -117,7 +118,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         var service = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         var outMetrics = DisplayMetrics()
         service?.defaultDisplay.getRealMetrics(outMetrics)
-        params.height =  outMetrics.heightPixels
+        params.height =  outMetrics.heightPixels-DeviceUtils.getNavigationBarHeight()
         binding.carTopViewPager.layoutParams = params
     }
     fun setMinBottom(height:Int){
