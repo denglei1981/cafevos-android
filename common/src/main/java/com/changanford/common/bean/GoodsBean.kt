@@ -58,7 +58,7 @@ data class GoodsItemBean(
     val spuId: String = "0",
     val spuName: String = "",
     val fb: Int? = 0,
-    val fbOfLine: Int? = 0,
+    val fbOfLine: String? = "0",
     val imgUrl: String = "",
     var isSettedNotice: String = "",
     val mallMallSpuSeckillRangeId: String = "0",
@@ -123,7 +123,7 @@ data class GoodsItemBean(
         if (TextUtils.isEmpty(lineFb)) {
             return true
         }
-        if (lineFb.toInt() == 0) {
+        if (lineFb=="0") {
             return true
         }
         return false
@@ -220,7 +220,7 @@ data class GoodsDetailBean(
         if (TextUtils.isEmpty(fbLine)) {
             return true
         }
-        if (fbLine?.toInt() == 0) {
+        if (fbLine=="0") {
             return true
         }
         return false
