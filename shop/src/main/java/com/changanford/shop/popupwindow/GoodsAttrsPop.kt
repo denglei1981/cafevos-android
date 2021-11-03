@@ -13,6 +13,7 @@ import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
+import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
@@ -34,6 +35,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     }
     private fun initView(){
         setKeyboardAdaptive(true)
+        setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
         viewDataBinding.recyclerView.adapter=mAdapter
         viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
         viewDataBinding.btnSubmit.setOnClickListener {
