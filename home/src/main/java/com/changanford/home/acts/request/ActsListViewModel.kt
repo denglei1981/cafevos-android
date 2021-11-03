@@ -80,8 +80,8 @@ class ActsListViewModel : BaseViewModel() {
                     val updateUiState = UpdateUiState<ListMainBean<ActBean>>(false, it)
                     actsLiveData.postValue(updateUiState)
                 }.onFailure {
-                    val updateUiState = UpdateUiState<ListMainBean<ActBean>>(false, "错了。。")
-                    actsLiveData.postValue(updateUiState)
+//                    val updateUiState = UpdateUiState<ListMainBean<ActBean>>(false, "")
+//                    actsLiveData.postValue(updateUiState)
                 }
         })
     }

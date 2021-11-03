@@ -6,20 +6,19 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
-        android:src="@mipmap/circle_empty_ic"
+        android:src="@mipmap/circle_no_comment"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
-        android:text="暂无评论~"
+        android:text="没有评论"
         android:textColor="@color/color_99"
         android:textSize="12sp"
         android:layout_marginBottom="40dp"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_25"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"/>
 

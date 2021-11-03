@@ -59,7 +59,7 @@ class FindNewsListViewModel : BaseViewModel() {
                     newsListLiveData.value = updateUiState
 
                 }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<NewsListMainBean>(false, "", isLoadMore)
+                    val updateUiState = UpdateUiState<NewsListMainBean>(false, it, isLoadMore)
                     newsListLiveData.value = updateUiState
                 }
         })
