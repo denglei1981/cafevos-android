@@ -171,21 +171,20 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 maxDragHeight: Int
             ) {
                 val alphaTest = 1 - percent.coerceAtMost(1f)
+                if (alphaTest > 0.8f) { // 提前显示下方导航
+                    LiveDataBus.get()
+                        .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
+                        .postValue(false)
+                }
                 when (alphaTest) {
                     0f -> {
-                        // 打开二楼
-//                        move()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
                         LiveDataBus.get()
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
                             .postValue(true)
                     }
                     1f -> { // 关闭，
-//                        moveCancel()
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
-                        LiveDataBus.get()
-                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
-                            .postValue(false)
                     }
                 }
             }
@@ -352,16 +351,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             if (it.isSuccess) {
                 val appIndexBackground = it.data.app_index_background  // 背景广告
                 binding.recommendContent.ivHome.setOnClickListener {
-                    if(appIndexBackground!=null&&appIndexBackground.size>0){
+                    if (appIndexBackground != null && appIndexBackground.size > 0) {
                         val adBean = appIndexBackground[0]
-                        JumpUtils.instans!!.jump(adBean.jumpDataType,adBean.jumpDataValue)
+                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
                     }
                 }
                 appIndexBackground?.forEach { b -> // 背景。
                     val endsWithGif = b.adImg.endsWith(".gif")
-                    if(endsWithGif){
-                          GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
-                    }else{
+                    if (endsWithGif) {
+                        GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
+                    } else {
                         GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
                     }
                 }
@@ -395,10 +394,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun bus() {
         LiveDataBus.get().withs<String>("Gone").observe(this, {
-            binding.appbarLayout.setExpanded(false)
+//            binding.appbarLayout.setExpanded(false)
         })
         LiveDataBus.get().withs<String>("Visi").observe(this, {
-            binding.appbarLayout.setExpanded(true)
+//            binding.appbarLayout.setExpanded(true)
         })
     }
 
@@ -412,7 +411,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             MConstant.isFirstOpenTwoLevel = false
         }
     }
-    open fun closeTwoLevel(){
+
+    open fun closeTwoLevel() {
 
         binding.header.finishTwoLevel()
     }

@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/tab_layout"
-            app:tabTextAppearance="@style/style_indexTabItemStyle"
+            app:tabTextAppearance="@style/style_indexTabItemStyle0"
             android:background="@color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

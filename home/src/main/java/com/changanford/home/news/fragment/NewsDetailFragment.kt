@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
@@ -54,7 +53,6 @@ import com.google.android.material.button.MaterialButton
 
 class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailViewModel>(),
     View.OnClickListener {
-
 
     val linearLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -151,7 +149,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 viewModel.getNewsCommentList(artId, false)
                 viewModel.getArtAdditional(artId)
             } else {
-//                ToastUtils.showShortToast(, this)
                 toastShow("没有该资讯类型")
             }
             bus()

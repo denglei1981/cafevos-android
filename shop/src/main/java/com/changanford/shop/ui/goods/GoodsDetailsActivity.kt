@@ -2,13 +2,13 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.CommentItem
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
@@ -26,6 +26,9 @@ import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /**
@@ -59,8 +62,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private var isCollection=false //是否收藏
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
-        commentH=headerBinding.viewComment.y-topBarH
-        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH-30
+        commentH=headerBinding.viewComment.y-topBarH+60
+        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -79,26 +82,27 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
-        initTab()
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
         viewModel.queryGoodsDetails(spuId,true)
-        //去掉行高
-//        headerBinding.tvDetails.lineHeight=1
-//        headerBinding.tvDetails.setLineSpacing(0f,1f)
     }
-    private fun initTab(){
-        for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
-        WCommonUtil.setTabSelectStyle(this,tabLayout,15f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
+    private fun initTab(itemData: CommentItem?){
+        tabLayout.removeAllTabs()
+        val tabs=if(itemData!=null)arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details)) else
+            arrayOf(getString(R.string.str_goods),getString(R.string.str_details))
+        for(it in tabs)tabLayout.addTab(tabLayout.newTab().setText(it))
         tabClick()
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             binding.inEmpty.layoutEmpty.visibility=View.GONE
-//            if(BuildConfig.DEBUG)it.acountFb=0
             control.bindingData(it)
-            initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
+            initTab(it.mallOrderEval)
+            GlobalScope.launch {
+                delay(1000L)
+                initH()
+            }
         })
         viewModel.responseData.observe(this,{
             it.apply {
@@ -225,9 +229,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             }else{
                 topBarBg.alpha=255
                 tabLayout.alpha=1f
-                if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
-                    tabLayout.getTabAt(2)?.select()
-                }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
+                if(tabLayout.tabCount>2){
+                    if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
+                        tabLayout.getTabAt(2)?.select()
+                    }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
+                        tabLayout.getTabAt(1)?.select()
+                    }
+                }else if(!isClickSelect&&oldScrollY>=commentH&&selectedTabPosition!=1){
                     tabLayout.getTabAt(1)?.select()
                 }
                 binding.inHeader.imgBack.background.alpha=0
