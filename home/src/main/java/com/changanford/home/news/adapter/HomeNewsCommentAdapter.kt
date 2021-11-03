@@ -39,11 +39,11 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
         binding?.let {
 
             if(item.typeNull==1){
-                it.tvNoComment.visibility=View.VISIBLE
+                it.gNoComment.visibility=View.VISIBLE
                 it.conComment.visibility=View.GONE
                 return@let
             }
-            it.tvNoComment.visibility=View.GONE
+            it.gNoComment.visibility=View.GONE
             it.conComment.visibility=View.VISIBLE
             GlideUtils.loadBD(item.avatar, it.ivHead)
             binding.bean=item
