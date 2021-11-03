@@ -42,6 +42,8 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)
                 else -> ScreenUtils.setMargin(holder.itemView,0,0,9,0)
             }
+            dataBinding.tvSeckillStatus.setBackgroundResource(if("ON_GOING"==status)R.drawable.shadow_cc00095b_2dp
+            else R.drawable.shadow_6600095b_2dp)
             dataBinding.model=item
             dataBinding.executePendingBindings()
         }
