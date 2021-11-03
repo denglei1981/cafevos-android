@@ -23,6 +23,7 @@ import android.app.ActivityManager.RunningAppProcessInfo
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.util.DisplayMetrics
 
@@ -70,7 +71,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         res.updateConfiguration(config,metrics)
     }
     override fun initView(savedInstanceState: Bundle?) {
-
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     override fun onResume() {
