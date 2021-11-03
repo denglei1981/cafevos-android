@@ -353,21 +353,18 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 val appIndexBackground = it.data.app_index_background  // 背景广告
                 binding.recommendContent.ivHome.setOnClickListener {
                     if(appIndexBackground!=null&&appIndexBackground.size>0){
+                        binding.header.finishTwoLevel()
                         val adBean = appIndexBackground[0]
                         JumpUtils.instans!!.jump(adBean.jumpDataType,adBean.jumpDataValue)
                     }
                 }
-
                 appIndexBackground?.forEach { b -> // 背景。
-//                    val endsWithGif = b.adImg.endsWith(".gif")
-//                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
-                    GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
-
-//                    if(endsWithGif){
-//                        GlideUtils.loadGif(b.adImg, binding.recommendContent.ivHome)
-//                    }else{
-//                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
-//                    }
+                    val endsWithGif = b.adImg.endsWith(".gif")
+                    if(endsWithGif){
+                          GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
+                    }else{
+                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+                    }
                 }
 
                 val appIndexTopic = it.data.app_index_topic
