@@ -117,7 +117,7 @@
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_seckillStatus"
             android:gravity="center"
-            android:background="@drawable/shadow_9900095b_2dp"
+            android:background="@drawable/shadow_6600095b_2dp"
             android:paddingEnd="@dimen/dp_3"
             android:paddingStart="@dimen/dp_3"
             android:textSize="@dimen/sp_14"

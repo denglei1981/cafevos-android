@@ -135,7 +135,11 @@
 
     <color name="color_fefefe">#FEFEFE</color>
     <color name="color_7_2D384C">#2D384C</color>
-    <color name="color_9900095B">#9900095B</color>
+    <color name="color_6600095B">#6600095B</color>
     <color name="color_66FA863E">#66FA863E</color>
     <color name="color_F4F5F9">#F4F5F9</color>
+    <color name="color_B30459E6">#b30459E6</color>
+    <color name="color_b305BAD5">#b305BAD5</color>
+    <color name="color_CC00095B">#CC00095B</color>
+    <color name="color_B300095B">#B300095B</color>
 </resources>

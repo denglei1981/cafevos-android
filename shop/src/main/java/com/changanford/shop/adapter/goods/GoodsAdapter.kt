@@ -29,32 +29,41 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
     private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){
         val tagType=item.spuPageTagType
         dataBinding.inVip.lLayoutVip.visibility=View.GONE
-        dataBinding.tvTagType.visibility=View.VISIBLE
-        dataBinding.tvTagType.setBackgroundResource(R.drawable.shadow_9900095b_2dp)
-        dataBinding.tvTagType.text=when(tagType){
-            "NEW_PRODUCTS"->"新品"
-            "HOT_SALE"->"热销"
-            "MEMBER_DISCOUNT"->{
-                dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
-                dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
-                dataBinding.tvIntegral.visibility=View.GONE
-                "会员折扣"
+        dataBinding.tvTagType.apply {
+            visibility=View.VISIBLE
+            setBackgroundResource(R.drawable.shadow_b300095b_2dp)
+            text=when(tagType){
+                "NEW_PRODUCTS"->{
+                    setBackgroundResource(R.drawable.shadow_b305bad5_2dp)
+                    "新品"
+                }
+                "HOT_SALE"->{
+                    setBackgroundResource(R.drawable.shadow_b30459e6_2dp)
+                    "热销"
+                }
+                "MEMBER_DISCOUNT"->{
+                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
+                    dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
+                    dataBinding.tvIntegral.visibility=View.GONE
+                    "会员折扣"
+                }
+                "MEMBER_EXCLUSIVE"->{
+                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
+                    dataBinding.tvIntegral.visibility=View.GONE
+                    val secondarySpuPageTagType=item.secondarySpuPageTagType
+                    dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
+                    "会员专享"
+                }
+                "SECKILL"->{
+                    setBackgroundResource(R.drawable.shadow_66fa863e_2dp)
+                    "秒杀"
+                }
+                else ->{
+                    visibility=View.GONE
+                    ""
+                }
             }
-            "MEMBER_EXCLUSIVE"->{
-                dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
-                dataBinding.tvIntegral.visibility=View.GONE
-                val secondarySpuPageTagType=item.secondarySpuPageTagType
-                dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
-                "会员专享"
-            }
-            "SECKILL"->{
-                dataBinding.tvTagType.setBackgroundResource(R.drawable.shadow_66fa863e_2dp)
-                "秒杀"
-            }
-            else ->{
-                dataBinding.tvTagType.visibility=View.GONE
-                ""
-            }
+
         }
     }
 }
