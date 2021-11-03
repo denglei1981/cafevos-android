@@ -89,6 +89,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             dataBean.buyNum= it
             control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
         })
+        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {

@@ -74,6 +74,7 @@
                     android:textColor="@color/color_00095B"
                     android:textSize="@dimen/sp_18" />
                 <com.changanford.shop.view.TypefaceTextView
+                    android:id="@+id/tv_fbLine"
                     app:layout_constraintStart_toEndOf="@id/tv_integral"
                     app:layout_constraintBottom_toBottomOf="@id/tv_integral"
                     android:layout_marginStart="@dimen/dp_3"
