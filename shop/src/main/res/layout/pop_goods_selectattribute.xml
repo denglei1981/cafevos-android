@@ -92,45 +92,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="vertical"
                     tools:listitem="@layout/item_goods_attribute_index"
-                    tools:itemCount="1"/>
-                <!--            <com.changanford.shop.view.TypefaceTextView-->
-                <!--                android:id="@+id/tv_color"-->
-                <!--                android:textStyle="bold"-->
-                <!--                android:layout_marginTop="@dimen/dp_28"-->
-                <!--                app:layout_constraintStart_toStartOf="parent"-->
-                <!--                app:layout_constraintTop_toBottomOf="@id/img_cover"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:text="@string/str_color"-->
-                <!--                android:textColor="@color/color_33"-->
-                <!--                android:textSize="@dimen/sp_15" />-->
-                <!--            <androidx.recyclerview.widget.RecyclerView-->
-                <!--                android:layout_marginTop="@dimen/dp_13"-->
-                <!--                app:layout_constraintTop_toBottomOf="@id/tv_color"-->
-                <!--                android:id="@+id/rv_color"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-                <!--                android:orientation="horizontal"/>-->
-                <!--            <com.changanford.shop.view.TypefaceTextView-->
-                <!--                android:id="@+id/tv_specifications"-->
-                <!--                android:textStyle="bold"-->
-                <!--                android:layout_marginTop="@dimen/dp_28"-->
-                <!--                app:layout_constraintStart_toStartOf="parent"-->
-                <!--                app:layout_constraintTop_toBottomOf="@id/rv_color"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:text="@string/str_specifications"-->
-                <!--                android:textColor="@color/color_33"-->
-                <!--                android:textSize="@dimen/sp_15" />-->
-                <!--            <androidx.recyclerview.widget.RecyclerView-->
-                <!--                android:layout_marginTop="@dimen/dp_13"-->
-                <!--                app:layout_constraintTop_toBottomOf="@id/tv_specifications"-->
-                <!--                android:id="@+id/rv_specifications"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-                <!--                android:orientation="horizontal"/>-->
+                    tools:itemCount="2"/>
                 <com.changanford.shop.view.TypefaceTextView
                     android:id="@+id/tv_number"
                     android:layout_marginTop="@dimen/dp_28"
