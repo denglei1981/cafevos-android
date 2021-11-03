@@ -120,7 +120,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private fun initListener(topicName: String) {
         binding.ivPostBar.setOnClickListener {
-            if (postEntity == null) {
+            if (postEntity?.size == 0) {
                 initPop(topicName)
             } else {
                 AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
