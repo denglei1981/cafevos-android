@@ -395,10 +395,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun bus() {
         LiveDataBus.get().withs<String>("Gone").observe(this, {
-            binding.appbarLayout.setExpanded(false)
+//            binding.appbarLayout.setExpanded(false)
         })
         LiveDataBus.get().withs<String>("Visi").observe(this, {
-            binding.appbarLayout.setExpanded(true)
+//            binding.appbarLayout.setExpanded(true)
         })
     }
 
