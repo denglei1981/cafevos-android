@@ -245,10 +245,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true
-            mTabText?.textSize = 18f
+            mTabText?.textSize = 20f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.textSize = 15f
+            mTabText?.textSize = 17f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
@@ -274,11 +274,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
                 mTabText.paint.isFakeBoldText = true
-                mTabText.textSize = 18f
+                mTabText.textSize = 20f
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.textSize = 16f
+                mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
             //更改选中项样式
@@ -353,7 +353,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 val appIndexBackground = it.data.app_index_background  // 背景广告
                 binding.recommendContent.ivHome.setOnClickListener {
                     if(appIndexBackground!=null&&appIndexBackground.size>0){
-                        binding.header.finishTwoLevel()
                         val adBean = appIndexBackground[0]
                         JumpUtils.instans!!.jump(adBean.jumpDataType,adBean.jumpDataValue)
                     }
@@ -412,6 +411,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             binding.header.openTwoLevel(true)
             MConstant.isFirstOpenTwoLevel = false
         }
+    }
+    open fun closeTwoLevel(){
+
+        binding.header.finishTwoLevel()
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

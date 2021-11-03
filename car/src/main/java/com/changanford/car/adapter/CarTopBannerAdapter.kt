@@ -34,7 +34,7 @@ class CarTopBannerAdapter : BaseBannerAdapter<AdBean, CarTopBannerViewHolder>() 
 class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
     override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
         var binding = DataBindingUtil.bind<ItemCarIntroBinding>(itemView)
-        binding?.imageCarIntro?.load(data?.adImg)
+        binding?.imageCarIntro?.load(data?.adImg,null)
     }
 
 }

@@ -70,19 +70,19 @@ class TodaySignPop(context: Context) : BasePopupWindow(context) {
 
     }
 
-    override fun onCreateShowAnimation(): Animation {
-        val set = AnimationSet(false)
-        val shakeAnima: Animation = RotateAnimation(
-            0f,
-            15f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        shakeAnima.interpolator = CycleInterpolator(5f)
-        shakeAnima.duration = 400
-        set.addAnimation(shakeAnima)
-        return set
-    }
+//    override fun onCreateShowAnimation(): Animation {
+//        val set = AnimationSet(false)
+//        val shakeAnima: Animation = RotateAnimation(
+//            0f,
+//            15f,
+//            Animation.RELATIVE_TO_SELF,
+//            0.5f,
+//            Animation.RELATIVE_TO_SELF,
+//            0.5f
+//        )
+//        shakeAnima.interpolator = CycleInterpolator(5f)
+//        shakeAnima.duration = 400
+//        set.addAnimation(shakeAnima)
+//        return set
+//    }
 }

@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.car.R
 import com.changanford.common.bean.CarModels
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 
 class CarRecommendAdapter :
@@ -19,7 +20,6 @@ class CarRecommendAdapter :
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }
-
         holder.setText(R.id.carname, item.spuName)
     }
 }
