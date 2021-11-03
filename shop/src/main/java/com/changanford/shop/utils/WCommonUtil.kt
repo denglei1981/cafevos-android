@@ -271,8 +271,8 @@ object WCommonUtil {
     * */
     fun formatMobilePhone(mobile:String?):String{
         mobile?.apply {
-          if(this.length>=7){
-              return this.replace(this.substring(3,7),"****")
+          if(length>=7){
+              return "${substring(0,3)}****${substring(length-4,length)}"
           }
         }
         return mobile?:""
