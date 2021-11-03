@@ -22,8 +22,8 @@
             android:background="@drawable/radiobutton_bt_goods"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_5"
-            android:paddingEnd="@dimen/dp_5"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
             android:minWidth="@dimen/dp_70"
             android:minHeight="@dimen/dp_32"
             style="@style/rb_goods0"/>
