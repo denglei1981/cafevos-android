@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.CommentItem
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
@@ -82,25 +83,24 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
-        initTab()
         control= GoodsDetailsControl(this,binding,headerBinding,viewModel)
         WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive,"#FFE7B2","#E0AF60")
         viewModel.queryGoodsDetails(spuId,true)
-        //去掉行高
-//        headerBinding.tvDetails.lineHeight=1
-//        headerBinding.tvDetails.setLineSpacing(0f,1f)
     }
-    private fun initTab(){
-        for(it in tabTitles)tabLayout.addTab(tabLayout.newTab().setText(it))
+    private fun initTab(itemData: CommentItem?){
+        tabLayout.removeAllTabs()
+        val tabs=if(itemData!=null)arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details)) else
+            arrayOf(getString(R.string.str_goods),getString(R.string.str_details))
+        for(it in tabs)tabLayout.addTab(tabLayout.newTab().setText(it))
         WCommonUtil.setTabSelectStyle(this,tabLayout,15f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
         tabClick()
     }
     override fun initData() {
         viewModel.goodsDetailData.observe(this,{
             binding.inEmpty.layoutEmpty.visibility=View.GONE
-//            if(BuildConfig.DEBUG)it.acountFb=0
             control.bindingData(it)
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
+            initTab(it.mallOrderEval)
             GlobalScope.launch {
                 delay(1000L)
                 initH()
@@ -231,9 +231,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             }else{
                 topBarBg.alpha=255
                 tabLayout.alpha=1f
-                if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
-                    tabLayout.getTabAt(2)?.select()
-                }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
+                if(tabLayout.tabCount>2){
+                    if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
+                        tabLayout.getTabAt(2)?.select()
+                    }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
+                        tabLayout.getTabAt(1)?.select()
+                    }
+                }else if(!isClickSelect&&oldScrollY>=commentH&&selectedTabPosition!=1){
                     tabLayout.getTabAt(1)?.select()
                 }
                 binding.inHeader.imgBack.background.alpha=0
