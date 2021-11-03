@@ -176,7 +176,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             .observe(this,
                 Observer {
                     buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 2))
-                    params["topicId"] = it.topicId
+                    params["topicId"] = it.topicId.toString()
                 })
 
 
@@ -374,7 +374,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                             if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
                         postEntity.plateName = platename  //模块名称
                         postEntity.topicId =
-                            if (params["topicId"] == null) 0 else params["topicId"] as Int  //话题ID
+                            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
                         postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
                         postEntity.keywords =
                             if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
@@ -855,7 +855,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         binding.etBiaoti.setText(locaPostEntity!!.title)
                         binding.etContent.setText(locaPostEntity!!.content)
                         params["plate"] = locaPostEntity!!.plate
-                        params["topicId"] = locaPostEntity!!.topicId.toInt()
+                        params["topicId"] = locaPostEntity!!.topicId
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
                         params["keywords"] = locaPostEntity!!.keywords
