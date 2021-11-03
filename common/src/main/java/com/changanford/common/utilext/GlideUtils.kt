@@ -2,7 +2,6 @@ package com.changanford.common.utilext
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.rastermill.FrameSequenceDrawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -14,7 +13,6 @@ import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
-import com.changanford.common.util.gif.GlideApp
 
 
 /**********************************************************************************
@@ -27,7 +25,7 @@ import com.changanford.common.util.gif.GlideApp
  * *********************************************************************************
  */
 
-fun ImageView.load(url: String?, drawable: Int? = null) {
+fun ImageView.load(url: String?, drawable: Int? = R.mipmap.image_h_one_default) {
     var string: String? = url
     if (url?.startsWith("http") == false) {
         string = MConstant.imgcdn + url

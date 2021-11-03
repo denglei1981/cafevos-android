@@ -26,7 +26,8 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             val imgUrl=item.imgUrl
             val imgPath=if(imgUrl.contains(","))imgUrl.split(",")[0] else imgUrl
             imgCover.load(imgPath)
-            tvOrIntegral.visibility=if(null!=item.fbOfLine)View.VISIBLE else View.GONE
+            val fbOfLine=item.fbOfLine
+            tvOrIntegral.visibility=if(null!=fbOfLine&&fbOfLine!="0")View.VISIBLE else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
             btnStates.setOnClickListener {
                 clickBtn(this,item)
