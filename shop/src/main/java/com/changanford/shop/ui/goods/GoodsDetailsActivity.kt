@@ -26,6 +26,9 @@ import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /**
@@ -59,8 +62,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private var isCollection=false //是否收藏
     private fun initH(){
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
-        commentH=headerBinding.viewComment.y-topBarH
-        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH-30
+        commentH=headerBinding.viewComment.y-topBarH+60
+        detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -97,8 +100,11 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             binding.inEmpty.layoutEmpty.visibility=View.GONE
 //            if(BuildConfig.DEBUG)it.acountFb=0
             control.bindingData(it)
-            initH()
             viewModel.collectionGoodsStates.postValue(it.collect=="YES")
+            GlobalScope.launch {
+                delay(1000L)
+                initH()
+            }
         })
         viewModel.responseData.observe(this,{
             it.apply {
