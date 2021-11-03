@@ -7,6 +7,8 @@ import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -31,10 +33,12 @@ import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.view.SpecialAnimaTab
+import com.changanford.home.HomeV2Fragment
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
+import androidx.navigation.fragment.NavHostFragment
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -102,10 +106,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.carFragment, R.id.myFragment -> {
-                    StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                    StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                }
+                R.id.homeFragment -> {
+                    val currentFragment = getFragment(HomeV2Fragment::class.java)
+                    currentFragment?.let {
+                        val homeV2Fragment = it as HomeV2Fragment
+                        homeV2Fragment.closeTwoLevel()// 关掉二楼
+                    }
                 }
                 else -> {
-                    StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.white)
+                    StatusBarUtil.setStatusBarColor(this, R.color.white)
                 }
             }
 
@@ -323,23 +334,24 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 var jumpValue = it.getInt("jumpValue")
                 if (jumpValue > 0)
                     when (jumpValue) {
-                        1 ->{
+                        1 -> {
                             navController?.navigate(R.id.homeFragment)
                         }
                         2 -> {
-                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.white)
+                            StatusBarUtil.setStatusBarColor(this, R.color.white)
                             navController?.navigate(R.id.circleFragment)
                         }
                         3 -> {
-                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            setHomBottomNavi(View.VISIBLE)
                             navController?.navigate(R.id.carFragment)
+                            StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                         }
                         4 -> {
-                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                             navController?.navigate(R.id.shopFragment)
                         }
                         5 -> {
-                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                             navController?.navigate(R.id.myFragment)
                         }
                     }
@@ -370,5 +382,29 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun unRegisterConnChange() {
         unregisterReceiver(networkStateReceiver)
     }
+
+    // 获取当前fragment。
+    private fun getFragment(clazz: Class<*>?): Fragment? {
+        val fragments = supportFragmentManager.fragments
+        if (fragments != null && fragments.size > 0) {
+            val navHostFragment = fragments[0] as NavHostFragment
+            val childfragments = navHostFragment.childFragmentManager.fragments
+            if (childfragments != null && childfragments.size > 0) {
+                for (j in childfragments.indices) {
+                    val fragment = childfragments[j]
+                    if (fragment.javaClass.isAssignableFrom(clazz)) {
+                        Log.i(
+                            "evis",
+                            "getFragment1: $fragment"
+                        )
+                        return fragment
+                    }
+                }
+            }
+        }
+        return null
+    }
+
+
 }
 

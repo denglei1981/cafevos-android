@@ -257,14 +257,14 @@ object GlideUtils {
     fun loadGif(
         url: String?,
         imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int = R.drawable.image_recommed_default
+        @DrawableRes errorDefaultRes: Int = R.drawable.image_ad_bg
     ) {
         Glide
             .with(imageView.context)
             .asGif()
             .error(errorDefaultRes)
             .load(defaultHandleImageUrl(url))
-            .placeholder(R.drawable.image_recommed_default)
+            .placeholder(errorDefaultRes)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .fallback(errorDefaultRes)
             .into(imageView)
@@ -275,5 +275,20 @@ object GlideUtils {
 //            .load(defaultHandleImageUrl(url))
 //            .diskCacheStrategy(DiskCacheStrategy.DATA)
 //            .into(imageView)
+    }
+
+    @JvmOverloads
+    fun loadBDCenter(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
+            if (errorDefaultRes != null) {
+                placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
+                    .error(errorDefaultRes)
+            }
+        }.fitCenter().into(imageView)
     }
 }

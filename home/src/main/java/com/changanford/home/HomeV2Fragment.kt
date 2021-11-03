@@ -353,7 +353,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 val appIndexBackground = it.data.app_index_background  // 背景广告
                 binding.recommendContent.ivHome.setOnClickListener {
                     if(appIndexBackground!=null&&appIndexBackground.size>0){
-                        binding.header.finishTwoLevel()
                         val adBean = appIndexBackground[0]
                         JumpUtils.instans!!.jump(adBean.jumpDataType,adBean.jumpDataValue)
                     }
@@ -412,6 +411,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             binding.header.openTwoLevel(true)
             MConstant.isFirstOpenTwoLevel = false
         }
+    }
+    open fun closeTwoLevel(){
+
+        binding.header.finishTwoLevel()
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
