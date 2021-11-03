@@ -95,7 +95,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (mData.circleName.isNullOrEmpty()) {
                 tvFrom.visibility = View.GONE
             } else {
-                MUtils.postDetailsFrom(tvFrom, mData.circleName, mData.circleId.toString())
+                MUtils.postDetailsFromVideo(tvFrom, mData.circleName, mData.circleId.toString())
             }
             if (!mData.content.isNullOrEmpty()) {
                 MUtils.toggleEllipsize(
@@ -104,7 +104,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     1,
                     mData.content,
                     "展开",
-                    R.color.circle_app_color,
+                    R.color.circle_9eaed8,
                     false
                 )
             }

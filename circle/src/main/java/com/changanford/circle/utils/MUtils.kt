@@ -49,6 +49,33 @@ object MUtils {
         textView.movementMethod = LinkMovementMethod.getInstance()
     }
 
+    fun postDetailsFromVideo(textView: TextView, content: String, circleId: String) {
+
+        val content1 = "来自"
+
+        val spannable = SpannableString(content1 + content)
+
+        spannable.setSpan(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    val bundle = Bundle()
+                    bundle.putString("circleId", circleId)
+                    startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.color = ContextCompat.getColor(textView.context, R.color.circle_9eaed8)
+                    ds.isUnderlineText = false //去除超链接的下划线
+                }
+            }, content1.length,
+            spannable.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        textView.text = spannable
+        textView.movementMethod = LinkMovementMethod.getInstance()
+    }
+
     fun setDrawableStar(textView: TextView, @DrawableRes resource: Int) {
         val drawable: Drawable = ContextCompat.getDrawable(textView.context, resource)!!
         drawable.setBounds(
