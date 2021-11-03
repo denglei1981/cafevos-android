@@ -323,11 +323,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 var jumpValue = it.getInt("jumpValue")
                 if (jumpValue > 0)
                     when (jumpValue) {
-                        1 -> navController?.navigate(R.id.homeFragment)
-                        2 -> navController?.navigate(R.id.circleFragment)
-                        3 -> navController?.navigate(R.id.carFragment)
-                        4 -> navController?.navigate(R.id.shopFragment)
-                        5 -> navController?.navigate(R.id.myFragment)
+                        1 ->{
+                            navController?.navigate(R.id.homeFragment)
+                        }
+                        2 -> {
+                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.white)
+                            navController?.navigate(R.id.circleFragment)
+                        }
+                        3 -> {
+                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            navController?.navigate(R.id.carFragment)
+                        }
+                        4 -> {
+                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            navController?.navigate(R.id.shopFragment)
+                        }
+                        5 -> {
+                            StatusBarUtil.setStatusBarColor(this, com.changanford.home.R.color.transparent)
+                            navController?.navigate(R.id.myFragment)
+                        }
                     }
                 try {
                     val jumpDataType = it.getString("jumpDataType")?.toInt()
