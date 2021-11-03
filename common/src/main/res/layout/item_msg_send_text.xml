@@ -38,21 +38,29 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/msg_text"
+        <RelativeLayout
+            android:id="@+id/msg_text_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="18dp"
-            android:background="@drawable/msg_send_text_bg"
-            android:lineSpacingMultiplier="1.1"
-            android:padding="6dp"
-            android:text=""
-            android:textColor="#333333"
-            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/msg_head_icon"
-            app:layout_constraintTop_toTopOf="@+id/msg_head_icon" />
+            app:layout_constraintTop_toTopOf="@+id/msg_head_icon">
+
+            <TextView
+                android:id="@+id/msg_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/msg_send_text_bg"
+                android:lineSpacingMultiplier="1.1"
+                android:padding="6dp"
+                android:text=""
+                android:textColor="#333333"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
 
         <ProgressBar
             android:id="@+id/msg_progressbar"
@@ -65,9 +73,9 @@
             android:minWidth="24dp"
             android:minHeight="24dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/msg_text"
-            app:layout_constraintRight_toLeftOf="@+id/msg_text"
-            app:layout_constraintTop_toTopOf="@+id/msg_text" />
+            app:layout_constraintBottom_toBottomOf="@+id/msg_text_layout"
+            app:layout_constraintRight_toLeftOf="@+id/msg_text_layout"
+            app:layout_constraintTop_toTopOf="@+id/msg_text_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -32,6 +32,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.DensityUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
@@ -151,6 +152,7 @@ class CircleMainBottomAdapter(context: Context) :
 
     private fun likePost(binding: ItemCircleMainBottomBinding, item: PostDataBean, position: Int) {
         val activity = BaseApplication.curActivity as AppCompatActivity
+        MineUtils.getBindMobileJumpDataType(true)
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
             body["postsId"] = item.postsId

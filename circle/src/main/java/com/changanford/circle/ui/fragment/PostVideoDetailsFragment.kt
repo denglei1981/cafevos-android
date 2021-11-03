@@ -24,6 +24,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.dk.DKPlayerHelper
@@ -174,9 +175,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         }
         binding.run {
             llLike.setOnClickListener {
+                MineUtils.getBindMobileJumpDataType(true)
                 viewModel.likePosts(mData.postsId)
             }
             llCollection.setOnClickListener {
+                MineUtils.getBindMobileJumpDataType(true)
                 viewModel.collectionApi(mData.postsId)
             }
             tvShareNum.setOnClickListener {
@@ -201,6 +204,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
             tvFollow.setOnClickListener {
+                MineUtils.getBindMobileJumpDataType(true)
                 val isFol = mData.authorBaseVo?.isFollow
                 viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
             }

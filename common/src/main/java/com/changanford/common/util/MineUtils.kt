@@ -1104,11 +1104,16 @@ object MineUtils {
 
     /**
      * 获取绑定手机jumpDataType true跳转 false 不跳转
+     * isSkipBindModel true:直接跳转绑定手机页面,默认不跳转
      */
-    fun getBindMobileJumpDataType(): Boolean {
+    fun getBindMobileJumpDataType(isSkipBindMobile: Boolean = false): Boolean {
         UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getNoLiveDataUser()
             ?.let {
                 if (it.bindMobileJumpType == LiveDataBusKey.MINE_SIGN_OTHER_CODE) {
+                    if (isSkipBindMobile) {
+                        "请先绑定手机号".toast()
+                        JumpUtils.instans?.jump(18)
+                    }
                     return true
                 }
             }

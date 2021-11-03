@@ -9,6 +9,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.DialogCircleReplyBinding
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.utils.setDialogParams
+import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.toast
 
 /**
@@ -43,7 +44,9 @@ class ReplyDialog(
                 return@setOnClickListener
             }
             listener.getContent(getEditContent())
-            dismiss()
+            if(!MineUtils.getBindMobileJumpDataType(true)){
+                dismiss()
+            }
         }
     }
 

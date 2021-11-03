@@ -64,9 +64,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
                             JumpUtils.instans?.jump(1, MConstant.H5_MINE_FORD_AGREEMENT)
                         }
                         1 -> {
-                            if (viewModel.getBindMobileJumpDataType()) {
-                                RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
-                            } else {
+                            if (!viewModel.getBindMobileJumpDataType()) {
                                 RouterManger.startARouter(ARouterMyPath.MineTaskListUI)
                             }
                         }
