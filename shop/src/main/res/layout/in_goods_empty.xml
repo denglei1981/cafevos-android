@@ -25,12 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/tv_empty_content"
-            android:drawablePadding="@dimen/dp_16"
             android:gravity="center"
             android:drawableTop="@mipmap/emptyimg"
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
             android:text="@string/str_loading"
-            android:textColor="@color/picture_color_66"
+            android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
