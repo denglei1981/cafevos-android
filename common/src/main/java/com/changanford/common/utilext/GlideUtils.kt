@@ -265,6 +265,7 @@ object GlideUtils {
             .error(errorDefaultRes)
             .load(defaultHandleImageUrl(url))
             .placeholder(errorDefaultRes)
+            .fitCenter()
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .fallback(errorDefaultRes)
             .into(imageView)
