@@ -12,6 +12,7 @@ import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.ISDEBUG
 import com.changanford.common.util.SPUtils
+import com.changanford.common.util.room.Db
 import com.changanford.my.databinding.BateactivityBinding
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.delay
@@ -36,6 +37,8 @@ class BateActivity :
                     .setNegativeButton("取消") { }.setPositiveButton("确定") {
                         lifecycleScope.launch {
                             SPUtils.setParam(BaseApplication.INSTANT, ISDEBUG, true)
+                            Db.myDb.saveData("pubKey", "")
+                            Db.myDb.saveData("imgCdn", "")
                             delay(1200)
                             FastClickUtils.relaunchApp()
                         }
@@ -50,6 +53,8 @@ class BateActivity :
                     .setNegativeButton("取消") { }.setPositiveButton("确定") {
                         lifecycleScope.launch {
                             SPUtils.setParam(BaseApplication.INSTANT, ISDEBUG, false)
+                            Db.myDb.saveData("pubKey", "")
+                            Db.myDb.saveData("imgCdn", "")
                             delay(1200)
                             FastClickUtils.relaunchApp()
                         }

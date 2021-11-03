@@ -11,10 +11,13 @@ import com.changanford.common.util.JumpUtils;
 
 import java.util.Map;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 public class MyMessageReceiver extends MessageReceiver {
 
     // 消息接收部分的LOG_TAG
     public static final String REC_TAG = "receiver";
+    public static int badgeCount = 0;
 
     /**
      * 推送通知的回调方法
@@ -26,6 +29,8 @@ public class MyMessageReceiver extends MessageReceiver {
      */
     @Override
     public void onNotification(Context context, String title, String summary, Map<String, String> extraMap) {
+        badgeCount++;
+        ShortcutBadger.applyCount(context, badgeCount);
         // TODO 处理推送通知
         if (null != extraMap) {
             for (Map.Entry<String, String> entry : extraMap.entrySet()) {
@@ -77,6 +82,8 @@ public class MyMessageReceiver extends MessageReceiver {
      */
     @Override
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
+        badgeCount--;
+        ShortcutBadger.applyCount(context, badgeCount);
         Log.i(REC_TAG, "从通知栏打开通知的扩展处理 ： " + " : " + title + " : " + summary + " : " + extraMap);
         if (extraMap != null && !extraMap.isEmpty()) {
             try {
@@ -100,6 +107,8 @@ public class MyMessageReceiver extends MessageReceiver {
      */
     @Override
     public void onNotificationRemoved(Context context, String messageId) {
+        badgeCount--;
+        ShortcutBadger.applyCount(context, badgeCount);
         Log.i(REC_TAG, "onNotificationRemoved ： " + messageId);
         //    MainApplication.setConsoleText("onNotificationRemoved ： " + messageId);
     }

@@ -85,6 +85,8 @@ dependencies {
     api "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0"
     //adapter
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
+    //badger
+    api "me.leolin:ShortcutBadger:1.1.22@aar"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.+'

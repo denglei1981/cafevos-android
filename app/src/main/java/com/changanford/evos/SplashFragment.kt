@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import com.changanford.common.basic.BaseFragment
@@ -39,7 +40,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             override fun gifPlayComplete() {
                 viewModel.getKey()
                 viewModel.key.observe(this@SplashFragment) {
-                    showCounter()
                     MConstant.pubKey = it
                     viewModel.getDbAds()
                     viewModel.adService("app_launch")
@@ -61,14 +61,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         }
     }
 
-    private fun showCounter() {
-        binding.chronometer.apply {
-            base = SystemClock.elapsedRealtime() + 5 * 1000
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                isCountDown = true
-            }
-        }.start()
-    }
 
     private fun showAds() {
         var bundle = requireActivity().intent?.extras?: Bundle()
@@ -111,6 +103,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 player.prepareAsync()
                 viewModel.setTime(imgBean.videoTime)
             } else {
+                viewModel.setTime("5")
                 binding.splashimg.load(imgBean.adImg)
             }
             binding.chronometer.base = viewModel.getTime()
