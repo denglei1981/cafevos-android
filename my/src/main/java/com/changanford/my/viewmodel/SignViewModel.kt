@@ -1104,7 +1104,7 @@ class SignViewModel : ViewModel() {
      * 获取绑定手机jumpDataType true跳转 false 不跳转
      */
     fun getBindMobileJumpDataType(): Boolean {
-        return MineUtils.getBindMobileJumpDataType()
+        return MineUtils.getBindMobileJumpDataType(true)
     }
 
     var loginBgPath: MutableLiveData<String> = MutableLiveData()
