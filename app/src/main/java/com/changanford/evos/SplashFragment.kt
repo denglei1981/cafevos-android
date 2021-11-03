@@ -114,8 +114,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             var tv = binding.counter
             binding.chronometer.setOnChronometerTickListener { it ->
                 binding.counter.visibility = View.VISIBLE
-                Log.e("eeeeee","${SystemClock.elapsedRealtime()}")
-                Log.e("eeeeee","it.base = ${it.base}")
                 tv.text =
                     "跳过 ${ceil(((ceil((it.base - SystemClock.elapsedRealtime()).toDouble())) / 1000)).toInt()}"
                 if (it.base <= SystemClock.elapsedRealtime()) {

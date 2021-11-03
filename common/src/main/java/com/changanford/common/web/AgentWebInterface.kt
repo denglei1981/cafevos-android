@@ -29,6 +29,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.BindingPhoneDialog
 import com.just.agentweb.AgentWeb
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -356,7 +357,9 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     fun bindPhone(toast: String, callback: String) {
         LiveDataBus.get().with(LiveDataBusKey.WEB_BIND_PHONE).postValue(callback)
         if (toast == "1") {
-//            BindingPhoneDialog(activity!!).show()
+            BindingPhoneDialog(activity!!).show()
+        }else{
+            instans!!.jump(18, "")
         }
     }
 
