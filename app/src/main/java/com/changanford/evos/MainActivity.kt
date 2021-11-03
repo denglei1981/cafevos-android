@@ -8,12 +8,12 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
@@ -38,7 +38,6 @@ import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
-import androidx.navigation.fragment.NavHostFragment
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -105,7 +104,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-                R.id.carFragment, R.id.myFragment -> {
+                R.id.carFragment, R.id.myFragment, R.id.shopFragment -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                 }
                 R.id.homeFragment -> {
