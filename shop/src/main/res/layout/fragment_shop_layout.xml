@@ -41,7 +41,6 @@
                         android:gravity="bottom">
 
                         <com.google.android.material.tabs.TabLayout
-                            android:background="@color/white"
                             app:tabMode="scrollable"
                             android:id="@+id/tab_layout"
                             style="@style/tabLayout_style"
