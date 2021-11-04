@@ -87,10 +87,10 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 "待付款","待支付"->{
                     binding.inOrderInfo.tvOther.visibility=View.GONE
                     binding.inOrderInfo.tvOtherValue.visibility=View.GONE
-                    binding.tvOrderPrompt.apply {
-                        visibility= View.GONE
+//                    binding.tvOrderPrompt.apply {
+//                        visibility= View.GONE
 //                        setText(R.string.prompt_orderUpdateAddress)
-                    }
+//                    }
                     val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
                     if(payCountDown>0){
                         timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
@@ -113,10 +113,10 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     dataBean.otherName=getString(R.string.str_payTime)
                     val otherValue=simpleDateFormat.format(dataBean.payTime?:0)
                     dataBean.otherValue=otherValue
-                    binding.tvOrderPrompt.apply {
-                        visibility= View.VISIBLE
-                        setText(R.string.prompt_waitSend)
-                    }
+//                    binding.tvOrderPrompt.apply {
+//                        visibility= View.VISIBLE
+//                        setText(R.string.prompt_waitSend)
+//                    }
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
                     binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                 }

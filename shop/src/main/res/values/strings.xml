@@ -103,7 +103,7 @@
     <string name="str_realPayTotalAmount">实付总额：</string>
     <string name="str_cancelOrder">取消订单</string>
     <string name="str_immediatePayment">立即支付</string>
-    <string name="str_logisticsInformation">物流信息</string>
+    <string name="str_logisticsInformation">物流单号</string>
     <string name="str_copy">复制</string>
     <string name="str_orderParticulars">订单明细</string>
     <string name="str_common">共</string>
