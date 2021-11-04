@@ -12,6 +12,8 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.reflect.Field;
 
+
+
 public class FixAppBarLayoutBehavior extends AppBarLayout.Behavior {
 
     private static final String TAG = "FixAppBarLayoutBehavior";

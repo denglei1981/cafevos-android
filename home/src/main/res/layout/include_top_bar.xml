@@ -31,23 +31,34 @@
             android:id="@+id/iv_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/icon_home_more_action"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/search_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_home_search"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_content"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:background="@drawable/shape_search_bg_gray_f4"
+            android:drawableStart="@mipmap/icon_home_main_search"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:hint="请输入关键字搜索"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.84"
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

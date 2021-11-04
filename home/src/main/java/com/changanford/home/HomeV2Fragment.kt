@@ -1,6 +1,7 @@
 package com.changanford.home
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -28,6 +29,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
+import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
@@ -93,7 +95,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
-        StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
+//        StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
         easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
@@ -209,7 +211,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
             }
         })
-        binding.layoutTopBar.ivSearch.setOnClickListener {
+        binding.layoutTopBar.searchContent.setOnClickListener {
             toSearch()
         }
         binding.header.openTwoLevel(true)
@@ -344,18 +346,37 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    fun backImageViewTouch(adBean:AdBean) {
+        binding.recommendContent.ivHome.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                }
+                MotionEvent.ACTION_UP->{
+                    JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    binding.header.finishTwoLevel()
+                }
+            }
+            true
+        }
+    }
 
+    var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
         viewModel.twoBannerLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                val appIndexBackground = it.data.app_index_background  // 背景广告
-                binding.recommendContent.ivHome.setOnClickListener {
-                    if (appIndexBackground != null && appIndexBackground.size > 0) {
-                        val adBean = appIndexBackground[0]
-                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
-                    }
-                }
+                appIndexBackground = it.data.app_index_background  // 背景广告
+                appIndexBackground?.get(0)?.let { adBean -> backImageViewTouch(adBean) }
+
+//                binding.recommendContent.ivHome.setOnClickListener {
+//                    if (appIndexBackground != null && appIndexBackground?.size!! > 0) {
+//                        val adBean = appIndexBackground!![0]
+//                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
+//                    }
+//                }
                 appIndexBackground?.forEach { b -> // 背景。
                     val endsWithGif = b.adImg.endsWith(".gif")
                     if (endsWithGif) {
