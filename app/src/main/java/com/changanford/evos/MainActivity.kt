@@ -338,6 +338,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                             navController?.navigate(R.id.homeFragment)
                         }
                         2 -> {
+                            setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.white)
                             navController?.navigate(R.id.circleFragment)
                         }
@@ -347,10 +348,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                         }
                         4 -> {
+                            setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                             navController?.navigate(R.id.shopFragment)
                         }
                         5 -> {
+                            setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                             navController?.navigate(R.id.myFragment)
                         }
