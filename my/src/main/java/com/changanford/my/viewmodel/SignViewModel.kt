@@ -1115,7 +1115,7 @@ class SignViewModel : ViewModel() {
                 getDiskCachePath(BaseApplication.INSTANT)?.let {
                     getDiskCacheDir(
                         it,
-                        "loginBg.mp4"
+                        MConstant.loginBgVideoPath
                     )
                 }
             }")

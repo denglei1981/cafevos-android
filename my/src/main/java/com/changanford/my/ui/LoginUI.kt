@@ -207,6 +207,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 play(it)
             }
         })
+        binding.back.setOnClickListener {
+            back()
+        }
     }
 
     /**
@@ -249,6 +252,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
         player.isLooping = true
+        binding.imBg.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -91,6 +91,9 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnNoBind.setOnClickListener {
             back()
         }
+        binding.back.setOnClickListener {
+            back()
+        }
 
         viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
             it?.let {
@@ -131,6 +134,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
         player.isLooping = true
+        binding.imBg.visibility = View.GONE
     }
 
 

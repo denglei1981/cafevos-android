@@ -132,6 +132,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         } else {
             updateViewModel.getUpdateInfo()
+            viewModel.requestDownLogin()
         }
 
         getNavigator()
