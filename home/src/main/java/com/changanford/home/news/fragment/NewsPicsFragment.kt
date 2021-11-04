@@ -333,42 +333,46 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     }
 
     override fun onClick(v: View) {
-        if (MConstant.token.isEmpty()) {
-            startARouter(ARouterMyPath.SignUI)
-            return
-        }
+
         when (v.id) {
             R.id.tv_speak_something -> {
-                replay()
+                if (LoginUtil.isLongAndBindPhone()) {
+                    replay()
+                }
             }
             R.id.tv_news_to_like -> {
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                viewModel.actionLike(artId)
+                if(LoginUtil.isLongAndBindPhone()){
+                    viewModel.actionLike(artId)
+                }
+
             }
             R.id.tv_news_to_msg -> { // 去评论。
-//                replay()
-                // 滑动到看评论的地方
-//                binding.homeRvContent.smoothScrollToPosition(1)
+
                 showCommentDialog()
             }
 
             R.id.tv_news_to_collect -> {
                 // 收藏
-                viewModel.addCollect(artId)
+                if(LoginUtil.isLongAndBindPhone()){
+                    viewModel.addCollect(artId)
+                }
+
             }
             R.id.tv_news_to_share -> {
-                newsDetailData?.let {
-                    HomeShareModel.shareDialog(
-                        requireActivity(),
-                        0,
-                        it.shares,
-                        null,
-                        null,
-                        it.authors.nickname
-                    )
-                }
+
+                    newsDetailData?.let {
+                        HomeShareModel.shareDialog(
+                            requireActivity(),
+                            0,
+                            it.shares,
+                            null,
+                            null,
+                            it.authors.nickname
+                        )
+                    }
 
             }
             R.id.iv_more -> {
