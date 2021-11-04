@@ -1111,7 +1111,7 @@ object MineUtils {
             ?.let {
                 if (it.bindMobileJumpType == LiveDataBusKey.MINE_SIGN_OTHER_CODE) {
                     if (isSkipBindMobile) {
-                        "请先绑定手机号".toast()
+//                        "请先绑定手机号".toast()
                         JumpUtils.instans?.jump(18)
                     }
                     return true

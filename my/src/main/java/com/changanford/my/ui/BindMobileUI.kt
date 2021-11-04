@@ -7,6 +7,7 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.logE
@@ -35,7 +36,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
     var player = MediaPlayer()
 
     override fun initView() {
-
+        AppUtils.setStatusBarMarginTop(binding.rlTitle, this)
         var mobileText = binding.etLoginMobile.textChanges()
         var smsText = binding.etLoginSmsCode.textChanges()
 

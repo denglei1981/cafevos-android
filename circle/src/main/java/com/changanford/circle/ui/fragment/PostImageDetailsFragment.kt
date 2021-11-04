@@ -50,7 +50,7 @@ import com.zhpan.bannerview.constants.IndicatorGravity
 class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     BaseFragment<ActivityPostGraphicBinding, PostGraphicViewModel>() {
 
-    constructor():this(PostsDetailBean())
+    constructor() : this(PostsDetailBean())
 
     private var page = 1
     private var checkPosition = 0
@@ -254,7 +254,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     ReportDislikeBody(2, mData.postsId),
                     mData.isGood,   //是否加精
                     mData.authorBaseVo?.nickname,
-                    mData.topicName,mData.type
+                    mData.topicName, mData.type
                 )
             }
             tvTalkOut.setOnClickListener {
@@ -263,9 +263,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             tvFollow.setOnClickListener {
-                MineUtils.getBindMobileJumpDataType(true)
-                val isFol = mData.authorBaseVo?.isFollow
-                viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    val isFol = mData.authorBaseVo?.isFollow
+                    viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
+                }
             }
         }
         binding.bottomView.run {
@@ -273,12 +274,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 binding.nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
             }
             llLike.setOnClickListener {
-                MineUtils.getBindMobileJumpDataType(true)
-                viewModel.likePosts(mData.postsId)
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    viewModel.likePosts(mData.postsId)
+                }
             }
             llCollection.setOnClickListener {
-                MineUtils.getBindMobileJumpDataType(true)
-                viewModel.collectionApi(mData.postsId)
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    viewModel.collectionApi(mData.postsId)
+                }
             }
             tvShareNum.setOnClickListener {
                 CircleShareModel.shareDialog(
@@ -390,7 +393,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     "关注成功".toast()
                 else
                     "已取消关注".toast()
-                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER).postValue(mData.authorBaseVo?.isFollow)
+                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER)
+                    .postValue(mData.authorBaseVo?.isFollow)
             } else {
                 it.msg.toast()
             }
@@ -412,10 +416,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
         })
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this,{
-            val bean =commentAdapter.getItem(checkPosition)
-            bean.let { _->
-                bean.childCount=it
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+            val bean = commentAdapter.getItem(checkPosition)
+            bean.let { _ ->
+                bean.childCount = it
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })

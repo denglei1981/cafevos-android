@@ -43,8 +43,8 @@ class ReplyDialog(
                 "至少输入3个字".toast()
                 return@setOnClickListener
             }
-            listener.getContent(getEditContent())
             if(!MineUtils.getBindMobileJumpDataType(true)){
+                listener.getContent(getEditContent())
                 dismiss()
             }
         }

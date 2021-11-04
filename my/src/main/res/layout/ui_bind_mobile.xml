@@ -40,22 +40,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rl_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_25"
-                    android:layout_marginTop="@dimen/dp_33"
-                    android:src="@mipmap/back_w" />
+                    android:layout_marginTop="@dimen/dp_10">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/text_18_color_ff_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp_33"
-                    android:text="绑定手机号" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dp_25"
+                        android:src="@mipmap/back_w" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/text_18_color_ff_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal"
+                        android:text="绑定手机号" />
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_login_hint"

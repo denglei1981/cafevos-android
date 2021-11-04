@@ -60,8 +60,8 @@
                 android:maxLines="1"
                 android:paddingEnd="8dp"
                 android:text="@{bean.name}"
-                android:textColor="@color/circle_8195C8"
-                android:textSize="11sp"
+                android:textColor="@color/circle_01025c"
+                android:textSize="12sp"
                 tools:ignore="RtlSymmetry,SmallSp"
                 tools:text="年轻人喜欢什么样的车" />
         </RelativeLayout>
