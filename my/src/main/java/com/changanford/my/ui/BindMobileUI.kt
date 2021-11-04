@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.SurfaceHolder
 import android.view.View
@@ -45,6 +46,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                 t1.isNotEmpty() && t2.isNotEmpty()
             })
             .subscribe {
+                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#01025C" else "#757575"))
                 binding.btnLogin.isEnabled = it
             }
 
@@ -91,6 +93,9 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.btnNoBind.setOnClickListener {
             back()
         }
+        binding.back.setOnClickListener {
+            back()
+        }
 
         viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
             it?.let {
@@ -131,6 +136,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
         player.isLooping = true
+        binding.imBg.visibility = View.GONE
     }
 
 

@@ -30,7 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:text="长安福特等级"
+                    android:text="福域等级"
                     android:textColor="#081725"
                     android:textSize="@dimen/sp_18"
                     app:layout_constraintLeft_toLeftOf="parent"
