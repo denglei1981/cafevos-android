@@ -78,6 +78,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             this.finish()
             return
         }
+        binding.inEmpty.layoutEmpty.visibility=View.GONE
         binding.rvGoodsImg.adapter=mAdapter
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
@@ -106,7 +107,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 if(!isSuccess){
                     binding.inEmpty.apply {
                         layoutEmpty.visibility=View.VISIBLE
-                        tvEmptyContent.setText(msg)
+//                        tvEmptyContent.setText(msg)
                     }
                 }
             }
@@ -133,7 +134,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     fun onClick(v:View){
         val vid=v.id
-        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.img_share!=vid&&R.id.tv_goodsCommentLookAll!=vid){
+        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.tv_goodsCommentLookAll!=vid){
             JumpUtils.instans?.jump(100)
             return
         }

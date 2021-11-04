@@ -6,8 +6,6 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
@@ -222,10 +220,7 @@ class GoodsViewModel: BaseViewModel() {
      * */
     fun collectGoods(spuId:String){
         if(!isLogin())return
-        if(MineUtils.getBindMobileJumpDataType()){
-            startARouter(ARouterMyPath.MineBindMobileUI,true)
-            return
-        }
+        if(MineUtils.getBindMobileJumpDataType(true))return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -245,10 +240,7 @@ class GoodsViewModel: BaseViewModel() {
      * */
     fun cancelCollectGoods(spuId:String){
         if(!isLogin())return
-        if(MineUtils.getBindMobileJumpDataType()){
-            startARouter(ARouterMyPath.MineBindMobileUI,true)
-            return
-        }
+        if(MineUtils.getBindMobileJumpDataType(true))return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
