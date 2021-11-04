@@ -111,15 +111,18 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     @SuppressLint("SetTextI18n")
     fun bindingComment(itemData: CommentItem?){
-        itemData?.let{
-            headerBinding.inComment.apply {
-                layoutComment.visibility=View.VISIBLE
-                if("YES"==it.anonymous)it.nickName=activity.getString(R.string.str_anonymousUsers)
+        headerBinding.inComment.apply {
+            tvNoData.visibility=View.VISIBLE
+            tvGoodsCommentLookAll.visibility=View.GONE
+            itemData?.let {
+                tvNoData.visibility=View.GONE
+                tvGoodsCommentLookAll.visibility=View.VISIBLE
+                if("YES"== it.anonymous) it.nickName=activity.getString(R.string.str_anonymousUsers)
                 tvGoodsCommentNumber.text=activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
                 imgGoodsCommentAvatar.load(itemData.avater,R.mipmap.head_default)
                 it.evalTimeTxt=sfDate.format(it.evalTime?:0)
 //                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
-                model=it
+                model= it
             }
         }
     }
