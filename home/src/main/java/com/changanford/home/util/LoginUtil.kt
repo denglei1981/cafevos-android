@@ -32,8 +32,10 @@ object  LoginUtil {
                     JumpUtils.instans?.jump(18)
                     return false
                 }
-                return true
             }
+                           return true
+
+
         }
         return false
     }

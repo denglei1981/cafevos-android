@@ -454,7 +454,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 if(LoginUtil.isLongAndBindPhone()){
                     replay()
                 }
-
             }
             R.id.tv_news_to_like -> {
                 // 这里要防抖？
