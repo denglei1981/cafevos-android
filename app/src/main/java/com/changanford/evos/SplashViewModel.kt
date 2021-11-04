@@ -14,6 +14,7 @@ import com.changanford.common.util.MConstant.IMGURLTAG
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +67,8 @@ class SplashViewModel : ViewModel() {
                 }
             }.onFailure {
                 it ?: "tag".logE()
+            }.onWithMsgFailure {
+                it?.toast()
             }
         }
     }

@@ -11,6 +11,8 @@ import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.FeedbackTagsItem
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithCodeFailure
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
@@ -22,6 +24,7 @@ import com.changanford.common.util.PictureUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SUBMIT_FEEDBACK_SUCCESS
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toast
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -192,23 +195,23 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
                     startARouter(ARouterMyPath.MineFeedbackListUI)
                 }
                 finish()
-            }.onFailure {
-//                if (e.code == 108) {
-//                    var pop = ConfirmPop(this@MineEditFeedbackUI)
-//                    pop.title.text = "谢谢您的反馈！"
-//                    pop.title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-//                    pop.title.setTextColor(Color.parseColor("#1C1E20"))
-//                    pop.title.visibility = View.VISIBLE
-//                    pop.contentText.text = "您之前已反馈过该问题，无需再次提交，如有疑问可在之前的反馈记录中进行再次反馈。"
-//                    pop.cancelBtn.text = "重新编辑"
-//                    pop.submitBtn.text = "返回列表"
-//                    pop.submitBtn.setOnClickListener {
-//                        finish()
-//                    }
-//                    pop.showPopupWindow()
-//                } else {
-//                    ToastUtils.showLongToast(e.msg)
-//                }
+            }.onWithCodeFailure {
+                if (it == 108) {
+                    var pop = ConfirmPop(this@MineEditFeedbackUI)
+                    pop.title.text = "谢谢您的反馈！"
+                    pop.title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                    pop.title.setTextColor(Color.parseColor("#1C1E20"))
+                    pop.title.visibility = View.VISIBLE
+                    pop.contentText.text = "您之前已反馈过该问题，无需再次提交，如有疑问可在之前的反馈记录中进行再次反馈。"
+                    pop.cancelBtn.text = "重新编辑"
+                    pop.submitBtn.text = "返回列表"
+                    pop.submitBtn.setOnClickListener {
+                        finish()
+                    }
+                    pop.showPopupWindow()
+                }
+            }.onWithMsgFailure {
+                it?.toast()
             }
         }
     }

@@ -154,7 +154,7 @@ public class ChatAdapter extends BaseMultiItemQuickAdapter<MessageBean, BaseView
     private void setHeadIcon(ImageView headIcon, String headUrl, boolean isOneselfSend) {
         if (null != headIcon) {
             GlideUtils.INSTANCE.loadCircle(headUrl, headIcon, isOneselfSend ?
-                    R.mipmap.ic_def_square_img : R.mipmap.ic_def_square_img);
+                    R.mipmap.ic_def_square_img : R.mipmap.fordicon);
         }
     }
 

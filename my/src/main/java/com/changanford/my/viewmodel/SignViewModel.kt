@@ -902,6 +902,7 @@ class SignViewModel : ViewModel() {
                 AppUtils.binduserid(it)
             }
             MConstant.token = it.token
+            MConstant.mine_phone = "${it.phone}"
             SPUtils.putToken(it.token)
             getUserInfo()
             when {

@@ -26,6 +26,7 @@ import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.xiaomi.push.it
+import me.leolin.shortcutbadger.ShortcutBadger
 
 /**
  *  文件名：MineMessageInfoUI
@@ -86,6 +87,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
         }
         viewModel.changeAllToRead.observe(this, Observer {
             if (it) {
+                ShortcutBadger.applyCount(this,0)
                 toastShow("消息已读标记成功")
                 setSaveText(0)
             }
