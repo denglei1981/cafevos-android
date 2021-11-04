@@ -76,17 +76,17 @@ class CircleMainBottomAdapter(context: Context) :
                 likePost(binding, item, holder.layoutPosition)
             }
 
-            if (item.topicName.isNullOrEmpty()) {
-                binding.tvTalk.visibility = View.GONE
-            } else {
-                binding.tvTalk.visibility = View.VISIBLE
-                binding.tvTalk.text = item.topicName
-                binding.tvTalk.setOnClickListener {
-                    val bundle = Bundle()
-                    bundle.putString("topicId", item.topicId.toString())
-                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
-                }
-            }
+//            if (item.topicName.isNullOrEmpty()) {
+//                binding.tvTalk.visibility = View.GONE
+//            } else {
+//                binding.tvTalk.visibility = View.VISIBLE
+//                binding.tvTalk.text = item.topicName
+//                binding.tvTalk.setOnClickListener {
+//                    val bundle = Bundle()
+//                    bundle.putString("topicId", item.topicId.toString())
+//                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+//                }
+//            }
 
             binding.ivHead.setOnClickListener {
                 val bundle = Bundle()
