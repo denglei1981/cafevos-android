@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10">
+        android:layout_marginBottom="@dimen/dp_8">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_bg"
@@ -72,7 +72,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_talk"
@@ -80,9 +80,9 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_head"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
@@ -96,7 +96,7 @@
             android:maxLines="1"
             android:text="@{bean.authorBaseVo.nickname}"
             android:textColor="@color/circle_B0B8C0"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintLeft_toRightOf="@+id/iv_head"
             app:layout_constraintRight_toLeftOf="@+id/ll_like"
