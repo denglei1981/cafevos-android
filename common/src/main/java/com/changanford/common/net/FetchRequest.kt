@@ -59,6 +59,17 @@ fun <T> CommonResponse<T>.onFailure(block: (T?) -> Unit): CommonResponse<T> {
     return this
 }
 
+/**
+ * 请求失败或异常的处理
+ */
+fun <T> CommonResponse<T>.onWithCodeFailure(block: (Int) -> Unit): CommonResponse<T> {
+        //TODO 做一些统一的处理
+    if (this.code != 0) {
+        block(this.code)
+    }
+    return this
+}
+
 fun <T> CommonResponse<T>.onWithMsgFailure(block: (msg: String?) -> Unit): CommonResponse<T> {
     if (this.code != 0) {
         //TODO 做一些统一的处理

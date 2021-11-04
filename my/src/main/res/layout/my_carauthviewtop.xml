@@ -27,7 +27,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_12"
         android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +38,7 @@
         android:id="@+id/textView10"
         style="@style/commonTextView.Small.LightBlue"
         android:layout_marginEnd="@dimen/dp_10"
+        android:paddingVertical="@dimen/dp_6"
         android:text="@string/my_memberupdate"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"

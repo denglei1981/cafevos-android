@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
-    lateinit var menuBean: ArrayList<MenuBeanItem>
+    var menuBean: ArrayList<MenuBeanItem> = ArrayList<MenuBeanItem>()
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     val labelAdapter: LabelAdapter by lazy {
@@ -100,15 +100,21 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         getUserInfo()
         viewModel.getMenuList()
         viewModel.menuBean.observe(this, {
-            menuBean = it
+            menuBean.clear()
+            menuBean.addAll(it)
             menuAdapter.data = menuBean
             menuAdapter.notifyDataSetChanged()
         })
         lifecycleScope.launch {
-            viewModel.mineMedal()
+            if (MConstant.token.isNotEmpty()) {
+                viewModel.mineMedal()
+            }
         }
         viewModel.allMedal.observe(this, {
-            it?.let {
+            if (it == null){
+                medalAdapter.data?.clear()
+                medalAdapter.notifyDataSetChanged()
+            } else {
                 medalAdapter.data = it
                 medalAdapter.notifyDataSetChanged()
             }
@@ -141,6 +147,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             myStateShoucang.setOnClickListener { JumpUtils.instans?.jump(27) }
         }
         binding.myCarAuthLayout.apply {
+            include.root.setOnClickListener {
+                JumpUtils.instans?.jump(32)
+            }
             include.textView10.setOnClickListener {
                 JumpUtils.instans?.jump(16)
             }
@@ -237,6 +246,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.getUserInfo()
+        if (MConstant.token.isNotEmpty()){
+            viewModel.mineMedal()
+        }else{
+            medalAdapter.data?.clear()
+            medalAdapter.notifyDataSetChanged()
+        }
         viewModel.getMenuList()
     }
 }
