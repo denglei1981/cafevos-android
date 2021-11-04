@@ -176,7 +176,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvLikeCount.setOnClickListener {
             when (item.rtype) {
                 1 -> { // 点赞资讯。
-                    if (LoginUtil.isLogin()) {
+                    if (LoginUtil.isLongAndBindPhone()) {
                         if (item.authors != null) {
                             if (item.isLike == 0) {
                                 item.isLike = 1
@@ -205,7 +205,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     }
                 }
                 2 -> {// 点赞帖子
-                        if(LoginUtil.isLogin()){
+                        if(LoginUtil.isLongAndBindPhone()){
                             likePost(tvLikeCount,item)
                         }
                 }
@@ -228,7 +228,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
         btnFollow.setOnClickListener {
             // 判断是否登录。
-            if (LoginUtil.isLogin()) {
+            if (LoginUtil.isLongAndBindPhone()) {
                 if (item.authors != null) {
                     followAction(btnFollow, item.authors!!, holder.adapterPosition)
                 }

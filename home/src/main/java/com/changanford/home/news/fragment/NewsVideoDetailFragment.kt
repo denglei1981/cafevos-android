@@ -42,6 +42,7 @@ import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
+import com.changanford.home.util.LoginUtil
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
@@ -288,9 +289,7 @@ class NewsVideoDetailFragment :
         setFollowState(inflateHeader.btFollow, author)
 
         inflateHeader.btFollow.setOnClickListener {
-            if (MConstant.token.isEmpty()) {
-                startARouter(ARouterMyPath.SignUI)
-            } else {
+            if (LoginUtil.isLongAndBindPhone()) {
                 followAction()
             }
         }

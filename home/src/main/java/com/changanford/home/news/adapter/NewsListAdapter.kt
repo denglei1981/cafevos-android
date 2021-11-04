@@ -84,14 +84,14 @@ class NewsListAdapter(
         }
         btnFollow.setOnClickListener {
             // 判断是否登录。
-            if (LoginUtil.isLogin()) {
+            if (LoginUtil.isLongAndBindPhone()) {
                 if (item.authors != null) {
                     followAction(btnFollow, item.authors!!, holder.adapterPosition)
                 }
             }
         }
         tvLikeCount.setOnClickListener {
-            if (LoginUtil.isLogin()) {
+            if (LoginUtil.isLongAndBindPhone()) {
                 if (item.authors != null) {
                     if (item.isLike == 0) {
                         item.isLike = 1

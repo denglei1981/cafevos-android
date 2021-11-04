@@ -144,7 +144,7 @@
                 android:id="@+id/tv_replay_count"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/shape_gray_74_bg"
                 android:drawablePadding="2dp"
                 android:gravity="center"

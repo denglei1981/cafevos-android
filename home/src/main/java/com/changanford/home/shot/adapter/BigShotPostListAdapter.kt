@@ -50,7 +50,11 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 it.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
                 setFollowState(it.layoutHeader.btnFollow, item.authorBaseVo!!)
                 it.layoutHeader.btnFollow.setOnClickListener {
-                    item.authorBaseVo?.let { it1 -> followAction(it as MaterialButton, it1) }
+                    item.authorBaseVo?.let { it1 ->
+                        if (LoginUtil.isLongAndBindPhone()) {
+                            followAction(it as MaterialButton, it1)
+                        }
+                    }
                 }
             }
             // 内容
@@ -67,7 +71,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 labelAdapter.setNewInstance(item.authorBaseVo?.imags)
             }
             it.layoutCount.tvLikeCount.setOnClickListener { l ->
-                if (LoginUtil.isLogin()) {
+                if (LoginUtil.isLongAndBindPhone()) {
                     likePost(it, item)
                 }
             }
@@ -82,6 +86,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
         }
     }
+
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo) {
         var followType = authorBaseVo.isFollow
@@ -89,6 +94,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
 //        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
+
     fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {

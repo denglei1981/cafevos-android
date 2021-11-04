@@ -34,6 +34,7 @@ import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.dialog.CommentPicsDialog
 import com.changanford.home.news.request.NewsDetailViewModel
+import com.changanford.home.util.LoginUtil
 import com.changanford.home.widget.ReplyDialog
 import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
@@ -210,9 +211,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         }
         binding.layoutHeader.btnFollow.setOnClickListener {
-            if (MConstant.token.isEmpty()) {
-                startARouter(ARouterMyPath.SignUI)
-            } else {
+            if (LoginUtil.isLongAndBindPhone()) {
                 followAction()
             }
         }

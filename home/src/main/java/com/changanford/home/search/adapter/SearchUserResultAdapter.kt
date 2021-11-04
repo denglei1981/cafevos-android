@@ -8,7 +8,6 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
-import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultUserBinding
 import com.changanford.home.util.LoginUtil
@@ -24,13 +23,13 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
     ) {
         //     val headFrameName:String="", 这里取 这些
         //    val headFrameImage:String=""
-        holder.dataBinding?.let {
+        holder.dataBinding?.let { it ->
             GlideUtils.loadBD(item.avatar,it.ivHeader)
             it.tvAuthorName.text=item.nickname
             setFollowState(it.btnFollow,item)
             it.btnFollow.setOnClickListener {
                 // 判断是否登录。
-                if (LoginUtil.isLogin()) {
+                if (LoginUtil.isLongAndBindPhone()) {
                         followAction(it as MaterialButton, item, holder.adapterPosition)
                 }
             }
