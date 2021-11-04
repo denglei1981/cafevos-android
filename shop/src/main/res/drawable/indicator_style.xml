@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/shape_f5f6f8_w17_h5" android:state_selected="true" />
-
-    <item android:drawable="@drawable/round_ccf5f6f8_5dp" />
+    <item android:drawable="@drawable/round_33f5f6f8_5dp" />
 </selector>

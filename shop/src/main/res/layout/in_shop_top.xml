@@ -18,6 +18,9 @@
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_20"
                 style="@style/BannerDefaultStyle"
+                app:banner_indicatorGravity="bottom|left"
+                app:banner_pointTopBottomMargin="@dimen/dp_20"
+                app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
                 app:banner_aspectRatio="1"/>
             <com.changanford.shop.view.TypefaceTextView
                 tools:visibility="visible"
