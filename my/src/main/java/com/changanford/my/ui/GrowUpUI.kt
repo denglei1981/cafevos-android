@@ -45,14 +45,14 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
         binding.mineToolbar.toolbarTitle.text = "成长值详情"
 
         binding.mineToolbar.toolbarSave.visibility = View.VISIBLE
-        binding.mineToolbar.toolbarSave.text = "成长值"
+        binding.mineToolbar.toolbarSave.text = "关于成长值"
         binding.mineToolbar.toolbarSave.setTextColor(Color.parseColor("#01025C"))
         binding.mineToolbar.toolbarSave.setOnClickListener {
             JumpUtils.instans?.jump(1, MConstant.H5_MINE_GROW_UP)
         }
 
         binding.myUpdateGrade.setOnClickListener {
-            JumpUtils.instans!!.jump(16, "")
+            JumpUtils.instans?.jump(16)
         }
         binding.myGradeProgressbar.setProgressWithAnimation(0f)
 
@@ -151,7 +151,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
             size: Int
         ) {
             var icon: AppCompatImageView = holder.rootView.findViewById(R.id.item_icon_qy)
-            icon.load(data.icon, R.mipmap.ic_launcher)
+            icon.load(data.icon, R.mipmap.ic_def_square_img)
         }
 
         inner class BannerViewHolder(view: View) : RecyclerView.ViewHolder(view) {

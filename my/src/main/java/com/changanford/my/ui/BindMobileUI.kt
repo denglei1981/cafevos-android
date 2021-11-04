@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.SurfaceHolder
 import android.view.View
@@ -45,6 +46,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                 t1.isNotEmpty() && t2.isNotEmpty()
             })
             .subscribe {
+                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#01025C" else "#757575"))
                 binding.btnLogin.isEnabled = it
             }
 
