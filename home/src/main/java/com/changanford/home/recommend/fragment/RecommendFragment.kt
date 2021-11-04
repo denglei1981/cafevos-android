@@ -13,6 +13,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
+import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
@@ -24,11 +25,13 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 /**
  *  推荐列表
  * */
-open class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
+open class RecommendFragment :
+    BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
     OnLoadMoreListener {
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
+
     companion object {
         fun newInstance(): RecommendFragment {
             val fg = RecommendFragment()
@@ -43,7 +46,8 @@ open class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding,
         viewModel.getRecommend(false)
         binding.smartLayout.setEnableRefresh(false)
         binding.smartLayout.setOnLoadMoreListener(this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
@@ -158,6 +162,7 @@ open class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding,
             }
         })
     }
+
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
             if (it.isSuccess) {
@@ -180,7 +185,14 @@ open class RecommendFragment : BaseLoadSirFragment<FragmentRecommendListBinding,
                     binding.smartLayout.setEnableLoadMore(true)
                 }
             } else {
-                showFailure(it.message)
+                when (it.message) {
+                    getString(R.string.net_error) -> {
+                        showTimeOut()
+                    }
+                    else -> {
+                        showFailure(it.message)
+                    }
+                }
                 // 刷新也得停
                 (parentFragment as HomeV2Fragment).stopRefresh()
                 ToastUtils.showShortToast(it.message, requireContext())
