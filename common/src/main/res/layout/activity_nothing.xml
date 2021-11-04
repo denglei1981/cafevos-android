@@ -35,7 +35,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:gravity="center"
-                android:text="U享卡"
                 android:textColor="@color/color_00"
                 android:textSize="18sp"
                 android:visibility="invisible"
@@ -75,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="3"
-            android:textColor="@color/appblue"
+            android:textColor="@color/color_00095B"
             app:layout_constraintLeft_toLeftOf="@+id/tv_fly"
             app:layout_constraintTop_toBottomOf="@+id/tv_fly"
             tools:ignore="HardcodedText" />
