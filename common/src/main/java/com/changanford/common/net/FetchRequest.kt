@@ -89,7 +89,7 @@ fun <T> CommonResponse<T>.onWithMsgFailure(block: (msg: String?) -> Unit): Commo
 private fun getApiException(e: Throwable): ApiException {
     return when (e) {
         is UnknownHostException -> {
-            ApiException("您的网络不稳定，请刷新重试~", -100)
+            ApiException("您的网络不稳定,请刷新重试~", -100)
         }
         is JSONException -> {//|| e is JsonParseException
             ApiException("数据异常", -100)
