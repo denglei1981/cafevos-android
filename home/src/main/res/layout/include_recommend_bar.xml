@@ -54,6 +54,7 @@
             android:layout_height="@dimen/dp_44"
             android:layout_marginStart="20dp"
             android:layout_marginTop="@dimen/dp_30"
+            android:visibility="gone"
             android:background="@null"
             android:drawableStart="@drawable/icon_home_gray_search"
             android:drawablePadding="10dp"
