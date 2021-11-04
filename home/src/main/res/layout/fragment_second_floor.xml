@@ -64,7 +64,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
                         android:orientation="vertical"
-
                         app:layout_collapseMode="pin"
                         app:layout_collapseParallaxMultiplier="0.8">
 

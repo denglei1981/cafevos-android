@@ -42,6 +42,7 @@ import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
+import com.changanford.home.util.LoginUtil
 import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
@@ -243,9 +244,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             JumpUtils.instans!!.jump(35, newsDetailData.userId.toString())
         }
         inflateHeader.btFollow.setOnClickListener {
-            if (MConstant.token.isEmpty()) {
-                startARouter(ARouterMyPath.SignUI)
-            } else {
+            if (LoginUtil.isLongAndBindPhone()) {
                 followAction()
             }
         }
@@ -446,23 +445,32 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     }
 
     override fun onClick(v: View) {
-        if (MConstant.token.isEmpty()) {
-            startARouter(ARouterMyPath.SignUI)
-            return
-        }
+//        if (LoginUtil.isLongAndBindPhone()) {
+//            startARouter(ARouterMyPath.SignUI)
+//            return
+//        }
         when (v.id) {
             R.id.tv_speak_something -> {
-                replay()
+                if(LoginUtil.isLongAndBindPhone()){
+                    replay()
+                }
+
             }
             R.id.tv_news_to_like -> {
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                viewModel.actionLike(artId)
+                if(LoginUtil.isLongAndBindPhone()){
+                    viewModel.actionLike(artId)
+                }
+
             }
             R.id.tv_news_to_collect -> {
                 // 收藏
-                viewModel.addCollect(artId)
+                if(LoginUtil.isLongAndBindPhone()){
+                    viewModel.addCollect(artId)
+                }
+
             }
             R.id.tv_news_to_msg -> { // 去评论。
 //                replay()

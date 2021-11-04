@@ -13,6 +13,7 @@ import com.changanford.common.databinding.ItemFansBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -120,6 +121,9 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
 
     // 1 关注 2 取消关注
     fun cancel(followId: String, type: String) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
         if (type == "1") {
             lifecycleScope.launch { viewModel.cancelFans(followId, type) }
         } else {

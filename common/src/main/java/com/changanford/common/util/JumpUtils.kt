@@ -177,7 +177,9 @@ class JumpUtils {
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             10 -> {//成长值详情
-                startARouter(ARouterMyPath.MineTaskListUI)
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    RouterManger.needLogin(true).startARouter(ARouterMyPath.MineTaskListUI)
+                }
             }
             11 -> {//填写意见反馈
                 startARouter(ARouterMyPath.MineEditFeedbackUI)
@@ -195,7 +197,9 @@ class JumpUtils {
 
             }
             16 -> {//任务中心,
-                startARouter(ARouterMyPath.MineTaskListUI, true)
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    RouterManger.needLogin(true).startARouter(ARouterMyPath.MineTaskListUI)
+                }
             }
             17 -> {//车主认证',
                 when {
