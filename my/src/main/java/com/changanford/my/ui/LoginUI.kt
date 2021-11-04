@@ -12,6 +12,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.PUSH_ID
@@ -96,6 +97,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        AppUtils.setStatusBarMarginTop(binding.back, this)
         UserManger.deleteUserInfo()
         MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
