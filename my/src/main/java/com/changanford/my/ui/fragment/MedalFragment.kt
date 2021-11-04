@@ -44,6 +44,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                 it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
                 it.tvMedalName.text = item.medalName
                 it.btnGetMedal.setOnClickListener(null)
+                it.imMedalIcon.alpha = 0.3f
                 when {
                     item.isGet == "0" -> {//获得未领取
                         it.btnGetMedal.visibility = View.VISIBLE
@@ -68,6 +69,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                                 "yyyy-MM-dd"
                             )
                         }点亮\n$r"
+                        it.imMedalIcon.alpha = 1.0f
                     }
                 }
             }
