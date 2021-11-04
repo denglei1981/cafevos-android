@@ -9,6 +9,7 @@ import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.web.ShareViewModule
@@ -232,7 +233,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }else btnSubmit.setStates(5)
         }
     }
+    /**
+     * 商品分享 需登录和绑定手机
+    * */
     fun share(){
+        if(MineUtils.getBindMobileJumpDataType(true))return
         if(::dataBean.isInitialized)dataBean.shareBeanVO?.apply {
             shareBean=ShareBean(targetUrl =shareUrl,imageUrl = shareImg,bizId = bizId,title = shareTitle,content = shareDesc,type = type)
            shareViewModule.share(activity,shareBean)
