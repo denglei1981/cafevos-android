@@ -148,6 +148,8 @@ class ActsMainAdapter(
     }
 
     private fun initViewPager(binding: HomeActsHeaderBinding) {
+
+
         binding.bViewpager.apply {
             setAutoPlay(true)
             setScrollDuration(500)
@@ -165,6 +167,13 @@ class ActsMainAdapter(
 
 
     }
+    fun stopViewPagerLoop(){
+        headerBinding?.bViewpager?.stopLoop()
+    }
+    fun startViewPagerLoop(){
+        headerBinding?.bViewpager?.startLoop()
+    }
+
 
     /**
      * 设置指示器

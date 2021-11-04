@@ -33,9 +33,9 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         adapter.setItems(arrayListOf("", ""))
         binding.ryActs.setStickyListener {
             if(it){
-                LiveDataBus.get().with("Gone").postValue("")
+                adapter.stopViewPagerLoop()
             }else{
-                LiveDataBus.get().with("Visi").postValue("")
+                adapter.startViewPagerLoop()
             }
         }
     }
