@@ -12,6 +12,7 @@ import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.util.DeviceUtils
+import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
@@ -33,7 +34,9 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             setAdapter(carTopBanner)
             setIndicatorView(binding.drIndicator)
             setOnPageClickListener {
-                JumpUtils.instans?.jump(topBannerList[it].jumpDataType,topBannerList[it].jumpDataValue)
+                if(!FastClickUtils.isFastClick()){
+                    JumpUtils.instans?.jump(topBannerList[it].jumpDataType,topBannerList[it].jumpDataValue)
+                }
             }
             setIndicatorView(binding.drIndicator)
         }
