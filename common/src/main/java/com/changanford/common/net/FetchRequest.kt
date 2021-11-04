@@ -1,9 +1,16 @@
 package com.changanford.common.net
 
+import com.alipay.android.phone.mrpc.core.HttpException
+import com.changanford.common.basic.ApiException
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.ui.LoadingDialog
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -27,8 +34,9 @@ suspend fun <T> fetchRequest(
     }
     return try {
         request(ApiClient)
-    } catch (e: Exception) {
-        CommonResponse(data = null, msg = e.message ?: "报错", code = 1)
+    } catch (e: Throwable) {
+        val apiException = getApiException(e)
+        CommonResponse(data = null, msg = apiException.errorMessage ?: "报错", code = 1)
     } finally {//处理某些特殊情况
         if (showLoading) {
             withContext(Dispatchers.Main) {
@@ -76,4 +84,37 @@ fun <T> CommonResponse<T>.onWithMsgFailure(block: (msg: String?) -> Unit): Commo
         block(this.msg)
     }
     return this
+}
+
+private fun getApiException(e: Throwable): ApiException {
+    return when (e) {
+        is UnknownHostException -> {
+            ApiException("您的网络不稳定，请刷新重试~", -100)
+        }
+        is JSONException -> {//|| e is JsonParseException
+            ApiException("数据异常", -100)
+        }
+        is SocketTimeoutException -> {
+            ApiException("连接超时", -100)
+        }
+        is ConnectException -> {
+            ApiException("连接错误", -100)
+        }
+        is HttpException -> {
+            ApiException("http code ${e.code}", -100)
+        }
+        is ApiException -> {
+            e
+        }
+        /**
+         * 如果协程还在运行，个别机型退出当前界面时，viewModel会通过抛出CancellationException，
+         * 强行结束协程，与java中InterruptException类似，所以不必理会,只需将toast隐藏即可
+         */
+        is CancellationException -> {
+            ApiException("", -10)
+        }
+        else -> {
+            ApiException("未知错误", -100)
+        }
+    }
 }

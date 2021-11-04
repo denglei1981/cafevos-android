@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:background="@mipmap/image_comment_net_error"
+        android:background="@mipmap/icon_common_net_error"
         android:contentDescription="@string/app_name" />
 
     <TextView
@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/net_error"
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:textColor="#999999"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="wrap_content"
