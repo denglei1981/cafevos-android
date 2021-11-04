@@ -13,7 +13,6 @@
             layout="@layout/header_shop"/>
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smartRl"
-            android:paddingTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/dp_50">
