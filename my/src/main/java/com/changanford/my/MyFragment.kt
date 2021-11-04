@@ -176,7 +176,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             isRefreshUserInfo = false
             loginState.postValue(true)
         }
-        binding.myHead.load(userInfoBean?.avatar, R.mipmap.my_headdefault)
+        binding.myHead.load(userInfoBean?.avatar, R.mipmap.head_default)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"

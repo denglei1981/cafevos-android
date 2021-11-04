@@ -20,7 +20,7 @@ import java.io.File
 fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(GlideUtils.handleImgUrl(url))
-        .error(R.mipmap.image_h_one_default)
+        .error(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -36,7 +36,7 @@ fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
 fun ImageView.loadImageNoOther(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(url)
-        .error(R.mipmap.image_h_one_default)
+        .error(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -52,7 +52,7 @@ fun ImageView.loadImageNoOther(url: String?, imageOptions: ImageOptions? = null)
 fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(url)
-        .error(R.mipmap.image_h_one_default)
+        .error(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(
@@ -69,7 +69,7 @@ fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
 fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(GlideUtils.handleImgUrl(url))
-        .error(R.mipmap.image_h_one_default)
+        .error(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(

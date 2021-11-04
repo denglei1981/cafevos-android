@@ -26,8 +26,8 @@ class CircleMainTopicAdapter(context: Context) :
         val binding = vdBinding as ItemCircleMainTopicBinding
         binding.ivIcon.setCircular(5)
         binding.ivIcon.loadImage(item.pic, ImageOptions().apply {
-            placeholder = R.mipmap.image_s_one_default
-            error=R.mipmap.image_s_one_default
+            placeholder = R.mipmap.ic_def_square_img
+            error=R.mipmap.ic_def_square_img
         })
         binding.tvNum.text = "${item.postsCount}帖子 ${item.heat}热度"
         binding.bean = item
