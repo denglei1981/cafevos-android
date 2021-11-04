@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.GrowUpItem
-import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
@@ -64,9 +63,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
                             JumpUtils.instans?.jump(1, MConstant.H5_MINE_FORD_AGREEMENT)
                         }
                         1 -> {
-                            if (!viewModel.getBindMobileJumpDataType()) {
-                                RouterManger.startARouter(ARouterMyPath.MineTaskListUI)
-                            }
+                            JumpUtils.instans?.jump(16)
                         }
                     }
                 }

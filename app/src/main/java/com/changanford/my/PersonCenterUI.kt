@@ -194,6 +194,9 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
 
     // 1 关注 2 取消关注
     fun cancel(followId: String, type: String) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
         if (type == "1") {
             viewModel.cancelFans(followId, type)
         } else {
