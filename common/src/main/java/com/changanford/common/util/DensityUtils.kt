@@ -1,6 +1,7 @@
 package com.changanford.common.util
 
 import android.content.res.Resources
+import android.util.DisplayMetrics
 
 /**
  * @Author: hpb
@@ -54,4 +55,5 @@ object DensityUtils {
     fun px2dip(pxValue: Int): Float {
         return pxValue / density
     }
+
 }

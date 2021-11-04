@@ -19,7 +19,7 @@
             android:drawableLeft="@mipmap/icon_common_gray_search"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:hint="请输入你喜欢的内容"
+            android:hint="@string/home_input_key_word"
             android:imeOptions="actionSearch"
             android:maxLines="1"
             android:paddingLeft="10dp"
