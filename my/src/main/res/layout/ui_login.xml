@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_25"
-                    android:layout_marginTop="@dimen/dp_33"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:src="@mipmap/back_w" />
 
                 <androidx.appcompat.widget.AppCompatTextView
