@@ -54,7 +54,6 @@
             android:layout_height="@dimen/dp_44"
             android:layout_marginStart="20dp"
             android:layout_marginTop="@dimen/dp_30"
-            android:visibility="gone"
             android:background="@null"
             android:drawableStart="@drawable/icon_home_gray_search"
             android:drawablePadding="10dp"
@@ -68,6 +67,7 @@
             android:textColor="@color/white"
             android:textColorHint="#E2E2E2"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_ford_title"
             app:layout_constraintWidth_percent="0.72" />
@@ -114,35 +114,39 @@
             android:id="@+id/ll_back"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintBottom_toBottomOf="parent">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_go_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="16dp"
-                android:visibility="gone"
                 android:contentDescription="@string/home_go_back_main"
                 android:gravity="center"
                 android:src="@drawable/icon_home_down_back_main"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:lottie_autoPlay="true"
                 app:lottie_fileName="arrow_animation_down_new.json"
-                app:lottie_loop="true"
-                app:lottie_autoPlay="true" />
+                app:lottie_loop="true" />
 
         </FrameLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_big_topic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_10"
+            android:lineSpacingMultiplier="1.5"
             android:textColor="#ffffffff"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_topic_title"
@@ -155,8 +159,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="@dimen/dp_20"
             android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.5"
             android:textColor="#ffffffff"
             android:textSize="@dimen/sp_10"
             app:layout_constraintBottom_toTopOf="@+id/rv_banner"
