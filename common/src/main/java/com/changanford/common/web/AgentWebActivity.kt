@@ -272,10 +272,12 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
                     //取消绑定手机号
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "false")
                     }
                     //绑定手机号成功
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                     }
                 }
