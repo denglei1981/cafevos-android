@@ -21,3 +21,4 @@ build
 .idea/
 *.apk
 output-metadata.json
+/app/baidu
