@@ -94,10 +94,12 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             holder.dataBinding?.let {
                 try {
                     item.spuImgs?.let { img ->
-                        it.itemIcon.load(img, R.mipmap.ic_def_square_img)
-//                        var imgs = img.split(",")
-//                        if (imgs.size > 1) {
-//                        }
+                        var showImg: String = img
+                        var imgs = img.split(",")
+                        if (imgs.size > 1) {
+                            showImg = imgs[0]
+                        }
+                        it.itemIcon.load(showImg, R.mipmap.ic_def_square_img)
                     }
                 } catch (e: Exception) {
 
