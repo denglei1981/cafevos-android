@@ -117,8 +117,7 @@ class GoodsViewModel: BaseViewModel() {
 //                ToastUtils.showLongToast(it,MyApp.mContext)
                 responseData.postValue(ResponseBean(false,msg = it))
             }.onSuccess {
-                addFootprint(spuId)
-//                if(BuildConfig.DEBUG&&it?.acountFb!!<1) it.acountFb =1000
+//                addFootprint(spuId)
                 goodsDetailData.postValue(it)
             }
         }
