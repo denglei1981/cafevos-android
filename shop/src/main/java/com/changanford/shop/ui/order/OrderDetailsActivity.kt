@@ -146,7 +146,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                     isApplyRefund(dataBean)
                 }
-                "已完成"->{
+                "已完成","退货中","退货完成"->{
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
@@ -252,7 +252,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     * */
     private fun cancelOrder(){
         when(binding.inBottom.btnOrderCancle.text){
-            //取消订单
             getString(R.string.str_cancelOrder)->{
                 control.cancelOrder(dataBean,object :OnPerformListener{
                     override fun onFinish(code: Int) {
@@ -262,7 +261,6 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     }
                 })
             }
-            //申请退货
             getString(R.string.str_applyRefund)->{
                 control.applyRefund(dataBean,object :OnPerformListener{
                     override fun onFinish(code: Int) {
