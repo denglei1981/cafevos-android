@@ -102,6 +102,11 @@ interface ShopNetWorkApi {
     @POST("/mall/pay/cancel")
     suspend fun orderCancel(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
+     *申请退货
+     * */
+    @POST("")
+    suspend fun applyRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
      *我的积分
      * */
     @POST("/mall/index/myPoints")
