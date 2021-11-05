@@ -304,6 +304,5 @@ class OrderViewModel: BaseViewModel() {
             "RTED"->"退货完成"
             else ->"未知"
         }
-
     }
 }
