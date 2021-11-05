@@ -129,6 +129,9 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             status.visibility = View.GONE
                         }
                     }
+                    holder.itemView.setOnClickListener {
+                        JumpUtils.instans?.jump(6, item.circleId.toString())
+                    }
                 }
                 1 -> {
                     var title: AppCompatTextView = holder.getView(R.id.circle_user)
@@ -149,9 +152,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     //状态 状态 2待审核  1认证失败 3审核通过
                     when (item.checkStatus) {
                         "2", "1" -> {
+                            reasonLayout.visibility =
+                                if (item.checkStatus == "2") View.GONE else View.VISIBLE
                             status.visibility = View.VISIBLE
                             status.text = if (item.checkStatus == "2") "审核中" else "未通过"
-                            reasonLayout.visibility = View.VISIBLE
                             holder.setText(
                                 R.id.item_reason,
                                 if (item.checkStatus == "2") "" else "原因：${item.checkNoReason}"
@@ -179,15 +183,15 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .param(RouterManger.KEY_TO_ID, item.circleId.toString())
                                     .startARouter(ARouterMyPath.CircleMemberUI)
                             }
+                            holder.itemView.setOnClickListener {
+                                JumpUtils.instans?.jump(6, item.circleId.toString())
+                            }
                         }
                         else -> {
                             status.visibility = View.GONE
                         }
                     }
                 }
-            }
-            holder.itemView.setOnClickListener {
-                JumpUtils.instans?.jump(6, item.circleId.toString())
             }
         }
     }

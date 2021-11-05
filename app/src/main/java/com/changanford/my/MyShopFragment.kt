@@ -94,7 +94,7 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             holder.dataBinding?.let {
                 try {
                     item.spuImgs?.let { img ->
-                        it.itemIcon.load(img, R.mipmap.ic_launcher)
+                        it.itemIcon.load(img, R.mipmap.ic_def_square_img)
 //                        var imgs = img.split(",")
 //                        if (imgs.size > 1) {
 //                        }
