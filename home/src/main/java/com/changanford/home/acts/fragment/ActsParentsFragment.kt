@@ -32,9 +32,9 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         binding.ryActs.adapter = adapter
         adapter.setItems(arrayListOf("", ""))
         binding.ryActs.setStickyListener {
-            if(it){
+            if (it) {
                 adapter.stopViewPagerLoop()
-            }else{
+            } else {
                 adapter.startViewPagerLoop()
             }
         }
@@ -43,14 +43,17 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     override fun initData() {
         viewModel.getBanner()
     }
-
     override fun onRetryBtnClick() {
-
     }
-
     override fun onResume() {
         super.onResume()
-        viewModel.getBanner()
+//        viewModel.getBanner()
+        try {
+            adapter.startViewPagerLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
     override fun observe() {
@@ -68,5 +71,25 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     fun homeRefersh() {
         viewModel.getBanner()
         adapter.actsChildFragment.getActList(false, adapter.allUnitCode, adapter.allActsCode)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            adapter.stopViewPagerLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            adapter.stopViewPagerLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 }

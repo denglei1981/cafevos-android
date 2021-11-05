@@ -120,7 +120,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,newsDetailData?.shares)
+                shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
     }
@@ -157,7 +157,7 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
         binding.bViewpager.create(newsDetailData.imageTexts)
         binding.tvPicsNum.text = "1/${newsDetailData.imageTexts.size}"
         binding.homeTvContent.text = newsDetailData.imageTexts[0].description
-        binding.homeTvContent.movementMethod= ScrollingMovementMethod.getInstance()
+        binding.homeTvContent.movementMethod = ScrollingMovementMethod.getInstance()
 
     }
 
@@ -191,8 +191,8 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
                 followAction()
             }
         }
-        binding.layoutHeader.ivAvatar.setOnClickListener{
-            JumpUtils.instans?.jump(35,newsDetailData.userId)
+        binding.layoutHeader.ivAvatar.setOnClickListener {
+            JumpUtils.instans?.jump(35, newsDetailData.userId)
         }
         binding.llComment.tvNewsToLike.setPageTitleText(newsDetailData.getLikeCount())
 
@@ -380,6 +380,25 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
     }
 
     var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
+    override fun onResume() {
+        super.onResume()
+        try {
+            binding.bViewpager.startLoop()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            binding.bViewpager.stopLoop()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override fun onDestroy() {
         if (isNeedNotify) {
             newsDetailData?.let {
@@ -394,6 +413,11 @@ class NewsPicsActivity : BaseActivity<ActivityNewsPicDetailsBinding, NewsDetailV
             }
         }
         super.onDestroy()
+        try {
+            binding.bViewpager.stopLoop()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
 }

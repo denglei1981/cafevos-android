@@ -227,4 +227,33 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         viewModel.getSpecialList()
         viewModel.getNewsList(false)
     }
+
+    override fun onResume() {
+        super.onResume()
+        try {
+            headNewBinding?.bViewpager?.startLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        try {
+            headNewBinding?.bViewpager?.stopLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            headNewBinding?.bViewpager?.stopLoop()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
 }
