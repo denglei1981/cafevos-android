@@ -185,17 +185,17 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                 circleAdapter.topicAdapter.setItems(it.topics)
                 topicAdapter.notifyDataSetChanged()
 
-                topFragments.forEachIndexed { index, circleMainFragment ->
-                    when (index) {
-                        0 -> {
-                            circleMainFragment.setData(it.regionCircles.circleInfos)
-                        }
-                        1 -> {
-                            circleMainFragment.setData(it.interestCircles.circleInfos)
-                        }
-
-                    }
-                }
+//                topFragments.forEachIndexed { index, circleMainFragment ->
+//                    when (index) {
+//                        0 -> {
+//                            circleMainFragment.setData(it.regionCircles?.circleInfos)
+//                        }
+//                        1 -> {
+//                            circleMainFragment.setData(it.interestCircles?.circleInfos)
+//                        }
+//
+//                    }
+//                }
             }
             binding.refreshLayout.finishRefresh()
         })

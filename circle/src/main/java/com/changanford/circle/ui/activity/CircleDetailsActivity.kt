@@ -131,7 +131,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private fun initListener(circleName: String) {
         binding.ivPostBar.setOnClickListener {
-            if (postEntity == null) {
+            if (postEntity?.size == 0) {
                 initPop(circleName)
             } else {
                 AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
@@ -201,7 +201,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(viewModel.circleType[position], "", circleId)
+                    return CircleDetailsFragment.newInstance(
+                        viewModel.circleType[position],
+                        "",
+                        circleId
+                    )
                 }
 
             }

@@ -48,10 +48,10 @@ class CircleMainAdapter(
     private val tabList = listOf("推荐", "最新")
     private val topTabList = listOf("地域", "兴趣")
 
-    val topFragments = arrayListOf(
-        CircleMainFragment.newInstance("0"),
-        CircleMainFragment.newInstance("1")
-    )
+//    val topFragments = arrayListOf(
+//        CircleMainFragment.newInstance("0"),
+//        CircleMainFragment.newInstance("1")
+//    )
 
     lateinit var topBinding: ItemCircleMainTopBinding
 
@@ -119,75 +119,75 @@ class CircleMainAdapter(
         }
     }
 
-    private fun initTopMagicIndicator(binding: ItemCircleMainTopBinding) {
-        val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundColor(Color.WHITE)
-        val commonNavigator = CommonNavigator(context)
-        commonNavigator.scrollPivotX = 0.8f
-        commonNavigator.adapter = object : CommonNavigatorAdapter() {
-            override fun getCount(): Int {
-                return topTabList.size
-            }
-
-            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView: SimplePagerTitleView =
-                    ScaleTransitionPagerTitleView(context)
-                simplePagerTitleView.text = topTabList[index]
-                simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
-                simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(context, R.color.color_33)
-                simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(context, R.color.circle_app_color)
-                simplePagerTitleView.setOnClickListener { binding.viewPagerTop.currentItem = index }
-                return simplePagerTitleView
-            }
-
-            override fun getIndicator(context: Context): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight =
-                    UIUtil.dip2px(context, 3.0).toFloat()
-                indicator.lineWidth =
-                    UIUtil.dip2px(context, 22.0).toFloat()
-                indicator.roundRadius =
-                    UIUtil.dip2px(context, 1.5).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.circle_app_color
-                    )
-                )
-                return indicator
-            }
-        }
-        magicIndicator.navigator = commonNavigator
-        ViewPagerHelper.bind(magicIndicator, binding.viewPagerTop)
-    }
-
-    private fun initTopTabAndViewPager(binding: ItemCircleMainTopBinding) {
-        binding.viewPagerTop.apply {
-
-            adapter = object : FragmentPagerAdapter(
-                supportFragmentManager,
-                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-            ) {
-                override fun getCount(): Int {
-                    return tabList.size
-                }
-
-                override fun getItem(position: Int): Fragment {
-                    return topFragments[position]
-                }
-
-            }
-
-            offscreenPageLimit = 1
-        }
-
-    }
+//    private fun initTopMagicIndicator(binding: ItemCircleMainTopBinding) {
+//        val magicIndicator = binding.magicTab
+//        magicIndicator.setBackgroundColor(Color.WHITE)
+//        val commonNavigator = CommonNavigator(context)
+//        commonNavigator.scrollPivotX = 0.8f
+//        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+//            override fun getCount(): Int {
+//                return topTabList.size
+//            }
+//
+//            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+//                val simplePagerTitleView: SimplePagerTitleView =
+//                    ScaleTransitionPagerTitleView(context)
+//                simplePagerTitleView.text = topTabList[index]
+//                simplePagerTitleView.textSize = 18f
+//                simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+//                simplePagerTitleView.normalColor =
+//                    ContextCompat.getColor(context, R.color.color_33)
+//                simplePagerTitleView.selectedColor =
+//                    ContextCompat.getColor(context, R.color.circle_app_color)
+//                simplePagerTitleView.setOnClickListener { binding.viewPagerTop.currentItem = index }
+//                return simplePagerTitleView
+//            }
+//
+//            override fun getIndicator(context: Context): IPagerIndicator {
+//                val indicator = LinePagerIndicator(context)
+//                indicator.mode = LinePagerIndicator.MODE_EXACTLY
+//                indicator.lineHeight =
+//                    UIUtil.dip2px(context, 3.0).toFloat()
+//                indicator.lineWidth =
+//                    UIUtil.dip2px(context, 22.0).toFloat()
+//                indicator.roundRadius =
+//                    UIUtil.dip2px(context, 1.5).toFloat()
+//                indicator.startInterpolator = AccelerateInterpolator()
+//                indicator.endInterpolator = DecelerateInterpolator(2.0f)
+//                indicator.setColors(
+//                    ContextCompat.getColor(
+//                        context,
+//                        R.color.circle_app_color
+//                    )
+//                )
+//                return indicator
+//            }
+//        }
+//        magicIndicator.navigator = commonNavigator
+//        ViewPagerHelper.bind(magicIndicator, binding.viewPagerTop)
+//    }
+//
+//    private fun initTopTabAndViewPager(binding: ItemCircleMainTopBinding) {
+//        binding.viewPagerTop.apply {
+//
+//            adapter = object : FragmentPagerAdapter(
+//                supportFragmentManager,
+//                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+//            ) {
+//                override fun getCount(): Int {
+//                    return tabList.size
+//                }
+//
+//                override fun getItem(position: Int): Fragment {
+//                    return topFragments[position]
+//                }
+//
+//            }
+//
+//            offscreenPageLimit = 1
+//        }
+//
+//    }
 
     private fun initMagicIndicator(binding: ItemCircleMianBottomBinding) {
         val magicIndicator = binding.magicTab
