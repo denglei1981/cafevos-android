@@ -9,6 +9,7 @@ import com.changanford.common.R
 import com.changanford.common.loadsir.EmptyCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
+import com.changanford.common.loadsir.TimeoutCallback
 import com.changanford.common.util.toast.ToastUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
@@ -43,6 +44,12 @@ abstract class BaseLoadSirFragment<VB : ViewBinding, VM : ViewModel> : BaseFragm
             mLoadService!!.showCallback(EmptyCallback::class.java)
         }
     }
+    open fun showTimeOut() {
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(TimeoutCallback::class.java)
+        }
+    }
+
 
     open fun showFailure(message: String) {
         if (null != mLoadService) {

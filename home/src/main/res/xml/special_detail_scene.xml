@@ -102,7 +102,6 @@
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
-
             motion:shapeAppearanceOverlay="@style/circleImageStyle" />
 
 

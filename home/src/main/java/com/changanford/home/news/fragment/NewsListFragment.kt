@@ -50,7 +50,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.smartLayout.setEnableRefresh(false)
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
@@ -78,6 +79,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         homeRefersh()
         setLoadSir(binding.smartLayout)
     }
+
     var headNewBinding: HeaderNewsListBinding? = null
 
     private fun addHeadView() {
@@ -101,7 +103,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 it.bViewpager.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
-                        var speical = it.bViewpager.data[position] as SpecialListBean
+                        val speical = it.bViewpager.data[position] as SpecialListBean
                         if (TextUtils.isEmpty(speical.title)) {
                             it.tvSubTitle.text = "长安福特专题"
                         } else {
@@ -170,8 +172,16 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     binding.smartLayout.setEnableLoadMore(true)
                 }
             } else {
-                showFailure(it.message)
+                when (it.message) {
+                    getString(R.string.net_error) -> {
+                        showTimeOut()
+                    }
+                    else -> {
+                        showFailure(it.message)
+                    }
+                }
                 ToastUtils.showShortToast(it.message, requireContext())
+
             }
         })
         LiveDataBus.get().withs<InfoDetailsChangeData>(NEWS_DETAIL_CHANGE).observe(this, Observer {

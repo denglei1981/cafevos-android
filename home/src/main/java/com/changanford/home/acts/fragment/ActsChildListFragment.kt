@@ -55,8 +55,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     }
 
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = searchActsResultAdapter
         searchActsResultAdapter.loadMoreModule.setOnLoadMoreListener(object : OnLoadMoreListener {
             override fun onLoadMore() {

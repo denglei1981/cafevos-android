@@ -2,14 +2,20 @@ package com.changanford.common.basic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alipay.android.phone.mrpc.core.HttpException
 import com.changanford.common.net.CommonResponse
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toast
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 typealias Block<T> = suspend () -> T
-typealias Error = suspend (e: Exception) -> Unit
+typealias Error = suspend (e: Throwable) -> Unit
 
 open class BaseViewModel : ViewModel() {
 
@@ -28,12 +34,12 @@ open class BaseViewModel : ViewModel() {
             fetchRequest(showLoading) {
                 try {
                     block.invoke()
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     error?.invoke(e)
                     CommonResponse(data = null, msg = e.message ?: "报错", code = 1)
                 }
-
             }
         }
     }
+
 }
