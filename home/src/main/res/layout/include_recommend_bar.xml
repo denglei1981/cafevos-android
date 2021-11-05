@@ -15,11 +15,10 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_home"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="750:1622"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
