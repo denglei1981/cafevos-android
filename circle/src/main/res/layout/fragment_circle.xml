@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="社区"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_666974"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
