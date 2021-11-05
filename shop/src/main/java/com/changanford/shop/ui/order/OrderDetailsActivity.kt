@@ -135,7 +135,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_confirmGoods)
                     isApplyRefund(dataBean)
                 }
-                "待评价"->{
+                "待评价","退货中","退货完成"->{
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
@@ -146,7 +146,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                     isApplyRefund(dataBean)
                 }
-                "已完成","退货中","退货完成"->{
+                "已完成"->{
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
