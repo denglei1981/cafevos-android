@@ -9,7 +9,7 @@
         android:paddingBottom="@dimen/dp_10"
         android:paddingTop="@dimen/dp_35">
         <com.changanford.shop.view.TypefaceTextView
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_666974"
             android:textSize="@dimen/sp_22"
             android:textStyle="bold"
             android:text="@string/str_shop"
@@ -19,7 +19,6 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_search"
             android:background="@drawable/round_f8f9f9"
-            android:padding="@dimen/dp_9"
             android:src="@mipmap/shop_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
