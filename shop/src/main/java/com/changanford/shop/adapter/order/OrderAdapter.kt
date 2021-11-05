@@ -109,14 +109,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
         dataBinding.btnCancel.visibility=View.GONE
         if(-2!=orderSource){ //聚合订单将不展示操作按钮
             val evalStatus=item.evalStatus
-            if(null!=evalStatus&&"WAIT_EVAL"==evalStatus){//待评价
+            val orderStatus=item.orderStatus
+            if("FINISH"==orderStatus&&null!=evalStatus&&"WAIT_EVAL"==evalStatus){//待评价
                 dataBinding.btnConfirm.apply {
                     visibility=View.VISIBLE
                     setText(R.string.str_eval)
                     setOnClickListener { OrderEvaluationActivity.start(context,item.orderNo) }
                 }
             }else{
-                when(item.orderStatus){
+                when(orderStatus){
                     //待付款->可立即支付、取消支付
                     "WAIT_PAY"-> {
                         dataBinding.btnConfirm.apply {

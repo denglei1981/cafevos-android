@@ -276,11 +276,10 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun applyRefund(orderNo:String,listener: OnPerformListener?=null) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(true){
                 body.clear()
-                body["orderNo"] = orderNo
                 val randomKey = getRandomKey()
-                shopApiService.applyRefund(body.header(randomKey), body.body(randomKey))
+                shopApiService.applyRefund(orderNo,body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
@@ -292,15 +291,19 @@ class OrderViewModel: BaseViewModel() {
      * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
      * */
     fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
-        return if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价" else {
-            when(orderStatus){
-                "WAIT_PAY"->"待付款"
-                "WAIT_SEND"->"待发货"
-                "WAIT_RECEIVE"->"待收货"
-                "FINISH"->"已完成"
-                "CLOSED"->"已关闭"
-                else ->"未知"
+        return when(orderStatus){
+            "WAIT_PAY"->"待付款"
+            "WAIT_SEND"->"待发货"
+            "WAIT_RECEIVE"->"待收货"
+            "FINISH"->{
+                if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价"
+                else "已完成"
             }
+            "CLOSED"->"已关闭"
+            "RTING"->"退货中"
+            "RTED"->"退货完成"
+            else ->"未知"
         }
+
     }
 }

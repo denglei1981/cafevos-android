@@ -166,4 +166,5 @@
     <string name="prompt_refundComplete">您申请了退货，退货完成</string>
     <string name="str_applyRefundComplete">退货申请成功，请联系客服处理退货</string>
     <string name="str_iKnow">我知道了</string>
+    <string name="str_areYouApplyReturn">是否确定申请退货</string>
 </resources>

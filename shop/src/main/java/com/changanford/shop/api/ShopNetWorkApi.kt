@@ -104,8 +104,8 @@ interface ShopNetWorkApi {
     /**
      *申请退货
      * */
-    @POST("")
-    suspend fun applyRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    @POST("/mall/orders/{orderNo}/rtGoods")
+    suspend fun applyRefund(@Path("orderNo")orderNo:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
      *我的积分
      * */

@@ -207,19 +207,19 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         //需要判断是否可以申请退货
         binding.inBottom.btnOrderCancle.apply {
             visibility=View.GONE
-            when(dataBean.refundStates){
-                //可申请
-                1->{
+            when{
+                //可申请退货
+                "YES"==dataBean.canRtGoods->{
                     visibility=View.VISIBLE
                     setText(R.string.str_applyRefund)
                 }
                 //退货中
-                2->{
+                "RTING"==dataBean.orderStatus->{
                     binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_refunding)
                 }
                 //退货完成
-                3->{
+                "RTED"==dataBean.orderStatus->{
                     binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_refundComplete)
                 }
