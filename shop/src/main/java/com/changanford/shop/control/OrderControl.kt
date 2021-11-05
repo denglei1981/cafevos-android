@@ -171,7 +171,5 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 }
             })
         }
-
-
     }
 }

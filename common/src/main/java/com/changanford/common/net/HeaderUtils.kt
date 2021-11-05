@@ -2,6 +2,7 @@ package com.changanford.common.net
 
 import android.util.Log
 import com.alibaba.fastjson.JSON
+import com.changanford.common.BuildConfig
 import com.changanford.common.MyApp
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -94,7 +95,8 @@ fun decryResult(result: String, key: String): String = AESUtil.decrypts(result, 
 
 
 fun Map<String, Any>.body(key: String): RequestBody {
-    if (MConstant.isDebug)
+//    if (MConstant.isDebug)
+    if (BuildConfig.DEBUG)
         Log.d("OkHttp--body----------", JSON.toJSONString(this))
     return getAESBody(this, key).toRequestBody("application/json;charset=utf-8".toMediaType())
 }
