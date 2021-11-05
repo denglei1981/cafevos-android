@@ -25,10 +25,7 @@ class CircleMainTopicAdapter(context: Context) :
     override fun fillData(vdBinding: ViewDataBinding?, item: Topic, position: Int) {
         val binding = vdBinding as ItemCircleMainTopicBinding
         binding.ivIcon.setCircular(5)
-        binding.ivIcon.loadImage(item.pic, ImageOptions().apply {
-            placeholder = R.mipmap.ic_def_square_img
-            error=R.mipmap.ic_def_square_img
-        })
+        binding.ivIcon.loadImage(item.pic)
         binding.tvNum.text = "${item.postsCount}帖子 ${item.heat}热度"
         binding.bean = item
     }
