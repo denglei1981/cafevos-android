@@ -78,7 +78,10 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             layoutLogistics.visibility=View.GONE
             imgRight.visibility=View.GONE
         }
-        binding.inBottom.btnOrderConfirm.visibility=View.VISIBLE
+        binding.inBottom.apply {
+            btnOrderConfirm.visibility=View.VISIBLE
+            btnOrderCancle.visibility=View.GONE
+        }
         binding.inOrderInfo.tvOther.visibility=View.VISIBLE
         binding.inOrderInfo.tvOtherValue.visibility=View.VISIBLE
         viewModel.getOrderStatus(orderStatus,evalStatus).apply {
@@ -103,6 +106,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     }
                     binding.inBottom.apply {
                         btnOrderCancle.visibility=View.VISIBLE
+                        btnOrderCancle.setText(R.string.str_cancelOrder)
                         btnOrderConfirm.setText(R.string.str_immediatePayment)
                     }
                     binding.inAddress.imgRight.visibility=View.VISIBLE
@@ -129,6 +133,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_confirmGoods)
+                    isApplyRefund(dataBean)
                 }
                 "待评价"->{
                     totalPayName=R.string.str_realPayTotalAmount
@@ -139,8 +144,9 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
+                    isApplyRefund(dataBean)
                 }
-                "已完成"->{
+                "已完成","退货中","退货完成"->{
                     totalPayName=R.string.str_realPayTotalAmount
                     //支付时间
                     dataBean.otherName=getString(R.string.str_payTime)
@@ -149,6 +155,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
+                    isApplyRefund(dataBean)
                 }
                 "已关闭"->{
                     binding.inOrderInfo.layoutOrderClose.visibility=View.GONE
@@ -193,6 +200,32 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         }
         this.dataBean=dataBean
     }
+    /**
+     * 是否可申请退货 待收货、待评价、已完成时可以申请
+    * */
+    private fun isApplyRefund(dataBean:OrderItemBean){
+        //需要判断是否可以申请退货
+        binding.inBottom.btnOrderCancle.apply {
+            visibility=View.GONE
+            when(dataBean.refundStates){
+                //可申请
+                1->{
+                    visibility=View.VISIBLE
+                    setText(R.string.str_applyRefund)
+                }
+                //退货中
+                2->{
+                    binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
+                    binding.tvOrderRemainingTime.setText(R.string.prompt_refunding)
+                }
+                //退货完成
+                3->{
+                    binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
+                    binding.tvOrderRemainingTime.setText(R.string.prompt_refundComplete)
+                }
+            }
+        }
+    }
     private fun bindingAddressInfo(addressInfo:String,isUpdate:Boolean=false){
         Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
             //更新收货地址
@@ -215,16 +248,29 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         }
     }
     /**
-     * 取消订单
+     * 取消订单、申请退货
     * */
     private fun cancelOrder(){
-        control.cancelOrder(dataBean,object :OnPerformListener{
-            override fun onFinish(code: Int) {
-                timeCountControl?.cancel()
-                binding.inBottom.btnOrderCancle.visibility=View.GONE
-                viewModel.getOrderDetail(orderNo)
+        when(binding.inBottom.btnOrderCancle.text){
+            getString(R.string.str_cancelOrder)->{
+                control.cancelOrder(dataBean,object :OnPerformListener{
+                    override fun onFinish(code: Int) {
+                        timeCountControl?.cancel()
+                        binding.inBottom.btnOrderCancle.visibility=View.GONE
+                        viewModel.getOrderDetail(orderNo)
+                    }
+                })
             }
-        })
+            getString(R.string.str_applyRefund)->{
+                control.applyRefund(dataBean,object :OnPerformListener{
+                    override fun onFinish(code: Int) {
+                        binding.inBottom.btnOrderCancle.visibility=View.GONE
+                        viewModel.getOrderDetail(orderNo)
+                    }
+                })
+            }
+        }
+
     }
     /**
      * 确认收货

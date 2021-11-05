@@ -142,4 +142,25 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             })
         }
     }
+    /**
+     * 申请退货
+    * */
+    fun applyRefund(item: OrderItemBean,listener: OnPerformListener?=null){
+        viewModel?.applyRefund(item.orderNo,object:OnPerformListener{
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onFinish(code: Int) {
+//                item.orderStatusName=""
+//                item.orderStatus="CLOSED"
+                listener?.onFinish(0)
+                PublicPop(context).apply {
+                    showPopupWindow(context.getString(R.string.str_applyRefundComplete),context.getString(R.string.str_iKnow),object :
+                        PublicPop.OnPopClickListener{
+                        override fun onLeftClick() { dismiss() }
+                        override fun onRightClick() { dismiss() }
+                    })
+                }
+            }
+        })
+
+    }
 }

@@ -7,8 +7,8 @@ package com.changanford.circle.bean
  */
 data class CircleMainBean(
     val allCircles: ArrayList<AllCircle> = arrayListOf(),
-    val interestCircles: InterestCircles = InterestCircles(),
-    val regionCircles: InterestCircles = InterestCircles(),
+    val interestCircles: InterestCircles? = InterestCircles(),
+    val regionCircles: InterestCircles? = InterestCircles(),
     val topics: ArrayList<Topic> = arrayListOf()
 )
 

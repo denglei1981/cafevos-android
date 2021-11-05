@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.changanford.common.ui.AutoScaleWidthImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageCarIntro"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
+            android:layout_height="0dp"
             android:layout_gravity="top"
-
-            tools:srcCompat="@mipmap/ic_def_square_img" />
-    </LinearLayout>
+            android:adjustViewBounds="true"
+            app:layout_constraintDimensionRatio="750:1620"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/ic_def_square_img"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

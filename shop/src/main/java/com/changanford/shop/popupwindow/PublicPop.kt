@@ -1,6 +1,7 @@
 package com.changanford.shop.popupwindow
 
 import android.content.Context
+import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.shop.R
@@ -34,6 +35,13 @@ open class PublicPop(context: Context?): BasePopupWindow(context) {
         this.listener=listener
         viewDataBinding.tvContent.text=content
         if(null!=leftTxt)viewDataBinding.tvBtnLeft.text=leftTxt
+        if(null!=rightTxt)viewDataBinding.tvBtnRight.text=rightTxt
+        this.showPopupWindow()
+    }
+    fun showPopupWindow(content:String?,rightTxt:String?,listener:OnPopClickListener?){
+        this.listener=listener
+        viewDataBinding.tvContent.text=content
+        viewDataBinding.tvBtnLeft.visibility= View.GONE
         if(null!=rightTxt)viewDataBinding.tvBtnRight.text=rightTxt
         this.showPopupWindow()
     }
