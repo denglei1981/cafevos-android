@@ -101,7 +101,7 @@
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_marginEnd="@dimen/dp_12"
-            android:src="@mipmap/ic_login_wx" />
+            android:src="@mipmap/ic_set_wx" />
 
         <TextView
             android:layout_width="0dp"
@@ -146,7 +146,7 @@
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_marginEnd="@dimen/dp_12"
-            android:src="@mipmap/ic_login_qq" />
+            android:src="@mipmap/ic_set_qq" />
 
         <TextView
             android:layout_width="0dp"
@@ -192,7 +192,7 @@
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_marginEnd="@dimen/dp_12"
-            android:src="@mipmap/ic_login_apple" />
+            android:src="@mipmap/ic_set_apple" />
 
         <TextView
             android:layout_width="0dp"

@@ -109,6 +109,9 @@ class ClearAccountConfirmUI :
         return binding.clearCry.smartCommonLayout
     }
 
+    override fun hasRefresh(): Boolean {
+        return false
+    }
     /**
      * 注销原因
      */
