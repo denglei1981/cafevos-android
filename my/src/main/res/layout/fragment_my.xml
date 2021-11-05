@@ -21,6 +21,7 @@
         <TextView
             android:id="@+id/daySign"
             style="@style/commonTextView.Small.Black"
+            android:textColor="#676978"
             android:layout_height="@dimen/dp_30"
             android:layout_marginHorizontal="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_15"

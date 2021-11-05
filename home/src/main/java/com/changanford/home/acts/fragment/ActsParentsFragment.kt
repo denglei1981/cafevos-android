@@ -58,7 +58,7 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
 
     override fun observe() {
         super.observe()
-        viewModel.bannerLiveData.observe(this, androidx.lifecycle.Observer {
+        viewModel.bannerLiveData.observe(this, {
             if (it.isSuccess) {
                 (parentFragment as HomeV2Fragment).stopRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
