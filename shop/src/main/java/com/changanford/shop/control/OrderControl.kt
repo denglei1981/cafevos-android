@@ -142,4 +142,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             })
         }
     }
+    /**
+     * 申请退货
+    * */
+    fun applyRefund(item: OrderItemBean,listener: OnPerformListener?=null){
+
+    }
 }

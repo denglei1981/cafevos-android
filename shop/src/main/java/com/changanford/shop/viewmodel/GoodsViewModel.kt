@@ -245,7 +245,7 @@ class GoodsViewModel: BaseViewModel() {
             fetchRequest {
                 body.clear()
                 body["collectionType"]=5
-                body["spuId"]=spuId
+                body["collectionContentIds"]= arrayOf(spuId)
                 val randomKey = getRandomKey()
                 shopApiService.cancelCollectGoods(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
