@@ -27,7 +27,7 @@
                 style="@style/commonTextView.Normal"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="25dp"
-                android:text="调查标题"
+                android:text="调研问题"
                 android:textStyle="bold"
                 android:textColor="@color/textblack"
                 android:textSize="15sp" />
@@ -109,7 +109,7 @@
                 style="@style/commonTextView.Normal"
                 android:layout_marginBottom="18dp"
                 android:layout_marginTop="30dp"
-                android:text="问题"/>
+                android:text="选项"/>
             <TextView
                 android:textColor="@color/textblack"
                 style="@style/commonTextView.Small.Light"

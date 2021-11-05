@@ -75,6 +75,9 @@ class AboutFordUI : BaseMineUI<UiAboutBinding, EmptyViewModel>() {
         updateViewModel = createViewModel(UpdateViewModel::class.java)
         updateViewModel._updateInfo.observe(this, { info ->
             info?.downloadUrl?.let {
+                if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
+                    return@observe
+                }
                 binding.include.messageStatus.isVisible = true
                 MConstant.newApk = true
                 MConstant.newApkUrl = it
