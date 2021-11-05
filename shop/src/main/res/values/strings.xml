@@ -159,12 +159,13 @@
     <string name="str_noOrder">您还没有相关订单哦~</string>
     <string name="str_noComment">没有评论</string>
     <string name="str_currentPageIsInvalid">当前页面已失效~</string>
-    <string name="str_applyRefund">申请退货</string>
-    <string name="str_refunding">退货中</string>
-    <string name="prompt_refunding">您申请了退货，退货处理中</string>
-    <string name="str_refundComplete">退货完成</string>
-    <string name="prompt_refundComplete">您申请了退货，退货完成</string>
-    <string name="str_applyRefundComplete">退货申请成功，请联系客服处理退货</string>
+    <string name="str_applyRefund">申请退换货</string>
+    <string name="str_refunding">退换货处理中</string>
+    <string name="prompt_refunding">您的退换货申请已提交，如有疑问请联系客服</string>
+    <string name="str_refundComplete">退换货完成</string>
+    <string name="prompt_refundComplete">退换货已完成，如有疑问联系客服</string>
+    <string name="str_applyRefundComplete">您的退换货申请已提交</string>
     <string name="str_iKnow">我知道了</string>
-    <string name="str_areYouApplyReturn">是否确定申请退货</string>
+    <string name="str_areYouApplyReturn">是否确定申请退换货</string>
+    <string name="str_contactCustomerService">联系客服</string>
 </resources>

@@ -213,12 +213,12 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     visibility=View.VISIBLE
                     setText(R.string.str_applyRefund)
                 }
-                //退货中
+                //退换货处理中
                 "RTING"==dataBean.orderStatus->{
                     binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_refunding)
                 }
-                //退货完成
+                //退换货完成
                 "RTED"==dataBean.orderStatus->{
                     binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_refundComplete)

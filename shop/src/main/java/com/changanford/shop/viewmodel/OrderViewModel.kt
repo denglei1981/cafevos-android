@@ -300,8 +300,8 @@ class OrderViewModel: BaseViewModel() {
                 else "已完成"
             }
             "CLOSED"->"已关闭"
-            "RTING"->"退货中"
-            "RTED"->"退货完成"
+            "RTING"->"退换货处理中"
+            "RTED"->"退换货完成"
             else ->"未知"
         }
     }

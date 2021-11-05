@@ -143,7 +143,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
         }
     }
     /**
-     * 申请退货
+     * 申请退换货
     * */
     fun applyRefund(item: OrderItemBean,listener: OnPerformListener?=null){
         PublicPop(context).apply {
@@ -155,7 +155,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
                             item.orderStatusName=""
-                            item.orderStatus="RTING"//退货中
+                            item.orderStatus="RTING"//退换货处理中
                             listener?.onFinish(0)
                             dismiss()
                             ToastUtils.reToast(R.string.str_applyRefundComplete)
