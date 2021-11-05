@@ -153,7 +153,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_topic_title"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="@dimen/dp_20"
             android:gravity="center_vertical"
@@ -162,7 +162,7 @@
             app:layout_constraintBottom_toTopOf="@+id/rv_banner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="五月天、周杰伦、邓紫棋等歌手等你来参与→" />
+            tools:text="五月天、周杰伦、邓紫棋等歌手等你来参与你是衣蛾eight是家乐福是垃圾分类是积分老几说杰弗里斯规划上飞机和零售价格说过了十来个回公司了几个→" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_banner"
