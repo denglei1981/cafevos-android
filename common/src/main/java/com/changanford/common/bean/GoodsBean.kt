@@ -417,7 +417,7 @@ data class OrderItemBean(
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
-    var canRtGoods:String?="",//是否可以退货 YES  NO
+    var canRtGoods:String?=null,//是否可以退货 YES  NO
 )
 
 data class OrderInfoBean(
