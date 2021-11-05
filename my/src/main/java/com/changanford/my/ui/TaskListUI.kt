@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.RoundBean
+import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
@@ -24,6 +25,7 @@ import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /**
  *  文件名：TaskListUI
@@ -73,6 +75,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
 
         binding.taskFinish.setOnClickListener {
+            isRefresh = true
             JumpUtils.instans?.jump(37)
         }
 
@@ -95,6 +98,10 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         task()
     }
 
+    override fun showEmpty(): View? {
+        return ViewEmptyTopBinding.inflate(layoutInflater).root
+    }
+
     override fun onResume() {
         super.onResume()
         getData()
@@ -114,6 +121,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             dayAdapter.data.clear()
             bean?.let {
                 it.data?.apply {
+                    dayAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt())
                     binding.des.text =
                         "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}福币+${nextGrowth ?: 0}成长值"
                     roundList?.forEach {
@@ -131,6 +139,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     inner class DayAdapter :
         BaseQuickAdapter<RoundBean, BaseDataBindingHolder<ItemSignDayBinding>>(R.layout.item_sign_day) {
+        var reissueIntegral = 0
         override fun convert(holder: BaseDataBindingHolder<ItemSignDayBinding>, item: RoundBean) {
 
             holder.dataBinding?.let {
@@ -145,7 +154,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                     if (TimeUtils.dayTaskBefore(item.date)) {
                         it.clLayout.setOnClickListener {
                             var pop = ConfirmTwoBtnPop(BaseApplication.curActivity)
-                            pop.contentText.text = "本次补签将消耗 ${item.integral} 福币"
+                            pop.contentText.text = "本次补签将消耗 ${reissueIntegral} 福币"
                             pop.btnConfirm.text = "立即补签"
                             pop.btnConfirm.setOnClickListener {
                                 pop.dismiss()

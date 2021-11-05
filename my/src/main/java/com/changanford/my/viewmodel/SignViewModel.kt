@@ -551,13 +551,14 @@ class SignViewModel : ViewModel() {
 
     fun queryTasksList() {
         viewModelScope.launch {
-            var task = fetchRequest {
+            fetchRequest {
                 var body = HashMap<String, Any>()
                 var rkey = getRandomKey()
                 apiService.queryTasksList(body.header(rkey), body.body(rkey))
-            }
-            if (task.code == 0) {
-                taskBean.postValue(task.data)
+            }.onSuccess {
+                taskBean.postValue(it)
+            }.onFailure {
+                taskBean.postValue(null)
             }
         }
     }

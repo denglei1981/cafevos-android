@@ -44,7 +44,9 @@ import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.functions.Function3
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -327,6 +329,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     var isForeground = true
     var timer: Timer? = null
     var timerTask: MyTimerTask? = null
+    var isOnResume = false
+    var isOnStop = false
 
     inner class MyTimerTask : TimerTask() {
         override fun run() {
@@ -345,6 +349,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        isOnStop = false
+        isOnResume = true
         try {
             timer = Timer()
             timerTask = MyTimerTask()
@@ -357,5 +363,23 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             //由后台切换到前台
             isForeground = true
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isOnResume = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(2000)
+            if (!isFinishing && !isOnResume && !isOnStop) {
+                withContext(Dispatchers.Main){
+                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isOnStop = true
     }
 }
