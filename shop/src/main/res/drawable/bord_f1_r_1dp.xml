@@ -3,6 +3,7 @@
     <!-- 连框颜色值 -->
     <item>
         <shape>
+            <corners android:bottomLeftRadius="@dimen/dp_5" />
             <solid android:color="@color/color_f1"/>
         </shape>
     </item>
@@ -10,6 +11,7 @@
         android:right="@dimen/dp_1">
         <!-- 主体背景颜色值 -->
         <shape>
+            <corners android:bottomLeftRadius="@dimen/dp_5" />
             <solid android:color="@color/white"/>
         </shape>
     </item>
