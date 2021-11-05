@@ -44,6 +44,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 
     var isDarkFont=true
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = bindings
@@ -70,8 +72,12 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         metrics.scaledDensity = config.fontScale * metrics.density
         res.updateConfiguration(config,metrics)
     }
+    var isPortrait:Boolean=true
     override fun initView(savedInstanceState: Bundle?) {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        if(isPortrait){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
     }
 
     override fun onResume() {

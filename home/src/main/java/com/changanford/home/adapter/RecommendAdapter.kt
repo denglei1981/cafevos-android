@@ -2,6 +2,7 @@ package com.changanford.home.adapter
 
 import android.text.TextUtils
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -162,6 +163,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvNewsTag = holder.getView<TextView>(R.id.tv_news_tag)
 
         val tvVideoTime = holder.getView<TextView>(R.id.tv_video_times)
+        val ivPlay = holder.getView<ImageView>(R.id.iv_play)
 
         ivHeader.setOnClickListener {
             toUserHomePage(item)
@@ -205,9 +207,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     }
                 }
                 2 -> {// 点赞帖子
-                        if(LoginUtil.isLongAndBindPhone()){
-                            likePost(tvLikeCount,item)
-                        }
+                    if (LoginUtil.isLongAndBindPhone()) {
+                        likePost(tvLikeCount, item)
+                    }
                 }
             }
         }
@@ -223,7 +225,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             tvTopic.text = item.getContent()
         }
         item.authors?.let {
-            setFollowState(btnFollow,it)
+            setFollowState(btnFollow, it)
         }
 
         btnFollow.setOnClickListener {
@@ -248,10 +250,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
                 tvVideoTime.visibility = View.VISIBLE
                 tvNewsTag.text = "资讯"
+
+                ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE
                 tvVideoTime.visibility = View.GONE
+                ivPlay.visibility = View.GONE
             }
 
         }
@@ -260,6 +265,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     private fun toUserHomePage(item: RecommendData) {
         JumpUtils.instans!!.jump(35, item.authors?.authorId.toString())
     }
+
     /**
      *  设置关注状态。
      * */
@@ -269,6 +275,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             setFollowState.setFollowState(btnFollow, it, true)
         }
     }
+
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
@@ -276,6 +283,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
+
     // 关注。
     private fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
@@ -292,6 +300,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
         }
     }
+
     //关注
     fun notifyAtt(userId: String, isFollow: Int) {
         for (data in this.data) {
@@ -327,8 +336,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     }
 
 
-
-    private fun likePost(tvLikeView: DrawCenterTextView, item:RecommendData) {
+    private fun likePost(tvLikeView: DrawCenterTextView, item: RecommendData) {
         val activity = BaseApplication.curActivity as AppCompatActivity
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
@@ -339,12 +347,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            tvLikeView.setThumb(R.drawable.icon_home_bottom_like,true)
+                            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, true)
                             item.postsLikesCount++
                         } else {
                             item.isLike = 0
                             item.postsLikesCount--
-                            tvLikeView.setThumb(R.drawable.icon_home_look_like_count,false)
+                            tvLikeView.setThumb(R.drawable.icon_home_look_like_count, false)
                         }
                         tvLikeView.setPageTitleText(item.getLikeCount())
                     } else {

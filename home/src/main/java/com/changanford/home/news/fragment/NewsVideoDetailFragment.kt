@@ -58,6 +58,7 @@ class NewsVideoDetailFragment :
     var linearLayoutManager: LinearLayoutManager? = null
     var checkPosition: Int = -1
 
+
     var isNeedNotify: Boolean = false //  是否需要通知，上个界面。。
     private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
         NewsRecommendListAdapter()

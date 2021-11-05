@@ -2,7 +2,9 @@ package com.changanford.home.news.adapter
 
 import android.text.TextUtils
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -39,7 +41,6 @@ class NewsListAdapter(
             R.id.tv_sub_title,
             R.id.tv_time_look_count,
             R.id.tv_comment_count,
-
             )
     }
 
@@ -63,6 +64,10 @@ class NewsListAdapter(
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
         val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
+
+        val ivPlay=holder.getView<ImageView>(R.id.iv_play)
+
+        val tvVideoTime=holder.getView<AppCompatTextView>(R.id.tv_video_times)
         tvLikeCount.setPageTitleText(item.likesCount.toString())
         setLikeState(tvLikeCount, item, false)
         tvCommentCount.text = item.getCommentCountResult()
@@ -75,6 +80,18 @@ class NewsListAdapter(
         } else {
             tvTopic.visibility = View.VISIBLE
             tvTopic.text = item.summary
+        }
+        when(item.type){
+            1,2->{
+                ivPlay.visibility=View.GONE
+                tvVideoTime.visibility=View.GONE
+            }
+            3->{
+                ivPlay.visibility=View.VISIBLE
+                tvVideoTime.visibility=View.VISIBLE
+                tvVideoTime.text = item.videoTime
+            }
+
         }
         val rvUserTag = holder.getView<RecyclerView>(R.id.rv_user_tag)
         if (item.authors != null) {

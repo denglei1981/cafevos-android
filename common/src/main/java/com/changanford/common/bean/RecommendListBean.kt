@@ -198,7 +198,7 @@ data class RecommendData(
         val viewCountStr = CountUtils.formatNum(viewCount.toString(), false).toString()
 
 
-        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览量")
+        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览")
         return timeAndViewCountResult
     }
 
@@ -221,6 +221,9 @@ data class RecommendData(
             }
         }
         return topicStr
+    }
+    fun  isArtVideoType():Boolean{
+        return artType==3
     }
 
     fun getAddress():String{

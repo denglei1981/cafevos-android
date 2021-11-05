@@ -70,6 +70,19 @@
             tools:src="@drawable/image_recommend_test"
             tools:visibility="visible" />
 
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/home_big_shot_play_icon"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
+            app:layout_constraintEnd_toEndOf="@+id/iv_pic"
+            app:layout_constraintStart_toStartOf="@+id/iv_pic"
+            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_news_tag"
             android:layout_width="wrap_content"
