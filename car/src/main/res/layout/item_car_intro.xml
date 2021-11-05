@@ -16,8 +16,9 @@
             android:adjustViewBounds="true"
             app:layout_constraintDimensionRatio="750:1620"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@mipmap/ic_def_square_img" />
+            tools:srcCompat="@mipmap/ic_def_square_img"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
