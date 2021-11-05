@@ -108,7 +108,7 @@ data class InfoDataBean(
     var timeAndViewCountResult: String = ""
     fun getTimeAdnViewCount(): String {
         val viewCountStr = CountUtils.formatNum(viewsCount.toString(), false).toString()
-        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览量")
+        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览")
         return timeAndViewCountResult
     }
 }

@@ -1,5 +1,6 @@
 package com.changanford.home.news.activity
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MotionEvent
@@ -29,10 +30,11 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
 
     var artId: String? = null
 
+
     @JvmField
     @Autowired(name = "contentType") //页面来源
     var contentType: String? = null
-    private val videoFragment: NewsVideoDetailFragment? = null
+    private var videoFragment: NewsVideoDetailFragment? = null
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
@@ -50,9 +52,10 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                         trans.replace(R.id.frame_layout, NewsPicsFragment.newInstance(artId!!))
                     }
                     3 -> {
+                        videoFragment = NewsVideoDetailFragment.newInstance(artId!!)
                         trans.replace(
                             R.id.frame_layout,
-                            NewsVideoDetailFragment.newInstance(artId!!)
+                            videoFragment!!
                         )
                     }
                 }
@@ -63,20 +66,30 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
             }
         })
     }
-    override fun initView() {
+
+    override fun initView(savedInstanceState: Bundle?) {
+        isPortrait = false
+        super.initView(savedInstanceState)
     }
+
+    override fun initView() {
+
+    }
+
     override fun initData() {
         artId = intent.getStringExtra(JumpConstant.NEWS_ART_ID).toString()
         artId?.let {
             viewModel.getNewsDetail(it)
         }
+
     }
+
     override fun onBackPressed() {
         //结束判断时候切换video全屏
         if (videoFragment == null) {
             super.onBackPressed()
         } else {
-            videoFragment.backPressed { super.onBackPressed() }
+            videoFragment?.backPressed { super.onBackPressed() }
         }
     }
 
