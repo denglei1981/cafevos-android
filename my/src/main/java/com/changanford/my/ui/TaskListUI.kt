@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.RoundBean
+import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
@@ -73,6 +74,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
 
         binding.taskFinish.setOnClickListener {
+            isRefresh = true
             JumpUtils.instans?.jump(37)
         }
 
@@ -93,6 +95,10 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         task()
+    }
+
+    override fun showEmpty(): View? {
+        return ViewEmptyTopBinding.inflate(layoutInflater).root
     }
 
     override fun onResume() {
