@@ -27,13 +27,14 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.request.FindNewsListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.zhpan.bannerview.constants.PageStyle
 
 /**
  *  新闻列表
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
-    OnLoadMoreListener {
+    OnLoadMoreListener,OnRefreshListener {
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
@@ -52,7 +53,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     override fun initView() {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        binding.smartLayout.setEnableRefresh(false)
+
         addHeadView()
         binding.recyclerView.adapter = newsListAdapter
 
@@ -74,7 +75,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
             }
         }
-//        binding.smartLayout.setOnRefreshListener(this)
+        binding.smartLayout.setEnableRefresh(true)
+        binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
         homeRefersh()
         setLoadSir(binding.smartLayout)
@@ -163,8 +165,8 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     }
                     showContent()
                     newsListAdapter.setNewInstance(dataList)
-                    (parentFragment as HomeV2Fragment).stopRefresh()
-//                    binding.smartLayout.finishRefresh()
+//                    (parentFragment as HomeV2Fragment).stopRefresh()
+                    binding.smartLayout.finishRefresh()
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
@@ -255,5 +257,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             e.printStackTrace()
         }
 
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        homeRefersh()
     }
 }

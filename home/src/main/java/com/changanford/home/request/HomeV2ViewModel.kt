@@ -30,10 +30,7 @@ class HomeV2ViewModel : BaseViewModel() {
 //                    val updateUiState = UpdateUiState<String>(false, it)
 //                    bannerLiveData.postValue(updateUiState)
                 }
-
-
         })
-
 
     }
 

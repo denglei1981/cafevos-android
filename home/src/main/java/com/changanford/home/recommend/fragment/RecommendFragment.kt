@@ -20,6 +20,7 @@ import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.recommend.request.RecommendViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
 /**
@@ -27,7 +28,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
  * */
 open class RecommendFragment :
     BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
-    OnLoadMoreListener {
+    OnLoadMoreListener,OnRefreshListener {
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
@@ -44,7 +45,7 @@ open class RecommendFragment :
     var selectPosition = -1
     override fun initView() {
         viewModel.getRecommend(false)
-        binding.smartLayout.setEnableRefresh(false)
+        binding.smartLayout.setEnableRefresh(true)
         binding.smartLayout.setOnLoadMoreListener(this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -176,8 +177,9 @@ open class RecommendFragment :
                     }
                     showContent()
                     recommendAdapter.setNewInstance(dataList)
-                    (parentFragment as HomeV2Fragment).stopRefresh()
-                    (parentFragment as HomeV2Fragment).openTwoLevel()
+                    binding.smartLayout.finishRefresh()
+//                    (parentFragment as HomeV2Fragment).stopRefresh()
+//                    (parentFragment as HomeV2Fragment).openTwoLevel()
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
@@ -210,6 +212,10 @@ open class RecommendFragment :
     }
 
     override fun onRetryBtnClick() {
+        viewModel.getRecommend(false)
+    }
 
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getRecommend(false)
     }
 }

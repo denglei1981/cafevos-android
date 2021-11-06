@@ -334,7 +334,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     override fun initData() {
-        viewModel.getTwoBanner()
+//        viewModel.getTwoBanner()
         binding.recommendContent.rvBanner.adapter = twoAdRvListAdapter
         twoAdRvListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -427,10 +427,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     fun openTwoLevel() { // 主动打开二楼。。。
-        if (MConstant.isFirstOpenTwoLevel) {
-            binding.header.openTwoLevel(true)
-            MConstant.isFirstOpenTwoLevel = false
-        }
+//        if (MConstant.isFirstOpenTwoLevel) {
+//            binding.header.openTwoLevel(true)
+//            MConstant.isFirstOpenTwoLevel = false
+//        }
     }
 
     open fun closeTwoLevel() {
