@@ -87,15 +87,11 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
 
 
-
-
         binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.rvAuto.adapter = sAdapter
 
         binding.recyclerViewFind.adapter = searchHotAdapter
-
-
 
 
         binding.ivBack.setOnClickListener {
