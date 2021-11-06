@@ -817,6 +817,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         )
         headBinding.etBiaoti.hint = spannableString
         headBinding.etBiaoti.requestFocus()
+        editText= headBinding.etBiaoti
+
         headBinding.ivAddfm.setOnClickListener {
             PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
