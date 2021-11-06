@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -108,7 +109,7 @@ object MUtils {
             return
         }
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
+            OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (isExpand) {
                     textView.text = originText
