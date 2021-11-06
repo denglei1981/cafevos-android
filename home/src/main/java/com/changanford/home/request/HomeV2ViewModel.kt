@@ -31,7 +31,6 @@ class HomeV2ViewModel : BaseViewModel() {
 //                    bannerLiveData.postValue(updateUiState)
                 }
         })
-
     }
 
 }

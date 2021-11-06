@@ -322,6 +322,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
+                toastShow(it.message)
                 setLikeState()
             } else {// 网络原因操作失败了。
                 toastShow(it.message)
@@ -345,6 +346,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.followLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                toastShow(it.message)
                 isNeedNotify = true
             } else {
                 toastShow(it.message)
@@ -352,10 +354,9 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.collectLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.isSuccess) {
-                    setCollection()
-                }
+                setCollection()
             }
+            toastShow(it.message)
         })
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
@@ -451,7 +452,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 //        }
         when (v.id) {
             R.id.tv_speak_something -> {
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     replay()
                 }
             }
@@ -459,14 +460,14 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.actionLike(artId)
                 }
 
             }
             R.id.tv_news_to_collect -> {
                 // 收藏
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
                 }
 
