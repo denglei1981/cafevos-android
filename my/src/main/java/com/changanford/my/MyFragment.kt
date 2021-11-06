@@ -29,7 +29,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     val labelAdapter: LabelAdapter by lazy {
-        LabelAdapter(20)
+        LabelAdapter(22)
     }
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
     private var authState: MutableLiveData<Boolean> = MutableLiveData()
@@ -111,7 +111,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             }
         }
         viewModel.allMedal.observe(this, {
-            if (it == null){
+            if (it == null) {
                 medalAdapter.data?.clear()
                 medalAdapter.notifyDataSetChanged()
             } else {
@@ -246,9 +246,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.getUserInfo()
-        if (MConstant.token.isNotEmpty()){
+        if (MConstant.token.isNotEmpty()) {
             viewModel.mineMedal()
-        }else{
+        } else {
             medalAdapter.data?.clear()
             medalAdapter.notifyDataSetChanged()
         }
