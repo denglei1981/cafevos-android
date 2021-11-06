@@ -118,7 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                 }
             }
-
+            StatusBarUtil.setLightStatusBar(this, destination.id != R.id.carFragment)
         }
     }
 

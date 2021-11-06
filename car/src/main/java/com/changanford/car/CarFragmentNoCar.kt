@@ -3,7 +3,6 @@ package com.changanford.car
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.changanford.car.adapter.CarAuthAdapter
 import com.changanford.car.adapter.CarRecommendAdapter
@@ -17,7 +16,6 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
 
 
 class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
