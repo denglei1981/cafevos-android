@@ -108,6 +108,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
     private var locaPostEntity: PostEntity? = null
     override fun initView() {
+        binding.etBiaoti.requestFocus()
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvTitle.text = "发帖"
@@ -147,12 +148,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            if (isPopup) {
-                iskeybarOpen = true
+//            if (isPopup) {
+//                iskeybarOpen = true
                 binding.bottom.emojirec.visibility = View.GONE
-            } else {
-                iskeybarOpen = false
-            }
+//            } else {
+//                iskeybarOpen = false
+//            }
         }
 //        LiveDataBus.get().with(LiveDataBusKey.CLEARVIDEOPOSTDATA).observe(this, Observer {
 //            selectList.clear()
@@ -445,7 +446,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun onclick() {
         binding.bottom.ivEmoj.setOnClickListener {
-            if (binding.etContent.hasFocus() && iskeybarOpen) {
+//            if (binding.etContent.hasFocus() && iskeybarOpen) {
 
                 HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
@@ -459,15 +460,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         }
                     }
                 }
-            } else if (!iskeybarOpen) {
-                Timer().schedule(80) {
-                    binding.bottom.emojirec.post {
-                        if (binding.bottom.emojirec.isShown) {
-                            binding.bottom.emojirec.visibility = View.GONE
-                        }
-                    }
-                }
-            }
+//            } else if (!iskeybarOpen) {
+//                Timer().schedule(80) {
+//                    binding.bottom.emojirec.post {
+//                        if (binding.bottom.emojirec.isShown) {
+//                            binding.bottom.emojirec.visibility = View.GONE
+//                        }
+//                    }
+//                }
+//            }
 
         }
 
