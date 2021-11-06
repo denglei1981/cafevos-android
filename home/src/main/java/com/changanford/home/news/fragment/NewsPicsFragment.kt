@@ -129,7 +129,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         viewModel.followLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
-            }else{
+            } else {
                 toastShow(it.message)
             }
         })
@@ -231,7 +231,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         if (newsDetailData.isLike == 0) {
             binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_white, false)
         } else {
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, false)
         }
         if (newsDetailData.isCollect == 0) {
             binding.llComment.tvNewsToCollect.setThumb(
@@ -240,7 +240,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             )
         } else {
             binding.llComment.tvNewsToCollect.setThumb(
-                R.drawable.icon_home_bottom_collection,
+                R.drawable.icon_home_bottom_collection_blue,
                 false
             )
         }
@@ -325,7 +325,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
-            followType = if (followType==1) 2 else 1
+            followType = if (followType == 1) 2 else 1
             it.authors.isFollow = followType;
             setFollowState(binding.layoutHeader.btnFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
@@ -344,7 +344,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.actionLike(artId)
                 }
 
@@ -356,23 +356,23 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
             R.id.tv_news_to_collect -> {
                 // 收藏
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
                 }
 
             }
             R.id.tv_news_to_share -> {
 
-                    newsDetailData?.let {
-                        HomeShareModel.shareDialog(
-                            requireActivity(),
-                            0,
-                            it.shares,
-                            null,
-                            null,
-                            it.authors.nickname
-                        )
-                    }
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        requireActivity(),
+                        0,
+                        it.shares,
+                        null,
+                        null,
+                        it.authors.nickname
+                    )
+                }
 
             }
             R.id.iv_more -> {

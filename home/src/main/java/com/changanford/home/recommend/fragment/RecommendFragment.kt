@@ -45,7 +45,6 @@ open class RecommendFragment :
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
-
     companion object {
         fun newInstance(): RecommendFragment {
             val fg = RecommendFragment()
@@ -54,7 +53,6 @@ open class RecommendFragment :
             return fg
         }
     }
-
     var selectPosition = -1
     override fun initView() {
 
@@ -68,11 +66,11 @@ open class RecommendFragment :
             val itemViewType = recommendAdapter.getItemViewType(position)
             val item = recommendAdapter.getItem(position)
             when (itemViewType) {
-                1, 2 -> {
-                    toPostOrNews(item)
-                }
                 3 -> { // 跳转到活动
                     toActs(item)
+                }
+                else -> {
+                    toPostOrNews(item)
                 }
             }
         }
@@ -131,10 +129,10 @@ open class RecommendFragment :
         bus()
         viewModel.recommendBannerLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                if(it.data==null|| it.data.isEmpty()){
+                if (it.data == null || it.data.isEmpty()) {
                     headNewBinding?.bViewpager?.visibility = View.GONE
                     headNewBinding?.drIndicator?.visibility = View.GONE
-                }else{
+                } else {
                     headNewBinding?.bViewpager?.visibility = View.VISIBLE
                     headNewBinding?.drIndicator?.visibility = View.VISIBLE
                 }

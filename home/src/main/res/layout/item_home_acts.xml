@@ -54,7 +54,7 @@
             android:maxLines="2"
             android:text="长安福特 未来活动体验日，于2021年9月11日正式上市"
             android:textColor="#ff0f1524"
-            android:textSize="15sp"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="@+id/iv_acts"
             app:layout_constraintStart_toStartOf="@+id/iv_acts"
             app:layout_constraintTop_toBottomOf="@+id/iv_acts" />
