@@ -112,6 +112,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.llBack.setOnClickListener {
             binding.header.finishTwoLevel()
         }
+//        viewModel.getIndexPerms()
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
@@ -301,15 +302,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         } catch (ignore: Exception) {
         }
     }
-
+    var publishPopup:PublishPopup?=null
     private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
         publishLocationView.getLocationOnScreen(location)
         height -= location[1]
         val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
-        val publishPopup = PublishPopup(
+        publishPopup = PublishPopup(
             requireContext(),
+            this,
             publishView,
             Constraints.LayoutParams.WRAP_CONTENT,
             Constraints.LayoutParams.WRAP_CONTENT,
@@ -329,8 +331,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         )
-        publishPopup.contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        publishPopup.showAsDropDown(publishLocationView)
+        publishPopup?.contentView?.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        publishPopup?.showAsDropDown(publishLocationView)
     }
 
     override fun initData() {
@@ -366,6 +368,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
+//        viewModel.permsLiveData.observe(this, Observer {
+//            publishPopup?.changPerm(it)
+//        })
+
         viewModel.twoBannerLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 appIndexBackground = it.data.app_index_background  // 背景广告

@@ -10,6 +10,8 @@ import com.changanford.home.data.TwoAdData
 class HomeV2ViewModel : BaseViewModel() {
     val twoBannerLiveData = MutableLiveData<UpdateUiState<TwoAdData>>() //
 
+//    val permsLiveData= MutableLiveData<List<String>>()
+
     //app_index_background 背景长图。
     //app_index_banner
     //app_index_topic
@@ -32,5 +34,21 @@ class HomeV2ViewModel : BaseViewModel() {
                 }
         })
     }
+//    fun getIndexPerms(){
+//        launch(false, {
+//            val body = HashMap<String, Any>()
+//            val rkey = getRandomKey()
+//            ApiClient.createApi<HomeNetWork>()
+//                .getIndexPerms(body.header(rkey), body.body(rkey))
+//                .onSuccess {
+//                    permsLiveData.postValue(it)
+//                }.onWithMsgFailure {
+//
+//                }.onFailure {
+////                    val updateUiState = UpdateUiState<String>(false, it)
+////                    bannerLiveData.postValue(updateUiState)
+//                }
+//        })
+//    }
 
 }

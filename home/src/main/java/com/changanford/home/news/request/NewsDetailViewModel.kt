@@ -138,7 +138,7 @@ class NewsDetailViewModel : BaseViewModel() {
                         val updateUiState = UpdateUiState<Any>(it.msg, true, "")
                         followLiveData.postValue(updateUiState)
                     }else{
-                        val updateUiState = UpdateUiState<Any>(it.message, false, it.message)
+                        val updateUiState = UpdateUiState<Any>(it.msg, false, it.msg)
                         followLiveData.postValue(updateUiState)
                     }
                 }
