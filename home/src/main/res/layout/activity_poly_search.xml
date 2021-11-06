@@ -119,7 +119,7 @@
                         android:layout_marginTop="20dp"
                         android:drawablePadding="12dp"
                         android:gravity="center"
-                        android:text="热门搜索"
+                        android:text="快捷导航"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"

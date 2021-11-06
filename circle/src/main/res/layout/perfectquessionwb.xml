@@ -31,7 +31,7 @@
                 style="@style/commonTextView.Normal"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="25dp"
-                android:text="调查标题"
+                android:text="调研问题"
                 android:textStyle="bold"
                 android:textColor="@color/textblack"
                 android:textSize="15sp" />
@@ -48,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:hint="请填写调查标题"
+                android:hint="请填写调研问题"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:maxLength="20"
