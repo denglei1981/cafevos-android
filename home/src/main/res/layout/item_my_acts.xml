@@ -88,7 +88,7 @@
             android:minWidth="@dimen/dp_40"
             android:paddingStart="@dimen/dp_8"
             android:paddingEnd="@dimen/dp_8"
-            android:text="线上活动"
+            android:text="福域活动"
             android:textColor="#ff74889d"
             android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@+id/tv_tag_one"
