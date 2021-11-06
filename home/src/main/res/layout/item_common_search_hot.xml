@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
@@ -11,9 +11,14 @@
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:ellipsize="end"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:maxLength="10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:minWidth="60dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:maxLines="1"
+        android:background="@drawable/shape_whit15_bg"
         tools:text="速度与激情9"
         android:textColor="#333333"
         android:textSize="13sp" />

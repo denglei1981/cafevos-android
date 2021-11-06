@@ -95,7 +95,7 @@ class PublishPopup(
             data.forEach { d ->
                 when (d) {
                     acts -> {
-                        list.add(
+                        list.add(0,
                             PublishData(
                                 1,
                                 context.getString(R.string.home_publish_acts),
@@ -104,7 +104,7 @@ class PublishPopup(
                         )
                     }
                     questiton -> {
-                        list.add(
+                        list.add(0,
                             PublishData(
                                 2,
                                 context.getString(R.string.home_publish_answer),
