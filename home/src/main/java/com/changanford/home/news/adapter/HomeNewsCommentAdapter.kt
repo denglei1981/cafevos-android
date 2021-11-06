@@ -32,24 +32,25 @@ import com.changanford.home.widget.MyLinkMovementMethod
 
 
 class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment) ,LoadMoreModule {
+    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment),
+    LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)
         binding?.let {
 
-            if(item.typeNull==1){
-                it.gNoComment.visibility=View.VISIBLE
-                it.conComment.visibility=View.GONE
+            if (item.typeNull == 1) {
+                it.gNoComment.visibility = View.VISIBLE
+                it.conComment.visibility = View.GONE
                 return@let
             }
-            it.gNoComment.visibility=View.GONE
-            it.conComment.visibility=View.VISIBLE
+            it.gNoComment.visibility = View.GONE
+            it.conComment.visibility = View.VISIBLE
             GlideUtils.loadBD(item.avatar, it.ivHead)
-            binding.bean=item
+            binding.bean = item
             it.tvName.text = item.nickname
             it.tvTime.text = item.timeStr
-            it.tvLikeCount.text=CountUtils.formatNum(item.likesCount.toString(),false)
+            it.tvLikeCount.text = CountUtils.formatNum(item.likesCount.toString(), false)
             it.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.home_comment_like
@@ -66,32 +67,33 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
                 lifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
-                    body["type"]=1
+                    body["type"] = 1
                     val rKey = getRandomKey()
                     ApiClient.createApi<HomeNetWork>()
-                        .commentLike(body.header(rKey), body.body(rKey)).also {
-                            it.msg.toast()
-                            if (it.code == 0) {
-                                if (item.isLike == 0) {
-                                    item.isLike = 1
-                                    item.likesCount++
-                                } else {
-                                    item.likesCount--
-                                    item.isLike = 0
+                        .commentLike(body.header(rKey), body.body(rKey)).also { cr ->
+                                cr.msg.toast()
+                                if (cr.code == 0) {
+                                    if (item.isLike == 0) {
+                                        item.isLike = 1
+                                        item.likesCount++
+                                    } else {
+                                        item.likesCount--
+                                        item.isLike = 0
+                                    }
+                                    binding.tvLikeCount.text = item.likesCount.toString()
+                                    binding.ivLike.setImageResource(
+                                        if (item.isLike == 1) {
+                                            AnimScaleInUtil.animScaleIn(binding.ivLike)
+                                            R.mipmap.home_comment_like
+                                        } else R.mipmap.home_comment_no_like
+                                    )
                                 }
-                                binding.tvLikeCount.text = item.likesCount.toString()
-                                binding.ivLike.setImageResource(
-                                    if (item.isLike == 1) {
-                                        AnimScaleInUtil.animScaleIn(binding.ivLike)
-                                        R.mipmap.home_comment_like
-                                    } else R.mipmap.home_comment_no_like
-                                )
-                            }
                         }
                 }
             }
         }
     }
+
     /**
      * 处理回复文本各种样式
      */

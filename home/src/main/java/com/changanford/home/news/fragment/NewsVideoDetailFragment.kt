@@ -177,7 +177,6 @@ class NewsVideoDetailFragment :
                 showHeadInfo(it.data)
                 playVideo(it.data.videoUrl)
             } else {
-//                ToastUtils.showShortToast(it.message, this)
                 toastShow(it.message)
             }
         })
