@@ -470,7 +470,7 @@ public class TimeUtils {
             month = month + index;
 
             if (index < 0) {
-                while (month < 0) {
+                while (month <= 0) {
                     year -= 1;
                     month += 12;
                 }
