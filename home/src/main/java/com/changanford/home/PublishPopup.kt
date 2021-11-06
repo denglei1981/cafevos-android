@@ -84,32 +84,35 @@ class PublishPopup(
 
 
     fun changPerm(data: List<String>) {
-        data.forEach { d ->
-            when (d) {
-                acts -> {
-                    list.add(
-                        PublishData(
-                            1,
-                            context.getString(R.string.home_publish_acts),
-                            R.drawable.icon_home_publish_acts
+        try {
+            data.forEach { d ->
+                when (d) {
+                    acts -> {
+                        list.add(
+                            PublishData(
+                                1,
+                                context.getString(R.string.home_publish_acts),
+                                R.drawable.icon_home_publish_acts
+                            )
                         )
-                    )
-                }
-                questiton -> {
-                    list.add(
-                        PublishData(
-                            2,
-                            context.getString(R.string.home_publish_answer),
-                            R.drawable.icon_home_answer
+                    }
+                    questiton -> {
+                        list.add(
+                            PublishData(
+                                2,
+                                context.getString(R.string.home_publish_answer),
+                                R.drawable.icon_home_answer
+                            )
                         )
-                    )
-                }
-                else -> {
+                    }
+                    else -> {
 
+                    }
                 }
             }
             homeViewPagerAdapter?.notifyDataSetChanged()
-
+        }catch (e:Exception){
+            e.printStackTrace()
         }
 
     }

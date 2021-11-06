@@ -1,7 +1,6 @@
 package com.changanford.home.recommend.fragment
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -10,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -22,12 +19,9 @@ import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
-import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
-import com.changanford.home.databinding.HeaderNewsListBinding
 import com.changanford.home.databinding.RecommendHeaderBinding
-import com.changanford.home.news.adapter.NewsBannerAdapter
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -63,7 +57,7 @@ open class RecommendFragment :
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
-            val itemViewType = recommendAdapter.getItemViewType(position)
+            val itemViewType = recommendAdapter.getItemViewType(position+1)
             val item = recommendAdapter.getItem(position)
             when (itemViewType) {
                 3 -> { // 跳转到活动

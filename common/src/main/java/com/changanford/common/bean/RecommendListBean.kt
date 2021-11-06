@@ -234,8 +234,8 @@ data class RecommendData(
         return city
     }
 
-    override val itemType: Int
-        get() = getItemTypeLocal()
+    override val itemType: Int get() = getItemTypeLocal()
+
 }
 
 /**
