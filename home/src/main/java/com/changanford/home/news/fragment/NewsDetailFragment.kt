@@ -347,11 +347,19 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.followLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-//                toastShow(it.data.toString())
-                isNeedNotify = true
-            } else {
-                toastShow(it.message)
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                } else {
+                    toastShow(it.message)
+                    newsDetailData?.let {na  ->
+                        val followType = na.authors.isFollow
+                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        setFollowState(inflateHeader.btFollow, na.authors)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
         viewModel.collectLiveData.observe(this, Observer {

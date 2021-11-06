@@ -236,7 +236,7 @@ class NewsVideoDetailFragment :
             if (it.isSuccess) {
                 isNeedNotify = true
                 setLikeState()
-                toastShow(it.data.toString())
+                toastShow(it.toString())
             } else {// 网络原因操作失败了。
                 //
 //                ToastUtils.showShortToast(it.message, this)
@@ -247,12 +247,16 @@ class NewsVideoDetailFragment :
         viewModel.followLiveData.observe(this, Observer {
             try {
                 if (it.isSuccess) {
-//                    toastShow(it.data.toString())
                     isNeedNotify = true
                 } else {
                     toastShow(it.message)
+                    newsDetailData?.let {na  ->
+                        val followType = na.authors.isFollow
+                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        setFollowState(inflateHeader.btFollow, na.authors)
+                    }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -361,16 +365,8 @@ class NewsVideoDetailFragment :
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
-            var followType = it.authors.isFollow
-            when (followType) {
-                1 -> {
-                    followType = 2
-                }
-                else -> {
-                    followType = 1
-                }
-            }
-            it.authors.isFollow = followType
+            val followType = it.authors.isFollow
+            it.authors.isFollow = if (followType == 1) 2 else 1
             setFollowState(inflateHeader.btFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
         }

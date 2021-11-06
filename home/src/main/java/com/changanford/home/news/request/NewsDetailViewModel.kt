@@ -134,9 +134,16 @@ class NewsDetailViewModel : BaseViewModel() {
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey)).also {
-                    val updateUiState = UpdateUiState<Any>(it.msg, true, "")
-                    followLiveData.postValue(updateUiState)
+                    if(it.code==0){
+                        val updateUiState = UpdateUiState<Any>(it.msg, true, "")
+                        followLiveData.postValue(updateUiState)
+                    }else{
+                        val updateUiState = UpdateUiState<Any>(it.message, false, it.message)
+                        followLiveData.postValue(updateUiState)
+                    }
                 }
+        },error = {
+            it.message?.toast()
         })
     }
     val collectLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。

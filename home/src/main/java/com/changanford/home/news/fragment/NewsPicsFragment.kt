@@ -135,12 +135,16 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         viewModel.followLiveData.observe(this, Observer {
             try {
                 if (it.isSuccess) {
-//                    toastShow(it.data.toString())
                     isNeedNotify = true
                 } else {
                     toastShow(it.message)
+                    newsDetailData?.let {na  ->
+                        val followType = na.authors.isFollow
+                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        setFollowState(binding.layoutHeader.btnFollow, na.authors)
+                    }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
