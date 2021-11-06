@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:paddingBottom="20dp"
+            android:minHeight="75dp"
             android:background="@null"
             android:gravity="top"
             android:hint="请输入正文内容，字数小于200"
