@@ -306,7 +306,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     mData.isLike = 0
                     mData.likesCount--
-                    binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                    binding.ivLike.setImageResource(R.mipmap.circle_no_like_image_v)
                 }
                 binding.tvLikeNum.text =
                     "${if (mData.likesCount > 0) mData.likesCount else "0"}"
@@ -330,7 +330,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
                         R.mipmap.circle_collection_image
                     } else {
-                        R.mipmap.circle_no_collection_image
+                        R.mipmap.circle_no_collection_image_v
                     }
                 )
             }

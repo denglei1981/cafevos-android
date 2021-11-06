@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
+import com.changanford.circle.adapter.HotMainTopicAdapter
 import com.changanford.circle.adapter.HotTopicAdapter
 import com.changanford.circle.databinding.ActivityHotTopicBinding
 import com.changanford.circle.viewmodel.HotTopicViewModel
@@ -22,7 +23,7 @@ import com.changanford.common.util.AppUtils
 class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel>() {
 
     private val adapter by lazy {
-        HotTopicAdapter()
+        HotMainTopicAdapter()
     }
 
     override fun initView() {

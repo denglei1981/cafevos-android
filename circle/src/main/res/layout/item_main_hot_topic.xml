@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.changanford.circle.bean.HotPicItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="21dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="100dp"
+            bindingUrl="@{bean.pic}"
+            android:scaleType="centerCrop"
+            android:layout_height="100dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_topic"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/circle_66_f2_20"
+            android:gravity="center_vertical"
+            app:layout_constraintRight_toRightOf="parent"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/circle_talk_hint" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1"
+                android:text="@{bean.name}"
+                android:textColor="@color/circle_8195C8"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="什么时候可以不带口罩" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{bean.description}"
+            android:textColor="@color/color_33"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/ll_topic"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_topic"
+            tools:text="这里是描述这里是描述这里是描述这里好是描述。" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/circle_B0BDDD"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+            tools:text="1233 帖子     12353 热度" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
