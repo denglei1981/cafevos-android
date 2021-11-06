@@ -346,6 +346,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                             setHomBottomNavi(View.VISIBLE)
                             navController?.navigate(R.id.carFragment)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+
                         }
                         4 -> {
                             setHomBottomNavi(View.VISIBLE)
