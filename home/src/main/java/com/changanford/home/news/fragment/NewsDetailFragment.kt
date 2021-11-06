@@ -204,7 +204,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(requireContext())
         setFollowState.setFollowState(btnFollow, authors)
-
     }
 
 
@@ -219,8 +218,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
-
-
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
@@ -320,13 +317,18 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
-                toastShow(it.message)
-                setLikeState()
-            } else {// 网络原因操作失败了。
-                toastShow(it.message)
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                    toastShow(it.data.toString())
+                    setLikeState()
+                } else {// 网络原因操作失败了。
+                    toastShow(it.message)
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
@@ -346,17 +348,23 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         })
         viewModel.followLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                toastShow(it.message)
+//                toastShow(it.data.toString())
                 isNeedNotify = true
             } else {
                 toastShow(it.message)
             }
         })
         viewModel.collectLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                setCollection()
+            try {
+                if (it.isSuccess) {
+                    setCollection()
+                    toastShow(it.data.toString())
+                } else {
+                    toastShow(it.message)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            toastShow(it.message)
         })
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {

@@ -235,6 +235,8 @@ class NewsVideoDetailFragment :
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
+                setLikeState()
+                toastShow(it.data.toString())
             } else {// 网络原因操作失败了。
                 //
 //                ToastUtils.showShortToast(it.message, this)
@@ -243,17 +245,31 @@ class NewsVideoDetailFragment :
             }
         })
         viewModel.followLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
+            try {
+                if (it.isSuccess) {
+//                    toastShow(it.data.toString())
+                    isNeedNotify = true
+                } else {
+                    toastShow(it.message)
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
         })
 
         viewModel.collectLiveData.observe(this, Observer {
-            if (it.isSuccess) {
+            try {
                 if (it.isSuccess) {
                     setCollection()
+                    toastShow(it.data.toString())
+                } else {
+                    toastShow(it.message)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+
         })
 
     }
@@ -387,7 +403,7 @@ class NewsVideoDetailFragment :
     override fun onDestroy() {
         if (isNeedNotify) {
             newsDetailData?.let {
-                var infoDetailsChangeData = InfoDetailsChangeData(
+                val infoDetailsChangeData = InfoDetailsChangeData(
                     it.commentCount,
                     it.likesCount,
                     it.authors.isFollow,
@@ -433,13 +449,13 @@ class NewsVideoDetailFragment :
 //        }
         when (v.id) {
             R.id.tv_news_to_collect -> {
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
                 }
 
             }
             R.id.tv_speak_something -> {
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     replay()
                 }
 
@@ -448,8 +464,8 @@ class NewsVideoDetailFragment :
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                if(LoginUtil.isLongAndBindPhone()){
-                    setLikeState()
+                if (LoginUtil.isLongAndBindPhone()) {
+
                     viewModel.actionLike(artId)
                 }
 
