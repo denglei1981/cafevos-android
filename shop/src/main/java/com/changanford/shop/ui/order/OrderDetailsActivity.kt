@@ -148,9 +148,9 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 }
                 "已完成"->{
                     totalPayName=R.string.str_realPayTotalAmount
-                    //支付时间
-                    dataBean.otherName=getString(R.string.str_payTime)
-                    dataBean.otherValue=simpleDateFormat.format(dataBean.payTime?:0)
+                    //发货时间
+                    dataBean.otherName=getString(R.string.str_deliveryTime)
+                    dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
                     binding.inAddress.layoutLogistics.visibility=View.VISIBLE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
@@ -168,8 +168,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                         }else{//未发货
                             //支付时间
                             dataBean.otherName=getString(R.string.str_payTime)
-                            val otherValue=simpleDateFormat.format(dataBean.payTime?:0)
-                            dataBean.otherValue=otherValue
+                            dataBean.otherValue=simpleDateFormat.format(dataBean.payTime?:0)
                         }
                     }
                     binding.inBottom.btnOrderConfirm.visibility=View.GONE
@@ -220,7 +219,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         this.dataBean=dataBean
     }
     /**
-     * 是否可申请退货 待收货、待评价、已完成时可以申请
+     * 是否可申请售后 待发货、待收货、待评价、已完成时可以申请
     * */
     private fun isApplyRefund(dataBean:OrderItemBean){
         //需要判断是否可以申请退货
