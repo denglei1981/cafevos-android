@@ -2,7 +2,6 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -48,7 +47,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
-        Log.e("okhttp","goodsInfo:$goodsInfo")
+//        Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
         dataBean.isAgree=false
         initLiveDataBus()
