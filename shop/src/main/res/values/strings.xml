@@ -143,7 +143,7 @@
     <string name="str_payTime">支付时间</string>
     <string name="str_deliveryTime">发货时间</string>
     <string name="str_collectionSuccess">收藏成功</string>
-    <string name="str_cancelledCollection">已取消收藏</string>
+    <string name="str_cancelledCollection">取消收藏</string>
     <string name="str_seckill">秒杀</string>
     <string name="str_bargaining">砍价</string>
     <string name="str_addressChangedSuccessfully">地址修改成功</string>
@@ -153,18 +153,17 @@
     <string name="str_noDatanow">暂时没有数据哦~</string>
     <string name="str_loading">加载中...</string>
     <string name="str_evaluationSuccess">评价成功</string>
-    <string name="str_haveAgreedAndAccepted">我已同意并接受</string>
+    <string name="str_haveAgreedAndAccepted">我已阅读并接受</string>
     <string name="str_fuyuAPPStoreTermsService">《福域APP商城服务条款》</string>
     <string name="str_anonymousUsers">匿名用户</string>
     <string name="str_noOrder">您还没有相关订单哦~</string>
     <string name="str_noComment">没有评论</string>
     <string name="str_currentPageIsInvalid">当前页面已失效~</string>
-    <string name="str_applyRefund">申请退货</string>
-    <string name="str_refunding">退货中</string>
-    <string name="prompt_refunding">您申请了退货，退货处理中</string>
-    <string name="str_refundComplete">退货完成</string>
-    <string name="prompt_refundComplete">您申请了退货，退货完成</string>
-    <string name="str_applyRefundComplete">退货申请成功，请联系客服处理退货</string>
+    <string name="str_applyRefund">申请售后</string>
+    <string name="str_refundComplete">售后已处理</string>
+    <string name="prompt_refundComplete">您的售后申请已处理，如有疑问请联系客服</string>
+    <string name="str_applyRefundComplete">您的退换货申请已提交</string>
     <string name="str_iKnow">我知道了</string>
-    <string name="str_areYouApplyReturn">是否确定申请退货</string>
+    <string name="str_areYouApplyReturn">是否确定申请退换货</string>
+    <string name="str_contactCustomerService">联系客服</string>
 </resources>

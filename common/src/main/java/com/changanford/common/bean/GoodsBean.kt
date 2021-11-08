@@ -343,8 +343,8 @@ data class OrderItemBean(
     var buyNum: String = "0",
     val consignee: String = "",
     val consumerMsg: String? = "",
-    val courierCompany: String = "",
-    val courierNo: String = "",
+    val courierCompany: String? = "",
+    val courierNo: String? = "",
     val createBy: String = "",
     val createTime: String = "",
     val dataState: String = "",
@@ -417,7 +417,7 @@ data class OrderItemBean(
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
-    var canRtGoods:String?=null,//是否可以退货 YES  NO
+    var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
 )
 
 data class OrderInfoBean(
