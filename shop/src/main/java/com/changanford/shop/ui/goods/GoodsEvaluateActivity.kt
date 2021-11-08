@@ -44,6 +44,8 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
                 else dataList?.let { it1 -> mAdapter.addData(it1) }
                 binding.model=this
             }
+            if(it?.pageList == null ||mAdapter.data.size>=it.pageList?.total!!)binding.smartRl.setEnableLoadMore(false)
+            else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.apply {
                 finishLoadMore()
                 finishRefresh()
