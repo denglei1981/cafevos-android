@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="没有相关活动,请扩大搜索范围"
+                android:text="暂无内容"
                 app:layout_constraintTop_toBottomOf="@+id/iv_empty"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
