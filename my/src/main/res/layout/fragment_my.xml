@@ -143,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_20"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/my_score" />
+                android:src="@mipmap/ic_task_jife" />
 
             <TextView
                 android:id="@+id/my_score"
