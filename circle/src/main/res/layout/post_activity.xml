@@ -31,6 +31,7 @@
             android:id="@+id/mcons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="65dp"
             android:background="@color/white">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -79,6 +80,7 @@
                 android:paddingBottom="50dp"
                 android:background="@null"
                 android:gravity="top"
+                android:minHeight="270dp"
                 android:hint="请输入正文内容，字数小于500"
                 android:maxLength="500"
                 android:paddingLeft="20dp"

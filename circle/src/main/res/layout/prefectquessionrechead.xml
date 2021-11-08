@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:hint="请填写调查标题"
+                android:hint="请填写调研问题"
                 android:maxLength="20"
                 android:paddingTop="10dp"
                 android:textSize="15sp"

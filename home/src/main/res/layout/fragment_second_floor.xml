@@ -18,6 +18,7 @@
             app:srlAccentColor="@android:color/white"
             app:srlDragRate="0.6"
             app:srlEnableLoadMore="false"
+            app:srlEnableRefresh="false"
             app:srlEnableOverScrollBounce="false">
 
             <com.scwang.smart.refresh.header.TwoLevelHeader

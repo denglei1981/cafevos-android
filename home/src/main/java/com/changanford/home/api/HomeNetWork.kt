@@ -270,6 +270,12 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<TwoAdData>
 
+    @POST("con/ads/list")
+    suspend fun getRecommendBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<AdBean>>
+
     /**
      * 枚举字典
      */
@@ -334,4 +340,10 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    @POST("/user/getIndexPerms")
+    suspend fun getIndexPerms(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<String>>
 }

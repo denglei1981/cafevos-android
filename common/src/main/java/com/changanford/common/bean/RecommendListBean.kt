@@ -89,7 +89,7 @@ data class RecommendData(
     val endTime: Long = 0,
     val official: Int? = null,
     val wonderfulType: Int? = null,
-    val activityJoinCount : String? = null, //参加活动人数
+    val activityJoinCount: String? = null, //参加活动人数
     val coverImg: String? = null,
     val jumpVal: String? = null,
     val serverTime: Long = 0,
@@ -97,16 +97,14 @@ data class RecommendData(
     val provinceName: String? = null,
     val recommend: String? = null,
     val hot: String? = null,
-    val wonderfulTitle:String="",
-    val wonderfulPic:String="",
-    val timeState:String="",
-    val openTime: String="",
-    val jumpType:String="",
-    val jumpValue:String="",
-
-
-) : MultiItemEntity {
-    fun getItemTypeLocal(): Int {
+    val wonderfulTitle: String = "",
+    val wonderfulPic: String = "",
+    val timeState: String = "",
+    val openTime: String = "",
+    val jumpType: String = "",
+    val jumpValue: String = "",
+    ) : MultiItemEntity {
+    private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
             return 3
         }
@@ -120,6 +118,7 @@ data class RecommendData(
         }
         return 1
     }
+
     fun getContent(): String { // 获取内容
         var contentString: String = ""
         when (rtype) {//1 资讯 2 帖子 3 活动
@@ -211,7 +210,11 @@ data class RecommendData(
         var topicStr: String = ""
         when (rtype) {
             1 -> {
-                topicStr = artTitle
+                topicStr = if (TextUtils.isEmpty(title)) {
+                    artTitle
+                } else {
+                    title
+                }
             }
             2 -> {
                 topicStr = postsTitle
@@ -222,15 +225,17 @@ data class RecommendData(
         }
         return topicStr
     }
-    fun  isArtVideoType():Boolean{
-        return artType==3
+
+    fun isArtVideoType(): Boolean {
+        return artType == 3
     }
 
-    fun getAddress():String{
+    fun getAddress(): String {
         return city
     }
-    override val itemType: Int
-        get() = getItemTypeLocal()
+
+    override val itemType: Int get() = getItemTypeLocal()
+
 }
 
 /**

@@ -162,7 +162,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                 }
                 //"官方", "线上活动", "免费" official 0-官方，1-非官方
-                // wonderfulType 精彩类型，0-线上活动，1-线下活动，2-问卷
+                // wonderfulType 精彩类型，0-线上活动，1-线下活动，2-问卷 3-福域活动
                 if (item.official == 0) {
                     it.tvTagOne.visibility = View.VISIBLE
                 } else {
@@ -178,6 +178,9 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                     2 -> {
                         it.tvTagTwo.text = "调查问卷"
+                    }
+                    3->{
+                        it.tvTagTwo.text = "福域活动"
                     }
                 }
                 //

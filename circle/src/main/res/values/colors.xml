@@ -10,6 +10,7 @@
     <color name="circle_666666">#666666</color>
     <color name="circle_74889D">#74889D</color>
     <color name="circle_B0B8C0">#B0B8C0</color>
+    <color name="circle_B0BDDD">#B0BDDD</color>
     <color name="circle_F4F4F4">#F4F4F4</color>
     <color name="circle_E53030">#E53030</color>
     <color name="circle_F9F9F9">#F9F9F9</color>
@@ -17,6 +18,7 @@
     <color name="circle_00095">#00095b</color>
     <color name="color_b0b3">#B0B3B5</color>
     <color name="color_00_a20">#33000000</color>
+    <color name="color_2d">#2D2D2D</color>
     <color name="circle_9eaed8">#9eaed8</color>
     <color name="circle_01025c">#01025C</color>
 </resources>

@@ -59,6 +59,8 @@
             android:background="@drawable/shap_longposttxtbk"
             android:minHeight="70dp"
             android:paddingLeft="10dp"
+            android:paddingBottom="40dp"
+            android:maxLength="100"
             android:gravity="top"
             android:paddingTop="10dp"
             android:textSize="13sp"

@@ -75,13 +75,25 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         flexboxLayoutManagerHistory = FlexboxLayoutManager(this)
         flexboxLayoutManagerHistory!!.flexDirection = FlexDirection.ROW
         flexboxLayoutManagerHistory!!.justifyContent = JustifyContent.FLEX_START
-        binding.recyclerViewHistory.layoutManager = flexboxLayoutManagerHistory
+
+
+        binding.recyclerViewHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         binding.recyclerViewHistory.adapter = historyAdapter
-        binding.recyclerViewFind.layoutManager = GridLayoutManager(this, 2)
-        binding.rvAuto.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+        binding.recyclerViewFind.layoutManager = flexboxLayoutManagerHistory
+
+
+
+
+        binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         binding.rvAuto.adapter = sAdapter
+
         binding.recyclerViewFind.adapter = searchHotAdapter
+
+
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -91,15 +103,15 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         }
         historyAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = historyAdapter.getItem(position)
-            if (position == 7 && !historyAdapter.isExpand) {
-                historyList?.let {
-                    historyAdapter.setExpand(true)
-                    historyAdapter.setList(it)
-                }
-            } else {
-                search(bean.keyword, true)
-            }
-
+            search(bean.keyword, true)
+//            if (position == 7 && !historyAdapter.isExpand) {
+//                historyList?.let {
+//                    historyAdapter.setExpand(true)
+//                    historyAdapter.setList(it)
+//                }
+//            } else {
+//
+//            }
         }
         sAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -166,12 +178,13 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                     binding.gHis.visibility = View.GONE
                 }
                 historyList = it as? MutableList<SearchRecordEntity>
-                if (it.size > 8 && !historyAdapter.isExpand) {
-                    val subList = it.subList(0, 8) as MutableList
-                    historyAdapter.setList(subList)
-                } else {
-                    historyAdapter.setList(it)
-                }
+                historyAdapter.setList(it)
+//                if (it.size > 8 && !historyAdapter.isExpand) {
+//                    val subList = it.subList(0, 8) as MutableList
+//                    historyAdapter.setList(subList)
+//                } else {
+//
+//                }
 
             })
         binding.layoutSearch.cancel.setOnClickListener {

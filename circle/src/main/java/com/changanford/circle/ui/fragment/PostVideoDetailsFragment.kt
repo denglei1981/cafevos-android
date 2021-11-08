@@ -2,6 +2,10 @@ package com.changanford.circle.ui.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +48,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
     private var page = 1
     private var checkPosition = 0
+    private var isExpand = false
     private var isOpenComment = false //是否打开评论区
 
     private val commentAdapter by lazy {
@@ -98,18 +103,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             } else {
                 MUtils.postDetailsFromVideo(tvFrom, mData.circleName, mData.circleId.toString())
             }
-            if (!mData.content.isNullOrEmpty()) {
-                MUtils.toggleEllipsize(
-                    requireContext(),
-                    binding.tvContent,
-                    1,
-                    mData.content,
-                    "展开",
-                    R.color.circle_9eaed8,
-                    false
-                )
+            showContent()
+            tvExpand.setOnClickListener {
+                isExpand = !isExpand
+                showContent()
             }
-
             if (!mData.city.isNullOrEmpty()) {
                 tvTwoCity.visibility = View.VISIBLE
                 tvTwoCity.text = mData.city
@@ -126,13 +124,45 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         bus()
     }
 
+    private fun showContent() {
+        binding.tvContent.post {
+            val textView = binding.tvContent
+            binding.tvExpand.text = if (isExpand) "收起" else "展开"
+            val originText = mData.content
+            if (isExpand) {
+                textView.text = mData.content
+            } else {
+                val paddingLeft = textView.paddingLeft
+                val paddingRight = textView.paddingRight
+                val paint = textView.paint
+                val availableTextWidth = (textView.width - paddingLeft - paddingRight).toFloat()
+
+                val ellipsizeStr: CharSequence = TextUtils.ellipsize(
+                    originText, paint,
+                    availableTextWidth, TextUtils.TruncateAt.END
+                )
+                if (ellipsizeStr.length < originText?.length!!) {
+                    val temp: CharSequence = ellipsizeStr.toString()
+                    val ssb = SpannableStringBuilder(temp)
+                    ssb.setSpan(
+                        ForegroundColorSpan(requireContext().resources.getColor(R.color.circle_9eaed8)),
+                        temp.length,
+                        temp.length,
+                        Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                    )
+                    textView.text = ssb
+                } else {
+                    binding.tvExpand.visibility = View.INVISIBLE
+                    textView.text = originText
+                }
+            }
+        }
+    }
+
     private fun initListener() {
         binding.run {
             backImg.setOnClickListener {
                 requireActivity().finish()
-            }
-            tvContent.setOnClickListener {
-                tvContent.text = mData.content
             }
             tvTalk.setOnClickListener {
                 page = 1
@@ -206,7 +236,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
             tvFollow.setOnClickListener {
-                if(!MineUtils.getBindMobileJumpDataType(true)){
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
                     val isFol = mData.authorBaseVo?.isFollow
                     viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
                 }
@@ -276,7 +306,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     mData.isLike = 0
                     mData.likesCount--
-                    binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                    binding.ivLike.setImageResource(R.mipmap.circle_no_like_image_v)
                 }
                 binding.tvLikeNum.text =
                     "${if (mData.likesCount > 0) mData.likesCount else "0"}"
@@ -300,7 +330,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
                         R.mipmap.circle_collection_image
                     } else {
-                        R.mipmap.circle_no_collection_image
+                        R.mipmap.circle_no_collection_image_v
                     }
                 )
             }

@@ -27,6 +27,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mcons"
+            android:paddingBottom="65dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
@@ -75,6 +76,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@null"
                 android:gravity="top"
+                android:minHeight="270dp"
                 android:hint="请输入正文内容，字数小于500"
                 android:maxLength="500"
                 android:paddingLeft="20dp"

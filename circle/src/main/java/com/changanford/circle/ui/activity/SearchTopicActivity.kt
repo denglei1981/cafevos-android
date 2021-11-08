@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
+import com.changanford.circle.adapter.HotMainTopicAdapter
 import com.changanford.circle.adapter.HotTopicAdapter
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.databinding.ActivitySearchTopicBinding
@@ -28,7 +29,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     private var page = 1
     private var needCallback:Boolean =false
     private val adapter by lazy {
-        HotTopicAdapter()
+        HotMainTopicAdapter()
     }
 
     override fun initView() {

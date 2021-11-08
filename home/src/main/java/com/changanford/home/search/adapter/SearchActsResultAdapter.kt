@@ -48,7 +48,7 @@ class SearchActsResultAdapter :
                     it.tvHomeActAddress.visibility = View.GONE
                 }
                 3 -> {
-                    it.tvTagTwo.text = "厂家活动"
+                    it.tvTagTwo.text = "福域活动"
                     it.tvHomeActTimes.text =
                         "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
                     it.tvHomeActAddress.visibility = View.GONE

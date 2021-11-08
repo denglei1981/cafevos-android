@@ -14,7 +14,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/g_no_comment"
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="iv_no_comment,tv_no_comment"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
 
         <ImageView
@@ -40,9 +41,9 @@
             android:id="@+id/tv_no_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
             android:layout_marginTop="@dimen/dp_30"
             android:gravity="center"
+            android:paddingBottom="20dp"
             android:text="@string/no_comment"
             android:textColor="@color/color_99"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,12 +55,13 @@
             android:id="@+id/con_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
             android:background="@color/white"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_head"
@@ -130,6 +132,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_content"
+                style="@style/AppText.lineSpace"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="19dp"

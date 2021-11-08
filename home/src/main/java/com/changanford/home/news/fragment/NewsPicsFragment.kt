@@ -118,27 +118,48 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
-                setLikeState()
-            } else {// 网络原因操作失败了。
-                toastShow(it.message)
-                setLikeState()
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                    toastShow(it.data.toString())
+                    setLikeState()
+                } else {// 网络原因操作失败了。
+                    toastShow(it.message)
+                    setLikeState()
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
         })
         viewModel.followLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
-            }else{
-                toastShow(it.message)
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                } else {
+                    toastShow(it.message)
+                    newsDetailData?.let {na  ->
+                        val followType = na.authors.isFollow
+                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        setFollowState(binding.layoutHeader.btnFollow, na.authors)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+
         })
 
         viewModel.collectLiveData.observe(this, Observer {
-            if (it.isSuccess) {
+            try {
                 if (it.isSuccess) {
                     setCollection()
+                    toastShow(it.data.toString())
+                } else {
+                    toastShow(it.message)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
 
@@ -231,7 +252,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         if (newsDetailData.isLike == 0) {
             binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_white, false)
         } else {
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, false)
         }
         if (newsDetailData.isCollect == 0) {
             binding.llComment.tvNewsToCollect.setThumb(
@@ -240,7 +261,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             )
         } else {
             binding.llComment.tvNewsToCollect.setThumb(
-                R.drawable.icon_home_bottom_collection,
+                R.drawable.icon_home_bottom_collection_blue,
                 false
             )
         }
@@ -261,7 +282,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 newsDetailData?.isCollect = 1
                 collectCount = newsDetailData?.collectCount?.plus(1)
                 binding.llComment.tvNewsToCollect.setThumb(
-                    R.drawable.icon_home_bottom_collection,
+                    R.drawable.icon_home_bottom_collection_blue,
                     true
                 )
             }
@@ -291,7 +312,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, true)
             }
             1 -> {
                 newsDetailData?.isLike = 0
@@ -325,7 +346,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
-            followType = if (followType==1) 2 else 1
+            followType = if (followType == 1) 2 else 1
             it.authors.isFollow = followType;
             setFollowState(binding.layoutHeader.btnFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
@@ -344,7 +365,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.actionLike(artId)
                 }
 
@@ -356,23 +377,23 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
             R.id.tv_news_to_collect -> {
                 // 收藏
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
                 }
 
             }
             R.id.tv_news_to_share -> {
 
-                    newsDetailData?.let {
-                        HomeShareModel.shareDialog(
-                            requireActivity(),
-                            0,
-                            it.shares,
-                            null,
-                            null,
-                            it.authors.nickname
-                        )
-                    }
+                newsDetailData?.let {
+                    HomeShareModel.shareDialog(
+                        requireActivity(),
+                        0,
+                        it.shares,
+                        null,
+                        null,
+                        it.authors.nickname
+                    )
+                }
 
             }
             R.id.iv_more -> {

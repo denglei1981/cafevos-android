@@ -204,7 +204,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(requireContext())
         setFollowState.setFollowState(btnFollow, authors)
-
     }
 
 
@@ -219,8 +218,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
-
-
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
@@ -320,12 +317,18 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.actionLikeLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
-                setLikeState()
-            } else {// 网络原因操作失败了。
-                toastShow(it.message)
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                    toastShow(it.data.toString())
+                    setLikeState()
+                } else {// 网络原因操作失败了。
+                    toastShow(it.message)
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
         })
         viewModel.recommendNewsLiveData.observe(this, Observer {
             if (it.isSuccess) {
@@ -344,17 +347,31 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         })
         viewModel.followLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                isNeedNotify = true
-            } else {
-                toastShow(it.message)
+            try {
+                if (it.isSuccess) {
+                    isNeedNotify = true
+                } else {
+                    toastShow(it.message)
+                    newsDetailData?.let {na  ->
+                        val followType = na.authors.isFollow
+                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        setFollowState(inflateHeader.btFollow, na.authors)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
         viewModel.collectLiveData.observe(this, Observer {
-            if (it.isSuccess) {
+            try {
                 if (it.isSuccess) {
                     setCollection()
+                    toastShow(it.data.toString())
+                } else {
+                    toastShow(it.message)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
         //分享
@@ -451,7 +468,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 //        }
         when (v.id) {
             R.id.tv_speak_something -> {
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     replay()
                 }
             }
@@ -459,14 +476,14 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.actionLike(artId)
                 }
 
             }
             R.id.tv_news_to_collect -> {
                 // 收藏
-                if(LoginUtil.isLongAndBindPhone()){
+                if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
                 }
 

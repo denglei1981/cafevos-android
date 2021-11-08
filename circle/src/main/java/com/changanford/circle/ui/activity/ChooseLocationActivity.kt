@@ -269,7 +269,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvTitle.text = "所在位置"
         binding.title.barTvOther.visibility = View.VISIBLE
-        binding.title.barTvOther.text = "发布"
+        binding.title.barTvOther.text = "完成"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)

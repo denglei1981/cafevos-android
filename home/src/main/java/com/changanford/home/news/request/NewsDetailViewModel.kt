@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
@@ -110,63 +111,57 @@ class NewsDetailViewModel : BaseViewModel() {
                 }
         })
     }
-
     fun actionLike(artId: String) {
-        launch(false, {
+        launch(block = {
             val requestBody = HashMap<String, Any>()
             requestBody["artId"] = artId
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .actionLike(requestBody.header(rkey), requestBody.body(rkey))
-                .onSuccess {
-                    val updateUiState = UpdateUiState<Any>(it, true, "")
-                    actionLikeLiveData.postValue(updateUiState)
-                }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<Any>(false, it)
+                .also {
+                    val updateUiState = UpdateUiState<Any>(it.msg, true, "")
                     actionLikeLiveData.postValue(updateUiState)
                 }
+        }, error = {
+            it.message?.toast()
         })
     }
-
     fun followOrCancelUser(followId: String, type: Int) {
-        launch(false, {
+        launch(false, block = {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
             requestBody["type"] = type
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
-                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
-                .onSuccess {
-                    val updateUiState = UpdateUiState<Any>(it, true, "")
-                    followLiveData.postValue(updateUiState)
-                }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<Any>(false, it)
-                    followLiveData.postValue(updateUiState)
+                .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey)).also {
+                    if(it.code==0){
+                        val updateUiState = UpdateUiState<Any>(it.msg, true, "")
+                        followLiveData.postValue(updateUiState)
+                    }else{
+                        val updateUiState = UpdateUiState<Any>(it.msg, false, it.msg)
+                        followLiveData.postValue(updateUiState)
+                    }
                 }
+        },error = {
+            it.message?.toast()
         })
     }
     val collectLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
     fun addCollect(collId: String) {
-        launch(false, {
+        launch(false, block={
             val requestBody = HashMap<String, Any>()
             requestBody["collectionContentId"] = collId
             requestBody["collectionType"] = 1
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
-                .collectionApi(requestBody.header(rkey), requestBody.body(rkey))
-                .onSuccess {
-                    val updateUiState = UpdateUiState<Any>(it, true, "")
+                .collectionApi(requestBody.header(rkey), requestBody.body(rkey)).also {
+                    val updateUiState = UpdateUiState<Any>(it.msg, true, "")
                     collectLiveData.postValue(updateUiState)
-                }.onWithMsgFailure {
-                    val updateUiState = UpdateUiState<Any>(false, it)
-                    collectLiveData.postValue(updateUiState)
-                    if (it != null) {
-                        toastShow(it)
-                    }
                 }
+        },error = {
+            toastShow(it.message.toString())
         })
     }
-
 
     fun getArtAdditional(artId: String) {
         launch(false, {

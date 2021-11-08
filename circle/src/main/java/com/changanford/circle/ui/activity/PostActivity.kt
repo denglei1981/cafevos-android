@@ -144,12 +144,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            if (isPopup){
-                iskeybarOpen = true
+//            if (isPopup){
+//                iskeybarOpen = true
                 binding.bottom.emojirec.visibility = View.GONE
-            } else{
-                iskeybarOpen= false
-            }
+//            } else{
+//                iskeybarOpen= false
+//            }
         }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -414,7 +414,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         }
         binding.bottom.ivEmoj.setOnClickListener {
-            if (binding.etContent.hasFocus()&&iskeybarOpen){
+//            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
                 HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
@@ -428,15 +428,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         }
                     }
                 }
-            }else if(!iskeybarOpen) {
-                Timer().schedule(80) {
-                    binding.bottom.emojirec.post {
-                        if (binding.bottom.emojirec.isShown) {
-                            binding.bottom.emojirec.visibility = View.GONE
-                        }
-                    }
-                }
-            }
+//            }else if(!iskeybarOpen) {
+//                Timer().schedule(80) {
+//                    binding.bottom.emojirec.post {
+//                        if (binding.bottom.emojirec.isShown) {
+//                            binding.bottom.emojirec.visibility = View.GONE
+//                        }
+//                    }
+//                }
+//            }
 
         }
         binding.title.barTvOther.setOnClickListener {

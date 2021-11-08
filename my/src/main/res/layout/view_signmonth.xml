@@ -167,6 +167,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/textView17"
             style="@style/commonTextView.Normal.White"
             android:layout_marginTop="@dimen/dp_10"
@@ -175,6 +176,7 @@
             app:layout_constraintTop_toBottomOf="@id/jiangli" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/guize"
             style="@style/commonTextView.Small"
             android:layout_marginTop="@dimen/dp_10"

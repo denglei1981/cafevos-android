@@ -1,8 +1,12 @@
 package com.changanford.home.recommend.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.util.JumpUtils
@@ -17,9 +21,13 @@ import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
+import com.changanford.home.databinding.RecommendHeaderBinding
+import com.changanford.home.recommend.adapter.RecommendBannerAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.zhpan.bannerview.constants.PageStyle
 
 
 /**
@@ -27,11 +35,10 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
  * */
 open class RecommendFragment :
     BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
-    OnLoadMoreListener {
+    OnLoadMoreListener, OnRefreshListener {
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
-
     companion object {
         fun newInstance(): RecommendFragment {
             val fg = RecommendFragment()
@@ -40,34 +47,98 @@ open class RecommendFragment :
             return fg
         }
     }
-
     var selectPosition = -1
     override fun initView() {
-        viewModel.getRecommend(false)
-        binding.smartLayout.setEnableRefresh(false)
+
+        binding.smartLayout.setEnableRefresh(true)
         binding.smartLayout.setOnLoadMoreListener(this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
-            val itemViewType = recommendAdapter.getItemViewType(position)
+            val itemViewType = recommendAdapter.getItemViewType(position+1)
             val item = recommendAdapter.getItem(position)
             when (itemViewType) {
-                1, 2 -> {
-                    toPostOrNews(item)
-                }
                 3 -> { // 跳转到活动
                     toActs(item)
+                }
+                else -> {
+                    toPostOrNews(item)
                 }
             }
         }
         setLoadSir(binding.smartLayout)
+        addHeadView()
+        viewModel.getRecommendBanner()
+        viewModel.getRecommend(false)
+    }
+
+    var headNewBinding: RecommendHeaderBinding? = null
+
+    private fun addHeadView() {
+        if (headNewBinding == null) {
+            headNewBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.recommend_header,
+                binding.recyclerView,
+                false
+            )
+            val recommendBannerAdapter = RecommendBannerAdapter()
+            headNewBinding?.let {
+                recommendAdapter.addHeaderView(it.root, 0)
+                it.bViewpager.setAdapter(recommendBannerAdapter)
+                it.bViewpager.setCanLoop(true)
+                it.bViewpager.setIndicatorView(it.drIndicator)
+                it.bViewpager.setAutoPlay(true)
+                it.bViewpager.create()
+                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+                it.bViewpager.setScrollDuration(500)
+                it.bViewpager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+
+                    }
+                })
+            }
+            setIndicator()
+        }
+    }
+
+    /**
+     * 设置指示器
+     * */
+    private fun setIndicator() {
+        val dp6 = resources.getDimensionPixelOffset(R.dimen.dp_6)
+        headNewBinding?.drIndicator?.setIndicatorDrawable(
+            R.drawable.shape_home_banner_normal,
+            R.drawable.shape_home_banner_focus
+        )
+            ?.setIndicatorSize(dp6, dp6, resources.getDimensionPixelOffset(R.dimen.dp_20), dp6)
+            ?.setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
     override fun observe() {
         super.observe()
         bus()
+        viewModel.recommendBannerLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.data == null || it.data.isEmpty()) {
+                    headNewBinding?.bViewpager?.visibility = View.GONE
+                    headNewBinding?.drIndicator?.visibility = View.GONE
+                } else {
+                    headNewBinding?.bViewpager?.visibility = View.VISIBLE
+                    headNewBinding?.drIndicator?.visibility = View.VISIBLE
+                }
+                headNewBinding?.bViewpager?.refreshData(it.data)
+
+            } else {
+                //
+                headNewBinding?.bViewpager?.visibility = View.GONE
+                headNewBinding?.drIndicator?.visibility = View.GONE
+            }
+
+        })
     }
 
     private fun toPostOrNews(item: RecommendData) { // 跳转到资讯，或者 帖子
@@ -176,8 +247,9 @@ open class RecommendFragment :
                     }
                     showContent()
                     recommendAdapter.setNewInstance(dataList)
-                    (parentFragment as HomeV2Fragment).stopRefresh()
-                    (parentFragment as HomeV2Fragment).openTwoLevel()
+                    binding.smartLayout.finishRefresh()
+//                    (parentFragment as HomeV2Fragment).stopRefresh()
+//                    (parentFragment as HomeV2Fragment).openTwoLevel()
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
@@ -210,6 +282,25 @@ open class RecommendFragment :
     }
 
     override fun onRetryBtnClick() {
+        viewModel.getRecommend(false)
+    }
 
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getRecommend(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        headNewBinding?.bViewpager?.stopLoop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        headNewBinding?.bViewpager?.startLoop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        headNewBinding?.bViewpager?.stopLoop()
     }
 }

@@ -27,7 +27,7 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/emptyimg" />
+            android:src="@mipmap/image_common_empty" />
 
         <TextView
             android:textStyle="bold"
@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="暂时没有数据哦~"
+            android:layout_marginTop="20dp"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12" />
 

@@ -2,15 +2,16 @@ package com.changanford.home.acts.fragment
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.databinding.FragmentActsParentBinding
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>() {
+class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),OnRefreshListener {
 
 
     companion object {
@@ -27,7 +28,8 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     }
 
     override fun initView() {
-        binding.refreshLayout.setEnableRefresh(false)
+        binding.refreshLayout.setEnableRefresh(true)
+        binding.refreshLayout.setOnRefreshListener(this)
         binding.ryActs.setStickyHeight(0)
         binding.ryActs.adapter = adapter
         adapter.setItems(arrayListOf("", ""))
@@ -60,7 +62,8 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         super.observe()
         viewModel.bannerLiveData.observe(this, {
             if (it.isSuccess) {
-                (parentFragment as HomeV2Fragment).stopRefresh()
+//                (parentFragment as HomeV2Fragment).stopRefresh()
+                 binding.refreshLayout.finishRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
             } else {
                 toastShow(it.message)
@@ -91,5 +94,9 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
             e.printStackTrace()
         }
 
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        homeRefersh()
     }
 }

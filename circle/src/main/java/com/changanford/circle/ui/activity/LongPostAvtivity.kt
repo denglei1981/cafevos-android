@@ -140,12 +140,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            if (isPopup){
-                iskeybarOpen = true
+//            if (isPopup){
+//                iskeybarOpen = true
                 binding.bottom.emojirec.visibility = View.GONE
-            } else{
-                iskeybarOpen= false
-            }
+//            } else{
+//                iskeybarOpen= false
+//            }
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             FMMeadia = it as LocalMedia
@@ -519,7 +519,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         binding.bottom.ivEmoj.setOnClickListener {
 
-            if (!headBinding.etBiaoti.hasFocus()&&iskeybarOpen){
+//            if (!headBinding.etBiaoti.hasFocus()&&iskeybarOpen){
 
                 HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
@@ -533,15 +533,15 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         }
                     }
                 }
-            }else if(!iskeybarOpen) {
-                Timer().schedule(80) {
-                    binding.bottom.emojirec.post {
-                        if (binding.bottom.emojirec.isShown) {
-                            binding.bottom.emojirec.visibility = View.GONE
-                        }
-                    }
-                }
-            }
+//            }else if(!iskeybarOpen) {
+//                Timer().schedule(80) {
+//                    binding.bottom.emojirec.post {
+//                        if (binding.bottom.emojirec.isShown) {
+//                            binding.bottom.emojirec.visibility = View.GONE
+//                        }
+//                    }
+//                }
+//            }
         }
         binding.title.barTvOther.setOnClickListener {
             ispost()
@@ -816,6 +816,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
         headBinding.etBiaoti.hint = spannableString
+        headBinding.etBiaoti.requestFocus()
+        editText= headBinding.etBiaoti
+
         headBinding.ivAddfm.setOnClickListener {
             PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {

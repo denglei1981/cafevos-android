@@ -23,6 +23,9 @@ object LoginUtil {
         } else {
             true
         }
+
+
+
     }
 
     fun isBindPhone(isSkipBindMobile: Boolean = true): Boolean {
