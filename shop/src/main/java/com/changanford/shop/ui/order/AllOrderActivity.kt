@@ -55,10 +55,8 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
                 else mAdapter.addData(it.dataList)
             }
             if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
-            else {
-                binding.smartRl.finishLoadMore()
-                binding.smartRl.setEnableLoadMore(true)
-            }
+            else binding.smartRl.setEnableLoadMore(true)
+            binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
 //            if(null==it|| it.dataList.isEmpty())pageNo--
 //            binding.smartRl.finishLoadMore()
