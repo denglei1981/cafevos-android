@@ -46,6 +46,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "Boolean", "DEBUG_ENABLE", "false" //不显示log
 //            android.applicationVariants.all{ variant ->
 //                variant.outputs.all{
 //                    variant.getPackageApplication().outputDirectory = new File(project.rootDir.path+"/build/outapks/release")
@@ -58,6 +59,7 @@ android {
 //            minifyEnabled true
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "Boolean", "DEBUG_ENABLE", "false" //不显示log
         }
     }
 
