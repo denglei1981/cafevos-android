@@ -95,6 +95,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         })
         viewModel.classificationLiveData.observe(this,{
             bindingTab(it)
+            binding.smartRl.finishRefresh()
         })
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {

@@ -80,20 +80,24 @@ class OrderViewModel: BaseViewModel() {
           }
         }
     }
+    private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
     /**
      * 商品订单列表
-     * [orderStatus] 0待付款,1待发货,2待收货,3已完成
+     * [orderStatus]0全部 1待付款,2待发货,3待收货,4待评价
      * evalStatus 0待评价
      * */
-    fun getShopOrderList(orderStatus:Int?,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
+    fun getShopOrderList(orderStatus:Int,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
         viewModelScope.launch {
             val responseBean=fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
-                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
-                    else if(3==orderStatus)it["evalStatus"] =0
+                    var typeI=orderStatus+1
+                    if(typeI<0||typeI>=queryType.size)typeI=0
+                    it["queryType"] = queryType[typeI]
+//                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
+//                    else if(3==orderStatus)it["evalStatus"] =0
                 }
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))

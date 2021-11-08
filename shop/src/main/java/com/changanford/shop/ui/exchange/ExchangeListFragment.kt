@@ -58,13 +58,14 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
         } else if(it?.dataList != null)mAdapter.addData(it.dataList)
-//        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
-//        else {
-//            binding.smartRl.finishLoadMore()
-//            binding.smartRl.setEnableLoadMore(true)
-//        }
-        if(null==it|| it.dataList.isEmpty())pageNo--
-        binding.smartRl.finishLoadMore()
+
+        if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+        else {
+            binding.smartRl.finishLoadMore()
+            binding.smartRl.setEnableLoadMore(true)
+        }
+//        if(null==it|| it.dataList.isEmpty())pageNo--
+//        binding.smartRl.finishLoadMore()
     }
     fun setParentSmartRefreshLayout(parentSmartRefreshLayout:SmartRefreshLayout?){
         this.parentSmartRefreshLayout=parentSmartRefreshLayout
