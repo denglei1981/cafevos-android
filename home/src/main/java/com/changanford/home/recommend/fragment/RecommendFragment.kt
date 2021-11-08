@@ -91,15 +91,9 @@ open class RecommendFragment :
                 it.bViewpager.setCanLoop(true)
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
-                it.bViewpager.create()
-                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
                 it.bViewpager.setScrollDuration(500)
-                it.bViewpager.registerOnPageChangeCallback(object :
-                    ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-
-                    }
-                })
+                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+                it.bViewpager.create()
             }
             setIndicator()
         }

@@ -156,8 +156,7 @@ class ActsMainAdapter(
             setCanLoop(true)
             setAdapter(SimpleAdapter())
             setIndicatorView(binding.drIndicator)
-            setRoundCorner(20)
-                .setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+            setRoundCorner(20).setPageStyle(PageStyle.MULTI_PAGE_SCALE)
             setOnPageClickListener { }
             setIndicatorSliderColor(
                 ContextCompat.getColor(context, R.color.blue_tab),
