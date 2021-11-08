@@ -28,6 +28,7 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
 import com.just.agentweb.AgentWeb
@@ -605,4 +606,16 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun getAppVersion() = DeviceUtils.getversionName()
+
+    /**
+     * 设置状态栏字体的颜色
+     * color 0是白，1是黑
+     */
+    @JavascriptInterface
+    fun setStatusBarTextColor(color:Int){
+        activity!!.lifecycleScope.launch {
+            StatusBarUtil.setLightStatusBar(activity, color != 0)
+        }
+    }
+
 }

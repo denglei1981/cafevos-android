@@ -37,5 +37,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/right_arrow_black" />
+        android:src="@mipmap/right_arrow_common" />
 </androidx.constraintlayout.widget.ConstraintLayout>

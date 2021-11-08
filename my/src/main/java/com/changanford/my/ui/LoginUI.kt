@@ -254,6 +254,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             player.setDisplay(binding.loginVideo.holder)
             player.start()
         }
+        player.setOnErrorListener { mp, what, extra ->
+            binding.loginVideo.visibility = View.GONE
+            binding.imBg.visibility = View.VISIBLE
+            false
+        }
         player.setDataSource(videoUrl)
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
@@ -371,7 +376,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         lifecycleScope.launch(Dispatchers.IO) {
             delay(2000)
             if (!isFinishing && !isOnResume && !isOnStop) {
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     "${resources.getString(R.string.app_name)}App已经进入后台".toast()
                 }
             }
