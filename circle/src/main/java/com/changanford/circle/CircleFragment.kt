@@ -156,7 +156,11 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                     Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
                     object : CheckRequestPermissionListener {
                         override fun onPermissionOk(permission: Permission) {
-                            getLocationData()
+                            if (JumpUtils.instans?.isOPen(requireContext()) == true) {
+                                getLocationData()
+                            } else {
+                                viewModel.communityIndex()
+                            }
                         }
 
                         override fun onPermissionDenied(permission: Permission) {

@@ -12,6 +12,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
@@ -176,7 +177,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             isRefreshUserInfo = false
             loginState.postValue(true)
         }
-        binding.myHead.load(userInfoBean?.avatar, R.mipmap.head_default)
+        GlideUtils.loadCircle(userInfoBean?.avatar,binding.myHead,R.mipmap.head_default)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"

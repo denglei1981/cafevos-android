@@ -79,7 +79,7 @@
             android:layout_marginTop="7dp"
             android:text="@{bean.description}"
             android:textColor="@color/color_2d"
-            android:textSize="11sp"
+            android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_topic"
             app:layout_constraintRight_toLeftOf="@+id/iv_icon"
