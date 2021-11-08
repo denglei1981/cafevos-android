@@ -36,6 +36,7 @@
                         android:layout_marginTop="@dimen/dp_69"
                         android:background="@drawable/bg_circle_eee"
                         android:src="@mipmap/my_headdefault"
+                        android:scaleType="fitXY"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:shapeAppearanceOverlay="@style/circleImageStyle" />
