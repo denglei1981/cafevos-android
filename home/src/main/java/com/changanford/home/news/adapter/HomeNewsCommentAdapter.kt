@@ -71,7 +71,7 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
                     val rKey = getRandomKey()
                     ApiClient.createApi<HomeNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also { cr ->
-                                cr.msg.toast()
+//                                cr.msg.toast()
                                 if (cr.code == 0) {
                                     if (item.isLike == 0) {
                                         item.isLike = 1
