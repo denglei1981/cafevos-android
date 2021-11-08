@@ -134,13 +134,15 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_confirmGoods)
                 }
-                "待评价","售后已处理"->{
+                "待评价"->{
                     totalPayName=R.string.str_realPayTotalAmount
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
-                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
-                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+                    binding.inAddress.apply {
+                        layoutLogistics.visibility=View.VISIBLE
+                        tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+                    }
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                 }
@@ -153,6 +155,25 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
+                }
+                "售后已处理"->{
+                    totalPayName=R.string.str_realPayTotalAmount
+                    binding.inAddress.apply {
+                        if(!TextUtils.isEmpty(dataBean.courierNo)){//已发货
+                            //发货时间
+                            dataBean.otherName=getString(R.string.str_deliveryTime)
+                            dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
+                            layoutLogistics.visibility=View.VISIBLE
+                            tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+                        }else{//未发货
+                            //支付时间
+                            dataBean.otherName=getString(R.string.str_payTime)
+                            val otherValue=simpleDateFormat.format(dataBean.payTime?:0)
+                            dataBean.otherValue=otherValue
+                        }
+                    }
+                    binding.inBottom.btnOrderConfirm.visibility=View.GONE
+                    binding.tvOrderRemainingTime.setText(R.string.prompt_refundComplete)
                 }
                 "已关闭"->{
                     binding.inOrderInfo.layoutOrderClose.visibility=View.GONE
