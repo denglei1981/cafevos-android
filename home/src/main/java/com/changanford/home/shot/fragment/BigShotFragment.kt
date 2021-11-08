@@ -184,10 +184,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             recommendUser.isMutualAttention = followType
             bigShotUserListAdapter.notifyItemChanged(position,"follow")
             viewModel.followOrCancelUser(recommendUser.userId, followType)
-
     }
-
-
     fun homeRefersh() {
         viewModel.getRecommendList()
         viewModel.getBigShotPost(false)

@@ -38,7 +38,6 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
-
     companion object {
         fun newInstance(): NewsListFragment {
             val fg = NewsListFragment()
