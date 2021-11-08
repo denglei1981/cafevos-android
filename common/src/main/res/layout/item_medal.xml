@@ -20,8 +20,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/im_medal_icon"
-                android:layout_width="@dimen/dp_68"
-                android:layout_height="@dimen/dp_74"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
                 android:layout_marginTop="@dimen/dp_8"
                 android:src="@mipmap/ic_medal_ex"
                 app:layout_constraintDimensionRatio="1:1"
