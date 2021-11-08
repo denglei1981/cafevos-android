@@ -59,7 +59,7 @@ android {
 //            minifyEnabled true
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "Boolean", "DEBUG_ENABLE", "false" //不显示log
+            buildConfigField "Boolean", "DEBUG_ENABLE", "true" //显示log
         }
     }
 
