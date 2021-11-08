@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarIntroBinding
 import com.changanford.common.bean.AdBean
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -34,7 +35,7 @@ class CarTopBannerAdapter : BaseBannerAdapter<AdBean, CarTopBannerViewHolder>() 
 class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
     override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
         var binding = DataBindingUtil.bind<ItemCarIntroBinding>(itemView)
-        binding?.imageCarIntro?.load(data?.adImg,null)
+        binding?.imageCarIntro?.let { GlideUtils.loadBD(data?.adImg, it,R.mipmap.ic_def_square_img) }
     }
 
 }
