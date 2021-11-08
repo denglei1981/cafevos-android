@@ -29,7 +29,7 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/emptyimg" />
+            android:src="@mipmap/image_common_empty" />
 
         <TextView
             android:id="@+id/view_status_text"

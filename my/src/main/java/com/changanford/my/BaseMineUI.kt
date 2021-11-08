@@ -93,7 +93,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
      */
     open fun showEmptyView(
         emptyMessage: String = getString(R.string.empty_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
     ): View? {
         return setAdapterView(emptyMessage, errorLayoutId);
     }
@@ -129,7 +129,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
      */
     fun showErrorView(
         msg: String = getString(R.string.error_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
     ): View? {
         return setAdapterView(msg, errorLayoutId);
     }
@@ -217,7 +217,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
         dataSize: Int,
         adapter: BaseQuickAdapter<T, VH>,
         emptyMessage: String = getString(R.string.empty_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.emptyimg
+        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
     ): Boolean {
         if (dataSize == 0) {
             //禁止加载更多
