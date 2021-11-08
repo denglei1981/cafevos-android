@@ -134,7 +134,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also { it1 ->
-                            it1.msg.toast()
+//                            it1.msg.toast()
                             if (it1.code == 0) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
