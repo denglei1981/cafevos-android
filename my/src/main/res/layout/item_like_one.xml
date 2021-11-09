@@ -30,7 +30,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_def_square_img"
         app:layout_constraintLeft_toLeftOf="@+id/item_like_title"
         app:layout_constraintRight_toRightOf="@+id/item_like_title"
         app:layout_constraintTop_toTopOf="parent" />
