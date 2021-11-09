@@ -50,7 +50,7 @@ android {
 //            android.applicationVariants.all{ variant ->
 //                variant.outputs.all{
 //                    variant.getPackageApplication().outputDirectory = new File(project.rootDir.path+"/build/outapks/release")
-//                    outputFileName = "${project.name}_${defaultConfig.versionName}_${variant.buildType.name}.apk"
+//                    outputFileName = "${project.name}_${defaultConfig.versionName}_${variant.buildType.name}_${variant.productFlavors[0].name}.apk"
 //                }
 //            }
         }
@@ -66,9 +66,38 @@ android {
     //多渠道打包
     flavorDimensions "default"
     productFlavors {
+        //华为、应用宝、360、OPPO、vivo、小米、百度、魅族
+        huawei {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "huawei"]
+        }
+        yyb {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "yyb"]
+        }
+        c360 {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "c360"]
+        }
+        oppo {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "oppo"]
+        }
+        vivo {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "vivo"]
+        }
+        xiaomi {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "xiaomi"]
+        }
         baidu {
             dimension "default"
             manifestPlaceholders = [channel_value: "baidu"]
+        }
+        meizu {
+            dimension "default"
+            manifestPlaceholders = [channel_value: "meizu"]
         }
     }
 
