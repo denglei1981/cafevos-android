@@ -67,7 +67,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         }
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                var item = searchActsResultAdapter.getItem(position)
+                val item = searchActsResultAdapter.getItem(position)
                 when (item.jumpType) {
                     1 -> {
                         JumpUtils.instans?.jump(
@@ -80,7 +80,6 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                             1,
                             searchActsResultAdapter.getItem(position).jumpVal
                         )
-                        viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
                     }
                     3 -> {
                         JumpUtils.instans?.jump(
@@ -89,6 +88,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         )
                     }
                 }
+//                viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
             }
         })
     }
