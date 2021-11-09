@@ -388,7 +388,7 @@ interface NetWorkApi {
     /**
      * 获取验证码
      */
-    @POST("login/getUNISmsCode")
+    @POST("login/getFDSmsCode")
     suspend fun sendFordSmsCode(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
