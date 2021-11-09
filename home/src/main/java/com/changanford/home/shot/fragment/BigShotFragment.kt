@@ -160,8 +160,6 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                // 收到 登录状态改变回调都要刷新页面
                  homeRefersh()
             })
-
-
     }
 
     override fun initData() {
