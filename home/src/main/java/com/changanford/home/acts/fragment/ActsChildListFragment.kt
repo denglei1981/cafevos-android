@@ -88,7 +88,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         )
                     }
                 }
-                viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
+//                viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
             }
         })
     }
