@@ -105,11 +105,15 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
         viewModel.mineGrowUpQy {
             it.onSuccess {
                 it?.let {
-                    binding.banner.visibility = View.VISIBLE
-                    binding.banner.isAutoLoop(false)
-                    binding.banner.setAdapter(QyAdapter(it))
-                        .addBannerLifecycleObserver(this)
-                        .setBannerGalleryEffect(0, 24, 20, 1F)
+                    binding.banner.apply {
+                        visibility = View.VISIBLE
+                        isAutoLoop(false)
+                        setAdapter(QyAdapter(it))
+                            .addBannerLifecycleObserver(this@GrowUpUI)
+                        if (it.size != 1) {
+                            setBannerGalleryEffect(0, 24, 20, 1F)
+                        }
+                    }
                 }
             }
         }
