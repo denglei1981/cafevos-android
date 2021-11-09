@@ -8,10 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.NEWS_DETAIL_CHANGE
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toastShow
@@ -201,6 +203,13 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
             }
         })
+
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this,{
+                // 收到 登录状态改变回调都要刷新页面
+                homeRefersh()
+            })
     }
 
     /**
