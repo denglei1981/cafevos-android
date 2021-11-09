@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -126,15 +125,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         updateViewModel = createViewModel(UpdateViewModel::class.java)
-        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
-            showAppPrivacy(this) {
-                updateViewModel.getUpdateInfo()
-                viewModel.requestDownLogin()
-            }
-        } else {
-            updateViewModel.getUpdateInfo()
-            viewModel.requestDownLogin()
-        }
+        updateViewModel.getUpdateInfo()
+        viewModel.requestDownLogin()
 
         getNavigator()
         initBottomNavigation()
