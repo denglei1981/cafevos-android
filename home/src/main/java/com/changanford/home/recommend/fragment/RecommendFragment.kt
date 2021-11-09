@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -226,6 +227,13 @@ open class RecommendFragment :
                 }
             }
         })
+
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this,{
+                // 收到 登录状态改变回调都要刷新页面
+                homeRefersh()
+            })
     }
 
     override fun initData() {
