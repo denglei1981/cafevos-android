@@ -93,7 +93,9 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                         binding.getTitle1.text = medal?.fillCondition
                     }.showPopupWindow()
                     medals[indexMedalItem].isGet = "1"
+                    medals[indexMedalItem].getTime = "${System.currentTimeMillis()}"
                     setItem(indexMedalItem)
+                    binding.banner.adapter.notifyDataSetChanged()
                 } else {
                     showToast("已点亮")
                 }

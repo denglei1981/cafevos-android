@@ -192,7 +192,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                             it.btnEndAct.visibility = View.GONE
                         }
                         //专题活动 为jumpType =2 或 1的
-                        if ((item.jumpType == 1 || item.jumpType == 2)
+                        if (!(item.jumpType == 1 || item.jumpType == 2)
                             &&
                             (type == "actMyCreate" || type == "actMyJoin")
                         ) {
