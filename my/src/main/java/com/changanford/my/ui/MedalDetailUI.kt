@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
@@ -43,7 +44,11 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
     var medals: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
-        binding.medalToolbar.toolbarTitle.text = "勋章详情"
+//        binding.medalToolbar.toolbarTitle.text = "勋章详情"
+        AppUtils.setStatusBarMarginTop(binding.back, this)
+        binding.back.setOnClickListener {
+            back()
+        }
         intent?.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             var medal = (it as ArrayList<MedalListBeanItem>).apply {
                 medals.addAll(it)
@@ -88,7 +93,9 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                         binding.getTitle1.text = medal?.fillCondition
                     }.showPopupWindow()
                     medals[indexMedalItem].isGet = "1"
+                    medals[indexMedalItem].getTime = "${System.currentTimeMillis()}"
                     setItem(indexMedalItem)
+                    binding.banner.adapter.notifyDataSetChanged()
                 } else {
                     showToast("已点亮")
                 }
@@ -109,7 +116,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             itemBanner.root.layoutParams = layout
-            itemBanner.root.setPadding(0, 0, 0, 20)
+//            itemBanner.root.setPadding(0, 0, 0, 20)
             return BannerViewHolder(itemBanner.root)
         }
 
@@ -127,6 +134,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
 
             var medalAd: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_ad)
             medalAd.text = "${data.remark}"
+            medalAd.visibility = if (data.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
             var medalTime: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_time)
             medalTime.text = "暂未点亮"
             data?.getTime?.let {
@@ -189,5 +197,13 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         LiveDataBus.get().with("refreshMedal", String::class.java).postValue(medalIds)
         return super.onKeyDown(keyCode, event)
+    }
+
+    override fun isUseFullScreenMode(): Boolean {
+        return true
+    }
+
+    override fun isUserLightMode(): Boolean {
+        return false
     }
 }

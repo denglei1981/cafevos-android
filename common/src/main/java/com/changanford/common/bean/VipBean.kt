@@ -26,7 +26,7 @@ data class MedalListBeanItem(
     val status: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    val getTime: String = "" // 获取时间
+    var getTime: String = "" // 获取时间
 ) : Serializable
 
 data class UserIdCardBeanItem(
