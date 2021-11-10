@@ -1,6 +1,5 @@
 package com.changanford.shop.utils
 
-import android.content.Context
 import android.graphics.Typeface
 
 /**
@@ -11,12 +10,12 @@ import android.graphics.Typeface
 object TypefaceUtils {
     private var typefaceTxt:Typeface?=null
     private var typefaceNumber:Typeface?=null
-    fun getTypefaceTxt(context:Context):Typeface{
-        if(null==typefaceTxt)typefaceTxt=Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
-        return typefaceTxt!!
-    }
-    fun getTypefaceNumber(context:Context):Typeface{
-        if(null==typefaceNumber)typefaceNumber=Typeface.createFromAsset(context.assets, "ford-antenna-light.woff.ttf")
-        return typefaceNumber!!
-    }
+//    fun getTypefaceTxt(context:Context):Typeface{
+//        if(null==typefaceTxt)typefaceTxt=Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
+//        return typefaceTxt!!
+//    }
+//    fun getTypefaceNumber(context:Context):Typeface{
+//        if(null==typefaceNumber)typefaceNumber=Typeface.createFromAsset(context.assets, "ford-antenna-light.woff.ttf")
+//        return typefaceNumber!!
+//    }
 }
