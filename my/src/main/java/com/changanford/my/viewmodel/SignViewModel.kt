@@ -1165,7 +1165,8 @@ class SignViewModel : ViewModel() {
     private fun clearLoginUserInfo() {
         UserManger.deleteUserInfo()
         AppUtils.Unbinduserid()
-        ShortcutBadger.applyCount(MyApp.mContext,0)
+        ShortcutBadger.applyCount(MyApp.mContext, 0)
+        SPUtils.clearByKey(MConstant.FORD_CHANNEL)
         MConstant.token = ""
         MConstant.mine_phone = ""
         MConstant.userId = ""
