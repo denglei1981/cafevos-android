@@ -61,9 +61,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
      * 处理首次登录
      */
     private fun firstIn(){
-        if (SPUtils.getParam(requireContext(), "isfirstin", true) as Boolean) {
+        var oldVersionCode = SPUtils.getParam(requireContext(),"versionCode",0) as Int
+        var curVersionCode = DeviceUtils.getVersionCode(requireContext())
+        if (SPUtils.getParam(requireContext(), "isfirstin", true) as Boolean || oldVersionCode < curVersionCode) {
             startARouterFinish(requireActivity(), ARouterHomePath.LandingActivity)
             SPUtils.setParam(requireContext(), "isfirstin", false)
+            SPUtils.setParam(requireContext(),"versionCode",curVersionCode)
             return
         }
     }
