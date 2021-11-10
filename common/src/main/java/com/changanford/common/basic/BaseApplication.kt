@@ -107,7 +107,6 @@ abstract class BaseApplication : MultiDexApplication() {
                 var deviceid = pushService.deviceId
                 deviceid?.let {
                     SPUtils.setParam(applicationContext, MConstant.PUSH_ID, deviceid)
-                    Log.d("12121", deviceid)
                 }
             }
 

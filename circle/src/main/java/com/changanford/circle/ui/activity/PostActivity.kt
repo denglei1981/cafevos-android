@@ -788,6 +788,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
             override fun onUploadFileFailed(errCode: String) {
                 errCode.toast()
+
                 dialog.dismiss()
             }
 

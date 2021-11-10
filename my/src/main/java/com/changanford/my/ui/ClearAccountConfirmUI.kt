@@ -66,11 +66,12 @@ class ClearAccountConfirmUI :
             var b = Bundle()
             b.putString("value", reason)
             RouterManger.startARouter(ARouterMyPath.ConfirmCancelAccountUI, b)
+
         }
 
         binding.cancelBtn.setOnClickListener {
             LiveDataBus.get().with(LiveDataBusKey.MINE_CANCEL_ACCOUNT, Boolean::class.java)
-                .postValue(true)
+                .postValue(false)
             back()
         }
 
@@ -112,6 +113,7 @@ class ClearAccountConfirmUI :
     override fun hasRefresh(): Boolean {
         return false
     }
+
     /**
      * 注销原因
      */

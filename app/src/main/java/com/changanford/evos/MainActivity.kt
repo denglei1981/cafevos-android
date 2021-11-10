@@ -4,9 +4,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -125,15 +125,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         updateViewModel = createViewModel(UpdateViewModel::class.java)
-        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
-            showAppPrivacy(this) {
-                updateViewModel.getUpdateInfo()
-                viewModel.requestDownLogin()
-            }
-        } else {
-            updateViewModel.getUpdateInfo()
-            viewModel.requestDownLogin()
-        }
+        updateViewModel.getUpdateInfo()
+        viewModel.requestDownLogin()
 
         getNavigator()
         initBottomNavigation()
@@ -167,8 +160,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         updateViewModel._updateInfo.observe(this, { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
-                    Log.e("---------->", info.versionNumber ?: "")
-                    Log.e("---------->", DeviceUtils.getVersionCode(this).toString())
                     return@observe
                 }
                 var dialog = UpdateAlertDialog(this)
@@ -304,6 +295,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
                     MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
                 }
+            }
+        })
+        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this,{
+            if (it as Boolean){//true 显示
+                ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgVisible()
+            } else {
+                ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgGone()
             }
         })
     }

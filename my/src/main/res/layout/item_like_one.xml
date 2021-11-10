@@ -1,69 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="140dp"
-    tools:ignore="MissingDefaultResource">
 
-    <TextView
-        android:id="@+id/item_like_title"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="体育运动"
-        android:textColor="#72747B"
-        android:textSize="@dimen/text_size_small"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/item_name"
-        app:layout_constraintTop_toBottomOf="@+id/item_icon" />
+        android:minHeight="140dp"
+        tools:ignore="MissingDefaultResource">
+
+        <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8"
+            android:src="@mipmap/ic_def_square_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_like_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_11"
+            android:layout_marginTop="@dimen/dp_8"
+            android:gravity="center"
+            android:text="体育运动"
+            android:textColor="#2C2C2C"
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/item_icon"
+            app:layout_constraintLeft_toRightOf="@+id/item_icon"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
-        android:id="@+id/item_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintLeft_toLeftOf="@+id/item_like_title"
-        app:layout_constraintRight_toRightOf="@+id/item_like_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.donkingliang.labels.LabelsView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:labelBackground="@drawable/like_label_bg"
+            app:labelTextColor="@drawable/label_text_color"
+            app:labelTextPaddingBottom="5dp"
+            app:labelTextPaddingLeft="10dp"
+            app:labelTextPaddingRight="10dp"
+            app:labelTextPaddingTop="5dp"
+            app:labelTextSize="14sp"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_icon"
+            app:lineMargin="@dimen/dp_13"
+            app:selectType="MULTI"
+            app:wordMargin="@dimen/dp_9" />
 
-    <com.donkingliang.labels.LabelsView
-        android:id="@+id/item_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        app:labelBackground="@drawable/like_label_bg"
-        app:labelTextColor="@drawable/label_text_color"
-        app:labelTextPaddingBottom="5dp"
-        app:labelTextPaddingLeft="10dp"
-        app:labelTextPaddingRight="10dp"
-        app:labelTextPaddingTop="5dp"
-        app:labelTextSize="14sp"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintLeft_toRightOf="@+id/item_like_title"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_like_title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lineMargin="10dp"
-        app:selectType="MULTI"
-        app:wordMargin="10dp" />
-
-    <View
-        android:id="@+id/line"
-        style="@style/line"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        <View
+            android:id="@+id/line"
+            style="@style/line"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.R
@@ -152,7 +154,12 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
         })
 
-
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this,{
+               // 收到 登录状态改变回调都要刷新页面
+                 homeRefersh()
+            })
     }
 
     override fun initData() {

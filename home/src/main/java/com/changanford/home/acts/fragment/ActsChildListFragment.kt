@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.CommonUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.acts.dialog.HomeActsScreenDialog
@@ -55,7 +55,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     }
 
     override fun initView() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = searchActsResultAdapter
         searchActsResultAdapter.loadMoreModule.setOnLoadMoreListener(object : OnLoadMoreListener {
             override fun onLoadMore() {
@@ -67,27 +68,10 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         }
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                var item = searchActsResultAdapter.getItem(position)
-                when (item.jumpType) {
-                    1 -> {
-                        JumpUtils.instans?.jump(
-                            10000,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                    }
-                    2 -> {
-                        JumpUtils.instans?.jump(
-                            1,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                        viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
-                    }
-                    3 -> {
-                        JumpUtils.instans?.jump(
-                            1,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                    }
+                val item = searchActsResultAdapter.getItem(position)
+                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
+                if (item.jumpType == 2) {
+//                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
                 }
             }
         })
@@ -109,6 +93,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     fun hideEmptys() {
         binding.llEmpty.visibility = View.GONE
     }
+
     override fun observe() {
         super.observe()
         viewModel.actsLiveData.observe(this, androidx.lifecycle.Observer {
@@ -174,12 +159,12 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         cityName = screenData.cityName
                         officialCode = if (!TextUtils.isEmpty(screenData.official)) {
                             screenData.official.toInt()
-                        }else{
+                        } else {
                             -1
                         }
                         wonderfulType = if (!TextUtils.isEmpty(screenData.wonderfulType)) {
                             screenData.wonderfulType.toInt()
-                        }else{
+                        } else {
                             -1
                         }
                         getActList(false)

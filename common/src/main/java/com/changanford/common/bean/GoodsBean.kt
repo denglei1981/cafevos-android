@@ -421,10 +421,10 @@ data class OrderItemBean(
 )
 
 data class OrderInfoBean(
-    val orderNo: String,
+    val orderNo: String,//订单号
     val cost: String? = "0",
-    var accountFb: String? = "",
-    var source: String? = "0",//1商品详情（原生）
+    var accountFb: String? = "",//账号余额
+    var source: String? = "0",//1商品详情（原生）2 H5
 )
 
 data class ShopAddressInfoBean(

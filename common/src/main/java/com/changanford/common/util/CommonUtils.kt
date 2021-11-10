@@ -1,6 +1,7 @@
 package com.changanford.common.util
 
 import android.os.Bundle
+import androidx.appcompat.widget.AppCompatTextView
 import com.alibaba.fastjson.JSON
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
@@ -99,6 +100,59 @@ object CommonUtils {
         bundle.putString("uniDistributorShareId", uniDistributorShareId)
         bundle.putString("seriesCode", seriesCode)
         RouterManger.startARouter(ARouterMyPath.UniCardPayOrderUI, bundle)
+    }
+
+
+    /**
+     * 活动跳转
+     */
+    fun jumpActDetail(jumpType: Int, jumpVal: String? = "") {
+        //跳转类型(1跳转外部，2跳转内部，3常规)
+        when (jumpType) {
+            1 -> {
+                JumpUtils.instans?.jump(
+                    10000,
+                    jumpVal
+                )
+            }
+            2, 3 -> {
+                JumpUtils.instans?.jump(
+                    1,
+                    jumpVal
+                )
+            }
+            else -> {
+                JumpUtils.instans?.jump(
+                    jumpType,
+                    jumpVal
+                )
+            }
+        }
+    }
+
+}
+
+/**
+ * 活动类型
+ * //精彩类型，0-线上活动，1-线下活动，2-问卷
+ */
+fun AppCompatTextView.actTypeText(wonderfulType: Int? = 0) {
+    text = when (wonderfulType) {
+        0 -> {
+            "线上活动"
+        }
+        1 -> {
+            "线下活动"
+        }
+        2 -> {
+            "调查问卷"
+        }
+        3 -> {
+            "福域活动"
+        }
+        else -> {
+            "福域活动"
+        }
     }
 }
 

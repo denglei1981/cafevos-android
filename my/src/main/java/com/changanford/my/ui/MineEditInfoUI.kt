@@ -441,6 +441,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         var bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
+            wheelLayout.setDateLabel("年","月","日")
             wheelLayout.setRange(DateEntity.target(1900, 1, 1), DateEntity.today())
             if (null != bb && bb.size == 3) {
                 wheelLayout.setDefaultValue(

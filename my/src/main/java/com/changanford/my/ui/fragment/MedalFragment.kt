@@ -138,6 +138,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             list.forEach {
                 if (mId == it.medalId) {
                     it.isGet = "1"
+                    it.getTime = "${System.currentTimeMillis()}"
                 }
             }
             adapter.notifyDataSetChanged()

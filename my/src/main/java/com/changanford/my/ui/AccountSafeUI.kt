@@ -194,6 +194,13 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
                 bindMobile("weixin", it)
             })
 
+        //取消注销申请  注销账户成功
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CANCEL_ACCOUNT, Boolean::class.java)
+            .observe(this,
+                Observer {
+                    if (it) back()
+                })
+
     }
 
     fun bindMobile(type: String, code: String) {
