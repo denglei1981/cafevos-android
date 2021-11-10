@@ -55,11 +55,11 @@ class SearchActsFragment :
         }
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                var item: ActBean = searchActsResultAdapter.getItem(position)
+                val item: ActBean = searchActsResultAdapter.getItem(position)
                 CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-                if (item.jumpType == 2) {
-                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
-                }
+//                if (item.jumpType == 2) {
+//                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
+//                }
             }
         })
     }
