@@ -48,10 +48,10 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        curActivity = this
         binding = bindings
         setContentView(binding.root)
         initViewModel()
-        curActivity = this
         handleTextSize()
 //        makeStateBarTransparent(true)
         initView(savedInstanceState)

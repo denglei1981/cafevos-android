@@ -7,13 +7,13 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouterFinish
-import com.changanford.common.util.GifLoadOneTimeGif
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.SPUtils
+import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.evos.databinding.FragmentSplashBinding
@@ -41,8 +41,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 viewModel.getKey()
                 viewModel.key.observe(this@SplashFragment) {
                     MConstant.pubKey = it
-                    viewModel.getDbAds()
-                    viewModel.adService("app_launch")
+                    if (MConstant.isPopAgreement) {
+                        showAppPrivacy(BaseApplication.curActivity as AppCompatActivity) {
+                            viewModel.getDbAds()
+                            viewModel.adService("app_launch")
+                        }
+                    } else {
+                        viewModel.getDbAds()
+                        viewModel.adService("app_launch")
+                    }
                 }
                 showAds()
             }

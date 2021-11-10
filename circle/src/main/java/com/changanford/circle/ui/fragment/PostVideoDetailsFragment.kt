@@ -137,23 +137,28 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 val paint = textView.paint
                 val availableTextWidth = (textView.width - paddingLeft - paddingRight).toFloat()
 
-                val ellipsizeStr: CharSequence = TextUtils.ellipsize(
-                    originText, paint,
-                    availableTextWidth, TextUtils.TruncateAt.END
-                )
-                if (ellipsizeStr.length < originText?.length!!) {
-                    val temp: CharSequence = ellipsizeStr.toString()
-                    val ssb = SpannableStringBuilder(temp)
-                    ssb.setSpan(
-                        ForegroundColorSpan(requireContext().resources.getColor(R.color.circle_9eaed8)),
-                        temp.length,
-                        temp.length,
-                        Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-                    )
-                    textView.text = ssb
-                } else {
+                if (originText.isNullOrEmpty()) {
+                    textView.text = ""
                     binding.tvExpand.visibility = View.INVISIBLE
-                    textView.text = originText
+                } else {
+                    val ellipsizeStr: CharSequence = TextUtils.ellipsize(
+                        originText, paint,
+                        availableTextWidth, TextUtils.TruncateAt.END
+                    )
+                    if (ellipsizeStr.length < originText.length) {
+                        val temp: CharSequence = ellipsizeStr.toString()
+                        val ssb = SpannableStringBuilder(temp)
+                        ssb.setSpan(
+                            ForegroundColorSpan(requireContext().resources.getColor(R.color.circle_9eaed8)),
+                            temp.length,
+                            temp.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        textView.text = ssb
+                    } else {
+                        binding.tvExpand.visibility = View.INVISIBLE
+                        textView.text = originText
+                    }
                 }
             }
         }

@@ -100,6 +100,32 @@ object CommonUtils {
         bundle.putString("seriesCode", seriesCode)
         RouterManger.startARouter(ARouterMyPath.UniCardPayOrderUI, bundle)
     }
+
+
+    fun jumpActDetail(jumpType: Int, jumpVal: String? = "") {
+        //跳转类型(1跳转外部，2跳转内部，3常规)
+        when (jumpType) {
+            1 -> {
+                JumpUtils.instans?.jump(
+                    10000,
+                    jumpVal
+                )
+            }
+            2, 3 -> {
+                JumpUtils.instans?.jump(
+                    1,
+                    jumpVal
+                )
+            }
+            else -> {
+                JumpUtils.instans?.jump(
+                    jumpType,
+                    jumpVal
+                )
+            }
+        }
+    }
+
 }
 
 /**

@@ -3,14 +3,15 @@ package com.changanford.home.search.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.home.PageConstant
 import com.changanford.home.R
+import com.changanford.home.data.ActBean
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.home.search.request.PolySearchActsResultViewModel
@@ -54,29 +55,12 @@ class SearchActsFragment :
         }
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                when (searchActsResultAdapter.getItem(position).jumpType) {
-                    1 -> {
-                        JumpUtils.instans?.jump(
-                            10000,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                    }
-                    2 -> {
-                        JumpUtils.instans?.jump(
-                            1,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                        viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
-                    }
-                    3 -> {
-                        JumpUtils.instans?.jump(
-                            1,
-                            searchActsResultAdapter.getItem(position).jumpVal
-                        )
-                    }
-                }
+                val item: ActBean = searchActsResultAdapter.getItem(position)
+                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
+//                if (item.jumpType == 2) {
+//                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
+//                }
             }
-
         })
     }
 
