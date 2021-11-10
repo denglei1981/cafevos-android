@@ -13,6 +13,7 @@ import com.changanford.common.net.*
 import com.changanford.common.util.CommonUtils.jumpActDetail
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
 import com.changanford.my.databinding.FragmentActBinding
@@ -168,23 +169,10 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 } else {
                     it.tvTagOne.visibility = View.GONE
                 }
+
                 //精彩类型，0-线上活动，1-线下活动，2-问卷
-                when (item.wonderfulType) {
-                    0 -> {
-                        it.tvTagTwo.text = "线上活动"
-                    }
-                    1 -> {
-                        it.tvTagTwo.text = "线下活动"
-                    }
-                    2 -> {
-                        it.tvTagTwo.text = "调查问卷"
-                    }
-                    3 -> {
-                        it.tvTagTwo.text = "福域活动"
-                    }
-                }
-                //
-                //状态（0-审核中、1-驳回、2-正常、3-下架）
+                it.tvTagTwo.actTypeText(item.wonderfulType)
+
                 when (item.status) {
                     1 -> {
                         it.btnFollow.text = "审核不通过"
