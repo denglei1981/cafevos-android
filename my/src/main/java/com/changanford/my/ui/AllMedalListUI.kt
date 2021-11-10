@@ -60,6 +60,13 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)
         }
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
+        binding.medalToolbar.toolbarSave.apply {
+            text = "我的勋章"
+            textSize = 14f
+            setOnClickListener {
+                RouterManger.startARouter(ARouterMyPath.MineMedalUI)
+            }
+        }
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->

@@ -9,18 +9,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_8"
-        android:background="#30000000">
+        android:layout_margin="@dimen/dp_8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_227">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/item_medal_icon"
-                android:layout_width="@dimen/dp_89"
-                android:layout_height="@dimen/dp_112"
+                android:layout_width="@dimen/dp_169"
+                android:layout_height="@dimen/dp_169"
                 android:layout_marginTop="@dimen/dp_14"
                 android:src="@mipmap/ic_medal_ex"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -31,7 +29,7 @@
                 android:id="@+id/item_medal_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_14"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +40,7 @@
                 android:id="@+id/item_medal_ad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_12"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_13"
                 app:layout_constraintLeft_toLeftOf="parent"
