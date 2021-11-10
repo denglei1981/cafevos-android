@@ -16,7 +16,6 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountReasonBinding
 import com.changanford.my.databinding.UiClearAccountConfirmBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
@@ -64,23 +63,10 @@ class ClearAccountConfirmUI :
             } else {
                 reason.substring(0, reason.length - 1)
             }
-            ConfirmTwoBtnPop(this).apply {
-                title.apply {
-                    text = "是否确认注销账号？"
-                    visibility = View.VISIBLE
-                }
-                contentText.text = "帖子、福币、圈子、经验等级、活动、商城、勋章相关数据将被清除。"
-                btnCancel.setOnClickListener {
-                    dismiss()
-                }
-                btnConfirm.setOnClickListener {
-                    var b = Bundle()
-                    b.putString("value", reason)
-                    RouterManger.startARouter(ARouterMyPath.ConfirmCancelAccountUI, b)
-                    dismiss()
-                    finish()
-                }
-            }.showPopupWindow()
+            var b = Bundle()
+            b.putString("value", reason)
+            RouterManger.startARouter(ARouterMyPath.ConfirmCancelAccountUI, b)
+
         }
 
         binding.cancelBtn.setOnClickListener {
