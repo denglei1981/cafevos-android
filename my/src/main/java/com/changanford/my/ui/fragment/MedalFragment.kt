@@ -105,6 +105,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             if ("true" == it) {
                 if (indexItem in 0..list.size) {
                     var item = list[indexItem]
+                    num = 0
                     ref(item.medalId)
                     PopSuccessMedal().apply {
                         binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
@@ -120,6 +121,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
         })
         LiveDataBus.get().with("refreshMedal", String::class.java).observe(this, Observer {
             it?.let {
+                num = 0
                 "${it}传过来的数据".logE()
                 var medal = it.split(",")
                 medal?.forEach {
@@ -133,15 +135,20 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
     /**
      * 已点亮
      */
+    var num: Int = 0
+
     private fun ref(medalId: String?) {
         medalId?.let { mId ->
             list.forEach {
                 if (mId == it.medalId) {
                     it.isGet = "1"
                     it.getTime = "${System.currentTimeMillis()}"
+                    num += 1
                 }
             }
             adapter.notifyDataSetChanged()
+            LiveDataBus.get().with("refreshMedalNum", Int::class.java).postValue(num)
+//            (requireContext() as AllMedalListUI).setMedalNum(num)
         }
     }
 
