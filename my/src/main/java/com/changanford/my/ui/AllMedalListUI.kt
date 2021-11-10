@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -52,14 +53,22 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
     private var medalItem: MedalListBeanItem? = null
 
+    var num: Int = 0
+
     override fun initView() {
-        var num: Int = 0
         var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
         var userInfoBean: UserInfoBean? = null
         sysUserInfoBean?.userJson?.let {
             userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)
         }
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
+        binding.medalToolbar.toolbarSave.apply {
+            text = "我的勋章"
+            textSize = 14f
+            setOnClickListener {
+                RouterManger.startARouter(ARouterMyPath.MineMedalUI)
+            }
+        }
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->
@@ -84,11 +93,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                         binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
                     }
                 }
-                if (num == 0) {
-                    binding.imWithVipNum.text = "未获取勋章"
-                } else {
-                    binding.imWithVipNum.text = "${num}枚勋章"
-                }
+                binding.imWithVipNum.MedalNum(num)
                 if (titles.size > 0) {
                     var medalItem = MedalListBeanItem(medalTypeName = "全部", medalType = 0)
                     titles.add(0, medalItem)
@@ -110,6 +115,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     .postValue("${medalItem?.medalId},")
             } else {
                 showToast(it)
+            }
+        })
+
+        LiveDataBus.get().with("refreshMedalNum", Int::class.java).observe(this, Observer {
+            it?.let {
+                binding.imWithVipNum.MedalNum(num + it)
             }
         })
     }
@@ -228,5 +239,9 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
             binding.close.setOnClickListener { dismiss() }
         }
+    }
+
+    private fun AppCompatTextView.MedalNum(num: Int) {
+        text = if (num == 0) "未获取勋章" else "${num}枚勋章"
     }
 }

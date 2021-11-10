@@ -12,6 +12,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
@@ -180,6 +181,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         GlideUtils.loadCircle(userInfoBean?.avatar,binding.myHead,R.mipmap.head_default)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
+        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).postValue(userInfoBean?.isUnread == 1)
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"
         binding.daySign.isClickable = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname

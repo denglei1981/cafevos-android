@@ -441,7 +441,6 @@ public class CaptureActivity extends BaseActivity<ActivityDefinedBinding, Common
                 //Check the result.
                 if (result != null && result.length > 0 && result[0] != null && !TextUtils.isEmpty(result[0].getOriginalValue())) {
                     String ss = result[0].getOriginalValue();
-                    LogUtilsKt.logE(ss);
 //                    ToastUtils.INSTANCE.showShort(ss);
                     if (shouldCallback) {
                         Intent intent = new Intent();

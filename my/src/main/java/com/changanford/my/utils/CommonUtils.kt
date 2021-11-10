@@ -94,6 +94,7 @@ class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
     lateinit var contentText: AppCompatTextView
     lateinit var btnCancel: AppCompatButton
     lateinit var btnConfirm: AppCompatButton
+    lateinit var title: AppCompatTextView
 
     init {
         setContentView(R.layout.pop_two_btn)
@@ -105,6 +106,7 @@ class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
         contentText = contentView.findViewById(R.id.text_content)
         btnCancel = contentView.findViewById(R.id.btn_cancel)
         btnConfirm = contentView.findViewById(R.id.btn_comfir)
+        title = contentView.findViewById(R.id.title)
     }
 }
 

@@ -10,9 +10,10 @@ import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
-import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.CommonUtils.jumpActDetail
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
 import com.changanford.my.databinding.FragmentActBinding
@@ -53,7 +54,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
         }
-        userId = UserManger.getSysUserInfo()?.uid?:""
+        userId = UserManger.getSysUserInfo()?.uid ?: ""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
         }
@@ -168,23 +169,10 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 } else {
                     it.tvTagOne.visibility = View.GONE
                 }
+
                 //精彩类型，0-线上活动，1-线下活动，2-问卷
-                when (item.wonderfulType) {
-                    0 -> {
-                        it.tvTagTwo.text = "线上活动"
-                    }
-                    1 -> {
-                        it.tvTagTwo.text = "线下活动"
-                    }
-                    2 -> {
-                        it.tvTagTwo.text = "调查问卷"
-                    }
-                    3->{
-                        it.tvTagTwo.text = "福域活动"
-                    }
-                }
-                //
-                //状态（0-审核中、1-驳回、2-正常、3-下架）
+                it.tvTagTwo.actTypeText(item.wonderfulType)
+
                 when (item.status) {
                     1 -> {
                         it.btnFollow.text = "审核不通过"
@@ -203,39 +191,26 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         if (item.deadLineTime > 0 && item.deadLineTime < item.serverTime) {
                             it.btnEndAct.visibility = View.GONE
                         }
-                        if (type == "actMyCreate" || type == "actMyJoin") {
+                        //专题活动 为jumpType =2 或 1的
+                        if (!(item.jumpType == 1 || item.jumpType == 2)
+                            &&
+                            (type == "actMyCreate" || type == "actMyJoin")
+                        ) {
                             it.tvActNum.text = "报名人数${item.activityJoinCount}人"
                         }
                     }
                     3 -> {
                         it.btnFollow.text = "已结束"
-                        it.tvActNum.text = "报名人数${item.activityJoinCount}人"
+                        if (!(item.jumpType == 1 || item.jumpType == 2)) {
+                            it.tvActNum.text = "报名人数${item.activityJoinCount}人"
+                        }
                         it.btnEndAct.visibility = View.GONE
                     }
                 }
 
                 holder.itemView.setOnClickListener {
                     //跳转类型(1跳转外部，2跳转内部，3常规)
-                    when (item.jumpType) {
-                        1 -> {
-                            JumpUtils.instans?.jump(
-                                10000,
-                                item.jumpVal
-                            )
-                        }
-                        2, 3 -> {
-                            JumpUtils.instans?.jump(
-                                1,
-                                item.jumpVal
-                            )
-                        }
-                        else -> {
-                            JumpUtils.instans?.jump(
-                                item.jumpType,
-                                item.jumpVal
-                            )
-                        }
-                    }
+                    jumpActDetail(item.jumpType, item.jumpVal)
                 }
                 it.btnEndAct.setOnClickListener {//结束
                     endAct("${item.wonderfulId}")

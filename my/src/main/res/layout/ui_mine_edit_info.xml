@@ -24,6 +24,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/textblack"
+                    android:textSize="@dimen/sp_12"
+                    android:gravity="center"
+                    android:background="#1A01025C"
+                    android:text="完善所有资料才能获得任务奖励"
+                    android:layout_height="@dimen/dp50"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/helay"
@@ -31,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingBottom="@dimen/dp_15"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/info">
 
                     <TextView
                         android:id="@+id/edit_name_title"
@@ -61,7 +72,6 @@
                     android:id="@+id/edit_line1"
                     style="@style/line"
                     android:layout_marginLeft="14dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="14dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/helay" />

@@ -25,6 +25,7 @@ import com.changanford.my.utils.getDiskCachePath
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.leolin.shortcutbadger.ShortcutBadger
 
 /**
  *  文件名：SignViewModel
@@ -1164,6 +1165,8 @@ class SignViewModel : ViewModel() {
     private fun clearLoginUserInfo() {
         UserManger.deleteUserInfo()
         AppUtils.Unbinduserid()
+        ShortcutBadger.applyCount(MyApp.mContext, 0)
+        SPUtils.clearByKey(MConstant.FORD_CHANNEL)
         MConstant.token = ""
         MConstant.mine_phone = ""
         MConstant.userId = ""

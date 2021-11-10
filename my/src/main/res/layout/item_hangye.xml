@@ -10,11 +10,11 @@
         android:paddingBottom="8dp">
 
         <LinearLayout
-            android:paddingTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -32,9 +32,9 @@
             android:id="@+id/labels_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginRight="@dimen/dp_20"
             app:labelBackground="@drawable/like_label_bg"
             app:labelTextColor="@drawable/label_text_color"
             app:labelTextPaddingBottom="5dp"
@@ -42,9 +42,9 @@
             app:labelTextPaddingRight="15dp"
             app:labelTextPaddingTop="5dp"
             app:labelTextSize="13sp"
-            app:lineMargin="5dp"
+            app:lineMargin="@dimen/dp_13"
             app:maxSelect="1"
             app:selectType="SINGLE"
-            app:wordMargin="5dp" />
+            app:wordMargin="@dimen/dp_9" />
     </LinearLayout>
 </layout>

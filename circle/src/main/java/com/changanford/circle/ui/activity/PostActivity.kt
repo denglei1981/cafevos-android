@@ -763,8 +763,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }." + type
 
 
-        params["pics"] = path
-
         AliYunOssUploadOrDownFileConfig.getInstance(this)
             .uploadFile(stsBean.bucketName, path, ytPath, "", 0)
         AliYunOssUploadOrDownFileConfig.getInstance(this).setOnUploadFile(object :
@@ -778,16 +776,19 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
                 if (scount == selectList.size) {
                     params["imgUrl"] = upedimgs
+                    params["pics"] = upedimgs[0]?.imgUrl
                     params["isPublish"] = 2
                     JSON.toJSONString(params).logD()
                     addPost(dialog)
                     return
                 }
+
                 uploadImgs(stsBean, scount, dialog)
             }
 
             override fun onUploadFileFailed(errCode: String) {
                 errCode.toast()
+
                 dialog.dismiss()
             }
 

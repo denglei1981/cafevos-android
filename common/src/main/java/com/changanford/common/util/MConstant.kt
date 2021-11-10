@@ -38,7 +38,7 @@ object MConstant {
         ) as Boolean else false
     }
     const val ISDEBUG = "isdebug"//SP保存测试环境
-     var isCanQeck = false //打线上包时只需要切换它为false
+    var isCanQeck = com.changanford.common.BuildConfig.DEBUG //用于控制切换、日志显示等DEBUG模式
     val isShowLog: Boolean = isCanQeck //是否打印日志
 
     const val LOGIN_TOKEN = "LOGIN_TOKEN"
@@ -86,6 +86,8 @@ object MConstant {
     var newApk = false//是否有新版本
     var newApkUrl = ""//新版本的链接
     var mine_phone = ""
+
+    var FORD_CHANNEL = "sys:device_channel"
 
     var NUM = "" //
 

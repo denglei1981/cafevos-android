@@ -32,32 +32,56 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="9dp"
-            android:background="@drawable/circle_66_f2_20"
             android:gravity="center_vertical"
             app:layout_constraintRight_toRightOf="parent"
             android:orientation="horizontal"
             app:layout_constraintLeft_toRightOf="@+id/iv_icon"
             app:layout_constraintTop_toTopOf="@+id/iv_icon">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rl_topic"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:src="@mipmap/circle_talk_hint" />
+                android:layout_marginEnd="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_icon"
+                app:layout_constraintTop_toTopOf="@+id/iv_icon">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:ellipsize="end"
-                android:maxEms="10"
-                android:layout_marginEnd="8dp"
-                android:maxLines="1"
-                android:text="@{bean.name}"
-                android:textColor="@color/circle_8195C8"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="什么时候可以不带口罩" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="23dp"
+                    android:src="@mipmap/circle_main_talk_hint" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/circle_main_talk_20_bg">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_hint_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="23dp"
+                        android:src="@mipmap/circle_main_talk_hint"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_talk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_toRightOf="@+id/iv_hint_icon"
+                        android:drawablePadding="4dp"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingEnd="8dp"
+                        android:text="@{bean.name}"
+                        android:textColor="@color/circle_01025c"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry,SmallSp"
+                        tools:text="年轻人喜欢什么样的车" />
+                </RelativeLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

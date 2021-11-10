@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.data.ActBean
@@ -27,6 +28,8 @@ class SearchActsResultAdapter :
             } else {
                 it.btnState.text = "进行中"
             }
+            it.tvTagTwo.actTypeText(item.wonderfulType)
+
             when (item.wonderfulType) {
                 0 -> {
                     it.tvTagTwo.text = "线上活动"

@@ -14,6 +14,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiConfirmCancelAccountBinding
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 
 /**
@@ -118,16 +119,30 @@ class ConfirmCancelAccountUI :
             showToast("请输入验证码")
             return
         }
-        viewModel.cancelAccount(mobile, smsCode, reason) {
-            it.onSuccess {
-                showToast("申请注销成功")
-                viewModel.loginOut()
+
+        ConfirmTwoBtnPop(this).apply {
+            title.apply {
+                text = "是否确认注销账号？"
+                visibility = View.VISIBLE
             }
-            it.onWithMsgFailure {
-                it?.let {
-                    showToast(it)
+            contentText.text = "帖子、福币、圈子、经验等级、活动、商城、勋章相关数据将被清除。"
+            btnCancel.setOnClickListener {
+                dismiss()
+            }
+            btnConfirm.setOnClickListener {
+                viewModel.cancelAccount(mobile, smsCode, reason) {
+                    it.onSuccess {
+                        showToast("申请注销成功")
+                        viewModel.loginOut()
+                    }
+                    it.onWithMsgFailure {
+                        it?.let {
+                            showToast(it)
+                        }
+                    }
                 }
+                dismiss()
             }
-        }
+        }.showPopupWindow()
     }
 }

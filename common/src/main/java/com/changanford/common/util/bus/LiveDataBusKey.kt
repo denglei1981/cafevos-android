@@ -95,8 +95,8 @@ object LiveDataBusKey {
     //先享车主领取U享卡接口调用
     const val GET_FIRST_UNICARD = "get_first_uni_card"
 
-    //中间页隐藏悬浮按钮
-    const val SHOULD_HIDE_FLOATBAR = "should_hide_floatbar"
+    //我的消息红点显示隐藏
+    const val SHOULD_SHOW_MY_MSG_DOT = "should_show_my_msg_dot"
 
     //获取当前默认车辆的vin号
     const val GET_CUR_VIN = "get_cur_vin"
