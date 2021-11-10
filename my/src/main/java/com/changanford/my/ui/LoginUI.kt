@@ -63,7 +63,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     private lateinit var tencent: Tencent
     private lateinit var wxApi: IWXAPI
-    var player = MediaPlayer()
+    var mPlayer = MediaPlayer()
 
     var qqCallback = object : IUiListener {
         override fun onComplete(p0: Any?) {
@@ -210,7 +210,12 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
         viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
             it?.let {
-                play(it)
+                try {
+                    play(it)
+                } catch (e: Exception) {
+                    binding.loginVideo.visibility = View.GONE
+                    binding.imBg.visibility = View.VISIBLE
+                }
             }
         })
         binding.back.setOnClickListener {
@@ -227,43 +232,45 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
 
     override fun initData() {
-        viewModel.downLoginBgUrl()
+
     }
 
     fun play(videoUrl: String) {
         "${videoUrl}".logE()
-        binding.loginVideo.visibility = View.VISIBLE
-        binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
-            override fun surfaceCreated(holder: SurfaceHolder) {
-            }
+        mPlayer?.let { player ->
+            binding.loginVideo.visibility = View.VISIBLE
+            binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
+                override fun surfaceCreated(holder: SurfaceHolder) {
+                }
 
-            override fun surfaceChanged(
-                holder: SurfaceHolder,
-                format: Int,
-                width: Int,
-                height: Int
-            ) {
-                player.setDisplay(holder)
-            }
+                override fun surfaceChanged(
+                    holder: SurfaceHolder,
+                    format: Int,
+                    width: Int,
+                    height: Int
+                ) {
+                    player.setDisplay(holder)
+                }
 
-            override fun surfaceDestroyed(holder: SurfaceHolder) {
-            }
+                override fun surfaceDestroyed(holder: SurfaceHolder) {
+                }
 
-        })
-        player.setOnPreparedListener {
-            player.setDisplay(binding.loginVideo.holder)
-            player.start()
+            })
+            player.setOnPreparedListener {
+                player.setDisplay(binding.loginVideo.holder)
+                player.start()
+            }
+            player.setOnErrorListener { mp, what, extra ->
+                binding.loginVideo.visibility = View.GONE
+                binding.imBg.visibility = View.VISIBLE
+                false
+            }
+            player.setDataSource(videoUrl)
+            player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+            player.prepareAsync()
+            player.isLooping = true
+            binding.imBg.visibility = View.GONE
         }
-        player.setOnErrorListener { mp, what, extra ->
-            binding.loginVideo.visibility = View.GONE
-            binding.imBg.visibility = View.VISIBLE
-            false
-        }
-        player.setDataSource(videoUrl)
-        player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
-        player.prepareAsync()
-        player.isLooping = true
-        binding.imBg.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -325,10 +332,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         timerTask?.cancel()
         timer = null
         timerTask = null
-
-        if (player.isPlaying)
-            player.stop()
-        player.release()
+        mPlayer?.let {
+            if (it.isPlaying)
+                it.stop()
+            it.release()
+        }
     }
 
     var isForeground = true
@@ -368,6 +376,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             //由后台切换到前台
             isForeground = true
         }
+        viewModel.downLoginBgUrl()
     }
 
     override fun onPause() {

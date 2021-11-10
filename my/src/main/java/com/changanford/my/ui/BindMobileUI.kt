@@ -100,7 +100,12 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
         viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
             it?.let {
-                play(it)
+                try {
+                    play(it)
+                } catch (e: Exception) {
+                    binding.loginVideo.visibility = View.GONE
+                    binding.imBg.visibility = View.VISIBLE
+                }
             }
         })
     }

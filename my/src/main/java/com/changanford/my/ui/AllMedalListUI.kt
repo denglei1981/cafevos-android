@@ -31,7 +31,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  *  文件名：AllMedalListUI
@@ -43,17 +42,14 @@ import kotlin.collections.ArrayList
 @Route(path = ARouterMyPath.AllMedalUI)
 class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
-    private var medalMap: MutableMap<Int, ArrayList<MedalListBeanItem>> = TreeMap { o1, o2 ->
-        o1.compareTo(o2)
-    }
-
-    private val titles: ArrayList<MedalListBeanItem> = ArrayList()
 
     private var oldPosition = 0
 
     private var medalItem: MedalListBeanItem? = null
 
-    var num: Int = 0
+    private var totalNum: Int = 0
+
+    private var isRefresh: Boolean = false
 
     override fun initView() {
         var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
@@ -69,21 +65,15 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 RouterManger.startARouter(ARouterMyPath.MineMedalUI)
             }
         }
+        viewModel.medalTotalNum.observe(this, Observer {
+            it?.let {
+                totalNum = it
+                binding.imWithVipNum.MedalNum(it)
+            }
+        })
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 l.forEach { item ->
-                    var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalType]
-                    if (null == list) {
-                        list = ArrayList()
-                        list.add(item)
-                        medalMap[item.medalType] = list
-                        titles.add(item)
-                    } else {
-                        list.add(item)
-                    }
-                    if (item.isGet == "1") {//已领取
-                        num++
-                    }
                     if (item.isGet == "0" && null == medalItem) {
                         medalItem = item
                     }
@@ -93,11 +83,10 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                         binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
                     }
                 }
-                binding.imWithVipNum.MedalNum(num)
-                if (titles.size > 0) {
+                if (viewModel.titles.size > 0) {
                     var medalItem = MedalListBeanItem(medalTypeName = "全部", medalType = 0)
-                    titles.add(0, medalItem)
-                    medalMap[0] = l
+                    viewModel.titles.add(0, medalItem)
+                    viewModel.medalMap[0] = l
                 }
                 initViewpager()
             }
@@ -120,20 +109,30 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
         LiveDataBus.get().with("refreshMedalNum", Int::class.java).observe(this, Observer {
             it?.let {
-                binding.imWithVipNum.MedalNum(num + it)
+                binding.imWithVipNum.MedalNum(totalNum)
+                if (isRefresh) {
+                    isRefresh = false
+                    viewModel.mineMedal()
+                }
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
     }
 
     private fun initViewpager() {
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@AllMedalListUI) {
                 override fun getItemCount(): Int {
-                    return titles.size
+                    return viewModel.titles.size
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return MedalFragment.newInstance(medalMap[titles[position].medalType])
+                    var medalType: Int = viewModel.titles[position].medalType
+                    return MedalFragment.newInstance(viewModel.medalMap[medalType], medalType)
                 }
             }
 
@@ -179,7 +178,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
                 val itemHelpTabBinding = ItemMedalTabBinding.inflate(layoutInflater)
-                itemHelpTabBinding.tvTab.text = titles[tabPosition].medalTypeName
+                itemHelpTabBinding.tvTab.text = viewModel.titles[tabPosition].medalTypeName
                 //解决第一次进来item显示不完的bug
                 itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
                 if (tabPosition == 0) {
