@@ -3,12 +3,28 @@
     android:layout_width="@dimen/dp_285"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_r_5_c_ff"
-    android:minHeight="@dimen/dp_155"
+    android:minHeight="@dimen/dp_180"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/color_01025C"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
         android:layout_weight="1">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -29,6 +45,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_46"
+        android:layout_marginBottom="@dimen/dp_5"
         android:background="@color/bg_color"
         android:orientation="horizontal"
         android:paddingTop="@dimen/dp_1">

@@ -10,6 +10,8 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant.H5_CANCEL_ACCOUNT
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountVerifyBinding
@@ -62,6 +64,12 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
             RouterManger.startARouter(ARouterMyPath.MineCancelAccountConfirmUI)
         }
 
+        //取消注销申请  注销账户成功
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CANCEL_ACCOUNT, Boolean::class.java)
+            .observe(this,
+                Observer {
+                    if (it) back()
+                })
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
