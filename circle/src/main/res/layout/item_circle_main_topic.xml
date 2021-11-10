@@ -36,19 +36,20 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="20dp"
-                android:src="@mipmap/circle_main_talk_hint"
-                android:layout_height="23dp"/>
+                android:layout_height="23dp"
+                android:src="@mipmap/circle_main_talk_hint" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:background="@drawable/circle_main_talk_20_bg"
-                android:layout_height="20dp">
+                android:layout_height="20dp"
+                android:background="@drawable/circle_main_talk_20_bg">
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_hint_icon"
                     android:layout_width="20dp"
-                    android:visibility="invisible"
+                    android:layout_height="23dp"
                     android:src="@mipmap/circle_main_talk_hint"
-                    android:layout_height="23dp"/>
+                    android:visibility="invisible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_talk"
@@ -73,16 +74,16 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_marginTop="7dp"
             android:text="@{bean.description}"
             android:textColor="@color/color_2d"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_topic"
             app:layout_constraintRight_toLeftOf="@+id/iv_icon"
+            app:layout_constraintTop_toBottomOf="@+id/rl_topic"
             tools:text="人工智能发展迅猛，会摆脱人类码？" />
 
         <androidx.appcompat.widget.AppCompatTextView
