@@ -667,7 +667,7 @@ interface NetWorkApi {
     suspend fun saveAddress(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<AddressBeanItem>
 
 
     /**

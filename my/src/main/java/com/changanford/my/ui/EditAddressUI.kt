@@ -1,9 +1,14 @@
 package com.changanford.my.ui
 
+import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -36,7 +41,14 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
 
     var addressBean: AddressBeanItem? = null
 
+    private var isChooseAdd: Int = 0
+
     override fun initView() {
+        intent.extras?.getInt(RouterManger.KEY_TO_ITEM, 0)?.let {
+            isChooseAdd = it
+            binding.save.text = if (it != 0) "保存并使用" else "保存"
+        }
+
         binding.addressToolbar.toolbarTitle.text = "添加地址"
         binding.addressToolbar.toolbar.setNavigationOnClickListener { back() }
         body["addressId"] = "0"
@@ -141,18 +153,30 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                 showToast("详细地址不能输入特殊字符")
                 return@setOnClickListener
             }
-            viewModel.saveAddress(body)
-        }
-
-        viewModel.saveAddressStatus.observe(this, Observer {
-            if ("true" == it) {
-                showToast("地址保存成功")
-                LiveDataBus.get().with(LiveDataBusKey.MINE_UPDATE_ADDRESS).postValue(true)
-                finish()
-            } else {
-                showToast(it)
+            viewModel.saveAddress(body) {
+                it.onSuccess {
+                    showToast("地址保存成功")
+                    if (isChooseAdd != 0) {
+                        it?.let { item ->
+                            LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS)
+                                .postValue(JSON.toJSON(item).toString())//H5回调数据
+                            var intent = Intent()
+                            intent.putExtra("addressBeanItem", item)
+                            setResult(Activity.RESULT_OK, intent)
+                        }
+                    }
+                    //直接返回
+                    LiveDataBus.get().with(LiveDataBusKey.MINE_UPDATE_ADDRESS)
+                        .postValue(isChooseAdd == 0)
+                    finish()
+                }
+                it.onWithMsgFailure {
+                    it?.let {
+                        showToast(it)
+                    }
+                }
             }
-        })
+        }
     }
 
     override fun initData() {

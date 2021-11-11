@@ -58,21 +58,18 @@ class AddressViewModel : ViewModel() {
     /**
      * 保存地址
      */
-    var saveAddressStatus: MutableLiveData<String> = MutableLiveData()
 
-    fun saveAddress(map: HashMap<String, Any>) {
+    fun saveAddress(
+        map: HashMap<String, Any>, result: (CommonResponse<AddressBeanItem>) -> Unit
+    ) {
         if (null == map) {
             return
         }
         viewModelScope.launch {
-            fetchRequest(showLoading = true) {
+            result(fetchRequest(showLoading = true) {
                 var rkey = getRandomKey()
                 apiService.saveAddress(map.header(rkey), map.body(rkey))
-            }.onSuccess {
-                saveAddressStatus.postValue("true")
-            }.onWithMsgFailure {
-                saveAddressStatus.postValue(it)
-            }
+            })
         }
     }
 
