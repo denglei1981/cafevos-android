@@ -19,23 +19,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_totalPayFb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/str_copeWithTotalAmount"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_integral"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_marginEnd="@dimen/dp_10"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            app:end_txt="@string/str_integral"
-            android:text="@{model.fbCost}"
-            android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_14"
-            style="@style/style_txt_ellipsize"/>
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_totalPayFb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/str_copeWithTotalAmount"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_12" />
+            <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginTop="@dimen/dp_3"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/tv_integral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:end_txt="@string/str_integral"
+                android:text="@{model.fbCost}"
+                android:textColor="@color/color_00095B"
+                android:textSize="@dimen/sp_14"
+                app:lineHeight="@dimen/sp_14" />
+        </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             style="?android:attr/borderlessButtonStyle"
             android:onClick="onClick"
