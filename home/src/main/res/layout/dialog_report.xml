@@ -4,7 +4,7 @@
     android:id="@+id/cs_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/shape_whit5_bg"
     android:minHeight="300dp">
 
     <ImageView
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="40dp"
+        android:layout_height="58dp"
         android:gravity="center"
         android:text="请选择举报原因"
         android:textColor="@color/color_0717"
@@ -43,26 +43,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line1" />
 
-    <View
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_f6"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
 
     <TextView
         android:id="@+id/cancel_tv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:minWidth="@dimen/dp_72"
         android:layout_height="45dp"
         android:gravity="center"
+        android:textStyle="bold"
         android:text="取消"
-        android:textColor="@color/color_0717"
-        app:layout_constraintTop_toBottomOf="@+id/line2" />
+        android:textColor="#01005E"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/title_tv"
+        app:layout_constraintTop_toTopOf="@+id/title_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,8 @@
 package com.changanford.home.news.dialog
 
+import android.os.Bundle
 import android.view.Gravity
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -40,11 +42,18 @@ class ReportDialog(private val activity: AppCompatActivity, private val body: Re
 
     private val configBean = MutableLiveData<ArrayList<String>>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);//需要在设置内容之前定义
+//        window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+    }
     override fun getLayoutId(): Int {
         return R.layout.dialog_report
     }
 
     init {
+
         window?.setGravity(Gravity.BOTTOM)
         setParamWidthMatch()
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
