@@ -1,5 +1,6 @@
 package com.changanford.shop.popupwindow
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +44,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             OrderConfirmActivity.start(Gson().toJson(dataBean))
         }
     }
+    @SuppressLint("StringFormatMatches")
     private fun initData(){
         viewDataBinding.model=dataBean
         dataBean.skuVos.forEach { it.skuCodeArr=it.skuCode.split("-") }
@@ -84,7 +86,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         })
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-            setHtmlTxt(dataBean.acountFb,"#00095B")
+            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
         }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
