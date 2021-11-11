@@ -126,7 +126,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 mData.circleId.toString()
                             )
                         }
-                        tvOneTime.text = "发布于   ${mData.timeStr}"
+                        tvOneTime.text = "${mData.timeStr}"
 
                         //webview加载文本
                         if (webHelper == null) webHelper =
@@ -186,7 +186,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             tvTalkOut.visibility = View.GONE
                         }
                         tvTalkOut.text = mData.topicName
-                        tvTwoTime.text = "发布于   ${mData.timeStr}"
+                        tvTwoTime.text = "${mData.timeStr}"
                         tvContent.text = mData.content
                     }
                     else -> {
@@ -217,7 +217,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvTalkOut.visibility = View.GONE
                             }
                             tvTalkOut.text = mData.topicName
-                            tvTwoTime.text = "发布于   ${mData.timeStr}"
+                            tvTwoTime.text = "${mData.timeStr}"
                             tvOneContent.text = mData.content
                             val adapter = PostDetailsLongAdapter(requireContext())
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)

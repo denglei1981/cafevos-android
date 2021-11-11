@@ -44,7 +44,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
         binding?.let {
             binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.bean = item
-            binding.tvLikeCount.text = item.likesCount.toString()
+            binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.circle_comment_like
@@ -67,7 +67,8 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                                     item.likesCount--
                                     item.isLike = 0
                                 }
-                                binding.tvLikeCount.text = item.likesCount.toString()
+                                binding.tvLikeCount.text =
+                                    if (item.likesCount == 0) "" else item.likesCount.toString()
                                 binding.ivLike.setImageResource(
                                     if (item.isLike == 1) {
                                         AnimScaleInUtil.animScaleIn(binding.ivLike)
