@@ -27,7 +27,7 @@
             app:start_txt="@string/str_orderNo"
             android:text="@{model.orderNo}"
             tools:text="订单编号：DD202109110023"
-            android:textColor="@color/picture_color_66"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_order_states"

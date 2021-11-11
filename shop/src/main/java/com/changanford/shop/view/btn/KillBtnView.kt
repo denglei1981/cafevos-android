@@ -13,7 +13,7 @@ import com.changanford.shop.R
  * @Description : KillBtnView
  */
 class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(context,attrs) {
-    private var btnStates=-1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8福币不足 9提交订单 10 已提醒
+    private var btnStates=-1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8余额不足 9提交订单 10 已提醒
     private val statesTxt= arrayOf(R.string.str_toSnapUp,R.string.str_hasGone,
         R.string.str_hasEnded, R.string.str_remindMe,R.string.str_cancelReminder,
         R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut,R.string.str_notStart,R.string.str_lackBalance,R.string.str_submitOrder,R.string.str_haveToRemind)
@@ -40,13 +40,13 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             }
             //已抢光
             1->{
-                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_f4_20dp)
+                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
             //已结束
             2->{
-                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_f4_20dp)
+                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
@@ -68,9 +68,9 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true
             }
-            //已售罄,未开始,福币不足
+            //已售罄,未开始,余额不足
             6,7,8->{
-                setBackgroundResource(R.drawable.shadow_f4_20dp)
+                setBackgroundResource(R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
@@ -82,7 +82,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         if(isEnabled){
             setBackgroundResource(R.drawable.btn_selector)
         }else{
-            setBackgroundResource(R.drawable.shadow_f4_20dp)
+            setBackgroundResource(R.drawable.shadow_dd_20dp)
         }
     }
     fun getStates():Int{

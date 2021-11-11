@@ -25,7 +25,7 @@
             tools:visibility="visible"
             android:visibility="gone"
             android:id="@+id/tv_orderType"
-            android:background="@drawable/shadow_66black_2dp"
+            android:background="@drawable/shadow_b300095b_2dp"
             android:layout_margin="@dimen/dp_5"
             app:layout_constraintTop_toTopOf="@id/img_goods_cover"
             app:layout_constraintStart_toStartOf="@id/img_goods_cover"
@@ -62,7 +62,7 @@
             android:layout_height="0dp"
             app:start_txt="@string/str_x"
             android:text="@{model.buyNum}"
-            android:textColor="@color/color_99"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
