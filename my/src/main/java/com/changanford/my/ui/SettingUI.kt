@@ -64,7 +64,7 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
         binding.setFord.setOnClickListener {
             startARouter(ARouterMyPath.AboutUI)
         }
-        binding.setVersion.text = "V${DeviceUtils.getversionName()}"
+        binding.setVersion.text = "版本${DeviceUtils.getversionName()}"
 
         var cache = CleanDataUtils.getTotalCacheSize(this)
         if (!cache.contains("0.00")) {

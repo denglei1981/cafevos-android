@@ -172,7 +172,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                     binding.btnFollow.setOnClickListener {
                         cancel(user.userId, if (isFollow == 0) "1" else "2")
                     }
-
+                    binding.userVip.visibility = View.GONE
                     user.ext?.let {
                         //用户图标
                         it.imags?.let { imgs ->
