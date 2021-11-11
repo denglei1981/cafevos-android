@@ -22,7 +22,7 @@
             android:layout_width="@dimen/dp_16"
             android:layout_height="@dimen/dp_16"
             android:layout_marginStart="@dimen/dp_7"
-            android:layout_marginTop="@dimen/dp_2"
+            android:layout_marginTop="@dimen/dp_1"
             android:src="@mipmap/ic_task_jife"
             app:layout_constraintLeft_toRightOf="@+id/task_title"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +36,7 @@
             android:textColor="#1B3B89"
             android:textSize="@dimen/sp_13"
             android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_1"
             app:layout_constraintLeft_toRightOf="@+id/task_icon"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -33,6 +33,7 @@ import razerdp.basepopup.QuickPopupConfig
 class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     var type: Int = 1 //1 粉丝，2 关注
     var userId: String = ""
+    var followId: String = ""
 
     val fanAdapter: FansAdapter by lazy {
         FansAdapter()
@@ -54,7 +55,21 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
 
         viewModel.cancelTip.observe(this, Observer {
             if ("true" == it) {
-                initRefreshData(1)
+                showToast("已取消关注")
+                when (type) {
+                    2 -> {
+                        fanAdapter.data?.forEach {
+                            if (it.authorId == followId) {
+                                it.isMutualAttention = 100
+                            }
+                        }
+                        fanAdapter.notifyDataSetChanged()
+                    }
+                    1 -> {
+                        initRefreshData(1)
+
+                    }
+                }
             } else {
                 showToast(it)
             }
@@ -84,14 +99,23 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                 it.itemFansIcon.load(item.avatar)
                 if (type == 2) {
                     it.layout.isSelected = false
-                    if (item.isMutualAttention == 1) {
-                        it.itemIcon.setImageResource(0)
-                        it.itemText.text = "相互关注"
-                    } else {
-                        it.itemText.text = "已关注"
-                        it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
-                    }
                     it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
+                    when (item.isMutualAttention) {
+                        1 -> {
+                            it.itemIcon.setImageResource(0)
+                            it.itemText.text = "相互关注"
+                        }
+                        100 -> {
+                            it.layout.isSelected = true
+                            it.itemText.text = "关注"
+                            it.itemText.setTextColor(Color.parseColor("#01025C"))
+                            it.itemIcon.setImageResource(0)
+                        }
+                        else -> {
+                            it.itemText.text = "已关注"
+                            it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
+                        }
+                    }
                 } else {
                     when (item.isMutualAttention) {
                         1 -> {
@@ -143,6 +167,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     QuickPopupConfig()
                         .gravity(Gravity.CENTER)
                         .withClick(R.id.btn_comfir, View.OnClickListener {
+                            this.followId = followId
                             viewModel.cancelFans(followId, type)
                         }, true)
                         .withClick(R.id.btn_cancel, View.OnClickListener {

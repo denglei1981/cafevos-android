@@ -108,6 +108,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
         when (type) {
             "collectInformation" -> {
+                infoAdapter.isShowTag = true
                 viewModel.queryMineCollectInfo(pageSize) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
@@ -116,6 +117,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
             }
             "footInformation" -> {
+                infoAdapter.isShowTag = true
                 viewModel.queryMineFootInfo(pageSize) { reponse ->
                     reponse?.data?.total?.let {
                         total = it

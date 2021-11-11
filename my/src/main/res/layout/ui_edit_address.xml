@@ -134,7 +134,7 @@
         android:background="#EEEEEE" />
 
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <com.changanford.my.widget.NoEmojiEditText
         android:id="@+id/et_address_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,7 +145,6 @@
         android:gravity="top"
         android:hint="请填写详细地址"
         android:maxLength="100"
-        android:inputType="textPersonName"
         android:minHeight="@dimen/dp_100"
         android:padding="@dimen/dp_8"
         android:textColor="#081725"

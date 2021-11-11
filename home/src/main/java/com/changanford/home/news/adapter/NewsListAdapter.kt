@@ -34,6 +34,7 @@ class NewsListAdapter(
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
 
     var isShowFollow: Boolean = true
+    var isShowTag: Boolean = false
 
     init {
         addChildClickViewIds(
@@ -43,7 +44,7 @@ class NewsListAdapter(
             R.id.tv_sub_title,
             R.id.tv_time_look_count,
             R.id.tv_comment_count,
-            )
+        )
     }
 
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
@@ -51,6 +52,7 @@ class NewsListAdapter(
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
         val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
+        val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         GlideUtils.loadBD(item.pics, ivPicBig)
         tvAuthorName.text = item.authors?.nickname
@@ -58,6 +60,8 @@ class NewsListAdapter(
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
         btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
+        tag.visibility = if (isShowTag) View.VISIBLE else View.GONE
+        tag.text = "资讯"
         item.authors?.let {
             setFollowState(btnFollow, it)
         }
@@ -67,9 +71,9 @@ class NewsListAdapter(
         val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
 
-        val ivPlay=holder.getView<ImageView>(R.id.iv_play)
+        val ivPlay = holder.getView<ImageView>(R.id.iv_play)
 
-        val tvVideoTime=holder.getView<AppCompatTextView>(R.id.tv_video_times)
+        val tvVideoTime = holder.getView<AppCompatTextView>(R.id.tv_video_times)
         tvLikeCount.setPageTitleText(item.likesCount.toString())
         setLikeState(tvLikeCount, item, false)
         tvCommentCount.text = item.getCommentCountResult()
@@ -83,14 +87,14 @@ class NewsListAdapter(
             tvTopic.visibility = View.VISIBLE
             tvTopic.text = item.summary
         }
-        when(item.type){
-            1,2->{
-                ivPlay.visibility=View.GONE
-                tvVideoTime.visibility=View.GONE
+        when (item.type) {
+            1, 2 -> {
+                ivPlay.visibility = View.GONE
+                tvVideoTime.visibility = View.GONE
             }
-            3->{
-                ivPlay.visibility=View.VISIBLE
-                tvVideoTime.visibility=View.VISIBLE
+            3 -> {
+                ivPlay.visibility = View.VISIBLE
+                tvVideoTime.visibility = View.VISIBLE
                 tvVideoTime.text = item.videoTime
             }
 
@@ -142,7 +146,7 @@ class NewsListAdapter(
     }
 
     // 关注。
-    private fun getFollow( followId: String, type: Int) {
+    private fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
