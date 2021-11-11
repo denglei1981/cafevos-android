@@ -82,17 +82,38 @@
                 app:shapeAppearanceOverlay="@style/circleImageStyle"
                 tools:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_author"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:ellipsize="end"
-                android:maxLength="10"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_11"
-                tools:text="@string/app_name" />
+                android:orientation="vertical"
+                android:layout_marginStart="7dp">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:text="你是我的眼" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLength="12"
+                    android:maxLines="2"
+                    android:textColor="@color/color_99"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="2012.10.01" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
 
 

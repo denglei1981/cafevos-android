@@ -219,6 +219,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
+        binding.layoutTitle.tvTime.text=newsDetailData.timeStr
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }

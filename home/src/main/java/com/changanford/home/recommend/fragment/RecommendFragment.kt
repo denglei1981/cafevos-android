@@ -234,6 +234,11 @@ open class RecommendFragment :
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
             })
+
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            homeRefersh()
+        })
+
     }
 
     override fun initData() {

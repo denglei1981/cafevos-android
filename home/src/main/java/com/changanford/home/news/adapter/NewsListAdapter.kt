@@ -13,6 +13,8 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -104,6 +106,7 @@ class NewsListAdapter(
             if (LoginUtil.isLongAndBindPhone()) {
                 if (item.authors != null) {
                     followAction(btnFollow, item.authors!!, holder.adapterPosition)
+
                 }
             }
         }
@@ -205,9 +208,9 @@ class NewsListAdapter(
 
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-//        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
 }

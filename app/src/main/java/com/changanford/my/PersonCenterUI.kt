@@ -23,6 +23,8 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.databinding.ItemMedalTabBinding
@@ -64,6 +66,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                     0
                 }
                 binding.btnFollow.text = if (isFollow == 0) "关注" else "已关注"
+                LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
             } else {
                 showToast(it)
             }
