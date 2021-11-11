@@ -7,30 +7,45 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            tools:src="@mipmap/circle_post_video" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            tools:text="发长贴"
-            android:minWidth="50dp"
-            android:textColor="@color/color_33"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                tools:src="@mipmap/circle_post_video" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:minWidth="50dp"
+                android:textColor="@color/color_33"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="发长贴" />
+        </LinearLayout>
+
+        <View
+            android:id="@id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/color_f6" />
     </LinearLayout>
+
 </layout>

@@ -405,9 +405,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         /**
          * 砍价下单回调
          */
-        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this,  {
-            if("2"==it)this.finish()
-        })
+//        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this,  {
+//            if("2"==it)this.finish()
+//        })
     }
 
     override fun initData() {

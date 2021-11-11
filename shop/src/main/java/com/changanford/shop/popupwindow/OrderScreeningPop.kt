@@ -9,6 +9,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderTypeAdapter
 import com.changanford.shop.databinding.PopOrderScreeningBinding
+import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -30,6 +31,7 @@ open class OrderScreeningPop(val activity: AppCompatActivity,val viewModel: Orde
         initData()
     }
     private fun initView(){
+        setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
         viewDataBinding.tvCancel.setOnClickListener{this.dismiss()}
         viewDataBinding.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->

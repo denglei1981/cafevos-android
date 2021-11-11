@@ -14,7 +14,6 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
 import com.changanford.my.databinding.FmMedalBinding
@@ -32,6 +31,8 @@ import razerdp.basepopup.BasePopupWindow
  */
 class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
     var list: ArrayList<MedalListBeanItem> = ArrayList()
+
+    private var medalType: Int = 0
 
     var indexItem: Int = 0
     var adapter = object :
@@ -82,9 +83,10 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
     }
 
     companion object {
-        fun newInstance(list: ArrayList<MedalListBeanItem>?): MedalFragment {
+        fun newInstance(list: ArrayList<MedalListBeanItem>?, medalType: Int): MedalFragment {
             var bundle: Bundle = Bundle()
             bundle.putSerializable(RouterManger.KEY_TO_OBJ, list)
+            bundle.putInt(RouterManger.KEY_TO_ID, medalType)
             var medalFragment = MedalFragment()
             medalFragment.arguments = bundle
             return medalFragment
@@ -97,6 +99,10 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             adapter.addData(list)
         }
 
+        arguments?.getInt(RouterManger.KEY_TO_ID, 0)?.let {
+            medalType = it
+        }
+
         binding.rcyMedal.rcyCommonView.layoutManager = GridLayoutManager(requireContext(), 3)
 
         binding.rcyMedal.rcyCommonView.adapter = adapter
@@ -105,7 +111,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             if ("true" == it) {
                 if (indexItem in 0..list.size) {
                     var item = list[indexItem]
-                    ref(item.medalId)
+                    ref()
                     PopSuccessMedal().apply {
                         binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
                         binding.medalName.text = item?.medalName
@@ -118,31 +124,36 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                 showToast(it)
             }
         })
+        //勋章详情，需要刷新
         LiveDataBus.get().with("refreshMedal", String::class.java).observe(this, Observer {
             it?.let {
-                "${it}传过来的数据".logE()
-                var medal = it.split(",")
-                medal?.forEach {
-                    "${it}传过来的id".logE()
-                    ref(it)
+                if (it.isNotEmpty()) {
+                    ref()
                 }
             }
+        })
+
+        //勋章
+        viewModel.allMedal.observe(this, Observer {
+            it?.let {
+                list.clear()
+                list.addAll(it)
+                adapter.setDiffNewData(list)
+            }
+        })
+
+        //勋章总数
+        viewModel.medalTotalNum.observe(this, Observer {
+            LiveDataBus.get().with("refreshMedalNum", Int::class.java).postValue(it)
         })
     }
 
     /**
      * 已点亮
      */
-    private fun ref(medalId: String?) {
-        medalId?.let { mId ->
-            list.forEach {
-                if (mId == it.medalId) {
-                    it.isGet = "1"
-                    it.getTime = "${System.currentTimeMillis()}"
-                }
-            }
-            adapter.notifyDataSetChanged()
-        }
+
+    private fun ref() {
+        viewModel.mineMedal(medalType)
     }
 
 

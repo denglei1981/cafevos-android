@@ -35,7 +35,7 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
             }
             monthright.setOnClickListener {
                 if (index>=1){
-                    "最多只能查看下一个月签到".toast()
+                    "最多可查看下一个月签到".toast()
                     return@setOnClickListener
                 }
                 index++

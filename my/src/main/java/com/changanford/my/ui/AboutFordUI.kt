@@ -62,7 +62,7 @@ class AboutFordUI : BaseMineUI<UiAboutBinding, EmptyViewModel>() {
 
                 }
             }else{
-                "没有更新".toast()
+                "当前已是最新版本".toast()
             }
         }
         if (MConstant.newApk) {

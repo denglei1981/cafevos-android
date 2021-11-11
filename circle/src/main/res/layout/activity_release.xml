@@ -22,20 +22,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                background="@color/alertdialog_line"
+                >
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
+                    android:orientation="vertical">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10">
 
                     <ImageView
                         android:id="@+id/iv_fengmian"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/add_image" />
+                        android:src="@mipmap/default_release_fm" />
 
                     <TextView
                         android:id="@+id/tv_fm"
@@ -49,6 +56,19 @@
                         android:textColor="@color/white"
                         android:textSize="9sp"
                         android:visibility="invisible" />
+                    <TextView
+                        android:id="@+id/tv_fm_hint"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dp_60"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp_4"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="请上传封面"
+                        android:textColor="@color/color_cc"
+                        android:textSize="@dimen/sp_13"
+                        android:visibility="visible" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -104,7 +124,11 @@
                         android:textColor="#AFB3B6"
                         android:textSize="13sp" />
                 </LinearLayout>
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/alertdialog_line" />
                 <TextView
                     style="@style/commonTextView.Normal"
                     android:layout_marginTop="30dp"
@@ -222,10 +246,20 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
+                    android:layout_marginBottom="@dimen/dp_20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 <TextView
                     style="@style/commonTextView.Normal"
                     android:layout_marginTop="30dp"
@@ -410,7 +444,6 @@
                         android:drawableRight="@mipmap/rightarrow"
                         android:drawablePadding="5dp"
                         android:gravity="right"
-                        android:hint="姓名、手机号、年龄"
                         android:singleLine="true"
                         android:textColor="@color/textblack"
                         android:textColorHint="#AFB3B6"
@@ -458,6 +491,7 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginBottom="50dp"
                     android:background="@color/alertdialog_line" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

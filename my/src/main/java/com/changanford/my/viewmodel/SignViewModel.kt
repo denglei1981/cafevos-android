@@ -26,6 +26,9 @@ import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  *  文件名：SignViewModel
@@ -603,18 +606,59 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    val allMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
+    /*------------勋章------------*/
 
-    fun mineMedal() {
+    val allMedal: MutableLiveData<ArrayList<MedalListBeanItem>> = MutableLiveData()
+    val medalTotalNum: MutableLiveData<Int> = MutableLiveData()
+
+    var medalMap: MutableMap<Int, ArrayList<MedalListBeanItem>> = TreeMap { o1, o2 ->
+        o1.compareTo(o2)
+    }
+    val titles: ArrayList<MedalListBeanItem> = ArrayList()
+    private var medalWithWearTotalNum: Int = 0
+
+    fun mineMedal(medalType: Int = 0) {
         viewModelScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 var rkey = getRandomKey()
                 apiService.queryMedalList(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                allMedal.postValue(it)
+                medal(it, medalType)
             }.onFailure {
                 allMedal.postValue(null)
+            }
+        }
+    }
+
+    private fun medal(allMedals: ArrayList<MedalListBeanItem>?, medalType: Int = 0) {
+        allMedals?.let { medals ->
+            medalWithWearTotalNum = 0
+            medalMap.clear()
+            titles.clear()
+            medals?.forEach { item ->
+                var list: ArrayList<MedalListBeanItem>? = medalMap[item.medalType]
+                if (null == list) {
+                    list = ArrayList()
+                    list.add(item)
+                    medalMap[item.medalType] = list
+                    titles.add(item)
+                } else {
+                    list.add(item)
+                }
+                if (item.isGet == "1") {//已领取
+                    medalWithWearTotalNum++
+                }
+            }
+            medalTotalNum.postValue(medalWithWearTotalNum)
+
+            when (medalType) {
+                0 -> {
+                    allMedal.postValue(medals)
+                }
+                else -> {
+                    allMedal.postValue(medalMap[medalType])
+                }
             }
         }
     }

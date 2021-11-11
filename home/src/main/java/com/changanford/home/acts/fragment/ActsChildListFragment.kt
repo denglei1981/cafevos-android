@@ -30,7 +30,6 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
-
     //， 排序，活动状态  ，发布方,线上线下
     var shaixuanList =
         arrayListOf("OrderTypeEnum", "ActivityTimeStatus", "OfficialEnum", "WonderfulTypeEnum")
@@ -70,8 +69,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = searchActsResultAdapter.getItem(position)
                 CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-                if (item.jumpType == 2) {
-//                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
+                if (item.jumpType == 2||item.jumpType==1) {
+                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
                 }
             }
         })

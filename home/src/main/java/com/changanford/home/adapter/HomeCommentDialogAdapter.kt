@@ -39,6 +39,7 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
             GlideUtils.loadBD(item.avatar,binding.ivHead)
             binding.bean = item
             binding.tvLikeCount.text = item.likesCount.toString()
+            binding.tvLikeCount.visibility=if(item.likesCount==0) View.INVISIBLE else View.VISIBLE
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.home_comment_like
@@ -52,7 +53,7 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
                     val rKey = getRandomKey()
                     ApiClient.createApi<HomeNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {
-                            it.msg.toast()
+//                            it.msg.toast()
                             if (it.code == 0) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
@@ -62,6 +63,8 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
                                     item.isLike = 0
                                 }
                                 binding.tvLikeCount.text = item.likesCount.toString()
+                                binding.tvLikeCount.visibility=if(item.likesCount==0) View.INVISIBLE else View.VISIBLE
+
                                 binding.ivLike.setImageResource(
                                     if (item.isLike == 1) {
                                         AnimScaleInUtil.animScaleIn(binding.ivLike)

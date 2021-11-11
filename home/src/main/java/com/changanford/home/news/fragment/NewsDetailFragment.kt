@@ -121,7 +121,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             requireActivity().finish()
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
-        llInfoBottom = binding.layoutTitle.llAuthorInfo.getBottom()
+        llInfoBottom = binding.layoutTitle.llAuthorInfo.bottom
         binding.pbRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -130,8 +130,8 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     linearLayoutManager.findViewByPosition(position) as View
                 val itemHeight = firstVisiableChildView.height
                 val scrollHeight = position * itemHeight - firstVisiableChildView.top
-                binding.layoutTitle.llAuthorInfo.visibility =
-                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.llAuthorInfo.visibility = if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.btFollow.visibility=  if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
 
             }
         })
@@ -215,9 +215,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
         binding.layoutTitle.tvAuthor.text = author.nickname
         setFollowState(inflateHeader.btFollow, author)
+        setFollowState(binding.layoutTitle.btFollow,author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
+        binding.layoutTitle.tvTime.text=newsDetailData.timeStr
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
@@ -241,6 +243,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             JumpUtils.instans!!.jump(35, newsDetailData.userId.toString())
         }
         inflateHeader.btFollow.setOnClickListener {
+            if (LoginUtil.isLongAndBindPhone()) {
+                followAction()
+            }
+        }
+        binding.layoutTitle.btFollow.setOnClickListener{
             if (LoginUtil.isLongAndBindPhone()) {
                 followAction()
             }
@@ -356,6 +363,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                         val followType = na.authors.isFollow
                         na.authors.isFollow = if (followType == 1)  2  else  1
                         setFollowState(inflateHeader.btFollow, na.authors)
+                        setFollowState(binding.layoutTitle.btFollow,na.authors)
                     }
                 }
             } catch (e: Exception) {
@@ -450,12 +458,15 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         )
     }
 
+
+
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
             var followType = it.authors.isFollow
             followType = if (followType == 1) 2 else 1
-            it.authors.isFollow = followType;
+            it.authors.isFollow = followType
+            setFollowState(binding.layoutTitle.btFollow,it.authors)
             setFollowState(inflateHeader.btFollow, it.authors)
             viewModel.followOrCancelUser(it.userId, followType)
         }

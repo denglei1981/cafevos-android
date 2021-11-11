@@ -36,10 +36,11 @@ import com.zhpan.bannerview.constants.PageStyle
  *  新闻列表
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
-    OnLoadMoreListener,OnRefreshListener {
+    OnLoadMoreListener, OnRefreshListener {
     val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
+
     companion object {
         fun newInstance(): NewsListFragment {
             val fg = NewsListFragment()
@@ -205,11 +206,18 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         })
 
         //登录回调
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, {
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
             })
+
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            homeRefersh()
+        })
+
+
     }
 
     /**
@@ -242,7 +250,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         super.onResume()
         try {
             headNewBinding?.bViewpager?.startLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -252,7 +260,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
         try {
             headNewBinding?.bViewpager?.stopLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -261,7 +269,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         super.onDestroy()
         try {
             headNewBinding?.bViewpager?.stopLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 

@@ -210,9 +210,10 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
                             @Override
                             public void onResult(List<LocalMedia> result) {
                                 for (LocalMedia media : result) {
-                                    GlideUtils.INSTANCE.loadRoundLocal(PictureUtil.INSTANCE.getFinallyPath(media), binding.ivFengmian, 5, R.mipmap.ic_def_square_img);
+                                    GlideUtils.INSTANCE.loadRoundFilePath(PictureUtil.INSTANCE.getFinallyPath(media), binding.ivFengmian);
                                     dtoBean.setCoverImgUrl(PictureUtil.INSTANCE.getFinallyPath(media));
                                     binding.tvFm.setVisibility(View.VISIBLE);
+                                    binding.tvFmHint.setVisibility(View.GONE);
                                 }
                             }
 

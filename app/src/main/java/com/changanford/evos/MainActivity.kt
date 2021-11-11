@@ -86,7 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     R.mipmap.icon_shop_b,
                     R.mipmap.icon_shop_c,
                     "商城",
-                    10f
+                    13f
                 )
             )
             .addItem(

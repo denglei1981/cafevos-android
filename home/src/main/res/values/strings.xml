@@ -26,5 +26,6 @@
     <string name="no_comment">没有评论</string>
     <string name="screen_acts">筛选</string>
     <string name="home_input_key_word">请输入关键字搜索</string>
+    <string name="ad_tag">广告</string>
 
 </resources>

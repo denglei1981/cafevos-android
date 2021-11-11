@@ -8,10 +8,15 @@
 
     </data>
 
-    <RelativeLayout
+    <com.changanford.common.widget.ShadowLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_medal_item_bg">
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_2"
+        app:sl_cornerRadius="@dimen/dp_5"
+        app:sl_shadowColor="#88dddddd"
+        app:sl_shadowRadius="@dimen/dp_8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -79,5 +84,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </RelativeLayout>
+    </com.changanford.common.widget.ShadowLayout>
 </layout>

@@ -47,8 +47,8 @@
     <string name="str_packageMail">快递包邮</string>
     <string name="str_payConfirm">确认支付</string>
     <string name="str_remainingTimePayment">支付剩余时间：</string>
-    <string name="str_yourAccountPoints">您的账户福币：</string>
-    <string name="str_yourAccountPoints_font">您的账户福币：<font color="#00095B">1300福币</font></string>
+    <string name="str_yourAccountPoints">您的账户：</string>
+    <string name="str_yourAccountPoints_font">您的账户：<font color="#00095B">1300福币</font></string>
     <string name="str_paySucces">支付成功</string>
     <string name="str_total">共计</string>
     <string name="str_payFailure">支付失败</string>
@@ -59,8 +59,7 @@
     <string name="str_specifications">规格</string>
     <string name="str_number">数量</string>
     <string name="str_xgXjkcXj">（<font color="#00095B">限购5件</font> 库存1024件）</string>
-    <string name="str_yourAccountPointsF">您的账户福币：<font color="#00095B">1800</font>分</string>
-    <string name="str_yourAccountLuckyMoney">您的账户福币：</string>
+    <string name="str_yourAccountPointsF">您的账户：<font color="#00095B">1800</font>分</string>
     <string name="str_limited">限量</string>
     <string name="str_a">件</string>
     <string name="str_toSnapUp">去抢购</string>
@@ -166,4 +165,5 @@
     <string name="str_iKnow">我知道了</string>
     <string name="str_areYouApplyReturn">是否确定申请退换货</string>
     <string name="str_contactCustomerService">联系客服</string>
+    <string name="str_coin">币</string>
 </resources>
