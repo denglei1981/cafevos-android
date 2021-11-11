@@ -60,5 +60,23 @@ class RecommendViewModel : BaseViewModel() {
         })
     }
 
+    /**
+     * 点击活动统计
+     */
+    fun AddACTbrid(wonderfulId: Int) {
+        launch(false, {
+            var body = HashMap<String, Any>()
+            body["wonderfulId"] = wonderfulId
+            var rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .addactbrid(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                }.onWithMsgFailure {
+                }.onFailure {
+                }
+
+        })
+    }
+
 
 }

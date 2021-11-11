@@ -11,6 +11,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -68,13 +70,6 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
             }
         })
 
-        viewModel.saveAddressStatus.observe(this, Observer {
-            if ("true" == it) {
-                addAdapter.notifyDataSetChanged()
-            } else {
-                showToast(it)
-            }
-        })
         viewModel.deleteAddressStatus.observe(this, Observer {
             if ("true" == it) {
                 initRefreshData(1)
@@ -84,12 +79,18 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
         })
 
         //刷新地址
-        LiveDataBus.get().with(LiveDataBusKey.MINE_UPDATE_ADDRESS).observe(this, Observer {
-            initRefreshData(1)
-        })
+        LiveDataBus.get().with(LiveDataBusKey.MINE_UPDATE_ADDRESS, Boolean::class.java)
+            .observe(this, Observer {
+                if (it) {
+                    initRefreshData(1)
+                } else {//保存并使用
+                    finish()
+                }
+            })
 
         binding.add.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.EditAddressUI)
+            RouterManger.param(RouterManger.KEY_TO_ITEM, isChooseAdd)
+                .startARouter(ARouterMyPath.EditAddressUI)
         }
     }
 
@@ -98,7 +99,8 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
         emptyBinding.viewStatusText.text = "您暂时还没有收货地址哦~"
         emptyBinding.btnAddAddress.visibility = View.VISIBLE
         emptyBinding.btnAddAddress.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.EditAddressUI)
+            RouterManger.param(RouterManger.KEY_TO_ITEM, isChooseAdd)
+                .startARouter(ARouterMyPath.EditAddressUI)
         }
         return super.showEmpty()
     }
@@ -170,7 +172,16 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
         body["phone"] = item.phone
         body["addressName"] = item.addressName
         body["isDefault"] = item.isDefault
-        viewModel.saveAddress(body)
+        viewModel.saveAddress(body) {
+            it.onSuccess {
+                addAdapter.notifyDataSetChanged()
+            }
+            it.onWithMsgFailure {
+                it?.let {
+                    showToast(it)
+                }
+            }
+        }
     }
 
     private fun delete(item: AddressBeanItem) {

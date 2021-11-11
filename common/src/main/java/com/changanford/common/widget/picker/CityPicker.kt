@@ -33,7 +33,7 @@ class CityPicker : LinkagePicker {
 
     override fun initData() {
         super.initData()
-        titleView.text = "地址选择"
+        titleView.text = "所选地区"
         titleView.setTextColor(Color.parseColor("#071726"))
         titleView.textSize = 16F
         okView.setTextColor(Color.parseColor("#01025C"))

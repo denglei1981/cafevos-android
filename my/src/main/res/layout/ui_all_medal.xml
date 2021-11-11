@@ -100,7 +100,7 @@
                     app:tabIndicator="@null"
                     app:tabIndicatorColor="@android:color/transparent"
                     app:tabIndicatorHeight="0dp"
-                    app:tabMode="scrollable"
+                    app:tabMode="fixed"
                     app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="#161E37"
                     app:tabTextAppearance="@style/TabLayoutTextStyle"

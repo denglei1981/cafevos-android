@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
+import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
@@ -59,12 +60,22 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         PostDetailsCommentAdapter(this)
     }
 
+    private val labelAdapter by lazy {
+        LabelAdapter(requireContext(), 18)
+    }
+
     private var webHelper: CustomWebHelper? = null
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.run {
             ryComment.adapter = commentAdapter
+            mData.authorBaseVo?.imags?.let {
+                if (it.isNotEmpty()) {
+                    labelAdapter.setItems(it)
+                }
+            }
+            ryLabel.adapter = labelAdapter
             AppUtils.setStatusBarMarginTop(llTitle, requireActivity())
             ivHead.loadImage(
                 mData.authorBaseVo?.avatar,
@@ -115,7 +126,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 mData.circleId.toString()
                             )
                         }
-                        tvOneTime.text = "发布于   ${mData.timeStr}"
+                        tvOneTime.text = "${mData.timeStr}"
 
                         //webview加载文本
                         if (webHelper == null) webHelper =
@@ -175,7 +186,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             tvTalkOut.visibility = View.GONE
                         }
                         tvTalkOut.text = mData.topicName
-                        tvTwoTime.text = "发布于   ${mData.timeStr}"
+                        tvTwoTime.text = "${mData.timeStr}"
                         tvContent.text = mData.content
                     }
                     else -> {
@@ -206,7 +217,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvTalkOut.visibility = View.GONE
                             }
                             tvTalkOut.text = mData.topicName
-                            tvTwoTime.text = "发布于   ${mData.timeStr}"
+                            tvTwoTime.text = "${mData.timeStr}"
                             tvOneContent.text = mData.content
                             val adapter = PostDetailsLongAdapter(requireContext())
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)

@@ -1,6 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.content.Context
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleMainMenuBean
@@ -17,9 +18,15 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 class CircleMainMenuAdapter(context: Context) :
     BaseAdapterOneLayout<CircleMainMenuBean>(context, R.layout.item_circle_main_menu) {
     override fun fillData(vdBinding: ViewDataBinding?, item: CircleMainMenuBean, position: Int) {
-        val binding =vdBinding as ItemCircleMainMenuBinding
-        MUtils.setTopMargin(binding.llContent,20,position)
+        val binding = vdBinding as ItemCircleMainMenuBinding
+        MUtils.setTopMargin(binding.llContent, 20, position)
+
+        if (position == 2) {
+            binding.vLine.visibility = View.INVISIBLE
+        } else {
+            binding.vLine.visibility = View.VISIBLE
+        }
         binding.ivIcon.loadImage(item.pic)
-        binding.tvContent.text=item.content
+        binding.tvContent.text = item.content
     }
 }
