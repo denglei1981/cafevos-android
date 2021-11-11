@@ -45,7 +45,7 @@
                 android:textSize="@dimen/sp_14" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.changanford.shop.view.TypefaceTextView
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_15"
             android:textStyle="bold"
             android:id="@+id/tv_goodsTitle"
             android:layout_marginTop="@dimen/dp_14"
