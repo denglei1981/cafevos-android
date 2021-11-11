@@ -71,14 +71,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
             ivLike.setImageResource(
                 if (mData.isLike == 1) {
-                    R.mipmap.circle_like_image
+                    R.mipmap.circle_like_image_v
                 } else {
                     R.mipmap.circle_no_like_image_v
                 }
             )
             ivCollection.setImageResource(
                 if (mData.isCollection == 1) {
-                    R.mipmap.circle_collection_image
+                    R.mipmap.circle_collection_image_v
                 } else {
                     R.mipmap.circle_no_collection_image_v
                 }
@@ -305,7 +305,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (it.code == 0) {
                 if (mData.isLike == 0) {
                     mData.isLike = 1
-                    binding.ivLike.setImageResource(R.mipmap.circle_like_image)
+                    binding.ivLike.setImageResource(R.mipmap.circle_like_image_v)
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.ivLike)
                 } else {
@@ -333,7 +333,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 binding.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
-                        R.mipmap.circle_collection_image
+                        R.mipmap.circle_collection_image_v
                     } else {
                         R.mipmap.circle_no_collection_image_v
                     }
