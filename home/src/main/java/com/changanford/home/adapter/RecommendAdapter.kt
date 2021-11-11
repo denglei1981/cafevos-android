@@ -249,10 +249,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 if (!TextUtils.isEmpty(item.artVideoTime)) {
                     tvVideoTime.text = item.artVideoTime
                 }
+
                 tvVideoTime.visibility = View.VISIBLE
                 tvNewsTag.text = "资讯"
-
                 ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
+                tvVideoTime.visibility=if(item.isArtVideoType()) View.VISIBLE else View.GONE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE

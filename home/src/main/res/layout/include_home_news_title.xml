@@ -39,6 +39,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_follow"
+            style="@style/followBtnStyle"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_tab"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_more"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="关注" />
 
         <LinearLayout
             android:id="@+id/ll_author_info"
