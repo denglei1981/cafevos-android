@@ -24,6 +24,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:textStyle="bold"
+            style="@style/AppText.lineSpace"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
