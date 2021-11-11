@@ -66,7 +66,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                     0
                 }
                 binding.btnFollow.text = if (isFollow == 0) "关注" else "已关注"
-                LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
+                LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(isFollow)
             } else {
                 showToast(it)
             }
