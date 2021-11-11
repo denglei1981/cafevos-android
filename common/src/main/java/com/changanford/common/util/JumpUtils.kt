@@ -135,7 +135,6 @@ class JumpUtils {
             }
 
             2 -> {//资讯详情
-
 //                val gson = Gson()
 //                val newsValueData = gson.fromJson(value, NewsValueData::class.java)
 //                gotoNewsDetails(newsValueData)

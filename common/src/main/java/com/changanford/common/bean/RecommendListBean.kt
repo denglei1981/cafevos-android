@@ -85,7 +85,7 @@ data class RecommendData(
     var pisList: List<String>? = null,
     val townName: String? = null,
     val beginTime: Long = 0,
-    val deadLineTime: Long = 0,
+    val deadlineTime: Long = 0,
     val endTime: Long = 0,
     val official: Int? = null,
     val wonderfulType: Int? = null,
@@ -103,6 +103,7 @@ data class RecommendData(
     val openTime: String = "",
     val jumpType: String = "",
     val jumpValue: String = "",
+
     ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
@@ -232,6 +233,27 @@ data class RecommendData(
 
     fun getAddress(): String {
         return city
+    }
+    fun getEndStr():Long{
+        if(deadlineTime>1000){
+            return deadlineTime
+        }
+        return 0
+    }
+    fun getTimeStateStr():String{
+        when(timeState){
+            "NOT_BEGIN"->{
+                return  "未开启"
+            }
+            "ON_GOING"->{
+                return "进行中"
+            }
+            "CLOSED"->{
+                return "已截止"
+            }
+        }
+        return ""
+
     }
 
     override val itemType: Int get() = getItemTypeLocal()
