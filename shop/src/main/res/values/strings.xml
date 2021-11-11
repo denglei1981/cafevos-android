@@ -166,4 +166,5 @@
     <string name="str_iKnow">我知道了</string>
     <string name="str_areYouApplyReturn">是否确定申请退换货</string>
     <string name="str_contactCustomerService">联系客服</string>
+    <string name="str_coin">币</string>
 </resources>
