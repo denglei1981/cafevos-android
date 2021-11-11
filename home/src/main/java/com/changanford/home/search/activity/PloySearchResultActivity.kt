@@ -194,12 +194,12 @@ class PloySearchResultActivity :
         if (isSelect) {
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.paint?.isFakeBoldText = true
+//            mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.textSize = 15f
-            mTabText?.paint?.isFakeBoldText = false// 取消加粗
+//            mTabText?.paint?.isFakeBoldText = false// 取消加粗
 
         }
     }
