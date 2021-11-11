@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
+import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
@@ -59,12 +60,22 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         PostDetailsCommentAdapter(this)
     }
 
+    private val labelAdapter by lazy {
+        LabelAdapter(requireContext(), 18)
+    }
+
     private var webHelper: CustomWebHelper? = null
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.run {
             ryComment.adapter = commentAdapter
+            mData.authorBaseVo?.imags?.let {
+                if (it.isNotEmpty()) {
+                    labelAdapter.setItems(it)
+                }
+            }
+            ryLabel.adapter = labelAdapter
             AppUtils.setStatusBarMarginTop(llTitle, requireActivity())
             ivHead.loadImage(
                 mData.authorBaseVo?.avatar,

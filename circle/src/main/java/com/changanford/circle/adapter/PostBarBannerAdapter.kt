@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.databinding.ItemPostBarBannerBinding
+import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
@@ -33,7 +34,9 @@ class PostBarBannerAdapter :
     ) {
         holder!!.bindData(data, position, pageSize)
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
-        binding?.ivBanner?.loadImage(data?.imgUrl)
+        binding?.ivBanner?.loadImage(
+            data?.imgUrl,
+            ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
         binding?.ivBanner?.setOnClickListener {
             val pics = arrayListOf<MediaListBean>()
             mList.forEach {

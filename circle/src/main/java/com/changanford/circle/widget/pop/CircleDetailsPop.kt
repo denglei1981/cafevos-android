@@ -58,11 +58,10 @@ class CircleDetailsPop(
             .toShow()
     }
 
-    override fun onCreateDismissAnimation(): Animation {
+    override fun onCreateDismissAnimation(): Animation? {
         return AnimationHelper.asAnimation()
-            .withScale(ScaleConfig.TOP_TO_BOTTOM)
+            .withTranslation(TranslationConfig.TO_BOTTOM)
             .toDismiss()
     }
-
 
 }

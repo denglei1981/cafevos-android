@@ -16,6 +16,7 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.launchWithCatch
+import com.changanford.circle.widget.CommentLoadMoreView
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -29,6 +30,10 @@ import com.changanford.common.utilext.toast
 class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
+
+    init {
+        loadMoreModule.loadMoreView = CommentLoadMoreView()
+    }
 
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {

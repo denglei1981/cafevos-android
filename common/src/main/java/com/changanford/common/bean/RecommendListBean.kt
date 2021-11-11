@@ -4,6 +4,7 @@ import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Kevin on 2018/8/7.
@@ -273,7 +274,7 @@ data class HomeAuthorsBean(
     val memberId: String,
     val memberName: String,
     val nickname: String,
-    val imags: List<Imag>,
+    val imags: ArrayList<Imag>,
     val userId: String,
     val headFrameImage: String
 )

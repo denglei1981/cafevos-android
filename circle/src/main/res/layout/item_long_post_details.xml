@@ -17,16 +17,17 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon"
             bindingBigUrl="@{bean.imgUrl}"
-            android:adjustViewBounds="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@{bean.imgDesc}"
             android:textColor="@color/color_33"
-            android:text="@{bean.imgDesc}" />
+            android:textSize="14sp" />
     </LinearLayout>
 </layout>
