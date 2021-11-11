@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.databinding.ActivityInfoDetailBinding
@@ -49,6 +50,7 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                         trans.replace(R.id.frame_layout, NewsDetailFragment.newInstance(artId!!))
                     }
                     2 -> {
+
                         trans.replace(R.id.frame_layout, NewsPicsFragment.newInstance(artId!!))
                     }
                     3 -> {
@@ -113,8 +115,6 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
