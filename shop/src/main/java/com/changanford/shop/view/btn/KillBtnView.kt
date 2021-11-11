@@ -71,7 +71,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             //已售罄,未开始,余额不足
             6,7,8->{
                 setBackgroundResource(R.drawable.shadow_dd_20dp)
-                setTextColor(ContextCompat.getColor(context,R.color.color_99))
+//                setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
         }
