@@ -3,7 +3,6 @@ package com.changanford.home.acts.fragment
 import android.os.Bundle
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.utilext.toastShow
-import com.changanford.home.HomeV2Fragment
 import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.bean.CircleHeadBean
