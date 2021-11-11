@@ -34,7 +34,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent">
+            android:background="#30000000">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -49,20 +49,20 @@
                     android:src="@mipmap/back_w" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title"
                     style="@style/text_18_color_ff_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp_33"
-                    android:text="登录"
-                    android:visibility="gone" />
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="登录" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_login_hint"
                     android:layout_width="match_parent"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_135"
+                    android:gravity="center"
                     android:text="Hello,欢迎来到福域"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_25" />
@@ -169,7 +169,7 @@
                         android:layout_marginEnd="@dimen/dp_47"
                         android:background="@drawable/shape_r_20_c_ff"
                         android:gravity="center"
-                        android:text="登录/注册"
+                        android:text="注册/登录"
                         android:textColor="#01025C"
                         android:textSize="@dimen/sp_15"
                         app:layout_constraintLeft_toLeftOf="parent"

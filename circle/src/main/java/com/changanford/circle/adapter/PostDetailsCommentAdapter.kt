@@ -16,6 +16,7 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.launchWithCatch
+import com.changanford.circle.widget.CommentLoadMoreView
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -30,13 +31,17 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
 
+    init {
+        loadMoreModule.loadMoreView = CommentLoadMoreView()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.let {
             binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.bean = item
-            binding.tvLikeCount.text = item.likesCount.toString()
+            binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.circle_comment_like
@@ -59,7 +64,8 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                                     item.likesCount--
                                     item.isLike = 0
                                 }
-                                binding.tvLikeCount.text = item.likesCount.toString()
+                                binding.tvLikeCount.text =
+                                    if (item.likesCount == 0) "" else item.likesCount.toString()
                                 binding.ivLike.setImageResource(
                                     if (item.isLike == 1) {
                                         AnimScaleInUtil.animScaleIn(binding.ivLike)

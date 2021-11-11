@@ -112,17 +112,25 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             mDatabind.tvCityAny.text = "不限城市"
             cityName = ""
             cityId = ""
+            screenData()
         }
         mDatabind.homeBtnSure.setOnClickListener {
             // 没有sm 活动
-            val chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
-            val chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
-            val screenData = ScreenData(cityName, cityId, chooseOfficalType, chooseActType)
-            callback.onResult(ResultData(ResultData.OK, screenData))
+            screenData()
             dismiss()
 
 
         }
+    }
+
+    /**
+     *  重置。
+     * */
+    private fun screenData() {
+        val chooseActType = homeActsTypeItemAdapter.chooseType // 活动类型
+        val chooseOfficalType = homeActsScreenItemAdapter.chooseType // 发布方。
+        val screenData = ScreenData(cityName, cityId, chooseOfficalType, chooseActType)
+        callback.onResult(ResultData(ResultData.OK, screenData))
     }
 
     fun showCity(isVisible: Boolean) {
@@ -138,19 +146,19 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
 
     fun getData() {
         lifecycleOwner.launchWithCatch {
-            var body = HashMap<String, String>()
+            val body = HashMap<String, String>()
             body["district"] = "true"
-            var rkey = getRandomKey()
+            val rkey = getRandomKey()
             ApiClient.apiService.getAllCity(body.header(rkey), body.body(rkey)).onSuccess {
                 provinces.clear()
                 it?.forEach { p ->
-                    var province = ProvinceEntity(p.province.regionId, p.province.regionName)
-                    var citys = ArrayList<CityEntity>()
+                    val province = ProvinceEntity(p.province.regionId, p.province.regionName)
+                    val citys = ArrayList<CityEntity>()
                     p.citys.forEach { c ->
                         val city = CityEntity(c.city.regionId, c.city.regionName)
                         val countys = ArrayList<CountyEntity>()
                         c.district.forEach { d ->
-                            var county = CountyEntity(d.regionId, d.regionName)
+                            val county = CountyEntity(d.regionId, d.regionName)
                             countys.add(county)
                         }
                         city.countyList = countys

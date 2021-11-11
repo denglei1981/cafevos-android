@@ -100,6 +100,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.back, this)
+        AppUtils.setStatusBarMarginTop(binding.title, this)
         UserManger.deleteUserInfo()
         MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)

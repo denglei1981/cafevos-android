@@ -50,6 +50,7 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
             binding.bean = item
             it.tvName.text = item.nickname
             it.tvTime.text = item.timeStr
+            it.tvLikeCount.visibility=if(item.likesCount==0) View.GONE else View.VISIBLE
             it.tvLikeCount.text = CountUtils.formatNum(item.likesCount.toString(), false)
             it.ivLike.setImageResource(
                 if (item.isLike == 1) {
@@ -81,6 +82,7 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
                                         item.isLike = 0
                                     }
                                     binding.tvLikeCount.text = item.likesCount.toString()
+                                    binding.tvLikeCount.visibility=if(item.likesCount==0) View.GONE else View.VISIBLE
                                     binding.ivLike.setImageResource(
                                         if (item.isLike == 1) {
                                             AnimScaleInUtil.animScaleIn(binding.ivLike)

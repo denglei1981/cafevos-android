@@ -2,6 +2,7 @@ package com.changanford.my.ui
 
 import android.content.Intent
 import android.graphics.Paint
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -94,6 +95,7 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
                     "apple" -> {
                         binding.safeAppleNum.text = if (bean.bind) "已绑定" else "未绑定"
                         binding.safeAppleNum.isSelected = bean.bind
+                        binding.safeApple.visibility = if (bean.bind) View.VISIBLE else View.GONE
                     }
                 }
             }

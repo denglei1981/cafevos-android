@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -50,9 +51,8 @@ open class RecommendFragment :
     }
     var selectPosition = -1
     override fun initView() {
-
         binding.smartLayout.setEnableRefresh(true)
-        binding.smartLayout.setOnLoadMoreListener(this)
+        binding.smartLayout.setOnRefreshListener(this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
@@ -154,31 +154,16 @@ open class RecommendFragment :
                 JumpUtils.instans!!.jump(4, item.postsId)
             }
         }
-
-
     }
 
     private fun toActs(item: RecommendData) {
-        when (item.jumpType) {
-            "1" -> {
-                JumpUtils.instans?.jump(
-                    10000,
-                    item.jumpValue
-                )
+        try {
+            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpVal)
+            if (item.jumpType.toIntOrNull() == 2||item.jumpType.toIntOrNull()==1) {
+                item.wonderfulType?.let { viewModel.AddACTbrid(it) }
             }
-            "2" -> {
-                JumpUtils.instans?.jump(
-                    1,
-                    item.jumpValue
-                )
-//                viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
-            }
-            "3" -> {
-                JumpUtils.instans?.jump(
-                    1,
-                    item.jumpValue
-                )
-            }
+        }catch (e:Exception){
+            e.printStackTrace()
         }
     }
 
@@ -227,15 +212,17 @@ open class RecommendFragment :
                 }
             }
         })
-
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this,{
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
             })
-    }
 
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            homeRefersh()
+        })
+    }
     override fun initData() {
         viewModel.recommendLiveData.observe(this, Observer {
             if (it.isSuccess) {

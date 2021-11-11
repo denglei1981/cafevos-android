@@ -101,35 +101,33 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
         GlideUtils.loadBD(item.wonderfulPic, ivActs)
         tvTips.text = item.title
-        tvHomeActTimes.text = "活动截止时间:".plus(item.deadLineTime)
-        if (item.deadLineTime <= item.serverTime) {
-            btnState.text = "已截止"
-        } else {
-            btnState.text = "进行中"
-        }
+        tvHomeActTimes.text = "活动截止时间:".plus(item.getEndStr())
+
+        btnState.text = item.getTimeStateStr()
+
         when (item.wonderfulType) {
             0 -> {
                 tvTagTwo.text = "线上活动"
                 tvHomeActTimes.text =
-                    "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
+                    "活动截止时间:".plus(TimeUtils.formateActTime(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
                 tvHomeActTimes.text =
-                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
                 tvHomeActAddress.text = "地点：".plus(item.city)
                 tvHomeActAddress.visibility = View.VISIBLE
             }
             2 -> {
                 tvTagTwo.text = "调查问卷"
-                tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
+                tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
             }
             3 -> {
                 tvTagTwo.text = "厂家活动"
                 tvHomeActTimes.text =
-                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
+                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
             }
         }
@@ -249,10 +247,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 if (!TextUtils.isEmpty(item.artVideoTime)) {
                     tvVideoTime.text = item.artVideoTime
                 }
+
                 tvVideoTime.visibility = View.VISIBLE
                 tvNewsTag.text = "资讯"
-
                 ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
+                tvVideoTime.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE

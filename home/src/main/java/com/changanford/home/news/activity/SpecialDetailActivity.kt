@@ -46,7 +46,7 @@ class SpecialDetailActivity :
             selectPosition = position
             when (view.id) {
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
-                    JumpUtils.instans!!.jump(35,item.authors?.authorId)
+                    JumpUtils.instans!!.jump(35, item.authors?.authorId)
                 }
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
@@ -62,8 +62,9 @@ class SpecialDetailActivity :
 
     }
 
+    var topicId: String? = null
     override fun initData() {
-        var topicId = intent.getStringExtra(JumpConstant.SPECIAL_TOPIC_ID) // 跳过来的详情。
+        topicId = intent.getStringExtra(JumpConstant.SPECIAL_TOPIC_ID) // 跳过来的详情。
         StatusBarUtil.setStatusBarMarginTop(binding.layoutBar.conTitle, this)
         setAppbarPercent()
         binding.layoutBar.ivMenu.visibility = View.VISIBLE
@@ -74,14 +75,14 @@ class SpecialDetailActivity :
             onBackPressed()
         }
         if (topicId != null) {
-            viewModel.getSpecialDetail(topicId)
+            viewModel.getSpecialDetail(topicId!!)
             setLoadSir(binding.recyclerView)
         }
 //        setExpandView()
     }
 
 
-//  fun setExpandView(){
+    //  fun setExpandView(){
 //      val width: Int = ScreenUtils.getScreenWidth(this)+40
 //      binding.layoutCollBar.tvTopic.initWidth(width)
 //      binding.layoutCollBar.tvTopic.maxLines = 3
@@ -91,7 +92,7 @@ class SpecialDetailActivity :
 //      binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
 //
 //  }
-    var shares: Shares?=null
+    var shares: Shares? = null
     override fun observe() {
         super.observe()
         viewModel.specialDetailLiveData.observe(this, Observer {
@@ -100,10 +101,10 @@ class SpecialDetailActivity :
                 binding.layoutCollBar.ivShare.setOnClickListener { s ->
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }
-                binding.layoutBar.ivMenu.setOnClickListener{i->
+                binding.layoutBar.ivMenu.setOnClickListener { i ->
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }
-                 shares = it.data.shares
+                shares = it.data.shares
                 binding.specialDetailData = it.data
                 binding.layoutCollBar.tvTopic.text = it.data.summary
                 GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
@@ -136,16 +137,20 @@ class SpecialDetailActivity :
                 item.isLike = it.isLike
                 item.authors?.isFollow = it.isFollow
                 item.commentCount = it.msgCount
-                newsListAdapter.notifyItemChanged(selectPosition + 1)// 有t
+                newsListAdapter.notifyItemChanged(selectPosition)// 有t
 
             })
 
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                shareBackUpHttp(this,shares)
+                shareBackUpHttp(this, shares)
             }
         })
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            topicId?.let { ti -> viewModel.getSpecialDetail(ti) }
+        })
+
 
     }
 

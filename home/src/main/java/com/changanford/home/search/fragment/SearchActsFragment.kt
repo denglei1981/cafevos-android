@@ -57,9 +57,9 @@ class SearchActsFragment :
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item: ActBean = searchActsResultAdapter.getItem(position)
                 CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-//                if (item.jumpType == 2) {
-//                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
-//                }
+                if (item.jumpType == 2||item.jumpType==1) {
+                    viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
+                }
             }
         })
     }

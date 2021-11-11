@@ -6,16 +6,15 @@
 
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
         android:layout_marginBottom="@dimen/dp_8"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_8">
+        android:background="@drawable/shape_task_top_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +62,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
 </layout>

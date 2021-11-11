@@ -77,11 +77,11 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             ReplyDialog(this, object : ReplyDialog.ReplyListener {
                 override fun getContent(content: String) {
                     val bean = commentAdapter.getItem(position)
-                    when(type){
-                        1->{// 资讯
+                    when (type) {
+                        1 -> {// 资讯
                             viewModel.addNewsComment(bizId, bean.groupId, bean.id, content)
                         }
-                        2->{//帖子
+                        2 -> {//帖子
                             viewModel.addPostsComment(bizId, bean.groupId, bean.id, content)
                         }
                     }
@@ -98,7 +98,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.tvName.text = item.nickname
             binding.tvTime.text = item.timeStr
-            binding.tvLikeCount.text = item.likesCount.toString()
+            binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.circle_comment_like
@@ -109,11 +109,11 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             binding.llTopComment.setOnClickListener { _ ->
                 ReplyDialog(this, object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
-                        when(type){
-                            1->{
+                        when (type) {
+                            1 -> {
                                 viewModel.addNewsComment(bizId, it.groupId, it.id, content)
                             }
-                            2->{
+                            2 -> {
                                 viewModel.addPostsComment(bizId, it.groupId, it.id, content)
                             }
                         }
@@ -145,7 +145,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                                 }
                                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_COMMENT_ITEM)
                                     .postValue(item.isLike)
-                                binding.tvLikeCount.text = item.likesCount.toString()
+                                binding.tvLikeCount.text =
+                                    if (item.likesCount == 0) "" else item.likesCount.toString()
                                 binding.ivLike.setImageResource(
                                     if (item.isLike == 1) {
                                         AnimScaleInUtil.animScaleIn(binding.ivLike)
@@ -176,7 +177,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         viewModel.addCommendBean.observe(this, {
             page = 1
             initData()
-            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CHILD_COUNT).postValue(commentAdapter.itemCount)
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CHILD_COUNT)
+                .postValue(commentAdapter.itemCount)
         })
     }
 }
