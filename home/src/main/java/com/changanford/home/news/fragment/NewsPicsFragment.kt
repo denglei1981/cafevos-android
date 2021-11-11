@@ -51,7 +51,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     override fun initView() {
         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutHeader.conHomeBar, requireActivity())
-        ImmersionBar.with(this).statusBarColor(R.color.white).init()
+        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).init()
         binding.layoutHeader.ivMore.setOnClickListener(this)
         binding.layoutHeader.ivBack.setOnClickListener { requireActivity().finish() }
     }

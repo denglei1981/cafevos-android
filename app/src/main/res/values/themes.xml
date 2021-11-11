@@ -15,7 +15,6 @@
         <!-- Customize your theme here. -->
         <!--页面跳转动画-->
         <item name="android:windowActivityTransitions">true</item>
-        <item name="android:fontFamily">@font/fontface</item>
 
         <!--去掉顶部-->
         <item name="windowActionBar">false</item>

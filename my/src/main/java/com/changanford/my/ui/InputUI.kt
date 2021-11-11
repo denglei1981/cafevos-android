@@ -33,15 +33,17 @@ class InputUI : BaseMineUI<UiEditInputBinding, EmptyViewModel>() {
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
         }
 
-        binding.nickNameTitle.visibility = View.INVISIBLE
+        binding.nickNameTitle.visibility = View.VISIBLE
         when (type) {
             1 -> {
-                binding.mineToolbar.toolbarTitle.text = "编辑个人签名"
+                binding.mineToolbar.toolbarTitle.text = "修改个性签名"
                 binding.nickInput.hint = "请输入个性签名"
+                binding.nickNameTitle.text = "个性签名"
             }
             2 -> {
-                binding.mineToolbar.toolbarTitle.text = "编辑邮箱"
+                binding.mineToolbar.toolbarTitle.text = "修改邮箱"
                 binding.nickInput.hint = "请输入邮箱"
+                binding.nickNameTitle.text = "邮箱"
             }
         }
 
