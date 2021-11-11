@@ -24,36 +24,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_order_type"/>
-<!--        <com.changanford.shop.view.TypefaceTextView-->
-<!--            android:id="@+id/tv_order_goods"-->
-<!--            android:background="@drawable/bord_ed_t_0d5dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/dp_53"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/str_ordersGoods"-->
-<!--            android:textColor="@color/color_33"-->
-<!--            android:textSize="@dimen/sp_14" />-->
-<!--        <com.changanford.shop.view.TypefaceTextView-->
-<!--            android:id="@+id/tv_order_car"-->
-<!--            android:background="@drawable/bord_ed_t_0d5dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/dp_53"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/str_orderCar"-->
-<!--            android:textColor="@color/color_33"-->
-<!--            android:textSize="@dimen/sp_14" />-->
-<!--        <com.changanford.shop.view.TypefaceTextView-->
-<!--            android:id="@+id/tv_order_testDrive"-->
-<!--            android:background="@drawable/bord_ed_t_0d5dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/dp_53"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/str_orderTestDrive"-->
-<!--            android:textColor="@color/color_33"-->
-<!--            android:textSize="@dimen/sp_14" />-->
         <View
             android:background="@color/color_F4"
             android:layout_width="match_parent"
