@@ -217,7 +217,7 @@ class PloySearchResultActivity :
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.paint.isFakeBoldText = true
+                mTabText.paint.isFakeBoldText = false
                 mTabText.textSize = 18f
 
             } else {
