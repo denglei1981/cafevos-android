@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
         android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintEnd_toStartOf="@id/line2"
         app:layout_constraintTop_toBottomOf="@+id/date"
@@ -28,6 +28,7 @@
         android:id="@+id/word"
         style="@style/commonTextView.Normal"
         android:text="补"
+        android:textSize="@dimen/sp_13"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toEndOf="@+id/icon"

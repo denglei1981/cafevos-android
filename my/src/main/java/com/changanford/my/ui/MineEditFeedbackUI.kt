@@ -93,6 +93,10 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
                 ToastUtils.showLongToast("请输入问题描述",this)
                 return@setOnClickListener
             }
+            if (binding.feedbackInput.text.toString().length < 5) {
+                ToastUtils.showLongToast("请输入5-300字问题详细描述",this)
+                return@setOnClickListener
+            }
             if (binding.inputName.text.isNullOrEmpty()) {
                 ToastUtils.showLongToast("请输入正确的姓名",this)
                 return@setOnClickListener

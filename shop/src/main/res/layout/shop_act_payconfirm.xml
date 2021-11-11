@@ -32,13 +32,13 @@
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_payTime"
                 android:gravity="center"
-                android:background="@drawable/shadow_f9_11dp"
+                android:background="@drawable/shadow_f2f4f9_14dp"
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_width="@dimen/dp_130"
                 android:layout_height="@dimen/dp_22"
                 app:start_txt="@string/str_remainingTimePayment"
                 tools:text="支付剩余时间：00:26:50"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_74889D"
                 android:textSize="@dimen/sp_10" />
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_accountPoints"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/str_yourAccountPoints_font"
-                app:start_txt="@string/str_yourAccountPoints"
+                app:start_txt="@string/str_yourAccount"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>

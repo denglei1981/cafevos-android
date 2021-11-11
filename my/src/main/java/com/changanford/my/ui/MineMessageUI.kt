@@ -33,7 +33,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     override fun initView() {
 
-        binding.mineToolbar.toolbarTitle.text = "消息"
+        binding.mineToolbar.toolbarTitle.text = "我的消息"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
         }

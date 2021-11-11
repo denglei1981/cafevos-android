@@ -13,6 +13,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:text="分享到"
+        android:visibility="visible"
         android:textColor="@color/text_color"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -363,6 +364,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:layout_marginBottom="10dp"
             android:background="#fff6f6f6" />
     </LinearLayout>
@@ -371,7 +373,7 @@
 
         android:id="@+id/tvclose"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp50"
         android:background="@drawable/bg_bt_blue_corner39"
         android:gravity="center"
         android:padding="10dp"

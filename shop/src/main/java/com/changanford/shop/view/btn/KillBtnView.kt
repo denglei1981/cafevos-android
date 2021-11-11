@@ -40,13 +40,13 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             }
             //已抢光
             1->{
-                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_f4_20dp)
+                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
             //已结束
             2->{
-                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_f4_20dp)
+                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_f4_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
@@ -70,7 +70,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             }
             //已售罄,未开始,余额不足
             6,7,8->{
-                setBackgroundResource(R.drawable.shadow_f4_20dp)
+                setBackgroundResource(R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.color_99))
                 isEnabled=false
             }
@@ -82,7 +82,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         if(isEnabled){
             setBackgroundResource(R.drawable.btn_selector)
         }else{
-            setBackgroundResource(R.drawable.shadow_f4_20dp)
+            setBackgroundResource(R.drawable.shadow_dd_20dp)
         }
     }
     fun getStates():Int{

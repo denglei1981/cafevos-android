@@ -81,7 +81,7 @@
                     android:layout_marginRight="14dp"
                     android:background="@drawable/edit_feedback_input_bg"
                     android:gravity="top"
-                    android:hint="请输入问题详细描述，以便我们更快处理你的反馈（5-300字）"
+                    android:hint="请输入问题详细描述，以便我们更快处理你的反馈（5-300字内）"
                     android:maxLength="300"
                     android:minHeight="180dp"
                     android:padding="8dp"

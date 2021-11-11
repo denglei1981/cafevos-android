@@ -3,13 +3,5 @@
     "jumpDataType":52,
     "jumpDataValue":"",
     "typeName":"商品订单"
-  },{
-  "jumpDataType":99,
-  "jumpDataValue":"",
-  "typeName":"购车订单"
-},{
-  "jumpDataType":99,
-  "jumpDataValue":"",
-  "typeName":"预约试驾订单"
-}
+  }
 ]

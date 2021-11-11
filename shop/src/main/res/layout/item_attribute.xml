@@ -13,7 +13,7 @@
         android:paddingEnd="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_5">
         <com.changanford.shop.view.TypefaceTextView
-            android:background="@drawable/shadow_e8ebf3_12dp"
+            android:background="@drawable/shadow_f2f4f9_11dp"
             android:paddingStart="@dimen/dp_10"
             android:paddingEnd="@dimen/dp_10"
             android:gravity="center"
@@ -24,7 +24,7 @@
             android:text="@{model}"
             android:maxWidth="@dimen/dp_90"
             style="@style/style_txt_ellipsize"
-            android:textColor="@color/picture_color_66"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_11"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
