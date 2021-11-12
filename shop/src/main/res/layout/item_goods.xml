@@ -90,6 +90,7 @@
                 tools:text="12600"
                 android:text="@{model.lineFb}"
                 app:text_flags="0x10"
+                app:end_txt="@string/str_integral"
                 android:textColor="@color/color_cf"
                 android:textSize="@dimen/sp_11" />
         </androidx.appcompat.widget.LinearLayoutCompat>
