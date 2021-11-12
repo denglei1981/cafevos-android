@@ -2,6 +2,7 @@ package com.changanford.home.news.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -19,6 +20,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -47,6 +49,8 @@ import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 /**
  *  图文详情。。。
@@ -128,8 +132,10 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     linearLayoutManager.findViewByPosition(position) as View
                 val itemHeight = firstVisiableChildView.height
                 val scrollHeight = position * itemHeight - firstVisiableChildView.top
-                binding.layoutTitle.llAuthorInfo.visibility = if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
-                binding.layoutTitle.btFollow.visibility=  if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.llAuthorInfo.visibility =
+                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.btFollow.visibility =
+                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
 
             }
         })
@@ -199,7 +205,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             bean.let { _ ->
                 bean.childCount = it
             }
-            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
         })
     }
 
@@ -220,11 +226,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
         binding.layoutTitle.tvAuthor.text = author.nickname
         setFollowState(inflateHeader.btFollow, author)
-        setFollowState(binding.layoutTitle.btFollow,author)
+        setFollowState(binding.layoutTitle.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
-        binding.layoutTitle.tvTime.text=newsDetailData.timeStr
+        binding.layoutTitle.tvTime.text = newsDetailData.timeStr
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
@@ -252,7 +258,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 followAction()
             }
         }
-        binding.layoutTitle.btFollow.setOnClickListener{
+        binding.layoutTitle.btFollow.setOnClickListener {
             if (LoginUtil.isLongAndBindPhone()) {
                 followAction()
             }
@@ -337,7 +343,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 } else {// 网络原因操作失败了。
                     toastShow(it.message)
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -362,13 +368,14 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
+                    newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
-                    newsDetailData?.let {na  ->
+                    newsDetailData?.let { na ->
                         val followType = na.authors.isFollow
-                        na.authors.isFollow = if (followType == 1)  2  else  1
+                        na.authors.isFollow = if (followType == 1) 2 else 1
                         setFollowState(inflateHeader.btFollow, na.authors)
-                        setFollowState(binding.layoutTitle.btFollow,na.authors)
+                        setFollowState(binding.layoutTitle.btFollow, na.authors)
                     }
                 }
             } catch (e: Exception) {
@@ -463,18 +470,45 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         )
     }
 
+    // 1 关注 2 取消关注
+    fun cancel(followId: String, type: Int) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
+        if (type == 1) {
+            viewModel.followOrCancelUser(followId, type)
+        } else {
+            QuickPopupBuilder.with(this)
+                .contentView(R.layout.pop_two_btn)
+                .config(
+                    QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .withClick(R.id.btn_comfir, View.OnClickListener {
+                            viewModel.followOrCancelUser(followId, type)
+                        }, true)
+                        .withClick(R.id.btn_cancel, View.OnClickListener {
+                        }, true)
+                )
+                .show()
+        }
+    }
 
+    var followType = 0
 
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
-            var followType = it.authors.isFollow
+            followType = it.authors.isFollow
             followType = if (followType == 1) 2 else 1
-            it.authors.isFollow = followType
-            setFollowState(binding.layoutTitle.btFollow,it.authors)
-            setFollowState(inflateHeader.btFollow, it.authors)
-            viewModel.followOrCancelUser(it.userId, followType)
+            cancel(followId = it.userId, followType)
         }
+    }
+
+    private fun surefollow(newsData: NewsDetailData, followType: Int) {
+        newsData.authors.isFollow = followType
+        setFollowState(binding.layoutTitle.btFollow, newsData.authors)
+        setFollowState(inflateHeader.btFollow, newsData.authors)
+//        viewModel.followOrCancelUser(newsData.userId, followType)
     }
 
     override fun onClick(v: View) {
