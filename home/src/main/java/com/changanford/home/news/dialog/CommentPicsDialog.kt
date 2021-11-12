@@ -91,14 +91,10 @@ open class CommentPicsDialog(
         mDatabind.commentList.layoutManager = LinearLayoutManager(activity)
         getCommentList()
 
-        commentAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                // 弹出评论窗口。。。
-                val items = commentAdapter.getItem(position)
-                replay(items.id)
-            }
-
-        })
+        commentAdapter.setOnItemClickListener { adapter, view, position -> // 弹出评论窗口。。。
+            val items = commentAdapter.getItem(position)
+            replay(items.id)
+        }
 
         mDatabind.out.setOnClickListener {
             behavior?.setState(BottomSheetBehavior.STATE_HIDDEN)

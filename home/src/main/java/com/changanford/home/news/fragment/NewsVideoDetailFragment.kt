@@ -93,11 +93,13 @@ class NewsVideoDetailFragment :
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-        linearLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         binding.homeRvContent.adapter = homeNewsCommentAdapter
+        homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener{
+            viewModel.getNewsCommentList(artId, true)
+        }
         playerHelper = DKPlayerHelperBig(requireActivity(), binding.homesDkVideo)
         binding.ivBack.setOnClickListener {
 //            onBackPressed()

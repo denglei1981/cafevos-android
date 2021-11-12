@@ -103,20 +103,18 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             viewModel.getNewsCommentList(bizId = artId, true)
         }
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
-        homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val commentBean = homeNewsCommentAdapter.getItem(position)
-                if (commentBean.typeNull == 1) {
-                    return
-                }
-                val bundle = Bundle()
-                bundle.putString("groupId", commentBean.groupId)
-                bundle.putInt("type", 1)// 1 资讯 2 帖子
-                bundle.putString("bizId", artId)
-                startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-                checkPosition = position
+        homeNewsCommentAdapter.setOnItemClickListener { _, view, position ->
+            val commentBean = homeNewsCommentAdapter.getItem(position)
+            if (commentBean.typeNull == 1) {
+                return@setOnItemClickListener
             }
-        })
+            val bundle = Bundle()
+            bundle.putString("groupId", commentBean.groupId)
+            bundle.putInt("type", 1)// 1 资讯 2 帖子
+            bundle.putString("bizId", artId)
+            startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+            checkPosition = position
+        }
         binding.layoutTitle.ivBack.setOnClickListener {
             requireActivity().finish()
         }
