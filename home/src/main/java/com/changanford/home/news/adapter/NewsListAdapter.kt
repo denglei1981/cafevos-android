@@ -194,9 +194,9 @@ class NewsListAdapter(
 
     fun setLikeState(tvLikeView: DrawCenterTextView, item: InfoDataBean, isAnim: Boolean) {
         if (item.isLike == 0) {
-            tvLikeView.setThumb(R.drawable.icon_home_bottom_unlike, isAnim)
+            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, isAnim)
         } else {
-            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, isAnim)
+            tvLikeView.setThumb(R.mipmap.home_comment_like, isAnim)
         }
     }
 

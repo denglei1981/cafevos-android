@@ -26,9 +26,9 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
             if(::skuCodes.isInitialized){
                 val pos=position+1
                 val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,skuCode,object :GoodsAttributeAdapter.OnSelectedBackListener{
-                    override fun onSelectedBackListener(pos: Int, item: OptionVo?) {
+                    override fun onSelectedBackListener(pos: Int, item: OptionVo?, isClick: Boolean) {
                         if(null==item)skuCodes[pos] = "0" else item.optionId.also { skuCodes[pos] = it }
-                        updateSkuCode(pos)
+                        updateSkuCode(pos,isClick)
                     }
                 })
                 dataBinding.recyclerView.layoutManager=FlowLayoutManager(context,true)
@@ -49,15 +49,15 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
      * ["227","75","95","99","106","108"]
     * */
     @SuppressLint("NotifyDataSetChanged")
-    fun updateSkuCode(pos:Int){
+    fun updateSkuCode(pos:Int, isClick: Boolean){
         skuCode=""
         skuCodes.forEach{ skuCode+="$it-" }
         skuCode=skuCode.substring(0,skuCode.length-1)
         skuCodeLiveData.postValue(skuCode)
-        if(skuCodes[pos]!="0"){
+        if(skuCodes[pos]!="0"||isClick){
             var newSkuVo:List<SkuVo>?=skuVos
             //筛选有效组合(能更当前点击选中的optionId搭配)
-            skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { it.skuCodeArr[pos]==this&&it.stock!="0" }}
+            skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { (it.skuCodeArr[pos]==this||"0"==this)&&it.stock!="0" }}
             adapterMap.keys.forEach {
                 if(pos!= it){
                     adapterMap[it]?.apply {

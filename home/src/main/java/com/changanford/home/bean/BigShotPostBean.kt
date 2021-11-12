@@ -65,7 +65,7 @@ data class BigShotPostBean(
 
     fun getLikeCount(): String {
         if (likesCount == 0L) {
-            return "0"
+            return "赞"
         }
         return CountUtils.formatNum(likesCount.toString(), false).toString()
     }

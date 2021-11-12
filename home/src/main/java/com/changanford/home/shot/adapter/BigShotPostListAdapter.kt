@@ -141,7 +141,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                         if (item.isLike == 0) {
                             item.isLike = 1
                             binding.layoutCount.tvLikeCount.setThumb(
-                                R.drawable.icon_home_bottom_like,
+                                R.mipmap.home_comment_like,
                                 true
                             )
                             item.likesCount++
@@ -149,7 +149,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                             item.isLike = 0
                             item.likesCount--
                             binding.layoutCount.tvLikeCount.setThumb(
-                                R.drawable.icon_home_bottom_unlike,
+                                R.drawable.icon_big_shot_unlike,
                                 false
                             )
                         }

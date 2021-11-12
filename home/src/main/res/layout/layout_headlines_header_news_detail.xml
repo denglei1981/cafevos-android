@@ -137,7 +137,7 @@
                     android:layout_weight="1"
                     android:drawableEnd="@drawable/home_right_blue"
                     android:gravity="center_vertical|start"
-                    android:textColor="#999999"
+                    android:textColor="#74889D"
                     android:textSize="@dimen/sp_12"
                     tools:text="@string/app_name" />
             </LinearLayout>
