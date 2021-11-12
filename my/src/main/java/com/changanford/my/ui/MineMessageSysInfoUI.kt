@@ -74,6 +74,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
             }
             pop.showPopupWindow()
         }
+        setSaveText(0)
         viewModel.changeAllToRead.observe(this, Observer {
             if (it) {
                 toastShow("消息已读标记成功")
