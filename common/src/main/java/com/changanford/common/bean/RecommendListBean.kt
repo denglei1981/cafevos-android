@@ -152,7 +152,7 @@ data class RecommendData(
             }
         }
         if (likeCount == 0L) {
-            return "点赞"
+            return "赞"
         }
         likeCountResult = CountUtils.formatNum(likeCount.toString(), false).toString()
         return likeCountResult

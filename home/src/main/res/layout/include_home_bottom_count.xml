@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            app:image="@drawable/icon_home_bottom_unlike"
+            app:image="@drawable/icon_big_shot_unlike"
             tools:text="1" />
 
         <com.changanford.home.widget.DrawCenterTextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            app:image="@drawable/icon_home_bottom_unmsg"
+            app:image="@drawable/icon_big_unmsg"
             tools:text="123123" />
 
     </LinearLayout>
