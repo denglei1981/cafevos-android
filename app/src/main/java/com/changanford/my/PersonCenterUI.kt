@@ -165,7 +165,7 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                         }
                     }
                     binding.userDesc.text =
-                        if (user.brief.isNullOrEmpty()) "这个人很赖~" else user.brief
+                        if (user.brief.isNullOrEmpty()) "这个人很懒~" else user.brief
                     isFollow = user.isFollow
                     binding.btnFollow.text = if (isFollow == 0) "关注" else "已关注"
 
