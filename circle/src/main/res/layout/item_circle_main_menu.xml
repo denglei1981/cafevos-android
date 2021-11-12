@@ -34,7 +34,6 @@
                 android:minWidth="50dp"
                 android:textColor="@color/color_33"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 tools:text="发长贴" />
         </LinearLayout>
 
