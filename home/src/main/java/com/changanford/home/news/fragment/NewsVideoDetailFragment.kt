@@ -93,11 +93,13 @@ class NewsVideoDetailFragment :
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-        linearLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         binding.homeRvContent.adapter = homeNewsCommentAdapter
+        homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener{
+            viewModel.getNewsCommentList(artId, true)
+        }
         playerHelper = DKPlayerHelperBig(requireActivity(), binding.homesDkVideo)
         binding.ivBack.setOnClickListener {
 //            onBackPressed()
@@ -596,6 +598,14 @@ class NewsVideoDetailFragment :
             if (it == 0) {
                 shareBackUpHttp(this, newsDetailData?.shares)
             }
+        })
+
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+            val bean = homeNewsCommentAdapter.getItem(checkPosition)
+            bean.let { _ ->
+                bean.childCount = it
+            }
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
         })
     }
 

@@ -47,7 +47,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/image_recommend_test"
             android:visibility="visible"
-            motion:layout_constraintDimensionRatio="375:148"
+            app:layout_constraintDimensionRatio="375:129"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
@@ -103,7 +103,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/image_recommend_test"
             android:visibility="invisible"
-            motion:layout_constraintDimensionRatio="375:148"
+            app:layout_constraintDimensionRatio="375:129"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />

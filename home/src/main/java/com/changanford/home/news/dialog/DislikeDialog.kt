@@ -1,8 +1,11 @@
 package com.changanford.home.news.dialog
 
 import android.view.Gravity
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +49,8 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
         val titleTv = findViewById<TextView>(R.id.chose_title_tv)
         val btTv = findViewById<TextView>(R.id.bt_tv)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        val cancel = findViewById<TextView>(R.id.cancel_tv)
+        recyclerView.layoutManager = GridLayoutManager(context, 1)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener { _, _, position ->
             val dislikeBean = adapter.getItem(position)
@@ -56,20 +60,23 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
             } else {
                 selectSize--
             }
+            if (selectSize == 0) {
+                cancel.text = "取消"
+            } else {
+                cancel.text = "提交"
+            }
             titleTv.text = if (selectSize > 0) "已选择 $selectSize 个理由" else "请选择不喜欢理由"
             btTv.isSelected = selectSize > 0
-            btTv.text = if (btTv.isSelected) "提交" else {
-                "直接屏蔽"
-            }
+//            btTv.text = if (btTv.isSelected) "提交" else {
+//                "直接屏蔽"
+//            }
             adapter.notifyItemChanged(position)
         }
-        findViewById<TextView>(R.id.cancel_tv).setOnClickListener { dismiss() }
-        getDislikeReason()
-        configBean.observe(activity, {
-            adapter.setList(it)
-        })
-        btTv.setOnClickListener {
-            if (btTv.isSelected) {//提交
+        findViewById<TextView>(R.id.cancel_tv).setOnClickListener {
+
+            if(selectSize==0){
+                dismiss()
+            }else{
                 var str = ""
                 for (bean in configBean.value!!) {
                     if (bean.isSelect) str += "," + bean.content
@@ -78,9 +85,26 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
                     str = str.substring(1)
                 }
                 dislikeApi(str)
-            } else {//直接屏蔽
-                dislikeApi("")
             }
+        }
+        getDislikeReason()
+        configBean.observe(activity, {
+            adapter.setList(it)
+        })
+        btTv.setOnClickListener {
+//            if (btTv.isSelected) {//提交
+//                var str = ""
+//                for (bean in configBean.value!!) {
+//                    if (bean.isSelect) str += "," + bean.content
+//                }
+//                if (str.isNotEmpty()) {
+//                    str = str.substring(1)
+//                }
+//                dislikeApi(str)
+//            } else {//直接屏蔽
+//
+//            }
+            dislikeApi("")
         }
     }
 
@@ -88,7 +112,15 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
         BaseQuickAdapter<DislikeBean, BaseViewHolder>(R.layout.item_dialog_dislike) {
 
         override fun convert(holder: BaseViewHolder, item: DislikeBean) {
-            holder.getView<TextView>(R.id.content_tv).isSelected = item.isSelect
+            val tvContent = holder.getView<TextView>(R.id.content_tv)
+            val ivRight= holder.getView<ImageView>(R.id.iv_right)
+            if(item.isSelect){
+               tvContent.setTextColor(ContextCompat.getColor(context,R.color.color_33))
+                ivRight.visibility= View.VISIBLE
+           }else{
+                tvContent.setTextColor(ContextCompat.getColor(context,R.color.color_99))
+                ivRight.visibility= View.GONE
+           }
             holder.setText(R.id.content_tv, item.content)
         }
 

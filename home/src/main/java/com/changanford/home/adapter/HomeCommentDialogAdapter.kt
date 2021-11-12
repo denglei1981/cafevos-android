@@ -80,7 +80,8 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
                 bundle.putString("value", item.userId)
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
-            contentSty(binding.tvContent, item)
+//            contentSty(binding.tvContent, item)
+            binding.tvContent.text = item.content
         }
     }
 

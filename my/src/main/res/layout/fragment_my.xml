@@ -157,6 +157,7 @@
                 android:id="@+id/my_score_acc"
                 style="@style/commonTextView.Small.LightBlue"
                 android:layout_marginLeft="@dimen/dp_20"
+                android:textColor="@color/text_01025C"
                 android:text="1.5倍加速" />
 
         </LinearLayout>
@@ -183,6 +184,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_15"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"
