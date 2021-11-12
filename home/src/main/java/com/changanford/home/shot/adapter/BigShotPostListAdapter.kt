@@ -70,6 +70,11 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 rvUserTag.adapter = labelAdapter
                 labelAdapter.setNewInstance(item.authorBaseVo?.imags)
             }
+            if(item.isLike==1){
+                it.layoutCount.tvLikeCount.setThumb(R.mipmap.home_comment_like,false)
+            }else{
+                it.layoutCount.tvLikeCount.setThumb(R.drawable.icon_big_shot_unlike,false)
+            }
             it.layoutCount.tvLikeCount.setOnClickListener { l ->
                 if (LoginUtil.isLongAndBindPhone()) {
                     likePost(it, item)
@@ -137,6 +142,7 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
             val rKey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .actionPostLike(body.header(rKey), body.body(rKey)).also {
+                    it.msg.toast()
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
@@ -154,8 +160,6 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                             )
                         }
                         binding.layoutCount.tvLikeCount.setPageTitleText(item.getLikeCount())
-                    } else {
-                        it.msg.toast()
                     }
                 }
         }

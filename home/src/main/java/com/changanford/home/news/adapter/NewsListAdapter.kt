@@ -16,6 +16,7 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -181,14 +182,10 @@ class NewsListAdapter(
             requestBody["artId"] = artId
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
-                .actionLike(requestBody.header(rkey), requestBody.body(rkey))
-                .onSuccess {
-
-                }.onWithMsgFailure {
-                    if (it != null) {
-                        toastShow(it)
-                    }
+                .actionLike(requestBody.header(rkey), requestBody.body(rkey)).also {
+                    it.msg.toast()
                 }
+
         }
     }
 

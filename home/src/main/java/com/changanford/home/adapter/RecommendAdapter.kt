@@ -348,11 +348,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .actionPostLike(body.header(rKey), body.body(rKey)).also {
                     if (it.code == 0) {
+                        it.msg.toast()
                         if (item.isLike == 0) {
+//                            "点赞成功".toast()
                             item.isLike = 1
                             tvLikeView.setThumb(R.mipmap.home_comment_like, true)
                             item.postsLikesCount++
                         } else {
+//                            "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--
                             tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, false)
