@@ -26,6 +26,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     private var maxValue=10//最大值
     var numberLiveData: MutableLiveData<Int> = MutableLiveData()
     private var isAdd=true//是否可以添加
+    private var isLimitBuyNum:Boolean=false//是否库存限购
     init {
         initView()
     }
@@ -61,7 +62,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
             R.id.tv_addNumber->{
                 if(isAdd){
                     if(number<maxValue) number++
-                    else ToastUtils.showLongToast("已超出限购数量")
+                    else ToastUtils.reToast(if(isLimitBuyNum)R.string.str_purchaseQuantityHasExceededLimit else R.string.str_insufficientInventory)
                 }else ToastUtils.reToast(R.string.str_propertiesAreNotFullySelected)
             }
             //-
@@ -80,9 +81,11 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     private fun postValue(isPostValue:Boolean=true){
         if(isPostValue)numberLiveData.postValue(number)
     }
-    fun setMax(max:Int){
+
+    fun setMax(max:Int,isLimitBuyNum:Boolean=false){
         this.maxValue=max
         if(maxValue<number)setNumber(minValue)
+        this.isLimitBuyNum=isLimitBuyNum
     }
     /**
      * 是否可以追加

@@ -87,8 +87,12 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock=dataBean.stock
                     WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
-                    val max: Int =if(limitBuyNum!=0&&limitBuyNum<=nowStock) limitBuyNum else nowStock
-                    viewDataBinding.addSubtractView.setMax(max)
+                    var isLimitBuyNum=false//是否限购
+                    val max: Int =if(limitBuyNum in 1..nowStock) {
+                        isLimitBuyNum=true
+                        limitBuyNum
+                    } else nowStock
+                    viewDataBinding.addSubtractView.setMax(max,isLimitBuyNum)
                     control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
                 }
             }

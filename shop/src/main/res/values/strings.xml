@@ -168,4 +168,6 @@
     <string name="str_contactCustomerService">联系客服</string>
     <string name="str_coin">币</string>
     <string name="str_propertiesAreNotFullySelected">属性未选择完全</string>
+    <string name="str_purchaseQuantityHasExceededLimit">已超出限购数量</string>
+    <string name="str_insufficientInventory">库存不足</string>
 </resources>

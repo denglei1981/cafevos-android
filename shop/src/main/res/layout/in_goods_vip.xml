@@ -29,7 +29,6 @@
         <com.changanford.shop.view.TypefaceTextView
             android:gravity="center"
             android:id="@+id/tv_vipIntegral"
-            android:textStyle="bold"
             android:paddingStart="@dimen/dp_3"
             android:paddingEnd="@dimen/dp_5"
             android:paddingTop="@dimen/dp_2"
