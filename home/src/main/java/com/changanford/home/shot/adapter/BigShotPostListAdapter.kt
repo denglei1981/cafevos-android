@@ -70,6 +70,11 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 rvUserTag.adapter = labelAdapter
                 labelAdapter.setNewInstance(item.authorBaseVo?.imags)
             }
+            if(item.isLike==1){
+                it.layoutCount.tvLikeCount.setThumb(R.mipmap.home_comment_like,false)
+            }else{
+                it.layoutCount.tvLikeCount.setThumb(R.drawable.icon_big_shot_unlike,false)
+            }
             it.layoutCount.tvLikeCount.setOnClickListener { l ->
                 if (LoginUtil.isLongAndBindPhone()) {
                     likePost(it, item)
