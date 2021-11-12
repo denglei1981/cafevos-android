@@ -4,7 +4,7 @@
     android:id="@+id/cs_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_whit5_bg"
+    android:background="@drawable/shape_white_only_top"
     android:minHeight="300dp">
 
     <ImageView

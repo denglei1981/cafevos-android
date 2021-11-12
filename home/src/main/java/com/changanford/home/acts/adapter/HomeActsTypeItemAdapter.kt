@@ -30,7 +30,7 @@ class HomeActsTypeItemAdapter(list: MutableList<EnumBean>) : BaseQuickAdapter<En
                     R.color.color_gray_f2f4f9
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_app_color))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_blue_748))
         } else {
             btnCheck.setBackgroundColor(
                 ContextCompat.getColor(
@@ -38,7 +38,7 @@ class HomeActsTypeItemAdapter(list: MutableList<EnumBean>) : BaseQuickAdapter<En
                     R.color.white
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_black_081725))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.text_colorv6))
         }
 
     }

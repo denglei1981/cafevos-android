@@ -32,7 +32,7 @@ class HomeActsScreenItemAdapter(list: MutableList<EnumBean>) :
                     R.color.color_gray_f2f4f9
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_app_color))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_blue_748))
         } else {
             btnCheck.setBackgroundColor(
                 ContextCompat.getColor(
@@ -40,7 +40,7 @@ class HomeActsScreenItemAdapter(list: MutableList<EnumBean>) :
                     R.color.white
                 )
             )
-            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.color_black_081725))
+            btnCheck.setTextColor(ContextCompat.getColor(context, R.color.text_colorv6))
         }
 
     }

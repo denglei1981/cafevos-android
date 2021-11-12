@@ -71,7 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="已显示所有评论~"
-            android:textColor="@android:color/darker_gray"/>
+            android:text="@string/comment_all_show"
+            android:textSize="@dimen/sp_11"
+            android:textColor="@color/color_99"/>
     </FrameLayout>
 </FrameLayout>
