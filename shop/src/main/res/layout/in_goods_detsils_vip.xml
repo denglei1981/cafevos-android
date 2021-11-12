@@ -65,6 +65,6 @@
             android:text="@{model.purchasedNum}"
             app:end_txt="@string/str_a"
             android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_12" />
     </LinearLayout>
 </layout>

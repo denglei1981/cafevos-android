@@ -98,7 +98,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
-            android:textStyle="bold"
             tools:visibility="visible"
             android:drawableTop="@mipmap/shop_no_comment_data"
             android:id="@+id/tv_noData"
