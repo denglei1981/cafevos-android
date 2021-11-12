@@ -111,7 +111,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                         setAdapter(QyAdapter(it))
                             .addBannerLifecycleObserver(this@GrowUpUI)
                         if (it.size != 1) {
-                            setBannerGalleryEffect(0, 24, 20, 1F)
+                            setBannerGalleryEffect(0, 20, 16, 1F)
                         }
                     }
                 }
@@ -145,7 +145,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             itemBanner.root.layoutParams = layout
-            itemBanner.root.setPadding(0, 0, 0, 20)
+//            itemBanner.root.setPadding(0, 0, 0, 20)
             return BannerViewHolder(itemBanner.root)
         }
 
