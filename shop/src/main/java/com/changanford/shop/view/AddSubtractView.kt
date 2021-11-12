@@ -25,6 +25,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     private var minValue=1//最小值
     private var maxValue=10//最大值
     var numberLiveData: MutableLiveData<Int> = MutableLiveData()
+    private var isAdd=true//是否可以添加
     init {
         initView()
     }
@@ -58,8 +59,10 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
         when(v?.id){
             // +
             R.id.tv_addNumber->{
-                if(number<maxValue) number++
-                else ToastUtils.showLongToast("已超出限购数量")
+                if(isAdd){
+                    if(number<maxValue) number++
+                    else ToastUtils.showLongToast("已超出限购数量")
+                }else ToastUtils.reToast(R.string.str_propertiesAreNotFullySelected)
             }
             //-
             R.id.tv_reduction->{
@@ -80,6 +83,13 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     fun setMax(max:Int){
         this.maxValue=max
         if(maxValue<number)setNumber(minValue)
+    }
+    /**
+     * 是否可以追加
+    * */
+    fun setIsAdd(isAdd:Boolean){
+        this.isAdd=isAdd
+        edtNumberValue.isEnabled=isAdd
     }
     fun setMine(min:Int){
         this.minValue=min

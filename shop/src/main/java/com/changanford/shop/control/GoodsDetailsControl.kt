@@ -43,6 +43,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun bindingData(dataBean:GoodsDetailBean){
         popupWindow=null
         this.dataBean=dataBean
+        dataBean.orFbPrice=dataBean.fbPrice
+        dataBean.orginPrice0=dataBean.orginPrice
         dataBean.price=dataBean.orginPrice
         dataBean.purchasedNum=dataBean.salesCount
         dataBean.source="1"//标记为原生

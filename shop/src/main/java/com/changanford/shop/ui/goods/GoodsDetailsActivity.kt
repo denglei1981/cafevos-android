@@ -134,7 +134,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     fun onClick(v:View){
         val vid=v.id
-        if(MConstant.token.isEmpty()&&R.id.img_back!=vid&&R.id.tv_goodsCommentLookAll!=vid){
+        if(MConstant.token.isEmpty()&&R.id.tv_goodsAttrs!=vid&&R.id.img_back!=vid&&R.id.tv_goodsCommentLookAll!=vid){
             JumpUtils.instans?.jump(100)
             return
         }

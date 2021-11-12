@@ -167,4 +167,5 @@
     <string name="str_areYouApplyReturn">是否确定申请退换货</string>
     <string name="str_contactCustomerService">联系客服</string>
     <string name="str_coin">币</string>
+    <string name="str_propertiesAreNotFullySelected">属性未选择完全</string>
 </resources>
