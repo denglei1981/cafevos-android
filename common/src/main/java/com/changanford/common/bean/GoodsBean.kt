@@ -173,9 +173,11 @@ data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
     var price: String? = "0",
+    var orginPrice0: String? = "0",//原价
     var orginPrice: String? = "0",//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
+    var orFbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),
     val limitBuy: String = "",
     val limitBuyNum: String? = "0",

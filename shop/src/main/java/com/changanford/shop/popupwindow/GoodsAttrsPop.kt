@@ -57,16 +57,20 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                 _skuCode=code
                 (this.find { it.skuCode==code }?:this.find { it.fbPrice==dataBean.fbPrice }?:this[0]).apply {
                     dataBean.skuId=skuId
-                    dataBean.fbPrice=fbPrice
-                    dataBean.orginPrice=orginPrice
-                    dataBean.price=orginPrice
                     if(!control.isInvalidSelectAttrs(_skuCode)){
                         dataBean.stock=stock.toInt()
                         dataBean.skuImg=skuImg
+                        dataBean.fbPrice=fbPrice
+                        dataBean.orginPrice=orginPrice
+                        viewDataBinding.addSubtractView.setIsAdd(true)
                     }else{
                         dataBean.skuImg=dataBean.imgs[0]
                         dataBean.stock=dataBean.allSkuStock
+                        dataBean.fbPrice=dataBean.orFbPrice
+                        dataBean.orginPrice=dataBean.orginPrice0
+                        viewDataBinding.addSubtractView.setIsAdd(false)
                     }
+                    dataBean.price=dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                     control.memberExclusive(dataBean)
                     val skuCodeTxtArr= arrayListOf<String>()
@@ -83,7 +87,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock=dataBean.stock
                     WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
-                    val max: Int =if(limitBuyNum!=0) limitBuyNum else nowStock
+                    val max: Int =if(limitBuyNum!=0&&limitBuyNum<=nowStock) limitBuyNum else nowStock
                     viewDataBinding.addSubtractView.setMax(max)
                     control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
                 }
