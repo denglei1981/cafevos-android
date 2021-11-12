@@ -195,6 +195,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.price=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
+        headerBinding.inKill.model=dataBean
+        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
         memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""

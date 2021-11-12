@@ -41,13 +41,13 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             //已抢光
             1->{
                 setBackgroundResource(if(!isDetailkill)R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
-                setTextColor(ContextCompat.getColor(context,R.color.color_99))
+                setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=false
             }
             //已结束
             2->{
                 setBackgroundResource(if(!isDetailkill)R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
-                setTextColor(ContextCompat.getColor(context,R.color.color_99))
+                setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=false
             }
             //提醒我
@@ -71,7 +71,7 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             //已售罄,未开始,余额不足
             6,7,8->{
                 setBackgroundResource(R.drawable.shadow_dd_20dp)
-//                setTextColor(ContextCompat.getColor(context,R.color.color_99))
+                setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=false
             }
         }
