@@ -16,9 +16,9 @@ class SetFollowState(var context: Context) {
             1 -> {//  已经关注
                 btnFollow.text = "已关注"
                 if (isGray) {
-                    btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_ccc))
+                    btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DD))
                 } else {
-                    btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.blue_tab))
+                    btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DD))
                 }
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
@@ -40,7 +40,7 @@ class SetFollowState(var context: Context) {
         when (authors.isMutualAttention) {
             1 -> {//  已经关注
                 btnFollow.text = "已关注"
-                btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_ccc))
+                btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DD))
                 btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
             else -> { // 未关注
