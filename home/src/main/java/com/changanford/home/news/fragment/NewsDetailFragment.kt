@@ -194,6 +194,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             // 有头布局。
             homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
         })
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+            val bean = homeNewsCommentAdapter.getItem(checkPosition)
+            bean.let { _ ->
+                bean.childCount = it
+            }
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
+        })
     }
 
     /**

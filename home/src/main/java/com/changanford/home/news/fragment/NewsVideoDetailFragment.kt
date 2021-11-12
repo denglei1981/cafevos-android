@@ -599,6 +599,14 @@ class NewsVideoDetailFragment :
                 shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
+
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+            val bean = homeNewsCommentAdapter.getItem(checkPosition)
+            bean.let { _ ->
+                bean.childCount = it
+            }
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
+        })
     }
 
 }
