@@ -36,6 +36,11 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
                     true
                 }else {
                     dataBinding.radioButton.setTextAppearance(R.style.rb_goods1)
+                    if(isChecked){
+                        selectedOptionId="0"
+                        isChecked=false
+                        listener.onSelectedBackListener(pos,null)
+                    }
                     false
                 }
             }
@@ -59,6 +64,6 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         lastRb=rb
     }
     interface OnSelectedBackListener {
-        fun onSelectedBackListener(pos: Int,item: OptionVo)
+        fun onSelectedBackListener(pos: Int,item: OptionVo?)
     }
 }
