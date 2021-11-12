@@ -127,10 +127,9 @@
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_173"
+                    android:layout_height="@dimen/dp_168"
                     android:layout_marginTop="@dimen/dp_16"
                     android:visibility="gone"
-                    android:padding="@dimen/dp_3"
                     app:banner_indicator_radius="@dimen/dp_8"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7"

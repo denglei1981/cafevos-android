@@ -2,6 +2,8 @@ package com.changanford.circle.ui.activity
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.os.Bundle
 import android.text.Editable
 import android.text.Spannable
@@ -9,6 +11,7 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +20,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
@@ -24,13 +30,18 @@ import com.changanford.circle.adapter.PostVideoAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.VideoPostBinding
 import com.changanford.circle.viewmodel.PostViewModule
+import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.logD
@@ -40,23 +51,13 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
-import com.yalantis.ucrop.UCrop
-import android.media.MediaMetadataRetriever
-import java.io.File
-import android.graphics.Bitmap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.changanford.circle.widget.pop.ShowSavePostPop
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
-import com.changanford.common.room.PostEntity
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.util.*
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
+import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
@@ -473,69 +474,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         binding.title.barImgBack.setOnClickListener {
-            var postsId = intent?.getStringExtra("postsId")
-            if (binding.etBiaoti.text.toString().isEmpty()) {
-                finish()
-            } else {
-                if (!postsId.isNullOrEmpty()){
-                    finish()
-                    return@setOnClickListener
-                }
-                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                    override fun con() {
+            back()
 
-                    }
-
-                    override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
-                        postEntity.content = binding.etContent.text.toString() //内容
-                        postEntity.circleId =
-                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
-                        postEntity.circleName = circlename  //选择圈子的名称
-                        postEntity.plate =
-                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
-                        postEntity.plateName = platename  //模块名称
-                        postEntity.topicId =
-                            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
-                        postEntity.keywords =
-                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
-//                    postEntity.keywordValues = binding.keywordTv.text.toString()
-                        postEntity.localMeadle = JSON.toJSONString(selectList)
-                        postEntity.actionCode =
-                            if (params["actionCode"] != null) params["actionCode"] as String else ""
-                        postEntity.fmpath =
-                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
-                        postEntity.type = "3"  //视频帖子类型
-                        postEntity.title = binding.etBiaoti.text.toString()
-                        postEntity.address =
-                            if (params["address"] != null) params["address"] as String else ""
-                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
-                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
-                        postEntity.city =
-                            if (params["city"] != null) params["city"] as String else ""
-                        postEntity.province =
-                            if (params["province"] != null) params["province"] as String else ""
-                        postEntity.cityCode =
-                            if (params["cityCode"] != null) params["cityCode"] as String else ""
-                        postEntity.creattime = System.currentTimeMillis().toString()
-
-                        if (locaPostEntity == null) {
-                            viewModel.insertPostentity(postEntity)
-                        } else {
-                            viewModel.update(postEntity)
-                        }
-                        finish()
-                    }
-
-                    override fun unsave() {
-//                    viewModel.clearPost()
-                        finish()
-                    }
-
-                }).showPopupWindow()
-            }
         }
         postVideoAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.iv_delete) {
@@ -1065,5 +1005,80 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
 
             })
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            back()
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    private fun back(){
+
+        var postsId = intent?.getStringExtra("postsId")
+        if (binding.etBiaoti.text.toString().isEmpty()) {
+            finish()
+        } else {
+            if (!postsId.isNullOrEmpty()){
+                finish()
+                return
+            }
+            ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                override fun con() {
+
+                }
+
+                override fun save() {
+                    var postEntity =
+                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                    postEntity.content = binding.etContent.text.toString() //内容
+                    postEntity.circleId =
+                        if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                    postEntity.circleName = circlename  //选择圈子的名称
+                    postEntity.plate =
+                        if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                    postEntity.plateName = platename  //模块名称
+                    postEntity.topicId =
+                        if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+                    postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                    postEntity.keywords =
+                        if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                    postEntity.localMeadle = JSON.toJSONString(selectList)
+                    postEntity.actionCode =
+                        if (params["actionCode"] != null) params["actionCode"] as String else ""
+                    postEntity.fmpath =
+                        if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+                    postEntity.type = "3"  //视频帖子类型
+                    postEntity.title = binding.etBiaoti.text.toString()
+                    postEntity.address =
+                        if (params["address"] != null) params["address"] as String else ""
+                    postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                    postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                    postEntity.city =
+                        if (params["city"] != null) params["city"] as String else ""
+                    postEntity.province =
+                        if (params["province"] != null) params["province"] as String else ""
+                    postEntity.cityCode =
+                        if (params["cityCode"] != null) params["cityCode"] as String else ""
+                    postEntity.creattime = System.currentTimeMillis().toString()
+
+                    if (locaPostEntity == null) {
+                        viewModel.insertPostentity(postEntity)
+                    } else {
+                        viewModel.update(postEntity)
+                    }
+                    finish()
+                }
+
+                override fun unsave() {
+//                    viewModel.clearPost()
+                    finish()
+                }
+
+            }).showPopupWindow()
+        }
     }
 }

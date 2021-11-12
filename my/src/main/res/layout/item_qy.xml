@@ -9,7 +9,7 @@
         android:id="@+id/item_icon_qy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType="centerInside"
         app:shapeAppearanceOverlay="@style/roundedCornerImageStyle" />
 
 </RelativeLayout>
