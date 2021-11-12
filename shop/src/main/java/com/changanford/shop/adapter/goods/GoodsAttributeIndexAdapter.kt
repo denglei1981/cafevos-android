@@ -58,17 +58,6 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
 
         //筛选有效组合(能更当前点击选中的optionId搭配)
         skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { it.skuCodeArr[pos]==this }}
-
-//        if(skuCodes.any { "0" == it }){
-//            for(i in 1 until skuCodes.size){
-//                skuCodes[i].apply {
-//                    if("0"!=this){
-//                        newSkuVo=newSkuVo?.filter { it.skuCodeArr[i]==this }
-//                    }
-//                }
-//            }
-//        }
-//        Log.e("okhttp","skuCodes:$skuCodes>>>skuCode:$skuCode>>>size:${newSkuVo?.size}>>newSkuVo:$newSkuVo")
         adapterMap.keys.forEach {
             if(pos!= it){
                 adapterMap[it]?.apply {

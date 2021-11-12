@@ -39,6 +39,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
+    private var popupWindow:GoodsAttrsPop?=null//规格属性弹窗
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.price=dataBean.orginPrice
@@ -169,14 +170,16 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         if(::dataBean.isInitialized){
             val spuPageType=dataBean.spuPageType
             if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
-                GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
-                    showPopupWindow()
-                    onDismissListener=object : BasePopupWindow.OnDismissListener() {
-                        override fun onDismiss() {
-                            getSkuTxt(_skuCode)
+                if(null==popupWindow){
+                    popupWindow=GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
+                        showPopupWindow()
+                        onDismissListener=object : BasePopupWindow.OnDismissListener() {
+                            override fun onDismiss() {
+                                getSkuTxt(_skuCode)
+                            }
                         }
                     }
-                }
+                }else popupWindow?.showPopupWindow()
             }
         }
     }

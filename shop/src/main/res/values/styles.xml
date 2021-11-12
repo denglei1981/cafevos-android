@@ -62,9 +62,11 @@
     </style>
 <!-- radiobutton   商品属性-->
     <style name="rb_goods0">
+        <item name="android:background">@drawable/radiobutton_bt_goods</item>
         <item name="android:textColor">@drawable/radiobutton_text_goods</item>
     </style>
     <style name="rb_goods1">
+        <item name="android:background">@drawable/bord_ee_0d5dp</item>
         <item name="android:textColor">@color/color_99</item>
     </style>
     <style name="rb_kill_date">

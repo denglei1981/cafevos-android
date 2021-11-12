@@ -19,7 +19,6 @@
             android:gravity="center"
             android:textSize="@dimen/sp_14"
             android:button="@null"
-            android:background="@drawable/radiobutton_bt_goods"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/dp_10"
