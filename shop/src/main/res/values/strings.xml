@@ -17,9 +17,10 @@
     <string name="str_ongoing">进行中</string>
     <string name="str_limitedXa">限量%1$s件</string>
     <string name="str_zeroPercent">0%</string>
-    <string name="str_goods_typeX">选择 <font color="#333333">已选：黑色 降噪 256G</font></string>
-    <string name="str_goods_freightX">运费 <font color="#333333">包邮</font></string>
-    <string name="str_goods_parameterX">参数 <font color="#333333">苹果</font></string>
+    <string name="str_goods_typeX">选择    <font color="#333333">已选：黑色 降噪 256G</font></string>
+    <string name="str_goods_freightX">运费\t\t\t<font color="#333333">包邮</font></string>
+    <string name="str_goods_parameterX">参数    <font color="#333333">苹果</font></string>
+    <string name="str_parameter">参数</string>
     <string name="str_lookAtAll">查看全部</string>
     <string name="str_productEvaluation">商品评价(0)</string>
     <string name="str_productEvaluationX">商品评价(%1$s)</string>

@@ -2,8 +2,8 @@ package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.widget.RadioButton
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatCheckBox
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -14,32 +14,27 @@ import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 
 class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, var currentSkuCode:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
-    private lateinit var lastRb:RadioButton
+    private lateinit var lastCheckBox:AppCompatCheckBox
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             val optionId=item.optionId
-            dataBinding.radioButton.apply {
+            dataBinding.checkBox.apply {
                 isChecked= if(selectedOptionId==optionId){
-                    lastRb=this
+                    lastCheckBox=this
                     true
                 }else false
                 isEnabled=if(isExistSku(optionId)){
-                    dataBinding.radioButton.setTextAppearance(R.style.rb_goods0)
-                    setOnClickListener {
-                        selectRb(dataBinding.radioButton)
-                        selectedOptionId=item.optionId
-                        listener.onSelectedBackListener(pos,item)
-                    }
+                    dataBinding.checkBox.setTextAppearance(R.style.rb_goods0)
+                    setOnClickListener { selectRb(this,item,true) }
                     true
                 }else {
-                    dataBinding.radioButton.setTextAppearance(R.style.rb_goods1)
+                    dataBinding.checkBox.setTextAppearance(R.style.rb_goods1)
                     if(isChecked){
-                        selectedOptionId="0"
                         isChecked=false
-                        listener.onSelectedBackListener(pos,null)
+                        selectRb(this,item,false)
                     }
                     false
                 }
@@ -58,12 +53,21 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         currentSkuCode=skuCode
         notifyDataSetChanged()
     }
-    private fun selectRb(rb:RadioButton){
-        if(::lastRb.isInitialized)lastRb.isChecked=false
-        rb.isChecked=true
-        lastRb=rb
+    private fun selectRb(checkBox: AppCompatCheckBox,item: OptionVo,isClick:Boolean){
+        //选中
+        if(checkBox.isChecked){
+            selectedOptionId=item.optionId
+            if(::lastCheckBox.isInitialized)lastCheckBox.isChecked=false
+            checkBox.isChecked=true
+            lastCheckBox=checkBox
+            listener.onSelectedBackListener(pos,item,isClick)
+        }else{//未选中
+            selectedOptionId="0"
+            checkBox.isChecked=false
+            listener.onSelectedBackListener(pos,null,isClick)
+        }
     }
     interface OnSelectedBackListener {
-        fun onSelectedBackListener(pos: Int,item: OptionVo?)
+        fun onSelectedBackListener(pos: Int,item: OptionVo?,isClick:Boolean)
     }
 }

@@ -56,14 +56,19 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             dataBean.skuVos.apply {
                 _skuCode=code
                 (this.find { it.skuCode==code }?:this.find { it.fbPrice==dataBean.fbPrice }?:this[0]).apply {
-                    dataBean.skuImg=skuImg
                     dataBean.skuId=skuId
                     dataBean.fbPrice=fbPrice
                     dataBean.orginPrice=orginPrice
                     dataBean.price=orginPrice
-                    control.memberExclusive(dataBean)
-                    dataBean.stock=if(!control.isInvalidSelectAttrs(_skuCode))stock.toInt() else dataBean.allSkuStock
+                    if(!control.isInvalidSelectAttrs(_skuCode)){
+                        dataBean.stock=stock.toInt()
+                        dataBean.skuImg=skuImg
+                    }else{
+                        dataBean.skuImg=dataBean.imgs[0]
+                        dataBean.stock=dataBean.allSkuStock
+                    }
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
+                    control.memberExclusive(dataBean)
                     val skuCodeTxtArr= arrayListOf<String>()
                     for((i,item) in dataBean.attributes.withIndex()){
                         item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {
@@ -73,7 +78,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     }
                     dataBean.skuCodeTxts=skuCodeTxtArr
                     viewDataBinding.sku= this
-                    viewDataBinding.imgCover.load(skuImg)
+                    viewDataBinding.imgCover.load(dataBean.skuImg)
                     val limitBuyNum:Int=(dataBean.limitBuyNum?:"0").toInt()
                     val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock=dataBean.stock

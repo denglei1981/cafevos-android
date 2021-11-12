@@ -41,6 +41,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     private var popupWindow:GoodsAttrsPop?=null//规格属性弹窗
     fun bindingData(dataBean:GoodsDetailBean){
+        popupWindow=null
         this.dataBean=dataBean
         dataBean.price=dataBean.orginPrice
         dataBean.purchasedNum=dataBean.salesCount
@@ -57,7 +58,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         //品牌参数
         val param=dataBean.param
         if(null!=param){
-            WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvParameter,"参数 <font color=\"#333333\">$param</font>")
+            headerBinding.inGoodsInfo.tvParameter.setHtmlTxt("\t\t\t$param","#333333")
             headerBinding.inGoodsInfo.tvParameter.visibility=View.VISIBLE
         }
         //详情
@@ -65,7 +66,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
-        if(freightPrice!="0.00"&&"0"!=freightPrice)WCommonUtil.htmlToString(headerBinding.inGoodsInfo.tvFreight,"运费 <font color=\"#333333\">$freightPrice</font>")
+        if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
@@ -206,7 +207,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             }
         }
         dataBean.skuCodeTxts=skuCodeTxtArr
-        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"  未选择属性" else "  已选：${skuCodeTxt}","#333333")
+        headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"\t\t\t未选择属性" else "\t\t\t已选：${skuCodeTxt}","#333333")
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn(dataBean,null, binding.inBottom.btnSubmit)

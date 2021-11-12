@@ -11,10 +11,10 @@
         android:paddingBottom="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatRadioButton
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:ellipsize="end"
             android:singleLine="true"
-            android:id="@+id/radioButton"
+            android:id="@+id/checkBox"
             android:text="@{model.optionName}"
             android:gravity="center"
             android:textSize="@dimen/sp_14"
