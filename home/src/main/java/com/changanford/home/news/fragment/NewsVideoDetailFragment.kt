@@ -2,6 +2,7 @@ package com.changanford.home.news.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -19,6 +20,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -49,6 +51,8 @@ import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 class NewsVideoDetailFragment :
     BaseLoadSirFragment<ActivityHomeNewsVideoDetailBinding, NewsDetailViewModel>(),
@@ -250,20 +254,15 @@ class NewsVideoDetailFragment :
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
+                    newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
-                    newsDetailData?.let {na  ->
-                        val followType = na.authors.isFollow
-                        na.authors.isFollow = if (followType == 1)  2  else  1
-                        setFollowState(inflateHeader.btFollow, na.authors)
-                    }
+
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         })
-
         viewModel.collectLiveData.observe(this, Observer {
             try {
                 if (it.isSuccess) {
@@ -275,9 +274,7 @@ class NewsVideoDetailFragment :
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         })
-
     }
 
     var newsDetailData: NewsDetailData? = null
@@ -365,13 +362,24 @@ class NewsVideoDetailFragment :
     }
 
     // 关注或者取消
+    // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
-            val followType = it.authors.isFollow
-            it.authors.isFollow = if (followType == 1) 2 else 1
-            setFollowState(inflateHeader.btFollow, it.authors)
-            viewModel.followOrCancelUser(it.userId, followType)
+
+            followType = it.authors.isFollow
+
+            followType = if (followType == 1) 2 else 1
+
+            cancel(followId = it.userId,followType)
+
+
         }
+    }
+    private fun surefollow(newsData: NewsDetailData, followType: Int) {
+        newsData.authors.isFollow = followType
+        setFollowState(inflateHeader.btFollow, newsData.authors)
+        setFollowState(inflateHeader.btFollow, newsData.authors)
+//        viewModel.followOrCancelUser(newsData.userId, followType)
     }
 
     fun smooth() {// todo  没有评论呢？
@@ -379,6 +387,31 @@ class NewsVideoDetailFragment :
         smoothScroller.targetPosition = 1//要滑动到的位置
         linearLayoutManager?.startSmoothScroll(smoothScroller)
     }
+
+    var followType =0
+    // 1 关注 2 取消关注
+    fun cancel(followId: String, type: Int) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
+        if (type == 1) {
+            viewModel.followOrCancelUser(followId, type)
+        } else {
+            QuickPopupBuilder.with(this)
+                .contentView(R.layout.pop_two_btn)
+                .config(
+                    QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .withClick(R.id.btn_comfir, View.OnClickListener {
+                            viewModel.followOrCancelUser(followId, type)
+                        }, true)
+                        .withClick(R.id.btn_cancel, View.OnClickListener {
+                        }, true)
+                )
+                .show()
+        }
+    }
+
 
     /**
      *  设置关注状态。
