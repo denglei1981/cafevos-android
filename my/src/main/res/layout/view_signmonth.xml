@@ -64,7 +64,6 @@
                     android:id="@+id/textView2"
                     style="@style/commonTextView.Normal"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
                     android:text="连续签到记录"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -113,7 +112,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/jiangli"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_60"
+            android:layout_height="@dimen/dp_70"
             android:layout_marginHorizontal="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_20"

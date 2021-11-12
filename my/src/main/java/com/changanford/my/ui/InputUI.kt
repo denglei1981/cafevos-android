@@ -37,12 +37,12 @@ class InputUI : BaseMineUI<UiEditInputBinding, EmptyViewModel>() {
         when (type) {
             1 -> {
                 binding.mineToolbar.toolbarTitle.text = "修改个性签名"
-                binding.nickInput.hint = "请输入个性签名"
+                binding.nickInput.hint = "请填写个性签名"
                 binding.nickNameTitle.text = "个性签名"
             }
             2 -> {
                 binding.mineToolbar.toolbarTitle.text = "修改邮箱"
-                binding.nickInput.hint = "请输入邮箱"
+                binding.nickInput.hint = "请填写邮箱"
                 binding.nickNameTitle.text = "邮箱"
             }
         }

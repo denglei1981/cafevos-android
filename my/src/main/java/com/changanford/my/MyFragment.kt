@@ -191,7 +191,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 //            userInfoBean?.brief
 //                ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginSubTips)
         binding.myScore.text = "${userInfoBean?.ext?.totalIntegral ?: "0"}"//积分
-        binding.myScoreAcc.text = "${userInfoBean?.ext?.multiple ?: "1"} 倍加速"
+        binding.myScoreAcc.text = "${getAcc(userInfoBean?.ext?.multiple)} 倍加速"
         binding.myStateLayout.apply {
             myStateFabu.text = "${userInfoBean?.count?.releases ?: "0"}"
             myStateFensi.text = "${userInfoBean?.count?.fans ?: "0"}"
@@ -223,6 +223,15 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 labelAdapter.addData(it)
             }
         }
+    }
+    private fun getAcc(multiple:Double?):String{
+        if (multiple==null || multiple.isNaN()){
+            return "1"
+        }
+        return if ((multiple*10).toInt()%10==0){
+            "${multiple.toInt()}"
+        } else
+            "$multiple"
     }
 
     /**
