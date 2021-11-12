@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseFragment
@@ -17,6 +18,8 @@ import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.evos.databinding.FragmentSplashBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.ceil
@@ -38,22 +41,25 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun initData() {
         GifLoadOneTimeGif.loadOneTimeGif(requireContext(),R.drawable.splashgif,binding.splashimg,1,object :GifLoadOneTimeGif.GifListener{
             override fun gifPlayComplete() {
-                viewModel.getKey()
-                viewModel.key.observe(this@SplashFragment) {
-                    MConstant.pubKey = it
-                    if (MConstant.isPopAgreement) {
-                        showAppPrivacy(BaseApplication.curActivity as AppCompatActivity) {
-                            viewModel.getDbAds()
-                            viewModel.adService("app_launch")
-                        }
-                    } else {
+            }
+        })
+        lifecycleScope.launch {
+            delay(4000)
+            viewModel.getKey()
+            viewModel.key.observe(this@SplashFragment) {
+                MConstant.pubKey = it
+                if (MConstant.isPopAgreement) {
+                    showAppPrivacy(BaseApplication.curActivity as AppCompatActivity) {
                         viewModel.getDbAds()
                         viewModel.adService("app_launch")
                     }
+                } else {
+                    viewModel.getDbAds()
+                    viewModel.adService("app_launch")
                 }
-                showAds()
             }
-        })
+            showAds()
+        }
 
     }
 
