@@ -2,6 +2,7 @@ package com.changanford.home.news.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -19,6 +20,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -47,6 +49,8 @@ import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 /**
  *  图文详情。。。
@@ -362,6 +366,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
+                    newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
                     newsDetailData?.let {na  ->
@@ -463,18 +468,50 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         )
     }
 
+    // 1 关注 2 取消关注
+    fun cancel(followId: String, type: Int) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
+        if (type == 1) {
+            viewModel.followOrCancelUser(followId, type)
+        } else {
+            QuickPopupBuilder.with(this)
+                .contentView(R.layout.pop_two_btn)
+                .config(
+                    QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .withClick(R.id.btn_comfir, View.OnClickListener {
+                            viewModel.followOrCancelUser(followId, type)
+                        }, true)
+                        .withClick(R.id.btn_cancel, View.OnClickListener {
+                        }, true)
+                )
+                .show()
+        }
+    }
 
+    var followType =0
 
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
-            var followType = it.authors.isFollow
+
+            followType = it.authors.isFollow
+
             followType = if (followType == 1) 2 else 1
-            it.authors.isFollow = followType
-            setFollowState(binding.layoutTitle.btFollow,it.authors)
-            setFollowState(inflateHeader.btFollow, it.authors)
-            viewModel.followOrCancelUser(it.userId, followType)
+
+           cancel(followId = it.userId,followType)
+
+
         }
+    }
+
+    private fun surefollow(newsData: NewsDetailData, followType: Int) {
+        newsData.authors.isFollow = followType
+        setFollowState(binding.layoutTitle.btFollow, newsData.authors)
+        setFollowState(inflateHeader.btFollow, newsData.authors)
+//        viewModel.followOrCancelUser(newsData.userId, followType)
     }
 
     override fun onClick(v: View) {
