@@ -11,6 +11,7 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
@@ -449,6 +450,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         return String(Character.toChars(unicode))
     }
 
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            binding.title.barImgBack.callOnClick()
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
     private fun onclick() {
 
         binding.title.barImgBack.setOnClickListener {
