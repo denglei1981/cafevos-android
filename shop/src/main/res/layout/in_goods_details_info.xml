@@ -34,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_consumption"
             android:id="@+id/tv_goodsTitle"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{model.spuName}"

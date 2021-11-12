@@ -39,7 +39,6 @@
             android:textSize="@dimen/sp_11" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_title"
-            android:textStyle="bold"
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_10"
             app:layout_constraintStart_toEndOf="@id/img_goods_cover"
@@ -90,7 +89,6 @@
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integral"
-            android:textStyle="bold"
             android:layout_marginBottom="@dimen/dp_5"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"

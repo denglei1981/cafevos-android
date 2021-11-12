@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             app:start_txt="@string/str_remainingTimePayment0"
             android:text=" "
-            android:textColor="@color/white"
+            android:textColor="@color/color_99white"
             android:textSize="@dimen/sp_12" />
         <ScrollView
             android:id="@+id/scrollView"
