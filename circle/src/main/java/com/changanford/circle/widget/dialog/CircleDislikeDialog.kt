@@ -61,7 +61,7 @@ class CircleDislikeDialog(private val activity: AppCompatActivity, private val b
             } else {
                 cancel.text = "提交"
             }
-//            titleTv.text = if (selectSize > 0) "已选择 $selectSize 个理由" else "请选择不喜欢理由"
+            titleTv.text = if (selectSize > 0) "已选择 $selectSize 个理由" else "请选择不喜欢理由"
             btTv.isSelected = selectSize > 0
 //            btTv.text = if (btTv.isSelected) "提交" else {
 //                "直接屏蔽"
