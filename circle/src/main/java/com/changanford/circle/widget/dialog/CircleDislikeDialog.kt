@@ -28,7 +28,7 @@ import com.changanford.common.utilext.toast
  * @Date: 2021/10/22
  * @Des: 不喜欢
  */
-class DislikeDialog(private val activity: AppCompatActivity, private val body: ReportDislikeBody?) :
+class CircleDislikeDialog(private val activity: AppCompatActivity, private val body: ReportDislikeBody?) :
     BaseDialog(activity) {
 
     private val adapter = MyAdapter()
@@ -36,7 +36,7 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
     private var selectSize = 0
 
     override fun getLayoutId(): Int {
-        return R.layout.dialog_dislike
+        return R.layout.circle_dialog_dislike
     }
 
     init {
@@ -44,8 +44,9 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
         setParamWidthMatch()
         val titleTv = findViewById<TextView>(R.id.chose_title_tv)
         val btTv = findViewById<TextView>(R.id.bt_tv)
+        val cancel = findViewById<TextView>(R.id.cancel_tv)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+//        recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener { _, _, position ->
             val dislikeBean = adapter.getItem(position)
@@ -55,20 +56,22 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
             } else {
                 selectSize--
             }
-            titleTv.text = if (selectSize > 0) "已选择 $selectSize 个理由" else "请选择不喜欢理由"
-            btTv.isSelected = selectSize > 0
-            btTv.text = if (btTv.isSelected) "提交" else {
-                "直接屏蔽"
+            if (selectSize == 0) {
+                cancel.text = "取消"
+            } else {
+                cancel.text = "提交"
             }
+//            titleTv.text = if (selectSize > 0) "已选择 $selectSize 个理由" else "请选择不喜欢理由"
+            btTv.isSelected = selectSize > 0
+//            btTv.text = if (btTv.isSelected) "提交" else {
+//                "直接屏蔽"
+//            }
             adapter.notifyItemChanged(position)
         }
-        findViewById<TextView>(R.id.cancel_tv).setOnClickListener { dismiss() }
-        getDislikeReason()
-        configBean.observe(activity, {
-            adapter.setList(it)
-        })
-        btTv.setOnClickListener {
-            if (btTv.isSelected) {//提交
+        findViewById<TextView>(R.id.cancel_tv).setOnClickListener {
+            if(selectSize==0){
+                dismiss()
+            }else{
                 var str = ""
                 for (bean in configBean.value!!) {
                     if (bean.isSelect) str += "," + bean.content
@@ -77,18 +80,39 @@ class DislikeDialog(private val activity: AppCompatActivity, private val body: R
                     str = str.substring(1)
                 }
                 dislikeApi(str)
-            } else {//直接屏蔽
-                dislikeApi("")
             }
+        }
+        getDislikeReason()
+        configBean.observe(activity, {
+            adapter.setList(it)
+        })
+        btTv.setOnClickListener {
+//            if (btTv.isSelected) {//提交
+//                var str = ""
+//                for (bean in configBean.value!!) {
+//                    if (bean.isSelect) str += "," + bean.content
+//                }
+//                if (str.isNotEmpty()) {
+//                    str = str.substring(1)
+//                }
+//                dislikeApi(str)
+//            } else {//直接屏蔽
+                dislikeApi("")
+//            }
         }
     }
 
     inner class MyAdapter :
-        BaseQuickAdapter<DislikeBean, BaseViewHolder>(R.layout.item_dialog_dislike) {
+        BaseQuickAdapter<DislikeBean, BaseViewHolder>(R.layout.item_circle_dialog_dislike) {
 
         override fun convert(holder: BaseViewHolder, item: DislikeBean) {
             holder.getView<TextView>(R.id.content_tv).isSelected = item.isSelect
             holder.setText(R.id.content_tv, item.content)
+            if (item.isSelect) {
+                holder.setVisible(R.id.iv_check, true)
+            } else {
+                holder.setGone(R.id.iv_check, true)
+            }
         }
 
     }

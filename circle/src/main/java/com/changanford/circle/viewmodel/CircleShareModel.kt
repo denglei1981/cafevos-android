@@ -6,7 +6,7 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.utils.launchWithCatch
-import com.changanford.circle.widget.dialog.DislikeDialog
+import com.changanford.circle.widget.dialog.CircleDislikeDialog
 import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
 import com.changanford.common.manger.RouterManger
@@ -124,7 +124,7 @@ object CircleShareModel {
                     }
                     6 -> {
                         if (MConstant.userId.isNotEmpty()) {
-                            DislikeDialog(activity, body).show()
+                            CircleDislikeDialog(activity, body).show()
                         } else {
                             startARouter(ARouterMyPath.SignUI)//跳转登录
                         }
