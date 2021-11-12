@@ -124,6 +124,9 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                     dayAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt())
                     binding.des.text =
                         "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}福币+${nextGrowth ?: 0}成长值"
+                    if (ontinuous == "0"){
+                        binding.des.text = "连续签到赚丰厚奖励"
+                    }
                     roundList?.forEach {
                         it.isNowDay = TimeUtils.getNowDay().equals(it.date)
                         if (TimeUtils.getNowDay().equals(it.date)) {
