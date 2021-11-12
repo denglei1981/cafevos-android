@@ -190,6 +190,7 @@ data class GoodsDetailBean(
     var skuVos: ArrayList<SkuVo> = ArrayList(),
     val spuPageType: String = "",
     var stock: Int = 0,
+    var allSkuStock: Int = 0,//sku库存之和
     val mallOrderEval: CommentItem? = null,
     var stockProportion: String = "0",//库存百分比 0-100
     val spuName: String? = "",

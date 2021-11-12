@@ -39,12 +39,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
+    private var popupWindow:GoodsAttrsPop?=null//规格属性弹窗
     fun bindingData(dataBean:GoodsDetailBean){
         this.dataBean=dataBean
         dataBean.price=dataBean.orginPrice
         dataBean.purchasedNum=dataBean.salesCount
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
+        dataBean.allSkuStock=dataBean.stock
         //初始化 skuCode
         var skuCodeInitValue="${dataBean.spuId}-"
         dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
@@ -169,14 +171,16 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         if(::dataBean.isInitialized){
             val spuPageType=dataBean.spuPageType
             if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
-                GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
-                    showPopupWindow()
-                    onDismissListener=object : BasePopupWindow.OnDismissListener() {
-                        override fun onDismiss() {
-                            getSkuTxt(_skuCode)
+                if(null==popupWindow){
+                    popupWindow=GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {
+                        showPopupWindow()
+                        onDismissListener=object : BasePopupWindow.OnDismissListener() {
+                            override fun onDismiss() {
+                                getSkuTxt(_skuCode)
+                            }
                         }
                     }
-                }
+                }else popupWindow?.showPopupWindow()
             }
         }
     }
@@ -226,6 +230,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
             } else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
+                    btnSubmit.setText(R.string.str_immediatelyChange)
                     btnSubmit.updateEnabled(false)
                 } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
                     btnSubmit.setStates(8)

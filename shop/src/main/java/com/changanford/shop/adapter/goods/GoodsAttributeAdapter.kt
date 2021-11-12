@@ -15,7 +15,6 @@ import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 
 class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, var currentSkuCode:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastRb:RadioButton
-    private var isUpdate=false
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
@@ -37,6 +36,11 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
                     true
                 }else {
                     dataBinding.radioButton.setTextAppearance(R.style.rb_goods1)
+                    if(isChecked){
+                        selectedOptionId="0"
+                        isChecked=false
+                        listener.onSelectedBackListener(pos,null)
+                    }
                     false
                 }
             }
@@ -45,44 +49,14 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         }
     }
     /**
-     * 是否存在该sku选项
+     * 存在指定optionId的sku组合并且库存不等于0即该optionId为可选状态反之禁选
      * */
     private fun isExistSku(optionId:String):Boolean{
-//        Log.e("okhttp","$pos>>>currentSkuCode:$currentSkuCode>>>${skuVos?.size}")
-        skuVos?.apply {
-            for (item in this){
-                //skuVos是否包含 optionId可选属性
-                if(item.skuCodeArr[pos]==optionId&&item.stock!="0"){
-//                    if(isUpdate){
-//                        //查询 optionId 的组合可能性是否也在 skuVos中
-//                        val skuCode=getTemporarySkuCode(optionId)
-//                        skuVos?.find { skuCode==it.skuCode }?.let { return true }
-//                        break
-//                    }
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-    private fun getTemporarySkuCode(optionId:String):String{
-        var skuCode=""
-        if(currentSkuCode.contains("-")){
-            val skuCodeArr= currentSkuCode.split("-").toMutableList()
-            skuCodeArr[pos]=optionId//更新
-            skuCodeArr.forEach{ skuCode+="$it-" }
-            skuCode=skuCode.substring(0,skuCode.length-1)
-        }
-        return skuCode
+        return skuVos?.find { it.skuCodeArr[pos]==optionId&&it.stock!="0" }!=null
     }
     fun updateAdapter(skuCode: String){
         currentSkuCode=skuCode
-//        isUpdate=isLegalSkuCode(currentSkuCode)<2
         notifyDataSetChanged()
-    }
-    private fun isLegalSkuCode(_skuCode:String?):Int{
-        return _skuCode?.split("-")?.filter { "0"==it }?.size?:0
     }
     private fun selectRb(rb:RadioButton){
         if(::lastRb.isInitialized)lastRb.isChecked=false
@@ -90,6 +64,6 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         lastRb=rb
     }
     interface OnSelectedBackListener {
-        fun onSelectedBackListener(pos: Int,item: OptionVo)
+        fun onSelectedBackListener(pos: Int,item: OptionVo?)
     }
 }

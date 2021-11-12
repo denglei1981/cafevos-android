@@ -26,8 +26,8 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
             if(::skuCodes.isInitialized){
                 val pos=position+1
                 val mAdapter=GoodsAttributeAdapter(pos,skuCodes[pos],skuVos,skuCode,object :GoodsAttributeAdapter.OnSelectedBackListener{
-                    override fun onSelectedBackListener(pos: Int, item: OptionVo) {
-                        item.optionId.also { skuCodes[pos] = it }
+                    override fun onSelectedBackListener(pos: Int, item: OptionVo?) {
+                        if(null==item)skuCodes[pos] = "0" else item.optionId.also { skuCodes[pos] = it }
                         updateSkuCode(pos)
                     }
                 })
@@ -54,29 +54,18 @@ class GoodsAttributeIndexAdapter(private val skuCodeLiveData: MutableLiveData<St
         skuCodes.forEach{ skuCode+="$it-" }
         skuCode=skuCode.substring(0,skuCode.length-1)
         skuCodeLiveData.postValue(skuCode)
-        var newSkuVo:List<SkuVo>?=skuVos
-
-        //筛选有效组合(能更当前点击选中的optionId搭配)
-        skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { it.skuCodeArr[pos]==this }}
-
-//        if(skuCodes.any { "0" == it }){
-//            for(i in 1 until skuCodes.size){
-//                skuCodes[i].apply {
-//                    if("0"!=this){
-//                        newSkuVo=newSkuVo?.filter { it.skuCodeArr[i]==this }
-//                    }
-//                }
-//            }
-//        }
-//        Log.e("okhttp","skuCodes:$skuCodes>>>skuCode:$skuCode>>>size:${newSkuVo?.size}>>newSkuVo:$newSkuVo")
-        adapterMap.keys.forEach {
-            if(pos!= it){
-                adapterMap[it]?.apply {
-                    skuVos=newSkuVo
-                    updateAdapter(skuCode)
+        if(skuCodes[pos]!="0"){
+            var newSkuVo:List<SkuVo>?=skuVos
+            //筛选有效组合(能更当前点击选中的optionId搭配)
+            skuCodes[pos].apply {newSkuVo=newSkuVo?.filter { it.skuCodeArr[pos]==this&&it.stock!="0" }}
+            adapterMap.keys.forEach {
+                if(pos!= it){
+                    adapterMap[it]?.apply {
+                        skuVos=newSkuVo
+                        updateAdapter(skuCode)
+                    }
                 }
             }
         }
-
     }
 }

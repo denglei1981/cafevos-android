@@ -62,7 +62,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     dataBean.orginPrice=orginPrice
                     dataBean.price=orginPrice
                     control.memberExclusive(dataBean)
-                    if(!control.isInvalidSelectAttrs(_skuCode))dataBean.stock=stock.toInt()
+                    dataBean.stock=if(!control.isInvalidSelectAttrs(_skuCode))stock.toInt() else dataBean.allSkuStock
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
                     val skuCodeTxtArr= arrayListOf<String>()
                     for((i,item) in dataBean.attributes.withIndex()){
