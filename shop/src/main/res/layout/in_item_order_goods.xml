@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="预约时间：2021-09-08  24:12:09"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integral"
