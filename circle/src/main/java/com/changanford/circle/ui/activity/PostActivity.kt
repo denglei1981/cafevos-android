@@ -11,6 +11,7 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -146,7 +147,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             Log.d("ImmersionBar", keyboardHeight.toString())
 //            if (isPopup){
 //                iskeybarOpen = true
-                binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.emojirec.visibility = View.GONE
 //            } else{
 //                iskeybarOpen= false
 //            }
@@ -155,7 +156,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            if (locaPostEntity!=null){
+            if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
             "发布成功".toast()
@@ -182,9 +183,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                address = it.address?:it.name?:""
+                address = it.address ?: it.name ?: ""
                 params["address"] = address
-                it.location?.let { mit->
+                it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
@@ -196,15 +197,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
-           plateBean?.plate?.forEach {
-               if (it.name == "社区"){
-                   buttomTypeAdapter?.setData(0,ButtomTypeBean("",0,0))
-                   buttomTypeAdapter?.setData(1,ButtomTypeBean(it.name,1,1))
-                   platename = it.name
-                   params["plate"] = it.plate
-                   params["actionCode"] = it.actionCode
-               }
-           }
+            plateBean?.plate?.forEach {
+                if (it.name == "社区") {
+                    buttomTypeAdapter?.setData(0, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter?.setData(1, ButtomTypeBean(it.name, 1, 1))
+                    platename = it.name
+                    params["plate"] = it.plate
+                    params["actionCode"] = it.actionCode
+                }
+            }
 
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
@@ -216,7 +217,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("province")
                     params.remove("cityCode")
                     params.remove("address")
-                    address= ""
+                    address = ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
                 })
 
@@ -235,7 +236,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }
                     buttomlabelAdapter.notifyDataSetChanged()
                 }
-            }else{
+            } else {
                 handleEditPost()
             }
         })
@@ -343,91 +344,30 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private fun onclick() {
 
         binding.etBiaoti.setOnFocusChangeListener { view, b ->
-            if (b){
+            if (b) {
                 isshowemoji = false
             }
         }
 
 
         binding.title.barImgBack.setOnClickListener {
-            var postsId = intent?.getStringExtra("postsId")
-            if (binding.etBiaoti.text.toString().isEmpty()) {
-                finish()
-            } else {
-                if (!postsId.isNullOrEmpty()){
-                    finish()
-                    return@setOnClickListener
-                }
-                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                    override fun con() {
-
-                    }
-
-                    override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
-                        postEntity.content = binding.etContent.text.toString() //内容
-                        postEntity.circleId =
-                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
-                        postEntity.circleName = circlename  //选择圈子的名称
-                        postEntity.plate =
-                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
-                        postEntity.plateName = platename  //模块名称
-                        postEntity.topicId =
-                            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
-                        postEntity.keywords =
-                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
-//                    postEntity.keywordValues = binding.keywordTv.text.toString()
-                        postEntity.localMeadle = JSON.toJSONString(selectList)
-                        postEntity.actionCode =
-                            if (params["actionCode"] != null) params["actionCode"] as String else ""
-                        postEntity.fmpath =
-                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
-                        postEntity.type = "2"  //图片帖子类型
-                        postEntity.title = binding.etBiaoti.text.toString()
-                        postEntity.address =
-                            if (params["address"] != null) params["address"] as String else ""
-                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
-                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
-                        postEntity.city =
-                            if (params["city"] != null) params["city"] as String else ""
-                        postEntity.province =
-                            if (params["province"] != null) params["province"] as String else ""
-                        postEntity.cityCode =
-                            if (params["cityCode"] != null) params["cityCode"] as String else ""
-                        postEntity.creattime = System.currentTimeMillis().toString()
-                        if (locaPostEntity == null) {
-                            viewModel.insertPostentity(postEntity)
-                        } else {
-                            viewModel.update(postEntity)
-                        }
-                        finish()
-                    }
-
-                    override fun unsave() {
-//                    viewModel.clearPost()
-                        finish()
-                    }
-
-                }).showPopupWindow()
-            }
+            back()
         }
         binding.bottom.ivEmoj.setOnClickListener {
 //            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
-                HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
-                Timer().schedule(80) {
-                    binding.bottom.emojirec.post {
-                        if (binding.bottom.emojirec.isShown) {
+            Timer().schedule(80) {
+                binding.bottom.emojirec.post {
+                    if (binding.bottom.emojirec.isShown) {
 
-                            binding.bottom.emojirec.visibility = View.GONE
-                        } else {
-                            binding.bottom.emojirec.visibility = View.VISIBLE
-                        }
+                        binding.bottom.emojirec.visibility = View.GONE
+                    } else {
+                        binding.bottom.emojirec.visibility = View.VISIBLE
                     }
                 }
+            }
 //            }else if(!iskeybarOpen) {
 //                Timer().schedule(80) {
 //                    binding.bottom.emojirec.post {
@@ -451,24 +391,24 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     position,
                     ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
                 )
-                when(buttomTypeAdapter.getItem(position).itemType){
-                    2 ->{
+                when (buttomTypeAdapter.getItem(position).itemType) {
+                    2 -> {
                         params.remove("topicId")
                         params.remove("topicName")
                     }
-                    3->{
+                    3 -> {
                         params.remove("circleId")
                         params.remove("circleName")
-                        circlename=""
+                        circlename = ""
                     }
-                    4->{
+                    4 -> {
                         params.remove("lat")
                         params.remove("lon")
                         params.remove("city")
                         params.remove("province")
                         params.remove("cityCode")
                         params.remove("address")
-                        address= ""
+                        address = ""
                     }
                 }
             }
@@ -662,10 +602,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.bottom.labelrec.adapter = buttomlabelAdapter
 
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            if (buttomlabelAdapter.getItem(position).isselect){
+            if (buttomlabelAdapter.getItem(position).isselect) {
                 buttomlabelAdapter.getItem(position).isselect = false
                 params.remove("keywords")
-            }else{
+            } else {
                 buttomlabelAdapter.getItem(position).isselect = true
                 buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
                     if (index != position) {
@@ -891,7 +831,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                             ButtomTypeBean(locaPostEntity!!.address, 1, 4)
                         )
                         //选择的标签
-                        if (locaPostEntity!!.keywords?.isNotEmpty()==true) {
+                        if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
                             buttomlabelAdapter.data.forEach {
                                 it.isselect = it.tagName == locaPostEntity!!.keywords
                             }
@@ -904,6 +844,78 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            back()
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+   private fun back() {
+        var postsId = intent?.getStringExtra("postsId")
+        if (binding.etBiaoti.text.toString().isEmpty()) {
+            finish()
+        } else {
+            if (!postsId.isNullOrEmpty()) {
+                finish()
+                return
+            }
+            ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                override fun con() {
+
+                }
+
+                override fun save() {
+                    var postEntity =
+                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                    postEntity.content = binding.etContent.text.toString() //内容
+                    postEntity.circleId =
+                        if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                    postEntity.circleName = circlename  //选择圈子的名称
+                    postEntity.plate =
+                        if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                    postEntity.plateName = platename  //模块名称
+                    postEntity.topicId =
+                        if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+                    postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                    postEntity.keywords =
+                        if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                    postEntity.localMeadle = JSON.toJSONString(selectList)
+                    postEntity.actionCode =
+                        if (params["actionCode"] != null) params["actionCode"] as String else ""
+                    postEntity.fmpath =
+                        if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+                    postEntity.type = "2"  //图片帖子类型
+                    postEntity.title = binding.etBiaoti.text.toString()
+                    postEntity.address =
+                        if (params["address"] != null) params["address"] as String else ""
+                    postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                    postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                    postEntity.city =
+                        if (params["city"] != null) params["city"] as String else ""
+                    postEntity.province =
+                        if (params["province"] != null) params["province"] as String else ""
+                    postEntity.cityCode =
+                        if (params["cityCode"] != null) params["cityCode"] as String else ""
+                    postEntity.creattime = System.currentTimeMillis().toString()
+                    if (locaPostEntity == null) {
+                        viewModel.insertPostentity(postEntity)
+                    } else {
+                        viewModel.update(postEntity)
+                    }
+                    finish()
+                }
+
+                override fun unsave() {
+//                    viewModel.clearPost()
+                    finish()
+                }
+
+            }).showPopupWindow()
+        }
+    }
 
 }
 
