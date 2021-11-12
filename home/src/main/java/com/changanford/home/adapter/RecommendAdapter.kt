@@ -165,8 +165,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvAuthorName.setOnClickListener {
             toUserHomePage(item)
         }
+        if(TextUtils.isEmpty(item.getTopic())){
+            tvContent.visibility=View.GONE
+        }else{
+            tvContent.visibility=View.VISIBLE
+            tvContent.text = item.getTopic()
+        }
 
-        tvContent.text = item.getTopic()
+
         val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
         setLikeState(tvLikeCount, item.isLike, false) // 设置是否喜欢。
         tvLikeCount.setOnClickListener {
@@ -215,7 +221,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.getContent())) {
             tvTopic.text = ""
+            tvTopic.visibility=View.GONE
         } else {
+            tvTopic.visibility=View.VISIBLE
             tvTopic.text = item.getContent()
         }
         item.authors?.let {
