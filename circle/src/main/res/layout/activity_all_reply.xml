@@ -47,7 +47,6 @@
                         android:layout_marginStart="12dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_head"
                         app:layout_constraintLeft_toRightOf="@+id/iv_head"
                         app:layout_constraintTop_toTopOf="@+id/iv_head"
