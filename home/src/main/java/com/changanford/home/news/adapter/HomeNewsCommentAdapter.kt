@@ -35,6 +35,8 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment),
     LoadMoreModule {
 
+
+
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)
         binding?.let {
@@ -63,7 +65,7 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
                 bundle.putString("value", item.userId)
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
-            contentSty(binding.tvContent, item)
+            binding.tvContent.text = item.content
             binding.llLike.setOnClickListener {
                 lifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
