@@ -6,10 +6,10 @@
         <shape>
 
             <size
-                android:width="16dp"
-                android:height="4dp" />
+                android:width="17dp"
+                android:height="3dp" />
 
-            <corners android:radius="2dp" />
+            <corners android:radius="1.5dp" />
 
             <solid android:color="@color/blue_tab" />
 

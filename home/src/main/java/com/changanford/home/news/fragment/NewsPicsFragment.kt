@@ -3,6 +3,7 @@ package com.changanford.home.news.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.ScrollingMovementMethod
+import android.view.Gravity
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
@@ -17,6 +18,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
@@ -40,6 +42,8 @@ import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
 import com.zhpan.bannerview.constants.IndicatorGravity
 import com.zhpan.bannerview.constants.PageStyle
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 /**
  *  图片详情。
@@ -136,13 +140,14 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
+                    newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
-                    newsDetailData?.let {na  ->
-                        val followType = na.authors.isFollow
-                        na.authors.isFollow = if (followType == 1)  2  else  1
-                        setFollowState(binding.layoutHeader.btnFollow, na.authors)
-                    }
+//                    newsDetailData?.let {na  ->
+//                        val followType = na.authors.isFollow
+//                        na.authors.isFollow = if (followType == 1)  2  else  1
+//                        setFollowState(binding.layoutHeader.btnFollow, na.authors)
+//                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -342,15 +347,54 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         setFollowState.setFollowState(btnFollow, authors)
     }
 
+//    // 关注或者取消
+//    private fun followAction() {
+//        newsDetailData?.let {
+//            var followType = it.authors.isFollow
+//            followType = if (followType == 1) 2 else 1
+//            it.authors.isFollow = followType;
+//            setFollowState(binding.layoutHeader.btnFollow, it.authors)
+//            viewModel.followOrCancelUser(it.userId, followType)
+//        }
+//    }
+
+    var followType = 0
+    // 1 关注 2 取消关注
+    fun cancel(followId: String, type: Int) {
+        if (MineUtils.getBindMobileJumpDataType(true)) {
+            return
+        }
+        if (type == 1) {
+            viewModel.followOrCancelUser(followId, type)
+        } else {
+            QuickPopupBuilder.with(this)
+                .contentView(R.layout.pop_two_btn)
+                .config(
+                    QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .withClick(R.id.btn_comfir, View.OnClickListener {
+                            viewModel.followOrCancelUser(followId, type)
+                        }, true)
+                        .withClick(R.id.btn_cancel, View.OnClickListener {
+                        }, true)
+                )
+                .show()
+        }
+    }
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {
-            var followType = it.authors.isFollow
+            followType = it.authors.isFollow
             followType = if (followType == 1) 2 else 1
-            it.authors.isFollow = followType;
-            setFollowState(binding.layoutHeader.btnFollow, it.authors)
-            viewModel.followOrCancelUser(it.userId, followType)
+            cancel(followId = it.userId, followType)
         }
+    }
+
+    private fun surefollow(newsData: NewsDetailData, followType: Int) {
+        newsData.authors.isFollow = followType
+        setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
+        setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
+//        viewModel.followOrCancelUser(newsData.userId, followType)
     }
 
     override fun onClick(v: View) {
