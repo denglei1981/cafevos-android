@@ -81,13 +81,13 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_28"
+            android:layout_height="@dimen/dp_28"
             android:layout_marginStart="18dp"
             android:layout_marginTop="36dp"
             android:padding="4dp"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/icon_back_white"
+            android:src="@mipmap/back_w"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
