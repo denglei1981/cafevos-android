@@ -15,7 +15,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
-import com.changanford.shop.BuildConfig
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
@@ -49,7 +48,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
-        if(BuildConfig.DEBUG)Log.e("okhttp","goodsInfo:$goodsInfo")
+        if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
         dataBean.isAgree=false
         initLiveDataBus()

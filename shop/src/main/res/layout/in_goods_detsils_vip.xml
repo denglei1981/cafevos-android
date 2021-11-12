@@ -49,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:text_flags="0x10"
+            app:end_txt="@string/str_integral"
             tools:text="1600"
             android:visibility="@{model.getLineFbEmpty?View.GONE:View.VISIBLE}"
             android:text="@{model.fbLine}"
@@ -63,7 +64,7 @@
             app:start_txt="@string/str_hasChange"
             android:text="@{model.purchasedNum}"
             app:end_txt="@string/str_a"
-            android:textColor="@color/color_99"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_10" />
     </LinearLayout>
 </layout>

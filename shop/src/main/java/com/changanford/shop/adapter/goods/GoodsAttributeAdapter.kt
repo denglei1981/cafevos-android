@@ -52,7 +52,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         skuVos?.apply {
             for (item in this){
                 //skuVos是否包含 optionId可选属性
-                if(item.skuCodeArr[pos]==optionId){
+                if(item.skuCodeArr[pos]==optionId&&item.stock!="0"){
 //                    if(isUpdate){
 //                        //查询 optionId 的组合可能性是否也在 skuVos中
 //                        val skuCode=getTemporarySkuCode(optionId)

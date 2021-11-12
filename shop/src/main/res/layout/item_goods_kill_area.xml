@@ -95,7 +95,8 @@
                 android:text="@{model.fbOfLine}"
                 android:textColor="@color/color_cc"
                 android:textSize="@dimen/sp_10"
-                app:text_flags="0x10"/>
+                app:text_flags="0x10"
+                app:end_txt="@string/str_integral"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_stockPlusSalesCount"
                 app:layout_constraintTop_toBottomOf="@id/tv_integral"

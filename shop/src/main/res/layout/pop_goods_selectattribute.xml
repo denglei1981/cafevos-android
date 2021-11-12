@@ -79,7 +79,8 @@
                 android:text="@{model.fbLine}"
                 android:textColor="@color/color_cc"
                 android:textSize="@dimen/sp_12"
-                app:text_flags="0x10"/>
+                app:text_flags="0x10"
+                app:end_txt="@string/str_integral"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:scrollbars="vertical"

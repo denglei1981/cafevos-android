@@ -222,14 +222,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
             if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
-            else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
+            else if(stock<1){//库存不足,已售罄、已抢光
+                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+            } else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
                     btnSubmit.updateEnabled(false)
                 } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
                     btnSubmit.setStates(8)
-                }else if(stock<1){//库存不足,已售罄、已抢光
-                    btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
-                } else btnSubmit.setStates(5)
+                }else btnSubmit.setStates(5)
             }else btnSubmit.setStates(5)
         }
     }
