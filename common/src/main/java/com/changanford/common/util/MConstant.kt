@@ -1,6 +1,5 @@
 package com.changanford.common.util
 
-import com.changanford.common.BuildConfig
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import java.io.File
@@ -39,7 +38,7 @@ object MConstant {
         ) as Boolean else false
     }
     const val ISDEBUG = "isdebug"//SP保存测试环境
-    var isCanQeck = BuildConfig.DEBUG //用于控制切换、日志显示等DEBUG模式
+    var isCanQeck = com.changanford.common.BuildConfig.DEBUG //用于控制切换、日志显示等DEBUG模式
     val isShowLog: Boolean = isCanQeck //是否打印日志
 
     const val LOGIN_TOKEN = "LOGIN_TOKEN"

@@ -43,6 +43,9 @@
             app:labelTextPaddingTop="5dp"
             app:labelTextSize="13sp"
             app:lineMargin="@dimen/dp_13"
+            app:labelTextWidth="@dimen/dp_100"
+            app:labelGravity="center"
+            app:maxColumns="3"
             app:maxSelect="1"
             app:selectType="SINGLE"
             app:wordMargin="@dimen/dp_9" />
