@@ -241,6 +241,6 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     }
 
     private fun AppCompatTextView.MedalNum(num: Int) {
-        text = if (num == 0) "未获取勋章" else "${num}枚勋章"
+        text = "${num}枚勋章"
     }
 }

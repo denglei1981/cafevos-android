@@ -158,7 +158,7 @@ open class RecommendFragment :
 
     private fun toActs(item: RecommendData) {
         try {
-            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpVal)
+            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpValue)
             if (item.jumpType.toIntOrNull() == 2||item.jumpType.toIntOrNull()==1) {
                 item.wonderfulType?.let { viewModel.AddACTbrid(it) }
             }

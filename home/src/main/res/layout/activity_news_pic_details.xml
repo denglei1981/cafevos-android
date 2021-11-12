@@ -82,24 +82,24 @@
 
         <LinearLayout
             android:id="@+id/ll_special"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="18dp"
             android:background="@drawable/shape_home_di_blue"
             app:layout_constraintBottom_toTopOf="@+id/ll_comment"
             app:layout_constraintStart_toStartOf="@+id/home_tv_content"
-            app:layout_constraintTop_toBottomOf="@+id/home_tv_content"
-            app:layout_constraintWidth_percent="0.62">
+            app:layout_constraintTop_toBottomOf="@+id/home_tv_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="@dimen/dp_28"
-                android:layout_height="@dimen/dp_28"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginStart="@dimen/dp_3"
                 android:background="@drawable/shape_blue_819_bg"
                 android:gravity="center"
                 android:text="专题"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_10" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_topic_name"
@@ -109,6 +109,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:drawableEnd="@drawable/icon_home_next"
+                android:drawablePadding="@dimen/dp_18"
                 android:gravity="center_vertical|start"
                 android:text="@string/app_name"
                 android:textColor="#FEFEFE" />

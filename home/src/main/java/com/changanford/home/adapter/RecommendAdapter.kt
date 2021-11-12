@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -14,9 +13,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
@@ -28,8 +25,6 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
-import com.changanford.home.bean.BigShotPostBean
-import com.changanford.home.databinding.ItemBigShotItemsBinding
 import com.changanford.home.util.LoginUtil
 import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.DrawCenterTextView
@@ -329,9 +324,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     fun setLikeState(tvLikeView: DrawCenterTextView, isLike: Int, isAnim: Boolean) {
         if (isLike == 0) {
-            tvLikeView.setThumb(R.drawable.icon_home_bottom_unlike, isAnim)
+            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, isAnim)
         } else {
-            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, isAnim)
+            tvLikeView.setThumb(R.mipmap.home_comment_like, isAnim)
         }
     }
 
@@ -347,12 +342,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            tvLikeView.setThumb(R.drawable.icon_home_bottom_like, true)
+                            tvLikeView.setThumb(R.mipmap.home_comment_like, true)
                             item.postsLikesCount++
                         } else {
                             item.isLike = 0
                             item.postsLikesCount--
-                            tvLikeView.setThumb(R.drawable.icon_home_bottom_unlike, false)
+                            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, false)
                         }
                         tvLikeView.setPageTitleText(item.getLikeCount())
                     } else {
