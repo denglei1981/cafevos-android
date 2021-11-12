@@ -38,6 +38,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_11" />
         <com.changanford.shop.view.TypefaceTextView
+            android:textStyle="bold"
             android:id="@+id/tv_goods_title"
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_10"

@@ -18,7 +18,6 @@
         android:paddingEnd="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_16">
         <com.changanford.shop.view.TypefaceTextView
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/tv_orderParticulars"
             app:layout_constraintTop_toTopOf="parent"
