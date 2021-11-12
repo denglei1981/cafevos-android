@@ -80,17 +80,14 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             val item = bigShotPostListAdapter.getItem(position)
             JumpUtils.instans!!.jump(35,item.userId.toString())
         }
-        bigShotPostListAdapter.setOnItemClickListener(object :OnItemClickListener{
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val item = bigShotPostListAdapter.getItem(position)
-                selectPosition = position
-                // todo 跳转到帖子
-//                bundle.putString("postsId", value)
-//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
-                JumpUtils.instans!!.jump(4, item.postsId.toString())
-            }
-
-        })
+        bigShotPostListAdapter.setOnItemClickListener { adapter, view, position ->
+            val item = bigShotPostListAdapter.getItem(position)
+            selectPosition = position
+            // todo 跳转到帖子
+            //                bundle.putString("postsId", value)
+            //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            JumpUtils.instans!!.jump(4, item.postsId.toString())
+        }
     }
     override fun observe() {
         super.observe()
