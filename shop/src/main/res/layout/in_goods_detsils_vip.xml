@@ -64,7 +64,7 @@
             app:start_txt="@string/str_hasChange"
             android:text="@{model.purchasedNum}"
             app:end_txt="@string/str_a"
-            android:textColor="@color/color_99"
+            android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_10" />
     </LinearLayout>
 </layout>

@@ -94,7 +94,7 @@ fun decryResult(result: String, key: String): String = AESUtil.decrypts(result, 
 
 
 fun Map<String, Any>.body(key: String): RequestBody {
-    if (MConstant.isDebug)
+    if (MConstant.isShowLog)
         Log.d("OkHttp--body----------", JSON.toJSONString(this))
     return getAESBody(this, key).toRequestBody("application/json;charset=utf-8".toMediaType())
 }
