@@ -24,6 +24,7 @@ import com.changanford.home.bean.CommentListBean
 import com.changanford.home.databinding.DialogShortVideoCommentBinding
 import com.changanford.home.news.request.HomeCommentViewModel
 import com.changanford.home.widget.ReplyDialog
+import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kingja.loadsir.callback.Callback
@@ -81,7 +82,9 @@ open class CommentPicsDialog(
             onRetryBtnClick()
         } as Callback.OnReloadListener)
     }
-
+    private val customLoadMoreView: CustomLoadMoreView by lazy {
+        CustomLoadMoreView()
+    }
     override fun initView(savedInstanceState: Bundle?) {
         setLoadSir(mDatabind.commentList)
         mDatabind.commentList.adapter = commentAdapter
@@ -101,11 +104,10 @@ open class CommentPicsDialog(
             behavior?.setState(BottomSheetBehavior.STATE_HIDDEN)
         }
 
+        commentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         commentAdapter.loadMoreModule.setOnLoadMoreListener {
             requestShortVideoCommentViewMode.getNewsCommentList(bizId, true)
         }
-
-
     }
 
     fun getCommentList() {
