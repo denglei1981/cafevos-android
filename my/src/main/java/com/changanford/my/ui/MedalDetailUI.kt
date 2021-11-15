@@ -128,6 +128,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
         ) {
             var icon: AppCompatImageView = holder.rootView.findViewById(R.id.item_medal_icon)
             icon.load(data.medalImage, R.mipmap.ic_medal_ex)
+            icon.alpha = if (data.isGet == "1") 1f else 0.3f
 
             var medalName: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_title)
             medalName.text = data.medalName
