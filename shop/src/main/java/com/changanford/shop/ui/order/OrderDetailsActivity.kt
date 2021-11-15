@@ -23,6 +23,9 @@ import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -99,16 +102,15 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 "待付款","待支付"->{
                     binding.inOrderInfo.tvOther.visibility=View.GONE
                     binding.inOrderInfo.tvOtherValue.visibility=View.GONE
-//                    binding.tvOrderPrompt.apply {
-//                        visibility= View.GONE
-//                        setText(R.string.prompt_orderUpdateAddress)
-//                    }
                     val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
                     if(payCountDown>0){
                         timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
                             override fun onFinish() {
                                 //支付倒计时结束 刷新
-                                viewModel.getOrderDetail(orderNo)
+                                GlobalScope.launch {
+                                    delay(600L)
+                                    viewModel.getOrderDetail(orderNo)
+                                }
                             }
                         })
                         timeCountControl?.start()
