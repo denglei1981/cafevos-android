@@ -26,9 +26,9 @@ open class PublicPop(context: Context?): BasePopupWindow(context) {
         initView()
     }
     private fun initView(){
-        viewDataBinding.tvBtnLeft.setOnClickListener { this.listener?.onLeftClick()}
+        viewDataBinding.tvBtnLeft.setOnClickListener { if(this.listener!=null)this.listener?.onLeftClick() else dismiss()}
         viewDataBinding.tvBtnRight.setOnClickListener {
-            this.listener?.onRightClick()
+            if(this.listener!=null)this.listener?.onRightClick() else dismiss()
         }
     }
     fun showPopupWindow(content:String?,leftTxt:String?,rightTxt:String?,listener:OnPopClickListener?){

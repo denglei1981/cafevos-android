@@ -20,12 +20,11 @@ import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -106,11 +105,12 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     if(payCountDown>0){
                         timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
                             override fun onFinish() {
-                                //支付倒计时结束 刷新
-                                GlobalScope.launch {
-                                    delay(600L)
-                                    viewModel.getOrderDetail(orderNo)
-                                }
+                                createCloseOrderPop()
+//                                //支付倒计时结束 刷新
+//                                GlobalScope.launch {
+//                                    delay(1500L)
+//                                    viewModel.getOrderDetail(orderNo)
+//                                }
                             }
                         })
                         timeCountControl?.start()
@@ -228,6 +228,19 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             tvTotalPayFb.setText(totalPayName)
         }
         this.dataBean=dataBean
+    }
+    /**
+     * 订单关闭弹窗
+    * */
+    private fun createCloseOrderPop(){
+        PublicPop(this).apply {
+            showPopupWindow(context.getString(R.string.str_orderClosed),null,null)
+            onDismissListener = object :BasePopupWindow.OnDismissListener(){
+                override fun onDismiss() {
+                    viewModel.getOrderDetail(orderNo)
+                }
+            }
+        }
     }
     /**
      * 是否可申请售后 待发货、待收货、待评价、已完成时可以申请
