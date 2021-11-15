@@ -46,6 +46,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     }
     @SuppressLint("StringFormatMatches")
     private fun initData(){
+        viewDataBinding.model=dataBean
         dataBean.skuVos.forEach { it.skuCodeArr=it.skuCode.split("-") }
         mAdapter.skuVos=dataBean.skuVos
         mAdapter.setSkuCodes(_skuCode)
@@ -63,12 +64,14 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         dataBean.fbPrice=fbPrice
                         dataBean.orginPrice=orginPrice
                         viewDataBinding.addSubtractView.setIsAdd(true)
+                        viewDataBinding.tvIntegral.setText(fbPrice)
                     }else{
                         dataBean.skuImg=dataBean.imgs[0]
                         dataBean.stock=dataBean.allSkuStock
-                        dataBean.fbPrice=dataBean.orginPrice0?:"0"
+                        dataBean.fbPrice=dataBean.orFbPrice
                         dataBean.orginPrice=dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
+                        viewDataBinding.tvIntegral.setText(dataBean.orginPrice)
                     }
                     dataBean.price=dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
@@ -94,7 +97,6 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max,isLimitBuyNum)
                     control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
-                    viewDataBinding.model=dataBean
                 }
             }
         })
