@@ -71,7 +71,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         dataBean.fbPrice=dataBean.orFbPrice
                         dataBean.orginPrice=dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
-                        viewDataBinding.tvIntegral.setText(dataBean.orginPrice)
+                        viewDataBinding.tvIntegral.setText(if("SECKILL"==dataBean.spuPageType)dataBean.fbPrice else dataBean.orginPrice)
                     }
                     dataBean.price=dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
