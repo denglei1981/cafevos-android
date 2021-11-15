@@ -102,8 +102,6 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         tvLimitBuyNum.setText("$totalStock")
-//                        val limitBuyNum=dataBean.limitBuyNum?:"0"
-//                        if("0"!=limitBuyNum)tvLimitBuyNum.visibility=View.VISIBLE
                         model=dataBean
                     }
                 }

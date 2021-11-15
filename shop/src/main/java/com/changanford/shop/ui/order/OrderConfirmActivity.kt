@@ -57,7 +57,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     override fun initData() {
         binding.inGoodsInfo.addSubtractView.apply {
             val stock=dataBean.stock
-            val limitBuyNum=(dataBean.limitBuyNum?:"0").toInt()
+            val limitBuyNum:Int=dataBean.getLimitBuyNum()
             var isLimitBuyNum=false//是否限购
             val max: Int =if(limitBuyNum in 1..stock) {
                 isLimitBuyNum=true

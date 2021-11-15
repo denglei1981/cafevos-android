@@ -86,7 +86,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                     dataBean.skuCodeTxts=skuCodeTxtArr
                     viewDataBinding.sku= this
                     viewDataBinding.imgCover.load(dataBean.skuImg)
-                    val limitBuyNum:Int=(dataBean.limitBuyNum?:"0").toInt()
+                    val limitBuyNum:Int=dataBean.getLimitBuyNum()
                     val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock=dataBean.stock
                     WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")

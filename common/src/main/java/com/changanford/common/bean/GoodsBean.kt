@@ -219,11 +219,11 @@ data class GoodsDetailBean(
     var killStates: Int = 0,//秒杀状态
     var secondarySpuPageTagType: String? = "",
 ){
+    fun getLimitBuyNum():Int{
+       return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
+    }
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
-        if (TextUtils.isEmpty(fbLine)) {
-            return true
-        }
-        if (fbLine=="0") {
+        if (TextUtils.isEmpty(fbLine)||"0"==fbLine) {
             return true
         }
         return false
