@@ -416,7 +416,7 @@ data class OrderItemBean(
     var freightPrice: String? = "0.00",//运费 0为包邮
     var otherName: String? = "",
     var otherValue: String? = "",
-    var totalIntegral: String? = "0",
+    var totalIntegral: String? = null,
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价

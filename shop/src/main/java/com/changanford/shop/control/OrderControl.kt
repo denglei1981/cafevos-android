@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
-import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -19,7 +18,6 @@ import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
-import com.google.gson.Gson
 
 /**
  * @Author : wenke
@@ -71,7 +69,8 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
      * 去支付
      * */
     fun toPay(item: OrderItemBean){
-        PayConfirmActivity.start(Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
+//        PayConfirmActivity.start(Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
+        PayConfirmActivity.start(item.orderNo)
     }
     /**
      * 再次购买->商品详情

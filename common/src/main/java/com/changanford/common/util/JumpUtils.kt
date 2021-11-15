@@ -593,7 +593,7 @@ class JumpUtils {
             }
             110->{// 支付确认
                 if(!TextUtils.isEmpty(value)){
-                    bundle.putString("orderInfo", value)
+                    bundle.putString("orderNo", value)//订单号
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle,true)
                 }
             }

@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.order
 
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -30,8 +31,8 @@ import kotlinx.coroutines.launch
 class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(),
     TopBar.OnBackClickListener {
     companion object{
-        fun start(orderInfo:String) {
-            JumpUtils.instans?.jump(110,orderInfo)
+        fun start(orderNo:String) {
+            JumpUtils.instans?.jump(110,orderNo)
         }
     }
     private var timeCountControl:PayTimeCountControl?=null
@@ -44,16 +45,23 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         binding.topBar.setOnBackClickListener(this)
     }
     override fun initData() {
-        val orderInfo=intent.getStringExtra("orderInfo")
-        if(null==orderInfo){
-            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
-            this.finish()
+        var orderNo=intent.getStringExtra("orderNo")
+        if(TextUtils.isEmpty(orderNo)){
+            //兼容以前版本
+            intent.getStringExtra("orderInfo")?.apply {
+                if(this.startsWith("{")){
+                    orderInfoBean= Gson().fromJson(this,OrderInfoBean::class.java)
+                    orderNo=orderInfoBean?.orderNo
+                }
+            }
+        }
+        if (TextUtils.isEmpty(orderNo)){
+            ToastUtils.reToast(R.string.str_parameterIllegal)
             return
         }
-        orderInfoBean= Gson().fromJson(orderInfo,OrderInfoBean::class.java)
-        orderInfoBean?.orderNo?.let { viewModel.getOrderDetail(it) }
+        orderNo?.let { viewModel.getOrderDetail(it) }
         viewModel.orderItemLiveData.observe(this,{orderItem->
-            orderInfoBean?.accountFb?.let {orderItem.acountFb=it }
+//            orderInfoBean?.accountFb?.let {orderItem.acountFb=it }
             dataBean= orderItem
             bindingData()
         })
@@ -65,7 +73,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     }
     private fun bindingData(){
         binding.model=dataBean
-        binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.acountFb),"#00095B")
+        binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.totalIntegral),"#00095B")
         val payCountDown=dataBean?.waitPayCountDown?:waitPayCountDown
         if(payCountDown>0){
             timeCountControl?.cancel()

@@ -34,7 +34,6 @@
             app:start_txt="@string/str_total"
             android:text="@{model.fbCost}"
             app:end_txt="@string/str_integral"
-            tools:text="共计1300积分"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
