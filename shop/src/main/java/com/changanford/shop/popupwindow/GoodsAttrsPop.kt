@@ -55,7 +55,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         skuCodeLiveData.observe(activity,{ code ->
             dataBean.skuVos.apply {
                 _skuCode=code
-                (this.find { it.skuCode==code }?:this.find { it.fbPrice==dataBean.fbPrice }?:this[0]).apply {
+                //首页取选中的sku 然后是最低sku价格的
+                (find { it.skuCode==code }?:find { it.fbPrice==dataBean.orFbPrice }?:sortedBy{it.fbPrice.toFloat()}[0]).apply {
                     dataBean.skuId=skuId
                     if(!control.isInvalidSelectAttrs(_skuCode)){
                         dataBean.stock=stock.toInt()
