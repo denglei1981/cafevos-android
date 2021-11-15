@@ -21,7 +21,8 @@
         <!-- 商品订单-->
         <activity android:name=".ui.order.OrdersGoodsActivity"/>
         <!-- 商品订单-订单详情-->
-        <activity android:name=".ui.order.OrderDetailsActivity"/>
+        <activity android:name=".ui.order.OrderDetailsActivity"
+            android:launchMode="singleTask" />
         <!-- 所有订单-->
         <activity android:name=".ui.order.AllOrderActivity"/>
         <!--================================= 商城 End-->

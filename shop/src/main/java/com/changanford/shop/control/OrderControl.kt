@@ -75,8 +75,8 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
     /**
      * 再次购买->商品详情
      * */
-    fun onceAgainToBuy(item: OrderItemBean){
-        item.apply {
+    fun onceAgainToBuy(item: OrderItemBean?){
+        item?.apply {
             if("2"==busSourse){
                 //砍价
                 JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))

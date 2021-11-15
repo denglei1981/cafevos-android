@@ -1,6 +1,7 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -9,7 +10,6 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -36,8 +36,7 @@ import kotlin.math.abs
 class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
     companion object{
         fun start(orderNo:String?) {
-            if(MConstant.token.isEmpty()) JumpUtils.instans?.jump(100)
-            else orderNo?.let {JumpUtils.instans?.jump(5,orderNo) }
+            orderNo?.let {JumpUtils.instans?.jump(5,orderNo) }
         }
     }
     private val control by lazy { OrderControl(this,viewModel) }
@@ -55,12 +54,22 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             this.finish()
             return
         }
+        binding.inGoodsInfo.inGoodsInfo.layoutGoodsInfo.setOnClickListener {
+            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
+        }
     }
     override fun initData() {
         viewModel.orderItemLiveData.observe(this,{
             bindingData(it)
         })
         addLiveDataBus()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if(null!=intent){
+            orderNo=intent.getStringExtra("orderNo")?:orderNo
+        }
     }
     override fun onStart() {
         super.onStart()
