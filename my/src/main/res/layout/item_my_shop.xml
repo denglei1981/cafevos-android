@@ -52,35 +52,42 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_icon" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_integral"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_11"
                 android:layout_marginEnd="@dimen/dp_17"
                 android:layout_marginBottom="@dimen/dp_8"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="#1B3B89"
-                android:textSize="@dimen/sp_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/item_icon"
                 app:layout_constraintLeft_toRightOf="@+id/item_icon"
-                app:layout_constraintRight_toLeftOf="@+id/item_collect_num" />
+                app:layout_constraintRight_toRightOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_collect_num"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_11"
-                android:layout_marginEnd="@dimen/dp_17"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="@+id/item_icon"
-                app:layout_constraintLeft_toRightOf="@+id/item_integral"
-                app:layout_constraintRight_toRightOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_integral"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="#1B3B89"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintRight_toLeftOf="@+id/item_collect_num" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_collect_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="100人收藏"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
