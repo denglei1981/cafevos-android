@@ -35,8 +35,10 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import android.content.Intent
 import com.alibaba.android.arouter.launcher.ARouter
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterHomePath.SplashActivity
+import com.changanford.common.ui.dialog.PostDialog
 
 
 /**
@@ -99,31 +101,78 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                         }
                     } else {
                         JSON.toJSONString(postEntity).logD()
-                        AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
-                            .setNegativeButton("继续编辑") {
-                                startARouter(ARouterMyPath.MyPostDraftUI)
-                            }.setPositiveButton("不使用草稿") {
-                                CircleMainMenuPop(
-                                    requireContext(),
-                                    object : CircleMainMenuPop.CheckPostType {
-                                        override fun checkLongBar() {
-                                            startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                        activity?.let { it1 ->
+                            PostDialog(it1,"发现您还有草稿未发布",postButtonListener = object :PostDialog.PostButtonListener{
+                                override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+                                  var postEntity =  postEntity?.last()
+                                    when (postEntity?.type) {
+                                        "2" -> {
+                                            RouterManger.param("postEntity", postEntity!!)
+                                                .startARouter(ARouterCirclePath.PostActivity)
                                         }
-
-                                        override fun checkPic() {
-                                            startARouter(ARouterCirclePath.PostActivity, true)
+                                        "3" -> {
+                                            RouterManger.param("postEntity", postEntity!!)
+                                                .startARouter(ARouterCirclePath.VideoPostActivity)
                                         }
-
-                                        override fun checkVideo() {
-                                            startARouter(ARouterCirclePath.VideoPostActivity, true)
+                                        "4" -> {
+                                            RouterManger.param("postEntity", postEntity!!)
+                                                .startARouter(ARouterCirclePath.LongPostAvtivity)
                                         }
-
-                                    }).run {
-                                    setBlurBackgroundEnable(false)
-                                    showPopupWindow(binding.ivMenu)
-                                    initData()
+                                    }
                                 }
-                            }.show()
+
+                                override fun cancle() {  //不使用草稿
+                                    CircleMainMenuPop(
+                                        requireContext(),
+                                        object : CircleMainMenuPop.CheckPostType {
+                                            override fun checkLongBar() {
+                                                startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                                            }
+
+                                            override fun checkPic() {
+                                                startARouter(ARouterCirclePath.PostActivity, true)
+                                            }
+
+                                            override fun checkVideo() {
+                                                startARouter(ARouterCirclePath.VideoPostActivity, true)
+                                            }
+
+                                        }).run {
+                                        setBlurBackgroundEnable(false)
+                                        showPopupWindow(binding.ivMenu)
+                                        initData()
+                                    }
+                                }
+
+
+                            }).show()
+                        }
+
+//                        AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
+//                            .setNegativeButton("继续编辑") {
+//                                startARouter(ARouterMyPath.MyPostDraftUI)
+//                            }.setPositiveButton("不使用草稿") {
+//                                CircleMainMenuPop(
+//                                    requireContext(),
+//                                    object : CircleMainMenuPop.CheckPostType {
+//                                        override fun checkLongBar() {
+//                                            startARouter(ARouterCirclePath.LongPostAvtivity, true)
+//                                        }
+//
+//                                        override fun checkPic() {
+//                                            startARouter(ARouterCirclePath.PostActivity, true)
+//                                        }
+//
+//                                        override fun checkVideo() {
+//                                            startARouter(ARouterCirclePath.VideoPostActivity, true)
+//                                        }
+//
+//                                    }).run {
+//                                    setBlurBackgroundEnable(false)
+//                                    showPopupWindow(binding.ivMenu)
+//                                    initData()
+//                                }
+//                            }.show()
                     }
                 } else {
                     BindDialog(binding.ivMenu.context).show()

@@ -482,7 +482,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         bundle.putInt("position", 0)
                         bundle.putInt("showEditType", -1)
                         startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-
+                        finish()
                     }
 
                     override fun onCancel() {
@@ -739,6 +739,75 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             ) {
             }
         })
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        return super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            var postsId = intent?.getStringExtra("postsId")
+            if (binding.etBiaoti.text.toString().isEmpty()) {
+                finish()
+            } else {
+                if (!postsId.isNullOrEmpty()){
+                    finish()
+                    return true
+                }
+                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
+                    override fun con() {
+                        finish()
+                    }
+
+                    override fun save() {
+                        var postEntity =
+                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                        postEntity.content = binding.etContent.text.toString() //内容
+                        postEntity.circleId =
+                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+                        postEntity.circleName = circlename  //选择圈子的名称
+                        postEntity.plate =
+                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+                        postEntity.plateName = platename  //模块名称
+                        postEntity.topicId =
+                            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                        postEntity.keywords =
+                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+                        postEntity.localMeadle = JSON.toJSONString(selectList)
+                        postEntity.actionCode =
+                            if (params["actionCode"] != null) params["actionCode"] as String else ""
+                        postEntity.fmpath =
+                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+                        postEntity.type = "2"  //图片帖子类型
+                        postEntity.title = binding.etBiaoti.text.toString()
+                        postEntity.address =
+                            if (params["address"] != null) params["address"] as String else ""
+                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+                        postEntity.city =
+                            if (params["city"] != null) params["city"] as String else ""
+                        postEntity.province =
+                            if (params["province"] != null) params["province"] as String else ""
+                        postEntity.cityCode =
+                            if (params["cityCode"] != null) params["cityCode"] as String else ""
+                        postEntity.creattime = System.currentTimeMillis().toString()
+                        if (locaPostEntity == null) {
+                            viewModel.insertPostentity(postEntity)
+                        } else {
+                            viewModel.update(postEntity)
+                        }
+                        finish()
+                    }
+
+                    override fun unsave() {
+//                    viewModel.clearPost()
+                        finish()
+                    }
+
+                }).showPopupWindow()
+            }
+        }
+        return false
     }
 
     fun addPost(dialog: LoadDialog) {
