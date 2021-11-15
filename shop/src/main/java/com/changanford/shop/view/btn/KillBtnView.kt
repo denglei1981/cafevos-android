@@ -13,10 +13,10 @@ import com.changanford.shop.R
  * @Description : KillBtnView
  */
 class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(context,attrs) {
-    private var btnStates=-1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8余额不足 9提交订单 10 已提醒
+    private var btnStates=-1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换 6已售罄 7详情秒杀未开始 8余额不足 9提交订单 10 已提醒 11订单详情
     private val statesTxt= arrayOf(R.string.str_toSnapUp,R.string.str_hasGone,
         R.string.str_hasEnded, R.string.str_remindMe,R.string.str_cancelReminder,
-        R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut,R.string.str_notStart,R.string.str_lackBalance,R.string.str_submitOrder,R.string.str_haveToRemind)
+        R.string.str_immediatelyChange,R.string.str_hasBeenSoldOut,R.string.str_notStart,R.string.str_lackBalance,R.string.str_submitOrder,R.string.str_haveToRemind,R.string.str_orderDetails,R.string.str_payConfirm)
     init {
         initAttributes(context, attrs)
     }
@@ -62,8 +62,8 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.color_37AA74))
                 isEnabled=states==4
             }
-            //立即兑换、提交订单
-            5,9->{
+            //立即兑换、提交订单、订单详情、确认支付
+            5,9,11,12->{
                 setBackgroundResource(R.drawable.btn_selector)
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true

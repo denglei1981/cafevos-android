@@ -72,18 +72,24 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         })
     }
     private fun bindingData(){
-        binding.model=dataBean
-        binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,dataBean?.totalIntegral),"#00095B")
-        val payCountDown=dataBean?.waitPayCountDown?:waitPayCountDown
-        if(payCountDown>0){
-            timeCountControl?.cancel()
-            timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
-                override fun onFinish() {
-                    payResults(false)
-                }
-            })
-            timeCountControl?.start()
+        dataBean?.apply {
+            binding.model=this
+            binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
+            //账户余额小于所支付额度 则余额不足
+            if(totalIntegral!!.toFloat()<fbCost!!.toFloat())binding.btnSubmit.setStates(8)
+            else binding.btnSubmit.setStates(12)
+            val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
+            if(payCountDown>0){
+                timeCountControl?.cancel()
+                timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
+                    override fun onFinish() {
+                        payResults(false)
+                    }
+                })
+                timeCountControl?.start()
+            }
         }
+
     }
     /**
      * [isSuccessful]支付成功、支付失败
@@ -98,18 +104,19 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             val dTop=ContextCompat.getDrawable(this@PayConfirmActivity,if(isSuccessful)R.mipmap.shop_pay_succes else R.mipmap.shop_pay_failure)
             tvPayResultsState.setCompoundDrawablesRelativeWithIntrinsicBounds(null,dTop,null,null)
         }
-        binding.btnSubmit.setText(R.string.str_orderDetails)
+        binding.btnSubmit.setStates(11)
     }
     fun btnSubmit(v:View){
         dataBean?.let {
             if(!isClickSubmit){
                 isClickSubmit=true
-                if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){//支付
-                    viewModel.fbPay(it.orderNo)
-                }else {
-                    OrderDetailsActivity.start(it.orderNo)
-                    isClickSubmit=false
-                    if(isPaySuccessful)this.finish()
+                when(binding.btnSubmit.text){
+                    getString(R.string.str_payConfirm)-> viewModel.fbPay(it.orderNo)
+                    getString(R.string.str_orderDetails)->{
+                        OrderDetailsActivity.start(it.orderNo)
+                        isClickSubmit=false
+                        if(isPaySuccessful)this.finish()
+                    }
                 }
             }
             GlobalScope.launch {

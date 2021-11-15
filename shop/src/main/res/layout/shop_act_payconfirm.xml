@@ -54,7 +54,7 @@
             tools:visibility="gone"
             android:id="@+id/in_payResults"
             layout="@layout/in_pay_results"/>
-        <androidx.appcompat.widget.AppCompatButton
+        <com.changanford.shop.view.btn.KillBtnView
             android:onClick="btnSubmit"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
