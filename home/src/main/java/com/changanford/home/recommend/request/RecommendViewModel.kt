@@ -1,23 +1,21 @@
 package com.changanford.home.recommend.request
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.net.*
+import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.data.TwoAdData
 import kotlinx.coroutines.launch
 
 class RecommendViewModel : BaseViewModel() {
 
-    var recommendLiveData: MutableLiveData<UpdateUiState<RecommendListBean>> = MutableLiveData()
+    var recommendLiveData: SafeMutableLiveData<UpdateUiState<RecommendListBean>> = SafeMutableLiveData()
 
-    val recommendBannerLiveData : MutableLiveData<UpdateUiState<List<AdBean>>> = MutableLiveData()
+    val recommendBannerLiveData : SafeMutableLiveData<UpdateUiState<List<AdBean>>> = SafeMutableLiveData()
 
 
     var pageNo: Int = 1

@@ -123,7 +123,7 @@ open class RecommendFragment :
     override fun observe() {
         super.observe()
         bus()
-        viewModel.recommendBannerLiveData.observe(this, Observer {
+        viewModel.recommendBannerLiveData.safeObserve(this, Observer {
             it.toString().logD()
             if (it.isSuccess) {
                 if (it.data == null || it.data.isEmpty()) {
@@ -139,7 +139,13 @@ open class RecommendFragment :
                 headNewBinding?.bViewpager?.visibility = View.GONE
                 headNewBinding?.drIndicator?.visibility = View.GONE
             }
+
         })
+
+
+
+
+
     }
 
     private fun toPostOrNews(item: RecommendData) { // 跳转到资讯，或者 帖子
@@ -230,7 +236,7 @@ open class RecommendFragment :
         })
     }
     override fun initData() {
-        viewModel.recommendLiveData.observe(this, Observer {
+        viewModel.recommendLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {
