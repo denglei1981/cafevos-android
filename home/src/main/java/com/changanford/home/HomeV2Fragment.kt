@@ -368,10 +368,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
-//        viewModel.permsLiveData.observe(this, Observer {
-//            publishPopup?.changPerm(it)
-//        })
-
         viewModel.twoBannerLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 appIndexBackground = it.data.app_index_background  // 背景广告
@@ -415,17 +411,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
 
         })
-        bus()
+
     }
 
 
     private fun bus() {
-        LiveDataBus.get().withs<String>("Gone").observe(this, {
-//            binding.appbarLayout.setExpanded(false)
-        })
-        LiveDataBus.get().withs<String>("Visi").observe(this, {
-//            binding.appbarLayout.setExpanded(true)
-        })
+
     }
 
     fun stopRefresh() {
