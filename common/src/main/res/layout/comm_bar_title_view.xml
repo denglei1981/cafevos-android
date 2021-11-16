@@ -94,6 +94,8 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
+                    android:paddingLeft="@dimen/dp_70"
+                    android:paddingRight="@dimen/dp_70"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
