@@ -17,7 +17,7 @@ class RecommendViewModel : BaseViewModel() {
 
     var recommendLiveData: MutableLiveData<UpdateUiState<RecommendListBean>> = MutableLiveData()
 
-    val recommendBannerLiveData : MutableLiveData<UpdateUiState<List<AdBean>>> = MutableLiveData()//
+    val recommendBannerLiveData : MutableLiveData<UpdateUiState<List<AdBean>>> = MutableLiveData()
 
 
     var pageNo: Int = 1
