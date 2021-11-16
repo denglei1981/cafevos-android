@@ -353,7 +353,7 @@ data class OrderItemBean(
     val dataState: String = "",
     val discount: String = "0",
     val discountScale: Int = 0,
-    val evalStatus: String? = "",
+    var evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: String = "0",
     var fbOfUnitPrice: String = "0",

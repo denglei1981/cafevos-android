@@ -41,7 +41,7 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         if(arguments!=null){
             statesId= requireArguments().getInt("statesId", -1)
             mAdapter.orderSource=statesId
-            viewModel.getShopOrderList(statesId,pageNo,showLoading = -1==statesId)
+//            viewModel.getShopOrderList(statesId,pageNo,showLoading = -1==statesId)
         }
         viewModel.shopOrderData.observe(this,{
             it?.let {
@@ -65,6 +65,11 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        pageNo=1
+        viewModel.getShopOrderList(statesId,pageNo,showLoading = (-1==statesId&&mAdapter.data.size<1))
+    }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         pageNo=1
         viewModel.getShopOrderList(statesId,pageNo)

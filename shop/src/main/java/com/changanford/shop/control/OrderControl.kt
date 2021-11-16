@@ -109,6 +109,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                             ToastUtils.showShortToast(R.string.str_goodsSuccessfully,context)
                             item.orderStatusName=""
                             item.orderStatus="FINISH"
+                            item.evalStatus="WAIT_EVAL"
                             listener?.onFinish(0)
                             dismiss()
                         }
