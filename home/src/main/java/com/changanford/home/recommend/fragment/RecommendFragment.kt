@@ -1,14 +1,17 @@
 package com.changanford.home.recommend.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
@@ -16,11 +19,15 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.ShadowLayout.TAG
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
+import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.data.AdBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.databinding.RecommendHeaderBinding
@@ -117,6 +124,7 @@ open class RecommendFragment :
         super.observe()
         bus()
         viewModel.recommendBannerLiveData.observe(this, Observer {
+            it.toString().logD()
             if (it.isSuccess) {
                 if (it.data == null || it.data.isEmpty()) {
                     headNewBinding?.bViewpager?.visibility = View.GONE
@@ -128,11 +136,9 @@ open class RecommendFragment :
                 headNewBinding?.bViewpager?.refreshData(it.data)
 
             } else {
-                //
                 headNewBinding?.bViewpager?.visibility = View.GONE
                 headNewBinding?.drIndicator?.visibility = View.GONE
             }
-
         })
     }
 
@@ -201,9 +207,9 @@ open class RecommendFragment :
                 }
             })
 
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, Observer{
             if (selectPosition == -1) {
-                return@observe
+                return@Observer
             }
             val bean = recommendAdapter.getItem(selectPosition)
             if (bean.authors?.isFollow != it) { // 关注不相同，以详情的为准。。
@@ -214,7 +220,7 @@ open class RecommendFragment :
         })
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
+            .observe(this, Observer{
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
             })
@@ -293,3 +299,7 @@ open class RecommendFragment :
         headNewBinding?.bViewpager?.stopLoop()
     }
 }
+
+
+
+

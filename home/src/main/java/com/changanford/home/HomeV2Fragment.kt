@@ -28,10 +28,12 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
+import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
+import com.changanford.home.data.TwoAdData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
@@ -368,50 +370,52 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
-        viewModel.twoBannerLiveData.observe(this, Observer {
-            if (it.isSuccess) {
-                appIndexBackground = it.data.app_index_background  // 背景广告
-                appIndexBackground?.get(0)?.let { adBean -> backImageViewTouch(adBean) }
-
-//                binding.recommendContent.ivHome.setOnClickListener {
-//                    if (appIndexBackground != null && appIndexBackground?.size!! > 0) {
-//                        val adBean = appIndexBackground!![0]
-//                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
+//        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
+//            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
+//                if (t.isSuccess) {
+//                    appIndexBackground = t.data.app_index_background  // 背景广告
+//                    appIndexBackground?.get(0)?.let { adBean -> backImageViewTouch(adBean) }
+//
+////                binding.recommendContent.ivHome.setOnClickListener {
+////                    if (appIndexBackground != null && appIndexBackground?.size!! > 0) {
+////                        val adBean = appIndexBackground!![0]
+////                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
+////                    }
+////                }
+//                    appIndexBackground?.forEach { b -> // 背景。
+//                        val endsWithGif = b.adImg.endsWith(".gif")
+//                        if (endsWithGif) {
+//                            GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
+//                        } else {
+//                            GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
+//                        }
 //                    }
+//
+//                    val appIndexTopic = t.data.app_index_topic
+//                    appIndexTopic.forEach { t -> // 话题
+//                        binding.recommendContent.tvTopicTitle.text = t.adSubName
+//                        binding.recommendContent.tvBigTopic.text = t.adName
+//                        binding.recommendContent.tvBigTopic.setOnClickListener {
+//                            JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
+//                        }
+//                        binding.recommendContent.tvTopicTitle.setOnClickListener {
+//                            JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
+//                        }
+//                    }
+//                    val appIndexBanner = t.data.app_index_banner
+//                    appIndexBanner.forEach { b -> // banner
+//                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivBanner)
+//                        binding.recommendContent.ivBanner.setOnClickListener {
+//                            JumpUtils.instans?.jump(b.jumpDataType, b.jumpDataValue)
+//                        }
+//                    }
+//                    val appIndexAds = t.data.app_index_ads
+//                    twoAdRvListAdapter.setNewInstance(appIndexAds)
 //                }
-                appIndexBackground?.forEach { b -> // 背景。
-                    val endsWithGif = b.adImg.endsWith(".gif")
-                    if (endsWithGif) {
-                        GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
-                    } else {
-                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
-                    }
-                }
+//            }
+//
+//        })
 
-                val appIndexTopic = it.data.app_index_topic
-                appIndexTopic.forEach { t -> // 话题
-                    binding.recommendContent.tvTopicTitle.text = t.adSubName
-                    binding.recommendContent.tvBigTopic.text = t.adName
-                    binding.recommendContent.tvBigTopic.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
-                    }
-                    binding.recommendContent.tvTopicTitle.setOnClickListener {
-                        JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
-                    }
-                }
-                val appIndexBanner = it.data.app_index_banner
-                appIndexBanner.forEach { b -> // banner
-                    GlideUtils.loadBD(b.adImg, binding.recommendContent.ivBanner)
-                    binding.recommendContent.ivBanner.setOnClickListener {
-                        JumpUtils.instans?.jump(b.jumpDataType, b.jumpDataValue)
-                    }
-                }
-                val appIndexAds = it.data.app_index_ads
-                twoAdRvListAdapter.setNewInstance(appIndexAds)
-            }
-
-        })
-//        bus()
     }
 
 
