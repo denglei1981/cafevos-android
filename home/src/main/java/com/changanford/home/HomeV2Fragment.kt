@@ -415,9 +415,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
 
-    private fun bus() {
 
-    }
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
