@@ -132,7 +132,9 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         }
                     }
                     //待发货
-                    "WAIT_SEND"-> {}
+                    "WAIT_SEND"-> {
+                        dataBinding.btnConfirm.visibility=View.INVISIBLE
+                    }
                     //待收货->可确认收货
                     "WAIT_RECEIVE"-> {
                         dataBinding.btnConfirm.apply {
