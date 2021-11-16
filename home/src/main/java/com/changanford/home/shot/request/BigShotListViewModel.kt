@@ -3,6 +3,7 @@ package com.changanford.home.shot.request
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
+import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -13,11 +14,11 @@ import com.changanford.home.bean.NewsListMainBean
 
 
 class BigShotListViewModel : BaseViewModel() {
-    val bigShotsLiveData = MutableLiveData<UpdateUiState<List<BigShotRecommendBean>>>() // 推荐的大咖
+    val bigShotsLiveData = SafeMutableLiveData<UpdateUiState<List<BigShotRecommendBean>>>() // 推荐的大咖
 
-    val bigShotPostLiveData = MutableLiveData<UpdateUiState<ListMainBean<BigShotPostBean>>>() //
+    val bigShotPostLiveData = SafeMutableLiveData<UpdateUiState<ListMainBean<BigShotPostBean>>>() //
 
-    val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
+    val followLiveData = SafeMutableLiveData<UpdateUiState<Any>>() // 关注否?。
     var pageNo: Int = 1
 
     /**

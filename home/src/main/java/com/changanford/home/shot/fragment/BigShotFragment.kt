@@ -91,7 +91,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
     override fun observe() {
         super.observe()
-        viewModel.bigShotsLiveData.observe(this, Observer {
+        viewModel.bigShotsLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 showContent()
                 bigShotUserListAdapter.setNewInstance(it.data as? MutableList<BigShotRecommendBean>)
@@ -101,7 +101,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
         })
         // 大咖帖子列表。
-        viewModel.bigShotPostLiveData.observe(this, Observer {
+        viewModel.bigShotPostLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 showContent()
                 if (it.isLoadMore) {

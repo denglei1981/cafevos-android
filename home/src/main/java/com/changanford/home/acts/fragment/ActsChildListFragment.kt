@@ -95,7 +95,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
 
     override fun observe() {
         super.observe()
-        viewModel.actsLiveData.observe(this, androidx.lifecycle.Observer {
+        viewModel.actsLiveData.safeObserve(this, androidx.lifecycle.Observer {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
                     searchActsResultAdapter.addData(it.data.dataList)
@@ -118,11 +118,11 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
             }
         })
 
-        viewModel.guanfang.observe(this, androidx.lifecycle.Observer {
+        viewModel.guanfang.safeObserve(this, androidx.lifecycle.Observer {
             // 记录官方渠道
             officialEnum = it
         })
-        viewModel.xianshang.observe(this, androidx.lifecycle.Observer {
+        viewModel.xianshang.safeObserve(this, androidx.lifecycle.Observer {
             xianshangEnum = it
         })
 
