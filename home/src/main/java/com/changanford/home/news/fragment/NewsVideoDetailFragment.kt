@@ -242,7 +242,7 @@ class NewsVideoDetailFragment :
             if (it.isSuccess) {
                 isNeedNotify = true
                 setLikeState()
-                toastShow(it.toString())
+//                toastShow(it.data.toString())
             } else {// 网络原因操作失败了。
                 //
 //                ToastUtils.showShortToast(it.message, this)
@@ -257,7 +257,6 @@ class NewsVideoDetailFragment :
                     newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -267,7 +266,6 @@ class NewsVideoDetailFragment :
             try {
                 if (it.isSuccess) {
                     setCollection()
-                    toastShow(it.data.toString())
                 } else {
                     toastShow(it.message)
                 }

@@ -338,7 +338,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
-                    toastShow(it.data.toString())
                     setLikeState()
                 } else {// 网络原因操作失败了。
                     toastShow(it.message)
@@ -386,7 +385,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             try {
                 if (it.isSuccess) {
                     setCollection()
-                    toastShow(it.data.toString())
                 } else {
                     toastShow(it.message)
                 }

@@ -119,7 +119,8 @@ class NewsDetailViewModel : BaseViewModel() {
             ApiClient.createApi<HomeNetWork>()
                 .actionLike(requestBody.header(rkey), requestBody.body(rkey))
                 .also {
-                    val updateUiState = UpdateUiState<Any>(it.msg, true, "")
+                    it.msg.toast()
+                    val updateUiState = UpdateUiState<Any>(it.msg, true, it.msg)
                     actionLikeLiveData.postValue(updateUiState)
                 }
         }, error = {
@@ -157,6 +158,7 @@ class NewsDetailViewModel : BaseViewModel() {
                 .collectionApi(requestBody.header(rkey), requestBody.body(rkey)).also {
                     val updateUiState = UpdateUiState<Any>(it.msg, true, "")
                     collectLiveData.postValue(updateUiState)
+                    toastShow(it.msg)
                 }
         },error = {
             toastShow(it.message.toString())

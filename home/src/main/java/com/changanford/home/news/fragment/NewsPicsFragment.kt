@@ -125,7 +125,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             try {
                 if (it.isSuccess) {
                     isNeedNotify = true
-                    toastShow(it.data.toString())
                     setLikeState()
                 } else {// 网络原因操作失败了。
                     toastShow(it.message)
@@ -143,23 +142,15 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                     newsDetailData?.let { it1 -> surefollow(it1, followType) }
                 } else {
                     toastShow(it.message)
-//                    newsDetailData?.let {na  ->
-//                        val followType = na.authors.isFollow
-//                        na.authors.isFollow = if (followType == 1)  2  else  1
-//                        setFollowState(binding.layoutHeader.btnFollow, na.authors)
-//                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         })
-
         viewModel.collectLiveData.observe(this, Observer {
             try {
                 if (it.isSuccess) {
                     setCollection()
-                    toastShow(it.data.toString())
                 } else {
                     toastShow(it.message)
                 }
@@ -167,7 +158,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 e.printStackTrace()
             }
         })
-
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {

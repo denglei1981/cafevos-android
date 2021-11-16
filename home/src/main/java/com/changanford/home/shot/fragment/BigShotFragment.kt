@@ -84,8 +84,8 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             val item = bigShotPostListAdapter.getItem(position)
             selectPosition = position
             // todo 跳转到帖子
-            //                bundle.putString("postsId", value)
-            //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            //bundle.putString("postsId", value)
+            //startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             JumpUtils.instans!!.jump(4, item.postsId.toString())
         }
     }
