@@ -241,3 +241,8 @@
 #DKVideoPlayer
 -keep class com.dueeeke.videoplayer.** { *; }
 -dontwarn com.dueeeke.videoplayer.**
+
+#崩溃
+-keep class com.changanford.common.util.crash.IProtectActivityStartUp{*;}
+-keepclassmembers class com.changanford.common.util.crash.IProtectActivityStartUp{*;}
+-keepclassmembers class com.changanford.common.util.crash.ReflexUtil{*;}

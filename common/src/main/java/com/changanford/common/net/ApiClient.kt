@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  */
 object ApiClient {
 
-    private const val TIME_OUT = 30L
+    private const val TIME_OUT = 60L
     private val gson: Gson by lazy {
         GsonBuilder().setLenient().create()
     }

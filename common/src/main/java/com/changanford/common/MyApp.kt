@@ -11,6 +11,7 @@ import com.changanford.common.loadsir.TimeoutCallback
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.crash.CrashProtect
 
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
@@ -61,6 +62,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
     override fun onCreate() {
         super.onCreate()
         mContext = this
+        CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
         LanSoEditor.initSDK(this, "ft")
         LanSongFileUtil.setFileDir(MConstant.ftFilesDir)

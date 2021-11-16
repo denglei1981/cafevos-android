@@ -3,11 +3,16 @@
     package="com.changanford.home">
 
     <application>
-        <activity android:name=".news.activity.SpecialListActivity" />
-        <activity android:name=".news.activity.SpecialDetailActivity" />
-        <activity android:name=".search.activity.PolySearchActivity" />
-        <activity android:name=".search.activity.PloySearchResultActivity" />
-        <activity android:name=".news.activity.NewsPicAdActivity" />
+        <activity android:name=".news.activity.SpecialListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.activity.SpecialDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".search.activity.PolySearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".search.activity.PloySearchResultActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.activity.NewsPicAdActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".news.activity.InfoDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"

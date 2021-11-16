@@ -157,10 +157,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 Db.myDb.saveData("name", it[0].name)
             }
         })
-        updateViewModel._updateInfo.observe(this, { info ->
+        updateViewModel._updateInfo.observe(this, Observer { info ->
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
-                    return@observe
+                    return@Observer
                 }
                 var dialog = UpdateAlertDialog(this)
                 dialog.builder().setPositiveButton("立即更新") {
@@ -289,7 +289,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 setHomBottomNavi(View.VISIBLE)
             }
         })
-        LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB, Boolean::class.java).observe(this, {
+        LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB, Boolean::class.java).observe(this, Observer {
             if (it) {
                 lifecycleScope.launch {
                     MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
@@ -297,7 +297,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         })
-        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this,{
+        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this, Observer {
             if (it as Boolean){//true 显示
                 ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgVisible()
             } else {

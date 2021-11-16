@@ -7,24 +7,33 @@
         <activity android:name=".ui.IntegralDetailsActivity"/>
         <!-- 商品详情-->
         <activity android:name=".ui.goods.GoodsDetailsActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask" />
         <!-- 订单确认-->
-        <activity android:name=".ui.order.OrderConfirmActivity"/>
+        <activity android:name=".ui.order.OrderConfirmActivity"
+            android:screenOrientation="portrait"/>
         <!-- 确认支付-->
-        <activity android:name=".ui.order.PayConfirmActivity"/>
+        <activity android:name=".ui.order.PayConfirmActivity"
+            android:screenOrientation="portrait"/>
         <!-- 商品评价-->
-        <activity android:name=".ui.goods.GoodsEvaluateActivity"/>
+        <activity android:name=".ui.goods.GoodsEvaluateActivity"
+            android:screenOrientation="portrait"/>
         <!-- 商品秒杀-->
-        <activity android:name=".ui.goods.GoodsKillAreaActivity"/>
+        <activity android:name=".ui.goods.GoodsKillAreaActivity"
+            android:screenOrientation="portrait"/>
         <!-- 订单评价-->
-        <activity android:name=".ui.order.OrderEvaluationActivity"/>
+        <activity android:name=".ui.order.OrderEvaluationActivity"
+            android:screenOrientation="portrait"/>
         <!-- 商品订单-->
-        <activity android:name=".ui.order.OrdersGoodsActivity"/>
+        <activity android:name=".ui.order.OrdersGoodsActivity"
+            android:screenOrientation="portrait"/>
         <!-- 商品订单-订单详情-->
         <activity android:name=".ui.order.OrderDetailsActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask" />
         <!-- 所有订单-->
-        <activity android:name=".ui.order.AllOrderActivity"/>
+        <activity android:name=".ui.order.AllOrderActivity"
+            android:screenOrientation="portrait"/>
         <!--================================= 商城 End-->
     </application>
 </manifest>

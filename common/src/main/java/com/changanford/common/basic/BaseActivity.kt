@@ -83,7 +83,11 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     override fun onResume() {
         super.onResume()
         curActivity = this
-        currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
+        try {
+            currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
     open fun observe(){}
