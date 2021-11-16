@@ -48,8 +48,11 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.ui.dialog.BindDialog
+import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
@@ -131,15 +134,46 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private fun initListener(circleName: String) {
         binding.ivPostBar.setOnClickListener {
+            if (MineUtils.getBindMobileJumpDataType()){
+                BindDialog(this).show()
+                return@setOnClickListener
+            }
             if (postEntity?.size == 0) {
                 initPop(circleName)
             } else {
-                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
-                    .setNegativeButton("继续编辑") {
-                        RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
-                    }.setPositiveButton("不使用草稿") {
-                        initPop(circleName)
-                    }.show()
+                this.let { it1 ->
+                    PostDialog(it1,"发现您还有草稿未发布",postButtonListener = object : PostDialog.PostButtonListener{
+                        override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+                            var postEntity =  postEntity?.last()
+                            when (postEntity?.type) {
+                                "2" -> {
+                                    RouterManger.param("postEntity", postEntity)
+                                        .startARouter(ARouterCirclePath.PostActivity)
+                                }
+                                "3" -> {
+                                    RouterManger.param("postEntity", postEntity)
+                                        .startARouter(ARouterCirclePath.VideoPostActivity)
+                                }
+                                "4" -> {
+                                    RouterManger.param("postEntity", postEntity)
+                                        .startARouter(ARouterCirclePath.LongPostAvtivity)
+                                }
+                            }
+                        }
+
+                        override fun cancle() {  //不使用草稿
+                            initPop(circleName)
+                        }
+
+
+                    }).show()
+                }
+//                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
+//                    .setNegativeButton("继续编辑") {
+//                        RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+//                    }.setPositiveButton("不使用草稿") {
+//                        initPop(circleName)
+//                    }.show()
             }
 
         }
