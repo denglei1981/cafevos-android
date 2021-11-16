@@ -65,16 +65,16 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->
-            val recommendUser = bigShotUserListAdapter.getItem(position)
-            if(!TextUtils.isEmpty(MConstant.token)){
-                when(view.id){
-                    R.id.btn_follow->{
-                        followAction(recommendUser,position)
-                    }
-                }
-            }else{
-                startARouter(ARouterMyPath.SignUI)
-            }
+//            val recommendUser = bigShotUserListAdapter.getItem(position)
+//            if(!TextUtils.isEmpty(MConstant.token)){
+//                when(view.id){
+//                    R.id.btn_follow->{
+//                        followAction(recommendUser,position)
+//                    }
+//                }
+//            }else{
+//                startARouter(ARouterMyPath.SignUI)
+//            }
         }
         bigShotPostListAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = bigShotPostListAdapter.getItem(position)
