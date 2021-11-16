@@ -67,7 +67,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         //详情
         val detailsHtml=dataBean.detailsHtml
 //        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
-        CustomWebHelper(activity, headerBinding.webview).loadDataWithBaseURL(detailsHtml)
+        CustomWebHelper(activity, headerBinding.webview,false).loadDataWithBaseURL(detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")

@@ -21,11 +21,10 @@ import com.just.agentweb.WebViewClient
  * @Date: 2020/6/6
  * @Des: WebView基础配置
  */
-class CustomWebHelper(activity: Activity, private var webView: WebView?) {
-
+class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargin:Boolean=true) {
     init {
         if (webView != null) {
-            if (webView?.layoutParams is ViewGroup.MarginLayoutParams) {
+            if (isMargin&&webView?.layoutParams is ViewGroup.MarginLayoutParams) {
                 val params = webView?.layoutParams as ViewGroup.MarginLayoutParams
                 params.leftMargin = DensityUtils.dip2px(15F)
                 params.rightMargin = DensityUtils.dip2px(15F)
@@ -113,7 +112,6 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?) {
             null
         )
     }
-
     fun onResume() {
         webView?.let {
             if (Build.VERSION.SDK_INT >= 21) {

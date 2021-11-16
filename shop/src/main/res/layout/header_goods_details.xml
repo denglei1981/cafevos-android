@@ -66,6 +66,12 @@
             android:text="@string/str_goodsDetails"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />
+        <WebView
+            android:id="@+id/webview"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 <!--        <com.changanford.shop.view.TypefaceTextView-->
 <!--            android:id="@+id/tv_details"-->
 <!--            android:layout_marginStart="@dimen/dp_20"-->
@@ -77,11 +83,5 @@
 <!--            android:lineSpacingExtra="@dimen/dp_0"-->
 <!--            android:lineHeight="@dimen/sp_14"-->
 <!--            android:textSize="@dimen/sp_14"/>-->
-        <WebView
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
