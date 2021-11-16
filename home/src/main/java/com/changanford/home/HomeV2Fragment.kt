@@ -411,11 +411,18 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
 
         })
-
+//        bus()
     }
 
 
-
+//    private fun bus() {
+//        LiveDataBus.get().withs<String>("Gone").observe(this, Observer{
+//            binding.appbarLayout.setExpanded(false)
+//        })
+//        LiveDataBus.get().withs<String>("Visi").observe(this, Observer{
+//            binding.appbarLayout.setExpanded(true)
+//        })
+//    }
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
