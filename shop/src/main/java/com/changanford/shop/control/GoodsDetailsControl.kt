@@ -13,6 +13,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.web.ShareViewModule
+import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.shop.R
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
@@ -65,7 +66,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         //详情
         val detailsHtml=dataBean.detailsHtml
-        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
+//        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
+        CustomWebHelper(activity, headerBinding.webview).loadDataWithBaseURL(detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
