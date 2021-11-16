@@ -43,14 +43,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity android:name=".ui.CaptureActivity" />
+        <activity android:name=".ui.CaptureActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity
             android:name=".web.AgentWebActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true" />
-        <activity android:name=".ui.PhotoViewActivity" />
-        <activity android:name=".ui.NothingActivity" />
+        <activity android:name=".ui.PhotoViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.NothingActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".sharelib.activity.QqShareActivity" />
         <activity android:name=".sharelib.activity.WxShareCallBackActivity" />
 

@@ -1157,32 +1157,36 @@ class SignViewModel : ViewModel() {
     var loginBgPath: MutableLiveData<String> = MutableLiveData()
 
     fun downLoginBgUrl() {
-        if (MConstant.isDownLoginBgSuccess) {
-            loginBgPath.postValue("${
-                getDiskCachePath(BaseApplication.INSTANT)?.let {
-                    getDiskCacheDir(
-                        it,
-                        MConstant.loginBgVideoPath
-                    )
-                }
-            }")
-        } else {
-            viewModelScope.launch {
-                fetchRequest {
-                    var body = java.util.HashMap<String, Any>()
-                    body["configKey"] = "login_background"
-                    body["obj"] = true
-                    var rkey = getRandomKey()
-                    apiService.loginBg(body.header(rkey), body.body(rkey))
-                }.onSuccess {
-                    it?.video?.let {
-                        loginBgPath.postValue(GlideUtils.handleImgUrl(it))
-                        downLoginBg(it)
+        try {
+            if (MConstant.isDownLoginBgSuccess) {
+                loginBgPath.postValue("${
+                    getDiskCachePath(BaseApplication.INSTANT)?.let {
+                        getDiskCacheDir(
+                            it,
+                            MConstant.loginBgVideoPath
+                        )
                     }
-                }.onFailure {
+                }")
+            } else {
+                viewModelScope.launch {
+                    fetchRequest {
+                        var body = java.util.HashMap<String, Any>()
+                        body["configKey"] = "login_background"
+                        body["obj"] = true
+                        var rkey = getRandomKey()
+                        apiService.loginBg(body.header(rkey), body.body(rkey))
+                    }.onSuccess {
+                        it?.video?.let {
+                            loginBgPath.postValue(GlideUtils.handleImgUrl(it))
+                            downLoginBg(it)
+                        }
+                    }.onFailure {
 //                play("ford-manager/2021/10/29/1c748b05a0c34fee8a172ae75f3df393.mp4")
+                    }
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

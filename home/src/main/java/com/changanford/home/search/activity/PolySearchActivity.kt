@@ -190,6 +190,8 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()
         }
+
+        HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
     }
 
 

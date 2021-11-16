@@ -3,6 +3,7 @@ package com.changanford.home.news.request
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
+import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -11,11 +12,11 @@ import com.changanford.home.bean.SpecialListMainBean
 
 
 class FindNewsListViewModel : BaseViewModel() {
-    val specialListLiveData = MutableLiveData<UpdateUiState<SpecialListMainBean>>() // 专题列表 轮播图。
+    val specialListLiveData = SafeMutableLiveData<UpdateUiState<SpecialListMainBean>>() // 专题列表 轮播图。
 
-    val newsListLiveData = MutableLiveData<UpdateUiState<NewsListMainBean>>() // 专题列表 轮播图。
+    val newsListLiveData = SafeMutableLiveData<UpdateUiState<NewsListMainBean>>() // 专题列表 轮播图。
     var pageNo: Int = 1
-    val followLiveData = MutableLiveData<UpdateUiState<Any>>() // 关注否?。
+    val followLiveData = SafeMutableLiveData<UpdateUiState<Any>>() // 关注否?。
     /**
      *  专题列表顶部
      * */

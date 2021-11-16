@@ -65,16 +65,16 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             JumpUtils.instans!!.jump(35,item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->
-            val recommendUser = bigShotUserListAdapter.getItem(position)
-            if(!TextUtils.isEmpty(MConstant.token)){
-                when(view.id){
-                    R.id.btn_follow->{
-                        followAction(recommendUser,position)
-                    }
-                }
-            }else{
-                startARouter(ARouterMyPath.SignUI)
-            }
+//            val recommendUser = bigShotUserListAdapter.getItem(position)
+//            if(!TextUtils.isEmpty(MConstant.token)){
+//                when(view.id){
+//                    R.id.btn_follow->{
+//                        followAction(recommendUser,position)
+//                    }
+//                }
+//            }else{
+//                startARouter(ARouterMyPath.SignUI)
+//            }
         }
         bigShotPostListAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = bigShotPostListAdapter.getItem(position)
@@ -91,7 +91,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     }
     override fun observe() {
         super.observe()
-        viewModel.bigShotsLiveData.observe(this, Observer {
+        viewModel.bigShotsLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 showContent()
                 bigShotUserListAdapter.setNewInstance(it.data as? MutableList<BigShotRecommendBean>)
@@ -101,7 +101,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
         })
         // 大咖帖子列表。
-        viewModel.bigShotPostLiveData.observe(this, Observer {
+        viewModel.bigShotPostLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 showContent()
                 if (it.isLoadMore) {

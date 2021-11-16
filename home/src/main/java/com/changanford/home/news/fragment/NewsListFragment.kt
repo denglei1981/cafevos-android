@@ -147,7 +147,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
     override fun observe() {
         super.observe()
-        viewModel.specialListLiveData.observe(this, {
+        viewModel.specialListLiveData.safeObserve(this, {
             if (it.isSuccess) {
                 headNewBinding?.bViewpager?.create(it.data.dataList)
             } else {
@@ -155,7 +155,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
 
         })
-        viewModel.newsListLiveData.observe(this, {
+        viewModel.newsListLiveData.safeObserve(this, {
             if (it.isSuccess) {
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {

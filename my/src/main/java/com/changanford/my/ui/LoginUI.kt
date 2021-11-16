@@ -363,21 +363,20 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        isOnStop = false
-        isOnResume = true
         try {
+            isOnStop = false
+            isOnResume = true
+            if (!isForeground) {
+                //由后台切换到前台
+                isForeground = true
+            }
+            viewModel.downLoginBgUrl()
             timer = Timer()
             timerTask = MyTimerTask()
             timer?.schedule(timerTask, 50, 50)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-        if (!isForeground) {
-            //由后台切换到前台
-            isForeground = true
-        }
-        viewModel.downLoginBgUrl()
     }
 
     override fun onPause() {

@@ -121,6 +121,7 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
                 = new LoadDialog(this);
         alertDialog.setLoadingText("定位中请稍后...");
         alertDialog.show();
+        alertDialog.setCanceledOnTouchOutside(true);
     }
 
     private void shearch(String shearch) {

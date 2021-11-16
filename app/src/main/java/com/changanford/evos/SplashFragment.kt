@@ -20,6 +20,7 @@ import com.changanford.common.utilext.load
 import com.changanford.evos.databinding.FragmentSplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.leolin.shortcutbadger.ShortcutBadger
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.ceil
@@ -41,6 +42,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun initData() {
         GifLoadOneTimeGif.loadOneTimeGif(requireContext(),R.drawable.splashgif,binding.splashimg,1,object :GifLoadOneTimeGif.GifListener{
             override fun gifPlayComplete() {
+                ShortcutBadger.applyCount(MyApp.mContext,0)
             }
         })
         lifecycleScope.launch {

@@ -4,6 +4,7 @@ import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
+import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
@@ -17,11 +18,11 @@ import com.changanford.home.data.EnumBean
  *   活动查询列表。
  * */
 class ActsListViewModel : BaseViewModel() {
-    val actsLiveData = MutableLiveData<UpdateUiState<ListMainBean<ActBean>>>() //
-    var zonghescreens = MutableLiveData<List<EnumBean>>() //综合排序等
-    var screenstype = MutableLiveData<MutableList<EnumBean>>()  //进行中等
-    var guanfang = MutableLiveData<List<EnumBean>>()  //官方
-    var xianshang = MutableLiveData<List<EnumBean>>()  //线上线下
+    val actsLiveData = SafeMutableLiveData<UpdateUiState<ListMainBean<ActBean>>>() //
+    var zonghescreens = SafeMutableLiveData<List<EnumBean>>() //综合排序等
+    var screenstype = SafeMutableLiveData<MutableList<EnumBean>>()  //进行中等
+    var guanfang = SafeMutableLiveData<List<EnumBean>>()  //官方
+    var xianshang = SafeMutableLiveData<List<EnumBean>>()  //线上线下
 
     // 发布方， 排序， 线上线下，活动状态
     var shaixuanList =
