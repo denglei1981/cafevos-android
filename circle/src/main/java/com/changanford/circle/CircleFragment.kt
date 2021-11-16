@@ -100,7 +100,7 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
                             initData()
                         }
                     } else {
-                        JSON.toJSONString(postEntity).logD()
+//                        JSON.toJSONString(postEntity).logD()
                         activity?.let { it1 ->
                             PostDialog(it1,"发现您还有草稿未发布",postButtonListener = object :PostDialog.PostButtonListener{
                                 override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
