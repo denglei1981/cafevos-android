@@ -80,10 +80,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
-//            it.accountFb=dataBean.acountFb.toString()
-//            val source=it.source
-//            if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
-//            PayConfirmActivity.start(Gson().toJson(it))
+            val source=it.source
+            if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
             PayConfirmActivity.start(it.orderNo)
             LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java).postValue(it.source)
             this.finish()
