@@ -55,8 +55,8 @@ import java.lang.reflect.Field
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>(),
-    OnRefreshListener {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>()
+     {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -129,7 +129,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }.attach().apply {
             initTab()
         }
-        binding.refreshLayout.setOnRefreshListener(this)
+//        binding.refreshLayout.setOnRefreshListener(this)
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) { // 不禁用刷新
@@ -444,23 +444,23 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.header.finishTwoLevel()
     }
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        when (currentPosition) {
-            0 -> {
-                recommendFragment.homeRefersh()
-            }
-            1 -> {
-                actsParentsFragment.homeRefersh()
-            }
-            2 -> {
-                newsListFragment.homeRefersh()
-            }
-            3 -> {
-                bigShotFragment.homeRefersh()
-            }
-        }
-
-    }
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//        when (currentPosition) {
+//            0 -> {
+//                recommendFragment.homeRefersh()
+//            }
+//            1 -> {
+//                actsParentsFragment.homeRefersh()
+//            }
+//            2 -> {
+//                newsListFragment.homeRefersh()
+//            }
+//            3 -> {
+//                bigShotFragment.homeRefersh()
+//            }
+//        }
+//
+//    }
 
     private var animator: ObjectAnimator? = null // 手指移动动画。
     fun move() {
