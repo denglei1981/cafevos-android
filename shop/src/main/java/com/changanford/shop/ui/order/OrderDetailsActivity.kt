@@ -301,7 +301,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 })
             }
             getString(R.string.str_applyRefund),getString(R.string.str_contactCustomerService)->{
-                JumpUtils.instans?.jump(11)
+                JumpUtils.instans?.jump(11,"28")//默认选中商城相关
 //                control.applyRefund(dataBean,object :OnPerformListener{
 //                    override fun onFinish(code: Int) {
 //                        binding.inBottom.btnOrderCancle.visibility=View.GONE

@@ -171,8 +171,11 @@ fun downFile(url: String, listener: OnDownloadListener) {
         }
     })
 }
-
+//登录和绑定手机号获取权限
+var refusePermission:Boolean = false
 fun downLoginBg(videoUrl: String) {
+    if (refusePermission)
+        return
     SoulPermission.getInstance().checkAndRequestPermissions(
         Permissions.build(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -196,7 +199,7 @@ fun downLoginBg(videoUrl: String) {
             }
 
             override fun onPermissionDenied(refusedPermissions: Array<Permission>) {
-
+                refusePermission = true
             }
         })
 
