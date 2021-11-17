@@ -147,6 +147,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         )// 生成自定义Navigator对象
         navController.navigatorProvider.addNavigator("custom_fragment", navigator) // 添加 key, value
         navController.setGraph(R.navigation.nav_graph)  // 要在 CustomNavigator 类被加载之后添加graph，不然找不到 custom_fragment节点
+
     }
 
     override fun initData() {

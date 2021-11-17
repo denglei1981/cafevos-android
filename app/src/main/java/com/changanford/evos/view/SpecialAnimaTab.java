@@ -120,6 +120,7 @@ public class SpecialAnimaTab extends BaseTabItem {
             gonAnima(mIcon, ivyuanshu);
         }
         mChecked = checked;
+
     }
 
     @Override
@@ -210,11 +211,11 @@ public class SpecialAnimaTab extends BaseTabItem {
     }
 
     public void gonAnima(View view, View view1) {
-        mIcon.setTranslationX(0f);
-        mIcon.setTranslationY(0f);
-        ivyuanshu.setTranslationX(0f);
-        ivyuanshu.setTranslationY(0f);
         if (set != null) {
+            mIcon.setTranslationX(0f);
+            mIcon.setTranslationY(0f);
+            ivyuanshu.setTranslationX(0f);
+            ivyuanshu.setTranslationY(0f);
             set.cancel();
         }
     }
