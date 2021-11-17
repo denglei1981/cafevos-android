@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
     //orderSource -2所有订单
     private val control by lazy { OrderControl(context,viewModel) }
-    private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","未知4","未知5","未知6","未知7","未知8")
+    private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","众筹订单","未知5","未知6","未知7","未知8")
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
