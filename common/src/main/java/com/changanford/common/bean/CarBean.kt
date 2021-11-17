@@ -15,58 +15,50 @@ import java.io.Serializable
  */
 
 data class CarItemBean(
-    val authTime: Any,
-    val avatar: Any,
-    val carColor: String,
-    val carStatus: Any,
-    val createBy: Any,
-    val createTime: String,
-    val crmAuthRemake: String,
-    val dealerId: Any,
-    val dealerName: String,
-    val dealerPhoneNumber: String,
-    val driverImg: String,
-    val driverSImg: String,
-    val carId: String,
-    val id: Int,
-    val idSImg: String,
-    val idsNumber: String,
-    val idsType: Int,
-    val isBind: Any,
-    val isRecPurchase: Any,
-    val latestMaintainKm: String,
-    val modelCode: String,
-    val modelName: String,
-    val nickname: Any,
-    val ownerName: String,
-    val ownerType: Int,
-    var personalShow: Int,
-    val phone: String,
-    val plateNum: String,
-    val pretrialRemake: String,
-    val pretrialTime: Any,
-    val pretrialUserId: Any,
-    val remark: Any,
-    val salesDate: String,
-    val searchValue: Any,
-    val seriesCode: String,
-    val seriesName: String,
-    val seriesUrl: String,
-    var status: Int,
-    val unBindTime: Any,
-    val updateBy: Any,
-    val updateTime: Any,
-    val userId: Int,
-    val vehicleId: Any,
-    val vin: String,
-    val idsImg: String,
-    val soldierCardImg: String,
-    val policeCardImg: String,
-    var reason: String,
-    var invoiceImg: String, //发票
-    var msgCode: String, //msgCode =“700001”
-    val msgButton: String, //消息弹框内容
-    val isIncall: Boolean,
+    val authTime: String = "",
+    val avatar: String = "",
+    val carColor: String = "",
+    val carStatus: String = "",
+    val createBy: String = "",
+    val createTime: String = "",
+    val crmAuthRemake: String = "",
+    val dealerId: String = "",
+    val dealerName: String = "",
+    val dealerPhoneNumber: String = "",
+    val driverImg: String = "",
+    val driverSImg: String = "",
+    val carId: String = "",
+    val id: Int = 0,
+    val idSImg: String = "",
+    val idsNumber: String = "",
+    val idsType: Int = 0,
+    val isBind: String = "",
+    val isRecPurchase: String = "",
+    val latestMaintainKm: String = "",
+    val modelCode: String = "",
+    val modelName: String = "",
+    val nickname: String = "",
+    val ownerName: String = "",
+    val ownerType: Int = 0,
+    var personalShow: Int = 0,
+    val phone: String = "",
+    val plateNum: String = "",
+    val pretrialRemake: String = "",
+    val salesDate: String = "",
+    val seriesCode: String = "",
+    val seriesName: String = "",
+    val seriesUrl: String = "",
+    var status: Int = 0,
+    val userId: Int = 0,
+    val vin: String = "",
+    val idsImg: String = "",
+    val soldierCardImg: String = "",
+    val policeCardImg: String = "",
+    var reason: String = "",
+    var invoiceImg: String = "", //发票
+    var msgCode: String = "", //msgCode =“700001”
+    val msgButton: String = "", //消息弹框内容
+    val isIncall: Boolean = false,
     var isExceedThree: Boolean = false,
     //原来列表的基础增加这两个字段（是否开通车控通过realnameAuthStatus字段判断;是否CRM认证 通过status==null
     // （表示并未提交过crm认证）反之则按照以前的状态值判断）
@@ -78,12 +70,16 @@ data class CarItemBean(
     //CHECK_SUCCESS 审核通过
     //CHECK_WAIT 审核中
     //UNAUTH 未实名  @蒋小寒 @周春宇 
-    var realnameAuthStatus: String,
-    val incallAuthRemake: String,
-    val carName: String
+    var realnameAuthStatus: String = "",
+    val incallAuthRemake: String = "",
+    val carName: String = ""
 
 ) : Serializable
 
+
+var cars = arrayListOf(
+    CarItemBean(status = 1), CarItemBean(status = 4), CarItemBean(status = 5)
+)
 
 /**
  * Ocr识别提交数据
@@ -94,7 +90,9 @@ data class CarItemBean(
  *  path : 上传图片地址（无前缀）
  */
 
-data class OcrRequestBean(
+data
+
+class OcrRequestBean(
     var imgExt: String,
     var ocrSceneType: String,
     var path: String,

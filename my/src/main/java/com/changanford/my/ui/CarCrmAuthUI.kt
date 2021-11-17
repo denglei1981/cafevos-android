@@ -1,11 +1,11 @@
 package com.changanford.my.ui
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.bean.cars
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
@@ -17,7 +17,6 @@ import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
 import com.changanford.my.viewmodel.CarViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：CarCrmAuthUI
@@ -41,7 +40,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
         binding.rcyCarAuth.rcyCommonView.adapter = carAdapter
 
         viewModel.carAuth.observe(this, Observer {
-            completeRefresh(it, carAdapter, 0)
+            completeRefresh(it ?: cars, carAdapter, 0)
         })
 
         binding.btnAddCar.setOnClickListener {
@@ -51,9 +50,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
 
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
-        lifecycleScope.launch {
-            viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
-        }
+        viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

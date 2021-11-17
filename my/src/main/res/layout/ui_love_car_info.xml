@@ -18,35 +18,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
+            <com.changanford.common.widget.ShadowLayout
                 android:id="@+id/car_pic_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_12"
-                android:layout_marginTop="@dimen/dp_6"
-                android:layout_marginEnd="@dimen/dp_12"
-                android:layout_marginBottom="@dimen/dp_6"
-                android:background="@color/white"
-                android:minHeight="@dimen/dp_165"
-                app:cardBackgroundColor="#01000000"
-                app:cardElevation="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_14"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:sl_shadowColor="#10000000"
+                app:sl_shadowRadius="@dimen/dp_6">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/car_pic"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside" />
+                    android:layout_height="@dimen/dp_165"
+                    android:background="@color/white"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_def_square_img"
+                    app:shapeAppearanceOverlay="@style/roundedCornerImageStyle" />
 
-            </androidx.cardview.widget.CardView>
+            </com.changanford.common.widget.ShadowLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_auth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:background="@drawable/shape_car_auth_status"
                 android:gravity="center"

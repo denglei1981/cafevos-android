@@ -2,12 +2,11 @@ package com.changanford.my.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.CarItemBean
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
+import kotlinx.coroutines.launch
 
 /**
  *  文件名：CarViewModel
@@ -29,14 +28,17 @@ class CarViewModel : ViewModel() {
 
     var carAuth: MutableLiveData<ArrayList<CarItemBean>> = MutableLiveData()
 
-    suspend fun queryAuthCarAndIncallList(status: AuthCarStatus) {
-        var car = fetchRequest {
-            var body = HashMap<String, Any>()
-            var rkey = getRandomKey()
-            apiService.queryAuthCarAndIncallList(body.header(rkey), body.body(rkey))
-        }
-        if (car.code == 0) {
-            carAuth.postValue(car.data)
+    fun queryAuthCarAndIncallList(status: AuthCarStatus) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.queryAuthCarAndIncallList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                carAuth.postValue(it)
+            }.onFailure {
+                carAuth.postValue(null)
+            }
         }
     }
 }

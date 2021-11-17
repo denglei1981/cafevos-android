@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -158,9 +160,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             include.textView11.setOnClickListener {
                 JumpUtils.instans?.jump(32)
             }
-//            include2.myMylovecar.setOnClickListener {
-//                RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
-//            }
+            include2.myMylovecar.setOnClickListener {
+                RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
+            }
         }
     }
 
