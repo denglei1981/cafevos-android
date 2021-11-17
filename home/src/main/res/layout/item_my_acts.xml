@@ -51,7 +51,7 @@
             android:minWidth="@dimen/dp_40"
             android:paddingStart="@dimen/dp_8"
             android:paddingEnd="@dimen/dp_8"
-            android:text="官方"
+            android:text="@string/platform_acts"
             android:textColor="#ff74889d"
             android:textSize="11sp"
             android:visibility="gone"

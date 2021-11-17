@@ -128,7 +128,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
         when (item.official) {
             0 -> {
-                tvTagOne.text = "官方"
+                tvTagOne.text = context.getString(R.string.platform_acts)
                 tvTagOne.visibility = View.VISIBLE
             }
             2 -> {
