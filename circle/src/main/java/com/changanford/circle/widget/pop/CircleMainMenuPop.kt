@@ -13,7 +13,6 @@ import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
-import razerdp.util.animation.ScaleConfig
 import razerdp.util.animation.TranslationConfig
 
 /**
@@ -47,7 +46,7 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
 
     override fun onCreateDismissAnimation(): Animation {
         return AnimationHelper.asAnimation()
-            .withScale(ScaleConfig.BOTTOM_TO_TOP)
+            .withTranslation(TranslationConfig.TO_TOP)
             .toDismiss()
     }
 
