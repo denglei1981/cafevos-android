@@ -102,6 +102,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         AppUtils.setStatusBarMarginTop(binding.back, this)
         AppUtils.setStatusBarMarginTop(binding.title, this)
         UserManger.deleteUserInfo()
+        playInit()
         MConstant.token = ""
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null)
         tencent = Tencent.createInstance(ConfigUtils.QQAPPID, this)
@@ -236,10 +237,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     }
 
-    fun play(videoUrl: String) {
-        "${videoUrl}".logE()
+   private fun playInit() {
         mPlayer?.let { player ->
-            binding.loginVideo.visibility = View.VISIBLE
             binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
                 override fun surfaceCreated(holder: SurfaceHolder) {
                 }
@@ -266,12 +265,18 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 binding.imBg.visibility = View.VISIBLE
                 false
             }
-            player.setDataSource(videoUrl)
-            player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
-            player.prepareAsync()
-            player.isLooping = true
-            binding.imBg.visibility = View.GONE
         }
+    }
+
+   private fun play(videoUrl: String) {
+        "${videoUrl}".logE()
+        binding.loginVideo.visibility = View.VISIBLE
+        mPlayer.reset()
+        mPlayer.setDataSource(videoUrl)
+        mPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+        mPlayer.prepareAsync()
+        mPlayer.isLooping = true
+        binding.imBg.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -389,6 +394,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     "${resources.getString(R.string.app_name)}App已经进入后台".toast()
                 }
             }
+        }
+        if (mPlayer.isPlaying) {
+            mPlayer.pause()
         }
     }
 
