@@ -76,17 +76,18 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         flexboxLayoutManagerHistory!!.justifyContent = JustifyContent.FLEX_START
 
 
-        binding.recyclerViewHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewHistory.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.recyclerViewHistory.adapter = historyAdapter
 
 
         binding.recyclerViewFind.layoutManager = flexboxLayoutManagerHistory
 
-
-
-
-        binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.smartLayout.setEnableLoadMore(false)
+        binding.smartLayout.setEnableOverScrollDrag(true)
+        binding.rvAuto.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.rvAuto.adapter = sAdapter
 
@@ -193,9 +194,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
     }
 
-   var searchContent=""
+    var searchContent = ""
     fun search(searchContent: String, needHide: Boolean) {
-        this.searchContent =searchContent
+        this.searchContent = searchContent
         if (TextUtils.isEmpty(searchContent)) {
             toastShow("请输入你喜欢的内容")
             return
@@ -207,16 +208,19 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         isPs()
 
     }
-    fun jumpNomarl(){
+
+    fun jumpNomarl() {
         val bundle = Bundle()
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+    }
+
+    fun isPs() {
+        viewModel.getSearchContent(searchContent)
         viewModel.insertRecord(this, searchContent) // 异步写入本地数据库。
     }
-   fun isPs(){
-       viewModel.getSearchContent(searchContent)
-   }
+
     override fun initData() {
         viewModel.getSearchHistoryList()
         viewModel.getSearchKeyList()
@@ -237,15 +241,15 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             }
         })
         viewModel.searchKolingLiveData.observe(this, Observer {
-            if(it.isSuccess){
-                if(it.data.extend!=null&&it.data.extend.jumpDataType>0){
+            if (it.isSuccess) {
+                if (it.data.extend != null && it.data.extend.jumpDataType > 0) {
                     val jumpDataType = it.data.extend.jumpDataType
                     val jumpDataValue = it.data.extend.jumpDataValue
-                    JumpUtils.instans!!.jump(jumpDataType,jumpDataValue)
-                }else{
+                    JumpUtils.instans!!.jump(jumpDataType, jumpDataValue)
+                } else {
                     jumpNomarl()
                 }
-            }else{
+            } else {
                 jumpNomarl()
             }
         })
