@@ -79,7 +79,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
-                3->{//商品
+                3,4->{//商品、众筹
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
                     var specifications=""
                     orderBriefBean.snapshotOfAttrOption?.let {
