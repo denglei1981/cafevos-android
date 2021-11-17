@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -194,8 +193,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
     }
 
-
+   var searchContent=""
     fun search(searchContent: String, needHide: Boolean) {
+        this.searchContent =searchContent
         if (TextUtils.isEmpty(searchContent)) {
             toastShow("请输入你喜欢的内容")
             return
@@ -204,15 +204,19 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
         }
         binding.layoutSearch.searchContent.setText(searchContent)
+        isPs()
+
+    }
+    fun jumpNomarl(){
         val bundle = Bundle()
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
-//        bundle.putInt(SEARCH_KEY_ID, keyId)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
         viewModel.insertRecord(this, searchContent) // 异步写入本地数据库。
-
     }
-
+   fun isPs(){
+       viewModel.getSearchContent(searchContent)
+   }
     override fun initData() {
         viewModel.getSearchHistoryList()
         viewModel.getSearchKeyList()
@@ -232,6 +236,21 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 sAdapter.setList(it.data)
             }
         })
+        viewModel.searchKolingLiveData.observe(this, Observer {
+            if(it.isSuccess){
+                if(it.data.extend!=null&&it.data.extend.jumpDataType>0){
+                    val jumpDataType = it.data.extend.jumpDataType
+                    val jumpDataValue = it.data.extend.jumpDataValue
+                    JumpUtils.instans!!.jump(jumpDataType,jumpDataValue)
+                }else{
+                    jumpNomarl()
+                }
+            }else{
+                jumpNomarl()
+            }
+        })
+
+
     }
 
 

@@ -51,13 +51,6 @@ class PolySearchUserViewModel : BaseViewModel() {
                             val updateUiState = UpdateUiState<ListMainBean<AuthorBaseVo>>(false, it,isLoadMore)
                             searchHistoryLiveData.postValue(updateUiState)
                         }
-
-
-
-
-
-
-
         })
     }
 

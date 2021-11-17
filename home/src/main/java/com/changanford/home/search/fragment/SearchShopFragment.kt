@@ -63,7 +63,22 @@ class SearchShopFragment: BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolyS
                 val item = searchShopResultAdapter.getItem(position)
                 selectPosition = position
                 // todo 跳转到商品
-                JumpUtils.instans!!.jump(3,item.mallMallSpuId)
+
+                if(item.jumpDataType==null||item.jumpDataType == "0"){
+                    JumpUtils.instans!!.jump(3,item.mallMallSpuId)
+                }else{
+                    JumpUtils.instans!!.jump(
+                        item.jumpDataType.toInt(),
+                        item.jumpDataValue
+                    )
+                }
+
+
+
+
+
+
+
             }
         })
     }

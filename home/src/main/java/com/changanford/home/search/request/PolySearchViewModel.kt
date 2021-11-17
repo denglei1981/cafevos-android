@@ -4,17 +4,21 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.net.*
+import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.ListMainBean
 import com.changanford.home.bean.SearchKeyBean
+import com.changanford.home.bean.SearchShopBean
 import com.changanford.home.room.SearchRecordDatabase
 import com.changanford.home.room.SearchRecordEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- *  专题详情
+ *
  * */
 class PolySearchViewModel : BaseViewModel() {
     val searchKeyLiveData = MutableLiveData<UpdateUiState<List<SearchKeyBean>>>()
@@ -22,6 +26,8 @@ class PolySearchViewModel : BaseViewModel() {
     val searchHistoryLiveData= MutableLiveData<UpdateUiState<List<SearchKeyBean>>>() // 搜索历史。
 
     val searchAutoLiveData =MutableLiveData<UpdateUiState<List<SearchKeyBean>>>() // 搜索关键词。
+
+    val searchKolingLiveData =MutableLiveData<UpdateUiState<ListMainBean<SearchShopBean>>>()
 
     /**
      *  获取搜索关键字
@@ -39,6 +45,30 @@ class PolySearchViewModel : BaseViewModel() {
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<List<SearchKeyBean>>(false, "")
                     searchKeyLiveData.postValue(updateUiState)
+                }
+        })
+    }
+
+    /**
+     *  搜索口令
+     * */
+    fun  getSearchContent(skwKeyword:String){
+        launch(false,{
+            val requestBody = HashMap<String, Any>()
+            requestBody["pageNo"]=1
+            requestBody["pageSize"]= PageConstant.DEFAULT_PAGE_SIZE_THIRTY
+            val hashMap = HashMap<String, Any>()
+            hashMap["skwKeyword"]=skwKeyword
+            requestBody["queryParams"]=hashMap
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .getSearchShopList(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    val updateUiState =
+                        UpdateUiState<ListMainBean<SearchShopBean>>(it, true, false, "")
+                       searchKolingLiveData.postValue(updateUiState)
+                }.onWithMsgFailure {
+
                 }
         })
     }
