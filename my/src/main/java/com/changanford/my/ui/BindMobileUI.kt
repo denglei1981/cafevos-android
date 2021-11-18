@@ -97,7 +97,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         binding.back.setOnClickListener {
             back()
         }
-
+        playInit()
         viewModel.loginBgPath.observe(this, androidx.lifecycle.Observer {
             it?.let {
                 try {
@@ -111,12 +111,10 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
     }
 
     override fun initData() {
-        viewModel.downLoginBgUrl()
+
     }
 
-    fun play(videoUrl: String) {
-        "${videoUrl}".logE()
-        binding.loginVideo.visibility = View.VISIBLE
+    fun playInit() {
         binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
             }
@@ -143,6 +141,13 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
             binding.imBg.visibility = View.VISIBLE
             false
         }
+
+    }
+
+    fun play(videoUrl: String) {
+        "${videoUrl}".logE()
+        binding.loginVideo.visibility = View.VISIBLE
+        player.reset()
         player.setDataSource(videoUrl)
         player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         player.prepareAsync()
@@ -203,13 +208,27 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         return false
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (player.isPlaying) {
+            player.pause()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.downLoginBgUrl()
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
         subscribe?.let {
             it.dispose()
         }
-        if (player.isPlaying)
+        if (player.isPlaying) {
             player.stop()
-        player.release()
+            player.release()
+        }
     }
 }
