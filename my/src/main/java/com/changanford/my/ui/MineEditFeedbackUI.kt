@@ -162,9 +162,15 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
     var lables = ArrayList<FeedbackTagsItem>()
 
     override fun initData() {
+        var tag = (intent?.getStringExtra("value")?:"-1").toInt()
         viewModel.getFeedbackTags()
         viewModel._lables.observe(this,{
             it?.let {
+                it.forEachIndexed { index, feedbackTagsItem ->
+                    if (feedbackTagsItem.tagId == tag){
+                        labelAdapter.checkedPosition = index
+                    }
+                }
                 lables.addAll(it)
                 labelAdapter.addData(it)
             }

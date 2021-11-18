@@ -181,7 +181,7 @@ class JumpUtils {
                 }
             }
             11 -> {//填写意见反馈
-                startARouter(ARouterMyPath.MineEditFeedbackUI)
+                startARouter(ARouterMyPath.MineEditFeedbackUI,bundle)
             }
             12 -> {//去发布调查
                 startARouter(ARouterCirclePath.ReleaseUpActivity, true)
