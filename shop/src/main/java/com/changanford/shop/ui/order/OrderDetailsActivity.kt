@@ -301,7 +301,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 })
             }
             getString(R.string.str_applyRefund),getString(R.string.str_contactCustomerService)->{
-                JumpUtils.instans?.jump(11,"{\"tagId\": \"28\",\"content\": \"${dataBean.orderNo}、${dataBean.orderStatusName}\"}")//默认选中商城相关
+                JumpUtils.instans?.jump(11,"{\"tagId\": \"28\",\"content\": \"订单号：${dataBean.orderNo}，${dataBean.orderStatusName}\\n（请不要修改订单号和订单状态）\"}")//默认选中商城相关
 //                control.applyRefund(dataBean,object :OnPerformListener{
 //                    override fun onFinish(code: Int) {
 //                        binding.inBottom.btnOrderCancle.visibility=View.GONE
