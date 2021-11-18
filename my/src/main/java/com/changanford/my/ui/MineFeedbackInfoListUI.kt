@@ -324,7 +324,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
             override fun onResult(result: List<LocalMedia>) {
                 val bundle = Bundle()
                 bundle.putInt("position", 0)
-                bundle.putInt("showEditType", 1)
+                bundle.putInt("showEditType", 312)
                 bundle.putParcelableArrayList(
                     "picList",
                     arrayListOf(*result.toTypedArray())

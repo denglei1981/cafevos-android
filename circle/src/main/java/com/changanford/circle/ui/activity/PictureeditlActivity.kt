@@ -79,7 +79,7 @@ class PictureeditlActivity : BaseActivity<PicturesEditBinding, EmptyViewModel>()
                     intent.putExtra("position",itemposition)
                     setResult(RESULT_OK, intent)
                     finish()
-                } else if(showEditType == 1){//发布活动选择图片
+                } else if(showEditType == 1||showEditType == 312){//发布活动选择图片,我要反馈聊天页
                     val intent = Intent()
                     intent.putParcelableArrayListExtra(
                         "picList",
