@@ -35,6 +35,7 @@ import com.changanford.my.viewmodel.SignViewModel
 import com.huawei.hms.common.ApiException
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import java.lang.Exception
 
 /**
  *  文件名：MineEditFeedbackUI
@@ -162,7 +163,17 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
     var lables = ArrayList<FeedbackTagsItem>()
 
     override fun initData() {
-        var tag = (intent?.getStringExtra("value")?:"-1").toInt()
+        var tag = -1
+        intent?.getStringExtra("value")?.let {
+            try {
+                var json = com.alibaba.fastjson.JSONObject.parseObject(it)
+                tag = json.getString("tagId").toInt()
+                var content = json.getString("content")
+                binding.feedbackInput.setText(content)
+            }catch ( e:Exception){
+                e.printStackTrace()
+            }
+        }
         viewModel.getFeedbackTags()
         viewModel._lables.observe(this,{
             it?.let {
