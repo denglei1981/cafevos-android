@@ -180,6 +180,7 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
                 it.forEachIndexed { index, feedbackTagsItem ->
                     if (feedbackTagsItem.tagId == tag){
                         labelAdapter.checkedPosition = index
+                        labelAdapter.canChange = false
                     }
                 }
                 lables.addAll(it)
