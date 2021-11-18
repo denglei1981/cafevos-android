@@ -17,7 +17,8 @@ import com.changanford.common.utilext.toast
  */
 class CircleListViewModel : BaseViewModel() {
 
-    val tabList = arrayListOf("全部圈子", "地域圈子", "兴趣圈子")
+//    val tabList = arrayListOf("全部圈子", "地域圈子", "兴趣圈子")
+    val tabList = arrayListOf("全部圈子", "兴趣圈子")
 
     val circleListBean = MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
 
@@ -27,14 +28,14 @@ class CircleListViewModel : BaseViewModel() {
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
-                if (type == 1) {
-                    if (lng.isNotEmpty()) {
-                        it["lng"] = lng
-                    }
-                    if (lat.isNotEmpty()) {
-                        it["lat"] = lat
-                    }
-                }
+//                if (type == 1) {
+//                    if (lng.isNotEmpty()) {
+//                        it["lng"] = lng
+//                    }
+//                    if (lat.isNotEmpty()) {
+//                        it["lat"] = lat
+//                    }
+//                }
                 it["type"] = type
             }
             val rKey = getRandomKey()
