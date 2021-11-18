@@ -464,7 +464,7 @@ data class OrderBriefBean(
     val buyNum: String = "0",
     val fbCost: String = "0",
     val payType: String = "",
-    val snapshotOfAttrOption: String? = "",
+    val snapshotOfAttrOption: String? = null,
     var fbOfUnitPrice: String? = "0",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
