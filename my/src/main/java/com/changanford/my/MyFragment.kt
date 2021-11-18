@@ -248,6 +248,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 setData(userInfoBean)
             }
         })
+        viewModel.userInfo.observe(this,{
+            setData(it)
+        })
     }
 
     override fun onPause() {
