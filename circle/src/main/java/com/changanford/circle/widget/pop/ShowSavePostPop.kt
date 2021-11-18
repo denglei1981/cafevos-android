@@ -32,6 +32,10 @@ class ShowSavePostPop(val context: Context,val postBackListener:PostBackListener
         binding.tvUnsave.setOnClickListener {
             postBackListener.unsave()
         }
+        binding.con.setOnClickListener {
+            dismiss()
+        }
+
     }
 
 
@@ -53,6 +57,5 @@ class ShowSavePostPop(val context: Context,val postBackListener:PostBackListener
     interface PostBackListener {
         fun save()
         fun unsave()
-        fun con()
     }
 }
