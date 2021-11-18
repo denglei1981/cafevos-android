@@ -102,11 +102,6 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         return ViewEmptyTopBinding.inflate(layoutInflater).root
     }
 
-    override fun onPause() {
-        super.onPause()
-        isRefresh = true
-    }
-
     override fun onResume() {
         super.onResume()
         getData()
