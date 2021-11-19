@@ -671,17 +671,16 @@ class SignViewModel : ViewModel() {
 
     fun wearMedal(medalId: String, type: String) {
         viewModelScope.launch {
-            var medal = fetchRequest(showLoading = true) {
+            fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["medalId"] = medalId
                 body["type"] = type
                 var rkey = getRandomKey()
                 apiService.wearMedal(body.header(rkey), body.body(rkey))
-            }
-            if (medal.code == 0) {
+            }.onSuccess {
                 wearMedal.postValue("true")
-            } else {
-                wearMedal.postValue(medal.msg)
+            }.onWithMsgFailure {
+                wearMedal.postValue(it)
             }
         }
     }
