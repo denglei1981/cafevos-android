@@ -25,6 +25,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
 
     private var pageSize: Int = 1
     private var pageNum: Int = 10
+    private var isFirst: Boolean = true //首次进入页面
     val emptyBinding: ViewEmptyBinding by lazy {
         ViewEmptyBinding.inflate(layoutInflater)
     }
@@ -39,7 +40,11 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
             it.setEnableLoadMore(hasLoadMore())
             it.setEnableRefresh(hasRefresh())
             it.setOnRefreshLoadMoreListener(this)
-            initRefreshData(pageSize)
+            if (hasRefresh()) {
+                it.autoRefresh()
+            } else {
+                initRefreshData(pageSize)
+            }
         }
     }
 

@@ -33,6 +33,7 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     private fun initViewpager() {
         binding.viewpager.isUserInputEnabled = false
+        binding.viewpager.offscreenPageLimit = 4
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyCollectUI) {
                 override fun getItemCount(): Int {
@@ -50,7 +51,7 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                         2 -> {
                             ActFragment.newInstance("collectAct")
                         }
-                        3->{
+                        3 -> {
                             MyShopFragment.newInstance("collectShop")
                         }
                         else -> {
