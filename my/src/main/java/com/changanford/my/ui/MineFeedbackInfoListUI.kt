@@ -324,7 +324,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
             override fun onResult(result: List<LocalMedia>) {
                 val bundle = Bundle()
                 bundle.putInt("position", 0)
-                bundle.putInt("showEditType", 1)
+                bundle.putInt("showEditType", 312)
                 bundle.putParcelableArrayList(
                     "picList",
                     arrayListOf(*result.toTypedArray())
@@ -488,7 +488,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
         files.forEach {
             var mMessage: MessageBean = getBaseSendMessage(MessageType.IMAGE)
             mMessage.messageId = "$startIndex"
-            var mImageMsgBody: MessageImageBody = MessageImageBody(AppUtils.getFinallyPath(it))
+            var mImageMsgBody: MessageImageBody = MessageImageBody(PictureUtil.getFinallyPath(it))
             mMessage.messageBody = mImageMsgBody
             adapter.addData(mMessage)
             updateList.add(mMessage)

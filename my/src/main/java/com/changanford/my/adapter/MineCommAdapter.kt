@@ -301,6 +301,7 @@ object MineCommAdapter {
     class FeedbackLabelAdapter constructor(var layoutId: Int) :
         BaseQuickAdapter<FeedbackTagsItem, BaseDataBindingHolder<ItemFeedbackLabelBinding>>(layoutId) {
         var checkedPosition = -1
+        var canChange = true
 
         override fun convert(
             holder: BaseDataBindingHolder<ItemFeedbackLabelBinding>,
@@ -311,7 +312,9 @@ object MineCommAdapter {
                 it.checkbox.isChecked = checkedPosition == holder.layoutPosition
             }
             holder.itemView.setOnClickListener {
-                checkedPosition = holder.layoutPosition
+                if (canChange) {
+                    checkedPosition = holder.layoutPosition
+                }
                 notifyDataSetChanged()
             }
         }

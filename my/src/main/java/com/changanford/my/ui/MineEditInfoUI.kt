@@ -216,6 +216,12 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
             if (!user.provinceName.isNullOrEmpty()) {
                 binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
+                body["province"] = "${user.province}"
+                body["city"] = "${user.city}"
+                body["district"] = "${user.district}"
+                body["provinceName"] = "${user.provinceName}"
+                body["cityName"] = "${user.cityName}"
+                body["districtName"] = "${user.districtName}"
             }
 
             if (!user.hobbyNames.isNullOrEmpty()) {

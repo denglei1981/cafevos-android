@@ -37,6 +37,8 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
     OnAddressPickedListener {
     var provinces = ArrayList<ProvinceEntity>()
 
+    var isShowPicker: Boolean = false
+
     var body = HashMap<String, Any>() //提交数据
 
     var addressBean: AddressBeanItem? = null
@@ -89,6 +91,9 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                 }
                 province.cityList = citys
                 provinces.add(province)
+                if (isShowPicker) {
+                    showPicker()
+                }
             }
         })
 
@@ -114,24 +119,11 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
 
         binding.tvAddressCityLayout.setOnClickListener {
             if (provinces.size == 0) {
-                initData()
-                showToast("获取城市数据失败，请稍后再试")
+                isShowPicker = true
+                viewModel.getAllCity(true)
                 return@setOnClickListener
             }
-            val picker = CityPicker(this)
-                .apply {
-                    setAddressMode(provinces)
-                    setDefaultValue("重庆市", "重庆市", "渝中区")
-                    addressBean?.let {
-                        setDefaultValue(
-                            "${it.provinceName}",
-                            "${it.cityName}",
-                            "${it.districtName}"
-                        )
-                    }
-                    setOnAddressPickedListener(this@EditAddressUI)
-                }
-            picker.show()
+            showPicker()
         }
 
         binding.addressSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -177,6 +169,24 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                 }
             }
         }
+    }
+
+    private fun showPicker() {
+        val picker = CityPicker(this)
+            .apply {
+                setAddressMode(provinces)
+//                    setDefaultValue("重庆市", "重庆市", "渝中区")
+                addressBean?.let {
+                    setDefaultValue(
+                        "${it.provinceName}",
+                        "${it.cityName}",
+                        "${it.districtName}"
+                    )
+                }
+                setOnAddressPickedListener(this@EditAddressUI)
+            }
+        picker.show()
+        isShowPicker = false
     }
 
     override fun initData() {

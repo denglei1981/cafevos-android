@@ -961,7 +961,7 @@ object MineUtils {
      */
     fun imgWandH(stsBean: STSBean, media: LocalMedia): String {
 
-        var ytPath = AppUtils.getFinallyPath(media)
+        var ytPath = PictureUtil.getFinallyPath(media)
         var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
 
         var path =

@@ -753,9 +753,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     return true
                 }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                    override fun con() {
-                        finish()
-                    }
 
                     override fun save() {
                         var postEntity =
@@ -931,9 +928,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 return
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                override fun con() {
-
-                }
 
                 override fun save() {
                     var postEntity =

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.bean.CityBeanItem
 import com.changanford.common.net.*
+import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
 
 /**
@@ -23,17 +24,18 @@ class AddressViewModel : ViewModel() {
 
     var allCity: MutableLiveData<ArrayList<CityBeanItem>> = MutableLiveData()
 
-    fun getAllCity() {
+    fun getAllCity(isShow: Boolean = false) {
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = isShow) {
                 var body = HashMap<String, String>()
                 body["district"] = "true"
                 var rkey = getRandomKey()
                 apiService.getAllCity(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 allCity.postValue(it)
-            }.onFailure {
+            }.onWithMsgFailure {
                 allCity.postValue(null)
+                it?.toast()
             }
         }
     }

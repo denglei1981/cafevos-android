@@ -1026,9 +1026,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 return
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                override fun con() {
-
-                }
 
                 override fun save() {
                     var postEntity =
