@@ -16,6 +16,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant.DEFAULT_PAGE_SIZE_THIRTY
 import com.changanford.home.R
@@ -24,6 +25,7 @@ import com.changanford.home.databinding.FragmentBigShotBinding
 import com.changanford.home.shot.adapter.BigShotPostListAdapter
 import com.changanford.home.shot.adapter.BigShotUserListAdapter
 import com.changanford.home.shot.request.BigShotListViewModel
+import com.changanford.home.util.LoginUtil
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -32,7 +34,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  *  大咖
  * */
 class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListViewModel>(),
-     OnLoadMoreListener,OnRefreshListener {
+    OnLoadMoreListener, OnRefreshListener {
     private val bigShotUserListAdapter: BigShotUserListAdapter by lazy {
         BigShotUserListAdapter()
     }
@@ -40,6 +42,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         BigShotPostListAdapter(this)
     }
     private var selectPosition: Int = -1;// 记录选中的 条目
+
     companion object {
         fun newInstance(): BigShotFragment {
             val fg = BigShotFragment()
@@ -48,37 +51,41 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             return fg
         }
     }
+
+    var bigShotUserPosition = -1
     override fun initView() {
         setLoadSir(binding.refreshLayout)
-
         binding.recyclerViewH.adapter = bigShotUserListAdapter
-        binding.recyclerViewH.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewH.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewV.adapter = bigShotPostListAdapter
-        binding.recyclerViewV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewV.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.refreshLayout.setEnableRefresh(true)
         binding.refreshLayout.setOnRefreshListener(this)
         binding.refreshLayout.setOnLoadMoreListener(this)
 //        onRefresh(binding.refreshLayout)
-         homeRefersh()
+        homeRefersh()
         bigShotUserListAdapter.setOnItemClickListener { adapter, view, position ->
             val item = bigShotUserListAdapter.getItem(position)
-            JumpUtils.instans!!.jump(35,item.userId.toString())
+            JumpUtils.instans!!.jump(35, item.userId.toString())
         }
         bigShotUserListAdapter.setOnItemChildClickListener { adapter, view, position ->
-//            val recommendUser = bigShotUserListAdapter.getItem(position)
-//            if(!TextUtils.isEmpty(MConstant.token)){
-//                when(view.id){
-//                    R.id.btn_follow->{
-//                        followAction(recommendUser,position)
-//                    }
-//                }
-//            }else{
-//                startARouter(ARouterMyPath.SignUI)
-//            }
+            bigShotUserPosition = position
+            val recommendUser = bigShotUserListAdapter.getItem(position)
+            if (LoginUtil.isLongAndBindPhone(true)) {
+                when (view.id) {
+                    R.id.btn_follow -> {
+                        followAction(recommendUser, position)
+                    }
+                }
+            } else {
+                startARouter(ARouterMyPath.SignUI)
+            }
         }
         bigShotPostListAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = bigShotPostListAdapter.getItem(position)
-            JumpUtils.instans!!.jump(35,item.userId.toString())
+            JumpUtils.instans!!.jump(35, item.userId.toString())
         }
         bigShotPostListAdapter.setOnItemClickListener { adapter, view, position ->
             val item = bigShotPostListAdapter.getItem(position)
@@ -89,6 +96,7 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             JumpUtils.instans!!.jump(4, item.postsId.toString())
         }
     }
+
     override fun observe() {
         super.observe()
         viewModel.bigShotsLiveData.safeObserve(this, Observer {
@@ -122,6 +130,15 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
                 showFailure(it.message)
             }
         })
+        viewModel.followLiveData.safeObserve(this, Observer {
+            if (it.isSuccess) {
+                val recommendUser = bigShotUserListAdapter.getItem(bigShotUserPosition)
+                recommendUser.isMutualAttention = followType
+                bigShotUserListAdapter.notifyItemChanged(bigShotUserPosition, "follow")
+            } else {
+                toastShow(it.message)
+            }
+        })
         bus()
     }
 
@@ -145,23 +162,30 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
             }
             val bean = bigShotPostListAdapter.getItem(selectPosition)
             if (bean.authorBaseVo?.isFollow != it) { // 关注不相同，以详情的为准。。
-                if(bean.authorBaseVo!=null){
+                if (bean.authorBaseVo != null) {
                     bigShotPostListAdapter.notifyAtt(bean.authorBaseVo!!.authorId, it)
                 }
             }
         })
 
         //登录回调
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
-               // 收到 登录状态改变回调都要刷新页面
-                 homeRefersh()
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, {
+                // 收到 登录状态改变回调都要刷新页面
+                homeRefersh()
             })
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            homeRefersh()
+        })
+
+
     }
 
     override fun initData() {
 
     }
+
     override fun onRetryBtnClick() {
 
     }
@@ -174,21 +198,16 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
         viewModel.getBigShotPost(true)
     }
 
+    var followType = 1
+
     // 关注或者取消
-    private fun followAction(recommendUser : BigShotRecommendBean,position:Int) {
-            var followType = recommendUser.isMutualAttention
-            when (followType) {
-                0 -> {
-                    followType = 1
-                }
-                1 -> {
-                    followType = 0
-                }
-            }
-            recommendUser.isMutualAttention = followType
-            bigShotUserListAdapter.notifyItemChanged(position,"follow")
-            viewModel.followOrCancelUser(recommendUser.userId, followType)
+    private fun followAction(recommendUser: BigShotRecommendBean, position: Int) {
+        followType = recommendUser.isMutualAttention
+        followType = if (followType == 1) 2 else 1
+
+        viewModel.followOrCancelUser(recommendUser.userId, followType)
     }
+
     fun homeRefersh() {
         viewModel.getRecommendList()
         viewModel.getBigShotPost(false)
