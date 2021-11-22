@@ -58,8 +58,8 @@ fun CarAuthHolder(
                 skipCrmCarInfo(item)
             } else {//失败跳认证页面
                 item.reason = "${it.authReason.text}"
-                if (holder.layoutPosition==3){
-                    item.msgCode="700001"
+                if (holder.layoutPosition == 3) {
+                    item.msgCode = "700001"
                 }
                 skipUniSubmitAuth(item)
             }
@@ -72,8 +72,16 @@ fun CarAuthHolder(
  * 跳转认证页面
  */
 fun skipUniSubmitAuth(item: CarItemBean) {
-    RouterManger.param(RouterManger.KEY_TO_OBJ, item)
-        .startARouter(ARouterMyPath.UniCarAuthUI)
+    when {
+        isCrmFail(item) -> {
+            RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+                .startARouter(ARouterMyPath.UniCarAuthUI)
+        }
+        else -> {
+            RouterManger.param(RouterManger.KEY_TO_OBJ, item)
+                .startARouter(ARouterMyPath.CarAuthIngUI)
+        }
+    }
 }
 
 /**

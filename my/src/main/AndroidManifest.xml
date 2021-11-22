@@ -142,5 +142,8 @@
         <activity
             android:name=".ui.CarAuthSuccessUI"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CarAuthIngUI"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
