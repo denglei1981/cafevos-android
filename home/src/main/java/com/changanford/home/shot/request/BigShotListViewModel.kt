@@ -21,6 +21,7 @@ class BigShotListViewModel : BaseViewModel() {
     val followLiveData = SafeMutableLiveData<UpdateUiState<Any>>() // 关注否?。
     var pageNo: Int = 1
 
+
     /**
      *  推荐的大咖
      * */
