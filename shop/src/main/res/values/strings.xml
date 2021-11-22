@@ -171,4 +171,5 @@
     <string name="str_purchaseQuantityHasExceededLimit">已超出限购数量</string>
     <string name="str_insufficientInventory">库存不足</string>
     <string name="str_orderClosed">订单已关闭</string>
+    <string name="str_bargainingFavorable">砍价优惠</string>
 </resources>

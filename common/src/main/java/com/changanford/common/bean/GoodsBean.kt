@@ -218,6 +218,7 @@ data class GoodsDetailBean(
     var isAgree: Boolean = false,//是否同意协议
     var killStates: Int = 0,//秒杀状态
     var secondarySpuPageTagType: String? = "",
+    var isUpdateBuyNum:Boolean=true,//是否可以更改购买数量
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
