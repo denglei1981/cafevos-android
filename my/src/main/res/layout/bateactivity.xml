@@ -50,5 +50,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableRight="@mipmap/rightarrow" />
+        <TextView
+            android:id="@+id/tv_copy"
+            android:text="复制token"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/textblack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:hint="复制在此"
+                android:textSize="@dimen/sp_14"
+                android:layout_height="@dimen/dp_50"
+                android:id="@+id/token"></EditText>
+            <TextView
+                android:id="@+id/tv_paste"
+                android:text="应用"
+                android:padding="@dimen/dp_10"
+                android:textColor="@color/textblack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
