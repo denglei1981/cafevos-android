@@ -60,6 +60,7 @@ open class RecommendFragment :
     override fun initView() {
         binding.smartLayout.setEnableRefresh(true)
         binding.smartLayout.setOnRefreshListener(this)
+        binding.smartLayout.setOnLoadMoreListener(this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter

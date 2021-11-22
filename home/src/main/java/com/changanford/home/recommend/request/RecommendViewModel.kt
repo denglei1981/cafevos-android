@@ -7,6 +7,7 @@ import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.net.*
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
+import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ class RecommendViewModel : BaseViewModel() {
                     pageNo = 1
                 }
                 paramMaps["pageNo"] = pageNo
+                paramMaps["pageSize"]= PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 val rKey = getRandomKey()
                 apiService.getRecommendList(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
