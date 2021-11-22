@@ -469,9 +469,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     return@setOnClickListener
                 }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                    override fun con() {
-                        finish()
-                    }
 
                     override fun save() {
                         var postEntity =
@@ -1184,9 +1181,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     return true
                 }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-                    override fun con() {
-                        finish()
-                    }
 
                     override fun save() {
                         var postEntity =

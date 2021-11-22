@@ -240,15 +240,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 获取用户信息
      */
     private fun getUserInfo() {
-        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
-            it?.toString()?.logE()
-            if (MConstant.token.isNullOrEmpty() || null == it || it.userJson.isNullOrEmpty()) {
-                setData(null)
-            } else {
-                var userInfoBean: UserInfoBean =
-                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
-                setData(userInfoBean)
-            }
+        if (MConstant.token.isNullOrEmpty()) {
+            setData(null)
+        }
+        viewModel.userInfo.observe(this,{
+            setData(it)
         })
     }
 

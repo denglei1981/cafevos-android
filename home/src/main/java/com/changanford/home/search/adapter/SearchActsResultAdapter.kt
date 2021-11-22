@@ -59,7 +59,7 @@ class SearchActsResultAdapter :
             }
             when (item.official) {
                 0 -> {
-                    it.tvTagOne.text = "官方"
+                    it.tvTagOne.text = context.getString(R.string.platform_acts)
                     it.tvTagOne.visibility = View.VISIBLE
                 }
                 2 -> {

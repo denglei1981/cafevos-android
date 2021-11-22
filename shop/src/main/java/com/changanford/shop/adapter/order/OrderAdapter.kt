@@ -82,8 +82,9 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 3,4->{//商品、众筹
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
                     var specifications=""
-                    orderBriefBean.snapshotOfAttrOption?.let {
-                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(it, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
+                    val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
+                    if(!TextUtils.isEmpty(snapshotOfAttrOption)){
+                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(snapshotOfAttrOption, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
                         for(item in attrOption){
                             specifications+="${item.optionName},"
                         }

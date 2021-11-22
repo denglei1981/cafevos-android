@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_title"
+        layout="@layout/view_toolbar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon_success"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_87"
+        android:src="@mipmap/ic_car_auth_sccess" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:text="提交成功"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_20" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_38"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_38"
+        android:gravity="center"
+        android:text="您的车主认证信息已提交成功，请耐心等待，我们将尽快为审核！"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_look_info"
+        style="@style/login_btn_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:text="查看详情"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@drawable/shape_c_ff_r_24_stroke_95"
+        android:gravity="center"
+        android:text="前往首页"
+        android:textColor="@color/color_00095B"
+        android:textSize="@dimen/sp_15" />
+
+</LinearLayout>

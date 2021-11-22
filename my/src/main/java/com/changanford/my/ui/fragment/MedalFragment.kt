@@ -137,8 +137,9 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
         viewModel.allMedal.observe(this, Observer {
             it?.let {
                 list.clear()
+                adapter.data.clear()
                 list.addAll(it)
-                adapter.setDiffNewData(list)
+                adapter.addData(list)
             }
         })
 

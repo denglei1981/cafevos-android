@@ -118,53 +118,10 @@ class PloySearchResultActivity :
             onBackPressed()
         }
 
-//        binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
-//            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == 0) {
-//                HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
-//                    search(binding.layoutSearch.searchContent.text.toString(), false)
-//                }
-//            }
-//            false
-//        }
-
-
-//        binding.layoutSearch.searchContent.addTextChangedListener(
-//            object : TextWatcher {
-//                override fun afterTextChanged(s: Editable?) {
-//
-//                }
-//
-//                override fun beforeTextChanged(
-//                    s: CharSequence?,
-//                    start: Int,
-//                    count: Int,
-//                    after: Int
-//                ) {
-//                }
-//
-//                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                    if (s.isNullOrEmpty()) {
-////                        binding.verLin.visibility = View.VISIBLE
-////                        binding.recordRecyclerView.visibility = View.VISIBLE
-////                        binding.sRecyclerView.visibility = View.GONE
-////                        binding.clearImg.visibility = View.GONE
-//                        binding.rvAuto.visibility = View.GONE
-//                    } else {
-////                        binding.verLin.visibility = View.GONE
-////                        binding.recordRecyclerView.visibility = View.GONE
-////                        binding.sRecyclerView.visibility = View.VISIBLE
-////                        binding.clearImg.visibility = View.VISIBLE
-//                        binding.rvAuto.visibility = View.VISIBLE
-//                        viewModel.getSearchAc(s.toString())
-//                    }
-//                }
-//
-//            })
-
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()
         }
+
     }
 
 //    fun search(searchContent: String, needHide: Boolean) {

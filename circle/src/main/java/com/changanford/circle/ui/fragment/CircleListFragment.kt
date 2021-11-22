@@ -66,46 +66,46 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     override fun initData() {
-        if (type == 1) {
-            binding.refreshLayout.post {
-                SoulPermission.getInstance()
-                    .checkAndRequestPermission(
-                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                        object : CheckRequestPermissionListener {
-                            override fun onPermissionOk(permission: Permission) {
-                                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                                    override fun onReceiveLocation(location: BDLocation) {
-                                        val latitude = location.latitude //获取纬度信息
-                                        val longitude = location.longitude //获取经度信息
-                                        viewModel.getData(
-                                            type,
-                                            longitude.toString(),
-                                            latitude.toString(),
-                                            page
-                                        )
-                                    }
-                                })
-                            }
-
-                            override fun onPermissionDenied(permission: Permission) {
-                                viewModel.getData(
-                                    type,
-                                    "",
-                                    "",
-                                    page
-                                )
-                            }
-                        })
-            }
-
-        } else {
+//        if (type == 1) {
+//            binding.refreshLayout.post {
+//                SoulPermission.getInstance()
+//                    .checkAndRequestPermission(
+//                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                        object : CheckRequestPermissionListener {
+//                            override fun onPermissionOk(permission: Permission) {
+//                                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+//                                    override fun onReceiveLocation(location: BDLocation) {
+//                                        val latitude = location.latitude //获取纬度信息
+//                                        val longitude = location.longitude //获取经度信息
+//                                        viewModel.getData(
+//                                            type,
+//                                            longitude.toString(),
+//                                            latitude.toString(),
+//                                            page
+//                                        )
+//                                    }
+//                                })
+//                            }
+//
+//                            override fun onPermissionDenied(permission: Permission) {
+//                                viewModel.getData(
+//                                    type,
+//                                    "",
+//                                    "",
+//                                    page
+//                                )
+//                            }
+//                        })
+//            }
+//
+//        } else {
             viewModel.getData(
                 type,
                 "",
                 "",
                 page
             )
-        }
+//        }
 
     }
 

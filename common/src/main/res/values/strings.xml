@@ -22,4 +22,5 @@
     <string name="empty_car_tips">销售顾问正在积极准备您的爱车，暂无\n可以查看提车进度的车辆哦~</string>
     <string name="loading_tips">努力加载中</string>
     <string name="str_shareSuccess">分享成功啦~</string>
+    <string name="platform_acts">平台</string>
 </resources>

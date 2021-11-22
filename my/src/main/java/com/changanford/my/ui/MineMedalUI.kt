@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -15,6 +17,7 @@ import com.changanford.my.databinding.ItemMineMedalBinding
 import com.changanford.my.databinding.UiMineMedalBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.xiaomi.push.it
 
 /**
  *  文件名：MineMedalUI
@@ -47,6 +50,16 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
         })
     }
 
+
+    override fun back() {
+        LiveDataBus.get().with("refreshNowMedal", String::class.java).postValue(medalId)
+        super.back()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        LiveDataBus.get().with("refreshNowMedal", String::class.java).postValue(medalId)
+        return super.onKeyDown(keyCode, event)
+    }
 
     override fun hasRefresh(): Boolean {
         return false

@@ -19,7 +19,6 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
@@ -31,6 +30,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  *  文件名：AllMedalListUI
@@ -50,12 +50,17 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private var totalNum: Int = 0
 
     private var isRefresh: Boolean = false
+    var nowMedalId: String = ""
+    var userInfoBean: UserInfoBean? = null
+    var medalDatas: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
         var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
-        var userInfoBean: UserInfoBean? = null
         sysUserInfoBean?.userJson?.let {
             userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)
+            userInfoBean?.ext?.medalId?.let {
+                nowMedalId = "$it"
+            }
         }
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
         binding.medalToolbar.toolbarSave.apply {
@@ -73,14 +78,14 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         })
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
+                medalDatas.clear()
+                medalDatas.addAll(l)
                 l.forEach { item ->
                     if (item.isGet == "0" && null == medalItem) {
                         medalItem = item
                     }
-                    userInfoBean?.ext?.medalId?.logE()
-                    if (item.medalId.equals("${userInfoBean?.ext?.medalId}")) {
-                        binding.imMedalWithIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
-                        binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
+                    if (item.medalId == "$nowMedalId") {
+                        nowMedal(item)
                     }
                 }
                 if (viewModel.titles.size > 0) {
@@ -116,6 +121,22 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 }
             }
         })
+
+        LiveDataBus.get().with("refreshNowMedal", String::class.java).observe(this, Observer {
+            it?.let {
+                nowMedalId = it
+                medalDatas.forEach { item ->
+                    if (item.medalId == "$nowMedalId") {
+                        nowMedal(item)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun nowMedal(item: MedalListBeanItem) {
+        binding.imMedalWithIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
+        binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
     }
 
     override fun onPause() {

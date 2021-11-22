@@ -23,7 +23,7 @@ class PictureAdapterViewHolder(itemView:View,activity: Activity,type:Int,var con
     var activity: Activity = activity
     var showedittype =type
     override fun bindData(data: LocalMedia, position: Int, pageSize: Int) {
-        if (showedittype==-1)etcontent?.visibility =View.GONE else etcontent?.visibility = View.VISIBLE
+        if (showedittype==-1||showedittype == 312)etcontent?.visibility =View.GONE else etcontent?.visibility = View.VISIBLE
          GlideUtils.loadFilePath(PictureUtil.getFinallyPath(data),pic)
         etcontent.setText(content)
         if (showedittype == 1){

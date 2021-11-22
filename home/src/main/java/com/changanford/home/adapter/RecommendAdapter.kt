@@ -120,7 +120,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 tvHomeActAddress.visibility = View.GONE
             }
             3 -> {
-                tvTagTwo.text = "厂家活动"
+                tvTagTwo.text = "福域活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
@@ -128,7 +128,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
         when (item.official) {
             0 -> {
-                tvTagOne.text = "官方"
+                tvTagOne.text = context.getString(R.string.platform_acts)
                 tvTagOne.visibility = View.VISIBLE
             }
             2 -> {

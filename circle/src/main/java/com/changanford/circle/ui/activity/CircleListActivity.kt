@@ -83,7 +83,8 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleListFragment.newInstance(position)
+                    val type = if (position == 0) 0 else 2
+                    return CircleListFragment.newInstance(type)
                 }
 
             }
