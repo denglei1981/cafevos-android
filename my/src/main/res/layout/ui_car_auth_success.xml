@@ -51,9 +51,10 @@
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
+        android:background="@drawable/shape_c_ff_r_24_stroke_95"
+        android:gravity="center"
         android:text="前往首页"
-        android:background="@drawable/shape_c_5c_r_23"
-        android:textColor="@color/white"
+        android:textColor="@color/color_00095B"
         android:textSize="@dimen/sp_15" />
 
 </LinearLayout>

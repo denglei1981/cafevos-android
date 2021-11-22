@@ -9,18 +9,6 @@
         android:id="@+id/car_toolbar"
         layout="@layout/view_toolbar" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/car_model_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#2000095B"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/dp_24"
-        android:paddingStart="@dimen/dp_29"
-        android:text="*仅支持FORD EVOS车主认证"
-        android:textColor="#00095B"
-        android:textSize="@dimen/sp_13" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -85,24 +73,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
                     android:background="#EEEEEE" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_13"
-                    android:text="上传证件"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_14"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="*福域APP不会通过任何渠道泄露您的个人信息，请放心填写。 \n*上传的图片请保证文字清晰可见，无反光。 \n*上传的资料信息请与购车经销商登记资料一致。"
-                    android:textColor="#999999"
-                    android:textSize="@dimen/sp_12" />
 
                 <include
                     android:id="@+id/include_idcard_layout"
