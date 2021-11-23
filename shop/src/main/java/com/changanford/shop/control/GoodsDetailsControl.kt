@@ -85,6 +85,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 }
             }
             "SECKILL"->{//秒杀信息
+                dataBean.isUpdateBuyNum=false//秒杀商品禁止修改商品数量
                 val secKillInfo=dataBean.secKillInfo
                 if(null!=secKillInfo){
                     headerBinding.inGoodsInfo.tvConsumption.visibility=View.VISIBLE

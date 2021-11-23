@@ -65,6 +65,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             } else stock
             setMax(max,isLimitBuyNum)
             setNumber(dataBean.buyNum,false)
+            setIsUpdateBuyNum(dataBean.isUpdateBuyNum)
             numberLiveData.observe(this@OrderConfirmActivity,{
                 dataBean.buyNum= it
                 bindingBaseData()
