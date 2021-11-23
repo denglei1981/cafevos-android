@@ -11,6 +11,7 @@ import com.changanford.common.loadsir.TimeoutCallback
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.crash.CrashProtect
 
 import com.changanford.common.widget.smart.MyFooterView
@@ -68,7 +69,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
         UserManger.getSysUserInfo()?.let {
             MConstant.userId = it.uid
-            MConstant.token = "${it.token}"
+            MConstant.token = SPUtils.getToken()
             MConstant.mine_phone = "${it.mobile}"
         }
         initLoadSir()// 初始化界面管理类。
