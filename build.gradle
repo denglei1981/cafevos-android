@@ -3,14 +3,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext{
-        kotlin_version = "1.5.10"
+        kotlin_version = "1.5.31"
         nav_version = "2.3.5"
         compileSDKVersion = 30
         buildToolsVersion = "30.0.3"
         targetSDKVersion = 30
         minSDKVersion = 21
         versions_router_compiler = "1.5.2"
-        compose_version = '1.0.0'
+        versions_compose = '1.0.5'
         //TODO
     }
     repositories {
