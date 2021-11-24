@@ -192,7 +192,7 @@ open class RecommendFragment :
             } else {
                 bean.postsLikesCount--
             }
-            recommendAdapter.notifyItemChanged(selectPosition)
+            recommendAdapter.notifyItemChanged(selectPosition+1)//有t
         })
 
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
@@ -205,7 +205,7 @@ open class RecommendFragment :
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike
                 item.commentCount = it.msgCount
-                recommendAdapter.notifyItemChanged(selectPosition)// 有t
+                recommendAdapter.notifyItemChanged(selectPosition+1)// 有t
                 if (item.authors?.isFollow != it.isFollow) {
                     // 关注不相同，以详情的为准。。
                     if (item.authors != null) {
