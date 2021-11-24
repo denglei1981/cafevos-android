@@ -60,7 +60,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
             messageType = it.getInt("value", 2)
             messageStatus = it.getInt("messageStatus", 1)
         }
-        setSaveText(0)
+        setSaveText(messageStatus)
         binding.mineToolbar.toolbarTitle.text = if (messageType == 2) "互动消息" else "交易消息"
         when (messageType) {
             2 -> {
@@ -152,7 +152,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                             }
                             viewModel.changAllMessage(message.toString())
                             adapter?.addData(it)
-                            setSaveText(messageStatus)
+//                            setSaveText(messageStatus)
                         }
                     }
                     if (null == list) {
