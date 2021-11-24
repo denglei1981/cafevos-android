@@ -121,42 +121,49 @@
                     android:id="@+id/vin_input_layout"
                     layout="@layout/inclube_car_auth_vin_inpunt"
                     android:visibility="gone" />
+            </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/check_layout"
-                    android:layout_width="match_parent"
+            <View
+                android:id="@+id/vin_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_10"
+                android:background="#EEEEEE"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/check_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_12"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/auth_checkbox"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:orientation="horizontal">
+                    android:button="@null"
+                    android:drawableLeft="@mipmap/ic_auth_checkbox"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:gravity="center_vertical"
+                    android:text="我已阅读并同意"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
 
-                    <CheckBox
-                        android:id="@+id/auth_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableLeft="@mipmap/ic_auth_checkbox"
-                        android:drawablePadding="@dimen/dp_4"
-                        android:gravity="center_vertical"
-                        android:text="我已阅读并同意"
-                        android:textColor="#333333"
-                        android:textSize="@dimen/sp_12" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="《用户隐私协议》"
-                        android:textColor="#00095B"
-                        android:textSize="@dimen/sp_12" />
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/submit"
-                    style="@style/login_btn_style"
-                    android:layout_width="match_parent"
-                    android:text="提交信息" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《用户隐私协议》"
+                    android:textColor="#00095B"
+                    android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/submit"
+                style="@style/login_btn_style"
+                android:layout_width="match_parent"
+                android:text="提交信息" />
 
             <View
                 android:layout_width="match_parent"

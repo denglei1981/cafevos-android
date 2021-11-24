@@ -5,7 +5,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
-import com.changanford.common.bean.cars
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
@@ -15,7 +14,7 @@ import com.changanford.my.adapter.CarAuthHolder
 import com.changanford.my.databinding.ItemCarAuthBinding
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
-import com.changanford.my.viewmodel.CarViewModel
+import com.changanford.my.viewmodel.CarAuthViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -26,7 +25,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineLoveCarListUI)
-class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
+class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
     val carAdapter: AuthCarAdapter by lazy {
         AuthCarAdapter()
@@ -40,7 +39,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarViewModel>() {
         binding.rcyCarAuth.rcyCommonView.adapter = carAdapter
 
         viewModel.carAuth.observe(this, Observer {
-            completeRefresh(it ?: cars, carAdapter, 0)
+            completeRefresh(it, carAdapter, 0)
         })
 
         binding.btnAddCar.setOnClickListener {

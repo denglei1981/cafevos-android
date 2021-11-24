@@ -19,7 +19,7 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiCarAuthIngBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
-import com.changanford.my.viewmodel.SignViewModel
+import com.changanford.my.viewmodel.CarAuthViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.CarAuthIngUI)
-class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, SignViewModel>() {
+class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
 
     var carItemBean: CarItemBean? = null
     var userInfoBean: UserInfoBean? = null
@@ -42,7 +42,7 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, SignViewModel>() {
     var imgType = 0 // 1身份证 4 行驶证  5发票
 
     override fun initView() {
-        binding.carToolbar.toolbarTitle.text = "车主认证"
+        binding.carToolbar.toolbarTitle.text = "认证详情"
         //VIN强制大写
         binding.vinInputLayout.vinNum.transformationMethod =
             object : ReplacementTransformationMethod() {
@@ -122,123 +122,149 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, SignViewModel>() {
         })
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             carItemBean = it as CarItemBean
-            carItemBean?.let { carItemBean ->
-                binding.authStatusLayout.statusLayout.visibility = View.VISIBLE
-                binding.idcardInputLayout.idcardLayout.visibility = View.VISIBLE
-                binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
-                when (carItemBean.status) {
-                    1, 2 -> {//审核中
+        }
+    }
+
+    override fun initData() {
+        carItemBean?.vin?.let {
+            viewModel.queryAuthCarDetail(it) {
+                it.onSuccess {
+                    it?.let {
+                        carItemBean = it
+                    }
+                    set()
+                }
+                it.onWithMsgFailure {
+                    it?.let {
+                        showToast(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun set() {
+        carItemBean?.let { carItemBean ->
+            binding.authStatusLayout.statusLayout.visibility = View.VISIBLE
+            binding.idcardInputLayout.idcardLayout.visibility = View.VISIBLE
+            binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
+            when (carItemBean.authStatus) {
+                1, 2 -> {//审核中
 //                        MineUtils.carAuthStatus(
 //                            binding.authStatusLayout.authStatus,
 //                            "请等待审核，审核时间为1-3个工作日",
 //                            "审核中"
 //                        )
-                        binding.authStatusLayout.authStatus.text = "审核中"
-                        binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
-                        binding.checkLayout.visibility = View.GONE
-                        isClick = false
-                    }
-                    3, 4 -> {//审核失败
-                        binding.authStatusLayout.authReason.visibility = View.VISIBLE
-                        if (it.reason.isNotEmpty()) {
-                            binding.authStatusLayout.authReason.text =
-                                "${it.reason.replace("失败原因：", "").replace("原因：", "")}"
-                        }
-                        binding.authStatusLayout.authStatus.text = "审核不通过"
-                        binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#D62C2C"))
-                        binding.authCheckbox.isChecked = true// 审核不通过，默认勾选
-                    }
-                }
-                if (it.msgCode == "700001") {// 更换绑定
-                    isClick = false
+                    binding.authStatusLayout.authStatus.text = "审核中"
+                    binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
                     binding.checkLayout.visibility = View.GONE
-                    binding.line1.visibility = View.VISIBLE
-                    binding.authStatusLayout.btnChangeMobile.visibility = View.VISIBLE
-                    binding.authStatusLayout.btnChangeMobile.setOnClickListener { v ->
-                        ConfirmTwoBtnPop(this).apply {
-                            contentText.text = "${it.msgButton}"
-                            btnCancel.setOnClickListener {
-                                dismiss()
-                            }
-                            btnConfirm.setOnClickListener {
-                                lifecycleScope.launch {
-                                    fetchRequest {
-                                        var body = HashMap<String, Any>()
-                                        body["id"] = carItemBean.id
-                                        var rkey = getRandomKey()
-                                        apiService.uniCarUpdatePhone(
-                                            body.header(rkey),
-                                            body.body(rkey)
-                                        )
-                                    }.onSuccess {
-                                        showToast("已成功提交资料")
-                                        binding.authStatusLayout.authStatus.text = "审核中"
-                                        binding.authStatusLayout.authReason.visibility = View.GONE
-                                        binding.authStatusLayout.btnChangeMobile.visibility =
-                                            View.GONE
-                                        LiveDataBus.get()
-                                            .with("mine:AuthCar", Boolean::class.java)
-                                            .postValue(true)
-                                    }.onWithMsgFailure {
-                                        it?.let {
-                                            showToast(it)
-                                        }
+                    isClick = false
+                }
+                3, 4 -> {//审核失败
+                    binding.authStatusLayout.authReason.visibility = View.VISIBLE
+                    if (carItemBean.examineRemakeFront.isNotEmpty()) {
+                        binding.authStatusLayout.authReason.text =
+                            "${
+                                carItemBean.examineRemakeFront.replace("失败原因：", "")
+                                    .replace("原因：", "")
+                            }"
+                    }
+                    binding.authStatusLayout.authStatus.text = "审核不通过"
+                    binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#D62C2C"))
+                    binding.authCheckbox.isChecked = true// 审核不通过，默认勾选
+                }
+            }
+            if (carItemBean.isNeedChangeBind == 1) {// 更换绑定
+                isClick = false
+                binding.checkLayout.visibility = View.GONE
+                binding.line1.visibility = View.VISIBLE
+                binding.authStatusLayout.btnChangeMobile.visibility = View.VISIBLE
+                binding.authStatusLayout.btnChangeMobile.setOnClickListener { v ->
+                    ConfirmTwoBtnPop(this).apply {
+                        contentText.text = "${carItemBean.examineRemakeFront}"
+                        btnCancel.setOnClickListener {
+                            dismiss()
+                        }
+                        btnConfirm.setOnClickListener {
+                            lifecycleScope.launch {
+                                fetchRequest {
+                                    var body = HashMap<String, Any>()
+                                    body["id"] = carItemBean.id
+                                    var rkey = getRandomKey()
+                                    apiService.uniCarUpdatePhone(
+                                        body.header(rkey),
+                                        body.body(rkey)
+                                    )
+                                }.onSuccess {
+                                    showToast("已成功提交资料")
+                                    binding.authStatusLayout.authStatus.text = "审核中"
+                                    binding.authStatusLayout.authReason.visibility = View.GONE
+                                    binding.authStatusLayout.btnChangeMobile.visibility =
+                                        View.GONE
+                                    LiveDataBus.get()
+                                        .with("mine:AuthCar", Boolean::class.java)
+                                        .postValue(true)
+                                }.onWithMsgFailure {
+                                    it?.let {
+                                        showToast(it)
                                     }
                                 }
                             }
-                        }.showPopupWindow()
-                    }
-                }
-                if (!it.idsImg.isNullOrEmpty()) {//身份证
-                    binding.idcardInputLayout.realName.apply {
-                        setText("${it.ownerName}")
-                        isEnabled = false
-                        isFocusable = false
-                    }
-                    binding.idcardInputLayout.idcardNum.apply {
-                        setText("${it.idsNumber}")
-                        isEnabled = false
-                        isFocusable = false
-                    }
-                    binding.imIdCard.load(it.idSImg, R.mipmap.image_h_one_default)
-                    when (it.idsType) {
-                        1 -> { //身份证
-                            binding.typeText.setText("身份证")
-                            pathMap[1] = OcrRequestBean(
-                                "${MConstant.imgcdn}${it.idsImg}",
-                                "ID_CARD",
-                                it.idsImg
-                            )
-                            imgType = 1
                         }
-                        2 -> { // 驾驶证
-                            binding.typeText.setText("身份证")
-                            pathMap[7] = OcrRequestBean(
-                                "${MConstant.imgcdn}${it.idsImg}",
-                                "DRIVER_LICENCE",
-                                it.idsImg
-                            )
-                        }
+                    }.showPopupWindow()
+                }
+            }
+            if (!carItemBean.idsImg.isNullOrEmpty()) {//身份证
+                binding.idcardInputLayout.realName.apply {
+                    setText("${carItemBean.ownerName}")
+                    isEnabled = false
+                    isFocusable = false
+                }
+                binding.idcardInputLayout.idcardNum.apply {
+                    setText("${carItemBean.idsNumber}")
+                    isEnabled = false
+                    isFocusable = false
+                }
+                binding.imIdCard.load(carItemBean.idsImg, R.mipmap.image_h_one_default)
+                when (carItemBean.idsType) {
+                    1 -> { //身份证
+                        binding.typeText.setText("身份证")
+                        pathMap[1] = OcrRequestBean(
+                            "${MConstant.imgcdn}${carItemBean.idsImg}",
+                            "ID_CARD",
+                            carItemBean.idsImg
+                        )
+                        imgType = 1
+                    }
+                    2 -> { // 驾驶证
+                        binding.typeText.setText("驾驶证")
+                        pathMap[7] = OcrRequestBean(
+                            "${MConstant.imgcdn}${carItemBean.idsImg}",
+                            "DRIVER_LICENCE",
+                            carItemBean.idsImg
+                        )
                     }
                 }
-                binding.vinInputLayout.vinNum.setText("${it.vin}")
-                if (!it.driverImg.isNullOrEmpty()) {//行驶证
-                    imgType = 4
-                    binding.imDriving.load(it.driverImg, R.mipmap.image_h_one_default)
-                    pathMap[4] = OcrRequestBean(
-                        "${MConstant.imgcdn}${it.driverImg}",
-                        "WALK_LICENCE",
-                        it.driverImg
-                    )
-                }
-                if (!it.invoiceImg.isNullOrEmpty()) {//发票
-                    imgType = 5
-                    binding.imDriving.load(it.invoiceImg, R.mipmap.image_h_one_default)
-                    pathMap[5] = OcrRequestBean(
-                        "${MConstant.imgcdn}${it.invoiceImg}",
-                        "INVOICE",
-                        it.invoiceImg
-                    )
+            }
+            binding.vinInputLayout.vinNum.setText("${carItemBean.vin}")
+            binding.imDriving.load(carItemBean.ownerCertImg, R.mipmap.image_h_one_default)
+            if (!carItemBean.ownerCertImg.isNullOrEmpty()) {//行驶证
+                imgType = 4
+                when (carItemBean.ownerCertType) {
+                    1 -> {
+                        pathMap[4] = OcrRequestBean(
+                            "${MConstant.imgcdn}${carItemBean.ownerCertImg}",
+                            "WALK_LICENCE",
+                            carItemBean.ownerCertImg
+                        )
+                    }
+                    2 -> {
+                        pathMap[5] = OcrRequestBean(
+                            "${MConstant.imgcdn}${carItemBean.ownerCertImg}",
+                            "INVOICE",
+                            carItemBean.ownerCertImg
+                        )
+                    }
                 }
             }
         }

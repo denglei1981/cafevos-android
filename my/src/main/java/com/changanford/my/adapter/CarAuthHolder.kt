@@ -9,6 +9,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.utilext.load
+import com.changanford.my.R
 import com.changanford.my.databinding.ItemCarAuthBinding
 
 /**
@@ -25,12 +26,12 @@ fun CarAuthHolder(
     holder.dataBinding?.let {
         it.tvVin.text = "VIN码：${item.vin}"
         it.tvCarName.text =
-            if (item.carName.isNullOrEmpty()) item.seriesName else item.carName
+            if (item.carName.isNullOrEmpty()) item.modelName else item.carName
         //设置后台配置的车系图片
-        if (item.seriesUrl.isNullOrEmpty()) {
+        if (item.modelUrl.isNullOrEmpty()) {
             //                    it.carPic.setImageResource(R.mipmap.uni_car_sample)
         } else {
-            it.carPic.load(item.seriesUrl)
+            it.carPic.load(item.modelUrl, R.mipmap.ic_car_auth_ex)
         }
         var d = it.tvAuth.background as GradientDrawable
         d.setColor(Color.parseColor("#60000000"))
@@ -54,14 +55,17 @@ fun CarAuthHolder(
             }
         }
         holder.itemView.setOnClickListener { _ ->
-            if (isCrmSuccess(item)) {//成功跳详情
-                skipCrmCarInfo(item)
-            } else {//失败跳认证页面
-                item.reason = "${it.authReason.text}"
-                if (holder.layoutPosition == 3) {
-                    item.msgCode = "700001"
+            when {
+                isCrmSuccess(item) -> {//成功跳详情
+                    skipCrmCarInfo(item)
                 }
-                skipUniSubmitAuth(item)
+                isCrmStatusNotBind(item) -> {//解绑
+
+                }
+                else -> {//失败跳认证页面
+                    item.reason = "${it.authReason.text}"
+                    skipUniSubmitAuth(item)
+                }
             }
         }
     }
@@ -115,24 +119,17 @@ private fun crmHint(
             holder.authReason.visibility = View.VISIBLE
             holder.authReason.text = "请等待审核，审核时间为1-3个工作日"
             if (hintStats == 2) {//认证失败
-                holder.authReason.text =
-                    if (item.status == 4) "失败原因：${item.crmAuthRemake}" else "失败原因：${item.pretrialRemake}"
+                holder.authReason.text = "失败原因：${item.examineRemakeFront ?: ""}"
+//                if (item.status == 4) "失败原因：${item.crmAuthRemake}" else "失败原因：${item.pretrialRemake}"
             }
         }
         3 -> {//CRM认证成功
             if (item.plateNum.isNullOrEmpty()) {
-                holder.btnAddCarNum.visibility = View.VISIBLE
+                holder.btnAddCarNum.visibility = View.GONE
             } else {
                 holder.btnCarNum.visibility = View.VISIBLE
                 holder.btnCarNum.text = "${item.plateNum}"
             }
-            //暂不考虑
-//                    if (isInCallStatusIng(item)) {//incall审核中
-//                        holder.openCall.visibility = View.INVISIBLE
-//                        holder.hintLayout.visibility = View.VISIBLE
-//                        holder.hintReason.visibility = View.VISIBLE
-//                        holder.hintReason.text = "其它平台已申请开通车控功能，请耐心等待..."
-//                    }
         }
     }
 }
@@ -220,15 +217,19 @@ fun isInCallStatusIng(item: CarItemBean): Boolean {
 }
 
 fun isCrmSuccess(item: CarItemBean): Boolean {
-    return CommonUtils.isCrmSuccess(item.status)
+    return CommonUtils.isCrmSuccess(item.authStatus)
 }
 
 fun isCrmFail(item: CarItemBean): Boolean {
-    return CommonUtils.isCrmFail(item.status)
+    return CommonUtils.isCrmFail(item.authStatus)
 }
 
 fun isCrmStatusIng(item: CarItemBean): Boolean {
-    return CommonUtils.isCrmStatusIng(item.status)
+    return CommonUtils.isCrmStatusIng(item.authStatus)
+}
+
+fun isCrmStatusNotBind(item: CarItemBean): Boolean {
+    return CommonUtils.isCrmNotBind(item.authStatus)
 }
 
 /**

@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**
@@ -10,11 +11,36 @@ import java.io.Serializable
  *  修改描述：TODO
  */
 
+
+data class CarAuthBean(
+    val userId: Int = 0,
+    val isCarOwner: Int = 0,
+    val carList: ArrayList<CarItemBean>
+)
+
 /**
  * 查询认证车辆，筛选数据状态
  */
 
 data class CarItemBean(
+    var vin: String = "",
+    val modelName: String = "",//车型名称
+    val modelUrl: String = "",//车型图
+    val plateNum: String = "",
+    @SerializedName(
+        value = "authStatus",
+        alternate = ["status"]
+    ) var authStatus: Int = 0,
+    val examineRemakeFront: String = "", //审核备注
+    val dealerName: String = "",
+    val dealerPhone: String = "",
+    val saleDate: String = "",//购车日期
+
+
+    val isNeedChangeBind: Int = 0, //是否需要更换绑定 1是 0 否
+    val ownerCertImg: String = "",//车主证件图片地址
+    val ownerCertType: Int = 0,//车主证件类型（1:行驶证 2:发票）
+
     val authTime: String = "",
     val avatar: String = "",
     val carColor: String = "",
@@ -23,8 +49,6 @@ data class CarItemBean(
     val createTime: String = "",
     val crmAuthRemake: String = "",
     val dealerId: String = "",
-    val dealerName: String = "",
-    val dealerPhoneNumber: String = "",
     val driverImg: String = "",
     val driverSImg: String = "",
     val carId: String = "",
@@ -36,21 +60,15 @@ data class CarItemBean(
     val isRecPurchase: String = "",
     val latestMaintainKm: String = "",
     val modelCode: String = "",
-    val modelName: String = "",
     val nickname: String = "",
     val ownerName: String = "",
     val ownerType: Int = 0,
     var personalShow: Int = 0,
     val phone: String = "",
-    val plateNum: String = "",
     val pretrialRemake: String = "",
     val salesDate: String = "",
     val seriesCode: String = "",
-    val seriesName: String = "",
-    val seriesUrl: String = "",
-    var status: Int = 0,
     val userId: Int = 0,
-    val vin: String = "",
     val idsImg: String = "",
     val soldierCardImg: String = "",
     val policeCardImg: String = "",
@@ -72,14 +90,10 @@ data class CarItemBean(
     //UNAUTH 未实名  @蒋小寒 @周春宇 
     var realnameAuthStatus: String = "",
     val incallAuthRemake: String = "",
-    val carName: String = ""
+    val carName: String = "",
 
-) : Serializable
+    ) : Serializable
 
-
-var cars = arrayListOf(
-    CarItemBean(status = 1), CarItemBean(status = 4), CarItemBean(status = 5)
-)
 
 /**
  * Ocr识别提交数据

@@ -42,7 +42,7 @@
             android:layout_height="@dimen/dp_158"
             android:layout_marginTop="@dimen/dp_10"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_idcard_ex"
+            android:src="@mipmap/ic_xsz_ex"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,18 +51,19 @@
             android:id="@+id/add_driving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_add"
+            android:src="@drawable/add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/add_driving_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_4"
             android:text="点击上传行驶证正面"
-            android:textColor="#666666"
+            android:textColor="@drawable/auth_hint_text_color"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -94,18 +95,19 @@
             android:id="@+id/add_fp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_add"
+            android:src="@drawable/add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/add_fp_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_4"
             android:text="点击上传发票"
-            android:textColor="#666666"
+            android:textColor="@drawable/auth_hint_text_color"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -13,7 +13,7 @@
             android:layout_marginStart="@dimen/dp_21"
             android:layout_marginTop="@dimen/dp_2"
             android:layout_marginEnd="@dimen/dp_20"
-            android:background="@drawable/shape_auth_look_bg"
+            android:background="@mipmap/ic_auth_car_top_bg"
             android:minHeight="@dimen/dp_66">
 
             <androidx.appcompat.widget.AppCompatTextView

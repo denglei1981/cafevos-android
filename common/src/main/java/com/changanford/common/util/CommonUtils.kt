@@ -28,16 +28,21 @@ object CommonUtils {
         return realnameAuthStatus == "AUTHING"
     }
 
+    //审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:解绑
     fun isCrmSuccess(status: Int): Boolean {
-        return status == 5
+        return status == 3
     }
 
     fun isCrmFail(status: Int): Boolean {
-        return status == 3 || status == 4
+        return status == 4
     }
 
     fun isCrmStatusIng(status: Int): Boolean {
         return status == 1 || status == 2
+    }
+
+    fun isCrmNotBind(status: Int): Boolean {
+        return status == 5
     }
 
     /**
@@ -60,7 +65,7 @@ object CommonUtils {
                     ""
                 }
             },
-            "crmAuthState" to when (item.status) {
+            "crmAuthState" to when (item.authStatus) {
                 5 -> { //认证成功
                     1
                 }

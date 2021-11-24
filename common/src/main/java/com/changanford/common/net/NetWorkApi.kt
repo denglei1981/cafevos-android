@@ -216,6 +216,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
     /**
      * 获取反馈 常用问题
      */
@@ -580,6 +581,18 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CarItemBean>>
+
+    @POST("ser/carAuth/myCarList")
+    suspend fun queryAuthCarList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CarAuthBean>
+
+    @POST("ser/carAuth/getAuthDetail")
+    suspend fun queryAuthDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CarItemBean>
 
     /**
      * 车主认证更新手机号
@@ -969,4 +982,35 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ShopBean>
+
+
+    /**
+     * 添加车牌号
+     */
+
+    @POST("ser/carAuth/addOrUpdatePlateNum")
+    suspend fun addCarCardNum(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * U享卡添加车牌号
+     */
+
+    @POST("/uniCard/updateOrderPlateNum")
+    suspend fun addCarCardNumUni(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+    /**
+     * 提交车主认证
+     */
+    @POST("/ser/carAuth/submitAuthApply")
+    suspend fun submitCarAuth(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CarAUthResultBean>
 }
