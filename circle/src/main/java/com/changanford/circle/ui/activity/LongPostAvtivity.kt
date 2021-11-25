@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Color
+import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -938,19 +939,36 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             ytPath = PictureUtil.getFinallyPath(media!!)
             Log.d("=============", "${ytPath}")
             var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
-
+            var exifInterface = ExifInterface(ytPath);
+            var rotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             path =
                 stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
-                    if (media.width == 0) {
-                        nomalwith
-                    } else {
-                        media.width
+                    if (media.isCut){
+                        if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270){
+                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                        }else{
+                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                        }
+                    }else{
+                        if (media.width==0){
+                            nomalwith
+                        }else{
+                            media.width
+                        }
                     }
                 }_${
-                    if (media.height == 0) {
-                        nomalhight
-                    } else {
-                        media.height
+                    if (media.isCut){
+                        if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270){
+                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                        }else{
+                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                        }
+                    }else{
+                        if (media.height==0){
+                            nomalwith
+                        }else{
+                            media.height
+                        }
                     }
                 }." + type
             if (index == 0) {

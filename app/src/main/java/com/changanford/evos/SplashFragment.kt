@@ -1,5 +1,6 @@
 package com.changanford.evos
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -52,6 +53,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 MConstant.pubKey = it
                 if (MConstant.isPopAgreement) {
                     showAppPrivacy(BaseApplication.curActivity as AppCompatActivity) {
+                        SPUtils.setParam(MyApp.mContext, "isPopAgreement", false)
                         viewModel.getDbAds()
                         viewModel.adService("app_launch")
                     }
@@ -82,7 +84,19 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 
     private fun showAds() {
         var bundle = requireActivity().intent?.extras?: Bundle()
-
+        if (Intent.ACTION_VIEW == requireActivity().intent.action) {
+            val uri = requireActivity().intent.data
+            if (uri != null) {
+                try {
+                    val type = uri.getQueryParameter("jumpDataType")
+                    val value = uri.getQueryParameter("jumpDataValue")
+                    bundle.putString("jumpDataType",type)
+                    bundle.putString("jumpDataValue",value)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
         viewModel.imgBean.observe(this, {
             firstIn()
             val imgBean = it

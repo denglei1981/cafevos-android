@@ -201,6 +201,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             dataBean.preferentialFb="${abs(preferentialFb.toInt())}"
             binding.inGoodsInfo1.apply {
                 tvIntegralVip.visibility=View.VISIBLE
+                if("2"==dataBean.busSourse)tvMemberDiscount.setText(R.string.str_bargainingFavorable)
                 tvMemberDiscount.visibility=View.VISIBLE
             }
         }

@@ -20,7 +20,7 @@
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
             android:src="@mipmap/image_h_one_default"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.shop.view.TypefaceTextView
             tools:visibility="visible"

@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-kapt'
     id 'com.alibaba.arouter'
 }
-def versions_compose = "1.0.0"
 def versions_datastore = "1.0.0-beta01"
 def versions_retrofit = "2.9.0"
 def versions_coroutine = "1.3.5"
@@ -134,6 +133,10 @@ dependencies {
     api "androidx.compose.material:material:$versions_compose"// Material Design
     api "androidx.compose.material:material-icons-core:$versions_compose"// Material design icons
     api "androidx.compose.material:material-icons-extended:$versions_compose"
+    // Integration with activities
+    api 'androidx.activity:activity-compose:1.3.1'
+    // Integration with ViewModels
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
 // Integration with observables
     api "androidx.compose.runtime:runtime-livedata:$versions_compose"
     api "androidx.compose.runtime:runtime:$versions_compose"

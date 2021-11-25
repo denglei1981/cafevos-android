@@ -46,10 +46,10 @@ class SplashViewModel : ViewModel() {
             MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
             MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
             if (MConstant.pubKey.isNotEmpty()) {
-                key.postValue(MConstant.pubKey)
-                if (MConstant.imgcdn.isNullOrEmpty()) {
-                    getConfig()
-                }
+//                key.postValue(MConstant.pubKey)
+//                if (MConstant.imgcdn.isNullOrEmpty()) {
+//                    getConfig()
+//                }
             }
         }
         viewModelScope.launch {

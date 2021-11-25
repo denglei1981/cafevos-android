@@ -56,10 +56,10 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                 }
             }
         }
-        setSaveText(0)
         intent.extras?.let {
             messageStatus = it.getInt("messageStatus", 1)
         }
+        setSaveText(messageStatus)
 
         binding.mineToolbar.toolbarTitle.text = "系统消息"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
@@ -143,7 +143,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                             }
                             viewModel.changAllMessage(message.toString())
                             adapter?.addData(it)
-                            setSaveText(messageStatus)
+//                            setSaveText(messageStatus)
                         }
                     }
                     if (null == list) {
