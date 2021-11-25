@@ -149,7 +149,7 @@
                         android:background="@drawable/btn_one_clear_bg"
                         android:gravity="center"
                         android:text="确定"
-                        android:textColor="#081725"
+                        android:textColor="@color/color_00095B"
                         android:textSize="@dimen/text_size_mid" />
 
                 </LinearLayout>

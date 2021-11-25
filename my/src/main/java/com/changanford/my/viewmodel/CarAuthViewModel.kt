@@ -11,6 +11,7 @@ import com.changanford.common.bean.OcrRequestBean
 import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.common.utilext.toastShow
 import kotlinx.coroutines.launch
 
 /**
@@ -88,6 +89,47 @@ class CarAuthViewModel : ViewModel() {
                 var rkey = getRandomKey()
                 apiService.queryAuthDetail(body.header(rkey), body.body(rkey))
             })
+        }
+    }
+
+    /****------------------****/
+    fun getSmsCode(mobile: String?, result: (CommonResponse<String>) -> Unit) {
+        if (mobile?.isNullOrEmpty() == true) {
+            toastShow("未获取到手机号")
+            return
+        }
+        viewModelScope.launch {
+            result(fetchRequest(showLoading = true) {
+                var body = HashMap<String, Any>()
+                body["phone"] = mobile
+                var rKey = getRandomKey()
+                apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+            })
+        }
+    }
+
+
+    fun changePhoneBind(
+        vin: String,
+        oldPhone: String? = "",
+        smsCode: String? = "",
+        result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(
+                fetchRequest {
+                    var body = HashMap<String, Any>()
+                    body["oldPhone"] = oldPhone ?: ""
+                    body["smsCode"] = smsCode ?: ""
+                    body["vin"] = vin
+                    var rKey = getRandomKey()
+                    if (oldPhone.isNullOrEmpty() && smsCode.isNullOrEmpty()) {
+                        apiService.changePhoneBind(body.header(rKey), body.body(rKey))
+                    } else {
+                        apiService.changeOldPhoneBind(body.header(rKey), body.body(rKey))
+                    }
+                }
+            )
         }
     }
 }

@@ -6,10 +6,7 @@ import android.view.View.OnTouchListener
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.net.body
-import com.changanford.common.net.fetchRequest
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_CAR_CARD_NUM
@@ -116,9 +113,15 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
                 inputContent?.let {
                     for (i in 0 until MAX) {
                         if (i < it.length) {
-                            textViews[i].text = it.get(i).toString()
+                            textViews[i].apply {
+                                text = it[i].toString()
+                                isSelected = true
+                            }
                         } else {
-                            textViews[i].text = ""
+                            textViews[i].apply {
+                                text = ""
+                                isSelected = false
+                            }
                         }
                     }
                 }
@@ -134,10 +137,18 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
-                body["id"] = authCarId
+                body["vin"] = authCarId
                 body["plateNum"] = cardNum
                 var rkey = getRandomKey()
                 apiService.addCarCardNum(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                LiveDataBus.get().with(MINE_CAR_CARD_NUM, String::class.java)
+                    .postValue(inputContent)
+                finish()
+            }.onWithMsgFailure {
+                it?.let {
+                    showToast(it)
+                }
             }
         }
     }

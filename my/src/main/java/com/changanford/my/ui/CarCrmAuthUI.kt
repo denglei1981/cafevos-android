@@ -8,6 +8,10 @@ import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -35,6 +39,9 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
         var headView: ViewHeadCarAuthBinding = ViewHeadCarAuthBinding.inflate(layoutInflater)
+        headView.look.setOnClickListener {
+            JumpUtils.instans?.jump(1, MConstant.H5_CAR_QY)
+        }
         carAdapter.addHeaderView(headView.root)
         binding.rcyCarAuth.rcyCommonView.adapter = carAdapter
 
@@ -45,6 +52,11 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         binding.btnAddCar.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.UniCarAuthUI)
         }
+
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java)
+            .observe(this, Observer {
+                initRefreshData(1)
+            })
     }
 
     override fun initRefreshData(pageSize: Int) {

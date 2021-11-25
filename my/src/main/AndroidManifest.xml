@@ -145,5 +145,13 @@
         <activity
             android:name=".ui.CarAuthIngUI"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AddCardNumTransparentUI"
+            android:screenOrientation="portrait"
+            android:theme="@style/Picture.Theme.Translucent" />
+        <activity
+            android:name=".ui.PopChangeBindMobileUI"
+            android:screenOrientation="portrait"
+            android:theme="@style/Picture.Theme.Translucent" />
     </application>
 </manifest>

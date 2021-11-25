@@ -97,7 +97,7 @@ import kotlinx.coroutines.launch
 '47'  |messageType(1->系统消息 2->互动消息 3->交易消息) |消息列表
 '48 ' | =>| 秒杀列表
 '49 ' | uniCardId |跳转到购买某类U享卡页面
-'50 ' | =>｜U享卡 uniCardId  我的爱车(列表页，不自动跳转)
+'50 ' | =>｜跳转车主认证详情
 '51 ' |=>｜跳转到U享卡片切换页面,（为其他车辆购买U享卡）
 '52'|=>|商城订单列表
 '55'|=>|月签到详情
@@ -181,7 +181,7 @@ class JumpUtils {
                 }
             }
             11 -> {//填写意见反馈
-                startARouter(ARouterMyPath.MineEditFeedbackUI,bundle)
+                startARouter(ARouterMyPath.MineEditFeedbackUI, bundle)
             }
             12 -> {//去发布调查
                 startARouter(ARouterCirclePath.ReleaseUpActivity, true)
@@ -400,7 +400,7 @@ class JumpUtils {
             48 -> {//秒杀列表
                 startARouter(ARouterShopPath.GoodsKillAreaActivity)
             }
-            49->{
+            49 -> {
                 RouterManger
                     .needLogin(true)
                     .param(LiveDataBusKey.MINE_MEMBER_INFO_TYPE, "ford_user")
@@ -408,8 +408,31 @@ class JumpUtils {
                     .param("title", "福特员工")
                     .startARouter(ARouterMyPath.FordUserAuthUI)
             }
+            50 -> {//认证详情
+                try {
+                    value?.let {
+                        var json = JSON.parseObject(it)
+                        var vin = json.getString("vin")
+                        var status = json.getIntValue("status")
+                        when {
+                            CommonUtils.isCrmSuccess(status) -> {
+
+                            }
+                            CommonUtils.isCrmStatusIng(status) -> {
+
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+
+                }
+            }
             52 -> {//商城订单列表
-                if (!TextUtils.isEmpty(value)) bundle.putInt("states", value!!.toInt()
+                if (!TextUtils.isEmpty(value)) bundle.putInt(
+                    "states", value!!.toInt()
                 )//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
                 startARouter(ARouterShopPath.OrderGoodsActivity, bundle, true)
             }
@@ -575,7 +598,7 @@ class JumpUtils {
                 bundle.putString(JumpConstant.SEARCH_TYPE, value)
                 startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
-            109->{// 商品订单确认 需要绑定手机号
+            109 -> {// 商品订单确认 需要绑定手机号
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
@@ -584,17 +607,17 @@ class JumpUtils {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
                     else -> {
-                        if(!TextUtils.isEmpty(value)){
+                        if (!TextUtils.isEmpty(value)) {
                             bundle.putString("goodsInfo", value)
-                            startARouter(ARouterShopPath.OrderConfirmActivity, bundle,true)
+                            startARouter(ARouterShopPath.OrderConfirmActivity, bundle, true)
                         }
                     }
                 }
             }
-            110->{// 支付确认
-                if(!TextUtils.isEmpty(value)){
+            110 -> {// 支付确认
+                if (!TextUtils.isEmpty(value)) {
                     bundle.putString("orderNo", value)//订单号
-                    startARouter(ARouterShopPath.PayConfirmActivity, bundle,true)
+                    startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
             10000 -> {
@@ -658,7 +681,7 @@ class JumpUtils {
         var rkey = getRandomKey()
         currentViewModelScope?.launch {
             fetchRequest {
-                apiService.inviteShare(body.header(rkey),body.body(rkey))
+                apiService.inviteShare(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
                     var shareBean =

@@ -988,12 +988,29 @@ interface NetWorkApi {
      * 添加车牌号
      */
 
-    @POST("ser/carAuth/addOrUpdatePlateNum")
+    @POST("ser/carAuth/updatePlateNum")
     suspend fun addCarCardNum(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
+
+    /**
+     * 更换绑定
+     */
+    @POST("ser/carAuth/changePhoneBind1")
+    suspend fun changePhoneBind(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    @POST("ser/carAuth/oldPhoneAuth1")
+    suspend fun changeOldPhoneBind(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    ///ser/carAuth/oldPhoneAuth
     /**
      * U享卡添加车牌号
      */

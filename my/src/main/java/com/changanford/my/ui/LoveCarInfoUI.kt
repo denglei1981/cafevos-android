@@ -55,6 +55,6 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         binding.cardTime.text = "${auth.saleDate ?: ""}"
         binding.cardDealer.text = "${auth.dealerName ?: ""}"
         binding.cardDealerPhone.text = "${auth.dealerPhone ?: ""}"
-        binding.carPic.load(auth.modelUrl, R.mipmap.ic_car_auth_ex)
+        binding.carPic.load(auth.modelUrl, R.mipmap.ic_def_square_img)
     }
 }

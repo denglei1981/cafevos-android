@@ -4,18 +4,18 @@ import android.graphics.Color
 import android.text.method.ReplacementTransformationMethod
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.*
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
-import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.styleAuthCheck
@@ -24,7 +24,6 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiCarAuthSubmitBinding
 import com.changanford.my.interf.UploadPicCallback
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
@@ -32,7 +31,6 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 /**
@@ -53,6 +51,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
     private var isClick: Boolean = true
 
+    private var isRefresh: Boolean = false
     var pathMap = HashMap<Int, OcrRequestBean>() // 保存上传图片地址
     var imgType: Int = 0 // 1身份证 4 行驶证  5发票
 
@@ -193,7 +192,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     binding.authStatusLayout.authReason.visibility = View.VISIBLE
                     if (carItemBean.examineRemakeFront.isNotEmpty()) {
                         binding.authStatusLayout.authReason.text =
-                            "${carItemBean.examineRemakeFront.replace("失败原因：", "").replace("原因：", "")}"
+                            "${
+                                carItemBean.examineRemakeFront.replace("失败原因：", "")
+                                    .replace("原因：", "")
+                            }"
                     }
                     binding.authStatusLayout.authStatus.text = "审核不通过"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#D62C2C"))
@@ -207,38 +209,9 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 binding.line1.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.setOnClickListener { v ->
-                    ConfirmTwoBtnPop(this).apply {
-                        contentText.text = "${carItemBean.examineRemakeFront}"
-                        btnCancel.setOnClickListener {
-                            dismiss()
-                        }
-                        btnConfirm.setOnClickListener {
-                            lifecycleScope.launch {
-                                fetchRequest {
-                                    var body = HashMap<String, Any>()
-                                    body["id"] = carItemBean.id
-                                    var rkey = getRandomKey()
-                                    apiService.uniCarUpdatePhone(
-                                        body.header(rkey),
-                                        body.body(rkey)
-                                    )
-                                }.onSuccess {
-                                    showToast("已成功提交资料")
-                                    binding.authStatusLayout.authStatus.text = "审核中"
-                                    binding.authStatusLayout.authReason.visibility = View.GONE
-                                    binding.authStatusLayout.btnChangeMobile.visibility =
-                                        View.GONE
-                                    LiveDataBus.get()
-                                        .with("mine:AuthCar", Boolean::class.java)
-                                        .postValue(true)
-                                }.onWithMsgFailure {
-                                    it?.let {
-                                        showToast(it)
-                                    }
-                                }
-                            }
-                        }
-                    }.showPopupWindow()
+                    isRefresh = true
+                    RouterManger.param(RouterManger.KEY_TO_OBJ, carItemBean)
+                        .startARouter(ARouterMyPath.PopChangeBindMobileUI)
                 }
             }
             if (!carItemBean.idsImg.isNullOrEmpty()) {//身份证
@@ -750,7 +723,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         //审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:解绑
                         1, 2, 3 -> {
                             RouterManger.param(RouterManger.KEY_TO_ID, vinNum)
-                                .param(RouterManger.KEY_TO_ITEM,it.authStatus)
+                                .param(RouterManger.KEY_TO_ITEM, it.authStatus)
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)
                             finish()
                         }
@@ -770,6 +743,14 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     showToast(it)
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            initData()
+            isRefresh = false
         }
     }
 }

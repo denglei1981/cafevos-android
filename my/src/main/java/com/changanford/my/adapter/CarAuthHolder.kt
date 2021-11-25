@@ -119,16 +119,28 @@ private fun crmHint(
             holder.authReason.visibility = View.VISIBLE
             holder.authReason.text = "请等待审核，审核时间为1-3个工作日"
             if (hintStats == 2) {//认证失败
-                holder.authReason.text = "失败原因：${item.examineRemakeFront ?: ""}"
+                holder.authReason.text = "原因：${item.examineRemakeFront ?: ""}"
 //                if (item.status == 4) "失败原因：${item.crmAuthRemake}" else "失败原因：${item.pretrialRemake}"
             }
         }
         3 -> {//CRM认证成功
-            if (item.plateNum.isNullOrEmpty()) {
-                holder.btnAddCarNum.visibility = View.GONE
+            holder.btnAddCarNum.visibility = View.VISIBLE
+            if (item.plateNum.isNullOrEmpty() || "无牌照" == item.plateNum) {
+                holder.btnAddCarNum.apply {
+                    text = "添加车牌"
+                    setBackgroundResource(R.drawable.shape_car_auth_btn_bg)
+                    setTextColor(Color.parseColor("#ffffff"))
+                    setOnClickListener {
+                        RouterManger.param("value", item.vin)
+                            .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                    }
+                }
             } else {
-                holder.btnCarNum.visibility = View.VISIBLE
-                holder.btnCarNum.text = "${item.plateNum}"
+                holder.btnCarNum.apply {
+                    setBackgroundResource(R.drawable.shape_car_num_btn_bg)
+                    setTextColor(Color.parseColor("#00095B"))
+                    text = "${item.plateNum}"
+                }
             }
         }
     }

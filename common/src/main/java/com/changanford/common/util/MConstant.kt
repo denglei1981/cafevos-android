@@ -138,6 +138,9 @@ object MConstant {
     //福币规则：/#/richTextAp?key=user_agreement_fuUb
     var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_fuUb"
 
+    //车主权益 https://evosh5qa.changanford.cn/common/#/richTextAp?key=user_agreement_ownerRights
+    var H5_CAR_QY = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_ownerRights"
+
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
 
     /**
