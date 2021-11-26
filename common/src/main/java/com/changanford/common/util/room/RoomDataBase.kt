@@ -16,7 +16,7 @@ import com.changanford.common.bean.StoreData
  * *********************************************************************************
  */
 
-@Database(entities = [StoreData::class], version = 1)
+@Database(entities = [StoreData::class], version = 1,exportSchema = false)
 abstract class OSDataBase : RoomDatabase() {
     abstract fun getDao(): Dao
 

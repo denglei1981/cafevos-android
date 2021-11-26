@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.MiddlePageBean
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.paging.DataRepository
@@ -60,6 +62,17 @@ class CarViewModel : ViewModel() {
                 _middleInfo.postValue(it)
             }.onFailure {
                 _middleInfo.postValue(null)
+            }
+        }
+    }
+    fun queryAuthCarAndIncallList(result: (CommonResponse<CarAuthBean>) -> Unit) {
+        if (UserManger.isLogin()) {
+            viewModelScope.launch {
+                result(fetchRequest {
+                    var body = HashMap<String, Any>()
+                    var rkey = getRandomKey()
+                    apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
+                })
             }
         }
     }

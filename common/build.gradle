@@ -140,6 +140,8 @@ dependencies {
 // Integration with observables
     api "androidx.compose.runtime:runtime-livedata:$versions_compose"
     api "androidx.compose.runtime:runtime:$versions_compose"
+    //图片
+    api "io.coil-kt:coil-compose:1.4.0"
 
     //other
     api 'androidx.core:core-ktx:1.6.0'
