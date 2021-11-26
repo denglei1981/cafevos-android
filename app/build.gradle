@@ -30,7 +30,7 @@ android {
         applicationId "com.changanford.evos"
         minSdkVersion minSDKVersion
         targetSdkVersion targetSDKVersion
-        versionCode 300
+        versionCode 301
         versionName "1.0.2"
         resConfigs "zh"
         ndk {

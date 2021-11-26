@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Color
+import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -45,6 +46,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.logD
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
 import com.gyf.immersionbar.ImmersionBar
@@ -53,9 +55,11 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
+import io.reactivex.exceptions.Exceptions
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
+import kotlin.concurrent.thread
 
 /**
  * 发图片帖子
@@ -74,7 +78,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private var nomalwith = 500;
     private var nomalhight = 500;
     private var isshowemoji = true
-    private var iskeybarOpen = false
     private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
     private var isTopPost = false
     private var isCirclePost: Boolean = false
@@ -100,6 +103,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         EmojiAdapter(this)
     }
     private var locaPostEntity: PostEntity? = null
+    private var isunSave: Boolean = false
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -145,12 +152,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-//            if (isPopup){
-//                iskeybarOpen = true
             binding.bottom.emojirec.visibility = View.GONE
-//            } else{
-//                iskeybarOpen= false
-//            }
         }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -354,7 +356,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             back()
         }
         binding.bottom.ivEmoj.setOnClickListener {
-//            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
             HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
@@ -368,15 +369,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }
                 }
             }
-//            }else if(!iskeybarOpen) {
-//                Timer().schedule(80) {
-//                    binding.bottom.emojirec.post {
-//                        if (binding.bottom.emojirec.isShown) {
-//                            binding.bottom.emojirec.visibility = View.GONE
-//                        }
-//                    }
-//                }
-//            }
 
         }
         binding.title.barTvOther.setOnClickListener {
@@ -686,22 +678,42 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         val ytPath = PictureUtil.getFinallyPath(media)
         Log.d("=============", "${ytPath}")
         var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
-
+        var exifInterface = ExifInterface(ytPath);
+        var rotation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        );
         val path =
             stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
-                if (media.width == 0) {
-                    nomalwith
+                if (media.isCut) {
+                    if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                    } else {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                    }
                 } else {
-                    media.width
+                    if (media.width == 0) {
+                        nomalwith
+                    } else {
+                        media.width
+                    }
                 }
+
             }_${
-                if (media.height == 0) {
-                    nomalhight
+                if (media.isCut) {
+                    if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                    } else {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                    }
                 } else {
-                    media.height
+                    if (media.height == 0) {
+                        nomalwith
+                    } else {
+                        media.height
+                    }
                 }
             }." + type
-
 
         AliYunOssUploadOrDownFileConfig.getInstance(this)
             .uploadFile(stsBean.bucketName, path, ytPath, "", 0)
@@ -741,6 +753,19 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         })
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        if (!isunSave) {
+            ondesSave()
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 //        return super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -748,15 +773,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (binding.etBiaoti.text.toString().isEmpty()) {
                 finish()
             } else {
-                if (!postsId.isNullOrEmpty()){
+                if (!postsId.isNullOrEmpty()) {
                     finish()
                     return true
+                }
+                var postEntity =
+                    if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                if (postEntity.postsId == 0L) {
+                    postEntity.postsId = insertPostId
                 }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                     override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                         postEntity.content = binding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -788,16 +816,19 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        if (locaPostEntity == null) {
-                            viewModel.insertPostentity(postEntity)
-                        } else {
-                            viewModel.update(postEntity)
-                        }
+//                        if (locaPostEntity == null) {
+                        viewModel.insertPostentity(postEntity)
+//                        } else {
+//                            viewModel.update(postEntity)
+//                        }
                         finish()
                     }
 
                     override fun unsave() {
-//                    viewModel.clearPost()
+//                        if (postEntity.postsId != 0) {
+//                            viewModel.deletePost(postEntity.postsId)
+//                        }
+                        isunSave = true
                         finish()
                     }
 
@@ -918,7 +949,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         return super.onKeyUp(keyCode, event)
     }
 
-   private fun back() {
+    private fun back() {
         var postsId = intent?.getStringExtra("postsId")
         if (binding.etBiaoti.text.toString().isEmpty()) {
             finish()
@@ -927,11 +958,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 finish()
                 return
             }
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId==0L){
+                postEntity.postsId = insertPostId
+            }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                 override fun save() {
-                    var postEntity =
-                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                     postEntity.content = binding.etContent.text.toString() //内容
                     postEntity.circleId =
                         if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -963,16 +997,19 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     postEntity.cityCode =
                         if (params["cityCode"] != null) params["cityCode"] as String else ""
                     postEntity.creattime = System.currentTimeMillis().toString()
-                    if (locaPostEntity == null) {
+//                    if (locaPostEntity == null) {
                         viewModel.insertPostentity(postEntity)
-                    } else {
-                        viewModel.update(postEntity)
-                    }
+//                    } else {
+//                        viewModel.update(postEntity)
+//                    }
                     finish()
                 }
 
                 override fun unsave() {
-//                    viewModel.clearPost()
+//                    if (postEntity.postsId != 0) {
+//                        viewModel.deletePost(postEntity.postsId)
+//                    }
+                    isunSave = true
                     finish()
                 }
 
@@ -980,5 +1017,52 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
+
+    fun ondesSave() {
+        var postsId = intent?.getStringExtra("postsId")
+        if (!postsId.isNullOrEmpty()) {
+            return
+        }
+        if (binding.etBiaoti.text.toString().isNotEmpty()) {
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
+            postEntity.content = binding.etContent.text.toString() //内容
+            postEntity.circleId =
+                if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+            postEntity.circleName = circlename  //选择圈子的名称
+            postEntity.plate =
+                if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+            postEntity.plateName = platename  //模块名称
+            postEntity.topicId =
+                if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+            postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+            postEntity.keywords =
+                if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+            postEntity.localMeadle = JSON.toJSONString(selectList)
+            postEntity.actionCode =
+                if (params["actionCode"] != null) params["actionCode"] as String else ""
+            postEntity.fmpath =
+                if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+            postEntity.type = "2"  //图片帖子类型
+            postEntity.title = binding.etBiaoti.text.toString()
+            postEntity.address =
+                if (params["address"] != null) params["address"] as String else ""
+            postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+            postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+            postEntity.city =
+                if (params["city"] != null) params["city"] as String else ""
+            postEntity.province =
+                if (params["province"] != null) params["province"] as String else ""
+            postEntity.cityCode =
+                if (params["cityCode"] != null) params["cityCode"] as String else ""
+            postEntity.creattime = System.currentTimeMillis().toString()
+            viewModel.insertPostentity(postEntity)
+
+        }
+    }
 }
 

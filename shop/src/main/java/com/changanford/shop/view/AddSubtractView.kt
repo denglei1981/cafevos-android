@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
@@ -21,6 +22,8 @@ import com.changanford.shop.utils.WCommonUtil.onTextChanged
 class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayout(context, attrs),
     View.OnClickListener {
     private lateinit var edtNumberValue:EditText
+    private lateinit var tvAddNumber:TextView
+    private lateinit var tvReduction:TextView
     private var number=1//初始值为1
     private var minValue=1//最小值
     private var maxValue=10//最大值
@@ -33,8 +36,10 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     private fun initView(){
         LayoutInflater.from(context).inflate(R.layout.view_addnumber, this)
         edtNumberValue=findViewById(R.id.edt_numberValue)
-        findViewById<TextView>(R.id.tv_addNumber).setOnClickListener(this)
-        findViewById<TextView>(R.id.tv_reduction).setOnClickListener(this)
+        tvAddNumber=findViewById(R.id.tv_addNumber)
+        tvReduction=findViewById(R.id.tv_reduction)
+        tvAddNumber.setOnClickListener(this)
+        tvReduction.setOnClickListener(this)
         edtNumberValue.onTextChanged {
             it.apply {
                 if(!TextUtils.isEmpty(s)){
@@ -93,6 +98,18 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null):LinearLayou
     fun setIsAdd(isAdd:Boolean){
         this.isAdd=isAdd
         edtNumberValue.isEnabled=isAdd
+    }
+    /**
+     * [isUpdateBuyNum]是否可以更新数量
+    * */
+    fun setIsUpdateBuyNum(isUpdateBuyNum:Boolean){
+        edtNumberValue.isEnabled=isUpdateBuyNum
+        tvAddNumber.isEnabled=isUpdateBuyNum
+        tvReduction.isEnabled=isUpdateBuyNum
+        val color=ContextCompat.getColor(context,if(isUpdateBuyNum)R.color.color_33 else R.color.color_cc)
+        edtNumberValue.setTextColor(color)
+        tvAddNumber.setTextColor(color)
+        tvReduction.setTextColor(color)
     }
     fun setMine(min:Int){
         this.minValue=min

@@ -93,12 +93,14 @@ class DataEncryptInterceptor : Interceptor {
                                 "isPopAgreement",
                                 true
                             ) as Boolean
+                        var versionCode = SPUtils.getParam(BaseApplication.INSTANT,"versionCode",0) as Int
                         var pushId = SPUtils.getParam(MyApp.mContext,MConstant.PUSH_ID,"11111") as String
                         SPUtils.clear(MyApp.mContext)
                         SPUtils.setParam(MyApp.mContext, MConstant.PUSH_ID, pushId)
                         SPUtils.setParam(MyApp.mContext, MConstant.ISDEBUG, isDebug)
                         SPUtils.setParam(MyApp.mContext, "isfirstin", isfirstin)
                         SPUtils.setParam(MyApp.mContext, "isPopAgreement", isPopAgreement)
+                        SPUtils.setParam(BaseApplication.INSTANT,"versionCode",versionCode)
 
                     } catch (e: java.lang.Exception) {
                         SPUtils.clear(MyApp.mContext)

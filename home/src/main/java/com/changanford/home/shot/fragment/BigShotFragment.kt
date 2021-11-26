@@ -204,7 +204,6 @@ class BigShotFragment : BaseLoadSirFragment<FragmentBigShotBinding, BigShotListV
     private fun followAction(recommendUser: BigShotRecommendBean, position: Int) {
         followType = recommendUser.isMutualAttention
         followType = if (followType == 1) 2 else 1
-
         viewModel.followOrCancelUser(recommendUser.userId, followType)
     }
 

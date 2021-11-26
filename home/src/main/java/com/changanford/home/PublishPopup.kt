@@ -91,32 +91,54 @@ class PublishPopup(
 
 
     fun changPerm(data: List<String>) {
-        try {
-            data.forEach { d ->
-                when (d) {
-                    acts -> {
-                        list.add(0,
-                            PublishData(
-                                1,
-                                context.getString(R.string.home_publish_acts),
-                                R.drawable.icon_home_publish_acts
-                            )
-                        )
-                    }
-                    questiton -> {
-                        list.add(0,
-                            PublishData(
-                                2,
-                                context.getString(R.string.home_publish_answer),
-                                R.drawable.icon_home_answer
-                            )
-                        )
-                    }
-                    else -> {
+         if(data!=null&& data.isNotEmpty()){
+             if(data.contains(questiton)){
+                 list.add(0,
+                     PublishData(
+                         2,
+                         context.getString(R.string.home_publish_answer),
+                         R.drawable.icon_home_answer
+                     )
+                 )
+             }
 
-                    }
-                }
-            }
+             if(data.contains(acts)){
+                 list.add(0,
+                     PublishData(
+                         1,
+                         context.getString(R.string.home_publish_acts),
+                         R.drawable.icon_home_publish_acts
+                     )
+                 )
+             }
+         }
+
+        try {
+//            data.forEach { d ->
+//                when (d) {
+//                    acts -> {
+//                        list.add(0,
+//                            PublishData(
+//                                1,
+//                                context.getString(R.string.home_publish_acts),
+//                                R.drawable.icon_home_publish_acts
+//                            )
+//                        )
+//                    }
+//                    questiton -> {
+//                        list.add(0,
+//                            PublishData(
+//                                2,
+//                                context.getString(R.string.home_publish_answer),
+//                                R.drawable.icon_home_answer
+//                            )
+//                        )
+//                    }
+//                    else -> {
+//
+//                    }
+//                }
+//            }
             homeViewPagerAdapter?.notifyDataSetChanged()
         } catch (e: Exception) {
             e.printStackTrace()
