@@ -15,7 +15,14 @@ import java.io.Serializable
 data class CarAuthBean(
     val userId: Int = 0,
     val isCarOwner: Int = 0,
+    val carAuthConfVo:CarAuthConfVo?,
     val carList: ArrayList<CarItemBean>
+)
+
+data class CarAuthConfVo(
+    val img: String = "",
+    val title: String = "",
+    val des: String = ""
 )
 
 /**

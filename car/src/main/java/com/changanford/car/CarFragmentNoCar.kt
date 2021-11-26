@@ -30,8 +30,10 @@ import com.changanford.car.adapter.CarTopBannerAdapter
 import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.DeviceUtils
@@ -77,9 +79,6 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         binding.carAuthrec.adapter = carAuthAdapter
         binding.carRecommendLayout.carRecommendRec.adapter = carRecommendAdapter
 
-        binding.carNoauthLayout.button.setOnClickListener {
-            JumpUtils.instans?.jump(17, "")
-        }
         binding.refreshLayout.setOnRefreshListener {
             initData()
             it.finishRefresh()
@@ -102,11 +101,11 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                             showCarAuthLayout(lists[0])
                         }
                     } else {//非车主
-                        binding.carNoauthLayout.root.isVisible = true
-                        setMinBottom(50)
-                        binding.carCompose.isVisible = false
+                        showAuthIntroLayout(it)
                     }
                 }
+            }.onFailure {
+                showAuthIntroLayout(it)
             }
         }
         viewModel._ads.observe(this, {
@@ -185,6 +184,21 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
     override fun onResume() {
         super.onResume()
         initData()
+    }
+    private fun showAuthIntroLayout(carAuthBean: CarAuthBean?) {
+        binding.carNoauthLayout.root.isVisible = true
+        binding.carNoauthLayout.apply {
+            button.setOnClickListener {
+                JumpUtils.instans?.jump(17, "")
+            }
+            carAuthBean?.carAuthConfVo?.let {
+                imageView.load(it.img,R.mipmap.car_notauth)
+                textView3.text = if (it.title.isNullOrEmpty()) resources.getText(R.string.car_updateExperience) else it.title
+                textView4.text = if (it.des.isNullOrEmpty()) resources.getText(R.string.car_bindTips) else it.des
+            }
+        }
+        setMinBottom(50)
+        binding.carCompose.isVisible = false
     }
 
     /**

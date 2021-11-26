@@ -66,14 +66,12 @@ class CarViewModel : ViewModel() {
         }
     }
     fun queryAuthCarAndIncallList(result: (CommonResponse<CarAuthBean>) -> Unit) {
-        if (UserManger.isLogin()) {
-            viewModelScope.launch {
-                result(fetchRequest {
-                    var body = HashMap<String, Any>()
-                    var rkey = getRandomKey()
-                    apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
-                })
-            }
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
+            })
         }
     }
 }
