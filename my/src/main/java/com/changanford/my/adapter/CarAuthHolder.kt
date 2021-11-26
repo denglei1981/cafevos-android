@@ -9,6 +9,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.logE
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemCarAuthBinding
 
@@ -112,7 +113,6 @@ private fun crmHint(
     item: CarItemBean
 ) {
     holder.btnAddCarNum.visibility = View.GONE
-    holder.btnCarNum.visibility = View.GONE
     holder.authReason.visibility = View.GONE
     when (hintStats) {
         1, 2 -> {//审核中,认证失败
@@ -124,6 +124,7 @@ private fun crmHint(
             }
         }
         3 -> {//CRM认证成功
+            "${item.plateNum}------".logE()
             holder.btnAddCarNum.visibility = View.VISIBLE
             if (item.plateNum.isNullOrEmpty() || "无牌照" == item.plateNum) {
                 holder.btnAddCarNum.apply {
@@ -136,7 +137,7 @@ private fun crmHint(
                     }
                 }
             } else {
-                holder.btnCarNum.apply {
+                holder.btnAddCarNum.apply {
                     setBackgroundResource(R.drawable.shape_car_num_btn_bg)
                     setTextColor(Color.parseColor("#00095B"))
                     text = "${item.plateNum}"

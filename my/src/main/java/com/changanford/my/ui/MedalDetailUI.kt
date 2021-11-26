@@ -166,7 +166,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
     private fun setItem(position: Int) {
         indexMedalItem = position
         var medal = medals[position]
-        binding.tvConTitle.text = "勋章获取条件"
+        binding.tvConTitle.text = "勋章获得条件"
         binding.tvCon.text = medal.fillCondition
         if (medal.isGet == "0") {
             binding.btnGetMedal.text = "立即点亮"

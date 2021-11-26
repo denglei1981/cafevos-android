@@ -8,23 +8,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
-import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
-import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.net.onSuccess
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -160,9 +157,6 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             include.textView11.setOnClickListener {
                 JumpUtils.instans?.jump(32)
             }
-            include2.myMylovecar.setOnClickListener {
-                RouterManger.startARouter(ARouterMyPath.MineLoveCarListUI)
-            }
         }
     }
 
@@ -179,11 +173,19 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         } else {
             isRefreshUserInfo = false
             loginState.postValue(true)
+            viewModel.queryAuthCarAndIncallList() {
+                it.onSuccess {
+                    it?.let {
+                        authState.postValue(it.isCarOwner == 1)
+                    }
+                }
+            }
         }
-        GlideUtils.loadCircle(userInfoBean?.avatar,binding.myHead,R.mipmap.head_default)
+        GlideUtils.loadCircle(userInfoBean?.avatar, binding.myHead, R.mipmap.head_default)
         binding.myHeadvipimg.load(userInfoBean?.ext?.memberIcon)
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
-        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).postValue(userInfoBean?.isUnread == 1)
+        LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT)
+            .postValue(userInfoBean?.isUnread == 1)
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"
         binding.daySign.isClickable = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname
@@ -226,11 +228,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             }
         }
     }
-    private fun getAcc(multiple:Double?):String{
-        if (multiple==null || multiple.isNaN()){
+
+    private fun getAcc(multiple: Double?): String {
+        if (multiple == null || multiple.isNaN()) {
             return "1"
         }
-        return if ((multiple*10).toInt()%10==0){
+        return if ((multiple * 10).toInt() % 10 == 0) {
             "${multiple.toInt()}"
         } else
             "$multiple"
@@ -243,7 +246,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         if (MConstant.token.isNullOrEmpty()) {
             setData(null)
         }
-        viewModel.userInfo.observe(this,{
+        viewModel.userInfo.observe(this, {
             setData(it)
         })
     }

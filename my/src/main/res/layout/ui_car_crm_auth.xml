@@ -28,6 +28,7 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/btn_add_car"
             style="@style/login_btn_style"
             android:layout_width="match_parent"

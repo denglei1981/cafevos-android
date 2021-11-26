@@ -57,6 +57,10 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             .observe(this, Observer {
                 initRefreshData(1)
             })
+        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
+            initRefreshData(1)
+        })
+
     }
 
     override fun initRefreshData(pageSize: Int) {

@@ -3,6 +3,7 @@
     android:id="@+id/vin_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_48"
+    android:layout_marginTop="@dimen/dp_6"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -24,6 +25,5 @@
         android:hint="请输入VIN码"
         android:inputType="textVisiblePassword"
         android:maxLines="1"
-        android:textSize="@dimen/sp_13"
-        android:textStyle="bold" />
+        android:textSize="@dimen/sp_13" />
 </LinearLayout>

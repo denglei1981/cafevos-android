@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.constant.JumpConstant
@@ -209,8 +210,7 @@ class JumpUtils {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
                     else -> {
-                        "此功能暂未开放".toast()
-//                        startARouter(ARouterMyPath.UniCarAuthUI)
+                        startARouter(ARouterMyPath.UniCarAuthUI)
                     }
                 }
             }
@@ -416,18 +416,29 @@ class JumpUtils {
                         var status = json.getIntValue("status")
                         when {
                             CommonUtils.isCrmSuccess(status) -> {
-
+                                RouterManger.param(
+                                    RouterManger.KEY_TO_OBJ,
+                                    CarItemBean(vin = vin)
+                                ).startARouter(ARouterMyPath.MineLoveCarInfoUI)
                             }
                             CommonUtils.isCrmStatusIng(status) -> {
-
+                                RouterManger.param(
+                                    RouterManger.KEY_TO_OBJ,
+                                    CarItemBean(vin = vin)
+                                ).startARouter(ARouterMyPath.CarAuthIngUI)
                             }
                             else -> {
-
+                                RouterManger.param(
+                                    RouterManger.KEY_TO_OBJ,
+                                    CarItemBean(vin = vin)
+                                ).startARouter(ARouterMyPath.UniCarAuthUI)
                             }
                         }
                     }
                 } catch (e: Exception) {
-
+                    RouterManger.param(
+                        RouterManger.KEY_TO_OBJ, CarItemBean()
+                    ).startARouter(ARouterMyPath.UniCarAuthUI)
                 }
             }
             52 -> {//商城订单列表

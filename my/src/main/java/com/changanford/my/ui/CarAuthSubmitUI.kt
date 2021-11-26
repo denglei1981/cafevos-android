@@ -147,11 +147,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             carItemBean = it as CarItemBean
         }
-        initClick()
+//        initClick()
     }
 
     override fun initData() {
-        if (carItemBean?.vin?.isNullOrEmpty() == true) {
+        if (null == carItemBean || carItemBean?.vin?.isNullOrEmpty() == true) {
             initClick()
         } else {
             carItemBean?.vin?.let {
@@ -186,6 +186,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
                     binding.checkLayout.visibility = View.GONE
                     binding.submit.visibility = View.GONE
+                    binding.vinLine.visibility = View.GONE
                     isClick = false
                 }
                 3, 4 -> {//审核失败
@@ -262,6 +263,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 }
             }
         }
+        initClick()
     }
 
     private fun initClick() {
@@ -324,24 +326,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     authDriver.styleAuthCheck(false)
                     idcardLayout.visibility = View.VISIBLE
                     driverLayout.visibility = View.GONE
-                    if (imgUrl.isNullOrEmpty()) {
-                        addIdcard.visibility = View.VISIBLE
-                    } else {
-                        authIdcardPic.load(imgUrl)
-                        addIdcard.visibility = View.GONE
-                    }
+                    authIdcardPic.load(imgUrl, R.mipmap.ic_idcard_ex)
+                    addIdcard.visibility = if (isClick) View.VISIBLE else View.GONE
+                    addIdcardHint.visibility = if (isClick) View.VISIBLE else View.GONE
                 }
                 2 -> {
                     authIdcard.styleAuthCheck(false)
                     authDriver.styleAuthCheck(true)
                     idcardLayout.visibility = View.GONE
                     driverLayout.visibility = View.VISIBLE
-                    if (imgUrl.isNullOrEmpty()) {
-                        addDriver.visibility = View.VISIBLE
-                    } else {
-                        authDriverPic.load(imgUrl)
-                        addDriver.visibility = View.GONE
-                    }
+                    authDriverPic.load(imgUrl, R.mipmap.ic_auth_driver_ex)
+                    addDriver.visibility = if (isClick) View.VISIBLE else View.GONE
+                    addDriverHint.visibility = if (isClick) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -358,24 +354,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     authFp.styleAuthCheck(false)
                     drivingLayout.visibility = View.VISIBLE
                     fpLayout.visibility = View.GONE
-                    if (imgUrl.isNullOrEmpty()) {
-                        addDriving.visibility = View.VISIBLE
-                    } else {
-                        addDriving.visibility = View.GONE
-                        authDrivingPic.load(imgUrl)
-                    }
+                    authDrivingPic.load(imgUrl, R.mipmap.ic_driving_ex)
+                    addDriving.visibility = if (isClick) View.VISIBLE else View.GONE
+                    addDrivingHint.visibility = if (isClick) View.VISIBLE else View.GONE
                 }
                 2 -> {
                     authDriving.styleAuthCheck(false)
                     authFp.styleAuthCheck(true)
                     drivingLayout.visibility = View.GONE
                     fpLayout.visibility = View.VISIBLE
-                    if (imgUrl.isNullOrEmpty()) {
-                        addFp.visibility = View.VISIBLE
-                    } else {
-                        addFp.visibility = View.GONE
-                        authFpPic.load(imgUrl)
-                    }
+                    authFpPic.load(imgUrl, R.mipmap.ic_auth_fp_ex)
+                    addFp.visibility = if (isClick) View.VISIBLE else View.GONE
+                    addFpHint.visibility = if (isClick) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -633,7 +623,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             showToast("请输入手机号")
             return
         }
-        body["phone"] = phone //"18723343942"
+        body["phone"] = phone//"18723343942"
         var idcardOcrBean: OcrRequestBean? = null
         binding.includeIdcardLayout.apply {
             when {
@@ -715,6 +705,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             body["ownerCertImg"] = it
         }
         body["vin"] = vinNum //vin
+
+        if (!binding.authCheckbox.isChecked) {
+            showToast("请阅读并勾选隐私协议")
+            return
+        }
 
         viewModel.submitCarAuth(body) {
             it.onSuccess {

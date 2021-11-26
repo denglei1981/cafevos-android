@@ -90,19 +90,6 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_car_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_car_name" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_car_num"
-            android:layout_width="@dimen/dp_98"
-            android:layout_height="@dimen/dp_31"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/shape_car_num_btn_bg"
-            android:gravity="center"
-            android:text="渝A 123333"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_car_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_car_name" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/auth_reason"
