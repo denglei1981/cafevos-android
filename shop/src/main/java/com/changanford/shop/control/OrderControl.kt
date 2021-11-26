@@ -37,7 +37,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
                 item.fbOfUnitPrice=item.hagglePrice!!
             }
-            imgGoodsCover.scaleType= if(item.orderType>2)ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
+            imgGoodsCover.scaleType= if(item.orderType>2) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
             imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
                 visibility = when(item.busSourse) {
