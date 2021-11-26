@@ -48,6 +48,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/auth_driving_pic_bg"
+            android:layout_width="@dimen/dp_278"
+            android:layout_height="@dimen/dp_158"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="#50000000"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_driving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +72,7 @@
             android:id="@+id/add_driving_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_8"
             android:text="点击上传行驶证正面"
             android:textColor="@drawable/auth_hint_text_color"
             android:textSize="@dimen/sp_13"
@@ -92,6 +103,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/auth_fp_pic_bg"
+            android:layout_width="@dimen/dp_278"
+            android:layout_height="@dimen/dp_158"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="#50000000"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_fp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +127,7 @@
             android:id="@+id/add_fp_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_8"
             android:text="点击上传发票"
             android:textColor="@drawable/auth_hint_text_color"
             android:textSize="@dimen/sp_13"

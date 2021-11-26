@@ -326,18 +326,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     authDriver.styleAuthCheck(false)
                     idcardLayout.visibility = View.VISIBLE
                     driverLayout.visibility = View.GONE
-                    authIdcardPic.load(imgUrl, R.mipmap.ic_idcard_ex)
                     addIdcard.visibility = if (isClick) View.VISIBLE else View.GONE
                     addIdcardHint.visibility = if (isClick) View.VISIBLE else View.GONE
+                    idCard(true, imgUrl, 1)
                 }
                 2 -> {
                     authIdcard.styleAuthCheck(false)
                     authDriver.styleAuthCheck(true)
                     idcardLayout.visibility = View.GONE
                     driverLayout.visibility = View.VISIBLE
-                    authDriverPic.load(imgUrl, R.mipmap.ic_auth_driver_ex)
                     addDriver.visibility = if (isClick) View.VISIBLE else View.GONE
                     addDriverHint.visibility = if (isClick) View.VISIBLE else View.GONE
+                    jsz(true, imgUrl,1)
                 }
             }
         }
@@ -354,18 +354,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     authFp.styleAuthCheck(false)
                     drivingLayout.visibility = View.VISIBLE
                     fpLayout.visibility = View.GONE
-                    authDrivingPic.load(imgUrl, R.mipmap.ic_driving_ex)
                     addDriving.visibility = if (isClick) View.VISIBLE else View.GONE
                     addDrivingHint.visibility = if (isClick) View.VISIBLE else View.GONE
+                    xsz(true, imgUrl, 1)
                 }
                 2 -> {
                     authDriving.styleAuthCheck(false)
                     authFp.styleAuthCheck(true)
                     drivingLayout.visibility = View.GONE
                     fpLayout.visibility = View.VISIBLE
-                    authFpPic.load(imgUrl, R.mipmap.ic_auth_fp_ex)
                     addFp.visibility = if (isClick) View.VISIBLE else View.GONE
                     addFpHint.visibility = if (isClick) View.VISIBLE else View.GONE
+                    fp(true, imgUrl, 1)
                 }
             }
         }
@@ -536,51 +536,80 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
 /*------------------------对图片的初始化-------------------------------*/
 
-    private fun xsz(isSuccess: Boolean, path: String = "") {
+    private fun xsz(isSuccess: Boolean, path: String? = "", pathType: Int = 0) {
         binding.includeDrivingLayout.apply {
-            if (isSuccess) {
-                GlideUtils.loadRoundFilePath(path, authDrivingPic)
-            } else {
-                authDrivingPic.setImageResource(R.mipmap.ic_xsz_ex)
+            when {
+                pathType == 1 -> {
+                    authDrivingPic.load(path, R.mipmap.ic_xsz_ex)
+                }
+                isSuccess -> {
+                    GlideUtils.loadRoundFilePath(path, authDrivingPic)
+                }
+                else -> {
+                    authDrivingPic.setImageResource(R.mipmap.ic_xsz_ex)
+                }
             }
             addDriving.isSelected = isSuccess
             addDrivingHint.isSelected = isSuccess
+            authDrivingPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
 
-    private fun fp(isSuccess: Boolean, path: String = "") {
+    private fun fp(isSuccess: Boolean, path: String? = "", pathType: Int = 0) {
         binding.includeDrivingLayout.apply {
-            if (isSuccess) {
-                GlideUtils.loadRoundFilePath(path, authFpPic)
-            } else {
-                authFpPic.setImageResource(R.mipmap.ic_auth_fp_ex)
+            when {
+                pathType == 1 -> {
+                    authFpPic.load(path, R.mipmap.ic_auth_fp_ex)
+                }
+                isSuccess -> {
+                    GlideUtils.loadRoundFilePath(path, authFpPic)
+                }
+                else -> {
+                    authFpPic.setImageResource(R.mipmap.ic_auth_fp_ex)
+                }
             }
             addFp.isSelected = isSuccess
             addFpHint.isSelected = isSuccess
+            authFpPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
 
-    private fun idCard(isSuccess: Boolean, path: String = "") {
+    //pathType == 1 ,已提交过,有相关数据
+    private fun idCard(isSuccess: Boolean, path: String? = "", pathType: Int = 0) {
         binding.includeIdcardLayout.apply {
-            if (isSuccess) {
-                GlideUtils.loadRoundFilePath(path, authIdcardPic)
-            } else {
-                authIdcardPic.setImageResource(R.mipmap.ic_idcard_ex)
+            when {
+                pathType == 1 -> {
+                    authIdcardPic.load(path, R.mipmap.ic_idcard_ex)
+                }
+                isSuccess -> {
+                    GlideUtils.loadRoundFilePath(path, authIdcardPic)
+                }
+                else -> {
+                    authIdcardPic.setImageResource(R.mipmap.ic_idcard_ex)
+                }
             }
             addIdcard.isSelected = isSuccess
             addIdcardHint.isSelected = isSuccess
+            authIdcardPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
 
-    private fun jsz(isSuccess: Boolean, path: String = "") {
+    private fun jsz(isSuccess: Boolean, path: String? = "", pathType: Int = 0) {
         binding.includeIdcardLayout.apply {
-            if (isSuccess) {
-                GlideUtils.loadRoundFilePath(path, authDriverPic)
-            } else {
-                authDriverPic.setImageResource(R.mipmap.ic_auth_fp_ex)
+            when {
+                pathType == 1 -> {
+                    authDriverPic.load(path, R.mipmap.ic_auth_fp_ex)
+                }
+                isSuccess -> {
+                    GlideUtils.loadRoundFilePath(path, authDriverPic)
+                }
+                else -> {
+                    authDriverPic.setImageResource(R.mipmap.ic_auth_fp_ex)
+                }
             }
             addDriver.isSelected = isSuccess
             addDriverHint.isSelected = isSuccess
+            authDriverPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
 

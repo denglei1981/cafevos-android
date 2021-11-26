@@ -6,6 +6,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -52,9 +53,9 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         binding.cardVin.text = "${auth.vin ?: ""}"
         binding.cardModel.text = "${auth.modelName ?: ""}"
         binding.cardNum.text = "${auth.plateNum ?: ""}"
-        binding.cardTime.text = "${auth.saleDate ?: ""}"
+        binding.cardTime.text = "${TimeUtils.InputTimetamp(auth.saleDate) ?: ""}"
         binding.cardDealer.text = "${auth.dealerName ?: ""}"
         binding.cardDealerPhone.text = "${auth.dealerPhone ?: ""}"
-        binding.carPic.load(auth.modelUrl, R.mipmap.ic_def_square_img)
+        binding.carPic.load(auth.modelUrl, R.mipmap.ic_car_auth_ex)
     }
 }
