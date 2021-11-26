@@ -88,6 +88,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private lateinit var jsonStr: String
     private lateinit var SelectlocalMedia: LocalMedia
     private var isunSave: Boolean = false
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -1027,11 +1030,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 finish()
                 return
             }
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                 override fun save() {
-                    var postEntity =
-                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+
                     postEntity.content = binding.etContent.text.toString() //内容
                     postEntity.circleId =
                         if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1063,17 +1070,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     postEntity.cityCode =
                         if (params["cityCode"] != null) params["cityCode"] as String else ""
                     postEntity.creattime = System.currentTimeMillis().toString()
-
-                    if (locaPostEntity == null) {
-                        viewModel.insertPostentity(postEntity)
-                    } else {
-                        viewModel.update(postEntity)
-                    }
+                    viewModel.insertPostentity(postEntity)
                     finish()
                 }
 
                 override fun unsave() {
-//                    viewModel.clearPost()
+                    isunSave = true
                     finish()
                 }
 
@@ -1097,6 +1099,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         if (binding.etBiaoti.text.toString().isNotEmpty()) {
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
             postEntity.content = binding.etContent.text.toString() //内容
             postEntity.circleId =
                 if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1128,11 +1133,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             postEntity.cityCode =
                 if (params["cityCode"] != null) params["cityCode"] as String else ""
             postEntity.creattime = System.currentTimeMillis().toString()
-            if (postEntity.postsId == 0) {
-                viewModel.insertPostentity(postEntity)
-            } else {
-                viewModel.update(postEntity)
-            }
+            viewModel.insertPostentity(postEntity)
 
         }
 

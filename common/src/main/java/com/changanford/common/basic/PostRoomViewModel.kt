@@ -12,6 +12,7 @@ import com.changanford.common.room.PostEntity
 import com.changanford.common.utilext.logE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 /**
  * 帖子数据库操作 可继承
@@ -43,7 +44,7 @@ open class PostRoomViewModel() : BaseViewModel() {
     /**
      * 删除该帖子
      */
-    fun deletePost(id: Int) {
+    fun deletePost(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             PostDatabase.getInstance(MyApp.mContext).getPostDao()
                 .delete(id)

@@ -55,6 +55,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
+import io.reactivex.exceptions.Exceptions
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
@@ -77,7 +78,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private var nomalwith = 500;
     private var nomalhight = 500;
     private var isshowemoji = true
-    private var iskeybarOpen = false
     private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
     private var isTopPost = false
     private var isCirclePost: Boolean = false
@@ -104,6 +104,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
     private var locaPostEntity: PostEntity? = null
     private var isunSave: Boolean = false
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -149,12 +152,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-//            if (isPopup){
-//                iskeybarOpen = true
             binding.bottom.emojirec.visibility = View.GONE
-//            } else{
-//                iskeybarOpen= false
-//            }
         }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -358,7 +356,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             back()
         }
         binding.bottom.ivEmoj.setOnClickListener {
-//            if (binding.etContent.hasFocus()&&iskeybarOpen){
 
             HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
@@ -372,15 +369,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }
                 }
             }
-//            }else if(!iskeybarOpen) {
-//                Timer().schedule(80) {
-//                    binding.bottom.emojirec.post {
-//                        if (binding.bottom.emojirec.isShown) {
-//                            binding.bottom.emojirec.visibility = View.GONE
-//                        }
-//                    }
-//                }
-//            }
 
         }
         binding.title.barTvOther.setOnClickListener {
@@ -789,11 +777,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     finish()
                     return true
                 }
+                var postEntity =
+                    if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                if (postEntity.postsId == 0L) {
+                    postEntity.postsId = insertPostId
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                     override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                         postEntity.content = binding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -825,16 +816,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        if (locaPostEntity == null) {
-                            viewModel.insertPostentity(postEntity)
-                        } else {
-                            viewModel.update(postEntity)
-                        }
+//                        if (locaPostEntity == null) {
+                        viewModel.insertPostentity(postEntity)
+//                        } else {
+//                            viewModel.update(postEntity)
+//                        }
                         finish()
                     }
 
                     override fun unsave() {
-//                    viewModel.clearPost()
+//                        if (postEntity.postsId != 0) {
+//                            viewModel.deletePost(postEntity.postsId)
+//                        }
                         isunSave = true
                         finish()
                     }
@@ -965,11 +958,14 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 finish()
                 return
             }
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId==0L){
+                postEntity.postsId = insertPostId
+            }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                 override fun save() {
-                    var postEntity =
-                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                     postEntity.content = binding.etContent.text.toString() //内容
                     postEntity.circleId =
                         if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1001,16 +997,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     postEntity.cityCode =
                         if (params["cityCode"] != null) params["cityCode"] as String else ""
                     postEntity.creattime = System.currentTimeMillis().toString()
-                    if (locaPostEntity == null) {
+//                    if (locaPostEntity == null) {
                         viewModel.insertPostentity(postEntity)
-                    } else {
-                        viewModel.update(postEntity)
-                    }
+//                    } else {
+//                        viewModel.update(postEntity)
+//                    }
                     finish()
                 }
 
                 override fun unsave() {
-//                    viewModel.clearPost()
+//                    if (postEntity.postsId != 0) {
+//                        viewModel.deletePost(postEntity.postsId)
+//                    }
                     isunSave = true
                     finish()
                 }
@@ -1028,6 +1026,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         if (binding.etBiaoti.text.toString().isNotEmpty()) {
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
             postEntity.content = binding.etContent.text.toString() //内容
             postEntity.circleId =
                 if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1059,11 +1060,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postEntity.cityCode =
                 if (params["cityCode"] != null) params["cityCode"] as String else ""
             postEntity.creattime = System.currentTimeMillis().toString()
-            if (postEntity.postsId == 0) {
-                viewModel.insertPostentity(postEntity)
-            } else {
-                viewModel.update(postEntity)
-            }
+            viewModel.insertPostentity(postEntity)
+
         }
     }
 }

@@ -40,6 +40,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -101,7 +102,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private lateinit var jsonStr: String
 
     private var isunSave: Boolean = false
-
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -474,11 +477,16 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     finish()
                     return@setOnClickListener
                 }
+
+                var postEntity =
+                    if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                if (postEntity.postsId == 0L) {
+                    postEntity.postsId = insertPostId
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                     override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+
                         postEntity.content = headBinding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -511,16 +519,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        if (locaPostEntity != null) {
-                            viewModel.update(postEntity)
-                        } else {
-                            viewModel.insertPostentity(postEntity)
-                        }
+                        viewModel.insertPostentity(postEntity)
                         finish()
                     }
 
                     override fun unsave() {
-//                    viewModel.clearPost()
+                        isunSave = true
                         finish()
                     }
 
@@ -1209,11 +1213,15 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     finish()
                     return true
                 }
+                var postEntity =
+                    if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+                if (postEntity.postsId == 0L) {
+                    postEntity.postsId = insertPostId
+                }
                 ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                     override fun save() {
-                        var postEntity =
-                            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+
                         postEntity.content = headBinding.etContent.text.toString() //内容
                         postEntity.circleId =
                             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1246,16 +1254,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-                        if (locaPostEntity != null) {
-                            viewModel.update(postEntity)
-                        } else {
-                            viewModel.insertPostentity(postEntity)
-                        }
+                        viewModel.insertPostentity(postEntity)
                         finish()
                     }
 
                     override fun unsave() {
-//                    viewModel.clearPost()
+
+                        isunSave = true
                         finish()
                     }
 
@@ -1280,6 +1285,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
             postEntity.content = headBinding.etContent.text.toString() //内容
             postEntity.circleId =
                 if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1312,12 +1320,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             postEntity.cityCode =
                 if (params["cityCode"] != null) params["cityCode"] as String else ""
             postEntity.creattime = System.currentTimeMillis().toString()
-            if (postEntity.postsId == 0) {
-                viewModel.insertPostentity(postEntity)
-            } else {
-                viewModel.update(postEntity)
-            }
-
+            viewModel.insertPostentity(postEntity)
         }
     }
 }
