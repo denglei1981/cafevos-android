@@ -5,98 +5,142 @@
     <application>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".ui.LoginUI"
-            android:launchMode="singleTask" />
-        <activity android:name=".ui.SettingUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.TaskListUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AllMedalListUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MedalDetailUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.CarCrmAuthUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.BindMobileUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.GrowUpUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineMedalUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.LoveCarInfoUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.FansUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AccountSafeUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ClearAccountUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ClearAccountConfirmUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.EditAddressUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AddressListUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineEditInfoUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MyCircleUI"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SettingUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TaskListUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AllMedalListUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MedalDetailUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CarCrmAuthUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.BindMobileUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.GrowUpUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineMedalUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoveCarInfoUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.FansUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AccountSafeUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ClearAccountUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ClearAccountConfirmUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.EditAddressUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AddressListUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineEditInfoUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MyCircleUI"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MyCircleMangerUI"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".ui.EditNickNameUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineLikeUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineIndustryUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.InputUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineMessageUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineMessageSysInfoUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineMessageInfoUI"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.EditNickNameUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineLikeUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineIndustryUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.InputUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineMessageUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineMessageSysInfoUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineMessageInfoUI"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SignTransparentUI"
             android:screenOrientation="portrait"
             android:theme="@style/Picture.Theme.Translucent" />
-        <activity android:name=".ui.MineFeedbackUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineEditFeedbackUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineFeedbackRecordUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineFeedbackInfoListUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MineCenterFeedbackUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SignMonthUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AboutFordUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.UserAuthUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.UserVipUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MyVipUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MyPostDraftUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.FordUserAuthUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.CarAuthSubmitUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ConfirmCancelAccountUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.JiFenList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.TaFansUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.BateActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.MineFeedbackUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineEditFeedbackUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineFeedbackRecordUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineFeedbackInfoListUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineCenterFeedbackUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SignMonthUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AboutFordUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserAuthUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserVipUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MyVipUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MyPostDraftUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.FordUserAuthUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CarAuthSubmitUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ConfirmCancelAccountUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.JiFenList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TaFansUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.BateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CarAuthSuccessUI"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
