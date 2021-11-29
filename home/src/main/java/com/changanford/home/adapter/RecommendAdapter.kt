@@ -219,7 +219,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
-        if (TextUtils.isEmpty(item.getContent())) {
+        if (TextUtils.isEmpty(item.getContent())||item.rtype==2) {
             tvTopic.text = ""
             tvTopic.visibility=View.GONE
         } else {
