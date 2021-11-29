@@ -12,10 +12,7 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
-import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.styleAuthCheck
@@ -53,7 +50,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
     private var isRefresh: Boolean = false
     var pathMap = HashMap<Int, OcrRequestBean>() // 保存上传图片地址
-    var imgType: Int = 0 // 1身份证 4 行驶证  5发票
+    var imgType: Int = 0 // 1身份证 4 行驶证  5发票  7 驾驶证
 
     val uploadDialog: LoadDialog by lazy {
         LoadDialog(this)
@@ -151,6 +148,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
     }
 
     override fun initData() {
+        super.initData()
         if (null == carItemBean || carItemBean?.vin?.isNullOrEmpty() == true) {
             initClick()
         } else {
@@ -275,6 +273,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
             })
 
+        binding.agreement.setOnClickListener {
+            JumpUtils.instans?.jump(1, MConstant.H5_USER_AGREEMENT)
+        }
+
         binding.idcardInputLayout.realName.isEnabled = isClick
         binding.idcardInputLayout.idcardNum.isEnabled = isClick
         binding.vinInputLayout.vinNum.isEnabled = isClick
@@ -284,10 +286,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         }
         binding.includeIdcardLayout.apply {
             authIdcard.setOnClickListener {
-                idCardLayout(1)
+                idCardLayout(1, pathMap[1]?.path)
             }
             authDriver.setOnClickListener {
-                idCardLayout(2)
+                idCardLayout(2,pathMap[7]?.path)
             }
             authIdcardPic.setOnClickListener { //身份证
                 click(1)
@@ -299,10 +301,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         binding.includeDrivingLayout.apply {
             authDriving.setOnClickListener {
-                drivingLayout(1)
+                drivingLayout(1,pathMap[4]?.path)
             }
             authFp.setOnClickListener {
-                drivingLayout(2)
+                drivingLayout(2,pathMap[5]?.path)
             }
 
             authDrivingPic.setOnClickListener { //行驶证
@@ -328,7 +330,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     driverLayout.visibility = View.GONE
                     addIdcard.visibility = if (isClick) View.VISIBLE else View.GONE
                     addIdcardHint.visibility = if (isClick) View.VISIBLE else View.GONE
-                    idCard(true, imgUrl, 1)
+                    idCard(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
                 2 -> {
                     authIdcard.styleAuthCheck(false)
@@ -337,7 +339,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     driverLayout.visibility = View.VISIBLE
                     addDriver.visibility = if (isClick) View.VISIBLE else View.GONE
                     addDriverHint.visibility = if (isClick) View.VISIBLE else View.GONE
-                    jsz(true, imgUrl,1)
+                    jsz(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
             }
         }
@@ -356,7 +358,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     fpLayout.visibility = View.GONE
                     addDriving.visibility = if (isClick) View.VISIBLE else View.GONE
                     addDrivingHint.visibility = if (isClick) View.VISIBLE else View.GONE
-                    xsz(true, imgUrl, 1)
+                    xsz(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
                 2 -> {
                     authDriving.styleAuthCheck(false)
@@ -365,7 +367,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     fpLayout.visibility = View.VISIBLE
                     addFp.visibility = if (isClick) View.VISIBLE else View.GONE
                     addFpHint.visibility = if (isClick) View.VISIBLE else View.GONE
-                    fp(true, imgUrl, 1)
+                    fp(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
             }
         }
@@ -598,13 +600,13 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         binding.includeIdcardLayout.apply {
             when {
                 pathType == 1 -> {
-                    authDriverPic.load(path, R.mipmap.ic_auth_fp_ex)
+                    authDriverPic.load(path, R.mipmap.ic_auth_driver_ex)
                 }
                 isSuccess -> {
                     GlideUtils.loadRoundFilePath(path, authDriverPic)
                 }
                 else -> {
-                    authDriverPic.setImageResource(R.mipmap.ic_auth_fp_ex)
+                    authDriverPic.setImageResource(R.mipmap.ic_auth_driver_ex)
                 }
             }
             addDriver.isSelected = isSuccess

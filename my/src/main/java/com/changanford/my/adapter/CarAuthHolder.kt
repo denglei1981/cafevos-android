@@ -30,7 +30,7 @@ fun CarAuthHolder(
             if (item.carName.isNullOrEmpty()) item.modelName else item.carName
         //设置后台配置的车系图片
         if (item.modelUrl.isNullOrEmpty()) {
-            //                    it.carPic.setImageResource(R.mipmap.uni_car_sample)
+            it.carPic.setImageResource(R.mipmap.ic_car_auth_ex)
         } else {
             it.carPic.load(item.modelUrl, R.mipmap.ic_car_auth_ex)
         }

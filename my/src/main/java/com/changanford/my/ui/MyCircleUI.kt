@@ -10,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
-import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.BaseMineUI
@@ -36,7 +35,6 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
-        binding.collectToolbar.toolbarSave.text = "创建圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
         }
@@ -47,12 +45,8 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         super.initData()
         viewModel.createCircle {
             it.onSuccess {
+                binding.collectToolbar.toolbarSave.text = "创建圈子"
                 binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
-            }
-            it.onWithMsgFailure {
-                it?.let {
-                    showToast(it)
-                }
             }
         }
     }

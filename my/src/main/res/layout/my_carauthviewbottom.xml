@@ -33,8 +33,9 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:background="@drawable/bg_bt_blue_corner39"
         android:paddingHorizontal="@dimen/dp_10"
-        android:paddingVertical="@dimen/dp_8"
+        android:paddingVertical="@dimen/dp_6"
         android:text="@string/my_lovecar"
+        android:textSize="@dimen/sp_14"
         app:layout_constraintBottom_toBottomOf="@+id/my_carauthstate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/my_carauthstate" />
