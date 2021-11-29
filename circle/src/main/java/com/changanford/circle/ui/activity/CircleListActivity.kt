@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.content.Context
 import android.graphics.Color
+import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
+import com.changanford.circle.bean.CircleTypesBean
 import com.changanford.circle.databinding.ActivityCircleListBinding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleListFragment
@@ -19,6 +21,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -46,8 +49,6 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             }
         }
         initListener()
-        initMagicIndicator()
-        initTabAndViewPager()
     }
 
     private fun initListener() {
@@ -71,7 +72,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
         })
     }
 
-    private fun initTabAndViewPager() {
+    private fun initTabAndViewPager(types: ArrayList<CircleTypesBean>) {
         binding.viewPager.apply {
 
             adapter = object : FragmentPagerAdapter(
@@ -79,12 +80,12 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
             ) {
                 override fun getCount(): Int {
-                    return viewModel.tabList.size
+                    return types.size
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    val type = if (position == 0) 0 else 2
-                    return CircleListFragment.newInstance(type)
+                    val bean = types[position]
+                    return CircleListFragment.newInstance(bean.id, bean.isRegion)
                 }
 
             }
@@ -95,26 +96,72 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
     }
 
     override fun initData() {
-
+        viewModel.getTypes()
     }
 
-    private fun initMagicIndicator() {
+    override fun observe() {
+        super.observe()
+        viewModel.typesBean.observe(this, {
+            if (it.isNotEmpty()) {
+                runOnUiThread {
+                    initMagicIndicator(it)
+                    initTabAndViewPager(it)
+                }
+            } else {
+                "没有圈子类型".toast()
+                finish()
+            }
+        })
+    }
+
+    private fun initMagicIndicator(types: ArrayList<CircleTypesBean>) {
+
+        if (types.size <= 3) {
+            val layoutParam = AppBarLayout.LayoutParams(
+                AppBarLayout.LayoutParams.WRAP_CONTENT,
+                AppBarLayout.LayoutParams.WRAP_CONTENT
+            )
+            layoutParam.gravity = Gravity.CENTER_HORIZONTAL
+            binding.magicTab.layoutParams = layoutParam
+        } else {
+            val layoutParam = AppBarLayout.LayoutParams(
+                AppBarLayout.LayoutParams.MATCH_PARENT,
+                AppBarLayout.LayoutParams.WRAP_CONTENT
+            )
+            binding.magicTab.layoutParams = layoutParam
+        }
+        binding.magicTab.setPadding(0, 0, 0, 2.toIntPx())
+
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getCount(): Int {
-                return viewModel.tabList.size
+                return types.size
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val simplePagerTitleView =
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.minScale = 1f
-                simplePagerTitleView.text = viewModel.tabList[index]
+                simplePagerTitleView.text = types[index].name
                 simplePagerTitleView.textSize = 15f
-                simplePagerTitleView.setPadding(30.toIntPx(), 0, 30.toIntPx(), 0)
+                if (types.size <= 3) {
+                    simplePagerTitleView.setPadding(
+                        30.toIntPx(),
+                        10.toIntPx(),
+                        30.toIntPx(),
+                        3.toIntPx()
+                    )
+                } else {
+                    simplePagerTitleView.setPadding(
+                        20.toIntPx(),
+                        10.toIntPx(),
+                        20.toIntPx(),
+                        3.toIntPx()
+                    )
+                }
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
                 simplePagerTitleView.selectedColor =
