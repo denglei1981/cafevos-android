@@ -16,6 +16,7 @@ object ARouterMyPath {
     const val EditAddressUI = "/my/EditAddressUI" // 编辑地址
     const val MineTaskListUI = "/my/MineTaskListUI"  //任务列表
     const val UniCarAuthUI = "/my/UniCarAuthUI"  //车主认证
+    const val CarAuthSuccessUI = "/my/CarAuthSuccessUI" //车主认证成功
     const val MineJoinAcUI = "/app/MineJoinAcUI"  //我的活动
     const val MineGrowUpUI = "/my/MineGrowUpUI" //成长值
     const val MineEditFeedbackUI = "/my/MineEditFeedbackUI" //填写反馈
@@ -72,7 +73,6 @@ object ARouterMyPath {
     const val MineMedalUI = "/my/MineMedalUI"
     const val AccountSafeUI = "/my/AccountSafeUI"
     const val BateActivity = "/my/BateActivity"
-
 
 
 //    const val UniCardBuyLogUI = "/my/UniCardBuyLogUI" //购卡记录、使用记录

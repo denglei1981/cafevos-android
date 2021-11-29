@@ -31,7 +31,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 @Route(path = ARouterMyPath.MyPostDraftUI)
 class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
 
-    val checkMap: HashMap<Int, Boolean> = HashMap()
+    val checkMap: HashMap<Long, Boolean> = HashMap()
     var isShowCheck: Boolean = false
 
     var adapter =
@@ -43,7 +43,19 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                 item: PostEntity
             ) {
                 holder.dataBinding?.let { holder ->
-                    holder.itemTitle.text = item.title
+                    if (item.content.isNotEmpty()){
+                        holder.itemContent.visibility=View.VISIBLE
+                        holder.itemContent.text = item.content
+                    }else{
+                        holder.itemContent.visibility=View.GONE
+                    }
+                    if (item.title.isNotEmpty()){
+                        holder.itemTitle.visibility = View.VISIBLE
+                        holder.itemTitle.text = item.title
+                    }else{
+                        holder.itemTitle.visibility = View.GONE
+                    }
+
                     holder.itemTime.text =
                         "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"
                     holder.checkbox.visibility = if (isShowCheck) View.VISIBLE else View.GONE
