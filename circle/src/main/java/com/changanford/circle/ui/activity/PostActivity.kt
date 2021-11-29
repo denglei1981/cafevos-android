@@ -475,7 +475,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         bundle.putInt("position", 0)
                         bundle.putInt("showEditType", -1)
                         startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                        finish()
                     }
 
                     override fun onCancel() {
