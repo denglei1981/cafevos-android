@@ -47,6 +47,7 @@ import androidx.transition.TransitionManager;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.immersive.ImmersiveManage;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.yalantis.ucrop.callback.BitmapCropCallback;
@@ -87,10 +88,10 @@ public class UCropActivity extends AppCompatActivity {
      * 具体沉浸的样式，可以根据需要自行修改状态栏和导航栏的颜色
      */
     public void immersive() {
-//        ImmersiveManage.immersiveAboveAPI23(this
-//                , mStatusBarColor
-//                , mToolbarColor
-//                , isOpenWhiteStatusBar);
+        ImmersiveManage.immersiveAboveAPI23(this
+                , mStatusBarColor
+                , mToolbarColor
+                , isOpenWhiteStatusBar);
     }
 
 
