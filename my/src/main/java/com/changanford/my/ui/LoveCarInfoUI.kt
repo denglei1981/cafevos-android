@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
@@ -44,6 +45,16 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                         showToast(it)
                     }
                     setAuthInfo()
+                }
+            }
+        }
+
+        viewModel.carAuthQY() {
+            it.onSuccess {
+                it?.let {
+                    binding.group.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carContent.text = it.authDetailRightsContent
                 }
             }
         }

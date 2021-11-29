@@ -40,6 +40,7 @@ import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.GlideUtils.handleImgUrl
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -248,7 +249,7 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                 .clickable(interactionSource = interactionSource, indication = null) {
                     var jumpValue =
                         "{\"vin\":\"${carItemBean.vin}\",\"status\":${carItemBean.authStatus}}"
-                    JumpUtils.instans?.jump(50, jumpValue)
+                    JumpUtils.instans?.jump(41, jumpValue)
                 }
         ) {
             Column() {
@@ -357,7 +358,7 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                                 -dimensionResource(id = R.dimen.dp_5)
                             ),
                         painter =
-                        rememberImagePainter(data = carItemBean.modelUrl ?: R.mipmap.ic_car_auth_ex,
+                        rememberImagePainter(data = handleImgUrl(carItemBean.modelUrl) ?: R.mipmap.ic_car_auth_ex,
                             builder = {
                                 crossfade(true)
                                 placeholder(R.mipmap.ic_car_auth_ex)

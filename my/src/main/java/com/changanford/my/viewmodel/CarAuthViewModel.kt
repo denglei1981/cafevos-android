@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.bean.CarAUthResultBean
-import com.changanford.common.bean.CarItemBean
-import com.changanford.common.bean.OcrBean
-import com.changanford.common.bean.OcrRequestBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.room.UserDatabase
@@ -65,7 +62,7 @@ class CarAuthViewModel : ViewModel() {
         }
     }
 
-    var carAuth: MutableLiveData<ArrayList<CarItemBean>> = MutableLiveData()
+    var carAuth: MutableLiveData<CarAuthBean> = MutableLiveData()
 
     fun queryAuthCarAndIncallList(status: AuthCarStatus) {
         viewModelScope.launch {
@@ -74,7 +71,7 @@ class CarAuthViewModel : ViewModel() {
                 var rkey = getRandomKey()
                 apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                carAuth.postValue(it?.carList)
+                carAuth.postValue(it)
             }.onFailure {
                 carAuth.postValue(null)
             }
@@ -130,6 +127,21 @@ class CarAuthViewModel : ViewModel() {
                     }
                 }
             )
+        }
+    }
+
+    /**
+     * 车主权益
+     */
+    fun carAuthQY(result: (CommonResponse<CarAuthQYBean>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = java.util.HashMap<String, Any>()
+                body["configKey"] = "car_auth_con"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.carAuthQY(body.header(rkey), body.body(rkey))
+            })
         }
     }
 }

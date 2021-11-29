@@ -28,12 +28,12 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:visibility="gone"
             android:id="@+id/btn_add_car"
             style="@style/login_btn_style"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginBottom="@dimen/dp_10"
-            android:text="添加车辆" />
+            android:text="添加车辆"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>

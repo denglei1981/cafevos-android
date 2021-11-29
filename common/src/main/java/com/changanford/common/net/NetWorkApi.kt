@@ -766,6 +766,16 @@ interface NetWorkApi {
     ): CommonResponse<LoginVideoBean>
 
 
+    /**
+     * 车主权益
+     */
+    @POST("base/config/getConfigValueByKey")
+    suspend fun carAuthQY(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CarAuthQYBean>
+
+
     //圈子审核 人数查询
     @POST("con/circle/getUserCount")
     suspend fun queryCircleCount(

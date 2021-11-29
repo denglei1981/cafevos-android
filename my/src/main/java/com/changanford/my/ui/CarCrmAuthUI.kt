@@ -1,11 +1,13 @@
 package com.changanford.my.ui
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
@@ -31,6 +33,10 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 @Route(path = ARouterMyPath.MineLoveCarListUI)
 class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
+    private var isCarOwner: Int = 0
+    val headView: ViewHeadCarAuthBinding by lazy {
+        ViewHeadCarAuthBinding.inflate(layoutInflater)
+    }
     val carAdapter: AuthCarAdapter by lazy {
         AuthCarAdapter()
     }
@@ -38,7 +44,6 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
-        var headView: ViewHeadCarAuthBinding = ViewHeadCarAuthBinding.inflate(layoutInflater)
         headView.look.setOnClickListener {
             JumpUtils.instans?.jump(1, MConstant.H5_CAR_QY)
         }
@@ -46,7 +51,10 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         binding.rcyCarAuth.rcyCommonView.adapter = carAdapter
 
         viewModel.carAuth.observe(this, Observer {
-            completeRefresh(it, carAdapter, 0)
+            it?.let {
+                isCarOwner = it.isCarOwner
+            }
+            completeRefresh(it?.carList, carAdapter, 0)
         })
 
         binding.btnAddCar.setOnClickListener {
@@ -66,6 +74,23 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
+
+        viewModel.carAuthQY {
+            it.onSuccess {
+                it?.let {
+                    headView.layout.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    headView.content.text = when (isCarOwner) {
+                        1 -> {
+                            it.carListRightsContentY
+                        }
+                        else -> {
+                            it.carListRightsContentN
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

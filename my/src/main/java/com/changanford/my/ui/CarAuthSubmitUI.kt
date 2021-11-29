@@ -166,6 +166,20 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 }
             }
         }
+
+        viewModel.carAuthQY() {
+            it.onSuccess {
+                it?.let {
+                    binding.line8.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyTitle.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyContent.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyContent.text = it.authDetailRightsContent
+                }
+            }
+        }
     }
 
     private fun setCar() {
@@ -289,7 +303,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 idCardLayout(1, pathMap[1]?.path)
             }
             authDriver.setOnClickListener {
-                idCardLayout(2,pathMap[7]?.path)
+                idCardLayout(2, pathMap[7]?.path)
             }
             authIdcardPic.setOnClickListener { //身份证
                 click(1)
@@ -301,10 +315,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         binding.includeDrivingLayout.apply {
             authDriving.setOnClickListener {
-                drivingLayout(1,pathMap[4]?.path)
+                drivingLayout(1, pathMap[4]?.path)
             }
             authFp.setOnClickListener {
-                drivingLayout(2,pathMap[5]?.path)
+                drivingLayout(2, pathMap[5]?.path)
             }
 
             authDrivingPic.setOnClickListener { //行驶证
