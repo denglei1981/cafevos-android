@@ -55,6 +55,31 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                     }else{
                         holder.itemTitle.visibility = View.GONE
                     }
+                    when(item.type){
+                        "2" ->{//图片
+                            if (item.title.isEmpty()&&item.content.isEmpty()&&item.localMeadle.isNotEmpty()){
+                                holder.itemTitle.visibility = View.VISIBLE
+                                holder.itemContent.visibility=View.GONE
+                                holder.itemTitle.text ="【图片】"
+                            }
+                        }
+                        "3" ->{//视频
+                            if (item.title.isEmpty()&&item.content.isEmpty()&&item.localMeadle.isNotEmpty()){
+                                holder.itemTitle.visibility = View.VISIBLE
+                                holder.itemContent.visibility=View.GONE
+                                holder.itemTitle.text ="【视频】"
+                            }
+                        }
+                        "4" ->{//长图
+                            if (item.title.isEmpty()&&item.content.isEmpty()){
+                                if (item.longpostFmLocalMeadle.isNotEmpty()||item.longPostDatas.isNotEmpty()){
+                                    holder.itemTitle.visibility = View.VISIBLE
+                                    holder.itemContent.visibility=View.GONE
+                                    holder.itemTitle.text ="【图片】"
+                                }
+                            }
+                        }
+                    }
 
                     holder.itemTime.text =
                         "${TimeUtils.InputTimetamp(item.creattime, "MM-dd HH:mm")}"

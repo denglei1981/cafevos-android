@@ -1023,7 +1023,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private fun back() {
 
         var postsId = intent?.getStringExtra("postsId")
-        if (binding.etBiaoti.text.toString().isEmpty()) {
+        if (!isSave()) {
             finish()
         } else {
             if (!postsId.isNullOrEmpty()) {
@@ -1090,13 +1090,34 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
+    fun isSave():Boolean{
+        if (binding.etBiaoti.text.toString().isNotEmpty()){
+            return true
+        }else if(binding.etContent.text.toString().isNotEmpty()){
+            return true
+        }else if (selectList.size>0){
+            return true
+        }else if(buttomTypeAdapter.getItem(1).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(2).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(3).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(4).content.isNotEmpty()){
+            return true
+        }
+        buttomlabelAdapter.data.forEach {
+            if (it.isselect){
+                return true
+            }
+        }
+        return false
+    }
+
     fun ondesSave() {
 
         var postsId = intent?.getStringExtra("postsId")
         if (!postsId.isNullOrEmpty()) {
             return
         }
-        if (binding.etBiaoti.text.toString().isNotEmpty()) {
+        if (isSave()) {
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
             if (postEntity.postsId == 0L) {
