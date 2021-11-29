@@ -30,8 +30,8 @@ android {
         applicationId "com.changanford.evos"
         minSdkVersion minSDKVersion
         targetSdkVersion targetSDKVersion
-        versionCode 301
-        versionName "1.0.2"
+        versionCode 302
+        versionName "1.0.3"
         resConfigs "zh"
         ndk {
             abiFilters "armeabi-v7a"
