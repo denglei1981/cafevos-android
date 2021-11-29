@@ -11,7 +11,7 @@ import java.io.Serializable
 @Entity(tableName = "post_table")
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "postsId") var postsId: Int = 0,//帖子id
+    @ColumnInfo(name = "postsId") var postsId: Long = 0,//帖子id
     @ColumnInfo(name = "circleId") var circleId: String = "",  //圈子id
     @ColumnInfo(name = "circleName") var circleName: String = "",  //圈子名称
     @ColumnInfo(name = "content") var content: String = "",//内容
@@ -55,7 +55,7 @@ interface PostDao {
     suspend fun insert(entity: PostEntity)
 
     @Query("Delete from post_table Where postsId = :postid")
-    suspend fun delete(postid: Int)
+    suspend fun delete(postid: Long)
 
     @Update
     suspend fun update(postEntity: PostEntity)

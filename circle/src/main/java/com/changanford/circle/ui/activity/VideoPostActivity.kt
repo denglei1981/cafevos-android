@@ -87,6 +87,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var h5postbean: H5PostTypeBean? = null
     private lateinit var jsonStr: String
     private lateinit var SelectlocalMedia: LocalMedia
+    private var isunSave: Boolean = false
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
     private val dialog by lazy {
         LoadDialog(this).apply {
             setCancelable(false)
@@ -151,7 +155,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             Log.d("ImmersionBar", keyboardHeight.toString())
 //            if (isPopup) {
 //                iskeybarOpen = true
-                binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.emojirec.visibility = View.GONE
 //            } else {
 //                iskeybarOpen = false
 //            }
@@ -191,9 +195,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                address = it.address?:it.name?:""
+                address = it.address ?: it.name ?: ""
                 params["address"] = address
-                it.location?.let { mit->
+                it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
@@ -206,9 +210,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean?.plate?.forEach {
-                if (it.name == "社区"){
-                    buttomTypeAdapter?.setData(0,ButtomTypeBean("",0,0))
-                    buttomTypeAdapter?.setData(1,ButtomTypeBean(it.name,1,1))
+                if (it.name == "社区") {
+                    buttomTypeAdapter?.setData(0, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter?.setData(1, ButtomTypeBean(it.name, 1, 1))
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
@@ -367,10 +371,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
         binding.bottom.labelrec.adapter = buttomlabelAdapter
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            if (buttomlabelAdapter.getItem(position).isselect){
+            if (buttomlabelAdapter.getItem(position).isselect) {
                 buttomlabelAdapter.getItem(position).isselect = false
                 params.remove("keywords")
-            }else{
+            } else {
                 buttomlabelAdapter.getItem(position).isselect = true
                 buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
                     if (index != position) {
@@ -449,18 +453,18 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.bottom.ivEmoj.setOnClickListener {
 //            if (binding.etContent.hasFocus() && iskeybarOpen) {
 
-                HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
+            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
-                Timer().schedule(80) {
-                    binding.bottom.emojirec.post {
-                        if (binding.bottom.emojirec.isShown) {
+            Timer().schedule(80) {
+                binding.bottom.emojirec.post {
+                    if (binding.bottom.emojirec.isShown) {
 
-                            binding.bottom.emojirec.visibility = View.GONE
-                        } else {
-                            binding.bottom.emojirec.visibility = View.VISIBLE
-                        }
+                        binding.bottom.emojirec.visibility = View.GONE
+                    } else {
+                        binding.bottom.emojirec.visibility = View.VISIBLE
                     }
                 }
+            }
 //            } else if (!iskeybarOpen) {
 //                Timer().schedule(80) {
 //                    binding.bottom.emojirec.post {
@@ -576,26 +580,27 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                                     )
-                                    SoulPermission.getInstance().checkAndRequestPermissions(permissions,object :
-                                        CheckRequestPermissionsListener {
-                                        override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-                                            startARouterForResult(
-                                                this@VideoPostActivity,
-                                                ARouterCirclePath.PictureEditAudioActivity,
-                                                Bundle().apply {
-                                                    putString(
-                                                        "path",
-                                                        selectList[0].realPath
-                                                    )
-                                                },
-                                                PictureEditAudioActivity.EDIT_VIDEOPATH
-                                            )
-                                        }
+                                    SoulPermission.getInstance()
+                                        .checkAndRequestPermissions(permissions, object :
+                                            CheckRequestPermissionsListener {
+                                            override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
+                                                startARouterForResult(
+                                                    this@VideoPostActivity,
+                                                    ARouterCirclePath.PictureEditAudioActivity,
+                                                    Bundle().apply {
+                                                        putString(
+                                                            "path",
+                                                            selectList[0].realPath
+                                                        )
+                                                    },
+                                                    PictureEditAudioActivity.EDIT_VIDEOPATH
+                                                )
+                                            }
 
-                                        override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-                                        }
+                                            override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
+                                            }
 
-                                    })
+                                        })
                                 }
 //                                "删除封面" -> {
 //                                    postVideoAdapter.fmPath = ""
@@ -1015,21 +1020,25 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         return super.onKeyUp(keyCode, event)
     }
 
-    private fun back(){
+    private fun back() {
 
         var postsId = intent?.getStringExtra("postsId")
         if (binding.etBiaoti.text.toString().isEmpty()) {
             finish()
         } else {
-            if (!postsId.isNullOrEmpty()){
+            if (!postsId.isNullOrEmpty()) {
                 finish()
                 return
+            }
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
 
                 override fun save() {
-                    var postEntity =
-                        if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+
                     postEntity.content = binding.etContent.text.toString() //内容
                     postEntity.circleId =
                         if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
@@ -1061,21 +1070,72 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     postEntity.cityCode =
                         if (params["cityCode"] != null) params["cityCode"] as String else ""
                     postEntity.creattime = System.currentTimeMillis().toString()
-
-                    if (locaPostEntity == null) {
-                        viewModel.insertPostentity(postEntity)
-                    } else {
-                        viewModel.update(postEntity)
-                    }
+                    viewModel.insertPostentity(postEntity)
                     finish()
                 }
 
                 override fun unsave() {
-//                    viewModel.clearPost()
+                    isunSave = true
                     finish()
                 }
 
             }).showPopupWindow()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!isunSave) {
+            ondesSave()
+        }
+    }
+
+    fun ondesSave() {
+
+        var postsId = intent?.getStringExtra("postsId")
+        if (!postsId.isNullOrEmpty()) {
+            return
+        }
+        if (binding.etBiaoti.text.toString().isNotEmpty()) {
+            var postEntity =
+                if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+            if (postEntity.postsId == 0L) {
+                postEntity.postsId = insertPostId
+            }
+            postEntity.content = binding.etContent.text.toString() //内容
+            postEntity.circleId =
+                if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+            postEntity.circleName = circlename  //选择圈子的名称
+            postEntity.plate =
+                if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+            postEntity.plateName = platename  //模块名称
+            postEntity.topicId =
+                if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+            postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+            postEntity.keywords =
+                if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+//                    postEntity.keywordValues = binding.keywordTv.text.toString()
+            postEntity.localMeadle = JSON.toJSONString(selectList)
+            postEntity.actionCode =
+                if (params["actionCode"] != null) params["actionCode"] as String else ""
+            postEntity.fmpath =
+                if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+            postEntity.type = "3"  //视频帖子类型
+            postEntity.title = binding.etBiaoti.text.toString()
+            postEntity.address =
+                if (params["address"] != null) params["address"] as String else ""
+            postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+            postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+            postEntity.city =
+                if (params["city"] != null) params["city"] as String else ""
+            postEntity.province =
+                if (params["province"] != null) params["province"] as String else ""
+            postEntity.cityCode =
+                if (params["cityCode"] != null) params["cityCode"] as String else ""
+            postEntity.creattime = System.currentTimeMillis().toString()
+            viewModel.insertPostentity(postEntity)
+
+        }
+
     }
 }
