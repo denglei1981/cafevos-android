@@ -37,20 +37,24 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.text = "创建圈子"
-        binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
-            viewModel.createCircle {
-                it.onSuccess {
-                    RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
-                }
-                it.onWithMsgFailure {
-                    it?.let {
-                        showToast(it)
-                    }
+            RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
+        }
+        initViewpager()
+    }
+
+    override fun initData() {
+        super.initData()
+        viewModel.createCircle {
+            it.onSuccess {
+                binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
+            }
+            it.onWithMsgFailure {
+                it?.let {
+                    showToast(it)
                 }
             }
         }
-        initViewpager()
     }
 
     private fun initViewpager() {
