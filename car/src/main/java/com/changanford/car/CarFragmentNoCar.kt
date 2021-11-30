@@ -186,6 +186,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         super.onResume()
         initData()
     }
+
     private fun showAuthIntroLayout(carAuthBean: CarAuthBean?) {
         binding.carNoauthLayout.root.isVisible = true
         binding.carNoauthLayout.apply {
@@ -193,9 +194,11 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 JumpUtils.instans?.jump(17, "")
             }
             carAuthBean?.carAuthConfVo?.let {
-                imageView.load(it.img,R.mipmap.car_notauth)
-                textView3.text = if (it.title.isNullOrEmpty()) resources.getText(R.string.car_updateExperience) else it.title
-                textView4.text = if (it.des.isNullOrEmpty()) resources.getText(R.string.car_bindTips) else it.des
+                imageView.load(it.img, R.mipmap.car_notauth)
+                textView3.text =
+                    if (it.title.isNullOrEmpty()) resources.getText(R.string.car_updateExperience) else it.title
+                textView4.text =
+                    if (it.des.isNullOrEmpty()) resources.getText(R.string.car_bindTips) else it.des
             }
         }
         setMinBottom(50)
@@ -323,7 +326,7 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                         ) {
                             if (carItemBean.plateNum.isNullOrEmpty() || "无牌照" == carItemBean.plateNum) {
                                 Text(
-                                    text = "${carItemBean.plateNum}",
+                                    text = "添加车牌",
                                     fontSize = 14.sp,
                                     color = Color.White,
                                     modifier = Modifier
@@ -358,7 +361,8 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                                 -dimensionResource(id = R.dimen.dp_5)
                             ),
                         painter =
-                        rememberImagePainter(data = handleImgUrl(carItemBean.modelUrl) ?: R.mipmap.ic_car_auth_ex,
+                        rememberImagePainter(data = handleImgUrl(carItemBean.modelUrl)
+                            ?: R.mipmap.ic_car_auth_ex,
                             builder = {
                                 crossfade(true)
                                 placeholder(R.mipmap.ic_car_auth_ex)

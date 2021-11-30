@@ -120,7 +120,7 @@ class CarAuthViewModel : ViewModel() {
                     body["smsCode"] = smsCode ?: ""
                     body["vin"] = vin
                     var rKey = getRandomKey()
-                    if (oldPhone.isNullOrEmpty() && smsCode.isNullOrEmpty()) {
+                    if (oldPhone.isNullOrEmpty() || smsCode.isNullOrEmpty()) {
                         apiService.changePhoneBind(body.header(rKey), body.body(rKey))
                     } else {
                         apiService.changeOldPhoneBind(body.header(rKey), body.body(rKey))

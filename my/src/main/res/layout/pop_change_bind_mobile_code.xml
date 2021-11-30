@@ -130,9 +130,8 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btn_get_sms"
-                android:layout_width="@dimen/dp_88"
+                android:layout_width="@dimen/dp_82"
                 android:layout_height="@dimen/dp_24"
-                android:layout_marginEnd="@dimen/dp_17"
                 android:background="@drawable/shape_c_2e_r_12"
                 android:gravity="center"
                 android:text="获取验证码"

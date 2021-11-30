@@ -13,6 +13,8 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.styleAuthCheck
@@ -180,6 +182,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 }
             }
         }
+        //提交成功
+        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
+            finish()
+        })
+
     }
 
     private fun setCar() {
@@ -189,12 +196,8 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
             when (carItemBean.authStatus) {
                 1, 2 -> {//审核中
-//                        MineUtils.carAuthStatus(
-//                            binding.authStatusLayout.authStatus,
-//                            "请等待审核，审核时间为1-3个工作日",
-//                            "审核中"
-//                        )
-                    binding.authStatusLayout.authStatus.text = "审核中"
+                    binding.authStatusLayout.authStatus.text =
+                        if (carItemBean.authStatus == 2) "换绑审核中" else "审核中"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
                     binding.checkLayout.visibility = View.GONE
                     binding.submit.visibility = View.GONE
@@ -210,12 +213,12 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                     ?.replace("原因：", "")
                             }"
                     }
-                    binding.authStatusLayout.authStatus.text = "审核不通过"
+                    binding.authStatusLayout.authStatus.text = "审核未通过"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#D62C2C"))
                     binding.authCheckbox.isChecked = true// 审核不通过，默认勾选
                 }
             }
-            if (carItemBean.isNeedChangeBind == 1) {// 更换绑定
+            if (carItemBean.isNeedChangeBind == 1 && CommonUtils.isCrmFail(carItemBean.authStatus)) {// 更换绑定
                 isClick = false
                 binding.checkLayout.visibility = View.GONE
                 binding.submit.visibility = View.GONE
@@ -226,6 +229,9 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     RouterManger.param(RouterManger.KEY_TO_OBJ, carItemBean)
                         .startARouter(ARouterMyPath.PopChangeBindMobileUI)
                 }
+            } else {
+                binding.line1.visibility = View.GONE
+                binding.authStatusLayout.btnChangeMobile.visibility = View.GONE
             }
             if (!carItemBean.idsImg.isNullOrEmpty()) {//身份证
                 binding.idcardInputLayout.realName.setText("${carItemBean.ownerName}")
@@ -268,7 +274,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         drivingLayout(2, carItemBean.ownerCertImg)
                         pathMap[5] = OcrRequestBean(
                             "${MConstant.imgcdn}${carItemBean.ownerCertImg}",
-                            "INVOICE",
+                            "CAR_INVOICE",
                             carItemBean.ownerCertImg
                         )
                     }
@@ -467,19 +473,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         uploadDialog.show()
         signViewModel.uploadFile(this, arrayListOf(path), object : UploadPicCallback {
             override fun onUploadSuccess(files: ArrayList<String>) {
-                if (imgType == 5) {
-                    uploadDialog.dismiss()
-                    pathMap.put(
-                        imgType,
-                        OcrRequestBean(
-                            "${MConstant.imgcdn}${files.get(0)}",
-                            "INVOICE",
-                            files.get(0)
-                        )
-                    )
-                } else {
-                    ocr(files.get(0))
-                }
+                ocr(files.get(0))
             }
 
             override fun onUploadFailed(errCode: String) {
@@ -517,6 +511,12 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     OcrRequestBean("${MConstant.imgcdn}${path}", "WALK_LICENCE", path)
                 )
             }
+            5 -> {
+                pathMap.put(
+                    imgType,
+                    OcrRequestBean("${MConstant.imgcdn}${path}", "CAR_INVOICE", path)
+                )
+            }
             7 -> {
                 pathMap.put(
                     imgType,
@@ -533,7 +533,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     1, 7 -> {
                         showIdcard(it)
                     }
-                    4 -> {
+                    4, 5 -> {
                         it?.plate_num?.let {
                             body["plateNum"] = it
                         }
@@ -648,10 +648,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             binding.vinLine.visibility = View.VISIBLE
         }
         ocrBean?.let {
+            var fpVin: String = it.vin ?: ""
+            try {
+                it?.data?.let {
+                    fpVin = "${it["车辆识别代号/车架号码"]}"
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             binding.vinInputLayout.apply {
                 vinLayout.visibility = View.VISIBLE
                 binding.vinLine.visibility = View.VISIBLE
-                vinNum.setText("${it.vin}")
+                vinNum.setText(fpVin)
             }
         }
     }
@@ -743,6 +751,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         if (binding.vinInputLayout.vinLayout.visibility == View.VISIBLE && vinNum.isNullOrEmpty()) {
             showToast("请填写VIN码")
+            return
+        }
+
+        if (vinNum.length != 17) {//Toast.show("请填写17位VIN码")
+            showToast("请填写17位VIN码")
             return
         }
 

@@ -1008,13 +1008,13 @@ interface NetWorkApi {
     /**
      * 更换绑定
      */
-    @POST("ser/carAuth/changePhoneBind1")
+    @POST("ser/carAuth/changePhoneBind")
     suspend fun changePhoneBind(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
-    @POST("ser/carAuth/oldPhoneAuth1")
+    @POST("ser/carAuth/oldPhoneAuth")
     suspend fun changeOldPhoneBind(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

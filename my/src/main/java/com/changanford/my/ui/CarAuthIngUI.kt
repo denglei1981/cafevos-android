@@ -12,6 +12,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
@@ -147,12 +148,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
             binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
             when (carItemBean.authStatus) {
                 1, 2 -> {//审核中
-//                        MineUtils.carAuthStatus(
-//                            binding.authStatusLayout.authStatus,
-//                            "请等待审核，审核时间为1-3个工作日",
-//                            "审核中"
-//                        )
-                    binding.authStatusLayout.authStatus.text = "审核中"
+                    binding.authStatusLayout.authStatus.text =
+                        if (carItemBean.authStatus == 2) "换绑审核中" else "审核中"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
                     binding.checkLayout.visibility = View.GONE
                     isClick = false
@@ -166,12 +163,12 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
                                     ?.replace("原因：", "")
                             }"
                     }
-                    binding.authStatusLayout.authStatus.text = "审核不通过"
+                    binding.authStatusLayout.authStatus.text = "审核未通过"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#D62C2C"))
                     binding.authCheckbox.isChecked = true// 审核不通过，默认勾选
                 }
             }
-            if (carItemBean.isNeedChangeBind == 1) {// 更换绑定
+            if (carItemBean.isNeedChangeBind == 1 && CommonUtils.isCrmFail(carItemBean.authStatus)) {// 更换绑定
                 isClick = false
                 binding.checkLayout.visibility = View.GONE
                 binding.line1.visibility = View.VISIBLE

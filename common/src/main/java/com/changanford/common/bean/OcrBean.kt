@@ -22,8 +22,9 @@ data class OcrBean(
     val success: Boolean,
     val use_character: String,
     val vehicle_type: String,
-    var picUrl:String,
-    val vin: String
+    var picUrl: String,
+    val vin: String,
+    val data: HashMap<String,Any>
 )
 
 data class CardRegion(

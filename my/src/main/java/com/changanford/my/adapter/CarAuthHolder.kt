@@ -42,7 +42,7 @@ fun CarAuthHolder(
                 crmHint(1, it, item)
             }
             isCrmFail(item) -> {
-                it.tvAuth.text = "审核不通过"
+                it.tvAuth.text = "审核未通过"
                 crmHint(2, it, item)
             }
             isCrmSuccess(item) -> {

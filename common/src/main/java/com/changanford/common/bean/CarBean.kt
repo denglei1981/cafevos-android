@@ -108,7 +108,7 @@ data class CarItemBean(
  * imgExt:图片地址/base64
  * imgType:  HTTP_URL(1, "网络地址"),     BASE64(2, "BASE64");
  *  ocrSceneType: VIN(1, "车架号"),     ID_CARD(2, "身份证"),     DRIVER_LICENCE(3, "驾驶证"),     WALK_LICENCE(4, "行驶证");
- *  INVOICE(4, "发票");
+ *  INVOICE(4, "发票"); CAR_INVOICE
  *  path : 上传图片地址（无前缀）
  */
 

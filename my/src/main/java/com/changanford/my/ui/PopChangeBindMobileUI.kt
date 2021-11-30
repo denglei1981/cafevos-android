@@ -88,13 +88,16 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
         binding.submit.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                carItemBean?.let {
+                carItemBean?.let { carItemBean ->
                     var sms: String = binding.etLoginSmsCode.text.toString()
                     if (binding.group.visibility == View.GONE) {
                         sms = ""
                     }
-                    viewModel.changePhoneBind(it.vin, it.oldBindPhone, sms) {
-                        it.onSuccess {
+                    viewModel.changePhoneBind(carItemBean.vin, carItemBean.oldBindPhone, sms) {
+                        it.onSuccess { _ ->
+                            RouterManger.param(RouterManger.KEY_TO_ID, carItemBean.vin)
+                                .param(RouterManger.KEY_TO_ITEM, 2)
+                                .startARouter(ARouterMyPath.CarAuthSuccessUI)
                             finish()
                         }
                         it.onWithMsgFailure {
