@@ -163,6 +163,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit"
+                android:layout_marginBottom="@dimen/dp_15"
                 style="@style/login_btn_style"
                 android:layout_width="match_parent"
                 android:text="提交信息" />
@@ -171,7 +172,7 @@
                 android:id="@+id/line8"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:background="#EEEEEE"
                 android:visibility="gone" />
 

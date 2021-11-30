@@ -1,5 +1,7 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
@@ -28,8 +30,9 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
 
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
+        var d = binding.tvAuth.background as GradientDrawable
+        d.setColor(Color.parseColor("#6900095B"))
 
-//        binding.tvAuth.isEnabled = true
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             auth = it as CarItemBean
 

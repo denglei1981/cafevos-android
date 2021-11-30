@@ -205,6 +205,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     isClick = false
                 }
                 3, 4 -> {//审核失败
+                    binding.submit.text = "重新提交"
                     binding.authStatusLayout.authReason.visibility = View.VISIBLE
                     if (carItemBean.examineRemakeFront?.isNotEmpty() == true) {
                         binding.authStatusLayout.authReason.text =

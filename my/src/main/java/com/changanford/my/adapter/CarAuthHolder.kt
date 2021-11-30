@@ -47,7 +47,7 @@ fun CarAuthHolder(
             }
             isCrmSuccess(item) -> {
                 it.tvAuth.text = "已认证"
-                d.setColor(Color.parseColor("#00095B"))
+                d.setColor(Color.parseColor("#6900095B"))
                 crmHint(3, it, item)
             }
             else -> {
