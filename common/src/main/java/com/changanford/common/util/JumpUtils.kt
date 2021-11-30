@@ -124,7 +124,7 @@ class JumpUtils {
     }
 
     fun jump(type: Int?, value: String? = "") {
-        if (type == null) {
+        if (type == null || type == 0) {
             return
         }
         val bundle = Bundle()

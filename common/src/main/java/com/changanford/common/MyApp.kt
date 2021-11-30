@@ -13,7 +13,6 @@ import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.crash.CrashProtect
-
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
 import com.kingja.loadsir.core.LoadSir
