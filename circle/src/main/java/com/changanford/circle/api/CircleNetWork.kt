@@ -408,4 +408,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     * 圈子类型
+     */
+    @POST("con/circle/circleTypes")
+    suspend fun circleTypes(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CircleTypesBean>>
 }

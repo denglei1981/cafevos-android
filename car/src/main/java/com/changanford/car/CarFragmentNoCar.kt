@@ -115,7 +115,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 binding.carTopViewPager.isVisible = false
                 return@observe
             }
-            setVPHeight()
+//            setVPHeight()
             binding.carTopViewPager.isVisible = true
             topBannerList.clear()
             topBannerList.addAll(it)

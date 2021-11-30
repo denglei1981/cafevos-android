@@ -27,6 +27,7 @@ import java.util.*
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     var menuBean: ArrayList<MenuBeanItem> = ArrayList<MenuBeanItem>()
+    var notSign = true
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     val labelAdapter: LabelAdapter by lazy {
@@ -126,7 +127,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 处理点击事件
      */
     private fun initClick() {
-        binding.daySign.setOnClickListener { JumpUtils.instans?.jump(37) }
+        binding.daySign.setOnClickListener {
+            if (notSign){
+                JumpUtils.instans?.jump(37)
+            } else {
+                JumpUtils.instans?.jump(55)
+            }
+        }
         binding.mySet.setOnClickListener { JumpUtils.instans?.jump(21) }
         binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(24) }
 
@@ -187,7 +194,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT)
             .postValue(userInfoBean?.isUnread == 1)
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"
-        binding.daySign.isClickable = userInfoBean?.isSignIn != 1
+        notSign = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname
             ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginTips)
         binding.myContent.visibility = if (UserManger.isLogin()) View.GONE else View.VISIBLE
