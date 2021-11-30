@@ -29,7 +29,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
-        binding.tvAuth.isEnabled = true
+//        binding.tvAuth.isEnabled = true
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             auth = it as CarItemBean
 

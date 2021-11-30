@@ -131,10 +131,6 @@ private fun crmHint(
                     text = "添加车牌"
                     setBackgroundResource(R.drawable.shape_car_auth_btn_bg)
                     setTextColor(Color.parseColor("#ffffff"))
-                    setOnClickListener {
-                        RouterManger.param("value", item.vin)
-                            .startARouter(ARouterMyPath.AddCardNumTransparentUI)
-                    }
                 }
             } else {
                 holder.btnAddCarNum.apply {
@@ -142,6 +138,11 @@ private fun crmHint(
                     setTextColor(Color.parseColor("#00095B"))
                     text = "${item.plateNum}"
                 }
+            }
+            holder.btnAddCarNum.setOnClickListener {
+                RouterManger.param("value", item.vin)
+                    .param("plateNum", item.plateNum ?: "")
+                    .startARouter(ARouterMyPath.AddCardNumTransparentUI)
             }
         }
     }
