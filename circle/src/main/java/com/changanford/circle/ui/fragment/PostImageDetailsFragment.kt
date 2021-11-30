@@ -129,6 +129,15 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             )
                         }
                         tvOneTime.text = mData.timeStr
+                        ivCover.loadBigImage(mData.pics)
+                        ivCover.setOnClickListener {
+                            val pics = arrayListOf<MediaListBean>()
+                            pics.add(MediaListBean(mData.pics))
+                            val bundle = Bundle()
+                            bundle.putSerializable("imgList", pics)
+                            bundle.putInt("count", 1)
+                            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+                        }
                         if (mData.topicName.isNullOrEmpty()) {
                             tvTalkWeb.visibility = View.GONE
                         }
