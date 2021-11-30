@@ -15,7 +15,7 @@ import java.io.Serializable
 data class CarAuthBean(
     val userId: Int = 0,
     val isCarOwner: Int = 0,
-    val carAuthConfVo:CarAuthConfVo?,
+    val carAuthConfVo: CarAuthConfVo?,
     val carList: ArrayList<CarItemBean>
 )
 
@@ -38,7 +38,7 @@ data class CarItemBean(
         value = "authStatus",
         alternate = ["status"]
     ) var authStatus: Int = 0,
-    val examineRemakeFront: String = "", //审核备注
+    val examineRemakeFront: String? = "", //审核备注
     val dealerName: String = "",
     val dealerPhone: String = "",
     val saleDate: String = "",//购车日期
@@ -47,7 +47,7 @@ data class CarItemBean(
     val isNeedChangeBind: Int = 0, //是否需要更换绑定 1是 0 否
     val ownerCertImg: String = "",//车主证件图片地址
     val ownerCertType: Int = 0,//车主证件类型（1:行驶证 2:发票）
-    val oldBindPhone:String = "",
+    val oldBindPhone: String = "",
 
     val authTime: String = "",
     val avatar: String = "",

@@ -128,7 +128,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      */
     private fun initClick() {
         binding.daySign.setOnClickListener {
-            if (notSign){
+            if (notSign) {
                 JumpUtils.instans?.jump(37)
             } else {
                 JumpUtils.instans?.jump(55)
@@ -183,7 +183,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             viewModel.queryAuthCarAndIncallList() {
                 it.onSuccess {
                     it?.let {
-                        authState.postValue(it.isCarOwner == 1)
+                        var size: Int = 0
+                        it.carList?.let {
+                            size = it.size
+                        }
+                        authState.postValue(size > 0)
                     }
                 }
             }

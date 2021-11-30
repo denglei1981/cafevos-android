@@ -24,6 +24,6 @@
         android:gravity="right"
         android:hint="请输入VIN码"
         android:inputType="textVisiblePassword"
-        android:maxLines="1"
+        android:maxLength="17"
         android:textSize="@dimen/sp_13" />
 </LinearLayout>

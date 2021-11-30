@@ -147,6 +147,7 @@
                     android:drawablePadding="@dimen/dp_4"
                     android:gravity="center_vertical"
                     android:text="我已阅读并同意"
+                    android:background="@color/transparent"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_12" />
 

@@ -95,7 +95,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             it.onSuccess {
                 it?.let {
                     if (it.isCarOwner == 1) {//是车主
-                        var lists = it.carList.filter {
+                        var lists = it.carList?.filter {
                             it.authStatus == 3
                         }
                         lists?.let {

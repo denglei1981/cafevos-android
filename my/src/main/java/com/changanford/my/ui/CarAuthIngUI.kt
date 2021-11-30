@@ -4,24 +4,21 @@ import android.graphics.Color
 import android.text.method.ReplacementTransformationMethod
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.OcrRequestBean
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.*
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiCarAuthIngBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.google.gson.Gson
-import kotlinx.coroutines.launch
 
 /**
  *  文件名：CarAuthIngUI
@@ -162,11 +159,11 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
                 }
                 3, 4 -> {//审核失败
                     binding.authStatusLayout.authReason.visibility = View.VISIBLE
-                    if (carItemBean.examineRemakeFront.isNotEmpty()) {
+                    if (carItemBean.examineRemakeFront?.isNotEmpty() == true) {
                         binding.authStatusLayout.authReason.text =
                             "${
-                                carItemBean.examineRemakeFront.replace("失败原因：", "")
-                                    .replace("原因：", "")
+                                carItemBean.examineRemakeFront?.replace("失败原因：", "")
+                                    ?.replace("原因：", "")
                             }"
                     }
                     binding.authStatusLayout.authStatus.text = "审核不通过"
@@ -180,38 +177,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
                 binding.line1.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.setOnClickListener { v ->
-                    ConfirmTwoBtnPop(this).apply {
-                        contentText.text = "${carItemBean.examineRemakeFront}"
-                        btnCancel.setOnClickListener {
-                            dismiss()
-                        }
-                        btnConfirm.setOnClickListener {
-                            lifecycleScope.launch {
-                                fetchRequest {
-                                    var body = HashMap<String, Any>()
-                                    body["id"] = carItemBean.id
-                                    var rkey = getRandomKey()
-                                    apiService.uniCarUpdatePhone(
-                                        body.header(rkey),
-                                        body.body(rkey)
-                                    )
-                                }.onSuccess {
-                                    showToast("已成功提交资料")
-                                    binding.authStatusLayout.authStatus.text = "审核中"
-                                    binding.authStatusLayout.authReason.visibility = View.GONE
-                                    binding.authStatusLayout.btnChangeMobile.visibility =
-                                        View.GONE
-                                    LiveDataBus.get()
-                                        .with("mine:AuthCar", Boolean::class.java)
-                                        .postValue(true)
-                                }.onWithMsgFailure {
-                                    it?.let {
-                                        showToast(it)
-                                    }
-                                }
-                            }
-                        }
-                    }.showPopupWindow()
+                    RouterManger.param(RouterManger.KEY_TO_OBJ, carItemBean)
+                        .startARouter(ARouterMyPath.PopChangeBindMobileUI)
                 }
             }
             if (!carItemBean.idsImg.isNullOrEmpty()) {//身份证

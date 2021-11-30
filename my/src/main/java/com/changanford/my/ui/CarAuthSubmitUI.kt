@@ -203,11 +203,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 }
                 3, 4 -> {//审核失败
                     binding.authStatusLayout.authReason.visibility = View.VISIBLE
-                    if (carItemBean.examineRemakeFront.isNotEmpty()) {
+                    if (carItemBean.examineRemakeFront?.isNotEmpty() == true) {
                         binding.authStatusLayout.authReason.text =
                             "${
-                                carItemBean.examineRemakeFront.replace("失败原因：", "")
-                                    .replace("原因：", "")
+                                carItemBean.examineRemakeFront?.replace("失败原因：", "")
+                                    ?.replace("原因：", "")
                             }"
                     }
                     binding.authStatusLayout.authStatus.text = "审核不通过"
