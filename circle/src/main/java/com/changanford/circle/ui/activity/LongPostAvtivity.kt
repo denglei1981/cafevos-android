@@ -40,6 +40,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -57,6 +58,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -64,6 +66,10 @@ import com.yw.li_model.adapter.EmojiAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
+import com.google.gson.reflect.TypeToken
+
+
+
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
@@ -357,6 +363,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         PictureUtil.getFinallyPath(FMMeadia!!),
                         headBinding.ivFm
                     )
+                    selectList.add(LongPostBean("", FMMeadia))
                     headBinding.ivAddfm.visibility = View.GONE
                     headBinding.tvFm.visibility = View.GONE
                 } catch (e: Exception) {
@@ -364,17 +371,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
 
             }
-            if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()){
-                var fmbean = JSON.parseObject(locaPostEntity!!.longpostFmLocalMeadle,LocalMedia::class.java)
-                selectList.add(LongPostBean("", fmbean))
-            }
             jsonStr2obj(locaPostEntity!!.longPostDatas)
         }
     }
 
     private fun jsonStr2obj(jonson: String) {
         try {
-            val longPostBean = JSON.parseArray(jonson, LongPostBean::class.java);
+            val longPostBean :ArrayList<LongPostBean> = Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
             selectList.addAll(longPostBean)
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
