@@ -566,6 +566,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             }
             addDriving.isSelected = isSuccess
             addDrivingHint.isSelected = isSuccess
+            addDrivingHint.text = if (isSuccess) "点击更换行驶证正面" else "点击上传行驶证正面"
             authDrivingPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
@@ -585,6 +586,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             }
             addFp.isSelected = isSuccess
             addFpHint.isSelected = isSuccess
+            addFpHint.text = if (isSuccess) "点击更换机动车销售统一发票" else "点击上传机动车销售统一发票"
             authFpPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
@@ -605,6 +607,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             }
             addIdcard.isSelected = isSuccess
             addIdcardHint.isSelected = isSuccess
+            addIdcardHint.text = if (isSuccess) "点击更换身份证正面" else "点击上传身份证正面"
             authIdcardPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
@@ -624,6 +627,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             }
             addDriver.isSelected = isSuccess
             addDriverHint.isSelected = isSuccess
+            addDriverHint.text = if (isSuccess) "点击更换驾驶证正面" else "点击上传驾驶证正面"
             authDriverPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }

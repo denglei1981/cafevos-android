@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_8"
-            android:text="点击上传发票"
+            android:text="点击上传机动车销售统一发票"
             android:textColor="@drawable/auth_hint_text_color"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="parent"
