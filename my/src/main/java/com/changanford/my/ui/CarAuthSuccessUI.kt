@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
@@ -35,6 +36,7 @@ class CarAuthSuccessUI : BaseMineUI<UiCarAuthSuccessBinding, SignViewModel>() {
         }
 
         binding.btnFinish.setOnClickListener {
+            JumpUtils.instans?.jump(103)
             back()
         }
 

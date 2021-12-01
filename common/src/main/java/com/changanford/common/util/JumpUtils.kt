@@ -414,26 +414,24 @@ class JumpUtils {
                         var json = JSON.parseObject(it)
                         var vin = json.getString("vin")
                         var status = json.getIntValue("status")
-                        when {
-                            CommonUtils.isCrmSuccess(status) -> {
-                                RouterManger.param(
-                                    RouterManger.KEY_TO_OBJ,
-                                    CarItemBean(vin = vin)
-                                ).startARouter(ARouterMyPath.MineLoveCarInfoUI)
+                        var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        RouterManger.param(
+                            RouterManger.KEY_TO_OBJ,
+                            CarItemBean(vin = vin)
+                        ).startARouter(when{
+                            CommonUtils.isCrmSuccess(status) ->{
+                                ARouterMyPath.MineLoveCarInfoUI
                             }
-                            CommonUtils.isCrmStatusIng(status) -> {
-                                RouterManger.param(
-                                    RouterManger.KEY_TO_OBJ,
-                                    CarItemBean(vin = vin)
-                                ).startARouter(ARouterMyPath.CarAuthIngUI)
+                            CommonUtils.isCrmStatusIng(status)
+                                    || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
+                                isNeedChangeBind
+                            )) -> {
+                                ARouterMyPath.CarAuthIngUI
                             }
-                            else -> {
-                                RouterManger.param(
-                                    RouterManger.KEY_TO_OBJ,
-                                    CarItemBean(vin = vin)
-                                ).startARouter(ARouterMyPath.UniCarAuthUI)
+                            else->{
+                                ARouterMyPath.UniCarAuthUI
                             }
-                        }
+                        })
                     }
                 } catch (e: Exception) {
                     RouterManger.param(

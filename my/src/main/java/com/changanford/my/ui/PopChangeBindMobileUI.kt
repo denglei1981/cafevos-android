@@ -39,12 +39,12 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
         }
 
         carItemBean?.let {
-            binding.content.text = "您即将用当前手机号码替换${mobile}与该身份及车辆进行绑定。请确认是否继续往下操作？"
             var oldMobile = it.oldBindPhone
             if (oldMobile.isNotEmpty() && oldMobile.length >= 11) {
                 oldMobile =
                     "${oldMobile.substring(0, 3)}****${oldMobile.substring(7, 11)}"
             }
+            binding.content.text = "您即将用当前手机号码替换${oldMobile}与该身份及车辆进行绑定。请确认是否继续往下操作？"
             binding.mobile.text = oldMobile
         }
 

@@ -37,6 +37,10 @@ object CommonUtils {
         return status == 4
     }
 
+    fun isCrmChangeBindFail(isNeedChangeBind: Int): Boolean {
+        return isNeedChangeBind == 1
+    }
+
     fun isCrmStatusIng(status: Int): Boolean {
         return status == 1 || status == 2
     }

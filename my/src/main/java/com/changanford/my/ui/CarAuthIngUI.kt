@@ -14,6 +14,8 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -121,6 +123,11 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             carItemBean = it as CarItemBean
         }
+
+        //提交成功
+        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
+            finish()
+        })
     }
 
     override fun initData() {
@@ -136,6 +143,20 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
                     it?.let {
                         showToast(it)
                     }
+                }
+            }
+        }
+
+        viewModel.carAuthQY() {
+            it.onSuccess {
+                it?.let {
+                    binding.line8.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyTitle.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyContent.visibility =
+                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.carQyContent.text = it.authDetailRightsContent
                 }
             }
         }

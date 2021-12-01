@@ -175,12 +175,14 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/line8"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_15"
                 android:background="#EEEEEE" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/car_qy_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
@@ -192,6 +194,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/car_qy_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"

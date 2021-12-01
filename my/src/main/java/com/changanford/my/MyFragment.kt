@@ -10,6 +10,7 @@ import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
+import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -34,7 +35,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         LabelAdapter(22)
     }
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
-    private var authState: MutableLiveData<Boolean> = MutableLiveData()
+    private var authState: MutableLiveData<Int> = MutableLiveData()
 
     private var isRefreshUserInfo: Boolean = true //是否刷新用户信息
 
@@ -72,22 +73,24 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             }
         })
 
-        authState.observe(this, {
-            if (it) {//已认证
-                binding.myCarAuthLayout.include2.myCarauthstate.text =
-                    resources.getText(R.string.my_authed)
-                binding.myCarAuthLayout.include2.myMylovecar.apply {
-                    text = resources.getText(R.string.my_lovecar)
-                    setOnClickListener { JumpUtils.instans?.jump(41) }
+        authState.observe(this, { type ->
+            when (type) {
+                0, 1 -> {//未认证，或者是认证
+                    binding.myCarAuthLayout.include2.myCarauthstate.text =
+                        resources.getText(R.string.my_unauth)
+                    binding.myCarAuthLayout.include2.myMylovecar.apply {
+                        text = resources.getText(R.string.my_goauth)
+                        setOnClickListener { JumpUtils.instans?.jump(if (type == 1) 41 else 17) }
+                    }
                 }
-            } else {//未认证
-                binding.myCarAuthLayout.include2.myCarauthstate.text =
-                    resources.getText(R.string.my_unauth)
-                binding.myCarAuthLayout.include2.myMylovecar.apply {
-                    text = resources.getText(R.string.my_goauth)
-                    setOnClickListener { JumpUtils.instans?.jump(17) }
+                2, 3 -> {//有认证成功的数据
+                    binding.myCarAuthLayout.include2.myCarauthstate.text =
+                        resources.getText(R.string.my_authed)
+                    binding.myCarAuthLayout.include2.myMylovecar.apply {
+                        text = resources.getText(R.string.my_lovecar)
+                        setOnClickListener { JumpUtils.instans?.jump(41) }
+                    }
                 }
-
             }
         })
         LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
@@ -176,18 +179,35 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         }
         if (userInfoBean == null) {
             loginState.postValue(false)
-            authState.postValue(false)
+            authState.postValue(0)//未登录
         } else {
             isRefreshUserInfo = false
             loginState.postValue(true)
-            viewModel.queryAuthCarAndIncallList() {
+            viewModel.queryAuthCarAndIncallList {
                 it.onSuccess {
+                    var isAuth: Int = 0 //已登录 1 全部数据都是未通过的
+                    var failNum: Int = 0
                     it?.let {
-                        var size: Int = 0
-                        it.carList?.let {
-                            size = it.size
+                        when (it.isCarOwner) {
+                            1 -> {//已认证成功
+                                isAuth = 2
+                            }
+                            else -> {
+                                it.carList?.let {
+                                    it.forEach {
+                                        if (CommonUtils.isCrmFail(it.authStatus)) {
+                                            failNum++
+                                        }
+                                    }
+                                    isAuth = if (failNum == it.size) {//列表数据全部失败
+                                        1
+                                    } else {
+                                        3 //有认证中的数据
+                                    }
+                                }
+                            }
                         }
-                        authState.postValue(size > 0)
+                        authState.postValue(isAuth)
                     }
                 }
             }

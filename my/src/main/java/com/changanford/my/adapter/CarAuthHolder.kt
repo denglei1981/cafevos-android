@@ -3,13 +3,14 @@ package com.changanford.my.adapter
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemCarAuthBinding
 
@@ -56,35 +57,7 @@ fun CarAuthHolder(
             }
         }
         holder.itemView.setOnClickListener { _ ->
-            when {
-                isCrmSuccess(item) -> {//成功跳详情
-                    skipCrmCarInfo(item)
-                }
-                isCrmStatusNotBind(item) -> {//解绑
-
-                }
-                else -> {//失败跳认证页面
-                    item.reason = "${it.authReason.text}"
-                    skipUniSubmitAuth(item)
-                }
-            }
-        }
-    }
-}
-
-
-/**
- * 跳转认证页面
- */
-fun skipUniSubmitAuth(item: CarItemBean) {
-    when {
-        isCrmFail(item) -> {
-            RouterManger.param(RouterManger.KEY_TO_OBJ, item)
-                .startARouter(ARouterMyPath.UniCarAuthUI)
-        }
-        else -> {
-            RouterManger.param(RouterManger.KEY_TO_OBJ, item)
-                .startARouter(ARouterMyPath.CarAuthIngUI)
+            skipCrmCarInfo(item)
         }
     }
 }
@@ -100,8 +73,16 @@ fun skipInCallCarInfo(item: CarItemBean) {
  * 跳转crm详情
  */
 fun skipCrmCarInfo(item: CarItemBean) {
-    RouterManger.param(RouterManger.KEY_TO_OBJ, item)
-        .startARouter(ARouterMyPath.MineLoveCarInfoUI)
+    JumpUtils.instans?.jump(
+        50,
+        JSON.toJSONString(
+            mapOf(
+                "vin" to item.vin,
+                "status" to item.authStatus,
+                "isNeedChangeBind" to item.isNeedChangeBind
+            )
+        )
+    )
 }
 
 /**
@@ -120,11 +101,9 @@ private fun crmHint(
             holder.authReason.text = "请等待审核，审核时间为1-3个工作日"
             if (hintStats == 2) {//认证失败
                 holder.authReason.text = "原因：${item.examineRemakeFront ?: ""}"
-//                if (item.status == 4) "失败原因：${item.crmAuthRemake}" else "失败原因：${item.pretrialRemake}"
             }
         }
         3 -> {//CRM认证成功
-            "${item.plateNum}------".logE()
             holder.btnAddCarNum.visibility = View.VISIBLE
             if (item.plateNum.isNullOrEmpty() || "无牌照" == item.plateNum) {
                 holder.btnAddCarNum.apply {
@@ -148,62 +127,6 @@ private fun crmHint(
     }
 }
 
-/**
- * 列表incall提示
- */
-private fun inCallHint(
-    hintStats: Int,
-    holder: ItemCarAuthBinding,
-    item: CarItemBean,
-    isSetDefCar: Boolean
-) {
-//    holder.hintLayout.visibility = View.GONE
-//    holder.hintReason.visibility = View.GONE
-//    holder.hintLine.visibility = View.GONE
-//    holder.hintTitle.visibility = View.GONE
-//    when (hintStats) {
-//        1, 2 -> {//审核中和审核失败
-//            holder.carNumCard.visibility = View.INVISIBLE
-//            holder.openCall.visibility = View.INVISIBLE
-//            holder.hintLayout.visibility = View.VISIBLE
-//            holder.hintReason.visibility = View.VISIBLE
-//            holder.hintReason.text = "审核中，审核时间1-3个工作日"
-//            if (hintStats == 2) {//认证失败
-//                holder.hintReason.text = "失败原因：${item.incallAuthRemake}"
-//            }
-//        }
-//        3 -> {
-//            holder.openCall.visibility = View.VISIBLE
-//            holder.carNumCard.visibility = View.VISIBLE
-//            //原来列表的基础增加这两个字段（是否开通车控通过realnameAuthStatus字段判断;是否CRM认证 通过status==null
-//            //（表示并未提交过crm认证）反之则按照以前的状态值判断）
-//            if (item.plateNum.isNullOrEmpty()) {
-//                holder.carNumCard.text = "添加车牌"
-//                holder.carNumCard.setTextColor(Color.parseColor("#FC883B"))
-//            } else {
-//                holder.carNumCard.text = "${item.plateNum}"
-//                holder.carNumCard.setTextColor(Color.parseColor("#182634"))
-//            }
-//            if (!isSetDefCar && (isCrmFail(item) || item.status == 0)) {//incall成功，crm失败,未认证
-//                holder.hintLayout.visibility = View.VISIBLE
-//                holder.hintReason.visibility = View.VISIBLE
-//                holder.hintReason.text = "车主认证资料过期，避免车主权益受限，请更新认证资料"
-//                holder.hintLine.visibility = View.VISIBLE
-//                holder.hintTitle.visibility = View.VISIBLE
-//                holder.hintTitle.text = "更新资料"
-//                //incall认证成功，crm认证需要更新
-//                holder.hintTitle.setOnClickListener {
-//                    item.reason =
-//                        if (item.status == 4) item.crmAuthRemake else item.pretrialRemake
-//                    skipUniSubmitAuth(
-//                        holder.hintLayout.context,
-//                        item
-//                    )
-//                }
-//            }
-//        }
-//    }
-}
 
 //AUTHED   认证通过
 //AUTHING  认证中
