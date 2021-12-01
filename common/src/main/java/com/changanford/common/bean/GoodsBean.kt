@@ -469,6 +469,9 @@ data class OrderBriefBean(
     var fbOfUnitPrice: String? = "0",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
+    var totalPrice:String="0",
+    var price:String="0",
+    var num:String="1",
 )
 
 data class SnapshotOfAttrOption(

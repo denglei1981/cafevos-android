@@ -38,7 +38,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             dataBinding.model=item
             dataBinding.executePendingBindings()
             updateBtnUI(position,dataBinding,item)
-            dataBinding.tvTotleIntegral.setHtmlTxt(context.getString(R.string.str_Xfb,item.fbCost),"#00095B")
+            dataBinding.tvTotleIntegral.setHtmlTxt(if(4!=item.orderType)context.getString(R.string.str_Xfb,item.fbCost) else item.fbCost,"#00095B")
             control.bindingGoodsInfo(dataBinding.inGoodsInfo,item)
             setOrderType(dataBinding.tvOrderType,item)
         }
@@ -79,7 +79,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
-                3,4->{//商品、众筹
+                3->{//商品
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
                     var specifications=""
                     val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
@@ -100,6 +100,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         this.orginPrice=orderBriefBean.orginPrice
                         this.busSourse= orderBriefBean.busSourse
                         this.hagglePrice=orderBriefBean.hagglePrice
+                    }
+                }
+                4->{//众筹
+                    val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
+                    item.apply {
+                        this.buyNum=orderBriefBean.num
+                        this.fbCost=orderBriefBean.totalPrice
+                        this.fbOfUnitPrice=orderBriefBean.price
+                        this.orderTypeName=null
                     }
                 }
             }
@@ -173,7 +182,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             when {
                 -2==orderSource -> {
                     text=item.orderTypeName?:orderTypes[item.orderType]
-                    setTextColor(ContextCompat.getColor(context,R.color.picture_color_66))
+                    setTextColor(ContextCompat.getColor(context,R.color.color_74889D))
                     visibility = View.VISIBLE
                 }
                 "WAIT_PAY"==orderStatus -> {

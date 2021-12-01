@@ -42,7 +42,7 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun initView(){
         if(TextUtils.isEmpty(text))setText(context.getString(R.string.str_text))
     }
-    fun setHtmlTxt(str:Any,color:String){
+    fun setHtmlTxt(str:Any?,color:String){
         WCommonUtil.htmlToString(this,"${startText?:""}<font color=\"$color\">$str</font>${endText?:""}")
     }
     fun setText(str:Int?){
@@ -58,9 +58,8 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     fun setText(str:String?){
         if(str==null)return
         text="${startText?:""}$str${endText?:""}"
-//        text=if(startText!=null&&endText!=null) "$startText$str$endText"
-//        else if(startText!=null) "$startText$str"
-//        else if (endText != null) "$str$endText"
-//        else str
+    }
+    fun setEndTxt(endStr: String?){
+        this.endText=endStr
     }
 }
