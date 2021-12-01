@@ -774,12 +774,18 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         viewModel.submitCarAuth(body) {
             it.onSuccess {
+                //审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:解绑
                 it?.let {
                     when (it.authStatus) {
-                        //审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:解绑
                         1, 2, 3 -> {
-                            RouterManger.param(RouterManger.KEY_TO_ID, vinNum)
-                                .param(RouterManger.KEY_TO_ITEM, it.authStatus)
+                            RouterManger.param(
+                                RouterManger.KEY_TO_ITEM,
+                                CarItemBean(
+                                    vin = vinNum,
+                                    authStatus = it.authStatus,
+                                    isNeedChangeBind = it?.isNeedChangeBind ?: 0
+                                )
+                            )
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)
                             finish()
                         }

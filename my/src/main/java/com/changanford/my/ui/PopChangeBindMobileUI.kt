@@ -44,7 +44,7 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
                 oldMobile =
                     "${oldMobile.substring(0, 3)}****${oldMobile.substring(7, 11)}"
             }
-            binding.content.text = "您即将用当前手机号码替换${oldMobile}与该身份及车辆进行绑定。请确认是否继续往下操作？"
+            binding.content.text = "您即将用当前手机号码替换${oldMobile}与该车辆进行绑定。请确认是否继续往下操作？"
             binding.mobile.text = oldMobile
         }
 
@@ -95,8 +95,13 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
                     }
                     viewModel.changePhoneBind(carItemBean.vin, carItemBean.oldBindPhone, sms) {
                         it.onSuccess { _ ->
-                            RouterManger.param(RouterManger.KEY_TO_ID, carItemBean.vin)
-                                .param(RouterManger.KEY_TO_ITEM, 2)
+                            RouterManger.param(
+                                RouterManger.KEY_TO_ITEM,
+                                CarItemBean(
+                                    vin = carItemBean.vin,
+                                    authStatus = 2
+                                )
+                            )
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)
                             finish()
                         }
