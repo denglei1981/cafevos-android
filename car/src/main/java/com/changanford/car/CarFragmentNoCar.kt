@@ -201,7 +201,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                     if (it.des.isNullOrEmpty()) resources.getText(R.string.car_bindTips) else it.des
             }
         }
-        setMinBottom(50)
+        setMinBottom(70)
         binding.carCompose.isVisible = false
     }
 
