@@ -190,8 +190,14 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
     private fun showAuthIntroLayout(carAuthBean: CarAuthBean?) {
         binding.carNoauthLayout.root.isVisible = true
         binding.carNoauthLayout.apply {
+            var type: Int = 17
+            carAuthBean?.carList?.let {
+                if (it.size > 0) {
+                    type = 41
+                }
+            }
             button.setOnClickListener {
-                JumpUtils.instans?.jump(17, "")
+                JumpUtils.instans?.jump(type, "")
             }
             carAuthBean?.carAuthConfVo?.let {
                 imageView.load(it.img, R.mipmap.car_notauth)

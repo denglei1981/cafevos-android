@@ -49,6 +49,8 @@ data class CarItemBean(
     val ownerCertType: Int = 0,//车主证件类型（1:行驶证 2:发票）
     val oldBindPhone: String = "",
 
+    val authId: String = "",
+
     val authTime: String = "",
     val avatar: String = "",
     val carColor: String = "",

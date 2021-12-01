@@ -770,6 +770,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             showToast("请阅读并勾选隐私协议")
             return
         }
+        body["authId"] = "${carItemBean?.authId ?: ""}"
 
         viewModel.submitCarAuth(body) {
             it.onSuccess {
@@ -783,12 +784,21 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             finish()
                         }
                         else -> {
-                            it.examineRemakeFront?.let {
-                                showToast(it)
+                            if (it.isNeedChangeBind == 1) {
+                                RouterManger.param(
+                                    RouterManger.KEY_TO_OBJ,
+                                    CarItemBean(vin = vinNum)
+                                )
+                                    .needLogin(true).startARouter(ARouterMyPath.CarAuthIngUI)
+                                finish()
+                            } else {
+                                it.examineRemakeFront?.let {
+                                    showToast(it)
+                                }
+                                //刷新一次数据
+                                carItemBean = CarItemBean(vin = vinNum)
+                                initData()
                             }
-                            //刷新一次数据
-                            carItemBean = CarItemBean(vin = vinNum)
-                            initData()
                         }
                     }
                 }
