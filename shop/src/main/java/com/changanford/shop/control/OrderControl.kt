@@ -52,6 +52,8 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                     else -> View.GONE
                 }
             }
+            //众筹订单自带单位
+            tvIntegral.setEndTxt(if(4==item.orderType)null else context.getString(R.string.str_integral))
             recyclerView.apply {
                 if(!TextUtils.isEmpty(item.specifications)){
                     visibility= View.VISIBLE
@@ -61,7 +63,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         setList(specifications)
                     }
                 }else{
-                    visibility= View.GONE
+                    visibility= View.INVISIBLE
                 }
             }
             model=item
