@@ -84,8 +84,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     }
                 }
                 2, 3 -> {//有认证成功的数据
-                    binding.myCarAuthLayout.include2.myCarauthstate.text =
-                        resources.getText(R.string.my_authed)
+                    binding.myCarAuthLayout.include2.myCarauthstate.apply {
+                        text = if (type == 2) {
+                            resources.getText(R.string.my_authed)
+                        } else {
+                            resources.getText(R.string.my_goauth)
+                        }
+                    }
                     binding.myCarAuthLayout.include2.myMylovecar.apply {
                         text = resources.getText(R.string.my_lovecar)
                         setOnClickListener { JumpUtils.instans?.jump(41) }

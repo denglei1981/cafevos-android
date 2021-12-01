@@ -79,7 +79,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             it.onSuccess {
                 it?.let {
                     headView.layout.visibility =
-                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                        if (it.carListRightsIsShow) View.VISIBLE else View.GONE
                     headView.content.text = when (isCarOwner) {
                         1 -> {
                             it.carListRightsContentY

@@ -15,7 +15,6 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -28,7 +27,7 @@ object PictureUtil {
      * 获取最终地址
      */
     fun getFinallyPath(media: LocalMedia): String {
-        var path=""
+        var path = ""
         return if (media.isCut && !media.isCompressed) {
             media.cutPath
         } else if (media.isCompressed || media.isCut && media.isCompressed) {
@@ -360,7 +359,7 @@ object PictureUtil {
 
     fun ChoseVideo(
         activity: Activity,
-        datas: ArrayList<LocalMedia>?=null,
+        datas: ArrayList<LocalMedia>? = null,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
         videoMaxSecond: Int = 10 * 60,//秒
         videoMinSecond: Int = 3

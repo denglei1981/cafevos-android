@@ -443,9 +443,6 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: List<LocalMedia>) {
                     uploadFile(result.get(0))
-                    if (imgType == 5) {//显示VIN输入布局
-
-                    }
                 }
 
                 override fun onCancel() {

@@ -39,7 +39,7 @@ fun CarAuthHolder(
         d.setColor(Color.parseColor("#60000000"))
         when {
             isCrmStatusIng(item) -> {
-                it.tvAuth.text = "认证中"
+                it.tvAuth.text = if (item.authStatus == 2) "换绑审核中" else "认证中"
                 crmHint(1, it, item)
             }
             isCrmFail(item) -> {
