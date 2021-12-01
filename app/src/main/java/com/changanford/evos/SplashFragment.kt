@@ -41,13 +41,14 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     }
 
     override fun initData() {
-        GifLoadOneTimeGif.loadOneTimeGif(requireContext(),R.drawable.splashgif,binding.splashimg,1,object :GifLoadOneTimeGif.GifListener{
-            override fun gifPlayComplete() {
-                ShortcutBadger.applyCount(MyApp.mContext,0)
-            }
-        })
+//        GifLoadOneTimeGif.loadOneTimeGif(requireContext(),R.drawable.splashgif,binding.splashimg,1,object :GifLoadOneTimeGif.GifListener{
+//            override fun gifPlayComplete() {
+//                ShortcutBadger.applyCount(MyApp.mContext,0)
+//            }
+//        })
         lifecycleScope.launch {
             delay(4000)
+            ShortcutBadger.applyCount(MyApp.mContext,0)
             viewModel.getKey()
             viewModel.key.observe(this@SplashFragment) {
                 MConstant.pubKey = it
