@@ -100,7 +100,7 @@ class CarAuthViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["phone"] = mobile
                 var rKey = getRandomKey()
-                apiService.sendFordSmsCode(body.header(rKey), body.body(rKey))
+                apiService.sendCacSmsCode(body.header(rKey), body.body(rKey))
             })
         }
     }
