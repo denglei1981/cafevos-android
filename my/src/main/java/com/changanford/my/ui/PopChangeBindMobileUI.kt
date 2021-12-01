@@ -102,7 +102,7 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
                                     RouterManger.KEY_TO_ITEM,
                                     CarItemBean(
                                         vin = carItemBean.vin,
-                                        authStatus = 2
+                                        authStatus = 3
                                     )
                                 )
                                     .startARouter(ARouterMyPath.CarAuthSuccessUI)

@@ -25,5 +25,6 @@
         android:hint="请输入VIN码"
         android:inputType="textVisiblePassword"
         android:maxLength="17"
+        android:textColor="@color/color_33"
         android:textSize="@dimen/sp_13" />
 </LinearLayout>

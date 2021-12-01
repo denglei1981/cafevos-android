@@ -204,10 +204,16 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                                             failNum++
                                         }
                                     }
-                                    isAuth = if (failNum == it.size) {//列表数据全部失败
-                                        1
-                                    } else {
-                                        3 //有认证中的数据
+                                    isAuth = when {
+                                        it.size == 0 -> {
+                                            0
+                                        }
+                                        failNum == it.size -> {//列表数据全部失败
+                                            1
+                                        }
+                                        else -> {
+                                            3 //有认证中的数据
+                                        }
                                     }
                                 }
                             }

@@ -46,6 +46,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "认证详情"
         //VIN强制大写
+        binding.vinInputLayout.vinNum.isEnabled = false
+        binding.vinInputLayout.vinNum.isFocusable = false
         binding.vinInputLayout.vinNum.transformationMethod =
             object : ReplacementTransformationMethod() {
                 override fun getOriginal(): CharArray {
