@@ -95,15 +95,19 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
                     }
                     viewModel.changePhoneBind(carItemBean.vin, carItemBean.oldBindPhone, sms) {
                         it.onSuccess { _ ->
-                            RouterManger.param(
-                                RouterManger.KEY_TO_ITEM,
-                                CarItemBean(
-                                    vin = carItemBean.vin,
-                                    authStatus = 2
+                            if (sms.isNullOrEmpty()) {
+                                finish()
+                            } else {
+                                RouterManger.param(
+                                    RouterManger.KEY_TO_ITEM,
+                                    CarItemBean(
+                                        vin = carItemBean.vin,
+                                        authStatus = 2
+                                    )
                                 )
-                            )
-                                .startARouter(ARouterMyPath.CarAuthSuccessUI)
-                            finish()
+                                    .startARouter(ARouterMyPath.CarAuthSuccessUI)
+                                finish()
+                            }
                         }
                         it.onWithMsgFailure {
                             it?.let {

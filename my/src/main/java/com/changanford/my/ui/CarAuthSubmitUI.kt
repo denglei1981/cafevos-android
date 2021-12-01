@@ -194,6 +194,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             binding.authStatusLayout.statusLayout.visibility = View.VISIBLE
             binding.idcardInputLayout.idcardLayout.visibility = View.VISIBLE
             binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
+            binding.authStatusLayout.authReason.visibility = View.GONE
             when (carItemBean.authStatus) {
                 1, 2 -> {//审核中
                     binding.authStatusLayout.authStatus.text =

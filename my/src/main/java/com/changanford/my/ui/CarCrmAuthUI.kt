@@ -33,6 +33,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 @Route(path = ARouterMyPath.MineLoveCarListUI)
 class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
+    var isRefresh: Boolean = false
+
     private var isCarOwner: Int = 0
     val headView: ViewHeadCarAuthBinding by lazy {
         ViewHeadCarAuthBinding.inflate(layoutInflater)
@@ -69,6 +71,19 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             initRefreshData(1)
         })
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isRefresh = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            initRefreshData(1)
+            isRefresh = false
+        }
     }
 
     override fun initRefreshData(pageSize: Int) {

@@ -41,6 +41,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
     var pathMap = HashMap<Int, OcrRequestBean>() // 保存上传图片地址
     var imgType = 0 // 1身份证 4 行驶证  5发票
 
+    var isRefresh: Boolean = false
+
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "认证详情"
         //VIN强制大写
@@ -130,7 +132,16 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isRefresh) {
+            initData()
+            isRefresh = false
+        }
+    }
+
     override fun initData() {
+        super.initData()
         carItemBean?.vin?.let {
             viewModel.queryAuthCarDetail(it) {
                 it.onSuccess {
@@ -167,6 +178,7 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
             binding.authStatusLayout.statusLayout.visibility = View.VISIBLE
             binding.idcardInputLayout.idcardLayout.visibility = View.VISIBLE
             binding.vinInputLayout.vinLayout.visibility = View.VISIBLE
+            binding.authStatusLayout.authReason.visibility = View.GONE
             when (carItemBean.authStatus) {
                 1, 2 -> {//审核中
                     binding.authStatusLayout.authStatus.text =
@@ -195,9 +207,13 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
                 binding.line1.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.visibility = View.VISIBLE
                 binding.authStatusLayout.btnChangeMobile.setOnClickListener { v ->
+                    isRefresh = true
                     RouterManger.param(RouterManger.KEY_TO_OBJ, carItemBean)
                         .startARouter(ARouterMyPath.PopChangeBindMobileUI)
                 }
+            } else {
+                binding.line1.visibility = View.GONE
+                binding.authStatusLayout.btnChangeMobile.visibility = View.GONE
             }
             if (!carItemBean.idsImg.isNullOrEmpty()) {//身份证
                 binding.idcardInputLayout.realName.apply {
