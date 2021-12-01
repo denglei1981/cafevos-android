@@ -325,7 +325,7 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                                 ) {
                                     RouterManger
                                         .param("value", carItemBean.vin)
-                                        .param("plateNum", carItemBean.plateNum)
+                                        .param("plateNum", carItemBean.plateNum ?: "")
                                         .startARouter(ARouterMyPath.AddCardNumTransparentUI)
                                 }
                                 .padding(horizontal = dimensionResource(id = R.dimen.dp_5))
