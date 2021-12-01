@@ -717,6 +717,10 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             showToast("未识别到身份证号，请重新上传")
             return
         }
+        if (!MineUtils.isIdcardCode(idCard)) {
+            showToast("请填写正确的身份证号")
+            return
+        }
         body["idsNumber"] = idCard //证件号码
 
         var vinNum = binding.vinInputLayout.vinNum.text.toString()

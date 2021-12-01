@@ -910,6 +910,17 @@ object MineUtils {
         return m.find()
     }
 
+    fun isIdcardCode(idCard: String): Boolean {
+        val id_18 =
+            "^[1-9][0-9]{5}(18|19|20)[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{3}([0-9]|(X|x))"
+        val id_15 =
+            "^[1-9][0-9]{5}[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{2}[0-9]"
+        val id_valid = "($id_18)|($id_15)"
+        var pattern = Pattern.compile(id_valid)
+        var matcher = pattern.matcher(idCard)
+        return matcher.matches()
+    }
+
     fun dip2px(context: Context, dpValue: Double): Int {
         val density: Float = context.getResources().getDisplayMetrics().density
         return (dpValue * density + 0.5).toInt()

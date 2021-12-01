@@ -16,6 +16,7 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.style.PictureCropParameterStyle
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import java.io.File
@@ -206,6 +207,7 @@ object PictureUtil {
             .isEnableCrop(true)// 是否裁剪
             //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
             .isCompress(isCompress)// 是否压缩
+            .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
             .compressQuality(90)// 图片压缩后输出质量 0~ 100
             .synOrAsy(true)//同步true或异步false 压缩 默认同步
             //.queryMaxFileSize(10)// 只查多少M以内的图片、视频、音频  单位M
@@ -264,6 +266,7 @@ object PictureUtil {
             .setCropTitleBarBackgroundColor(
                 BaseApplication.INSTANT.getResources().getColor(R.color.transparent)
             )
+            .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
             .isCompress(false)// 是否压缩
             .isCamera(true)
             .compressQuality(90)// 图片压缩后输出质量 0~ 100
