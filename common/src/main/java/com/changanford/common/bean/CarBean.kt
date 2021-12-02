@@ -41,7 +41,7 @@ data class CarItemBean(
     val examineRemakeFront: String? = "", //审核备注
     val dealerName: String = "",
     val dealerPhone: String = "",
-    val saleDate: String = "",//购车日期
+    val saleDate: Long = 0L,//购车日期
 
 
     val isNeedChangeBind: Int = 0, //是否需要更换绑定 1是 0 否
