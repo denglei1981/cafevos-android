@@ -84,6 +84,10 @@ object GlideUtils {
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
         )
+    fun handleNullableUrl(preUrl: String?) :String? =
+        if (preUrl.isNullOrEmpty()) null else {if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
+            preUrl
+        )}
 
     fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
