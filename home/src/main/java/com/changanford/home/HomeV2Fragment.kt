@@ -334,6 +334,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
         )
         publishPopup?.contentView?.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
         publishPopup?.showAsDropDown(publishLocationView)
     }
 
