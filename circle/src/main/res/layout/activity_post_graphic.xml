@@ -114,9 +114,8 @@
                         android:id="@+id/iv_cover"
                         android:layout_width="match_parent"
                         android:scaleType="centerCrop"
-                        android:adjustViewBounds="true"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="375dp"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_one_title"
