@@ -166,6 +166,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
                     binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
+                    if("2"==dataBean.busSourse)binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                 }
                 "售后已处理"->{
                     totalPayName=R.string.str_realPayTotalAmount
@@ -189,6 +190,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                     binding.inOrderInfo.layoutOrderClose.visibility=View.GONE
                     binding.tvOrderRemainingTime.text=dataBean.evalStatusDetail
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
+                    if("2"==dataBean.busSourse)binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                 }
             }
         }
@@ -252,7 +254,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             when{
                 //可申请售后
                 "YES"==dataBean.canApplyServiceOfAfterSales->{
-                    if("WAIT_SEND"==dataBean.orderStatus)binding.inBottom.btnOrderConfirm.visibility=View.GONE
+                    val orderStatus=dataBean.orderStatus
+                    if("WAIT_SEND"==orderStatus||(context.getString(R.string.str_onceAgainToBuy)==binding.inBottom.btnOrderConfirm.text&&"2"==dataBean.busSourse))binding.inBottom.btnOrderConfirm.visibility=View.GONE
                     visibility=View.VISIBLE
                     setText(R.string.str_applyRefund)
                 }
