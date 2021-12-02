@@ -60,4 +60,9 @@ public class BasePopup extends PopupWindow {
 	private void doDismiss() {
 		this.dismiss();
 	}
+
+
+
+
+
 }

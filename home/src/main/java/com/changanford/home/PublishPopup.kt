@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.createHashMap
@@ -43,6 +44,7 @@ class PublishPopup(
 
     init {
         initView(layoutView)
+
     }
 
     fun initView(layoutView: View) {
@@ -66,7 +68,7 @@ class PublishPopup(
         if (!TextUtils.isEmpty(MConstant.token)) {
             getData()
         }
-
+        getWindows(0.4f)
     }
 
 
@@ -144,6 +146,17 @@ class PublishPopup(
             e.printStackTrace()
         }
 
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        getWindows(1.0f)
+    }
+
+    fun getWindows(f:Float){
+        val  lp = BaseApplication.curActivity.window.attributes
+        lp.alpha= f
+        BaseApplication.curActivity.window.attributes=lp
     }
 
 
