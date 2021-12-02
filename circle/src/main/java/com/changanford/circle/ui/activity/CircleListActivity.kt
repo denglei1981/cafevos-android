@@ -116,20 +116,20 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
 
     private fun initMagicIndicator(types: ArrayList<CircleTypesBean>) {
 
-        if (types.size <= 3) {
-            val layoutParam = AppBarLayout.LayoutParams(
-                AppBarLayout.LayoutParams.WRAP_CONTENT,
-                AppBarLayout.LayoutParams.WRAP_CONTENT
-            )
-            layoutParam.gravity = Gravity.CENTER_HORIZONTAL
-            binding.magicTab.layoutParams = layoutParam
-        } else {
+//        if (types.size <= 3) {
+//            val layoutParam = AppBarLayout.LayoutParams(
+//                AppBarLayout.LayoutParams.WRAP_CONTENT,
+//                AppBarLayout.LayoutParams.WRAP_CONTENT
+//            )
+//            layoutParam.gravity = Gravity.CENTER_HORIZONTAL
+//            binding.magicTab.layoutParams = layoutParam
+//        } else {
             val layoutParam = AppBarLayout.LayoutParams(
                 AppBarLayout.LayoutParams.MATCH_PARENT,
                 AppBarLayout.LayoutParams.WRAP_CONTENT
             )
             binding.magicTab.layoutParams = layoutParam
-        }
+//        }
         binding.magicTab.setPadding(0, 0, 0, 2.toIntPx())
 
         val magicIndicator = binding.magicTab
@@ -147,21 +147,21 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 simplePagerTitleView.minScale = 1f
                 simplePagerTitleView.text = types[index].name
                 simplePagerTitleView.textSize = 15f
-                if (types.size <= 3) {
-                    simplePagerTitleView.setPadding(
-                        30.toIntPx(),
-                        10.toIntPx(),
-                        30.toIntPx(),
-                        3.toIntPx()
-                    )
-                } else {
+//                if (types.size <= 3) {
+//                    simplePagerTitleView.setPadding(
+//                        30.toIntPx(),
+//                        10.toIntPx(),
+//                        30.toIntPx(),
+//                        3.toIntPx()
+//                    )
+//                } else {
                     simplePagerTitleView.setPadding(
                         20.toIntPx(),
                         10.toIntPx(),
                         20.toIntPx(),
                         3.toIntPx()
                     )
-                }
+//                }
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
                 simplePagerTitleView.selectedColor =
