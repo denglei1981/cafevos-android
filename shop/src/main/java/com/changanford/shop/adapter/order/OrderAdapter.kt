@@ -155,11 +155,13 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     //已完成,已关闭->可再次购买
                     "FINISH","CLOSED"->{
-                        dataBinding.btnConfirm.apply {
-                            visibility=View.VISIBLE
-                            setText(R.string.str_onceAgainToBuy)
-                            setOnClickListener {control.onceAgainToBuy(item)}
-                        }
+                        if("2"!=item.busSourse){
+                            dataBinding.btnConfirm.apply {
+                                visibility=View.VISIBLE
+                                setText(R.string.str_onceAgainToBuy)
+                                setOnClickListener {control.onceAgainToBuy(item)}
+                            }
+                        }else dataBinding.btnConfirm.visibility=View.INVISIBLE
                     }
                     //未知
                     else ->{
