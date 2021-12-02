@@ -255,7 +255,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
                 //可申请售后
                 "YES"==dataBean.canApplyServiceOfAfterSales->{
                     val orderStatus=dataBean.orderStatus
-                    if("WAIT_SEND"==orderStatus||("FINISH"==orderStatus&&"2"==dataBean.busSourse))binding.inBottom.btnOrderConfirm.visibility=View.GONE
+                    if("WAIT_SEND"==orderStatus||(context.getString(R.string.str_onceAgainToBuy)==binding.inBottom.btnOrderConfirm.text&&"2"==dataBean.busSourse))binding.inBottom.btnOrderConfirm.visibility=View.GONE
                     visibility=View.VISIBLE
                     setText(R.string.str_applyRefund)
                 }
