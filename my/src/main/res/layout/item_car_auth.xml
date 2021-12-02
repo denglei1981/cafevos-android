@@ -102,7 +102,7 @@
             android:minHeight="@dimen/dp_45"
             android:paddingTop="@dimen/dp_2"
             android:paddingBottom="@dimen/dp_2"
-            android:text="原因：由于个人信息有误审核未通过"
+            android:text="原因："
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="parent" />
