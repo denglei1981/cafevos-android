@@ -40,7 +40,7 @@ import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.utilext.GlideUtils.handleImgUrl
+import com.changanford.common.utilext.GlideUtils.handleNullableUrl
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -368,7 +368,7 @@ fun CarAuthLayout(carItemBean: CarItemBean) {
                                 -dimensionResource(id = R.dimen.dp_5)
                             ),
                         painter =
-                        rememberImagePainter(data = handleImgUrl(carItemBean.modelUrl)
+                        rememberImagePainter(data = handleNullableUrl(carItemBean.modelUrl)
                             ?: R.mipmap.ic_car_auth_ex,
                             builder = {
                                 crossfade(true)
