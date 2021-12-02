@@ -10,9 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
@@ -22,6 +24,7 @@ import com.changanford.my.databinding.ItemMedalBannerBinding
 import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.databinding.UiMedalDetailBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.google.gson.Gson
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.listener.OnPageChangeListener
 import razerdp.basepopup.BasePopupWindow
@@ -101,6 +104,23 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                 }
             } else {
                 showToast(it)
+            }
+        })
+    }
+
+    override fun initData() {
+        super.initData()
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
+            if (null == it || it.userJson.isNullOrEmpty()) {
+                if (MConstant.token.isNotEmpty()) {
+                    viewModel.getUserInfo()
+                }
+            } else {
+                var userInfoBean: UserInfoBean =
+                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
+                userInfoBean?.nickname?.let {
+                    binding.nickName.text = it
+                }
             }
         })
     }

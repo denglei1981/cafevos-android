@@ -17,7 +17,7 @@
         android:gravity="center_vertical"
         android:minHeight="@dimen/dp_24"
         android:paddingStart="@dimen/dp_29"
-        android:text="*仅支持福特  EVOS车主认证"
+        android:text="*仅支持福特 EVOS车主认证"
         android:textColor="#00095B"
         android:textSize="@dimen/sp_13" />
 
