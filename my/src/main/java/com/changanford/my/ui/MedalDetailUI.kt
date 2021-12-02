@@ -93,7 +93,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                     PopSuccessMedal().apply {
                         binding.icon.load(medal?.medalImage, R.mipmap.ic_medal_ex)
                         binding.medalName.text = medal?.medalName
-                        binding.getTitle1.text = medal?.fillCondition
+                        binding.getTitle1.text = medal?.remark
                     }.showPopupWindow()
                     medals[indexMedalItem].isGet = "1"
                     medals[indexMedalItem].getTime = "${System.currentTimeMillis()}"

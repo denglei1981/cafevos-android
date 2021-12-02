@@ -231,7 +231,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             PopSuccessMedal().apply {
                 binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
                 binding.medalName.text = item?.medalName
-                binding.getTitle1.text = item?.fillCondition
+                binding.getTitle1.text = item?.remark
                 binding.btnGetTake.visibility = View.VISIBLE
                 binding.btnGetTake.setOnClickListener {
                     dismiss()
