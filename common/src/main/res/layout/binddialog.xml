@@ -34,8 +34,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#666666"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:layout_height="match_parent"
             android:text="取消"/>
         <View
