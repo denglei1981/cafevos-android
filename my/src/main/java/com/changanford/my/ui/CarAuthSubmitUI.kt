@@ -722,8 +722,8 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             showToast("未识别到身份证号，请重新上传")
             return
         }
-        if (!MineUtils.isIdcardCode(idCard)) {
-            showToast("请填写正确的身份证号")
+        if (!(idCard.length == 15 || idCard.length == 18)) {
+            showToast("请输入15或18位身份证号")
             return
         }
         body["idsNumber"] = idCard //证件号码

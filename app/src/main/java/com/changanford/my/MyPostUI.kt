@@ -16,7 +16,9 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.utilext.logE
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.databinding.UiMyPostBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
@@ -45,6 +47,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
     }
 
     override fun initView() {
+        "${MConstant.imgcdn}".logE()
         PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value?.let {
             num = it.size
         }
