@@ -109,12 +109,10 @@
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-                 <net.lucode.hackware.magicindicator.MagicIndicator
+                <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/magic_tab"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingBottom="2dp" />
+                    android:layout_height="40dp" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager

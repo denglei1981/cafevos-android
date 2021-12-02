@@ -40,7 +40,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.room.PostDatabase
+import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -56,7 +56,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
@@ -67,6 +66,10 @@ import com.yw.li_model.adapter.EmojiAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
+import com.google.gson.reflect.TypeToken
+
+
+
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
@@ -360,6 +363,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         PictureUtil.getFinallyPath(FMMeadia!!),
                         headBinding.ivFm
                     )
+                    selectList.add(LongPostBean("", FMMeadia))
                     headBinding.ivAddfm.visibility = View.GONE
                     headBinding.tvFm.visibility = View.GONE
                 } catch (e: Exception) {
@@ -367,14 +371,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
 
             }
-
             jsonStr2obj(locaPostEntity!!.longPostDatas)
         }
     }
 
     private fun jsonStr2obj(jonson: String) {
         try {
-            val longPostBean = JSON.parseArray(jonson, LongPostBean::class.java);
+            val longPostBean :ArrayList<LongPostBean> = Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
+            selectList.addAll(longPostBean)
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
         } catch (e: Exception) {
@@ -470,7 +474,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         binding.title.barImgBack.setOnClickListener {
             var postsId = intent?.getStringExtra("postsId")
-            if (headBinding.etBiaoti.text.toString().isEmpty()) {
+            if (!isSave()) {
                 finish()
             } else {
                 if (!postsId.isNullOrEmpty()) {
@@ -1206,7 +1210,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 //        return super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             var postsId = intent?.getStringExtra("postsId")
-            if (headBinding.etBiaoti.text.toString().isEmpty()) {
+            if (!isSave()) {
                 finish()
             } else {
                 if (!postsId.isNullOrEmpty()) {
@@ -1277,12 +1281,33 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
     }
 
+    fun isSave():Boolean{
+        if (headBinding.etBiaoti.text.toString().isNotEmpty()){
+            return true
+        }else if(headBinding.etContent.text.toString().isNotEmpty()){
+            return true
+        }else if (selectList.size>0){
+            return true
+        }else if(buttomTypeAdapter.getItem(1).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(2).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(3).content.isNotEmpty()
+            ||buttomTypeAdapter.getItem(4).content.isNotEmpty()){
+            return true
+        }
+        buttomlabelAdapter.data.forEach {
+            if (it.isselect){
+                return true
+            }
+        }
+        return false
+    }
+
     fun ondesSave() {
         var postsId = intent?.getStringExtra("postsId")
         if (!postsId.isNullOrEmpty()) {
             return
         }
-        if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
+        if (isSave()) {
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
             if (postEntity.postsId == 0L) {

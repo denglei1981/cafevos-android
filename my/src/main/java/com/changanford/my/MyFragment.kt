@@ -15,19 +15,18 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     var menuBean: ArrayList<MenuBeanItem> = ArrayList<MenuBeanItem>()
+    var notSign = true
     private var menuAdapter = MenuAdapter()
     private var medalAdapter = MedalAdapter()
     val labelAdapter: LabelAdapter by lazy {
@@ -127,7 +126,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 处理点击事件
      */
     private fun initClick() {
-        binding.daySign.setOnClickListener { JumpUtils.instans?.jump(37) }
+        binding.daySign.setOnClickListener {
+            if (notSign){
+                JumpUtils.instans?.jump(37)
+            } else {
+                JumpUtils.instans?.jump(55)
+            }
+        }
         binding.mySet.setOnClickListener { JumpUtils.instans?.jump(21) }
         binding.myMsg.setOnClickListener { JumpUtils.instans?.jump(24) }
 
@@ -183,7 +188,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.messageStatus.isVisible = userInfoBean?.isUnread == 1
         LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).postValue(userInfoBean?.isUnread == 1)
         binding.daySign.text = if (userInfoBean?.isSignIn == 1) "已签到" else "签到"
-        binding.daySign.isClickable = userInfoBean?.isSignIn != 1
+        notSign = userInfoBean?.isSignIn != 1
         binding.myName.text = userInfoBean?.nickname
             ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginTips)
         binding.myContent.visibility = if (UserManger.isLogin()) View.GONE else View.VISIBLE

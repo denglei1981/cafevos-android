@@ -9,6 +9,7 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
@@ -149,6 +150,7 @@ object GlideUtils {
                     .fallback(errorDefaultRes)
                     .error(errorDefaultRes)
             }
+            override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
         }.into(imageView)
     }
 

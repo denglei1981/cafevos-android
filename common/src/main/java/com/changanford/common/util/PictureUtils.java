@@ -14,6 +14,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.luck.picture.lib.style.PictureCropParameterStyle;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -582,6 +583,7 @@ public class PictureUtils {
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
                 .isEnableCrop(true)// 是否裁剪
+                .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .isCompress(isCompress)// 是否压缩
                 .compressQuality(90)// 图片压缩后输出质量 0~ 100
@@ -666,6 +668,7 @@ public class PictureUtils {
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
                 .isEnableCrop(true)// 是否裁剪
+                .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .isCompress(true)// 是否压缩
                 .compressQuality(90)// 图片压缩后输出质量 0~ 100
@@ -751,6 +754,7 @@ public class PictureUtils {
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
                 .isEnableCrop(true)// 是否裁剪
+                .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .isCompress(false)// 是否压缩
                 .compressQuality(90)// 图片压缩后输出质量 0~ 100

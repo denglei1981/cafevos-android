@@ -16,6 +16,7 @@ import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostGraphicBinding
 import com.changanford.circle.ext.ImageOptions
+import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
@@ -25,6 +26,7 @@ import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
@@ -126,8 +128,20 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 mData.circleId.toString()
                             )
                         }
-                        tvOneTime.text = "${mData.timeStr}"
-
+                        tvOneTime.text = mData.timeStr
+                        ivCover.loadBigImage(mData.pics)
+                        ivCover.setOnClickListener {
+                            val pics = arrayListOf<MediaListBean>()
+                            pics.add(MediaListBean(mData.pics))
+                            val bundle = Bundle()
+                            bundle.putSerializable("imgList", pics)
+                            bundle.putInt("count", 1)
+                            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+                        }
+                        if (mData.topicName.isNullOrEmpty()) {
+                            tvTalkWeb.visibility = View.GONE
+                        }
+                        tvTalkWeb.text = mData.topicName
                         //webview加载文本
                         if (webHelper == null) webHelper =
                             CustomWebHelper(
@@ -186,7 +200,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             tvTalkOut.visibility = View.GONE
                         }
                         tvTalkOut.text = mData.topicName
-                        tvTwoTime.text = "${mData.timeStr}"
+                        tvTwoTime.text = mData.timeStr
                         tvContent.text = mData.content
                     }
                     else -> {
@@ -203,6 +217,15 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             if (mData.isGood == 1) {
                                 MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
                             }
+                            ivCover.loadBigImage(mData.pics)
+                            ivCover.setOnClickListener {
+                                val pics = arrayListOf<MediaListBean>()
+                                pics.add(MediaListBean(mData.pics))
+                                val bundle = Bundle()
+                                bundle.putSerializable("imgList", pics)
+                                bundle.putInt("count", 1)
+                                startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+                            }
                             tvTwoTitle.text = mData.title
                             if (mData.circleName.isNullOrEmpty()) {
                                 tvTwoFrom.visibility = View.GONE
@@ -217,7 +240,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvTalkOut.visibility = View.GONE
                             }
                             tvTalkOut.text = mData.topicName
-                            tvTwoTime.text = "${mData.timeStr}"
+                            tvTwoTime.text = mData.timeStr
                             tvOneContent.text = mData.content
                             val adapter = PostDetailsLongAdapter(requireContext())
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)
@@ -269,6 +292,16 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
             tvTalkOut.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("topicId", mData.topicId)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+            tvTalkWeb.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("topicId", mData.topicId)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+            binding.viewLongType.tvTalkOut.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)

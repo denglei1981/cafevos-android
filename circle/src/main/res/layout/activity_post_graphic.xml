@@ -110,6 +110,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_cover"
+                        android:layout_width="match_parent"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_height="375dp"/>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_one_title"
                         android:layout_width="0dp"
@@ -123,7 +130,7 @@
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_cover"
                         tools:text="重庆长安福特EVOS华丽登场" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -160,16 +167,44 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_one_from"
                         tools:ignore="WebViewLayout" />
 
+                    <RelativeLayout
+                        android:id="@+id/rl_talk_web"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintLeft_toLeftOf="@+id/web_view"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/web_view">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_talk_web"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="19dp"
+                            android:background="@drawable/circle_talk_20_bg"
+                            android:drawableStart="@mipmap/circle_talk_hint"
+                            android:drawablePadding="9dp"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxEms="20"
+                            android:maxLines="1"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="14dp"
+                            android:textColor="@color/circle_8195C8"
+                            android:textSize="13sp"
+                            tools:text="年轻人喜欢什么样的车" />
+                    </RelativeLayout>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_one_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="15dp"
                         android:textColor="@color/color_99"
                         android:textSize="12sp"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/web_view"
+                        app:layout_constraintTop_toBottomOf="@+id/rl_talk_web"
                         tools:text="2021.09.25  12:25" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
