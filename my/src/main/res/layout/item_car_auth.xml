@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_21"
-            android:text="FORD EVOS"
+            android:text="福特 EVOS"
             android:textColor="#333333"
             android:textSize="@dimen/sp_14"
             app:layout_constraintLeft_toLeftOf="parent"
