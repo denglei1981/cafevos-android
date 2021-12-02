@@ -26,8 +26,9 @@
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_280"
-            android:layout_marginTop="@dimen/dp_40"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:minHeight="@dimen/dp_280"
             android:paddingTop="@dimen/dp_10"
             app:banner_indicator_normal_color="#22E9EBF1"
             app:banner_indicator_normal_width="@dimen/dp_6"

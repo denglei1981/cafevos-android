@@ -119,7 +119,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
                 var userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)
                 userInfoBean?.nickname?.let {
-                    binding.nickName.text = it
+                    binding.nickName.text = "@${it}"
                 }
             }
         })
