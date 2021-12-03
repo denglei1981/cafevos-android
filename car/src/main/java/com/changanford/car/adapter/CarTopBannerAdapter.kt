@@ -35,7 +35,7 @@ class CarTopBannerAdapter : BaseBannerAdapter<AdBean, CarTopBannerViewHolder>() 
 class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
     override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
         var binding = DataBindingUtil.bind<ItemCarIntroBinding>(itemView)
-        binding?.imageCarIntro?.let { GlideUtils.loadBD(data?.adImg, it,R.mipmap.ic_def_square_img) }
+        binding?.imageCarIntro?.let { GlideUtils.loadFullSize(data?.adImg, it,R.mipmap.ic_def_square_img) }
     }
 
 }

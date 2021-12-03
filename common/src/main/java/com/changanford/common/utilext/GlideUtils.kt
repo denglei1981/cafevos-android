@@ -154,6 +154,23 @@ object GlideUtils {
                     .fallback(errorDefaultRes)
                     .error(errorDefaultRes)
             }
+        }.into(imageView)
+    }
+    /**
+     * 加载原始大小
+     */
+    @JvmOverloads
+    fun loadFullSize(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
+            if (errorDefaultRes != null) {
+                placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
+                    .error(errorDefaultRes)
+            }
             override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
         }.into(imageView)
     }
