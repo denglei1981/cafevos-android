@@ -12,10 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleMainBottomBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
-import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.ext.*
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.MyApp
@@ -31,6 +28,7 @@ import com.changanford.common.util.DensityUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.luck.picture.lib.tools.ScreenUtils
 
@@ -129,7 +127,10 @@ class CircleMainBottomAdapter(context: Context) :
                     circleCrop = true
                     error = R.mipmap.head_default
                 })
-            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
+//            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
+            binding.ivBg.loadImage(
+                item.pics,
+                ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
 
             val content = if (!item.title.isNullOrEmpty()) {
                 item.title
