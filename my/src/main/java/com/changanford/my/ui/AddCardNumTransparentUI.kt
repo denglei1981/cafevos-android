@@ -48,7 +48,7 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
         textViews.add(binding.tv5)
         textViews.add(binding.tv6)
 
-        binding.editTextView.setCursorVisible(false) //隐藏光标
+        binding.editTextView.isCursorVisible = false //隐藏光标
         setEditTextListener()
 
         var plateNum = bundle?.getString("plateNum")
@@ -109,20 +109,23 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
             }
 
             override fun afterTextChanged(editable: Editable) {
-                inputContent = binding.editTextView.getText().toString()
+                inputContent = binding.editTextView.text.toString()
                 inputContent?.let {
                     for (i in 0 until MAX) {
+                        textViews[i].isSelected = false
                         if (i < it.length) {
                             textViews[i].apply {
                                 text = it[i].toString()
-                                isSelected = true
                             }
                         } else {
                             textViews[i].apply {
                                 text = ""
-                                isSelected = false
                             }
                         }
+                    }
+                    var len = binding.editTextView.selectionEnd - 1
+                    if (len in 0 until textViews.size) {
+                        textViews[binding.editTextView.selectionEnd - 1].isSelected = true
                     }
                 }
             }
