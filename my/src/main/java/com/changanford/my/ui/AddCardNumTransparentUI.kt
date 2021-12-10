@@ -5,9 +5,7 @@ import android.text.TextWatcher
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.net.*
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_CAR_CARD_NUM
 import com.changanford.my.BaseMineUI
@@ -22,7 +20,7 @@ import kotlinx.coroutines.launch
  * @author zcy
  *
  */
-@Route(path = ARouterMyPath.AddCardNumTransparentUI)
+//@Route(path = ARouterMyPath.AddCardNumTransparentUI)
 class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignViewModel>() {
     private val MAX = 7 //车牌长度，默认7位数
     private var textViews = ArrayList<TextView>()

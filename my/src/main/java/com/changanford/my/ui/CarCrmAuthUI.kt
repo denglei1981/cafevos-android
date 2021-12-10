@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -65,10 +66,9 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
         LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java)
             .observe(this, Observer {
-                initRefreshData(1)
+                "输入车牌--$it".logE()
             })
         LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
-            initRefreshData(1)
         })
 
     }
