@@ -58,6 +58,9 @@ fun CarAuthHolder(
         }
         holder.itemView.setOnClickListener { _ ->
             skipCrmCarInfo(item)
+//            RouterManger.param("value", item.vin)
+//                .param("plateNum", item.plateNum ?: "")
+//                .startARouter(ARouterMyPath.AddCardNumTransparentUI)
         }
     }
 }

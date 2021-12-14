@@ -15,9 +15,10 @@
         android:layout_height="wrap_content"
         android:background="#2000095B"
         android:gravity="center_vertical"
+        android:maxLines="1"
         android:minHeight="@dimen/dp_24"
         android:paddingStart="@dimen/dp_29"
-        android:text="*仅支持福特 EVOS车主认证"
+        android:text="*仅支持EVOS车型认证，其他车型将陆续开放"
         android:textColor="#00095B"
         android:textSize="@dimen/sp_13" />
 
