@@ -102,13 +102,12 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         this.hagglePrice=orderBriefBean.hagglePrice
                     }
                 }
-                4->{//众筹
+                4->{//活动订单-众筹
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
                     item.apply {
                         this.buyNum=orderBriefBean.num
                         this.fbCost=orderBriefBean.totalPrice
                         this.fbOfUnitPrice=orderBriefBean.price
-                        this.orderTypeName=null
                     }
                 }
             }
