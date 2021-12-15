@@ -111,7 +111,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 tvTagTwo.text = "线下活动"
                 tvHomeActTimes.text =
                     "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
-                tvHomeActAddress.text = "地点：".plus(item.city)
+                tvHomeActAddress.text = item.city
                 tvHomeActAddress.visibility = View.VISIBLE
             }
             2 -> {

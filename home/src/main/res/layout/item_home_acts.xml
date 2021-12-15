@@ -45,12 +45,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_tips"
+            style="@style/AppText.lineSpace.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:ellipsize="end"
-            style="@style/AppText.lineSpace.Bold"
             android:maxLines="2"
             android:text="长安福特 未来活动体验日，于2021年9月11日正式上市"
             android:textColor="#ff0f1524"
@@ -114,25 +114,41 @@
             android:id="@+id/tv_home_act_times"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            tools:text="活动截止时间：2021.09.11 12:00"
+            android:layout_marginTop="8dp"
             android:textColor="#ff9fabb7"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tag_two" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_sign_up_time"
+            tools:text="活动时间：2021.09.11 12:00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_home_sign_up_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#ff9fabb7"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tag_two"
+            tools:text="报名截止时间：2021.09.11 12:00"
+            tools:visibility="visible" />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_act_address"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="地点：重庆"
+            android:layout_marginEnd="@dimen/dp_15"
             android:textColor="#ff9fabb7"
             android:textSize="12sp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/icon_home_acts_adress"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_tag_one"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_act_times" />
+            app:layout_constraintTop_toTopOf="@+id/tv_tag_two"
+            tools:text="重庆" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

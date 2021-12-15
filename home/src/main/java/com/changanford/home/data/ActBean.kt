@@ -1,6 +1,7 @@
 package com.changanford.home.data
 
 import android.text.TextUtils
+import com.changanford.common.util.TimeUtils
 
 class ActBean {
     val townName: String? = null
@@ -11,20 +12,36 @@ class ActBean {
     val title: String? = null
     val userId = 0
     val wonderfulId = 0
-    val wonderfulType: Int? = null
+    var wonderfulType: Int = 0
     val activityJoinCount: String? = null //参加活动人数
     val coverImg: String? = null
     val jumpType = 0
     val jumpVal: String? = null
     val serverTime: Long = 0
     val cityName: String = ""
-    val provinceName: String? = null
+    val provinceName: String = ""
     val recommend: String? = null
     val hot: String? = null
     fun getAddress(): String {
         if (!TextUtils.isEmpty(cityName)) {
             return cityName
         }
-        return provinceName.plus("·").plus(townName)
+        if(TextUtils.isEmpty(provinceName)){
+            return "未知"
+        }
+        return provinceName
     }
+
+    fun getActTimeS():String{
+       return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" 至 ").plus(TimeUtils.formateActTime(endTime))
+    }
+
+    fun getSignTimes():String{
+        return "报名截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
+    }
+
+
+
+
+
 }
