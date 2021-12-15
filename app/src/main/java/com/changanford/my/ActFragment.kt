@@ -186,7 +186,20 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvToLookAct.visibility = View.GONE
                     }
                     2 -> {
-                        it.btnFollow.text = "进行中"
+                        var startTime: Long =
+                            if (!item.beginTime.isNullOrEmpty()) item.beginTime.toLong() else 0
+                        var endTime: Long = if (item.deadLineTime != 0L) item.deadLineTime else 0
+                        when {
+                            item.serverTime < startTime -> {//未开始
+                                it.btnFollow.text = "未开始"
+                            }
+                            item.serverTime < endTime -> {//进行中
+                                it.btnFollow.text = "进行中"
+                            }
+                            else -> {//已结束
+                                it.btnFollow.text = "已截止"
+                            }
+                        }
                         //问卷调查 过了截至时间
                         if (item.deadLineTime > 0 && item.deadLineTime < item.serverTime) {
                             it.btnEndAct.visibility = View.GONE
