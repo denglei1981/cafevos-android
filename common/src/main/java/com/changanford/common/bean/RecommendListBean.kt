@@ -244,7 +244,7 @@ data class RecommendData(
     fun getTimeStateStr():String{
         when(timeState){
             "NOT_BEGIN"->{
-                return  "未开启"
+                return  "未开始"
             }
             "ON_GOING"->{
                 return "进行中"

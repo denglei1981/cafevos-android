@@ -23,11 +23,26 @@ class SearchActsResultAdapter :
 
             it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
             it.tvHomeActTimes.text = "活动截止时间:".plus(TimeUtils.formateActTime(item.endTime))
-            if (item.deadLineTime <= item.serverTime) {
-                it.btnState.text = "已截止"
-            } else {
-                it.btnState.text = "进行中"
+
+            try{
+                when {
+                    item.serverTime<item.beginTime -> {
+                        it.btnState.text = "未开始"
+                    }
+                    item.deadLineTime <= item.serverTime -> {
+                        it.btnState.text = "已截止"
+                    }
+                    else -> {
+                        it.btnState.text = "进行中"
+                    }
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
+
+
+
             it.tvTagTwo.actTypeText(item.wonderfulType)
 
             when (item.wonderfulType) {
