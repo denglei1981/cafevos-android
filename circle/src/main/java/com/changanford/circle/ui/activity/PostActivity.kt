@@ -687,9 +687,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
                 if (media.isCut) {
                     if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
-                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
                     } else {
-                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500)
                     }
                 } else {
                     if (media.width == 0) {
@@ -702,9 +702,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }_${
                 if (media.isCut) {
                     if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
-                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500)
                     } else {
-                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
                     }
                 } else {
                     if (media.height == 0) {
