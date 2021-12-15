@@ -40,6 +40,10 @@ class ActBean {
         return "报名截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
     }
 
+    fun getEndTimeTips():String{
+        return "截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
+    }
+
 
 
 

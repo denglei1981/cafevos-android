@@ -58,12 +58,13 @@ class SearchActsResultAdapter :
                 }
                 1 -> {
                     it.tvTagTwo.text = "线下活动"
-                    it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
+                    it.tvHomeActAddress.text = item.getAddress()
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 2 -> {
                     it.tvTagTwo.text = "调查问卷"
                     it.tvHomeActAddress.visibility = View.GONE
+                    it.tvHomeActTimes.text = item.getEndTimeTips()
                 }
                 3 -> {
                     it.tvTagTwo.text = "福域活动"
