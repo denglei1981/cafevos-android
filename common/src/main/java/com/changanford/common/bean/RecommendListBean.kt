@@ -3,6 +3,7 @@ package com.changanford.common.bean
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.TimeUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -255,6 +256,19 @@ data class RecommendData(
         }
         return ""
 
+    }
+
+
+    fun getActTimeS():String{
+        return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" 至 ").plus(TimeUtils.formateActTime(endTime))
+    }
+
+    fun getSignTimes():String{
+        return "报名截止时间: ".plus(TimeUtils.formateActTime(deadlineTime))
+    }
+
+    fun getEndTimeTips():String{
+        return "截止时间: ".plus(TimeUtils.formateActTime(deadlineTime))
     }
 
     override val itemType: Int get() = getItemTypeLocal()
