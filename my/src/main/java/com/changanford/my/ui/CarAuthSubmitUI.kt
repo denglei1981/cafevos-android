@@ -182,7 +182,8 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
                     it.authPrompt?.let { hint ->
                         binding.carModelHint.apply {
-                            visibility = if (hint.isNullOrEmpty()) View.GONE else View.VISIBLE
+                            visibility =
+                                if (hint.trim().isNullOrEmpty()) View.GONE else View.VISIBLE
                             text = hint
                             isSelected = true
                         }
