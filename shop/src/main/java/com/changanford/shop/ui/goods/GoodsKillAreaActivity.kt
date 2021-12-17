@@ -54,7 +54,6 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         binding.rvList.adapter=mAdapter
         binding.topBar.setActivity(this)
         binding.smartRl.setOnRefreshLoadMoreListener(this)
-        mAdapter.setEmptyView(R.layout.view_empty)
         addObserve()
         mAdapter.setOnItemClickListener { _, _, position ->
             GoodsDetailsActivity.start(mAdapter.data[position].spuId)
@@ -88,6 +87,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         })
         viewModel.killGoodsListData.observe(this,{
             val dataList=it?.dataList
+            mAdapter.setEmptyView(R.layout.view_empty)
             if(1==pageNo)mAdapter.setList(dataList)
             else if(dataList!=null)mAdapter.addData(dataList)
 
