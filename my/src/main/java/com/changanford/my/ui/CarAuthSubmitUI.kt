@@ -179,6 +179,14 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     binding.carQyContent.visibility =
                         if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
                     binding.carQyContent.text = it.authDetailRightsContent
+
+                    it.authPrompt?.let { hint ->
+                        binding.carModelHint.apply {
+                            visibility = if (hint.isNullOrEmpty()) View.GONE else View.VISIBLE
+                            text = hint
+                            isSelected = true
+                        }
+                    }
                 }
             }
         }

@@ -49,5 +49,6 @@ data class CarAuthQYBean(
     val carListRightsContentN: String = "",
     val rightsDetailContent: String = "",
     val authDetailRightsIsShow: Boolean = false,
-    val authDetailRightsContent: String = ""
+    val authDetailRightsContent: String = "",
+    val authPrompt: String? = ""
 )
