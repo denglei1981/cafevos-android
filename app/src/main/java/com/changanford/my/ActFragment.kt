@@ -148,7 +148,8 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 if (item.cityName.isNullOrEmpty() && item.townName.isNullOrEmpty()) {
                     it.tvHomeActAddress.visibility = View.GONE
                 } else {
-                    it.tvHomeActAddress.text = "地点：${item.cityName ?: ""} . ${item.townName}"
+                    it.tvHomeActAddress.text =
+                        "地点：${if (item.cityName.isNullOrEmpty()) item.provinceName else item.cityName ?: ""} · ${item.townName}"
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 it.tvActNum.text = ""
