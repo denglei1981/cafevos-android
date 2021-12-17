@@ -21,39 +21,53 @@ class SearchActsResultAdapter :
             GlideUtils.loadBD(item.coverImg, it.ivActs)
             it.tvTips.text = item.title
 
-            it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
-            it.tvHomeActTimes.text = "活动截止时间:".plus(TimeUtils.formateActTime(item.endTime))
-            if (item.deadLineTime <= item.serverTime) {
-                it.btnState.text = "已截止"
-            } else {
-                it.btnState.text = "进行中"
+            it.tvHomeActAddress.text = item.getAddress()
+            it.tvHomeActTimes.text = item.getActTimeS()
+
+            try{
+                when {
+                    item.serverTime<item.beginTime -> {
+                        it.btnState.text = "未开始"
+                    }
+                    item.deadLineTime <= item.serverTime -> {
+                        it.btnState.text = "已截止"
+                    }
+                    else -> {
+                        it.btnState.text = "进行中"
+                    }
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
+
+            if(item.wonderfulType!=2){// 不是问卷活动
+                if(item.jumpType==3){ // 是常规活动 及报名活动
+                    it.tvHomeSignUpTime.visibility=View.VISIBLE
+                    it.tvHomeSignUpTime.text=item.getSignTimes()
+                }else{
+                    it.tvHomeSignUpTime.visibility=View.GONE
+                }
             }
             it.tvTagTwo.actTypeText(item.wonderfulType)
 
             when (item.wonderfulType) {
                 0 -> {
                     it.tvTagTwo.text = "线上活动"
-                    it.tvHomeActTimes.text =
-                        "活动截止时间:".plus(TimeUtils.formateActTime(item.deadLineTime))
                     it.tvHomeActAddress.visibility = View.GONE
                 }
                 1 -> {
                     it.tvTagTwo.text = "线下活动"
-                    it.tvHomeActTimes.text =
-                        "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
-
-                    it.tvHomeActAddress.text = "地点：".plus(item.getAddress())
+                    it.tvHomeActAddress.text = item.getAddress()
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 2 -> {
                     it.tvTagTwo.text = "调查问卷"
-                    it.tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.deadLineTime))
                     it.tvHomeActAddress.visibility = View.GONE
+                    it.tvHomeActTimes.text = item.getEndTimeTips()
                 }
                 3 -> {
                     it.tvTagTwo.text = "福域活动"
-                    it.tvHomeActTimes.text =
-                        "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.deadLineTime))
                     it.tvHomeActAddress.visibility = View.GONE
                 }
             }

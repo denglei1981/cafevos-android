@@ -94,35 +94,43 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val btnState = holder.getView<MaterialButton>(R.id.btn_state)
         val tvTagOne = holder.getView<AppCompatTextView>(R.id.tv_tag_one)
         val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
+        val  tvHomeSignUpTime=holder.getView<AppCompatTextView>(R.id.tv_home_sign_up_time)
         GlideUtils.loadBD(item.wonderfulPic, ivActs)
         tvTips.text = item.title
-        tvHomeActTimes.text = "活动截止时间:".plus(item.getEndStr())
+        tvHomeActTimes.text = item.getActTimeS()
 
         btnState.text = item.getTimeStateStr()
-
+        if(item.wonderfulType!=2){// 不是问卷活动
+            if(item.jumpType.toInt()==3){ // 是常规活动 及报名活动
+                tvHomeSignUpTime.visibility=View.VISIBLE
+                tvHomeSignUpTime.text=item.getSignTimes()
+            }else{
+                tvHomeSignUpTime.visibility=View.GONE
+            }
+        }
         when (item.wonderfulType) {
             0 -> {
                 tvTagTwo.text = "线上活动"
-                tvHomeActTimes.text =
-                    "活动截止时间:".plus(TimeUtils.formateActTime(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
-                tvHomeActTimes.text =
-                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
-                tvHomeActAddress.text = "地点：".plus(item.city)
-                tvHomeActAddress.visibility = View.VISIBLE
+                if(TextUtils.isEmpty(item.city)){
+                    tvHomeActAddress.visibility=View.GONE
+                }else{
+                    tvHomeActAddress.visibility=View.VISIBLE
+                    tvHomeActAddress.text = item.city
+                }
+
+
             }
             2 -> {
                 tvTagTwo.text = "调查问卷"
-                tvHomeActTimes.text = ("截止时间: " + TimeUtils.MillisTo_M_H(item.getEndStr()))
+                tvHomeActTimes.text = item.getEndTimeTips()
                 tvHomeActAddress.visibility = View.GONE
             }
             3 -> {
                 tvTagTwo.text = "福域活动"
-                tvHomeActTimes.text =
-                    "报名截止时间: ".plus(TimeUtils.MillisTo_M_H(item.getEndStr()))
                 tvHomeActAddress.visibility = View.GONE
             }
         }

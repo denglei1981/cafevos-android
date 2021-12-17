@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -139,6 +140,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 if (type == "actMyCreate") {
                     it.btnEndAct.visibility = View.VISIBLE
                     it.tvToLookAct.visibility = View.VISIBLE
+                    it.tvToLookAct.paintFlags = Paint.UNDERLINE_TEXT_FLAG
                 }
                 it.tvHomeActLookNum.visibility = View.GONE
 
@@ -146,7 +148,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 if (item.cityName.isNullOrEmpty() && item.townName.isNullOrEmpty()) {
                     it.tvHomeActAddress.visibility = View.GONE
                 } else {
-                    it.tvHomeActAddress.text = "${item.cityName ?: ""} . ${item.townName}"
+                    it.tvHomeActAddress.text = "地点：${item.cityName ?: ""} . ${item.townName}"
                     it.tvHomeActAddress.visibility = View.VISIBLE
                 }
                 it.tvActNum.text = ""
@@ -171,6 +173,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
 
                 //精彩类型，0-线上活动，1-线下活动，2-问卷
+                //1是线上报名活动，2是线下报名，3是问卷，4是营销活动
                 it.tvTagTwo.actTypeText(item.wonderfulType)
 
                 when (item.status) {
@@ -186,7 +189,20 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvToLookAct.visibility = View.GONE
                     }
                     2 -> {
-                        it.btnFollow.text = "进行中"
+                        var startTime: Long =
+                            if (!item.beginTime.isNullOrEmpty()) item.beginTime.toLong() else 0
+                        var endTime: Long = if (item.deadLineTime != 0L) item.deadLineTime else 0
+                        when {
+                            item.serverTime < startTime -> {//未开始
+                                it.btnFollow.text = "未开始"
+                            }
+                            item.serverTime < endTime -> {//进行中
+                                it.btnFollow.text = "进行中"
+                            }
+                            else -> {//已结束
+                                it.btnFollow.text = "已截止"
+                            }
+                        }
                         //问卷调查 过了截至时间
                         if (item.deadLineTime > 0 && item.deadLineTime < item.serverTime) {
                             it.btnEndAct.visibility = View.GONE

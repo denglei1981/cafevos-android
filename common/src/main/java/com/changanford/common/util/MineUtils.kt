@@ -453,15 +453,15 @@ object MineUtils {
         //我们将按法律法规要求，采取相应安全保护措施，尽力保护您的个人信息安全可控。
 
         val title = ""
-        var titleC =
+        val titleC =
             "感谢您信任并使用福域！在使用前，请您务必仔细阅读并充分理解“用户服务协议”和“隐私政策”相关条款内容，在确认充分理解并同意后使用福域相关产品或服务。点击同意即代表您已阅读并同意"
-        var content = "《用户服务协议》"
-        var content1 = "《隐私政策》"
+        val content = "《用户服务协议》"
+        val content1 = "《隐私政策》"
 
-        var spannable =
+        val spannable =
             SpannableString("${title}${titleC}${content}和${content1}，如果您不同意，将可能影响使用福域的产品和服务。我们将按法律法规要求，采取相应安全保护措施，尽力保护您的个人信息安全可控。")
 
-        var sizeSpannable = RelativeSizeSpan(1.2f)
+        val sizeSpannable = RelativeSizeSpan(1.2f)
         spannable.setSpan(sizeSpannable, 0, title.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         //设置颜色
         spannable.setSpan(
