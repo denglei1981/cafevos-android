@@ -84,7 +84,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList?.let {
-                       if (it[position].jumpDataValue?.contains("carModelCode=VLMR") == true){
+                       if (it[position].jumpDataValue?.contains("canAuth=true") == true){
                            binding.carNoauthLayout.button?.apply {
                                background =resources.getDrawable(R.drawable.bg_bt_blue_corner39)
                                isEnabled=true
