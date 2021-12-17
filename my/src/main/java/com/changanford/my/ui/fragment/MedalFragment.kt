@@ -58,7 +58,8 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                     item.isGet.isNullOrEmpty() -> {//未获取
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
-                        it.tvMedalDes.text = "暂未点亮\n${item.remark}"
+                        var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
+                        it.tvMedalDes.text = "暂未点亮\n$r"
                     }
                     else -> {//已获取
                         var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
