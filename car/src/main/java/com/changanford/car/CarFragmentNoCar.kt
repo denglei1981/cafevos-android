@@ -1,7 +1,10 @@
 package com.changanford.car
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.DisplayMetrics
+import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.isVisible
+import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
 import com.changanford.car.adapter.CarAuthAdapter
 import com.changanford.car.adapter.CarRecommendAdapter
@@ -53,6 +57,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
     private var carAuthAdapter = CarAuthAdapter()
     var topBannerList = ArrayList<AdBean>()
 
+    @SuppressLint("NewApi")
     override fun initView() {
         binding.carTopViewPager.apply {
             setAutoPlay(true)
@@ -67,9 +72,39 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                         topBannerList[it].jumpDataValue
                     )
                 }
+
+
             }
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+
+                }
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    topBannerList?.let {
+                       if (it[position].jumpDataValue?.contains("carModelCode=VLMR") == true){
+                           binding.carNoauthLayout.button?.apply {
+                               background =resources.getDrawable(R.drawable.bg_bt_blue_corner39)
+                               isEnabled=true
+                               setTextColor(resources.getColor(R.color.color_withe))
+                           }
+
+                       }else{
+                           binding.carNoauthLayout.button?.apply {
+                               background = resources.getDrawable( R.drawable.bg_bt_gray_corner39)
+                               isEnabled=false
+                               setTextColor(resources.getColor(R.color.color_withe))
+                           }
+                       }
+                    }
+                }
+            })
             setIndicatorView(binding.drIndicator)
         }
+
+
         binding.drIndicator
             .setIndicatorGap(20)
             .setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
