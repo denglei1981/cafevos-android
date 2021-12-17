@@ -115,9 +115,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
+                if(TextUtils.isEmpty(item.city)){
+                    tvHomeActAddress.visibility=View.GONE
+                }else{
+                    tvHomeActAddress.visibility=View.VISIBLE
+                    tvHomeActAddress.text = item.city
+                }
 
-                tvHomeActAddress.text = item.city
-                tvHomeActAddress.visibility = View.VISIBLE
+
             }
             2 -> {
                 tvTagTwo.text = "调查问卷"

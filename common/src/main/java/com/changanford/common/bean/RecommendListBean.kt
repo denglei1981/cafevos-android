@@ -234,6 +234,7 @@ data class RecommendData(
     }
 
     fun getAddress(): String {
+
         return city
     }
     fun getEndStr():Long{
