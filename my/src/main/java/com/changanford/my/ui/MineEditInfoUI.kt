@@ -374,7 +374,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             override fun onResult(result: List<LocalMedia>) {
                 for (media in result) {
                     var path: String? = ""
-                    path = AppUtils.getFinallyPath(media)
+                    path = PictureUtil.getFinallyPath(media)
                     loadCircleFilePath(path, binding.editIcon)
                     headIconPath = path
                 }

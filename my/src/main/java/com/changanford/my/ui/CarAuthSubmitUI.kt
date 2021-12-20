@@ -462,7 +462,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
     }
 
     fun uploadFile(localMedia: LocalMedia) {
-        var path = AppUtils.getFinallyPath(localMedia)
+        var path = PictureUtil.getFinallyPath(localMedia)
         when (imgType) {
             4 -> {//行驶证
                 xsz(true, path)

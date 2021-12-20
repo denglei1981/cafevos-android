@@ -230,7 +230,7 @@ class SignViewModel : ViewModel() {
         upimgs.add(path)
         //上传地址初始化
         AliYunOssUploadOrDownFileConfig.getInstance(context)
-            .uploadFile(stsBean.bucketName, path, AppUtils.getFinallyPath(upfiles[count]), "", 0)
+            .uploadFile(stsBean.bucketName, path, PictureUtil.getFinallyPath(upfiles[count]), "", 0)
         AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
             AliYunOssUploadOrDownFileConfig.OnUploadFile {
             override fun onUploadFileSuccess(info: String) {

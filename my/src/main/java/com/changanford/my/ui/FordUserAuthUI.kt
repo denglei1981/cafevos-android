@@ -14,7 +14,6 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -127,14 +126,14 @@ class FordUserAuthUI : BaseMineUI<UiFordUserAuthBinding, SignViewModel>() {
                 var userFiles = ArrayList<String>()
                 userData.forEach {
                     if (!it.hasHttpUrl()) {// 已上传过的照片 不是文件 不需要上传
-                        var path = AppUtils.getFinallyPath(it)
+                        var path = PictureUtil.getFinallyPath(it)
                         userFiles.add(path)
                     }
                 }
                 var imgFiles = ArrayList<String>()
                 imgData.forEach {
                     if (!it.hasHttpUrl()) { //已上传过的照片 不是文件 不需要上传
-                        var path = AppUtils.getFinallyPath(it)
+                        var path = PictureUtil.getFinallyPath(it)
                         imgFiles.add(path)
                     }
                 }

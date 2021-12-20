@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,16 +18,12 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
-//import com.alibaba.sdk.android.push.CloudPushService;
-//import com.alibaba.sdk.android.push.CommonCallback;
-//import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.changanford.common.basic.BaseApplication;
 import com.gyf.immersionbar.ImmersionBar;
 import com.luck.picture.lib.entity.LocalMedia;
-//import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -41,6 +36,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+//import com.alibaba.sdk.android.push.CloudPushService;
+//import com.alibaba.sdk.android.push.CommonCallback;
+//import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+//import com.luck.picture.lib.entity.LocalMedia;
 
 
 /**
@@ -332,24 +332,23 @@ public class AppUtils {
      * 获取最终地址
      * 用PictureUtil
      */
-    @Deprecated
     public static String getFinallyPath(LocalMedia media) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return media.getAndroidQToPath();
-        } else {
-            String path;
-            if (media.isCut() && !media.isCompressed()) {
-                // 裁剪过
-                path = media.getCutPath();
-            } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
-                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                path = media.getCompressPath();
-            } else {
-                // 原图
-                path = media.getPath();
-            }
-            return path;
-        }
+        return PictureUtil.INSTANCE.getFinallyPath(media);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            return media.getAndroidQToPath();
+//        } else {
+//            String path;
+//            if (media.isCut() && !media.isCompressed()) {
+//                // 裁剪过
+//                path = media.getCutPath();
+//            } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
+//                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+//                path = media.getCompressPath();
+//            } else {
+//                // 原图
+//                path = media.getPath();
+//            }
+//            return path;
 
     }
 
@@ -360,8 +359,8 @@ public class AppUtils {
      */
     public static void binduserid(String userid) {
         CloudPushService pushService = PushServiceFactory.getCloudPushService();
-        if (MConstant.INSTANCE.isDebug()){
-            userid = "dev"+userid;
+        if (MConstant.INSTANCE.isDebug()) {
+            userid = "dev" + userid;
         }
         pushService.bindAccount(userid, new CommonCallback() {
             @Override
@@ -395,6 +394,7 @@ public class AppUtils {
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean isIgnoringBatteryOptimizations() {
         boolean isIgnoring = false;
