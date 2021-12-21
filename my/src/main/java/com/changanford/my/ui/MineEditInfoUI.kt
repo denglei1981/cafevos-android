@@ -417,6 +417,8 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         })
     }
 
+
+
     private fun selectSex() {
 
         SelectDialog(
