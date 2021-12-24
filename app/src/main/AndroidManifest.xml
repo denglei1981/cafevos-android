@@ -18,6 +18,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!--    创建快捷方式权限-->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.UNINSTALL_SHORTCUT" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <!--适配Android R包可见性 开始-->
     <queries package="${applicationId}">
@@ -27,13 +33,14 @@
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
+
         <package android:name="com.tencent.mm" />
         <package android:name="com.sina.weibo" />
         <package android:name="com.tencent.mobileqq" />
-        <package android:name="com.autonavi.minimap"/>
-        <package android:name="com.baidu.BaiduMap"/>
+        <package android:name="com.autonavi.minimap" />
+        <package android:name="com.baidu.BaiduMap" />
         <!--支付宝-->
-        <package android:name="com.eg.android.AlipayGphone"/>
+        <package android:name="com.eg.android.AlipayGphone" />
     </queries>
     <!--适配Android R包可见性 结束-->
     <application
@@ -45,8 +52,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/fordicon"
         android:supportsRtl="true"
-        tools:replace="android:allowBackup"
-        android:theme="@style/Theme.EVOS">
+        android:theme="@style/Theme.EVOS"
+        tools:replace="android:allowBackup">
         <meta-data
             android:name="CHANNEL_VALUE"
             android:value="${channel_value}" />
@@ -79,9 +86,9 @@
         <!--        </activity>-->
         <activity
             android:name=".SplashActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.StartingWindowTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,17 +96,23 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="open"
                     android:scheme="fordevos" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".MainActivity"
             android:launchMode="singleTask"
-            />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -137,18 +150,25 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".ui.LandingActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.changanford.my.MyCollectUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.changanford.my.MyFootUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.changanford.my.MyActUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.changanford.my.PersonCenterUI"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.changanford.my.MyPostUI"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.LandingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.MyCollectUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.MyFootUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.MyActUI"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.changanford.my.PersonCenterUI"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.MyPostUI"
+            android:screenOrientation="portrait" />
 
     </application>
 

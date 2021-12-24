@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
+import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
@@ -15,7 +16,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_LIKE
 import com.changanford.common.utilext.GlideUtils.loadCircle
-import com.changanford.common.utilext.GlideUtils.loadCircleFilePath
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.SelectDialog
@@ -28,6 +28,7 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiMineEditInfoBinding
 import com.changanford.my.interf.UploadPicCallback
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.github.gzuliyujiang.wheelpicker.DatePicker
 import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
@@ -66,7 +67,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         dialog.setCanceledOnTouchOutside(false)
         dialog.setLoadingText("图片上传中..")
         binding.mineToolbar.toolbarTitle.text = "基本信息"
-        binding.mineToolbar.toolbarSave.text = "保存"
+//        binding.mineToolbar.toolbarSave.text = "保存"
         binding.mineToolbar.toolbarSave.setOnClickListener {
             //保存
             if (headIconPath.isNullOrEmpty()) {
@@ -127,13 +128,18 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         })
 
         LiveDataBus.get().with(MINE_LIKE, RetrunLike::class.java).observe(this, Observer {
+            var map = HashMap<String, String>()
+            map["hobbyIds"] = it.ids
+            map["hobbyNames"] = it.names
             body["hobbyIds"] = it.ids
             body["hobbyNames"] = it.names
             binding.editHobby.rightDesc = it.names
             if (it.names.isNotEmpty()) {
                 body["hobbyNames"] = it.names.substring(0, it.names.length - 1)
+                map["hobbyNames"] = it.names.substring(0, it.names.length - 1)
                 binding.editHobby.rightDesc = it.names.substring(0, it.names.length - 1)
             }
+            saveUserInfo(false, map)
         })
 
         LiveDataBus.get().with(LiveDataBusKey.MINE_INDUSTRY, IndustryReturnBean::class.java)
@@ -142,6 +148,12 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     body["industryIds"] = it.ids
                     body["industryNames"] = it.names
                     binding.editIndustry.rightDesc = it.names
+
+                    var map = HashMap<String, String>()
+                    map["industryIds"] = it.ids
+                    map["industryNames"] = it.names
+                    saveUserInfo(false, map)
+
                     //注释
 //                    if (!it.names.isNullOrEmpty()) {
 //                        body["industryNames"] = it.names.substring(
@@ -158,15 +170,19 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
         //监听 个性签名  邮箱
         LiveDataBus.get().with("MineEditInput", InputBean::class.java).observe(this, Observer {
-
+            var map = HashMap<String, String>()
             when (it.type) {
                 1 -> {
-                    binding.editAutograph.rightDesc = "${it.content}"
+                    //需要审核，不能直接现在
+//                    binding.editAutograph.rightDesc = "${it.content}"
+                    map["brief"] = it.content
                 }
                 2 -> {
                     binding.editEmail.rightDesc = "${it.content}"
+                    map["email"] = it.content
                 }
             }
+            saveUserInfo(it.type == 1, map)
         })
 
         binding.tvFordAuth.setOnClickListener {
@@ -176,16 +192,15 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
     override fun initData() {
         viewModel.getAllCity()
-//        viewModel.getUniUserInfo()
     }
 
     private fun full(user: UserInfoBean?) {
         user?.let {
             userInfoBean = user
-            binding.editNickname.setRightDesc(user.nickname)
+            binding.editNickname.rightDesc = user.nickname
             body["nickname"] = user.nickname
 
-            binding.editAutograph.setRightDesc(user.brief)
+            binding.editAutograph.rightDesc = user.brief
 
             var sex = "保密"
             when (user.sex) {
@@ -272,13 +287,12 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             "请输入正确的邮箱".toast()
             return
         }
-
         viewModel.saveUniUserInfo(body)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.edit_icon -> selectIcon()
+            R.id.edit_icon -> clickInfo(1)
             R.id.edit_sex -> selectSex()
             R.id.edit_birthday -> {
                 when {
@@ -290,7 +304,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     }
                 }
             }
-            R.id.edit_nickname -> editNickname()
+            R.id.edit_nickname -> clickInfo(2)
             R.id.edit_hobby -> startActivity(
                 Intent(
                     this,
@@ -316,11 +330,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 )
             }
             R.id.edit_autograph -> {
-                startActivity(
-                    Intent(this, InputUI::class.java)
-                        .putExtra("type", 1)
-                        .putExtra("content", binding.editAutograph.rightDesc.toString())
-                )
+                clickInfo(3)
             }
             R.id.edit_email -> {
                 startActivity(
@@ -339,8 +349,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             String::class.java
         ).observe(this, Observer<String?> {
             Log.e("---------", it)
-            binding.editNickname.setRightDesc(it)
+            //需要审核
+//            binding.editNickname.rightDesc = it
             body["nickname"] = it.toString()
+
+            var map = HashMap<String, String>()
+            map["nickname"] = it.toString()
+            saveUserInfo(true, map)
         })
     }
 
@@ -375,8 +390,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 for (media in result) {
                     var path: String? = ""
                     path = PictureUtil.getFinallyPath(media)
-                    loadCircleFilePath(path, binding.editIcon)
+//                    loadCircleFilePath(path, binding.editIcon)
                     headIconPath = path
+                    saveHeadIcon()
                 }
             }
 
@@ -388,25 +404,15 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 拍照
      */
     private fun takePhoto() {
-
         PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 // 结果回调
-                if (result.size > 0) {
+                if (result?.isNotEmpty()) {
                     for (media in result) {
-                        var path: String? = ""
-                        path = if (media.isCut && !media.isCompressed) {
-                            // 裁剪过
-                            media.cutPath
-                        } else if (media.isCompressed || media.isCut && media.isCompressed) {
-                            // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                            media.compressPath
-                        } else {
-                            // 原图
-                            media.path
-                        }
-                        loadCircleFilePath(path, binding.editIcon)
+                        var path: String = PictureUtil.getFinallyPath(media)
+//                        loadCircleFilePath(path, binding.editIcon)
                         headIconPath = path
+                        saveHeadIcon()
                     }
                 }
             }
@@ -417,6 +423,104 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         })
     }
 
+
+
+    private fun saveHeadIcon() {
+        //保存
+        if (headIconPath?.isNotEmpty()) {
+            dialog.show()
+            viewModel.uploadFile(this, arrayListOf(headIconPath), object : UploadPicCallback {
+                override fun onUploadSuccess(files: ArrayList<String>) {
+                    println(files)
+                    dialog.dismiss()
+                    if (files.size > 0) headIconUrl = files[0]
+                    var map = HashMap<String, String>()
+                    map["avatar"] = headIconUrl
+                    saveUserInfo(true, map)
+                }
+
+                override fun onUploadFailed(errCode: String) {
+                    dialog.dismiss()
+                }
+
+                override fun onuploadFileprogress(progress: Long) {
+                }
+            })
+        }
+    }
+
+    /**
+     * 新的保存
+     */
+    private fun saveUserInfo(isShowDialog: Boolean, map: HashMap<String, String>) {
+        viewModel.saveUniUserInfoV1(map) { response ->
+            response.onSuccess {
+                dialog.dismiss()
+                if (isShowDialog) {
+                    ConfirmTwoBtnPop(this).apply {
+                        contentText.text = response.msg
+                        btnCancel.visibility = View.GONE
+                        btnConfirm.text = "我知道了"
+                        btnConfirm.setOnClickListener {
+                            dismiss()
+                        }
+                    }.showPopupWindow()
+                } else {
+                    "保存成功".toast()
+                }
+            }
+        }
+    }
+
+    /**
+     * 判断是否可以修改
+     */
+    private fun clickInfo(type: Int) {
+        when (type) {
+            1 -> {//头像
+                selectIcon()
+            }
+            2 -> {//昵称
+                editNickname()
+            }
+            3 -> {//个性签名
+                startActivity(
+                    Intent(this, InputUI::class.java)
+                        .putExtra("type", 1)
+                        .putExtra("content", binding.editAutograph.rightDesc.toString())
+                )
+            }
+        }
+//        viewModel.getEditUserInfo {
+//            it?.let {
+//                if (it.msg.isNullOrEmpty()) {//没有提示
+//                    when (type) {
+//                        1 -> {//头像
+//                            selectIcon()
+//                        }
+//                        2 -> {//昵称
+//                            editNickname()
+//                        }
+//                        3 -> {//个性签名
+//                            startActivity(
+//                                Intent(this, InputUI::class.java)
+//                                    .putExtra("type", 1)
+//                                    .putExtra("content", binding.editAutograph.rightDesc.toString())
+//                            )
+//                        }
+//                    }
+//                } else {//需要提示
+//                    ConfirmTwoBtnPop(this).apply {
+//                        contentText.text = it.msg
+//                        btnCancel.visibility = View.GONE
+//                        btnConfirm.setOnClickListener {
+//                            dismiss()
+//                        }
+//                    }.showPopupWindow()
+//                }
+//            }
+//        }
+    }
 
 
     private fun selectSex() {
@@ -430,6 +534,10 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
                 binding.editSex.setRightDesc(dialogBottomBean.title)
                 body["sex"] = dialogBottomBean.id.toString()
+
+                var map = HashMap<String, String>()
+                map["sex"] = dialogBottomBean.id.toString()
+                saveUserInfo(false, map)
             }
         ).show()
     }
@@ -449,7 +557,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         var bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
-            wheelLayout.setDateLabel("年","月","日")
+            wheelLayout.setDateLabel("年", "月", "日")
             wheelLayout.setRange(DateEntity.target(1900, 1, 1), DateEntity.today())
             if (null != bb && bb.size == 3) {
                 wheelLayout.setDefaultValue(
@@ -461,32 +569,17 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 )
             }
         }
-//        datePicker?.setTitleText("日期选择")
-//        //生日起始改到1920  也是6到不行  1920  还能开车  再次修改 客户觉得1900人还能爬起来开车 我服了
-//        datePicker?.setRangeStart(1900, 1, 1)
-//        if (bb.isNotEmpty() && bb.size == 3) {
-//            datePicker?.setSelectedItem(bb[0].toInt(), bb[1].toInt(), bb[2].toInt())
-//        } else {
-//            datePicker?.setSelectedItem(2000, 1, 1)
-//        }
-//        datePicker?.setRangeEnd(
-//            calender.get(Calendar.YEAR),
-//            calender.get(Calendar.MONTH) + 1,
-//            calender.get(Calendar.DAY_OF_MONTH)
-//        )
-//        datePicker?.setDividerColor(Color.parseColor("#071726"))
-//        datePicker?.setCancelTextColor(Color.parseColor("#071726"))
-//        datePicker?.setSubmitTextColor(Color.parseColor("#FC883B"))
-//        datePicker?.setTextColor(Color.parseColor("#071726"))
-//        datePicker?.setTitleTextColor(Color.parseColor("#071726"))
-//        datePicker?.setTextSize(16)
-//        datePicker?.setCycleDisable(false)
         datePicker?.setOnDatePickedListener { year, month, day ->
             binding.editBirthday.rightDesc = "$year-$month-$day"
             binding.editConstellation.rightDesc = Constellation.star(month.toInt(), day.toInt())
 
             body["birthday"] = "$year-$month-$day"
             body["constellation"] = Constellation.star(month.toInt(), day.toInt())
+
+            var map = HashMap<String, String>()
+            map["birthday"] = "$year-$month-$day"
+            map["constellation"] = Constellation.star(month.toInt(), day.toInt())
+            saveUserInfo(false, map)
         }
         datePicker?.show()
     }
@@ -534,23 +627,6 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 )
                 setOnAddressPickedListener(this@MineEditInfoUI)
             }
-//        picker?.show()
-//        picker?.setTitleText("所选地区")
-//        picker?.setSubmitTextColor(Color.parseColor("#FC883B"))
-//        picker?.setCancelTextColor(Color.parseColor("#71747B"))
-//        picker?.setPressedTextColor(Color.parseColor("#071726"))
-//        picker?.setTitleTextSize(16)
-//        picker?.setTextColor(Color.parseColor("#071726"))
-//        picker?.setOnAddressPickListener { province, city, county ->
-//            body["provinceName"] = province.areaName
-//            body["cityName"] = city.areaName
-//            body["districtName"] = county.areaName
-//            body["province"] = province.areaId
-//            body["city"] = city.areaId
-//            body["district"] = county.cityId
-//
-//            binding.editAddress.setRightDesc("${province.areaName}${city.areaName}${county.areaName}")
-//        }
     }
 
     /**
@@ -578,22 +654,35 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         city: CityEntity?,
         county: CountyEntity?
     ) {
+        var map = HashMap<String, String>()
         var cityA: String = ""
         province?.let {
             body["province"] = it.code
             body["provinceName"] = "${it.name}"
             cityA = it.name
+
+            map["province"] = it.code
+            map["provinceName"] = "${it.name}"
         }
         city?.let {
             body["city"] = it.code
             body["cityName"] = "${it.name}"
             cityA += it.name
+
+            map["city"] = it.code
+            map["cityName"] = "${it.name}"
         }
         county?.let {
             body["district"] = it.code
             body["districtName"] = "${it.name}"
             cityA += it.name
+
+            map["district"] = it.code
+            map["districtName"] = "${it.name}"
         }
         binding.editAddress.rightDesc = cityA
+
+        saveUserInfo(false, map)
+
     }
 }

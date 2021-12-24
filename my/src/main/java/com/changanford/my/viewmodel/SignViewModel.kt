@@ -472,6 +472,15 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    fun saveUniUserInfoV1(body: HashMap<String, String>, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest(showLoading = true) {
+                var rkey = getRandomKey()
+                apiService.saveUniUserInfo(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
     fun smsLogin(mobile: String, sms: String, pushId: String) {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
@@ -544,6 +553,20 @@ class SignViewModel : ViewModel() {
                 }.onFailure {
                     saveUserInfo(null)
                 }
+            }
+        } else {
+            saveUserInfo(null)
+        }
+    }
+
+    fun getEditUserInfo(result: (CommonResponse<UserInfoBean>) -> Unit) {
+        if (UserManger.isLogin()) {
+            viewModelScope.launch {
+                result(fetchRequest(showLoading = true) {
+                    var body = HashMap<String, String>()
+                    var rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                })
             }
         } else {
             saveUserInfo(null)
