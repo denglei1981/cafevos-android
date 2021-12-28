@@ -123,7 +123,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
                     ConfirmTwoBtnPop(this).apply {
                         contentText.text = response.msg
                         btnCancel.visibility = View.GONE
-                        btnConfirm.text = "我知道了"
+                        btnConfirm.text = if (response.code == 0) "我知道了" else "确认"
                         btnConfirm.setOnClickListener {
                             dismiss()
                             if (response.code == 0) {
