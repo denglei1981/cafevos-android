@@ -63,7 +63,8 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
                         binding.nickInput?.setText(sb.toString())
                         binding.nickInput?.setSelection(p1)
                     }
-                    binding.nickSave.isEnabled = inputValue != binding.nickInput.text.toString()
+                    var inputText = binding.nickInput.text.toString()
+                    binding.nickSave.isEnabled = inputText.isNotEmpty() && inputValue != inputText
                     binding.inputHint.text = "${binding.nickInput.text.toString().length}/${max}"
                 } catch (e: Exception) {
                     binding.nickInput?.setText("")
