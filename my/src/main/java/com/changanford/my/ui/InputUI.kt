@@ -4,13 +4,13 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
-import com.changanford.my.databinding.*
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.InputBean
-import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
+import com.changanford.my.databinding.*
 
 /**
  *  文件名：EditNickNameUI
@@ -25,12 +25,16 @@ class InputUI : BaseMineUI<UiEditInputBinding, EmptyViewModel>() {
     var type: Int = 0
     var max: Int = 30
 
+    var inputValue: String = ""
+
     override fun initView() {
 
         type = intent.getIntExtra("type", 1)
         intent.getStringExtra("content")?.let {
             binding.nickInput.setText("${it}")
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
+            inputValue = it
+            binding.nickSave.isEnabled = inputValue.isNullOrEmpty()
         }
 
         binding.nickNameTitle.visibility = View.VISIBLE
@@ -76,6 +80,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, EmptyViewModel>() {
                     binding.nickInput?.setText(sb.toString())
                     binding.nickInput?.setSelection(p1)
                 }
+                binding.nickSave.isEnabled = inputValue != binding.nickInput.text.toString()
                 binding.inputHint.text = "${binding.nickInput.text.toString().length}/${max}"
             }
         })

@@ -22,6 +22,7 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
 
     var max: Int = 8
 
+    var inputValue: String = ""
 
     override fun initView() {
         binding.mineToolbar.toolbarTitle.text = "修改昵称"
@@ -32,6 +33,8 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
         intent.getStringExtra("nickName")?.let {
             binding.nickInput.setText(it)
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
+            inputValue = it
+            binding.nickSave.isEnabled = inputValue.isNullOrEmpty()
         }
 
         binding.nickInput.setFilters(
@@ -60,6 +63,7 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
                         binding.nickInput?.setText(sb.toString())
                         binding.nickInput?.setSelection(p1)
                     }
+                    binding.nickSave.isEnabled = inputValue != binding.nickInput.text.toString()
                     binding.inputHint.text = "${binding.nickInput.text.toString().length}/${max}"
                 } catch (e: Exception) {
                     binding.nickInput?.setText("")
@@ -71,7 +75,7 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
         binding.nickSave.setOnClickListener {
             var nickName: String = binding.nickInput.text.toString()
             if (nickName.isNullOrEmpty()) {
-                ToastUtils.showLongToast("请输入昵称",this)
+                ToastUtils.showLongToast("请输入昵称", this)
                 return@setOnClickListener
             }
 //            if (MineUtils.compileExChar(nickName)) {
@@ -79,8 +83,8 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
 //                return@setOnClickListener
 //            }
             viewModel.nameNick(nickName) {
-                    LiveDataBus.get().with("MineNickName").postValue(nickName)
-                    finish()
+                LiveDataBus.get().with("MineNickName").postValue(nickName)
+                finish()
             }
         }
     }

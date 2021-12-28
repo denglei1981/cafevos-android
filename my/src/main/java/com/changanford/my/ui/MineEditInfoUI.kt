@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
+import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
@@ -468,6 +469,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 } else {
                     "保存成功".toast()
                 }
+            }
+            response.onFailure {
+                showToast(response.msg)
             }
         }
     }
