@@ -52,9 +52,14 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.buyNum=1
         dataBean.allSkuStock=dataBean.stock
         //初始化 skuCode
-        var skuCodeInitValue="${dataBean.spuId}-"
-        dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
-        skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+        var skuCodeInitValue: String
+        if(dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
+            skuCodeInitValue=dataBean.skuVos[0].skuCode
+        }else{
+            skuCodeInitValue="${dataBean.spuId}-"
+            dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+            skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+        }
 //        getSkuTxt(skuCodeInitValue)
         val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
