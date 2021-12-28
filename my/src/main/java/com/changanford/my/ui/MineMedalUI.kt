@@ -17,7 +17,6 @@ import com.changanford.my.databinding.ItemMineMedalBinding
 import com.changanford.my.databinding.UiMineMedalBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
 
 /**
  *  文件名：MineMedalUI
@@ -42,7 +41,11 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
         binding.rcyMedal.rcyCommonView.adapter = medalAdapter
 
         binding.btnWear.setOnClickListener {
-            viewModel.wearMedal(medalId, "1")
+            if ("去点亮勋章" == binding.btnWear.text.toString().trim()) {
+                finish()
+            } else {
+                viewModel.wearMedal(medalId, "1")
+            }
         }
 
         viewModel.wearMedal.observe(this, Observer {
@@ -78,7 +81,7 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                     binding.btnWear.text = "佩戴"
                 } else {
                     binding.btnWear.text = "去点亮勋章"
-                    binding.btnWear.visibility = View.GONE
+//                    binding.btnWear.visibility = View.GONE
                 }
             }
         }

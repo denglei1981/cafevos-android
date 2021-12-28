@@ -1,6 +1,7 @@
 package com.changanford.my.viewmodel
 
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -510,6 +511,7 @@ class SignViewModel : ViewModel() {
             }.onWithMsgFailure {
                 var pop = ConfirmPop(BaseApplication.curActivity)
                 pop.contentText.text = it
+                pop.cancelBtn.visibility = View.GONE
                 pop.submitBtn.text = "确认"
                 pop.submitBtn.setOnClickListener {
                     pop.dismiss()
