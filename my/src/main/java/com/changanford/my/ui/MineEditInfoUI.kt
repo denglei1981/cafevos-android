@@ -198,10 +198,19 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     private fun full(user: UserInfoBean?) {
         user?.let {
             userInfoBean = user
-            binding.editNickname.rightDesc = user.nickname
+            binding.editNickname.rightTitle.hint = "请填写（最长8个汉字）"
+            user.nickname?.let {
+                if (it.isNotEmpty()) {
+                    binding.editNickname.rightDesc = it
+                }
+            }
             body["nickname"] = user.nickname
-
-            binding.editAutograph.rightDesc = user.brief
+            binding.editAutograph.rightTitle.hint = "请填写"
+            user.brief?.let {
+                if (it.isNotEmpty()) {
+                    binding.editAutograph.rightDesc = it
+                }
+            }
 
             var sex = "保密"
             when (user.sex) {
@@ -423,7 +432,6 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             }
         })
     }
-
 
 
     private fun saveHeadIcon() {

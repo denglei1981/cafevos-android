@@ -137,12 +137,17 @@ public class MineView extends LinearLayout {
     public void setRightDesc(String value) {
         rightTitle.setText(value);
     }
-    public void setMSGVisible(boolean visible){
+
+    public void setMSGVisible(boolean visible) {
         if (visible) {
             msg.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             msg.setVisibility(View.GONE);
         }
+    }
+
+    public TextView getRightTitle() {
+        return rightTitle;
     }
 
     //设置右侧描述文字

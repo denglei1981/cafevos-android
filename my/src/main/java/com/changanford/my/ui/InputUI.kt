@@ -35,7 +35,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
             binding.nickInput.setText("${it}")
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
             inputValue = it
-            binding.nickSave.isEnabled = inputValue.isNullOrEmpty()
+            binding.nickSave.isEnabled = inputValue.isNotEmpty()
         }
 
         binding.nickNameTitle.visibility = View.VISIBLE

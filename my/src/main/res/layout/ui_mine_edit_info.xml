@@ -86,7 +86,6 @@
                     app:left_text="昵称"
                     app:left_text_color="@color/color_00"
                     app:line_left_right_margin="14"
-                    app:right_text="最长8个汉字"
                     app:right_text_color="@color/color_33"
                     app:show_bottom_line="true" />
 
@@ -101,7 +100,6 @@
                     app:left_text="个性签名"
                     app:left_text_color="@color/color_00"
                     app:line_left_right_margin="14"
-                    app:right_text="请填写"
                     app:show_bottom_line="true" />
 
 
