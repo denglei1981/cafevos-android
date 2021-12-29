@@ -13,6 +13,7 @@
         android:paddingEnd="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_5">
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_attribute"
             android:background="@drawable/shadow_f2f4f9_11dp"
             android:paddingStart="@dimen/dp_10"
             android:paddingEnd="@dimen/dp_10"

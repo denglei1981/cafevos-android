@@ -8,13 +8,15 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemAttributeBinding
 
 
-class OrderGoodsAttributeAdapter: BaseQuickAdapter<String, BaseDataBindingHolder<ItemAttributeBinding>>(R.layout.item_attribute), LoadMoreModule {
+class OrderGoodsAttributeAdapter : BaseQuickAdapter<String, BaseDataBindingHolder<ItemAttributeBinding>>(R.layout.item_attribute), LoadMoreModule {
+//    private val maxWidth by lazy { ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,160f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemAttributeBinding>, item: String) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             dataBinding.model=item
             dataBinding.executePendingBindings()
+//            dataBinding.tvAttribute.maxWidth=this.maxWidth
         }
     }
 }
