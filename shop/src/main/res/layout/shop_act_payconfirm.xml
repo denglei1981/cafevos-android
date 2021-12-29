@@ -18,7 +18,7 @@
             android:id="@+id/layout_pay"
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_150"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -42,7 +42,7 @@
                 android:textSize="@dimen/sp_10" />
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_accountPoints"
-                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/str_yourAccountPoints_font"
@@ -55,12 +55,12 @@
             android:id="@+id/in_payResults"
             layout="@layout/in_pay_results"/>
         <com.changanford.shop.view.btn.KillBtnView
+            app:layout_constraintTop_toBottomOf="@+id/layout_pay"
             android:onClick="btnSubmit"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/btn_submit"
-            android:layout_marginTop="@dimen/dp_250"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dp_57"
             android:text="@string/str_payConfirm"
             android:gravity="center"
             android:textSize="@dimen/sp_15"

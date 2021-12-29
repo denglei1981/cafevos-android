@@ -96,7 +96,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     * */
     private fun payResults(isSuccessful:Boolean){
         this.isPaySuccessful=isSuccessful
-        binding.layoutPay.visibility=View.GONE
+        binding.layoutPay.visibility=View.INVISIBLE
         binding.inPayResults.apply {
             model=dataBean
             layoutPayResults.visibility=View.VISIBLE
