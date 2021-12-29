@@ -34,7 +34,6 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
             binding.nickInput.setText(it)
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
             inputValue = it
-            binding.nickSave.isEnabled = inputValue.isNotEmpty()
         }
 
         binding.nickInput.setFilters(
