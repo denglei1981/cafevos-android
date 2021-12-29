@@ -11,10 +11,12 @@ import com.changanford.common.bean.OptionVo
 import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
+import com.changanford.shop.utils.ScreenUtils
 
 
 class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, var skuVos:List<SkuVo>?=null, var currentSkuCode:String,val listener:OnSelectedBackListener): BaseQuickAdapter<OptionVo, BaseDataBindingHolder<ItemGoodsAttributeBinding>>(R.layout.item_goods_attribute), LoadMoreModule {
     private lateinit var lastCheckBox:AppCompatCheckBox
+    private val maxWidth:Int by lazy { ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,40f) }
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsAttributeBinding>, item: OptionVo) {
@@ -22,6 +24,7 @@ class GoodsAttributeAdapter(private val pos:Int, var selectedOptionId:String, va
         if(dataBinding!=null){
             val optionId=item.optionId
             dataBinding.checkBox.apply {
+                maxWidth=this@GoodsAttributeAdapter.maxWidth
                 isChecked= if(selectedOptionId==optionId){
                     lastCheckBox=this
                     true
