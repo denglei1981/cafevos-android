@@ -101,7 +101,6 @@
                     app:left_text="个性签名"
                     app:left_text_color="@color/color_00"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
                     app:right_text="请填写"
                     app:show_bottom_line="true" />
 
@@ -177,7 +176,6 @@
                     app:left_text="邮箱"
                     app:left_text_color="@color/color_00"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
                     app:right_text="请填写"
                     app:show_bottom_line="true" />
 
