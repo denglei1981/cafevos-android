@@ -134,7 +134,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         BaseQuickAdapter<ActDataBean, BaseDataBindingHolder<ItemMyActsBinding>>(com.changanford.home.R.layout.item_my_acts) {
         override fun convert(holder: BaseDataBindingHolder<ItemMyActsBinding>, item: ActDataBean) {
             holder.dataBinding?.let {
-                GlideUtils.loadRound(item.coverImg, it.ivActs, R.mipmap.image_h_one_default)
+                GlideUtils.loadBD(item.coverImg, it.ivActs, R.mipmap.image_h_one_default)
                 it.tvTips.text = item.title
                 //我创建的
                 if (type == "actMyCreate") {
