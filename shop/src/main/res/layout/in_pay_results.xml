@@ -8,6 +8,7 @@
             type="com.changanford.common.bean.OrderItemBean" />
     </data>
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/topBar"
         android:id="@+id/layout_payResults"
         android:gravity="center"
         android:visibility="gone"
@@ -15,12 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dp_130">
+        android:paddingTop="@dimen/dp_90">
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_payResults_state"
             android:drawableTop="@mipmap/shop_pay_succes"
             android:drawablePadding="@dimen/dp_15"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_paySucces"
@@ -28,7 +28,7 @@
             android:textSize="@dimen/sp_20" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_payResults_integral"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_total"
