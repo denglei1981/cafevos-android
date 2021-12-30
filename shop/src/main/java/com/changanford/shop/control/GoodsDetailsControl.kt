@@ -53,7 +53,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.allSkuStock=dataBean.stock
         //初始化 skuCode
         var skuCodeInitValue: String
-        if(dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
+        if(dataBean.stock>0&&dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
             dataBean.skuVos[0].apply {
                 skuCodeInitValue=skuCode
                 dataBean.skuImg=skuImg
