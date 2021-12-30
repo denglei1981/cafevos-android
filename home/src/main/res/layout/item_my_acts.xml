@@ -141,6 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"
             android:text=""
+            android:visibility="gone"
             android:textColor="#999999"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="@+id/tv_tips"

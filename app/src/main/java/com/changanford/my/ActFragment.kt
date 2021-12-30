@@ -183,11 +183,13 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvActNum.text = "原因：${item.reason}"
                         it.btnEndAct.visibility = View.GONE
                         it.tvToLookAct.visibility = View.GONE
+                        it.tvActNum.visibility=View.VISIBLE
                     }
                     0 -> {
                         it.btnFollow.text = "待审核"
                         it.btnEndAct.visibility = View.GONE
                         it.tvToLookAct.visibility = View.GONE
+                        it.tvActNum.visibility=View.GONE
                     }
                     2 -> {
                         var startTime: Long =
@@ -214,12 +216,14 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                             (type == "actMyCreate" || type == "actMyJoin")
                         ) {
                             it.tvActNum.text = "报名人数${item.activityJoinCount}人"
+                            it.tvActNum.visibility=View.VISIBLE
                         }
                     }
                     3 -> {
                         it.btnFollow.text = "已结束"
                         if (!(item.jumpType == 1 || item.jumpType == 2)) {
                             it.tvActNum.text = "报名人数${item.activityJoinCount}人"
+                            it.tvActNum.visibility=View.VISIBLE
                         }
                         it.btnEndAct.visibility = View.GONE
                     }
