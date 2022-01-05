@@ -10,7 +10,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
-import com.changanford.shop.listener.OnPerformListener
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.popupwindow.SetNoticPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.WCommonUtil
@@ -76,7 +76,8 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             //设置提醒
             3->{
                 if(!WCommonUtil.isNotificationEnabled(context))SetNoticPop(context).showPopupWindow()
-                else viewModel.setKillNotices("SET",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
+                else viewModel.setKillNotices("SET",item.mallMallSpuSeckillRangeId,object :
+                    OnPerformListener {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onFinish(code: Int) {
                         if(0==code){
@@ -89,7 +90,8 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
                 })
             }
             //取消提醒-暂时不做
-            4->viewModel.setKillNotices("CANCEL",item.mallMallSpuSeckillRangeId,object :OnPerformListener{
+            4->viewModel.setKillNotices("CANCEL",item.mallMallSpuSeckillRangeId,object :
+                OnPerformListener {
                 override fun onFinish(code: Int) {
                     if(0==code){
                         item.isSettedNotice="NO"

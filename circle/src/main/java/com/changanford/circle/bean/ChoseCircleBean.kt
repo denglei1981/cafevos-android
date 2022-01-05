@@ -13,7 +13,7 @@ data class ChoseCircleBean(
     val createTime: Any,
     val description: String,
     val hotIcon: String,
-    val isApply: Int,
+    var isApply: Int,
     val isHot: Int,
     val isRecommend: Int,
     val lastPostsTime: Any,
@@ -22,7 +22,8 @@ data class ChoseCircleBean(
     val pic: String,
     val postsCount: Int,
     val userCount: Int,
-    val userId: Int
+    val userId: Int,
+    val tags:List<String>?,//标签
 ) : SectionEntity {
     override val isHeader: Boolean
         get() = false

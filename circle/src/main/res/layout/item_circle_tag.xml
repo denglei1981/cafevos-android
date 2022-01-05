@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -11,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_5">
         <com.changanford.common.ui.view.WTextView
+            android:text="@{model}"
             android:background="@drawable/shadow_f2f4f9_8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

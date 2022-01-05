@@ -18,7 +18,7 @@ import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
-import com.changanford.shop.listener.OnPerformListener
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.utils.WCommonUtil
@@ -273,7 +273,8 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
         Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
             //更新收货地址
             if(isUpdate){
-                viewModel.updateAddressByOrderNo(dataBean.orderNo,addressId,object :OnPerformListener{
+                viewModel.updateAddressByOrderNo(dataBean.orderNo,addressId,object :
+                    OnPerformListener {
                     override fun onFinish(code: Int) {
                         dataBean.addressInfo= addressInfo
                         dataBean.addressId=addressId
@@ -296,7 +297,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
     private fun cancelOrder(){
         when(binding.inBottom.btnOrderCancle.text){
             getString(R.string.str_cancelOrder)->{
-                control.cancelOrder(dataBean,object :OnPerformListener{
+                control.cancelOrder(dataBean,object : OnPerformListener {
                     override fun onFinish(code: Int) {
                         timeCountControl?.cancel()
                         binding.inBottom.btnOrderCancle.visibility=View.GONE
@@ -320,7 +321,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
      * 确认收货
     * */
     private fun confirmGoods(){
-        control.confirmGoods(dataBean,object :OnPerformListener{
+        control.confirmGoods(dataBean,object : OnPerformListener {
             override fun onFinish(code: Int) {
                 viewModel.getOrderDetail(orderNo)
             }

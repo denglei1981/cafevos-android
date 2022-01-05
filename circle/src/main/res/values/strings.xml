@@ -12,4 +12,6 @@
     <string name="str_hotCarCircle">热门车型圈</string>
     <string name="str_hotCarCircle0">热门车友圈</string>
     <string name="str_circleHotList">圈子热门榜单</string>
+    <string name="str_join">加入</string>
+    <string name="str_hasJoined">已加入</string>
 </resources>

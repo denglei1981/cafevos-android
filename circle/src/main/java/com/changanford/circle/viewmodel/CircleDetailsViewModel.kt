@@ -8,6 +8,7 @@ import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.PostBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -88,7 +89,7 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
-    fun joinCircle(circleId: String) {
+    fun joinCircle(circleId: String,listener: OnPerformListener?=null) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId
@@ -96,6 +97,7 @@ class CircleDetailsViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().joinCircle(body.header(rKey), body.body(rKey))
                 .also {
                     joinBean.value = it
+                    listener?.onFinish(it.code)
                 }
         })
     }

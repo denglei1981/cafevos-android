@@ -48,7 +48,9 @@ data class AllCircle(
     val updateBy: Any? = Any(),
     val updateTime: Any? = Any(),
     val userCount: Any? = Any(),
-    val userId: Any? = Any()
+    val userId: Any? = Any(),
+    var isApply: Int = 0,
+    val isOwner: Int = 0,
 )
 
 data class InterestCircles(

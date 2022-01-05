@@ -18,14 +18,14 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
             bindingUrl="@{bean.pic}"
             android:scaleType="center"
             android:layout_marginStart="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+            tools:src="@color/color_00095B" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
@@ -40,8 +40,8 @@
             android:textColor="@color/color_33"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            app:layout_constraintEnd_toStartOf="@id/btn_join"
             app:layout_constraintTop_toTopOf="@+id/iv_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -58,7 +58,34 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
             app:layout_constraintRight_toRightOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
+        <androidx.appcompat.widget.AppCompatButton
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:id="@+id/btn_join"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:minHeight="@dimen/dp_25"
+            android:minWidth="@dimen/dp_60"
+            android:text="@string/str_join"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:background="@drawable/shadow_00095b_12dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            app:layout_constraintStart_toStartOf="@id/tv_num"
+            app:layout_constraintBottom_toTopOf="@id/tv_num"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_circle_tag"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_num"
             android:layout_width="wrap_content"

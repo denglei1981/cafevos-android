@@ -14,7 +14,7 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
-import com.changanford.shop.listener.OnPerformListener
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
@@ -133,7 +133,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 PublicPop.OnPopClickListener{
                 override fun onLeftClick() { dismiss() }
                 override fun onRightClick() {
-                    viewModel?.orderCancel(item.orderNo,object:OnPerformListener{
+                    viewModel?.orderCancel(item.orderNo,object: OnPerformListener {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
                             ToastUtils.showShortToast(R.string.str_orderCancelledSuccessfully,context)
@@ -156,7 +156,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 PublicPop.OnPopClickListener{
                 override fun onLeftClick() { dismiss() }
                 override fun onRightClick() {
-                    viewModel?.applyRefund(item.orderNo,object:OnPerformListener{
+                    viewModel?.applyRefund(item.orderNo,object: OnPerformListener {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onFinish(code: Int) {
                             item.orderStatusName=""
