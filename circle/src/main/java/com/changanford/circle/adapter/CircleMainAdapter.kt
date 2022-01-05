@@ -16,7 +16,7 @@ import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
-import com.changanford.circle.ui.fragment.CircleMainFragment
+import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
@@ -249,7 +249,8 @@ class CircleMainAdapter(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsMainFragment.newInstance(if (position == 0) 4 else 2)
+//                    return CircleDetailsMainFragment.newInstance(if (position == 0) 4 else 2)
+                    return if(position==0) CircleDetailsMainFragment.newInstance(if (position == 0) 4 else 2) else NewCircleFragment()
                 }
 
             }

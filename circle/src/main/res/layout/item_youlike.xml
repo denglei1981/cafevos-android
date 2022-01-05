@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/shadow_f9_5dp"
+        android:padding="@dimen/dp_8">
+        <com.google.android.material.imageview.ShapeableImageView
+            tools:background="@color/color_00095B"
+            android:id="@+id/img_cover"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_title"
+            android:layout_marginEnd="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="@id/img_cover"
+            app:layout_constraintEnd_toStartOf="@id/img_cover"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="重庆站"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            style="@style/w_style_txt_ellipsize" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_des"
+            app:layout_constraintTop_toBottomOf="@id/wtv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/wtv_title"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_width="0dp"
+            tools:text="重庆车友圈"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_12"
+            style="@style/w_style_txt_ellipsize" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="200成员"
+            app:w_end_txt="@string/str_members"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_11"
+            android:drawablePadding="@dimen/dp_1"
+            android:gravity="center_vertical"
+            android:drawableStart="@mipmap/circle_personal_mian_icon"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

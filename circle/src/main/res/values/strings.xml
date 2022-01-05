@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_myCircle">我的圈子</string>
+    <string name="str_more">更多</string>
+    <string name="str_youHavenJoinedCirclesYet">您还未加入任何圈子</string>
+    <string name="str_applyToJoin">申请加入</string>
+    <string name="str_hotList">热门榜单</string>
+    <string name="str_all">全部</string>
+    <string name="str_guessYouLike">猜你喜欢</string>
+    <string name="str_inBatch">换一批</string>
+    <string name="str_members">成员</string>
+</resources>

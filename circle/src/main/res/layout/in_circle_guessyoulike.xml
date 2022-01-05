@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_hot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/wtv_guessYouLike"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_guessYouLike"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_16" />
+        <com.changanford.common.ui.view.WTextView
+            android:drawablePadding="@dimen/dp_3"
+            android:id="@+id/wtv_inBatch"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/wtv_guessYouLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_inBatch"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_14"
+            android:drawableStart="@mipmap/circle_refresh"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_marginTop="@dimen/dp_15"
+            android:id="@+id/viewPager2"
+            app:layout_constraintTop_toBottomOf="@id/wtv_guessYouLike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@drawable/shadow_f2f4f9_2dp"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewPager2"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_4"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_circle_dot"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
