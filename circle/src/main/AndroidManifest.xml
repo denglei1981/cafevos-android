@@ -58,5 +58,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.CircleMemberManageActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.circle.HotListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

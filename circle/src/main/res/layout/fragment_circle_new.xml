@@ -21,6 +21,8 @@
                 android:id="@+id/in_myCircle"
                 layout="@layout/in_my_circle"/>
             <com.changanford.common.ui.view.WTextView
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:id="@+id/wtv_hotList"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/dp_30"
@@ -33,6 +35,8 @@
                 android:textColor="@color/color_34"
                 android:textSize="@dimen/sp_16" />
             <com.changanford.common.ui.view.WTextView
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:drawablePadding="@dimen/dp_5"
                 android:id="@+id/wtv_allHot"
                 android:layout_marginEnd="@dimen/dp_20"
@@ -45,6 +49,8 @@
                 android:textSize="@dimen/sp_14"
                 android:drawableEnd="@mipmap/right_74889d"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/wtv_hotList"
                 android:id="@+id/recyclerView_hot"
                 android:layout_width="match_parent"
@@ -52,6 +58,12 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 tools:itemCount="2"/>
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/composeView_hotList"
+                android:layout_marginTop="@dimen/dp_30"
+                app:layout_constraintTop_toBottomOf="@id/in_myCircle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <include
                 android:id="@+id/in_youLike"
                 layout="@layout/in_circle_guessyoulike"/>

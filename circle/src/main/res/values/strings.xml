@@ -9,4 +9,7 @@
     <string name="str_guessYouLike">猜你喜欢</string>
     <string name="str_inBatch">换一批</string>
     <string name="str_members">成员</string>
+    <string name="str_hotCarCircle">热门车型圈</string>
+    <string name="str_hotCarCircle0">热门车友圈</string>
+    <string name="str_circleHotList">圈子热门榜单</string>
 </resources>
