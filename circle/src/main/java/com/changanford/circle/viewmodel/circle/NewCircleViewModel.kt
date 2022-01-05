@@ -18,6 +18,8 @@ import com.changanford.common.utilext.toast
  */
 class NewCircleViewModel:BaseViewModel() {
     val circleBean = MutableLiveData<CircleMainBean>()
+    //猜你喜欢
+    val youLikeData=MutableLiveData<CircleMainBean>()
     fun communityIndex(lng: Double? = null, lat: Double? = null) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -32,6 +34,20 @@ class NewCircleViewModel:BaseViewModel() {
 
         }, error = {
             LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
+            it.message?.toast()
+        })
+    }
+    /**
+     * 获取猜你喜欢的数据
+    * */
+    fun getYouLikeData(){
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().youLike(body.header(rKey), body.body(rKey)).also {
+//                youLikeData.postValue()
+                }
+        }, error = {
             it.message?.toast()
         })
     }

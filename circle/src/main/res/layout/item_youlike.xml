@@ -15,7 +15,7 @@
         android:background="@drawable/shadow_f9_5dp"
         android:padding="@dimen/dp_8">
         <com.google.android.material.imageview.ShapeableImageView
-            tools:background="@color/color_00095B"
+            android:src="@color/color_00095B"
             android:id="@+id/img_cover"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

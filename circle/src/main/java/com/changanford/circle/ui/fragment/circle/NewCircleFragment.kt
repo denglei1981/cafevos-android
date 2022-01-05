@@ -28,9 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
 import com.changanford.circle.R
+import com.changanford.circle.adapter.circle.DotAdapter
 import com.changanford.circle.bean.AllCircle
+import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
@@ -39,7 +42,6 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
-import com.xiaomi.push.it
 
 /**
  * @Author : wenke
@@ -52,6 +54,10 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         binding.inMyCircle.wtvMore.setOnClickListener {
             startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
         }
+        binding.inYouLike.wtvInBatch.setOnClickListener {
+            //换一批猜你喜欢的内容
+//            viewModel.getYouLikeData()
+        }
     }
 
     override fun initData() {
@@ -63,6 +69,9 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 HotList()
             }
         })
+        viewModel.youLikeData.observe(this,{
+            bindingYouLike()
+        })
         viewModel.communityIndex()
     }
     /**
@@ -70,7 +79,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     * */
     @Composable
     fun RecommendedCompose(allCircles: ArrayList<AllCircle>){
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)){
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
             items(allCircles){itemData->
                 Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
@@ -154,7 +163,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                     .height(0.5.dp)
                     .fillMaxWidth())
                     for (i in 0..2){
-                        Row(modifier = Modifier.fillMaxWidth()) {
+                        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)) {
                             Image(
                                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
                                     builder = {
@@ -173,28 +182,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                             }
                         }
                     }
-//                LazyColumn(verticalArrangement  = Arrangement.spacedBy(12.dp)){
-//                    items(3){itemData->
-//                        Row(modifier = Modifier.fillMaxWidth()) {
-//                            Image(
-//                                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
-//                                    builder = {
-//                                        placeholder(R.mipmap.head_default)
-//                                    }),
-//                                contentDescription = null,
-//                                contentScale = ContentScale.Crop,
-//                                modifier = Modifier
-//                                    .size(60.dp)
-//                                    .clip(RoundedCornerShape(5.dp))
-//                            )
-//                            Column(modifier = Modifier.weight(1f).padding(start = 11.dp),verticalArrangement = Arrangement.Center) {
-//                                Text(text = "---",fontSize = 14.sp, color = colorResource( R.color.color_33),overflow = TextOverflow.Ellipsis,maxLines = 1)
-//                                Spacer(modifier = Modifier.height(12.dp))
-//                                Text(text = "---",fontSize = 12.sp, color = colorResource( R.color.color_74889D))
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
 
@@ -207,11 +194,26 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     /**
      * 猜你喜欢
     * */
-   private fun bindingYouLike(){
+   private fun bindingYouLike(dataBean:MutableList<CircleMainBean>?=null){
         val fragments= arrayListOf<Fragment>()
-        for (i in 0..4){
+        val dots= arrayListOf<Int>()
+        for (i in 0..1){
             fragments.add(YouLikeFragment.newInstance("$i"))
+            dots.add(i)
         }
-        binding.inYouLike.viewPager2.adapter=ViewPage2Adapter(requireActivity(),fragments)
+        binding.inYouLike.apply {
+            val myAdapter=DotAdapter()
+            myAdapter.setList(dots)
+            recyclerViewDot.adapter=myAdapter
+            viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
+            viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    myAdapter.selectPosition(position)
+                }
+            })
+
+        }
+
     }
 }

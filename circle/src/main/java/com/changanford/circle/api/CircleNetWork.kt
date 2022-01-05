@@ -1,11 +1,9 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
-import com.changanford.common.bean.CircleListBean
 import com.changanford.common.bean.LocationDataBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -417,4 +415,10 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleTypesBean>>
+
+    /**
+     * 猜你喜欢
+     */
+    @POST("")
+    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<*>>
 }

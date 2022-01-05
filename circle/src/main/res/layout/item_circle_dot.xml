@@ -6,7 +6,7 @@
     </data>
 
     <RadioButton
-        android:id="@+id/rb"
+        android:id="@+id/radioButton"
         android:checked="true"
         android:button="@null"
         android:background="@drawable/rb_dot"
