@@ -9,16 +9,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_60"
         android:layout_marginBottom="@dimen/dp_20"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_20"
         android:background="@color/white">
         <com.changanford.common.ui.view.WTextView
+            android:textStyle="bold"
             android:id="@+id/wtv_ranking"
-            app:layout_constraintTop_toTopOf="img_cover"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
@@ -32,7 +33,7 @@
             android:layout_marginStart="@dimen/dp_10"
             tools:background="@color/color_00095B"
             android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_height="match_parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
@@ -65,6 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_circle_tag"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

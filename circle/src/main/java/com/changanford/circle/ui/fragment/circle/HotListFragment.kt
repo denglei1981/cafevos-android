@@ -2,7 +2,6 @@ package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
 import com.changanford.circle.databinding.FragmentHotlistBinding
-import com.changanford.circle.ui.fragment.CircleListFragment
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.wutil.FlowLayoutManager
@@ -14,10 +13,10 @@ import com.changanford.common.wutil.FlowLayoutManager
  */
 class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>() {
     companion object {
-        fun newInstance(type: Int): CircleListFragment {
+        fun newInstance(type: Int): HotListFragment {
             val bundle = Bundle()
             bundle.putInt("type", type)
-            val fragment = CircleListFragment()
+            val fragment = HotListFragment()
             fragment.arguments = bundle
             return fragment
         }

@@ -1,10 +1,10 @@
 package com.changanford.circle.ui.fragment.circle
 
+import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -35,7 +35,11 @@ import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
+import com.xiaomi.push.it
 
 /**
  * @Author : wenke
@@ -45,10 +49,12 @@ import com.changanford.common.utilext.GlideUtils
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     override fun initView() {
         bindingYouLike()
+        binding.inMyCircle.wtvMore.setOnClickListener {
+            startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
+        }
     }
 
     override fun initData() {
-        viewModel.communityIndex()
         viewModel.circleBean.observe(this,{
             binding.composeViewRecommended.setContent {
                 RecommendedCompose(it.allCircles)
@@ -57,12 +63,25 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 HotList()
             }
         })
+        viewModel.communityIndex()
     }
+    /**
+     * 推荐圈子
+    * */
     @Composable
     fun RecommendedCompose(allCircles: ArrayList<AllCircle>){
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)){
             items(allCircles){itemData->
-                Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally){
+                Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable {
+                    if (itemData.circleId == 0) {
+                        startARouter(ARouterCirclePath.CircleListActivity)
+                    } else {
+                        val bundle = Bundle()
+                        bundle.putString("circleId", itemData.circleId.toString())
+                        startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                    }
+                }){
                     Image(
                         painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.pic) ?: R.mipmap.head_default,
                             builder = {
@@ -97,7 +116,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 modifier = Modifier
                     .padding(end = 5.dp)
                     .clickable {
-
+                        startARouter(ARouterCirclePath.HotListActivity)
                     })
                 Image(painter = painterResource(id = R.mipmap.right_74889d) , contentDescription = null)
             }
@@ -134,8 +153,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 Spacer(modifier = Modifier
                     .height(0.5.dp)
                     .fillMaxWidth())
-                LazyColumn(verticalArrangement  = Arrangement.spacedBy(12.dp)){
-                    items(3){itemData->
+                    for (i in 0..2){
                         Row(modifier = Modifier.fillMaxWidth()) {
                             Image(
                                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
@@ -155,7 +173,28 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                             }
                         }
                     }
-                }
+//                LazyColumn(verticalArrangement  = Arrangement.spacedBy(12.dp)){
+//                    items(3){itemData->
+//                        Row(modifier = Modifier.fillMaxWidth()) {
+//                            Image(
+//                                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
+//                                    builder = {
+//                                        placeholder(R.mipmap.head_default)
+//                                    }),
+//                                contentDescription = null,
+//                                contentScale = ContentScale.Crop,
+//                                modifier = Modifier
+//                                    .size(60.dp)
+//                                    .clip(RoundedCornerShape(5.dp))
+//                            )
+//                            Column(modifier = Modifier.weight(1f).padding(start = 11.dp),verticalArrangement = Arrangement.Center) {
+//                                Text(text = "---",fontSize = 14.sp, color = colorResource( R.color.color_33),overflow = TextOverflow.Ellipsis,maxLines = 1)
+//                                Spacer(modifier = Modifier.height(12.dp))
+//                                Text(text = "---",fontSize = 12.sp, color = colorResource( R.color.color_74889D))
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
 
