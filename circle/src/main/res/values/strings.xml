@@ -14,4 +14,11 @@
     <string name="str_circleHotList">圈子热门榜单</string>
     <string name="str_join">加入</string>
     <string name="str_hasJoined">已加入</string>
+    <string name="str_create">创建</string>
+    <string name="str_circleName"><font color="#FF0000">*</font>   圈子名称</string>
+    <string name="str_inputDescription"><font color="#FF0000">*</font>   填写描述</string>
+    <string name="str_pleaseInputCircleName">请填写圈子名称（4-8个字）</string>
+    <string name="str_inputDescriptionMorePeopleWillJoin">填写描述会有更多人加入哦~</string>
+    <string name="str_beautifulCircleJoin">漂亮的圈子头像可以吸引更多人加入哦~</string>
+    <string name="str_circleTag">圈子标签</string>
 </resources>

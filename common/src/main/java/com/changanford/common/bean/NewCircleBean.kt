@@ -6,3 +6,5 @@ package com.changanford.common.bean
  * @Description : NewCircleBean
  */
 data class NewCircleBean(val id:String?="0")
+
+data class NewCirceTagBean(var id:String?=null,var isCheck:Boolean?=false,var tagName:String?=null)

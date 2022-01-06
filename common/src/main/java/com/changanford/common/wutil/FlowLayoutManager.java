@@ -8,6 +8,8 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 /**
  * Author:wenke
  * Email:3158817509@qq.com
@@ -26,6 +28,9 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
     private boolean mIsFullyLayout;
     private boolean singleLine=false;//是否显示单行
     private int fistH=0;
+    private int maxLine=-1;
+    private OnMaxLineListener listener;
+    private ArrayList<Integer> lineHeightList= new ArrayList<>();
     public FlowLayoutManager(Context context, boolean isFullyLayout) {
         mIsFullyLayout = isFullyLayout;
     }
@@ -33,7 +38,10 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
         this.singleLine=singleLine;
         mIsFullyLayout = isFullyLayout;
     }
-
+    public FlowLayoutManager(Context context, int maxLine,OnMaxLineListener listener) {
+        this.maxLine=maxLine;
+        this.listener=listener;
+    }
     @Override
     public boolean supportsPredictiveItemAnimations() {
         return true;
@@ -97,12 +105,11 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
         super.onMeasure(recycler, state, widthSpec, heightSpec);
-
+        lineHeightList.clear();
         final int widthMode = View.MeasureSpec.getMode(widthSpec);
         final int heightMode = View.MeasureSpec.getMode(heightSpec);
         final int widthSize = View.MeasureSpec.getSize(widthSpec);
         final int heightSize = View.MeasureSpec.getSize(heightSpec);
-
         int height;
 
         switch (widthMode) {
@@ -110,7 +117,6 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
                 Log.d(TAG, "WidthMode is unspecified.");
                 break;
             case View.MeasureSpec.AT_MOST:
-                break;
             case View.MeasureSpec.EXACTLY:
                 break;
         }
@@ -150,9 +156,9 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
             layoutPoints.put(i, rect);
 
             left = left + w;
-//            Log.e("wenke","top + h:"+(top + h)+">>maxTop:"+maxTop);
-            if (top + h >= maxTop) {
+            if (top + h > maxTop) {
                 maxTop = top + h;
+                lineHeightList.add(maxTop);//每行的行高
             }
             if(fistH<1){
                 fistH=maxTop;
@@ -175,6 +181,16 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
                 break;
         }
         totalHeight = height - getPaddingTop() - getPaddingBottom();
-        setMeasuredDimension(widthSize, singleLine?fistH:height);
+        if(maxLine>0){
+            int lineSize=lineHeightList.size();
+            setMeasuredDimension(widthSize, maxLine<lineSize?lineHeightList.get(maxLine-1):height);
+            if(null!=listener)listener.onMaxLineListener(lineSize);
+        }else {
+            setMeasuredDimension(widthSize, singleLine?fistH:height);
+        }
+    }
+    public interface OnMaxLineListener {
+        void onMaxLineListener(int maxLine);
     }
 }
+
