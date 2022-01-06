@@ -1,6 +1,5 @@
 package com.changanford.circle
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -13,11 +12,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
-import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
-import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
 import com.changanford.circle.ui.fragment.CircleRecommendFragment
+import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -39,8 +37,6 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -49,7 +45,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
-import java.security.Permission
 
 
 /**
@@ -248,7 +243,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleRecommendFragment.newInstance(if (position == 0) 4 else 2)
+                    return if(1==position)NewCircleFragment() else CircleRecommendFragment.newInstance(if (position == 0) 4 else 2)
                 }
 
             }
