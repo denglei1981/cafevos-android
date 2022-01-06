@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_15"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView

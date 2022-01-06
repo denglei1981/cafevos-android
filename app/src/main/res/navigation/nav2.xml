@@ -7,7 +7,7 @@
     tools:ignore="UnusedNavigation">
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.changanford.circle.CircleFragment"
+        android:name="com.changanford.circle.CircleFragmentV2"
         android:label="@string/second_fragment_label"/>
 
 </navigation>

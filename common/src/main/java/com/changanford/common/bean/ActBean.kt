@@ -136,6 +136,14 @@ data class AuthorBaseVo(
             memberName
         }
     }
+    fun showSubtitle():Boolean{
+        if(TextUtils.isEmpty(memberName)){
+            return false
+        }
+        return true
+    }
+
+
 }
 
 data class PostBean(
@@ -192,7 +200,7 @@ data class PostDataBean(
     val userId: Int = 0,
     val videoTime: Any? = Any(),
     val videoUrl: Any? = Any(),
-    val viewsCount: Int = 0,
+    val viewsCount: Long = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0
 ) {
@@ -202,12 +210,30 @@ data class PostDataBean(
         return commentStr.plus("\t").plus(viewStr)
     }
 
+    fun getCommentCountResult(): String {
+        var commentCountResult: String = ""
+        if (commentCount == 0L) {
+            return "评论"
+        }
+        commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
     fun getContentStr(): String {
         if (!TextUtils.isEmpty(content)) {
             return content
         }
         return ""
     }
+    var timeAndViewCountResult: String = ""
+    fun getTimeAdnViewCount(): String {
+        val viewCountStr = CountUtils.formatNum(viewsCount.toString(), false).toString()
+        timeAndViewCountResult = timeStr.plus("  ").plus(viewCountStr).plus("浏览")
+        return timeAndViewCountResult
+    }
+
+
+
 
 }
 
