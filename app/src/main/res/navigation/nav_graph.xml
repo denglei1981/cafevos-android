@@ -15,10 +15,9 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/myFragment" />
     </custom_fragment>
-<!--            android:name="com.changanford.circle.CircleFragment"-->
     <custom_fragment
         android:id="@+id/circleFragment"
-        android:name="com.changanford.circle.ui.fragment.circle.NewCircleFragment"
+        android:name="com.changanford.circle.CircleFragmentV2"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
         <action

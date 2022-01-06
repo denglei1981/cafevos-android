@@ -52,7 +52,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_talk_type"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="28dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="19dp"
             android:layout_marginBottom="10dp"
@@ -135,6 +135,7 @@
                 android:textColor="@color/color_cc"
                 android:textSize="13sp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 tools:text="重庆市" />
 
         </RelativeLayout>

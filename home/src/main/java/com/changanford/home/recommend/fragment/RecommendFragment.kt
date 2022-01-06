@@ -1,17 +1,14 @@
 package com.changanford.home.recommend.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
@@ -21,17 +18,16 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
-import com.changanford.common.widget.ShadowLayout.TAG
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
-import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.data.AdBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
+import com.changanford.home.databinding.LayoutRecommendFastInBinding
 import com.changanford.home.databinding.RecommendHeaderBinding
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
+import com.changanford.home.recommend.adapter.RecommendFastInListAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -85,6 +81,8 @@ open class RecommendFragment :
 
     var headNewBinding: RecommendHeaderBinding? = null
 
+    var fastInBinding: LayoutRecommendFastInBinding?=null
+
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(
@@ -106,6 +104,22 @@ open class RecommendFragment :
             }
             setIndicator()
         }
+    }
+
+    private  fun addHeadFaster(isGrid:Boolean){
+         if(fastInBinding==null){
+             fastInBinding =DataBindingUtil.inflate(LayoutInflater.from(requireContext()),R.layout.layout_recommend_fast_in,binding.recyclerView,false)
+         }
+        val fastInAdapter = RecommendFastInListAdapter()
+        fastInBinding?.let{ fi->
+            fi.rvFastIn.adapter=fastInAdapter
+            if(isGrid){
+                fi.rvFastIn.layoutManager=GridLayoutManager(requireContext(),3)
+            }else {
+                fi.rvFastIn.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            }
+        }
+
     }
 
     /**
@@ -142,11 +156,6 @@ open class RecommendFragment :
             }
 
         })
-
-
-
-
-
     }
 
     private fun toPostOrNews(item: RecommendData) { // 跳转到资讯，或者 帖子
@@ -192,6 +201,7 @@ open class RecommendFragment :
             } else {
                 bean.postsLikesCount--
             }
+            // TODO 要取变量了。
             recommendAdapter.notifyItemChanged(selectPosition+1)//有t
         })
 
@@ -205,6 +215,7 @@ open class RecommendFragment :
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike
                 item.commentCount = it.msgCount
+                // TODO 要取变量了。
                 recommendAdapter.notifyItemChanged(selectPosition+1)// 有t
                 if (item.authors?.isFollow != it.isFollow) {
                     // 关注不相同，以详情的为准。。

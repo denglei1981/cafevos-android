@@ -46,4 +46,13 @@
         <item name="android:scrollbarTrackVertical">@color/transparent</item>
         <item name="android:scrollbars">vertical</item>
     </style>
+    <style name="AppText" />
+    <style name="AppText.lineSpace">
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+    <declare-styleable name="AssNineGridView">
+        <attr name="angv_singleImgRatio" format="float" />
+        <attr name="angv_gridSpace" format="dimension" />
+        <attr name="angv_maxSize" format="integer" />
+    </declare-styleable>
 </resources>

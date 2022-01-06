@@ -1,0 +1,126 @@
+package com.changanford.circle.ui.fragment
+
+import android.os.Bundle
+import com.changanford.circle.adapter.CircleRecommendAdapter
+import com.changanford.circle.databinding.FragmentCircleRecommendBinding
+import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.common.basic.BaseFragment
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+
+/**
+ *Author lcw
+ *Time on 2021/9/22
+ *Purpose
+ */
+class CircleRecommendFragment :
+    BaseFragment<FragmentCircleRecommendBinding, CircleDetailsViewModel>() ,OnRefreshListener {
+
+
+//    private lateinit var mCheckForGapMethod: Method
+
+    private val adapter by lazy { CircleRecommendAdapter(requireContext(),this) }
+
+    private var type = 0
+    private var page = 1
+
+    private var checkPosition: Int? = null
+
+    companion object {
+        fun newInstance(type: Int): CircleRecommendFragment {
+            val bundle = Bundle()
+            bundle.putInt("type", type)
+            val fragment = CircleRecommendFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
+    override fun initView() {
+        type = arguments?.getInt("type", 4)!!
+//        MUtils.scrollStopLoadImage(binding.ryCircle)
+//        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+//        mCheckForGapMethod.isAccessible = true
+
+
+//        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                mCheckForGapMethod.invoke(binding.ryCircle.layoutManager) as Boolean
+////                staggeredGridLayoutManager.invalidateSpanAssignments()
+//            }
+//        })
+
+
+        binding.ryCircle.adapter = adapter
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.getData(type, page)
+        }
+        adapter.setOnItemClickListener { _, view, position ->
+            val bundle = Bundle()
+            bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            checkPosition = position
+        }
+        binding.refreshLayout.setOnRefreshListener(this)
+        bus()
+    }
+
+    override fun initData() {
+        viewModel.getData(type, 1)
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.circleBean.observe(this, {
+            if (page == 1) {
+                binding.refreshLayout.finishRefresh()
+                adapter.setList(it.dataList)
+            } else {
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+        })
+    }
+
+    private fun bus() {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
+            val bean = checkPosition?.let { it1 -> adapter.getItem(it1) }
+            bean?.let { _ ->
+                bean.isLike = it
+                if (bean.isLike == 1) {
+                    bean.likesCount++
+                } else {
+                    bean.likesCount--
+                }
+            }
+
+            checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
+        })
+
+//        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT)
+//            .observe(this, {
+//                page = 1
+//                viewModel.getData(type, page)
+//            })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+            checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1,adapter.itemCount) }
+        })
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        page = 1
+        viewModel.getData(type, page)
+
+    }
+}
