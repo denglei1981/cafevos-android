@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="335:190"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@drawable/image_recommed_default"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/circle_play_icon"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
+            app:layout_constraintEnd_toEndOf="@+id/iv_pic"
+            app:layout_constraintStart_toStartOf="@+id/iv_pic"
+            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_video_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:paddingStart="4dp"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingEnd="4dp"
+            android:paddingBottom="@dimen/dp_2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="10:12" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

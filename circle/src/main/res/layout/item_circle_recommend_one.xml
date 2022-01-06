@@ -15,43 +15,48 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
         <include
             android:id="@+id/layout_header"
             layout="@layout/include_circle_recommend_header_info"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_18"
             binding:author="@{author}"
             binding:postBean="@{postBean}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+           />
         <com.changanford.circle.widget.assninegridview.AssNineGridView
             android:id="@+id/iv_nine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/layout_header"
-            app:layout_constraintStart_toStartOf="parent"
             android:scaleType="centerCrop"
             app:angv_gridSpace="3dp"
             app:angv_maxSize="9"
             app:angv_singleImgRatio="1"
-            app:layout_constraintEnd_toEndOf="parent"
+
+            tools:src="@drawable/image_recommed_default"
+            android:layout_marginTop="@dimen/dp_16"/>
+
+        <include
+            android:id="@+id/layout_one"
+            layout="@layout/include_recommend_one_pics"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
             tools:src="@drawable/image_recommed_default"
             android:layout_marginTop="@dimen/dp_16"/>
         <include
             android:id="@+id/layout_count"
             layout="@layout/include_circle_recommend_count"
             binding:postBean="@{postBean}"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_nine"/>
+            />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
