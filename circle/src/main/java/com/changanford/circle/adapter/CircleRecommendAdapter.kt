@@ -112,6 +112,18 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 
             val picList = item.getPicList()
             if (picList.isNotEmpty()) {
+
+//                val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
+//                picList.forEach {
+//                    val imageInfo = ImageInfo()
+//                    imageInfo.bigImageUrl = it
+//                    imageInfo.thumbnailUrl = it
+//                    imageInfoList.add(imageInfo)
+//                }
+//                val assNineAdapter = AssNineGridViewAdapter(context, imageInfoList)
+//                binding.ivNine.setAdapter(assNineAdapter)
+//                binding.ivNine.visibility=View.VISIBLE
+//                binding.layoutOne.ivPlay.visibility=View.GONE
                 when {
                     picList.size>1 -> {
                         val imageInfoList: ArrayList<ImageInfo> = arrayListOf()

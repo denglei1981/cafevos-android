@@ -55,4 +55,10 @@
         <attr name="angv_gridSpace" format="dimension" />
         <attr name="angv_maxSize" format="integer" />
     </declare-styleable>
+
+    <style name="default_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/color_f6</item>
+    </style>
 </resources>

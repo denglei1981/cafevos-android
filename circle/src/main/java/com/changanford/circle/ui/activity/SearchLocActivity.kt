@@ -1,14 +1,12 @@
 package com.changanford.circle.ui.activity
 
 import android.content.Intent
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -17,13 +15,11 @@ import com.baidu.mapapi.search.core.SearchResult
 import com.baidu.mapapi.search.poi.*
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
-import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.databinding.LayoutSearchLocationFooterBinding
 import com.changanford.circle.databinding.SearchlocBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
