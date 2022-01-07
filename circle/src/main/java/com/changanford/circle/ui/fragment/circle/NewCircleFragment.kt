@@ -1,19 +1,26 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +44,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.ScreenUtils
 
 /**
  * @Author : wenke
@@ -46,6 +54,7 @@ import com.changanford.common.utilext.GlideUtils
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
+    private val dp4 by lazy {(ScreenUtils.getScreenWidthDp(requireContext())- 40)/4- 10}
     override fun initView() {
         bindingYouLike()
         binding.inMyCircle.wtvMore.setOnClickListener {
@@ -57,13 +66,23 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         }
         binding.recyclerViewHot.adapter=hotListAdapter
         hotListAdapter.setList(arrayListOf(0,1))
+        val density=resources.displayMetrics.density
+        val densityDpi=resources.displayMetrics.densityDpi
+        val w=ScreenUtils.getScreenWidth(requireContext())
+        Log.e("wenke","density:$density>>>$densityDpi>>>w:$w>>>>${ScreenUtils.px2dp(requireContext(),w.toFloat())}")
     }
 
     override fun initData() {
         viewModel.circleBean.observe(this,{
             binding.composeViewRecommended.setContent {
-                RecommendedCompose(it.allCircles)
-                bindingMyCircle()
+                Column {
+                    RecommendedCompose(it.allCircles)
+                    val dataList= arrayListOf<NewCircleBean>()
+                    for (i in 0..3){
+                        dataList.add(NewCircleBean("$i"))
+                    }
+                    MyCircleCompose(dataList)
+                }
             }
 
         })
@@ -71,6 +90,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             bindingYouLike()
         })
         viewModel.communityIndex()
+        bindingMyCircle()
     }
     /**
      * 推荐圈子
@@ -80,7 +100,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
             items(allCircles){itemData->
                 Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable {
+                modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
                     if (itemData.circleId == 0) {
                         startARouter(ARouterCirclePath.CircleListActivity)
                     } else {
@@ -108,10 +128,49 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             }
         }
     }
+    /**
+     * 我的圈子
+    * */
+    @Composable
+    fun MyCircleCompose(dataList:List<NewCircleBean>){
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 35.dp)) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp),verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.str_myCircle),fontSize = 16.sp,color = colorResource(R.color.color_34),
+                    fontWeight = FontWeight.Bold,modifier = Modifier.weight(1f))
+                Text(text = stringResource(R.string.str_myCircle),fontSize = 14.sp,color = colorResource(R.color.color_74889D),
+                modifier = Modifier
+                    .padding(end = 6.dp)
+                    .clickable {
+                        startARouter(ARouterMyPath.MineCircleUI, true)
+                    })
+
+                Image(painter = painterResource(R.mipmap.right_74889d), contentDescription ="更多圈子",modifier = Modifier.clickable {
+                    startARouter(ARouterMyPath.MineCircleUI, true)
+                })
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            //最多展示4个我圈子
+           LazyRow(contentPadding = PaddingValues(horizontal = 10.dp)){
+               items(if(dataList.size<5)dataList else dataList.slice(0 until 4)){ itemData->
+                    Box(modifier = Modifier
+                        .height(108.dp)
+                        .width(dp4.dp),contentAlignment =Alignment.BottomCenter){
+                        Image(painter = painterResource(R.drawable.shadow_f9_5dp), contentDescription =null,
+                            modifier = Modifier.clip(RoundedCornerShape(5.dp))
+                        )
+                    }
+               }
+           }
+        }
+    }
     @Preview(backgroundColor = 0xffffff)
     @Composable
     fun PreviewUI(){
-
+        MyCircleCompose(arrayListOf())
     }
     /**
      * 我的圈子

@@ -29,13 +29,19 @@ object ScreenUtils {
         }
         return screenWidth
     }
-
+    fun getScreenWidthDp(context: Context): Int {
+        return px2dp(context,context.resources.displayMetrics.widthPixels.toFloat())
+    }
     fun dp2px(context: Context, dp: Float): Int {
         return (TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp,
             context.resources.displayMetrics
         ) + 0.5f).toInt()
+    }
+    fun px2dp(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
     }
 
     /**

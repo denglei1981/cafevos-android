@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_76"
+        android:layout_height="@dimen/dp_108"
         android:layout_marginEnd="@dimen/dp_10">
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_cover"
@@ -28,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_27"
+            android:minHeight="@dimen/dp_26"
             android:gravity="center"
             tools:text="玩+"
             android:textColor="@color/white"
