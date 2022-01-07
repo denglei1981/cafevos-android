@@ -188,6 +188,8 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private fun submit(){
         val title = binding.etBiaoti.text.toString()
         val content = binding.etContent.text.toString()
+        //被选中的标签集合
+        val isCheckTags=myAdapter.data.filter { it.isCheck==true }
         viewModel.upLoadCircle(content, title, picUrl)
     }
     override fun observe() {
