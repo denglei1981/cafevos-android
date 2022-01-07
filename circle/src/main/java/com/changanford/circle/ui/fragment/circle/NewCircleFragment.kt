@@ -1,8 +1,8 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -44,17 +45,15 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.wutil.ScreenUtils
 
 /**
  * @Author : wenke
  * @Time : 2022/1/5
- * @Description : CircleFragment
+ * @Description : 圈子
  */
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
-    private val dp4 by lazy {(ScreenUtils.getScreenWidthDp(requireContext())- 40)/4- 10}
     override fun initView() {
         bindingYouLike()
         binding.inMyCircle.wtvMore.setOnClickListener {
@@ -66,20 +65,17 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         }
         binding.recyclerViewHot.adapter=hotListAdapter
         hotListAdapter.setList(arrayListOf(0,1))
-        val density=resources.displayMetrics.density
-        val densityDpi=resources.displayMetrics.densityDpi
-        val w=ScreenUtils.getScreenWidth(requireContext())
-        Log.e("wenke","density:$density>>>$densityDpi>>>w:$w>>>>${ScreenUtils.px2dp(requireContext(),w.toFloat())}")
     }
 
     override fun initData() {
         viewModel.circleBean.observe(this,{
             binding.composeViewRecommended.setContent {
                 Column {
+                    Spacer(modifier = Modifier.height(15.dp))
                     RecommendedCompose(it.allCircles)
                     val dataList= arrayListOf<NewCircleBean>()
-                    for (i in 0..3){
-                        dataList.add(NewCircleBean("$i"))
+                    for (i in 0..5){
+                        dataList.add(NewCircleBean(circleId = "$i"))
                     }
                     MyCircleCompose(dataList)
                 }
@@ -90,13 +86,13 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             bindingYouLike()
         })
         viewModel.communityIndex()
-        bindingMyCircle()
+//        bindingMyCircle()
     }
     /**
      * 推荐圈子
     * */
     @Composable
-    fun RecommendedCompose(allCircles: ArrayList<AllCircle>){
+    private fun RecommendedCompose(allCircles: ArrayList<AllCircle>){
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
             items(allCircles){itemData->
                 Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
@@ -132,39 +128,104 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
      * 我的圈子
     * */
     @Composable
-    fun MyCircleCompose(dataList:List<NewCircleBean>){
+    private fun MyCircleCompose(dataList:List<NewCircleBean>){
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 35.dp)) {
+            .padding(top = 30.dp)) {
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp),verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.str_myCircle),fontSize = 16.sp,color = colorResource(R.color.color_34),
                     fontWeight = FontWeight.Bold,modifier = Modifier.weight(1f))
-                Text(text = stringResource(R.string.str_myCircle),fontSize = 14.sp,color = colorResource(R.color.color_74889D),
-                modifier = Modifier
-                    .padding(end = 6.dp)
-                    .clickable {
+                //查看更多圈子(我加入的圈子大于4个才显示更多入口)
+                if(dataList.size>4){
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
                         startARouter(ARouterMyPath.MineCircleUI, true)
-                    })
-
-                Image(painter = painterResource(R.mipmap.right_74889d), contentDescription ="更多圈子",modifier = Modifier.clickable {
-                    startARouter(ARouterMyPath.MineCircleUI, true)
-                })
+                    }) {
+                        Text(text = stringResource(R.string.str_more),fontSize = 14.sp,color = colorResource(R.color.color_74889D),modifier = Modifier.padding(end = 6.dp))
+                        Image(painter = painterResource(R.mipmap.right_74889d), contentDescription =null)
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            //最多展示4个我圈子
-           LazyRow(contentPadding = PaddingValues(horizontal = 10.dp)){
-               items(if(dataList.size<5)dataList else dataList.slice(0 until 4)){ itemData->
-                    Box(modifier = Modifier
-                        .height(108.dp)
-                        .width(dp4.dp),contentAlignment =Alignment.BottomCenter){
-                        Image(painter = painterResource(R.drawable.shadow_f9_5dp), contentDescription =null,
-                            modifier = Modifier.clip(RoundedCornerShape(5.dp))
+            //未加入任何圈子
+            if(dataList.isEmpty()){
+                Column(verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)) {
+                    Text(text = stringResource(R.string.str_youHavenJoinedCirclesYet),color = colorResource(R.color.color_74889D),fontSize = 12.sp,textAlign = TextAlign.Center)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier
+                        .defaultMinSize(minWidth = 70.dp, minHeight = 25.dp)
+                        .background(
+                            colorResource(R.color.color_F2F4F9),
+                            shape = RoundedCornerShape(12.dp)
                         )
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }) {
+                            //到全部圈子列表
+                            startARouter(ARouterCirclePath.CircleListActivity)
+                        }){
+                        //申请加入
+                        Text(text = stringResource(R.string.str_applyToJoin),color = colorResource(R.color.color_00095B),fontSize = 12.sp,textAlign = TextAlign.Center)
                     }
-               }
-           }
+                }
+            }else ItemMyCircle(dataList)
+        }
+    }
+    /**
+     * 我的圈子Item
+    * */
+    @Composable
+    private fun ItemMyCircle(dataList:List<NewCircleBean>){
+        val dataListSize=dataList.size
+//        val validDataList=if(dataListSize<5)dataList else dataList.slice(0 until 4)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 10.dp)) {
+            //最多展示4个我圈子
+            for (i in 0 until 4){
+                Row(modifier = Modifier
+                    .padding(end = 10.dp)
+                    .weight(1f)) {
+                    if(i<dataListSize){
+                        val itemData=dataList[i]
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(108.dp)
+                            .clickable {
+                                //到圈子详情
+                                val bundle = Bundle()
+                                bundle.putString("circleId", itemData.circleId)
+                                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                            },contentAlignment =Alignment.BottomCenter){
+                            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.pic) ?: R.mipmap.head_default,
+                                builder = {
+                                    crossfade(false)
+                                    placeholder(R.mipmap.head_default)
+                                }), contentDescription =null,contentScale = ContentScale.Crop,
+                                modifier = Modifier.clip(RoundedCornerShape(5.dp))
+                            )
+                            Box(contentAlignment = Alignment.Center,modifier = Modifier
+                                .height(27.dp)
+                                .fillMaxWidth()
+                                .background(
+                                    colorResource(R.color.color_E6205768),
+                                    shape = RoundedCornerShape(0.dp, 0.dp, 5.dp, 5.dp)
+                                )){
+                                Text(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 5.dp, end = 5.dp),
+                                    text = itemData.cityName?:"-------",color = Color.White,fontSize = 12.sp,textAlign = TextAlign.Center,
+                                    maxLines = 1,overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     @Preview(backgroundColor = 0xffffff)

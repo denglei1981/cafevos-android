@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <include
+                android:visibility="gone"
                 android:id="@+id/in_myCircle"
                 layout="@layout/in_my_circle"/>
             <com.changanford.common.ui.view.WTextView
@@ -30,7 +31,7 @@
                 android:layout_marginTop="@dimen/dp_30"
                 android:layout_marginStart="@dimen/dp_20"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/in_myCircle"
+                app:layout_constraintTop_toBottomOf="@id/composeView_recommended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_hotList"
