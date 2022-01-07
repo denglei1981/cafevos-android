@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
 import com.changanford.circle.R
+import com.changanford.circle.adapter.circle.CircleHotListAdapter
 import com.changanford.circle.adapter.circle.DotAdapter
 import com.changanford.circle.bean.AllCircle
 import com.changanford.circle.bean.CircleMainBean
@@ -49,6 +50,7 @@ import com.changanford.common.utilext.GlideUtils
  * @Description : CircleFragment
  */
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
+    private val hotListAdapter by lazy { CircleHotListAdapter() }
     override fun initView() {
         bindingYouLike()
         binding.inMyCircle.wtvMore.setOnClickListener {
@@ -58,6 +60,8 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             //换一批猜你喜欢的内容
 //            viewModel.getYouLikeData()
         }
+        binding.recyclerViewHot.adapter=hotListAdapter
+        hotListAdapter.setList(arrayListOf(0,1))
     }
 
     override fun initData() {

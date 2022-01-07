@@ -23,7 +23,7 @@
                 android:id="@+id/in_myCircle"
                 layout="@layout/in_my_circle"/>
             <com.changanford.common.ui.view.WTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible"
                 android:id="@+id/wtv_hotList"
                 android:textStyle="bold"
@@ -37,7 +37,7 @@
                 android:textColor="@color/color_34"
                 android:textSize="@dimen/sp_16" />
             <com.changanford.common.ui.view.WTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible"
                 android:drawablePadding="@dimen/dp_5"
                 android:id="@+id/wtv_allHot"
@@ -51,7 +51,7 @@
                 android:textSize="@dimen/sp_14"
                 android:drawableEnd="@mipmap/right_74889d"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/wtv_hotList"
                 android:id="@+id/recyclerView_hot"
@@ -59,11 +59,15 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                tools:itemCount="2"/>
+                tools:itemCount="2"
+                tools:listitem="@layout/item_circle_hotlist"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_15"/>
             <androidx.compose.ui.platform.ComposeView
+                android:visibility="gone"
                 android:id="@+id/composeView_hotList"
                 android:layout_marginTop="@dimen/dp_30"
-                app:layout_constraintTop_toBottomOf="@id/in_myCircle"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView_hot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <include

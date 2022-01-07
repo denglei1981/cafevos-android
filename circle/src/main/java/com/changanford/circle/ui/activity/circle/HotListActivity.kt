@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity.circle
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -16,6 +17,7 @@ import com.changanford.circle.ui.fragment.circle.HotListFragment
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.wutil.ScreenUtils
@@ -34,19 +36,28 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
  */
 @Route(path = ARouterCirclePath.HotListActivity)
 class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewModel>(){
+    companion object{
+        fun start(type:Int=0){
+            val bundle=Bundle()
+            bundle.putInt("type", type)
+            RouterManger.startARouter(ARouterCirclePath.HotListActivity,bundle)
+        }
+    }
     private val tabNames= arrayListOf("热门车型圈","热门车友圈","热门生活圈")
+    private var defaultType=0
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
             ivBack.setOnClickListener { finish() }
         }
+        defaultType=intent.getIntExtra("type",0)
+        if(defaultType>=tabNames.size||defaultType<0)defaultType=0
         initTabAndViewPager()
         initMagicIndicator()
+        binding.viewPager.currentItem = defaultType
     }
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
             adapter = object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
     <com.changanford.common.widget.ShadowLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dp_260"
         android:layout_height="wrap_content"
         app:sl_cornerRadius="@dimen/dp_5"
         app:sl_shadowColor="#14949494"
-        app:sl_shadowRadius="@dimen/dp_5">
+        app:sl_shadowRadius="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_m_5">
+        <androidx.compose.ui.platform.ComposeView
+            app:layout_constraintTop_toBottomOf="parent"
+            android:id="@+id/composeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -44,6 +51,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_5"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/view_divider"
+                tools:layout_editor_absoluteX="16dp"
+                tools:listitem="@layout/item2_circle_hotlist" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.changanford.common.widget.ShadowLayout>
 </layout>
