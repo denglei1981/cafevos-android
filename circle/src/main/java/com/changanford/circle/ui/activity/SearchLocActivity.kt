@@ -1,21 +1,29 @@
 package com.changanford.circle.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
 import com.baidu.mapapi.search.poi.*
+import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
+import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
+import com.changanford.circle.databinding.LayoutSearchLocationFooterBinding
 import com.changanford.circle.databinding.SearchlocBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -80,6 +88,38 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
         }
     }
 
+    var footerBinding : LayoutSearchLocationFooterBinding?=null
+    private fun addFooter() {
+        if (footerBinding == null) {
+            footerBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_search_location_footer,
+                binding.locrec,
+                false
+            )
+            footerBinding?.let {
+                locaAdapter.addFooterView(it.root, 0)
+                it.tvCreateLocation.setOnClickListener {
+                    val intent = Intent()
+                    intent.setClass(this,CreateLocationActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+//            val recommendBannerAdapter = RecommendBannerAdapter()
+//            headNewBinding?.let {
+//                recommendAdapter.addHeaderView(it.root, 0)
+//                it.bViewpager.setAdapter(recommendBannerAdapter)
+//                it.bViewpager.setCanLoop(true)
+//                it.bViewpager.setIndicatorView(it.drIndicator)
+//                it.bViewpager.setAutoPlay(true)
+//                it.bViewpager.setScrollDuration(500)
+//                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+//                it.bViewpager.create()
+//            }
+//            setIndicator()
+        }
+    }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(0, 0);
@@ -119,6 +159,7 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
         }
         list.add(shearch)
         locaAdapter.setTagName(list)
+        addFooter()
     }
 
     override fun onGetPoiResult(poiResult: PoiResult?) {

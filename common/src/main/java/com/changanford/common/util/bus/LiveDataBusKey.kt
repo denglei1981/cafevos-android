@@ -222,6 +222,7 @@ object LiveDataBusKey {
     const val JUMP_JR_BACK = "jump_jr_back"
 
     const val CHOOSELOCATION = "chooselocation" //选择定位poi返回时
+
     const val CHOOSELOCATIONNOTHING = "chooselocationnothing" //选择不显示定位poi返回时
     const val ColseCHOOSELOCATION = "colsechooselocation" //关闭一级页面
 

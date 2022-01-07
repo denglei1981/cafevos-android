@@ -193,16 +193,17 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
-
+//                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
+                binding.tvLocation.text=it.name
             })
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean?.plate?.forEach {
                 if (it.name == "社区") {
-                    buttomTypeAdapter?.setData(0, ButtomTypeBean("", 0, 0))
-                    buttomTypeAdapter?.setData(1, ButtomTypeBean(it.name, 1, 1))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter.setData(1, ButtomTypeBean(it.name, 1, 1))
+
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
@@ -221,6 +222,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("address")
                     address = ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
+                    binding.tvLocation.text="不显示位置"
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -329,10 +331,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 )
             }
             if (locaPostEntity!!.address.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    4,
-                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-                )
+//                buttomTypeAdapter.setData(
+//                    4,
+//                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+//                )
+                binding.tvLocation.text=locaPostEntity!!.address
             }
         }
     }
@@ -457,6 +460,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
+            startARouter(ARouterCirclePath.ChooseLocationActivity)
+        }
+        binding.tvLocation.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
 

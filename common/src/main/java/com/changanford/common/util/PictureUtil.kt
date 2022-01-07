@@ -119,7 +119,7 @@ object PictureUtil {
             .isCompress(false)
             .compressQuality(90)
             .synOrAsy(true)
-            .isGif(false)
+            .isGif(true)
             .freeStyleCropEnabled(true)
             .circleDimmedLayer(false)
             .showCropFrame(true)

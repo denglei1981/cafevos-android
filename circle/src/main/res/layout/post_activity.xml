@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -106,13 +107,33 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_f6f6_bg"
+        android:drawableStart="@mipmap/circle_loca_left"
+        android:drawablePadding="@dimen/dp_4"
+        android:textColor="@color/color_00095B"
+        android:maxLines="1"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintTop_toTopOf="@+id/typerec"
+        app:layout_constraintBottom_toBottomOf="@+id/typerec"
+        android:text="定位"
+        tools:text="重庆市" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/typerec"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:background="@color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/tv_location"
         app:layout_constraintBottom_toBottomOf="@id/mscr"
         android:visibility="visible" />
     <include
