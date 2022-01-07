@@ -121,13 +121,13 @@ class CircleMainBottomAdapter(context: Context) :
             }
             binding.ivBg.layoutParams?.height = item.itemImgHeight
 
-            binding.ivHead.loadImage(
-                item.authorBaseVo?.avatar,
-                ImageOptions().apply {
-                    circleCrop = true
-                    error = R.mipmap.head_default
-                })
-//            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
+//            binding.ivHead.loadImage(
+//                item.authorBaseVo?.avatar,
+//                ImageOptions().apply {
+//                    circleCrop = true
+//                    error = R.mipmap.head_default
+//                })
+            GlideUtils.loadBD( item.authorBaseVo?.avatar, binding.ivHead)
             binding.ivBg.loadImage(
                 item.pics,
                 ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })

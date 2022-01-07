@@ -232,6 +232,13 @@ data class PostDataBean(
         return timeAndViewCountResult
     }
 
+    fun getPicList():List<String>{
+        if (!TextUtils.isEmpty(pics)) {
+            val asList =pics.split(",")
+            return asList
+        }
+        return mutableListOf()
+    }
 
 
 

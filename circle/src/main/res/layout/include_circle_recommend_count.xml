@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_f6f6_corners20"
             android:drawableStart="@mipmap/icon_circle_location"
+            android:layout_marginTop="@dimen/dp_15"
             android:drawablePadding="@dimen/dp_4"
             android:textColor="@color/color_00095B"
             android:maxLines="1"

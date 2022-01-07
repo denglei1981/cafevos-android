@@ -16,7 +16,9 @@ import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleRecommendFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
+import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.viewmodel.CircleViewModel
+import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseFragment
@@ -172,6 +174,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
     override fun initData() {
+        AssNineGridView.setImageLoader(GlideImageLoader())
          // 权限申请
 //        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,object : CheckRequestPermissionListener{
 //            override fun onPermissionOk(permission: com.qw.soul.permission.bean.Permission?) {

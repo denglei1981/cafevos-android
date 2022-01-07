@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -28,11 +29,19 @@ class HotMainTopicAdapter :
         val binding = DataBindingUtil.bind<ItemMainHotTopicBinding>(holder.itemView)
         binding?.let {
             MUtils.setTopMargin(binding.clContent, 18, holder.layoutPosition)
-
             binding.tvNum.text = "${item.postsCount}帖子     ${item.heat}热度"
-            binding.ivIcon.setCircular(5)
-
             binding.bean = item
+            val position=holder.layoutPosition+1
+            when(position){
+                1,2,3->{
+                    binding.tvIcon.setTextColor(ContextCompat.getColor(context,R.color.color_FC5E42))
+                }else->{
+                    binding.tvIcon.setTextColor(ContextCompat.getColor(context,R.color.color_D1D2D7))
+                }
+            }
+            binding.tvIcon.text=(holder.layoutPosition+1).toString()
+
+
         }
     }
 }

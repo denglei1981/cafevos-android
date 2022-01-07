@@ -1,8 +1,13 @@
 package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.databinding.DataBindingUtil
+import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleRecommendAdapter
 import com.changanford.circle.databinding.FragmentCircleRecommendBinding
+import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
@@ -11,6 +16,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.zhpan.bannerview.constants.PageStyle
 
 /**
  *Author lcw
@@ -69,12 +75,43 @@ class CircleRecommendFragment :
         }
         binding.refreshLayout.setOnRefreshListener(this)
         bus()
+        addHeadView()
     }
 
     override fun initData() {
         viewModel.getData(type, 1)
     }
 
+    var headerBinding : LayoutCircleHeaderHotTopicBinding?=null
+    private fun addHeadView() {
+        if (headerBinding == null) {
+            headerBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.layout_circle_header_hot_topic,
+                binding.ryCircle,
+                false
+            )
+            headerBinding?.let {
+                adapter.addHeaderView(it.root, 0)
+                it.tvTopicMore.setOnClickListener {
+                    startARouter(ARouterCirclePath.HotTopicActivity)
+                }
+                it.bViewpager.visibility= View.GONE
+            }
+//            val recommendBannerAdapter = RecommendBannerAdapter()
+//            headNewBinding?.let {
+//                recommendAdapter.addHeaderView(it.root, 0)
+//                it.bViewpager.setAdapter(recommendBannerAdapter)
+//                it.bViewpager.setCanLoop(true)
+//                it.bViewpager.setIndicatorView(it.drIndicator)
+//                it.bViewpager.setAutoPlay(true)
+//                it.bViewpager.setScrollDuration(500)
+//                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+//                it.bViewpager.create()
+//            }
+//            setIndicator()
+        }
+    }
     override fun observe() {
         super.observe()
         viewModel.circleBean.observe(this, {
