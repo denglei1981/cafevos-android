@@ -84,6 +84,10 @@ class GoodsViewModel: BaseViewModel() {
      * [tagId]分类id
      * */
     fun getGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        if("18"==tagId){//获取维保商品数据
+            getMaintenanceGoodsList(tagId,pageNo,pageSize)
+            return
+        }
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -96,6 +100,30 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 goodsListData.postValue(it?.responsePageBean)
+            }.onFailure {
+                goodsListData.postValue(null)
+            }.onWithMsgFailure {
+                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
+    /**
+     * 维保商品
+     * [tagId]分类id
+     * */
+   private fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    it["tagId"]=tagId
+                }
+                val randomKey = getRandomKey()
+                shopApiService.maintenanceGoodsList(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                goodsListData.postValue(it)
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {

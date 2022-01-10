@@ -131,4 +131,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/updateAdrrByOrderNo")
     suspend fun updateAddressByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
+    /**
+     * 维保商品列表
+     * */
+    @POST("/mall/wb/list")
+    suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
 }

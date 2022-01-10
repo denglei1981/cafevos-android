@@ -19,7 +19,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     companion object{
         fun newInstance(itemId:String): ExchangeListFragment {
             val bundle = Bundle()
-            bundle.putString("typeId", itemId)
+            bundle.putString("tagId", itemId)
             val fragment= ExchangeListFragment()
             fragment.arguments = bundle
             return fragment
@@ -28,12 +28,12 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var parentSmartRefreshLayout: SmartRefreshLayout?=null
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
-    private var typeId="-1"
+    private var tagId="-1"
     private var isRequest=false
     override fun initView() {
         if(arguments!=null){
-            typeId=arguments?.getString("typeId","0")!!
-            viewModel.getGoodsList(typeId,pageNo)
+            tagId=arguments?.getString("tagId","0")!!
+            viewModel.getGoodsList(tagId,pageNo)
             isRequest=true
         }
         viewModel.goodsListData.observe(this,{
@@ -42,7 +42,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         })
         binding.smartRl.setOnLoadMoreListener {
             pageNo++
-            viewModel.getGoodsList(typeId,pageNo)
+            viewModel.getGoodsList(tagId,pageNo)
         }
     }
     override fun initData() {
@@ -73,9 +73,9 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
      * 切换tab时如果当前fragment 没有数据则自动刷新
     * */
     fun startRefresh(){
-        if(isAdded&&"-1"!=typeId&&mAdapter.data.size<1&&!isRequest){
+        if(isAdded&&"-1"!=tagId&&mAdapter.data.size<1&&!isRequest){
             pageNo=1
-            viewModel.getGoodsList(typeId,pageNo)
+            viewModel.getGoodsList(tagId,pageNo)
         }
     }
 }
