@@ -172,4 +172,6 @@
     <string name="str_insufficientInventory">库存不足</string>
     <string name="str_orderClosed">订单已关闭</string>
     <string name="str_bargainingFavorable">砍价优惠</string>
+    <string name="str_models">车型</string>
+    <string name="str_vidCode">VIN码</string>
 </resources>
