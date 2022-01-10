@@ -35,7 +35,6 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleHotListAdapter
 import com.changanford.circle.adapter.circle.DotAdapter
 import com.changanford.circle.adapter.circle.MyCircleAdapter
-import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.ui.activity.CircleListActivity
 import com.changanford.circle.ui.activity.circle.HotListActivity
@@ -47,6 +46,8 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.WCommonUtil
+import com.google.gson.Gson
 
 /**
  * @Author : wenke
@@ -57,13 +58,12 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
     override fun initView() {
-        bindingYouLike()
         binding.inMyCircle.wtvMore.setOnClickListener {
             startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
         }
         binding.inYouLike.wtvInBatch.setOnClickListener {
             //换一批猜你喜欢的内容
-//            viewModel.getYouLikeData()
+            viewModel.getYouLikeData()
         }
         binding.wtvAllHot.setOnClickListener {
             //全部热门榜单
@@ -86,10 +86,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 }
             }
         })
-        viewModel.getCircleHomeData()
         viewModel.youLikeData.observe(this,{
-            bindingYouLike()
+            bindingYouLike(it)
         })
+        viewModel.getCircleHomeData()
+        viewModel.getYouLikeData()
 //        bindingMyCircle()
     }
     /**
@@ -288,11 +289,20 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     /**
      * 猜你喜欢
     * */
-   private fun bindingYouLike(dataBean:MutableList<CircleMainBean>?=null){
+   private fun bindingYouLike(dataList:MutableList<NewCircleBean>){
+        //一页几条
+        val pageSize = 4
+        //page 总共几页
+        val page:Int = WCommonUtil.getHeatNumUP("${dataList.size/pageSize.toFloat()}",0).toInt()
+        val gson=Gson()
         val fragments= arrayListOf<Fragment>()
         val dots= arrayListOf<Int>()
-        for (i in 0..1){
-            fragments.add(YouLikeFragment.newInstance("$i"))
+        for (i in 0 until page){
+            val startIndex=i*pageSize
+            val endIndex=(i+1)*pageSize
+            val itemList=dataList.slice(startIndex until endIndex)
+            val jsonStr=gson.toJson(itemList)
+            fragments.add(YouLikeFragment.newInstance(i,jsonStr))
             dots.add(i)
         }
         binding.inYouLike.apply {

@@ -2,10 +2,10 @@ package com.changanford.circle.viewmodel.circle
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.CircleMainBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CirceHomeBean
+import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
@@ -19,9 +19,9 @@ import com.changanford.common.utilext.toast
  * @Description : CircleViewModel
  */
 class NewCircleViewModel:BaseViewModel() {
-    //猜你喜欢
-    val youLikeData=MutableLiveData<CircleMainBean>()
     val cirCleHomeData=MutableLiveData<CirceHomeBean>()
+    //猜你喜欢
+    val youLikeData=MutableLiveData<MutableList<NewCircleBean>>()
     /**
      * 圈子首页
     * */
@@ -44,7 +44,7 @@ class NewCircleViewModel:BaseViewModel() {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().youLike(body.header(rKey), body.body(rKey)).also {
-//                youLikeData.postValue()
+                 it.data?.apply { youLikeData.postValue(this) }
                 }
         }, error = {
             it.message?.toast()

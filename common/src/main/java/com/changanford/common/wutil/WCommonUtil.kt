@@ -230,6 +230,12 @@ object WCommonUtil {
         return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_DOWN)
     }
     /**
+     * [newScale]几位小数 向上取
+     * */
+    fun getHeatNumUP(number:String,newScale:Int): BigDecimal {
+        return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_UP)
+    }
+    /**
      *以百分比方式计数 并保留两位小数
      * */
     fun getPercentage(number:Double):String {

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.NewCircleBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="重庆站"
+            android:text="@{model.cityName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             style="@style/w_style_txt_ellipsize" />
@@ -42,6 +45,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_width="0dp"
             tools:text="重庆车友圈"
+            android:text="@{model.description}"
             android:layout_height="wrap_content"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12"
@@ -54,6 +58,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="200成员"
             app:w_end_txt="@string/str_members"
+            android:text="@{model.userCount}"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_11"
             android:drawablePadding="@dimen/dp_1"

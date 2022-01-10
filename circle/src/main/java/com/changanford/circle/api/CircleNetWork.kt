@@ -425,6 +425,6 @@ interface CircleNetWork {
     /**
      * 猜你喜欢
      */
-    @POST("")
-    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<NewCircleBean>>
+    @POST("con/community/circleLike")
+    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<NewCircleBean>>
 }

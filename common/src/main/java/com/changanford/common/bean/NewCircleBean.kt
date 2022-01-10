@@ -54,6 +54,6 @@ data class NewCircleBean(
     val type: Any? = null,
     val updateBy: Any? = null,
     val updateTime: Long = 0,
-    val userCount: Int = 0,
+    val userCount: String? = "0",
     val userId: String = "0"
 )
