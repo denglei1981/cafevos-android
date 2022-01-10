@@ -305,14 +305,17 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             dots.add(i)
         }
         binding.inYouLike.apply {
-            val myAdapter=DotAdapter()
-            if(dots.size>1)myAdapter.setList(dots)
-            recyclerViewDot.adapter=myAdapter
+            var myAdapter:DotAdapter?=null
+            if(dots.size>1){
+                myAdapter=DotAdapter()
+                myAdapter.setList(dots)
+                recyclerViewDot.adapter=myAdapter
+            }
             viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    myAdapter.selectPosition(position)
+                    myAdapter?.selectPosition(position)
                 }
             })
 
