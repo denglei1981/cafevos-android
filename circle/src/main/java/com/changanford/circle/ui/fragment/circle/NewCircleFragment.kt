@@ -228,6 +228,21 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             }
         }
     }
+    /**
+     * 圈子PK
+    * */
+    @Composable
+    fun CirclePK(){
+        Column(modifier=Modifier.fillMaxWidth().padding(start = 20.dp,end = 20.dp,top = 30.dp)) {
+            Row(modifier=Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.str_circlePK),color = colorResource(R.color.color_34),fontSize = 16.sp,fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f))
+                Text(text = stringResource(R.string.str_all),color = colorResource(R.color.color_74889D),fontSize = 14.sp,
+                    modifier = Modifier.padding(end = 5.dp).clickable {  })
+                Image(painter = painterResource(R.mipmap.right_74889d),contentDescription = null)
+            }
+        }
+    }
     @Preview(backgroundColor = 0xffffff)
     @Composable
     fun PreviewUI(){

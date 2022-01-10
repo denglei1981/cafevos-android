@@ -22,4 +22,5 @@
     <string name="str_beautifulCircleJoin">漂亮的圈子头像可以吸引更多人加入哦~</string>
     <string name="str_circleTag">圈子标签</string>
     <string name="more">更多</string>
+    <string name="str_circlePK">圈子PK</string>
 </resources>
