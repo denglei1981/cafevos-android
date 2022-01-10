@@ -38,6 +38,7 @@ import com.changanford.circle.adapter.circle.MyCircleAdapter
 import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.ui.activity.CircleListActivity
+import com.changanford.circle.ui.activity.circle.HotListActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
@@ -64,8 +65,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             //换一批猜你喜欢的内容
 //            viewModel.getYouLikeData()
         }
+        binding.wtvAllHot.setOnClickListener {
+            //全部热门榜单
+            HotListActivity.start(0)
+        }
         binding.recyclerViewHot.adapter=hotListAdapter
-        hotListAdapter.setList(arrayListOf(0,1))
     }
 
     override fun initData() {
@@ -73,8 +77,12 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             binding.composeViewRecommended.setContent {
                 Column {
                     Spacer(modifier = Modifier.height(15.dp))
+                    //推荐圈子分类
                     RecommendedCompose(it.circleTypes)
+                    //我的圈子
                     MyCircleCompose(it.myCircles)
+                    //热门榜单
+                    it.topList?.apply {hotListAdapter.setList(this)}
                 }
             }
         })

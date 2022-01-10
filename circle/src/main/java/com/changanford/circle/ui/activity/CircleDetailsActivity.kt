@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -16,18 +15,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
-import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
-import com.changanford.circle.bean.ReportDislikeBody
-import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
@@ -35,31 +30,19 @@ import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
-import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
-import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
-import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -79,7 +62,15 @@ import kotlin.math.abs
  */
 @Route(path = ARouterCirclePath.CircleDetailsActivity)
 class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
-
+    companion object{
+        fun start(circleId:String?){
+            circleId?.apply {
+                val bundle = Bundle()
+                bundle.putString("circleId",this)
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+            }
+        }
+    }
     private var isWhite = true//是否是白色状态
 
     private var circleId = ""

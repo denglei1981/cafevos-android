@@ -54,7 +54,7 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
         if(defaultType>=tabNames.size||defaultType<0)defaultType=0
         initTabAndViewPager()
         initMagicIndicator()
-        binding.viewPager.currentItem = defaultType
+//        binding.viewPager.currentItem = defaultType
     }
 
     override fun initData() {}
