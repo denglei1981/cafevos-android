@@ -3,6 +3,7 @@ package com.changanford.circle.ui.fragment.circle
 import android.os.Bundle
 import com.changanford.circle.adapter.circle.YouLikeAdapter
 import com.changanford.circle.databinding.FragmentYoulikeBinding
+import com.changanford.circle.ui.activity.CircleDetailsActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCircleBean
@@ -31,6 +32,9 @@ class YouLikeFragment:BaseFragment<FragmentYoulikeBinding, NewCircleViewModel>()
         arguments?.getString("jsonStr",null)?.apply {
             val dataList: List<NewCircleBean> = Gson().fromJson(this, object : TypeToken<List<NewCircleBean?>?>() {}.type)
             myAdapter.setList(dataList)
+            myAdapter.setOnItemClickListener { _, _, position ->
+                CircleDetailsActivity.start( myAdapter.data[position].circleId)
+            }
         }
     }
     override fun initData() {}
