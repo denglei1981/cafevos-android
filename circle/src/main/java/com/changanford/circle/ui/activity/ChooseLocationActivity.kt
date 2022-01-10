@@ -162,6 +162,12 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         binding.title.barImgBack.setOnClickListener {
             finish()
         }
+        binding.tvLocation.setOnClickListener {
+            var intent= Intent()
+            intent.setClass(this,ChoiceAllCityActivity::class.java)
+            startActivity(intent)
+
+        }
     }
 
 

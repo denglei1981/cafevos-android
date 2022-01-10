@@ -19,7 +19,7 @@
     <string name="picture_empty">你可以使用相机拍摄照片或视频</string>
     <string name="picture_audio_empty">你可以使用系统录音录制音频</string>
     <string name="picture_min_img_num">图片最低选择不能少于%1$s张</string>
-    <string name="picture_gif_tag">动图</string>
+    <string name="picture_gif_tag">gif</string>
     <string name="picture_webp_tag">webp</string>
     <string name="picture_video_toast">视频不可预览</string>
     <string name="picture_jurisdiction">读取内存卡权限被拒绝</string>

@@ -148,7 +148,6 @@
         <attr name="titleTextSize" format="dimension" />
         <attr name="titleTextColor" format="color" />
         <attr name="titleText" format="string" />
-
         <attr name="image" format="reference|integer" />
     </declare-styleable>
     <style name="w_style_txt_ellipsize">
@@ -157,4 +156,8 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <declare-styleable name="CreateLocationText">
+        <attr name="locationTexts" format="string" />
+        <attr name="hintText" format="string" />
+    </declare-styleable>
 </resources>

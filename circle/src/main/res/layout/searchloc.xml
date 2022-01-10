@@ -71,9 +71,23 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp">
 
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:drawableEnd="@drawable/icon_location_drop"
+                android:drawablePadding="@dimen/dp_2"
+                android:text="重庆"
+                android:visibility="gone"
+                android:textColor="@color/color_33"
+                app:layout_constraintBottom_toBottomOf="@+id/etsearch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etsearch" />
+
             <EditText
                 android:id="@+id/etsearch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -84,14 +98,15 @@
                 android:drawablePadding="5dp"
                 android:hint="搜索附近位置"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp"
                 android:paddingTop="6dp"
+                android:paddingRight="5dp"
                 android:paddingBottom="6dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color"
                 android:textSize="12sp"
                 android:windowSoftInputMode="stateVisible"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_location"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
