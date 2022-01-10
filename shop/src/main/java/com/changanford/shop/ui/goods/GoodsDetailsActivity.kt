@@ -151,7 +151,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 }
             }
             //查看评价
-            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,spuId)
+            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(spuId)
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品

@@ -629,6 +629,12 @@ class JumpUtils {
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
+            111->{//商品评价
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("spuId", value)
+                    startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {
