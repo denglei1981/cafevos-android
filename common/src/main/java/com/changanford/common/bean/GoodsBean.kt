@@ -244,6 +244,7 @@ data class GoodsDetailBean(
     var isUpdateBuyNum:Boolean=true,//是否可以更改购买数量
     var vinCode:String?=null,//维保商品 VIN码
     var models:String?=null,//车型
+    var busSourse:String?=null,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0

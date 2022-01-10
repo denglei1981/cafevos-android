@@ -31,6 +31,7 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
+import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -63,6 +64,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+        spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
         initLiveDataBus()
     }
@@ -84,14 +86,17 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 bindingBaseData()
             })
         }
-        viewModel.addressList.observe(this,{ addressList ->
-            //默认获取地址列表的默认收货地址
-            val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
-            bindingAddress(item)
-        })
-        val addressInfo=dataBean.addressInfo
-        if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
-        else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+        //非维保商品 需要选择地址
+        if(WConstant.maintenanceType!=spuPageType){
+            viewModel.addressList.observe(this,{ addressList ->
+                //默认获取地址列表的默认收货地址
+                val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
+                bindingAddress(item)
+            })
+            val addressInfo=dataBean.addressInfo
+            if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
+            else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+        }
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
             val source=it.source
@@ -104,11 +109,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
-        spuPageType=dataBean.spuPageType
         //秒杀情况下 原价=现价
         if("SECKILL"==spuPageType){
             dataBean.orginPrice=dataBean.fbPrice
-        }else if(""==spuPageType){//维保商品
+        }else if(WConstant.maintenanceType==spuPageType){//维保商品
             manageMaintenance()
         }
         //购买数量
@@ -167,7 +171,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     * */
     private fun updateBtnUi(){
         dataBean.apply {
-            if(""==spuPageType){//维保商品
+            if(WConstant.maintenanceType==spuPageType){//维保商品
                 binding.inBottom.btnSubmit.updateEnabled(isAgree&&totalPayFb.toInt()<=acountFb)
             }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
 
