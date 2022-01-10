@@ -13,6 +13,8 @@ class YouLikeAdapter: BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<Item
     override fun convert(holder: BaseDataBindingHolder<ItemYoulikeBinding>, itemData: NewCircleBean) {
         holder.dataBinding?.apply {
             imgCover.load(itemData.pic)
+            model=itemData
+            executePendingBindings()
         }
     }
 }

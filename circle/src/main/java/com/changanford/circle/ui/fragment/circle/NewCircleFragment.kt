@@ -87,7 +87,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             }
         })
         viewModel.youLikeData.observe(this,{
-            bindingYouLike(it)
+            it?.apply {bindingYouLike(this)  }
         })
         viewModel.getCircleHomeData()
         viewModel.getYouLikeData()
@@ -241,7 +241,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                     modifier = Modifier.padding(end = 5.dp).clickable {  })
                 Image(painter = painterResource(R.mipmap.right_74889d),contentDescription = null)
             }
-
         }
     }
     @Composable
@@ -299,7 +298,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         val dots= arrayListOf<Int>()
         for (i in 0 until page){
             val startIndex=i*pageSize
-            val endIndex=(i+1)*pageSize
+            val endIndex=if(i!=page-1)(i+1)*pageSize else dataList.size
             val itemList=dataList.slice(startIndex until endIndex)
             val jsonStr=gson.toJson(itemList)
             fragments.add(YouLikeFragment.newInstance(i,jsonStr))
@@ -307,7 +306,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         }
         binding.inYouLike.apply {
             val myAdapter=DotAdapter()
-            myAdapter.setList(dots)
+            if(dots.size>1)myAdapter.setList(dots)
             recyclerViewDot.adapter=myAdapter
             viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

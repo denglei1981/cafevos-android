@@ -8,11 +8,18 @@ package com.changanford.common.bean
 data class CirceHomeBean(val circleTypes:ArrayList<NewCircleBean>?=null,
                          val myCircles:ArrayList<NewCircleBean>?=null,
                          val circlePK:ArrayList<NewCircleBean>?=null,
-                         val topList:ArrayList<CirCleHotList>?=null)
+                         val topList:ArrayList<CirCleHotList>?=null,
+                         val dataList:ArrayList<NewCircleBean>?=null)
 data class CirCleHotList(val topId:Int=0,val topName:String?=null,val circleTops:ArrayList<NewCircleBean>?=null)
 
 data class NewCirceTagBean(var id:String?=null,var isCheck:Boolean?=false,var tagName:String?=null)
-
+data class NewCircleDataBean(
+    val dataList:ArrayList<NewCircleBean>?=null,
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0
+)
 data class NewCircleBean(
     val id:String?=null,
     val name: String?=null,

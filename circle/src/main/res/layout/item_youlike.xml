@@ -23,6 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
@@ -33,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="重庆站"
-            android:text="@{model.cityName}"
+            android:text="@{model.name}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             style="@style/w_style_txt_ellipsize" />
