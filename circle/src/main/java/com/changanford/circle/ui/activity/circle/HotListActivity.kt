@@ -28,6 +28,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 /**
  * @Author : wenke
@@ -75,7 +76,6 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
 
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
-        binding.magicTab.setPadding(0, 0, 0, 2.toIntPx())
         magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
@@ -85,31 +85,34 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView = ScaleTransitionPagerTitleView(context)
-                simplePagerTitleView.gravity=Gravity.CENTER_HORIZONTAL
-                simplePagerTitleView.minScale = 1f
-                simplePagerTitleView.text = tabNames[index]
-                simplePagerTitleView.textSize = 15f
-                simplePagerTitleView.width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
-                simplePagerTitleView.setPadding(0, 0, 0, 3.toIntPx())
-                simplePagerTitleView.normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
-                simplePagerTitleView.selectedColor = ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
-                simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
-                return simplePagerTitleView
+                val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
+                simplePagerTitleView.apply {
+                    gravity=Gravity.CENTER_HORIZONTAL
+                    text = tabNames[index]
+                    textSize = 18f
+                    setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                    width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
+                    normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
+                    selectedColor = ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
+                    setOnClickListener { binding.viewPager.currentItem = index }
+                    return this
+                }
             }
 
             override fun getIndicator(context: Context): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight = UIUtil.dip2px(context, 3.0).toFloat()
-                indicator.lineWidth = UIUtil.dip2px(context, 22.0).toFloat()
-                indicator.roundRadius = UIUtil.dip2px(context, 1.5).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(
-                    ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
-                )
-                return indicator
+                LinePagerIndicator(context).apply {
+                    mode = LinePagerIndicator.MODE_EXACTLY
+                    lineHeight = UIUtil.dip2px(context, 3.0).toFloat()
+                    lineWidth = UIUtil.dip2px(context, 22.0).toFloat()
+                    roundRadius = UIUtil.dip2px(context, 1.5).toFloat()
+                    startInterpolator = AccelerateInterpolator()
+                    endInterpolator = DecelerateInterpolator(2.0f)
+                    setColors(
+                        ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
+                    )
+                    return this
+                }
+
             }
         }
         magicIndicator.navigator = commonNavigator
