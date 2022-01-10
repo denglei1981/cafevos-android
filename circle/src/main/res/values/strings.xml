@@ -23,4 +23,8 @@
     <string name="str_circleTag">圈子标签</string>
     <string name="more">更多</string>
     <string name="str_circlePK">圈子PK</string>
+    <string name="str_cycle">周期：</string>
+    <string name="str_inPk">PK中</string>
+    <string name="str_toPlayList">去打榜</string>
+    <string name="str_look">查看</string>
 </resources>

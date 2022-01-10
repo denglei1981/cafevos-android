@@ -2,7 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.content.Context
 import android.graphics.Color
-import android.view.Gravity
+import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -39,7 +39,14 @@ import kotlin.math.abs
  */
 @Route(path = ARouterCirclePath.CircleListActivity)
 class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListViewModel>() {
-
+    companion object{
+        fun start(typeId:String?="0"){
+            val bundle = Bundle()
+            bundle.putString("typeId", typeId?:"0")
+            startARouter(ARouterCirclePath.CircleListActivity,bundle)
+        }
+    }
+    private var typeId:String="0"//圈子分类ID 默认全部
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
@@ -48,6 +55,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 startARouter(ARouterMyPath.MineCircleUI, true)
             }
         }
+        typeId=intent.getStringExtra("typeId")?:"0"
         initListener()
     }
 
@@ -106,6 +114,9 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 runOnUiThread {
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
+                    val index=it.indexOfFirst {item->item.id.toString()==typeId}
+                    if(index>0)binding.viewPager.currentItem=index
+
                 }
             } else {
                 "没有圈子类型".toast()

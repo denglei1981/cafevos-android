@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -34,9 +35,9 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleHotListAdapter
 import com.changanford.circle.adapter.circle.DotAdapter
 import com.changanford.circle.adapter.circle.MyCircleAdapter
-import com.changanford.circle.bean.AllCircle
 import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.databinding.FragmentCircleNewBinding
+import com.changanford.circle.ui.activity.CircleListActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
@@ -69,19 +70,29 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
 
     override fun initData() {
         viewModel.circleBean.observe(this,{
+//            binding.composeViewRecommended.setContent {
+//                Column {
+//                    Spacer(modifier = Modifier.height(15.dp))
+//                    RecommendedCompose(it.allCircles)
+//                    val dataList= arrayListOf<NewCircleBean>()
+//                    for (i in 0..5){
+//                        dataList.add(NewCircleBean(circleId = "$i"))
+//                    }
+//                    MyCircleCompose(dataList)
+//                }
+//            }
+
+        })
+        viewModel.cirCleHomeData.observe(this,{
             binding.composeViewRecommended.setContent {
                 Column {
                     Spacer(modifier = Modifier.height(15.dp))
-                    RecommendedCompose(it.allCircles)
-                    val dataList= arrayListOf<NewCircleBean>()
-                    for (i in 0..5){
-                        dataList.add(NewCircleBean(circleId = "$i"))
-                    }
-                    MyCircleCompose(dataList)
+                    RecommendedCompose(it.circleTypes)
+                    MyCircleCompose(it.myCircles)
                 }
             }
-
         })
+        viewModel.getCircleHomeData()
         viewModel.youLikeData.observe(this,{
             bindingYouLike()
         })
@@ -92,34 +103,30 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
      * 推荐圈子
     * */
     @Composable
-    private fun RecommendedCompose(allCircles: ArrayList<AllCircle>){
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
-            items(allCircles){itemData->
-                Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
-                    if (itemData.circleId == 0) {
-                        startARouter(ARouterCirclePath.CircleListActivity)
-                    } else {
-                        val bundle = Bundle()
-                        bundle.putString("circleId", itemData.circleId.toString())
-                        startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+    private fun RecommendedCompose(allCircles: ArrayList<NewCircleBean>?){
+        allCircles?.let {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
+                items(allCircles){itemData->
+                    Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
+                            CircleListActivity.start(itemData.id)
+                        }){
+                        Image(
+                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.icon) ?: R.mipmap.head_default,
+                                builder = {
+                                    crossfade(false)
+                                    placeholder(R.mipmap.head_default)
+                                }),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(76.dp)
+                                .clip(CircleShape)
+                        )
+                        Spacer(modifier = Modifier.height(11.dp))
+                        Text(text = itemData.name?:"",textAlign = TextAlign.Center,color = colorResource(id = R.color.color_33),fontSize = 14.sp,
+                            modifier = Modifier.fillMaxWidth(),overflow = TextOverflow.Ellipsis,maxLines = 1)
                     }
-                }){
-                    Image(
-                        painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.pic) ?: R.mipmap.head_default,
-                            builder = {
-                                crossfade(false)
-                                placeholder(R.mipmap.head_default)
-                            }),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(76.dp)
-                            .clip(CircleShape)
-                    )
-                    Spacer(modifier = Modifier.height(11.dp))
-                    Text(text = itemData.name,textAlign = TextAlign.Center,color = colorResource(id = R.color.color_33),fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth(),overflow = TextOverflow.Ellipsis,maxLines = 1)
                 }
             }
         }
@@ -128,7 +135,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
      * 我的圈子
     * */
     @Composable
-    private fun MyCircleCompose(dataList:List<NewCircleBean>){
+    private fun MyCircleCompose(dataList:List<NewCircleBean>?){
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 30.dp)) {
@@ -138,11 +145,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 Text(text = stringResource(R.string.str_myCircle),fontSize = 16.sp,color = colorResource(R.color.color_34),
                     fontWeight = FontWeight.Bold,modifier = Modifier.weight(1f))
                 //查看更多圈子(我加入的圈子大于4个才显示更多入口)
-                if(dataList.size>4){
+                if(null!=dataList&&dataList.size>4){
                     Row(verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
-                        startARouter(ARouterMyPath.MineCircleUI, true)
-                    }) {
+                            startARouter(ARouterMyPath.MineCircleUI, true)
+                        }) {
                         Text(text = stringResource(R.string.str_more),fontSize = 14.sp,color = colorResource(R.color.color_74889D),modifier = Modifier.padding(end = 6.dp))
                         Image(painter = painterResource(R.mipmap.right_74889d), contentDescription =null)
                     }
@@ -150,7 +157,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             }
             Spacer(modifier = Modifier.height(16.dp))
             //未加入任何圈子
-            if(dataList.isEmpty()){
+            if(null==dataList||dataList.isEmpty()){
                 Column(verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)) {
@@ -181,7 +188,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     @Composable
     private fun ItemMyCircle(dataList:List<NewCircleBean>){
         val dataListSize=dataList.size
-//        val validDataList=if(dataListSize<5)dataList else dataList.slice(0 until 4)
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 10.dp)) {
@@ -206,7 +212,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                     crossfade(false)
                                     placeholder(R.mipmap.head_default)
                                 }), contentDescription =null,contentScale = ContentScale.Crop,
-                                modifier = Modifier.clip(RoundedCornerShape(5.dp))
+                                modifier = Modifier.fillMaxWidth().fillMaxHeight().clip(RoundedCornerShape(5.dp))
                             )
                             Box(contentAlignment = Alignment.Center,modifier = Modifier
                                 .height(27.dp)
@@ -218,7 +224,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                 Text(modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 5.dp, end = 5.dp),
-                                    text = itemData.cityName?:"-------",color = Color.White,fontSize = 12.sp,textAlign = TextAlign.Center,
+                                    text = itemData.name?:"",color = Color.White,fontSize = 12.sp,textAlign = TextAlign.Center,
                                     maxLines = 1,overflow = TextOverflow.Ellipsis
                                 )
                             }
@@ -240,6 +246,31 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 Text(text = stringResource(R.string.str_all),color = colorResource(R.color.color_74889D),fontSize = 14.sp,
                     modifier = Modifier.padding(end = 5.dp).clickable {  })
                 Image(painter = painterResource(R.mipmap.right_74889d),contentDescription = null)
+            }
+
+        }
+    }
+    @Composable
+    fun CirclePkItem(itemData:NewCircleBean?){
+        Row(modifier = Modifier.fillMaxWidth()){
+            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData?.pic) ?: R.mipmap.head_default,
+                builder = {placeholder(R.mipmap.head_default)}),
+                contentDescription =null,contentScale = ContentScale.Crop,modifier = Modifier.size(77.dp).clip(RoundedCornerShape(5.dp))
+            )
+            Spacer(modifier = Modifier.width(11.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "",color = colorResource(R.color.color_2d),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = "${stringResource(R.string.str_cycle)}----",color = colorResource(R.color.color_74889D),fontSize = 11.sp)
+                Spacer(modifier = Modifier.weight(1f))
+                //按钮状态 PK中 未开始 已结束
+                Box(contentAlignment = Alignment.Center,modifier = Modifier.defaultMinSize(minWidth = 45.dp,minHeight = 18.dp)
+                    .background(colorResource(R.color.color_F2F4F9),shape = RoundedCornerShape(2.5.dp))){
+                    Text(text = stringResource(R.string.str_inPk),color = colorResource(R.color.color_00095B),fontSize = 12.sp)
+                }
+            }
+            Button(contentPadding = PaddingValues(12.dp,6.dp),shape = RoundedCornerShape(12.dp),modifier = Modifier.background(colorResource(R.color.color_00095B)),onClick = {}){
+                Text(stringResource(R.string.str_toPlayList),fontSize = 12.sp,color = Color.White,)
             }
         }
     }

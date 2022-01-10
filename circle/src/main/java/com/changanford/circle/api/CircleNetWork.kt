@@ -1,7 +1,9 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
+import com.changanford.common.bean.CirceHomeBean
 import com.changanford.common.bean.LocationDataBean
+import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
@@ -415,10 +417,14 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleTypesBean>>
-
+    /**
+     * 圈子首页
+    * */
+    @POST("con/community/circle")
+    suspend fun circleHome(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CirceHomeBean>
     /**
      * 猜你喜欢
      */
     @POST("")
-    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<*>>
+    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<NewCircleBean>>
 }
