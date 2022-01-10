@@ -153,8 +153,11 @@ object MConstant {
      * %s
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
-    val H5_SHOP_BARGAINING =
-        "${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+    val H5_SHOP_BARGAINING ="${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+    /**
+     * 维保商品订单详情 /#/maintain/maintainDetail?orderNo=
+    * */
+    val H5_SHOP_MAINTENANCE ="${H5_BASE_URL_ACTIVITY}/maintain/maintainDetail?orderNo==%s"
 
     var isFirstOpenTwoLevel = true // 是首次打开二楼
 }

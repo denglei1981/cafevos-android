@@ -10,6 +10,7 @@ import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
@@ -107,15 +108,17 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         binding.btnSubmit.setStates(11)
     }
     fun btnSubmit(v:View){
-        dataBean?.let {
+        dataBean?.apply {
             if(!isClickSubmit){
                 isClickSubmit=true
                 when(binding.btnSubmit.text){
-                    getString(R.string.str_payConfirm)-> viewModel.fbPay(it.orderNo)
+                    getString(R.string.str_payConfirm)-> viewModel.fbPay(orderNo)
                     getString(R.string.str_orderDetails)->{
-                        OrderDetailsActivity.start(it.orderNo)
+                        if("3"==busSourse){//维保商品订单详情
+                            JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+                        }else OrderDetailsActivity.start(orderNo)
                         isClickSubmit=false
-                        if(isPaySuccessful)this.finish()
+                        if(isPaySuccessful)this@PayConfirmActivity.finish()
                     }
                 }
             }
