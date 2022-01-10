@@ -6,9 +6,10 @@ import com.changanford.circle.bean.CircleMainBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CirceHomeBean
-import com.changanford.common.net.*
-import com.changanford.common.util.bus.CircleLiveBusKey
-import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -18,7 +19,6 @@ import com.changanford.common.utilext.toast
  * @Description : CircleViewModel
  */
 class NewCircleViewModel:BaseViewModel() {
-    val circleBean = MutableLiveData<CircleMainBean>()
     //猜你喜欢
     val youLikeData=MutableLiveData<CircleMainBean>()
     val cirCleHomeData=MutableLiveData<CirceHomeBean>()
@@ -30,27 +30,9 @@ class NewCircleViewModel:BaseViewModel() {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().circleHome(body.header(rKey), body.body(rKey)).also {
-                cirCleHomeData.postValue(it.data)
+                it.data?.apply {cirCleHomeData.postValue(this)  }
             }
         }, error = {
-            it.message?.toast()
-        })
-    }
-
-    fun communityIndex(lng: Double? = null, lat: Double? = null) {
-        launch(block = {
-            val body = MyApp.mContext.createHashMap()
-            lng?.let { body["lng"] = lng }
-            lat?.let { body["lat"] = lat }
-
-            val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>()
-                .communityIndex(body.header(rKey), body.body(rKey)).onSuccess {
-                    circleBean.value = it
-                }
-
-        }, error = {
-            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
             it.message?.toast()
         })
     }

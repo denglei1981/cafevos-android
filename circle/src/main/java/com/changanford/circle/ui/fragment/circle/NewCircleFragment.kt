@@ -69,20 +69,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     }
 
     override fun initData() {
-        viewModel.circleBean.observe(this,{
-//            binding.composeViewRecommended.setContent {
-//                Column {
-//                    Spacer(modifier = Modifier.height(15.dp))
-//                    RecommendedCompose(it.allCircles)
-//                    val dataList= arrayListOf<NewCircleBean>()
-//                    for (i in 0..5){
-//                        dataList.add(NewCircleBean(circleId = "$i"))
-//                    }
-//                    MyCircleCompose(dataList)
-//                }
-//            }
-
-        })
         viewModel.cirCleHomeData.observe(this,{
             binding.composeViewRecommended.setContent {
                 Column {
@@ -96,7 +82,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         viewModel.youLikeData.observe(this,{
             bindingYouLike()
         })
-        viewModel.communityIndex()
 //        bindingMyCircle()
     }
     /**
