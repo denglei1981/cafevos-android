@@ -42,6 +42,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         fun start(spuId:String) {
             JumpUtils.instans?.jump(3,spuId)
         }
+        fun start(jumpDataType:Int,jumpDataValue:String?) {
+            JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+        }
         fun start(context: Context,isRefresh:Boolean) {
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("isRefresh",isRefresh))
         }

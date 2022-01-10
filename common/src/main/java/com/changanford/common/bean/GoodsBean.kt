@@ -40,8 +40,6 @@ data class GoodsItemBean(
     val isOwner: Int = 0,
     val isSeckill: Int = 0,
     val isSingleSpec: Int = 0,
-    val jumpDataType: Int = 0,
-    val jumpDataValue: String = "",
     val jumpTargetName: Any? = null,
     val originalPrice: Int = 0,
     val originalPriceIntegral: Int = 0,
@@ -118,6 +116,8 @@ data class GoodsItemBean(
     var sekillCount: Int = 0,
     var totalStock: Int = 1,
     var secondarySpuPageTagType: String? = "",
+    val jumpDataType: Int? = 3,
+    val jumpDataValue: String? = null,
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
@@ -127,6 +127,12 @@ data class GoodsItemBean(
             return true
         }
         return false
+    }
+    fun getJdType():Int{
+        return jumpDataType?:3
+    }
+    fun getJdValue():String{
+        return jumpDataValue?:mallMallSpuId
     }
 }
 
@@ -407,8 +413,8 @@ data class OrderItemBean(
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType: Int = 0,
-    val jumpDataType: Int = 0,
-    val jumpDataValue: String = "",
+    val jumpDataType: Int? = 3,
+    val jumpDataValue: String? = null,
     val orderBrief: String = "",
     val orderImg: String = "",
     var orderStatusName: String? = "",

@@ -56,7 +56,10 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         addObserve()
         mAdapter.setOnItemClickListener { _, _, position ->
-            GoodsDetailsActivity.start(mAdapter.data[position].spuId)
+            mAdapter.data[position].apply {
+//                GoodsDetailsActivity.start(spuId)
+                GoodsDetailsActivity.start(getJdType(),jumpDataValue?:spuId)
+            }
 //            if("ON_GOING"==mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
         }
     }
