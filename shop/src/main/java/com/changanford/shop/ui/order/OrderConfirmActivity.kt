@@ -198,7 +198,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
             dataBean.apply {
-                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId)
+                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode)
             }
         }
         GlobalScope.launch {
@@ -248,7 +248,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         Column(modifier = Modifier
             .fillMaxWidth()
             .background(Color.White).padding(bottom = 17.dp)) {
-            Spacer(modifier = Modifier
+            Spacer(modifier = Modifier.fillMaxWidth()
                 .height(10.dp)
                 .background(colorResource(R.color.color_F4)))
             for (i in 0..1){//0 vin码 1车型

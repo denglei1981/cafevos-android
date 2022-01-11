@@ -96,6 +96,7 @@ data class GoodsItemBean(
     var spuImgs: String = "",
     val spuNew: Any? = null,
     var spuPageTagType: String = "",
+    var spuPageType: String = "",
     val spuStatus: String = "",
     val stock: Int = 0,
     val updateBy: Any? = null,
@@ -149,7 +150,7 @@ data class GoodsItemBean(
         secondName=goodsNameSecond
         normalFb=fbPrice?:"0"
 //        spuId=mallWbGoodsId?:"0"
-        spuPageTagType="MAINTENANCE"//标识为维保商品
+        spuPageType="MAINTENANCE"//标识为维保商品
     }
 }
 
@@ -213,7 +214,7 @@ data class GoodsDetailBean(
     val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",
     var skuVos: ArrayList<SkuVo> = ArrayList(),
-    val spuPageType: String = "",
+    var spuPageType: String = "",
     var stock: Int = 0,
     var allSkuStock: Int = 0,//sku库存之和
     val mallOrderEval: CommentItem? = null,

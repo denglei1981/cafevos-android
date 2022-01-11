@@ -44,7 +44,8 @@ class OrderViewModel: BaseViewModel() {
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * [mallMallSkuSpuSeckillRangeId]秒杀的skuId
      * [mallMallHaggleUserGoodsId]发起砍价id
-     * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品
+     * [vinCode]维保商品 vin码
+     * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品 3维保商品
      * */
     fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",
                     mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,vinCode:String?=null,payType:String="FB_PAY"){
