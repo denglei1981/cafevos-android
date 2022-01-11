@@ -48,7 +48,7 @@ class OrderViewModel: BaseViewModel() {
      * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品 3维保商品
      * */
     fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",
-                    mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,vinCode:String?=null,payType:String="FB_PAY"){
+                    mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:String="FB_PAY"){
         body.clear()
         var buySource=0
         var skuId=_skuId
@@ -67,7 +67,7 @@ class OrderViewModel: BaseViewModel() {
             }
             WConstant.maintenanceType->{//维保商品
                 buySource=3
-                body["mallMallWbVinSpuId"]= _skuId
+                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
                 body["vin"]= vinCode?:""
             }
         }
