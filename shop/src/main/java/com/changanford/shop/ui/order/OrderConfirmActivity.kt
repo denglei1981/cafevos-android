@@ -64,6 +64,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+//        dataBean.spuPageType="MAINTENANCE"
         spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
         initLiveDataBus()
