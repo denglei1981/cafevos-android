@@ -255,7 +255,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp,top = if(0==i)19.dp else 29.dp)) {
-                    Text(text = stringResource(if(0==i)R.string.str_vidCode else R.string.str_models),color= colorResource(R.color.color_33),fontSize = 14.sp,
+                    Text(text = stringResource(if(0==i)R.string.str_vinCode else R.string.str_models),color= colorResource(R.color.color_33),fontSize = 14.sp,
                     modifier = Modifier.weight(1f).padding(end = 10.dp))
                     Text(text = if(0==i)dataBean.vinCode?:"" else dataBean.models?:"",color= colorResource(R.color.color_33),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
                 }
