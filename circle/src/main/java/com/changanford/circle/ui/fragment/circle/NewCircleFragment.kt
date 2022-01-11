@@ -46,6 +46,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.AnimatorUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.google.gson.Gson
 
@@ -57,11 +58,13 @@ import com.google.gson.Gson
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
+    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
         binding.inMyCircle.wtvMore.setOnClickListener {
             startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
         }
         binding.inYouLike.wtvInBatch.setOnClickListener {
+            animatorUtil.resumeAnimator()
             //换一批猜你喜欢的内容
             viewModel.getYouLikeData()
         }
@@ -88,9 +91,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         })
         viewModel.youLikeData.observe(this,{
             it?.apply {bindingYouLike(this)  }
+            animatorUtil.stopAnimator()
         })
         viewModel.getCircleHomeData()
         viewModel.getYouLikeData()
+        animatorUtil.rotateAnimation()
 //        bindingMyCircle()
     }
     /**
@@ -320,6 +325,10 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             })
 
         }
+    }
 
+    override fun onStop() {
+        super.onStop()
+        animatorUtil.stopAnimator()
     }
 }
