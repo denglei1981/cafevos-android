@@ -629,10 +629,16 @@ class JumpUtils {
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
-            111->{//商品评价
+            111->{//商品评价列表
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("spuId", value)
                     startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
+                }
+            }
+            112->{//商品订单评价
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("orderNo", value)
+                    startARouter(ARouterShopPath.OrderEvaluationActivity, bundle, true)
                 }
             }
             10000 -> {

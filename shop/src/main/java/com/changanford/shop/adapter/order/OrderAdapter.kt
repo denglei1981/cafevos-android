@@ -123,7 +123,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 dataBinding.btnConfirm.apply {
                     visibility=View.VISIBLE
                     setText(R.string.str_eval)
-                    setOnClickListener { OrderEvaluationActivity.start(context,item.orderNo) }
+                    setOnClickListener { OrderEvaluationActivity.start(item.orderNo) }
                 }
             }else{
                 when(orderStatus){
