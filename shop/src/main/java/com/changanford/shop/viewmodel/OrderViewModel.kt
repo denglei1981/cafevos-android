@@ -73,14 +73,16 @@ class OrderViewModel: BaseViewModel() {
         }
         viewModelScope.launch {
           fetchRequest (true){
-                body["skuId"]=skuId
-                body["busSourse"]=buySource
-                body["buyNum"]=buyNum
-                body["consumerMsg"]=consumerMsg?:""
-                body["payType"]=payType
-                body["addressId"]=addressId?:"0"
-                val randomKey = getRandomKey()
-                shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
+              body["busSourse"]=buySource
+              body["buyNum"]=buyNum
+              body["consumerMsg"]=consumerMsg?:""
+              body["payType"]=payType
+              if(3!=buySource){
+                  body["skuId"]=skuId
+                  body["addressId"]=addressId?:"0"
+              }
+              val randomKey = getRandomKey()
+              shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
               orderInfoLiveData.postValue(it)
             }.onWithMsgFailure {
