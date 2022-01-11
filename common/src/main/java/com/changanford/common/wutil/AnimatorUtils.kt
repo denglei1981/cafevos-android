@@ -23,7 +23,8 @@ class AnimatorUtils (val view: View){
     private var maxCount=5//最大执行周期
     private var count=0
     fun rotateAnimation() {
-        rotate = RotateAnimation(0f,360f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f).apply {
+        //逆时针旋转
+        rotate = RotateAnimation(360f,0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f).apply {
             val lin = LinearInterpolator()
             interpolator = lin
             duration = durationTime//设置动画持续周期
@@ -60,8 +61,8 @@ class AnimatorUtils (val view: View){
     private val handler: Handler = object : Handler(Looper.myLooper()!!) {
         override fun handleMessage(msg: Message) {
             if(isStop||maxCount==count){
-                count=0
                 rotate?.cancel()
+                count=0
                 isStop=true
             }else {
                 this.sendEmptyMessageDelayed(1, durationTime)
