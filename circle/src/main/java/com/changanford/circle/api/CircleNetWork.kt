@@ -1,10 +1,8 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
-import com.changanford.common.bean.CirceHomeBean
-import com.changanford.common.bean.LocationDataBean
-import com.changanford.common.bean.NewCircleDataBean
-import com.changanford.common.bean.PostBean
+import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -427,4 +425,14 @@ interface CircleNetWork {
      */
     @POST("con/community/circleLike")
     suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    /**
+     * 热门榜单分类
+     */
+    @POST("con/community/circleTop")
+    suspend fun circleHotTypes(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<CirCleHotList>>
+    /**
+     * 热门榜单列表
+     */
+    @POST("con/community/circleTopList")
+    suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<CirCleHotList>>
 }
