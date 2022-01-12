@@ -65,7 +65,7 @@ class CircleRecommendFragment :
         binding.ryCircle.adapter = adapter
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getData(type, page)
+            viewModel.getRecommendPostData(type, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
             val bundle = Bundle()
@@ -79,7 +79,7 @@ class CircleRecommendFragment :
     }
 
     override fun initData() {
-        viewModel.getData(type, 1)
+        viewModel.getRecommendPostData(type, 1)
     }
 
     var headerBinding : LayoutCircleHeaderHotTopicBinding?=null
@@ -114,7 +114,7 @@ class CircleRecommendFragment :
     }
     override fun observe() {
         super.observe()
-        viewModel.circleBean.observe(this, {
+        viewModel.recommondBean.observe(this, {
             if (page == 1) {
                 binding.refreshLayout.finishRefresh()
                 adapter.setList(it.dataList)
@@ -157,7 +157,7 @@ class CircleRecommendFragment :
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         page = 1
-        viewModel.getData(type, page)
+        viewModel.getRecommendPostData(type, page)
 
     }
 }

@@ -24,6 +24,8 @@ class CircleDetailsViewModel : BaseViewModel() {
 
     val circleBean = MutableLiveData<PostBean>()
 
+    val recommondBean = MutableLiveData<PostBean>()
+
     val listBean = MutableLiveData<PostBean>()
 
     val joinBean = MutableLiveData<CommonResponse<Any>>()
@@ -50,6 +52,25 @@ class CircleDetailsViewModel : BaseViewModel() {
                 .onFailure { }
         })
     }
+
+
+    fun getRecommendPostData(viewType: Int, page: Int) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = page
+            body["pageSize"] = 20
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["viewType"] = viewType
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getRecommendPosts(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    recommondBean.value = it
+                }
+                .onFailure { }
+        })
+    }
+
 
     fun getListData(viewType: Int, topicId: String, circleId: String, page: Int) {
         launch(block = {

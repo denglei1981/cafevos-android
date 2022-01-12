@@ -36,6 +36,13 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<PostBean>
 
+
+    @POST("con/community/recommendPosts")
+    suspend fun getRecommendPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
     /**
      * 获取话题列表
      */
