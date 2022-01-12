@@ -434,5 +434,5 @@ interface CircleNetWork {
      * 热门榜单列表
      */
     @POST("con/community/circleTopList")
-    suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<CirCleHotList>>
+    suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
 }

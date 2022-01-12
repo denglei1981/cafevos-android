@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.NewCircleBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="美食街区"
+            android:text="@{model.name}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15" />
         <com.changanford.common.ui.view.WTextView
@@ -56,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="唯有美食不可辜负"
+            android:text="@{model.description}"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_13" />
         <androidx.recyclerview.widget.RecyclerView

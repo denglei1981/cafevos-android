@@ -17,6 +17,7 @@ import com.changanford.circle.ui.fragment.circle.HotListFragment
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
@@ -40,33 +41,38 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
     companion object{
         fun start(type:Int=0){
             val bundle=Bundle()
-            bundle.putInt("type", type)
+            bundle.putInt("topId", type)
             RouterManger.startARouter(ARouterCirclePath.HotListActivity,bundle)
         }
     }
-    private val tabNames= arrayListOf("热门车型圈","热门车友圈","热门生活圈")
-    private var defaultType=0
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
             ivBack.setOnClickListener { finish() }
         }
-        defaultType=intent.getIntExtra("type",0)
-        if(defaultType>=tabNames.size||defaultType<0)defaultType=0
-        initTabAndViewPager()
-        initMagicIndicator()
-//        binding.viewPager.currentItem = defaultType
     }
 
-    override fun initData() {}
-    private fun initTabAndViewPager() {
+    override fun initData() {
+        val defaultTopId=intent.getIntExtra("topId",0)
+        viewModel.hotTypesData.observe(this,{
+            it?.apply {
+                initTabAndViewPager(this)
+                initMagicIndicator(this)
+                val index= indexOfFirst { item->item.topId==defaultTopId }
+                if(index>0)binding.viewPager.currentItem = index
+            }
+
+        })
+        viewModel.getHotTypes()
+    }
+    private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
         binding.viewPager.apply {
             adapter = object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getCount(): Int {
-                    return tabNames.size
+                    return tabs.size
                 }
                 override fun getItem(position: Int): Fragment {
-                    return HotListFragment.newInstance(position)
+                    return HotListFragment.newInstance(tabs[position].topId)
                 }
 
             }
@@ -74,21 +80,21 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
         }
     }
 
-    private fun initMagicIndicator() {
+    private fun initMagicIndicator(tabs:MutableList<CirCleHotList>) {
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getCount(): Int {
-                return tabNames.size
+                return tabs.size
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.apply {
                     gravity=Gravity.CENTER_HORIZONTAL
-                    text = tabNames[index]
+                    text = tabs[index].topName
                     textSize = 18f
                     setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
                     width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
