@@ -146,6 +146,7 @@
     <string name="str_cancelledCollection">取消收藏</string>
     <string name="str_seckill">秒杀</string>
     <string name="str_bargaining">砍价</string>
+    <string name="str_maintenance">维保</string>
     <string name="str_addressChangedSuccessfully">地址修改成功</string>
     <string name="str_unselectedAttribute">未选择属性</string>
     <string name="str_000000">00:00:00</string>
