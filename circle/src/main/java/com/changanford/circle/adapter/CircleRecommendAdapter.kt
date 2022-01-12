@@ -91,8 +91,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutOne.conOne.visibility = View.VISIBLE
                 binding.layoutOne.ivPlay.visibility=View.VISIBLE
                 binding.ivNine.visibility=View.GONE
+                binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
+                binding.layoutOne.tvVideoTimes.text=item.videoTime.toString()
             } else {
                 binding.layoutOne.ivPlay.visibility=View.GONE
+                binding.layoutOne.tvVideoTimes.visibility=View.GONE
+                binding.layoutOne.tvVideoTimes.text=""
             }
 
             if (item.city.isNullOrEmpty()) {
