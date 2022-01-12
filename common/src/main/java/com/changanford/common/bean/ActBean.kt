@@ -203,6 +203,7 @@ data class PostDataBean(
     val viewsCount: Long = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0,
+    val picList: List<String>? = null,
 
 ) {
     fun getCommentCountAnViewCount(): String {
@@ -233,13 +234,14 @@ data class PostDataBean(
         return timeAndViewCountResult
     }
 
-    fun getPicList():List<String>{
+    fun getPicsList():List<String>{
         if (!TextUtils.isEmpty(pics)) {
             val asList =pics.split(",")
             return asList
         }
         return mutableListOf()
     }
+
 
 
 

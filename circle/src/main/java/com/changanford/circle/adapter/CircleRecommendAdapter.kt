@@ -95,9 +95,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutOne.ivPlay.visibility=View.GONE
             }
 
-
-
-
             if (item.city.isNullOrEmpty()) {
                 binding.layoutCount.tvLocation.visibility = View.GONE
             } else {
@@ -110,8 +107,8 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 //                binding.ivVery.visibility = View.GONE
 //            }
 
-            val picList = item.getPicList()
-            if (picList.isNotEmpty()) {
+            val picList = item.picList
+            if (picList?.isEmpty() == false) {
 
 //                val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
 //                picList.forEach {
@@ -131,12 +128,17 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             val imageInfo = ImageInfo()
                             imageInfo.bigImageUrl = it
                             imageInfo.thumbnailUrl = it
+                            item.postsId.let {tid->
+                                imageInfo.postId=tid.toString()
+                            }
+
                             imageInfoList.add(imageInfo)
                         }
-                        val assNineAdapter = AssNineGridViewAdapter(context, imageInfoList)
+                        val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
                         binding.ivNine.setAdapter(assNineAdapter)
                         binding.ivNine.visibility=View.VISIBLE
                         binding.layoutOne.ivPlay.visibility=View.GONE
+                        binding.layoutOne.conOne.visibility=View.GONE
                     }
                     picList.size==1 -> {
                         binding.ivNine.visibility=View.GONE
@@ -148,8 +150,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.layoutOne.conOne.visibility=View.GONE
                     }
                 }
-
-
 
             }else{
                 binding.ivNine.visibility=View.GONE

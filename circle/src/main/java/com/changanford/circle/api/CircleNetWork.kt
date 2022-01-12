@@ -1,6 +1,7 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CircleListBean
 import com.changanford.common.bean.LocationDataBean
 import com.changanford.common.bean.PostBean
@@ -42,6 +43,7 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<PostBean>
+
 
     /**
      * 获取话题列表
@@ -317,6 +319,14 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<CircleMainBean>
 
+
+    @POST("/con/community/recommend")
+    suspend fun communityTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMainBean>
+
+
     /**
      * 管理员列表
      */
@@ -424,4 +434,10 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleTypesBean>>
+
+    @POST("con/ads/list")
+    suspend fun getRecommendTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<AdBean>>
 }

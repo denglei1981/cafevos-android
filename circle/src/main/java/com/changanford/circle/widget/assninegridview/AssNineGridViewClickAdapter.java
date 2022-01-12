@@ -1,11 +1,16 @@
 package com.changanford.circle.widget.assninegridview;
 
+import static com.changanford.common.router.ARouterNavigationKt.startARouter;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+
+import com.changanford.common.router.path.ARouterCirclePath;
 
 import java.io.Serializable;
 import java.util.List;
@@ -45,13 +50,13 @@ public class AssNineGridViewClickAdapter extends AssNineGridViewAdapter {
             info.imageViewY = points[1] - statusHeight;
         }
         // TODO 预览
-//        Intent intent = new Intent(context, AssImgPreviewActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("imageInfo", (Serializable) imageInfo);
-//        bundle.putInt("currentIndex", index);
-//        intent.putExtras(bundle);
-//        context.startActivity(intent);
-//        ((Activity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        String topicId = imageInfo.get(0).postId;
+        if(!TextUtils.isEmpty(topicId)){
+            Bundle bundle =new  Bundle();
+            bundle.putString("postsId", imageInfo.get(0).postId);
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle);
+        }
+
     }
 
     /**
