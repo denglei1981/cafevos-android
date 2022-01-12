@@ -48,24 +48,28 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
     private fun isJoin(btnJoin: AppCompatButton, item: ChoseCircleBean){
         btnJoin.apply {
             visibility= View.VISIBLE
-            if ("NO"==item.isJoin) {//未加入
-                setText(R.string.str_join)
-                setBackgroundResource(R.drawable.shadow_00095b_12dp)
-                isEnabled=true
-                setOnClickListener {
-                    //申请加入圈子
-                    viewModel.joinCircle(item.circleId,object :OnPerformListener{
-                        override fun onFinish(code: Int) {
-//                            item.isJoin =if (item.isJoin == "YES") "NO" else "YES"
-//                            isJoin(btnJoin,item)
-                            context.getString(R.string.str_appliedForMembership).toast()
-                        }
-                    })
+            when (item.isJoin) {
+                "NO" -> {//未加入
+                    setText(R.string.str_join)
+                    setBackgroundResource(R.drawable.shadow_00095b_12dp)
+                    isEnabled=true
+                    setOnClickListener {
+                        //申请加入圈子
+                        viewModel.joinCircle(item.circleId,object :OnPerformListener{
+                            override fun onFinish(code: Int) {
+        //                            item.isJoin =if (item.isJoin == "YES") "NO" else "YES"
+        //                            isJoin(btnJoin,item)
+                                context.getString(R.string.str_appliedForMembership).toast()
+                            }
+                        })
+                    }
                 }
-            }else{
-                isEnabled=false
-                setText(R.string.str_hasJoined)
-                setBackgroundResource(R.drawable.shadow_dd_12dp)
+                "YES" -> {
+                    isEnabled=false
+                    setText(R.string.str_hasJoined)
+                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+                }
+                else -> visibility= View.GONE
             }
         }
 
