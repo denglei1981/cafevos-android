@@ -46,6 +46,7 @@ data class CircleItemBean(
     val checkNoReason: String = "", //审核不通过原因
     var typeStr: String,//圈子角色名称
     var isShowTitle: Boolean = false,//是否为圈子角色
+    var tags:List<NewCirceTagBean>?=null,
 
 ) : MultiItemEntity,Serializable
 
