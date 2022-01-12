@@ -6,7 +6,6 @@ import com.changanford.circle.databinding.FragmentHotlistBinding
 import com.changanford.circle.ui.activity.CircleDetailsActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.wutil.FlowLayoutManager
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
@@ -31,10 +30,7 @@ class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>()
     private val mAdapter by lazy { CircleTopAdapter() }
     override fun initView() {
         binding.srl.setOnRefreshLoadMoreListener(this)
-        binding.recyclerView.apply {
-            layoutManager= FlowLayoutManager(requireContext(),true,true)
-            adapter=mAdapter
-        }
+        binding.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
             CircleDetailsActivity.start( mAdapter.data[position].circleId)
         }

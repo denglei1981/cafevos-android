@@ -27,15 +27,16 @@
             android:gravity="center"
             tools:text="1"
             android:textColor="@color/color_FC5E42"
-            android:textSize="@dimen/sp_17" />
+            android:textSize="@dimen/sp_17"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_cover"
+            android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/wtv_ranking"
             android:layout_marginStart="@dimen/dp_10"
             tools:background="@color/color_00095B"
             android:layout_width="@dimen/dp_60"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_60"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
@@ -43,7 +44,8 @@
             style="@style/w_style_txt_ellipsize"
             app:layout_constraintTop_toTopOf="@id/img_cover"
             app:layout_constraintStart_toEndOf="@id/img_cover"
-            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="美食街区"
             android:text="@{model.name}"
@@ -56,7 +58,8 @@
             app:layout_constraintStart_toStartOf="@id/wtv_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="唯有美食不可辜负"
             android:text="@{model.description}"

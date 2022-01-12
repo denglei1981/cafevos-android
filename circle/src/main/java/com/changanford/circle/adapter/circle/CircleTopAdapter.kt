@@ -17,7 +17,7 @@ class CircleTopAdapter: BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<It
             val position=holder.absoluteAdapterPosition
             imgCover.load(item.pic)
             wtvRanking.apply {
-                text="$position"
+                text="${position+1}"
                 setTextColor(ContextCompat.getColor(context,if(position<3)R.color.color_FC5E42 else R.color.color_D1D2D7))
             }
             item.tags?.let {tags->

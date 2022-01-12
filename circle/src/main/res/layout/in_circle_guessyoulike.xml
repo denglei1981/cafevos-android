@@ -9,12 +9,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginTop="@dimen/dp_30"
-        android:layout_marginStart="@dimen/dp_20"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerView_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.changanford.common.ui.view.WTextView
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/wtv_guessYouLike"
