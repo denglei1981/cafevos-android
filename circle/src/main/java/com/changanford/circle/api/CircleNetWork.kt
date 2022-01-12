@@ -55,7 +55,7 @@ interface CircleNetWork {
     /**
      * 获取圈子
      */
-    @POST("con/circle/getAllTypeCircles")
+    @POST("con/community/circleAllTypeList")
     suspend fun getAllTypeCircles(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -410,7 +410,7 @@ interface CircleNetWork {
     /**
      * 圈子类型
      */
-    @POST("con/circle/circleTypes")
+    @POST("con/community/circleAllType")
     suspend fun circleTypes(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

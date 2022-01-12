@@ -15,6 +15,7 @@ import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 
 /**
@@ -35,8 +36,7 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
             isJoin(btnJoin,item)
             item.tags?.apply {
                 recyclerView.layoutManager=FlowLayoutManager(context,true,true)
-                TagAdapter().apply {
-                    recyclerView.adapter= this
+                recyclerView.adapter=TagAdapter().apply {
                     setList(item.tags)
                 }
             }
@@ -48,7 +48,7 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
     private fun isJoin(btnJoin: AppCompatButton, item: ChoseCircleBean){
         btnJoin.apply {
             visibility= View.VISIBLE
-            if (item.isApply == 0) {//未加入
+            if ("NO"==item.isJoin) {//未加入
                 setText(R.string.str_join)
                 setBackgroundResource(R.drawable.shadow_00095b_12dp)
                 isEnabled=true
@@ -56,8 +56,9 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
                     //申请加入圈子
                     viewModel.joinCircle(item.circleId,object :OnPerformListener{
                         override fun onFinish(code: Int) {
-                            item.isApply =if (item.isApply == 0) 1 else 0
-                            isJoin(btnJoin,item)
+//                            item.isJoin =if (item.isJoin == "YES") "NO" else "YES"
+//                            isJoin(btnJoin,item)
+                            context.getString(R.string.str_appliedForMembership).toast()
                         }
                     })
                 }

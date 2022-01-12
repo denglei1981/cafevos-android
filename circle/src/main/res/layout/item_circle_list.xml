@@ -38,7 +38,7 @@
             tools:text="美食街区"
             android:text="@{bean.name}"
             android:textColor="@color/color_33"
-            android:textSize="15sp"
+            android:textSize="@dimen/sp_15"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/iv_icon"
             app:layout_constraintEnd_toStartOf="@id/btn_join"
@@ -54,7 +54,7 @@
             android:text="@{bean.description}"
             tools:text="每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事"
             android:textColor="@color/circle_74889D"
-            android:textSize="13sp"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
             app:layout_constraintRight_toRightOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -81,6 +81,7 @@
             app:layout_constraintBottom_toTopOf="@id/tv_num"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -92,7 +93,7 @@
             android:layout_height="wrap_content"
             tools:text="123 成员     12232 帖子"
             android:textColor="@color/color_33"
-            android:textSize="12sp"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title" />
 

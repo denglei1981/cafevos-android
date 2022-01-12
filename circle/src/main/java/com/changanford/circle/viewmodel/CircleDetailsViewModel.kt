@@ -97,8 +97,12 @@ class CircleDetailsViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().joinCircle(body.header(rKey), body.body(rKey))
                 .also {
                     joinBean.value = it
-                    listener?.onFinish(it.code)
+                    if(it.code==0)listener?.onFinish(0)
+                    else it.msg.toast()
                 }
+
+        },error = {
+            it.message.toString().toast()
         })
     }
 
