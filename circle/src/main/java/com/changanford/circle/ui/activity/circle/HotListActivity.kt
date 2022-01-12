@@ -39,9 +39,9 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 @Route(path = ARouterCirclePath.HotListActivity)
 class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewModel>(){
     companion object{
-        fun start(type:Int=0){
+        fun start(topId:Int=-1){
             val bundle=Bundle()
-            bundle.putInt("topId", type)
+            bundle.putInt("topId", topId)
             RouterManger.startARouter(ARouterCirclePath.HotListActivity,bundle)
         }
     }
@@ -53,7 +53,7 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
     }
 
     override fun initData() {
-        val defaultTopId=intent.getIntExtra("topId",0)
+        val defaultTopId=intent.getIntExtra("topId",-1)
         viewModel.hotTypesData.observe(this,{
             it?.apply {
                 initTabAndViewPager(this)
@@ -74,7 +74,6 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
                 override fun getItem(position: Int): Fragment {
                     return HotListFragment.newInstance(tabs[position].topId)
                 }
-
             }
             offscreenPageLimit = 3
         }

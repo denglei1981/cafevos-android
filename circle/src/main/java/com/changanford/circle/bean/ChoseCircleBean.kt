@@ -1,6 +1,7 @@
 package com.changanford.circle.bean
 
 import com.chad.library.adapter.base.entity.SectionEntity
+import com.changanford.common.bean.NewCirceTagBean
 
 /**
  * @Author: hpb
@@ -23,7 +24,7 @@ data class ChoseCircleBean(
     val postsCount: Int,
     val userCount: Int,
     val userId: Int,
-    val tags:List<String>?,//标签
+    val tags:List<NewCirceTagBean>?,//标签
 ) : SectionEntity {
     override val isHeader: Boolean
         get() = false

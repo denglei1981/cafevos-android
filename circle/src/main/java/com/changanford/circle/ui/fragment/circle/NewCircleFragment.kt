@@ -70,7 +70,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         }
         binding.wtvAllHot.setOnClickListener {
             //全部热门榜单
-            HotListActivity.start(0)
+            HotListActivity.start()
         }
         binding.recyclerViewHot.adapter=hotListAdapter
     }

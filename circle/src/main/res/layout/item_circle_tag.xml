@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="String" />
+            type="com.changanford.common.bean.NewCirceTagBean" />
     </data>
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_5">
         <com.changanford.common.ui.view.WTextView
-            android:text="@{model}"
+            android:text="@{model.tagName}"
             android:background="@drawable/shadow_f2f4f9_8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
