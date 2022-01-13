@@ -15,7 +15,6 @@ import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 
 /**
@@ -49,7 +48,8 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
         btnJoin.apply {
             visibility= View.VISIBLE
             when (item.isJoin) {
-                "NO" -> {//未加入
+                //未加入
+                "TOJOIN" -> {
                     setText(R.string.str_join)
                     setBackgroundResource(R.drawable.shadow_00095b_12dp)
                     isEnabled=true
@@ -57,14 +57,22 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
                         //申请加入圈子
                         viewModel.joinCircle(item.circleId,object :OnPerformListener{
                             override fun onFinish(code: Int) {
-        //                            item.isJoin =if (item.isJoin == "YES") "NO" else "YES"
-        //                            isJoin(btnJoin,item)
-                                context.getString(R.string.str_appliedForMembership).toast()
+                                    //状态更新为申请中
+                                    item.isJoin ="PENDING"
+                                    isJoin(btnJoin,item)
+//                                context.getString(R.string.str_appliedForMembership).toast()
                             }
                         })
                     }
                 }
-                "YES" -> {
+                //申请中
+                "PENDING"->{
+                    isEnabled=false
+                    setText(R.string.str_applying)
+                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+                }
+                //已加入
+                "JOINED" -> {
                     isEnabled=false
                     setText(R.string.str_hasJoined)
                     setBackgroundResource(R.drawable.shadow_dd_12dp)

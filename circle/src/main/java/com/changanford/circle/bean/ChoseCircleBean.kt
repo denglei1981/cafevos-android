@@ -24,7 +24,7 @@ data class ChoseCircleBean(
     val postsCount: Int,
     val userCount: Int,
     val userId: Int,
-    var isJoin:String?=null,//是否加入圈子 YES NO
+    var isJoin:String?=null,//是否加入圈子 未加入（TOJOIN）、待审核（PENDING）、已加入（JOINED）
     val tags:List<NewCirceTagBean>?,//标签
 ) : SectionEntity {
     override val isHeader: Boolean
