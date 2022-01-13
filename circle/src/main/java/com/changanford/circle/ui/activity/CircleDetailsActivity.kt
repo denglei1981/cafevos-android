@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.adapter.circle.TagAdapter
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
@@ -42,6 +43,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.FlowLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -78,7 +80,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     private var shareBeanVO: CircleShareBean? = null
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
-
+    private val tagAdapter by lazy { TagAdapter() }
     private val personalAdapter by lazy {
         CircleDetailsPersonalAdapter(this)
     }
@@ -90,6 +92,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             backImg.setOnClickListener { finish() }
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
+            topContent.recyclerView.apply {
+                layoutManager=FlowLayoutManager(this@CircleDetailsActivity,true,true)
+                adapter=tagAdapter
+            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -255,7 +261,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         viewModel.circleDetailsBean.observe(this, {
             setJoinType(it.isApply)
             initListener(it.name)
-
+            tagAdapter.setList(it.tags)
             if (it.isOwner == 1) {//是圈主
                 binding.topContent.tvJoin.visibility = View.INVISIBLE
             } else {
