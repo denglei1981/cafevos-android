@@ -92,13 +92,14 @@
                 android:id="@+id/tv_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
+                android:gravity="center_vertical"
                 style="@style/w_style_txt_ellipsize"
                 tools:text="自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="@dimen/sp_13"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_title"
-                app:layout_constraintRight_toRightOf="@id/tv_join"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_join"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
