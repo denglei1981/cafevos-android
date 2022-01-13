@@ -35,6 +35,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
 
     private var picUrl = ""
     private val mAdapter by lazy { CircleTagAdapter() }
+    private var tagIds:ArrayList<Int>?=null
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
@@ -113,6 +114,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         //获取圈子标签信息
         viewModel.getTagInfo()
         val data = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
+        tagIds=data?.tagIds
         if (data != null) {
             binding.run {
                 picUrl = data.pic
@@ -196,9 +198,15 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 finish()
             }
         })
-        viewModel.tagInfoData.observe(this,{
-            it?.apply {
+        viewModel.tagInfoData.observe(this,{tagInfo->
+            tagInfo?.apply {
                 mAdapter.tagMaxCount=tagMaxCount?:0
+                tagIds?.forEach {tagId->
+                    tags?.let {tagItem->
+                        val index=tagItem.indexOfFirst {item->tagId==item.tagId}
+                        if(index>=0)tagItem[index].isCheck=true
+                    }
+                }
                 mAdapter.setList(tags)
             }
         })

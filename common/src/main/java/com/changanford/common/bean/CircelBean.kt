@@ -47,6 +47,7 @@ data class CircleItemBean(
     var typeStr: String,//圈子角色名称
     var isShowTitle: Boolean = false,//是否为圈子角色
     var tags:List<NewCirceTagBean>?=null,
+    var tagIds:ArrayList<Int>?=null,
 
 ) : MultiItemEntity,Serializable
 
