@@ -60,6 +60,9 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private val myCircleAdapter by lazy { MyCircleAdapter() }
     private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
+        binding.srl.setOnRefreshListener {
+            getData()
+        }
         binding.inMyCircle.wtvMore.setOnClickListener {
             startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
         }
@@ -88,15 +91,19 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                     it.topList?.apply {hotListAdapter.setList(this)}
                 }
             }
+            binding.srl.finishRefresh()
         })
         viewModel.youLikeData.observe(this,{
             it?.apply {bindingYouLike(this)  }
             animatorUtil.stopAnimator()
         })
+        getData()
+//        bindingMyCircle()
+    }
+    private fun getData(){
         viewModel.getCircleHomeData()
         viewModel.getYouLikeData()
         animatorUtil.rotateAnimation()
-//        bindingMyCircle()
     }
     /**
      * 推荐圈子
