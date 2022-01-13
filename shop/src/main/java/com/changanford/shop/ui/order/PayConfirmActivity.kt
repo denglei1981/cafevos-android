@@ -62,7 +62,6 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         }
         orderNo?.let { viewModel.getOrderDetail(it) }
         viewModel.orderItemLiveData.observe(this,{orderItem->
-//            orderInfoBean?.accountFb?.let {orderItem.acountFb=it }
             dataBean= orderItem
             bindingData()
         })
@@ -114,9 +113,16 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                 when(binding.btnSubmit.text){
                     getString(R.string.str_payConfirm)-> viewModel.fbPay(orderNo)
                     getString(R.string.str_orderDetails)->{
-                        if("3"==busSourse){//维保商品订单详情
-                            JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
-                        }else OrderDetailsActivity.start(orderNo)
+                        val jumpDataType=dataBean?.jumpDataType
+                        when {
+                            null!=jumpDataType -> {
+                                JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
+                            }
+                            "3"==busSourse -> {//维保商品订单详情
+                                JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+                            }
+                            else -> OrderDetailsActivity.start(orderNo)
+                        }
                         isClickSubmit=false
                         if(isPaySuccessful)this@PayConfirmActivity.finish()
                     }
@@ -134,20 +140,21 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     }
 
     override fun onBackClick() {
-//        orderInfoBean?.let {
-//            when(it.source){
-//                //商品详情
-//                "1"->GoodsDetailsActivity.start(this,true)
-//                //H5商品砍价
-//                "2"->{
-//                    if(isPaySuccessful){}
-//                }
-//                //订单列表的再次购买
-//                "3"->{
-//
-//                }
-//            }
-//        }
+        //确认支付 返回到订单详情
+        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){
+            dataBean?.apply {
+                val jumpDataType=dataBean?.jumpDataType
+                when {
+                    null!=jumpDataType -> {
+                        JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
+                    }
+                    "3"==busSourse -> {//维保商品订单详情
+                        JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+                    }
+                    else -> OrderDetailsActivity.start(orderNo)
+                }
+            }
+        }
         this.finish()
     }
 

@@ -435,7 +435,7 @@ data class OrderItemBean(
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType: Int = 0,
-    val jumpDataType: Int? = 3,
+    val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
     val orderBrief: String = "",
     val orderImg: String = "",
