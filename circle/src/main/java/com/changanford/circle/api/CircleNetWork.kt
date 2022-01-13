@@ -3,10 +3,6 @@ package com.changanford.circle.api
 import com.changanford.circle.bean.*
 import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.common.bean.*
-import com.changanford.common.bean.AdBean
-import com.changanford.common.bean.CircleListBean
-import com.changanford.common.bean.LocationDataBean
-import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -76,7 +72,7 @@ interface CircleNetWork {
     /**
      * 查询圈子详情
      */
-    @POST("con/circle/getCircleInfo")
+    @POST("con/community/circleInfo")
     suspend fun queryCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
