@@ -22,6 +22,8 @@
     <string name="str_beautifulCircleJoin">漂亮的圈子头像可以吸引更多人加入哦~</string>
     <string name="str_circleTag">圈子标签</string>
     <string name="more">更多</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
     <string name="str_circlePK">圈子PK</string>
     <string name="str_cycle">周期：</string>
     <string name="str_inPk">PK中</string>

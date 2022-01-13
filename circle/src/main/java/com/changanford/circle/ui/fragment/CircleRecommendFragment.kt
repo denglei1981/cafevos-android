@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.changanford.circle.R
+import com.changanford.circle.adapter.CircleAdBannerAdapter
 import com.changanford.circle.adapter.CircleRecommendAdapter
+import com.changanford.circle.adapter.CircleRecommendHotTopicAdapter
 import com.changanford.circle.databinding.FragmentCircleRecommendBinding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
@@ -24,12 +27,14 @@ import com.zhpan.bannerview.constants.PageStyle
  *Purpose
  */
 class CircleRecommendFragment :
-    BaseFragment<FragmentCircleRecommendBinding, CircleDetailsViewModel>() ,OnRefreshListener {
+    BaseFragment<FragmentCircleRecommendBinding, CircleDetailsViewModel>(), OnRefreshListener {
 
 
 //    private lateinit var mCheckForGapMethod: Method
 
-    private val adapter by lazy { CircleRecommendAdapter(requireContext(),this) }
+    private val adapter by lazy { CircleRecommendAdapter(requireContext(), this) }
+
+    private val topicAdapter by lazy { CircleRecommendHotTopicAdapter() }
 
     private var type = 0
     private var page = 1
@@ -65,7 +70,7 @@ class CircleRecommendFragment :
         binding.ryCircle.adapter = adapter
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getData(type, page)
+            viewModel.getRecommendPostData(type, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
             val bundle = Bundle()
@@ -74,15 +79,17 @@ class CircleRecommendFragment :
             checkPosition = position
         }
         binding.refreshLayout.setOnRefreshListener(this)
+        viewModel.communityTopic()
         bus()
         addHeadView()
     }
 
     override fun initData() {
-        viewModel.getData(type, 1)
+        viewModel.getRecommendPostData(type, 1)
+        viewModel.getRecommendTopic()
     }
 
-    var headerBinding : LayoutCircleHeaderHotTopicBinding?=null
+    var headerBinding: LayoutCircleHeaderHotTopicBinding? = null
     private fun addHeadView() {
         if (headerBinding == null) {
             headerBinding = DataBindingUtil.inflate(
@@ -96,25 +103,24 @@ class CircleRecommendFragment :
                 it.tvTopicMore.setOnClickListener {
                     startARouter(ARouterCirclePath.HotTopicActivity)
                 }
-                it.bViewpager.visibility= View.GONE
+                it.bViewpager.visibility = View.GONE
+                val recommendAdAdapter = CircleAdBannerAdapter()
+                it.bViewpager.setAdapter(recommendAdAdapter)
+                it.bViewpager.setCanLoop(true)
+                it.bViewpager.setIndicatorView(it.drIndicator)
+                it.bViewpager.setAutoPlay(true)
+                it.bViewpager.setScrollDuration(500)
+                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+                it.bViewpager.create()
             }
-//            val recommendBannerAdapter = RecommendBannerAdapter()
-//            headNewBinding?.let {
-//                recommendAdapter.addHeaderView(it.root, 0)
-//                it.bViewpager.setAdapter(recommendBannerAdapter)
-//                it.bViewpager.setCanLoop(true)
-//                it.bViewpager.setIndicatorView(it.drIndicator)
-//                it.bViewpager.setAutoPlay(true)
-//                it.bViewpager.setScrollDuration(500)
-//                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
-//                it.bViewpager.create()
-//            }
+
 //            setIndicator()
         }
     }
+
     override fun observe() {
         super.observe()
-        viewModel.circleBean.observe(this, {
+        viewModel.recommondBean.observe(this, Observer {
             if (page == 1) {
                 binding.refreshLayout.finishRefresh()
                 adapter.setList(it.dataList)
@@ -125,6 +131,26 @@ class CircleRecommendFragment :
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
+        })
+        viewModel.topicBean.observe(this, Observer {
+            headerBinding?.let { hb ->
+                hb.ryTopic.adapter = topicAdapter
+                topicAdapter.setList(it.topics)
+                topicAdapter.setOnItemClickListener { adapter, view, position ->
+                    val bundle = Bundle()
+                    bundle.putString("topicId", topicAdapter.getItem(position).topicId.toString())
+                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+                }
+            }
+        })
+        viewModel.circleAdBean.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                headerBinding?.bViewpager?.visibility = View.VISIBLE
+                headerBinding?.bViewpager?.refreshData(it)
+            }else{
+                headerBinding?.bViewpager?.visibility = View.GONE
+            }
+
         })
     }
 
@@ -139,10 +165,8 @@ class CircleRecommendFragment :
                     bean.likesCount--
                 }
             }
-
             checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
         })
-
 //        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT)
 //            .observe(this, {
 //                page = 1
@@ -151,13 +175,13 @@ class CircleRecommendFragment :
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
             checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
             checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
-            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1,adapter.itemCount) }
+            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1, adapter.itemCount) }
         })
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         page = 1
-        viewModel.getData(type, page)
+        viewModel.getRecommendPostData(type, page)
 
     }
 }

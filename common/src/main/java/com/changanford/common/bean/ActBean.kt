@@ -202,7 +202,9 @@ data class PostDataBean(
     val videoUrl: Any? = Any(),
     val viewsCount: Long = 0,
     val viewsCountBase: Int = 0,
-    val viewsCountMul: Int = 0
+    val viewsCountMul: Int = 0,
+    val picList: List<String>? = null,
+
 ) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
@@ -232,13 +234,14 @@ data class PostDataBean(
         return timeAndViewCountResult
     }
 
-    fun getPicList():List<String>{
+    fun getPicsList():List<String>{
         if (!TextUtils.isEmpty(pics)) {
             val asList =pics.split(",")
             return asList
         }
         return mutableListOf()
     }
+
 
 
 

@@ -69,7 +69,9 @@ data class Topic(
     val pic: String = "",
     val postsCount: Int = 0,
     val topicId: Int = 0,
-    val userCount: Int = 0
+    val userCount: Int = 0,
+    var  isHot:String="",
+    var isNew:String=""
 )
 
 class Params

@@ -3,6 +3,10 @@ package com.changanford.circle.api
 import com.changanford.circle.bean.*
 import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.common.bean.*
+import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CircleListBean
+import com.changanford.common.bean.LocationDataBean
+import com.changanford.common.bean.PostBean
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -33,6 +37,14 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<PostBean>
+
+
+    @POST("con/community/recommendPosts")
+    suspend fun getRecommendPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
 
     /**
      * 获取话题列表
@@ -308,6 +320,14 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<CircleMainBean>
 
+
+    @POST("/con/community/recommend")
+    suspend fun communityTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMainBean>
+
+
     /**
      * 管理员列表
      */
@@ -440,4 +460,10 @@ interface CircleNetWork {
      */
     @POST("con/community/circleCreateInfo")
     suspend fun circleCreateInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<TagInfoBean>
+
+    @POST("con/ads/list")
+    suspend fun getRecommendTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<AdBean>>
 }

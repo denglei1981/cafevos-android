@@ -94,7 +94,7 @@ class PhotoViewActivity :BaseActivity<PhotoviewActivityBinding,EmptyViewModel>()
         }
 
         binding.tvSaveImagePhoto.setOnClickListener {
-            var permissions = Permissions.build(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val permissions = Permissions.build(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
             SoulPermission.getInstance().checkAndRequestPermissions(permissions,object :CheckRequestPermissionsListener{
                 override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
                     try {

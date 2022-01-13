@@ -20,7 +20,7 @@ public class GlideImageLoader implements AssNineGridView.ImageLoader{
     @Override
     public void onDisplayImage(Context context, ImageView imageView, String url) {
 //        Glide.with(context).load(url).into(imageView);
-        GlideUtils.INSTANCE.loadBD(url,imageView);
+        GlideUtils.INSTANCE.loadRound(url,imageView);
     }
 
     @Override

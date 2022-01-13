@@ -16,6 +16,9 @@ public class ImageInfo implements Serializable {
     public int imageViewX;
     public int imageViewY;
 
+
+    public String postId;
+
     public String getThumbnailUrl() {
         return thumbnailUrl;
     }
