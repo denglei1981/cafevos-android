@@ -435,4 +435,9 @@ interface CircleNetWork {
      */
     @POST("con/community/circleTopList")
     suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    /**
+     * 创建圈子 获取tag标签
+     */
+    @POST("con/community/circleCreateInfo")
+    suspend fun circleCreateInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<TagInfoBean>
 }

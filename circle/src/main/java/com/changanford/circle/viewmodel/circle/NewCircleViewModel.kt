@@ -8,10 +8,7 @@ import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.bean.CirceHomeBean
 import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.bean.NewCircleDataBean
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -35,11 +32,9 @@ class NewCircleViewModel:BaseViewModel() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().circleHome(body.header(rKey), body.body(rKey)).also {
-                it.data?.apply {cirCleHomeData.postValue(this)  }
-            }
-        }, error = {
-            it.message?.toast()
+            ApiClient.createApi<CircleNetWork>().circleHome(body.header(rKey), body.body(rKey)).onSuccess {
+                it?.apply {cirCleHomeData.postValue(this)  }
+            }.onWithMsgFailure { it?.toast() }
         })
     }
     /**
@@ -49,11 +44,9 @@ class NewCircleViewModel:BaseViewModel() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().youLike(body.header(rKey), body.body(rKey)).also {
-                 it.data?.apply { youLikeData.postValue(this.dataList) }
-                }
-        }, error = {
-            it.message?.toast()
+            ApiClient.createApi<CircleNetWork>().youLike(body.header(rKey), body.body(rKey)).onSuccess {
+                 it?.apply { youLikeData.postValue(this.dataList) }
+                }.onWithMsgFailure { it?.toast() }
         })
     }
     /**
@@ -63,11 +56,9 @@ class NewCircleViewModel:BaseViewModel() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().circleHotTypes(body.header(rKey), body.body(rKey)).also {
-                it.data?.apply { hotTypesData.postValue(this) }
-            }
-        }, error = {
-            it.message?.toast()
+            ApiClient.createApi<CircleNetWork>().circleHotTypes(body.header(rKey), body.body(rKey)).onSuccess {
+                it?.apply { hotTypesData.postValue(this) }
+            }.onWithMsgFailure { it?.toast()  }
         })
     }
     /**
@@ -81,11 +72,11 @@ class NewCircleViewModel:BaseViewModel() {
                 it["topId"]=topId
             }
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().circleHotList(body.header(rKey), body.body(rKey)).also {
-                it.data?.apply { circleListData.postValue(this) }
+            ApiClient.createApi<CircleNetWork>().circleHotList(body.header(rKey), body.body(rKey)).onSuccess {
+                it?.apply { circleListData.postValue(this) }
+            }.onWithMsgFailure {
+                it?.toast()
             }
-        }, error = {
-            it.message?.toast()
         })
     }
 }

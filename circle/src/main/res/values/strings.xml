@@ -28,4 +28,5 @@
     <string name="str_toPlayList">去打榜</string>
     <string name="str_look">查看</string>
     <string name="str_appliedForMembership">已申请加入，等待审核</string>
+    <string name="str_mostOptionalTagX">最多可选%1$d个标签</string>
 </resources>

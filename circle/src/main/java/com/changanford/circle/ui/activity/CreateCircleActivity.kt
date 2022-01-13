@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleTagAdapter
 import com.changanford.circle.databinding.ActivityCreateCircleBinding
@@ -14,7 +13,6 @@ import com.changanford.circle.ext.setCircular
 import com.changanford.circle.viewmodel.CreateCircleViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleItemBean
-import com.changanford.common.bean.NewCirceTagBean
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
@@ -36,7 +34,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCircleViewModel>() {
 
     private var picUrl = ""
-    private val myAdapter by lazy { CircleTagAdapter() }
+    private val mAdapter by lazy { CircleTagAdapter() }
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
@@ -64,15 +62,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         }
         binding.recyclerView.apply {
             this.layoutManager=flowLayoutManager0
-            adapter=myAdapter
-            if(BuildConfig.DEBUG){
-                val dataList= arrayListOf<NewCirceTagBean>()
-                for (i in 0..20){
-                    val itemBean=NewCirceTagBean(isCheck = false,tagName = "Tag$i",id = "$i")
-                    dataList.add(itemBean)
-                }
-                myAdapter.setList(dataList)
-            }
+            adapter=mAdapter
         }
         binding.cbMore.apply {
             setOnClickListener {
@@ -120,6 +110,8 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
 
 
     override fun initData() {
+        //获取圈子标签信息
+        viewModel.getTagInfo()
         val data = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
         if (data != null) {
             binding.run {
@@ -188,9 +180,12 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private fun submit(){
         val title = binding.etBiaoti.text.toString()
         val content = binding.etContent.text.toString()
+        val tagIds= arrayListOf<Int>()
         //被选中的标签集合
-        val isCheckTags=myAdapter.data.filter { it.isCheck==true }
-        viewModel.upLoadCircle(content, title, picUrl)
+        mAdapter.data.filter { it.isCheck==true }.apply {
+            forEach { it.tagId?.apply { tagIds.add(this) }}
+        }
+        viewModel.upLoadCircle(content, title, picUrl,tagIds)
     }
     override fun observe() {
         super.observe()
@@ -199,6 +194,12 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             if (it.code == 0) {
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(false)
                 finish()
+            }
+        })
+        viewModel.tagInfoData.observe(this,{
+            it?.apply {
+                mAdapter.tagMaxCount=tagMaxCount?:0
+                mAdapter.setList(tags)
             }
         })
     }
