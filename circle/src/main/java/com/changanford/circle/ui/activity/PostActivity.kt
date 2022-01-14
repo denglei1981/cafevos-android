@@ -14,6 +14,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import androidx.compose.ui.res.booleanResource
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +32,11 @@ import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.PostActivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
+import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.room.PostEntity
@@ -45,9 +48,11 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.bus.LiveDataBusKey.CREATE_LOCATION
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.HomeBottomDialog
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
@@ -107,6 +112,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private val insertPostId by lazy {
         System.currentTimeMillis()
     }
+
+    private var circlePostTagDialog: CirclePostTagDialog? = null
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -194,8 +201,22 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
                 params["province"] = it.province ?: address
 //                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
-                binding.tvLocation.text=it.name
+                binding.tvLocation.text = it.name
             })
+        LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
+            .observe(this, Observer {
+
+                address = it.address
+                params["address"] = address
+                params["lat"] = it.lat
+                params["lon"] = it.lon
+                viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
+                params["province"] = it.province
+                binding.tvLocation.text = it.address
+            })
+
+
+
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
@@ -222,7 +243,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("address")
                     address = ""
 //                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
-                    binding.tvLocation.text="不显示位置"
+                    binding.tvLocation.text = "不显示位置"
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -245,13 +266,30 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         })
 
+        viewModel.tagsList.observe(this, Observer { ptList ->
+            postTagDataList = ptList
+            val buttomTagList = arrayListOf<PostKeywordBean>()
+            ptList.forEach { td ->
+                run {
+                    for ((index, tag) in td.tags.withIndex()) {
+                        if (index >= td.tagMaxCount) {
+                            break
+                        }
+                        buttomTagList.add(tag)
+                    }
+                }
+            }
+            buttomlabelAdapter.addData(buttomTagList)
+        })
+
     }
 
+    var postTagDataList: List<PostTagData>? = null
 
     override fun initData() {
         onclick()
         viewModel.getPlate() //获取发帖类型
-        viewModel.getKeyWords() //标签
+        viewModel.getTags() //标签
         initbuttom()
         params["type"] = 2
         val manager = FullyGridLayoutManager(
@@ -286,6 +324,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             (params["topicName"] as String).isNotEmpty().let {
                 buttomTypeAdapter.setData(2, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
+        }
+        binding.bottom.tvMore.setOnClickListener {
+            showMoreTag()
         }
     }
 
@@ -335,7 +376,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 //                    4,
 //                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
 //                )
-                binding.tvLocation.text=locaPostEntity!!.address
+                binding.tvLocation.text = locaPostEntity!!.address
             }
         }
     }
@@ -605,11 +646,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 params.remove("keywords")
             } else {
                 buttomlabelAdapter.getItem(position).isselect = true
-                buttomlabelAdapter.data.forEachIndexed { index, buttomlabelBean ->
-                    if (index != position) {
-                        buttomlabelBean.isselect = false
-                    }
-                }
                 params["keywords"] = buttomlabelAdapter.getItem(position).tagName
             }
             buttomlabelAdapter.notifyDataSetChanged()
@@ -630,13 +666,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             override fun onItemClick(view: View?, position: Int) {
                 val emoji = emojiAdapter.getItem(position)
 
-                var index = if (binding.etBiaoti.hasFocus()) {
+                val index = if (binding.etBiaoti.hasFocus()) {
                     binding.etBiaoti.selectionStart
                 } else {
                     binding.etContent.selectionStart
                 }
 
-                var editContent = if (binding.etBiaoti.hasFocus()) {
+                val editContent = if (binding.etBiaoti.hasFocus()) {
                     binding.etBiaoti.text
                 } else {
                     binding.etContent.text
@@ -845,6 +881,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     fun addPost(dialog: LoadDialog) {
+        var tagIds = ""
+        buttomlabelAdapter.data.forEach {
+            if (it.isselect) {
+                tagIds = it.id + ","
+            }
+        }
+        params["tagIds"] = tagIds
         viewModel.postEdit(params)
     }
 
@@ -955,21 +998,22 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         return super.onKeyUp(keyCode, event)
     }
 
-    fun isSave():Boolean{
-        if (binding.etBiaoti.text.toString().isNotEmpty()){
-           return true
-        }else if(binding.etContent.text.toString().isNotEmpty()){
-           return true
-        }else if (selectList.size>0){
+    fun isSave(): Boolean {
+        if (binding.etBiaoti.text.toString().isNotEmpty()) {
             return true
-        }else if(buttomTypeAdapter.getItem(1).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(2).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(3).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(4).content.isNotEmpty()){
+        } else if (binding.etContent.text.toString().isNotEmpty()) {
+            return true
+        } else if (selectList.size > 0) {
+            return true
+        } else if (buttomTypeAdapter.getItem(1).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(2).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(3).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(4).content.isNotEmpty()
+        ) {
             return true
         }
         buttomlabelAdapter.data.forEach {
-            if (it.isselect){
+            if (it.isselect) {
                 return true
             }
         }
@@ -987,7 +1031,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
             var postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
-            if (postEntity.postsId==0L){
+            if (postEntity.postsId == 0L) {
                 postEntity.postsId = insertPostId
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
@@ -1025,7 +1069,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         if (params["cityCode"] != null) params["cityCode"] as String else ""
                     postEntity.creattime = System.currentTimeMillis().toString()
 //                    if (locaPostEntity == null) {
-                        viewModel.insertPostentity(postEntity)
+                    viewModel.insertPostentity(postEntity)
 //                    } else {
 //                        viewModel.update(postEntity)
 //                    }
@@ -1039,11 +1083,45 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     isunSave = true
                     finish()
                 }
-
             }).showPopupWindow()
         }
     }
 
+    fun showMoreTag() {
+        if (postTagDataList == null) {
+            toastShow("没有可选的标签")
+            return
+        }
+        circlePostTagDialog = CirclePostTagDialog(this, object : CirclePostTagDialog.ICallbackTag {
+            override fun callbackTag(cancel: Boolean, tags: MutableList<PostKeywordBean>,totalTags:Int) {
+                if (!cancel) {
+                    tags.forEach {
+                        it.isselect = true
+                    }
+                    if (tags.size >= totalTags) {//全换了
+                        buttomlabelAdapter.setNewInstance(tags)
+                    }
+                    if (tags.size < totalTags) {
+                        val last = mutableListOf<PostKeywordBean>()
+                        buttomlabelAdapter.data.forEach {
+                            if (!tags.contains(it)) {
+                                it.isselect=false
+                                last.add(it)
+                                if (last.size == totalTags) {
+                                    return
+                                }
+                            }
+                        }
+                        tags.addAll(last)
+                        buttomlabelAdapter.setNewInstance(tags)
+                    }
+                }
+            }
+        }, postTagDataList!!, buttomlabelAdapter.data)
+//        circlePostTagDialog?.postTagDataList=postTagDataList
+//        circlePostTagDialog?.initData()
+        circlePostTagDialog?.show()
+    }
 
     fun ondesSave() {
         var postsId = intent?.getStringExtra("postsId")

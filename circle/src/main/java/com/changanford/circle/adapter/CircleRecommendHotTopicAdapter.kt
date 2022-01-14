@@ -22,13 +22,13 @@ class CircleRecommendHotTopicAdapter :
         binding?.let {
             binding.bean = item
             binding.label.text = EmsUtil.subStrByLen(item.name, 13)
-            var backGround: GradientDrawable= binding.lableKey.background as GradientDrawable
+            val backGround: GradientDrawable= binding.lableKey.background as GradientDrawable
             if ("YES" == item.isNew) {
                 binding.lableKey.text = "新"
 //                binding.lableKey.background = (DrawableTintUtil.tintDrawable(drawableBg!!, R.color.color_66A1FA))
 
                 backGround.setColor(ContextCompat.getColor(context,R.color.color_66A1FA))
-            } else if ("YES" == item.isHot) {
+            } else if (1 == item.isHot) {
                 binding.lableKey.text = "热"
 //                binding.lableKey.background = (DrawableTintUtil.tintDrawable(drawableBg!!, R.color.color_FB944F))
                 backGround.setColor(ContextCompat.getColor(context,R.color.color_FB944F))

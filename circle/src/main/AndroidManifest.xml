@@ -63,5 +63,9 @@
         <activity android:name=".ui.release.LocationMMapActivity"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".ui.activity.ChoiceAllCityActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.activity.CreateLocationActivity"/>
     </application>
 </manifest>

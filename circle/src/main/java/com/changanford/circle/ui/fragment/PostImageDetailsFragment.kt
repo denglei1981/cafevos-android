@@ -10,6 +10,7 @@ import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
+import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
@@ -70,6 +71,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
+
         binding.run {
             ryComment.adapter = commentAdapter
             mData.authorBaseVo?.imags?.let {
@@ -153,12 +155,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     2 -> {//带banner的帖子
                         clImageAndText.visibility = View.GONE
                         clImage.visibility = View.VISIBLE
-
+                        showPicTag()
                         if (!mData.city.isNullOrEmpty()) {
                             tvTwoCity.visibility = View.VISIBLE
                             tvTwoCity.text = mData.city
                         }
-
                         mData.imageList?.let {
                             banner.run {
                                 setAutoPlay(true)
@@ -206,6 +207,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     else -> {
                         clImageAndText.visibility = View.GONE
                         clImage.visibility = View.GONE
+                        showTag(true)
                         viewLongType.clImage.visibility = View.VISIBLE
                         viewLongType.run {
                             if (!mData.city.isNullOrEmpty()) {
@@ -467,5 +469,43 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })
+    }
+    fun showTag(isLong:Boolean){
+        if(isLong){
+            if(mData.tags==null||mData.tags.size==0){
+                binding.viewLongType.postTag.visibility=View.GONE
+                return
+            }
+            if(mData.tags.size>0){
+                val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+                binding.viewLongType.postTag.adapter=circlePostDetailsTagAdapter
+                circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+                binding.viewLongType.postTag.visibility=View.VISIBLE
+            }
+        }else{
+            if(mData.tags==null||mData.tags.size==0){
+                binding.postTag.visibility=View.GONE
+                return
+            }
+            if(mData.tags.size>0){
+                val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+                binding.postTag.adapter=circlePostDetailsTagAdapter
+                circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+                binding.postTag.visibility=View.VISIBLE
+            }
+        }
+
+    }
+    fun showPicTag(){
+        if(mData.tags==null||mData.tags.size==0){
+            binding.postTagS.visibility=View.GONE
+            return
+        }
+        if(mData.tags.size>0){
+            val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+            binding.postTagS.adapter=circlePostDetailsTagAdapter
+            circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+            binding.postTagS.visibility=View.VISIBLE
+        }
     }
 }

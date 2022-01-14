@@ -16,12 +16,11 @@ import com.changanford.circle.R;
 
 
 public class CreateLocationTextView extends ConstraintLayout {
-    private String titleText,hintText;
+    private String titleText, hintText;
 
     private TextView tvLocation;
 
     private EditText etInput;
-
 
 
     public CreateLocationTextView(Context context) {
@@ -43,7 +42,7 @@ public class CreateLocationTextView extends ConstraintLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CreateLocationText);
         titleText = a.getString(R.styleable.CreateLocationText_locationTexts);
 
-        hintText=a.getString(R.styleable.CreateLocationText_hintText);
+        hintText = a.getString(R.styleable.CreateLocationText_hintText);
         //回收资源，这一句必须调用
         a.recycle();
     }
@@ -58,11 +57,11 @@ public class CreateLocationTextView extends ConstraintLayout {
         //获取子控件
         tvLocation = findViewById(R.id.tv_location_name);
 
-         etInput=findViewById(R.id.et_txt);
+        etInput = findViewById(R.id.et_txt);
         //将从资源文件中加载的属性设置给子控件
         if (!TextUtils.isEmpty(titleText))
             setPageTitleText(titleText);
-        if(!TextUtils.isEmpty(hintText)){
+        if (!TextUtils.isEmpty(hintText)) {
             setEtInputHint(hintText);
         }
 
@@ -78,10 +77,12 @@ public class CreateLocationTextView extends ConstraintLayout {
         tvLocation.setText(text);
     }
 
-    public void setEtInputHint(String hintText){
+    public void setEtInputHint(String hintText) {
         etInput.setHint(hintText);
     }
 
-
+    public String getEtContent() {
+        return etInput.getText().toString().trim();
+    }
 
 }

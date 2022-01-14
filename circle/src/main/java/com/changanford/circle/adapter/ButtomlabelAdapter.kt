@@ -10,8 +10,9 @@ import com.changanford.common.MyApp
 
 
 class ButtomlabelAdapter :BaseQuickAdapter<PostKeywordBean, BaseViewHolder>(R.layout.item_buttomlabel) {
+
     override fun convert(holder: BaseViewHolder, item: PostKeywordBean) {
-        var text = holder.getView<TextView>(R.id.tv_content)
+        val text = holder.getView<TextView>(R.id.tv_content)
         text.text = item.tagName
         if (item.isselect){
             text.setTextColor( MyApp.mContext.resources.getColor(R.color.white))
@@ -28,4 +29,7 @@ class ButtomlabelAdapter :BaseQuickAdapter<PostKeywordBean, BaseViewHolder>(R.la
                 .into(text)
         }
     }
+
+
+
 }

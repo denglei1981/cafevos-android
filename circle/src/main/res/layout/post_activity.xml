@@ -117,6 +117,8 @@
         android:drawablePadding="@dimen/dp_4"
         android:textColor="@color/color_00095B"
         android:maxLines="1"
+        android:maxLength="10"
+        android:ellipsize="end"
         android:textSize="@dimen/sp_13"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/dp_20"

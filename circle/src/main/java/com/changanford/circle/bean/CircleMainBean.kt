@@ -70,7 +70,7 @@ data class Topic(
     val postsCount: Int = 0,
     val topicId: Int = 0,
     val userCount: Int = 0,
-    var  isHot:String="",
+    var  isHot:Int=0,
     var isNew:String=""
 )
 

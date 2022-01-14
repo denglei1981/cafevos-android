@@ -15,6 +15,7 @@ import com.changanford.circle.R;
 import com.changanford.circle.bean.CityEntity;
 import com.changanford.circle.widget.LetterListView;
 
+import java.net.InterfaceAddress;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public  class CityListAdapter extends BaseAdapter {
     final int VIEW_TYPE = 3;
     public  HashMap<String, Integer> alphaIndexer;// 存放存在的汉语拼音首字母和与之对应的列表位置
 
+    private ClickItem clickItem;
 
     public CityListAdapter(Context context,
                     List<CityEntity> totalCityList
@@ -48,6 +50,10 @@ public  class CityListAdapter extends BaseAdapter {
                 alphaIndexer.put(name, i);
             }
         }
+    }
+
+    public void setClickItem(ClickItem clickItem) {
+        this.clickItem = clickItem;
     }
 
     @Override
@@ -95,7 +101,15 @@ public  class CityListAdapter extends BaseAdapter {
             holder.cityKeyTv.setVisibility(View.VISIBLE);
             holder.cityKeyTv.setText(getAlpha(cityEntity.getKey()));
             holder.cityNameTv.setText(cityEntity.getName());
+            holder.cityNameTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickItem!=null){
+                        clickItem.clickItem(position,cityEntity);
+                    }
 
+                }
+            });
             if (position >= 1) {
                 CityEntity preCity = totalCityList.get(position - 1);
                 if (preCity.getKey().equals(cityEntity.getKey())) {
@@ -110,10 +124,12 @@ public  class CityListAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-
         TextView cityNameTv;
-
         TextView cityKeyTv;
+    }
+
+    public  interface  ClickItem{
+       void clickItem(int position,CityEntity cityEntity);
     }
     /**
      * 获得首字母

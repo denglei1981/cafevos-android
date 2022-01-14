@@ -147,6 +147,16 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<PostKeywordBean>>
 
+
+
+
+
+    @POST("con/community/keyWords")
+    suspend fun getTags(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<PostTagData>>
+
     /**
      * 帖子点赞
      */

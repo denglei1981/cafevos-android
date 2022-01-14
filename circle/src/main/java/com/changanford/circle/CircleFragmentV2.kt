@@ -56,7 +56,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("推荐","圈子","问答")
+    private val tabList = listOf("推荐","圈子")
 
 
     override fun onDestroyView() {
@@ -109,7 +109,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                                             }
                                         }
                                     }
-
                                     override fun cancle() {  //不使用草稿
                                         showMenuPop()
                                     }
@@ -236,7 +235,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
-
             adapter = object : FragmentPagerAdapter(
                 childFragmentManager,
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT

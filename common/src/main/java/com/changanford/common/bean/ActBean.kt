@@ -283,3 +283,8 @@ data class ActDataBean(
     val createTime: Long = 0L,
     val browseCount: Long = 0L
 )
+
+data class  LocationLotLon(val lat:Double,val lon:Double)
+
+
+data class  CreateLocation(val address:String,val province:String,val lat:Double,val lon:Double)

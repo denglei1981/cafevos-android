@@ -82,6 +82,13 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
 
             }
         }
+        LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
+            .observe(this,
+                {
+                    if (it) {
+                        finish()
+                    }
+                })
     }
 
     var footerBinding : LayoutSearchLocationFooterBinding?=null

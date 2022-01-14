@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity
 
+import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -38,6 +39,13 @@ class ChoiceAllCityActivity :BaseActivity<ActivityChoiceAllCityBinding,EmptyView
         initTotalCityList()
         cityListAdapter = CityListAdapter(this, totalCityList)
         binding.totalCityLv.adapter = cityListAdapter
+        cityListAdapter?.setClickItem{ postion,cityEntity->
+            val intent = Intent()
+            intent.putExtra("city",cityEntity)
+            setResult(111,intent )
+            this.finish()
+
+        }
         binding.totalCityLv.setOnScrollListener(this)
         binding.lettersLv.setOnTouchingLetterChangedListener(object :LetterListView.OnTouchingLetterChangedListener{
             override fun onTouchingLetterChanged(s: String) {
@@ -67,12 +75,14 @@ class ChoiceAllCityActivity :BaseActivity<ActivityChoiceAllCityBinding,EmptyView
 
             override fun afterTextChanged(s: Editable?) {
                 val content: String = binding.etsearch.text.toString().trim()
-
                 setSearchCityList(content)
             }
 
         })
         binding.rvSearch.adapter=citySearchListAdapter
+        binding.tvCancel.setOnClickListener {
+            onBackPressed()
+        }
     }
 //    protected var searchCityList: ArrayList<CityEntity> = ArrayList()
 

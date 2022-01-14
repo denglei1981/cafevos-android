@@ -84,7 +84,7 @@
             app:layout_constraintRight_toRightOf="@+id/tv_two_city"
             app:layout_constraintTop_toBottomOf="@+id/tv_one_content" />
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rl_talk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,6 +92,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content">
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_talk_out"
@@ -109,8 +110,23 @@
                 android:paddingEnd="14dp"
                 android:textColor="@color/circle_8195C8"
                 android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="年轻人喜欢什么样的车" />
-        </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/post_tag"
+                android:layout_width="0dp"
+                android:background="@color/red"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/dp_20"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_talk_out" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_two_time"

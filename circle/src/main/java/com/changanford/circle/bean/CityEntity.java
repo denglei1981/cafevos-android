@@ -1,12 +1,14 @@
 package com.changanford.circle.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by fySpring
  * Date : 2017/8/21
  * To do :
  */
 
-public class CityEntity {
+public class CityEntity implements Serializable {
     private String name;
     private String key;
     private String pinyin;  //全拼
@@ -51,5 +53,16 @@ public class CityEntity {
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
+    }
+
+    @Override
+    public String toString() {
+        return "CityEntity{" +
+                "name='" + name + '\'' +
+                ", key='" + key + '\'' +
+                ", pinyin='" + pinyin + '\'' +
+                ", first='" + first + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                '}';
     }
 }

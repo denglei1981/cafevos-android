@@ -223,8 +223,12 @@ object LiveDataBusKey {
 
     const val CHOOSELOCATION = "chooselocation" //选择定位poi返回时
 
+    const val CREATE_LOCATION="create_loccation" // 自定义位置
+
     const val CHOOSELOCATIONNOTHING = "chooselocationnothing" //选择不显示定位poi返回时
     const val ColseCHOOSELOCATION = "colsechooselocation" //关闭一级页面
+
+    const val CREATE_COLSE_LOCATION = "CREATE_COLSE_LOCATION" //关闭er 级页面
 
     const val MINE_SIGN_WX_CODE = "mine:sign_wx_code"//登录微信code
 

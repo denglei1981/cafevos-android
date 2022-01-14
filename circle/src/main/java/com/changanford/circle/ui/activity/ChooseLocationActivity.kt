@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSONObject
@@ -15,9 +16,12 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
+import com.baidu.mapapi.search.geocode.GeoCodeOption
+import com.baidu.mapapi.search.geocode.GeoCoder
 import com.baidu.mapapi.search.poi.*
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
+import com.changanford.circle.bean.CityEntity
 import com.changanford.circle.databinding.ChooselocationBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
@@ -32,6 +36,8 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 import kotlin.collections.ArrayList
+import com.baidu.mapapi.search.poi.PoiCitySearchOption
+
 
 /**
  * 定位
@@ -121,6 +127,16 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     }
 
     override fun initData() {
+
+
+        LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
+            .observe(this,
+                {
+                    if (it) {
+                        finish()
+                    }
+                })
+
         LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
             .observe(this,
                 {
@@ -129,7 +145,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                     }
                 })
         binding.etsearch.setOnClickListener {
-            city?.let {
+            city.let {
                 var bundle = Bundle()
                 bundle.putDouble("Lat", lat)
                 bundle.putDouble("Lon", lon)
@@ -142,13 +158,13 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         }
         binding.tvBuxs.setOnClickListener {
             binding.ivselect.visibility = View.VISIBLE
-            locaAdapter?.setSelectID(-1)
-            locaAdapter?.notifyDataSetChanged()
+            locaAdapter.setSelectID(-1)
+            locaAdapter.notifyDataSetChanged()
             isselected = true
         }
         binding.title.barTvOther.setOnClickListener {
             if (isselected) {
-                if (locaAdapter?.id == -1) {
+                if (locaAdapter.id == -1) {
                     LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
                         .postValue(binding.tvBuxs.text.toString())
                 } else {
@@ -156,16 +172,24 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                 }
                 finish()
             } else {
-               "请选择地址".toast()
+                "请选择地址".toast()
             }
         }
         binding.title.barImgBack.setOnClickListener {
             finish()
         }
         binding.tvLocation.setOnClickListener {
-            var intent= Intent()
-            intent.setClass(this,ChoiceAllCityActivity::class.java)
-            startActivity(intent)
+            val intent = Intent()
+            intent.setClass(this, ChoiceAllCityActivity::class.java)
+            startActivityForResult(intent, 121312)
+//            registerForActivityResult(
+//                ActivityResultContracts.StartActivityForResult()
+//            ) {
+//                val data = it.data
+//                val resultCode = it.resultCode
+//                data?.getSerializableExtra("city").toString().toast()
+//            }.launch(Intent(this,ChoiceAllCityActivity::class.java))
+
 
         }
     }
@@ -214,6 +238,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             lat = location.latitude
             lon = location.longitude
             city = location.city
+            binding.tvLocation.text = city
             poi()
         }
     }
@@ -230,7 +255,22 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                     .pageCapacity(99)
             )
         }
-        locationed = true;
+        locationed = true
+    }
+
+
+    // 正地理编码
+    fun rightPoi(cityName: String) {
+
+        mPoiSearch.searchInCity(
+            PoiCitySearchOption()
+                .city(cityName) //必填
+                .keyword("公司") //必填
+                .pageCapacity(99)
+                .pageNum(0)
+        )
+        city=cityName
+
     }
 
     fun hideInput() {
@@ -244,14 +284,14 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     override fun onDestroy() {
         super.onDestroy()
         if (ismLocationClientInitialzed()) {
-            mLocationClient?.stop()
+            mLocationClient.stop()
         }
     }
 
     override fun onGetPoiResult(poiResult: PoiResult?) {
         if (poiResult?.error == SearchResult.ERRORNO.NO_ERROR) {
             ml.clear()
-            ml.addAll(poiResult?.allPoi)
+            ml.addAll(poiResult.allPoi)
             locaAdapter.setList(ml)
             locaAdapter.notifyDataSetChanged()
         }
@@ -307,6 +347,18 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             binding.ivselect.visibility = View.GONE
             poiInfo = ml[position]
             isselected = true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 121312) {
+                val dataExtra = data?.getSerializableExtra("city")
+                if(dataExtra!=null){
+                    val cityEntity = data?.getSerializableExtra("city") as CityEntity
+                    binding.tvLocation.text = cityEntity.name
+                    rightPoi(cityName = cityEntity.name)
+                }
         }
     }
 }

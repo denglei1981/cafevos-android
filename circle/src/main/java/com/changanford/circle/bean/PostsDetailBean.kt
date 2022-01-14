@@ -61,7 +61,8 @@ data class PostsDetailBean(
     val lon: Double = 0.0,
     val province: String = "",
     val cityCode: String = "",
-    val city: String = ""
+    val city: String = "",
+    val tags:MutableList<PostKeywordBean>?= mutableListOf()
 ) {
 }
 
