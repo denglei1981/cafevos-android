@@ -882,9 +882,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
+
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
-                tagIds = it.id + ","
+                tagIds += it.id + ","
             }
         }
         params["tagIds"] = tagIds
