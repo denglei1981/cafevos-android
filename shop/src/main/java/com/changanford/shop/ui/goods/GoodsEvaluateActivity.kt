@@ -1,6 +1,7 @@
 package com.changanford.shop.ui.goods
 
 import android.text.TextUtils
+import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
@@ -24,9 +25,10 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel>(),
     OnRefreshLoadMoreListener {
     companion object{
-        fun start(spuId:String?) {
+        //"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"  或者直接 spuId
+        fun start(goodsInfo:String?) {
 //            context.startActivity(Intent(context,GoodsEvaluateActivity::class.java).putExtra("spuId",spuId))
-            spuId?.let { JumpUtils.instans?.jump(111,it) }
+            goodsInfo?.let { JumpUtils.instans?.jump(111,it) }
         }
     }
     private val mAdapter by lazy { GoodsEvalutaeAdapter() }
@@ -37,6 +39,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
         binding.topBar.setActivity(this)
 //        spuId=intent.getStringExtra("spuId")?:"0"
         val goodsInfo=intent.getStringExtra("goodsInfo")
+        Log.e("okhttp","goodsInfo:$goodsInfo")
         if(TextUtils.isEmpty(goodsInfo)){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
