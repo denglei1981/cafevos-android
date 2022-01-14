@@ -622,7 +622,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun setStatusBarIsTransparent(isTransparent:Boolean){
-        activity!!.lifecycleScope.launch {
+        activity?.lifecycleScope?.launch {
             StatusBarUtil.setStatusBarColor(activity, if(isTransparent)R.color.transparent else R.color.white)
         }
     }
