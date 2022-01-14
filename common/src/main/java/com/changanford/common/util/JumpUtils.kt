@@ -631,7 +631,10 @@ class JumpUtils {
             }
             111->{//商品评价列表
                 if (!TextUtils.isEmpty(value)) {
-                    bundle.putString("spuId", value)
+                  /*"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"
+                  * 或者直接传商品id
+                  * */
+                    bundle.putString("goodsInfo", value)
                     startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
                 }
             }

@@ -13,6 +13,7 @@ import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.listener.OnPerformListener
+import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
 /**
@@ -210,17 +211,21 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 评价列表
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
+                    if(WConstant.maintenanceType==spuPageType){
+                        it["mallWbGoodsId"] = spuId
+                    }
                     it["mallMallSpuId"] = spuId
                 }
                 val randomKey = getRandomKey()
-                shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
+                if(WConstant.maintenanceType==spuPageType)shopApiService.goodsEvalListWb(body.header(randomKey), body.body(randomKey))
+                else shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentLiveData.postValue(it)
             }.onWithMsgFailure {

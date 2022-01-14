@@ -60,6 +60,12 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/eval/list")
     suspend fun goodsEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+
+    /**
+     *评价列表-维保
+     * */
+    @POST("/mall/wb/evalsList")
+    suspend fun goodsEvalListWb(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
     /**
      *订单创建
      * */
