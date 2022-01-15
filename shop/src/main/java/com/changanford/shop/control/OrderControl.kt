@@ -50,10 +50,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         setText(R.string.str_bargaining)
                         View.VISIBLE
                     }
-                    "3"->{//维保
-                        setText(R.string.str_maintenance)
-                        View.VISIBLE
-                    }
+//                    "3"->{//维保
+//                        setText(R.string.str_maintenance)
+//                        View.VISIBLE
+//                    }
                     else -> View.GONE
                 }
             }
