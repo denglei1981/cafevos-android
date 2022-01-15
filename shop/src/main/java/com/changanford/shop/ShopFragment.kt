@@ -56,7 +56,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             add(GoodsTypesItemBean("0","全部"))
         }
         for(it in tabs){
-            val fragment=ExchangeListFragment.newInstance(it.mallMallTagId)
+            val fragment=ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }

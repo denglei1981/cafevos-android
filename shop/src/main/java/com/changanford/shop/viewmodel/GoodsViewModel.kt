@@ -84,8 +84,8 @@ class GoodsViewModel: BaseViewModel() {
      * 获取商品列表
      * [tagId]分类id
      * */
-    fun getGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
-        if("18"==tagId){//获取维保商品数据
+    fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize){
+        if("WB"==tagType){//获取维保商品数据
             getMaintenanceGoodsList(tagId,pageNo,pageSize)
             return
         }

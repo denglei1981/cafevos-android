@@ -17,9 +17,10 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  */
 class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>() {
     companion object{
-        fun newInstance(itemId:String): ExchangeListFragment {
+        fun newInstance(itemId:String,tagType:String?=null): ExchangeListFragment {
             val bundle = Bundle()
             bundle.putString("tagId", itemId)
+            bundle.putString("tagType", tagType)
             val fragment= ExchangeListFragment()
             fragment.arguments = bundle
             return fragment
@@ -29,11 +30,13 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var pageNo=1
     private val mAdapter by lazy { GoodsAdapter() }
     private var tagId="-1"
+    private var tagType:String?=null
     private var isRequest=false
     override fun initView() {
-        if(arguments!=null){
-            tagId=arguments?.getString("tagId","0")!!
-            viewModel.getGoodsList(tagId,pageNo)
+        arguments?.apply{
+            tagId=getString("tagId","0")
+            tagType=getString("tagType",null)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
             isRequest=true
         }
         viewModel.goodsListData.observe(this,{
@@ -42,7 +45,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         })
         binding.smartRl.setOnLoadMoreListener {
             pageNo++
-            viewModel.getGoodsList(tagId,pageNo)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
         }
     }
     override fun initData() {
@@ -75,7 +78,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     fun startRefresh(){
         if(isAdded&&"-1"!=tagId&&mAdapter.data.size<1&&!isRequest){
             pageNo=1
-            viewModel.getGoodsList(tagId,pageNo)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
         }
     }
 }

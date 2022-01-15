@@ -15,6 +15,7 @@ class GoodsClassification : ArrayList<GoodsTypesItemBean>()
 data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
+    val tagType:String?=null,
 )
 
 data class GoodsList(
