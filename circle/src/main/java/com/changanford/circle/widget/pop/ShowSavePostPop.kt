@@ -12,6 +12,10 @@ import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
 import razerdp.util.animation.ScaleConfig
 import razerdp.util.animation.TranslationConfig
+import com.google.gson.reflect.TypeToken
+
+
+
 
 
 class ShowSavePostPop(val context: Context,val postBackListener:PostBackListener)
@@ -36,6 +40,12 @@ class ShowSavePostPop(val context: Context,val postBackListener:PostBackListener
             dismiss()
         }
 
+
+//        val ps: List<Person> = gson.fromJson(str, object : TypeToken<List<Person?>?>() {}.type)
+//        for (i in ps.indices) {
+//            val p: Person = ps[i]
+//            System.out.println(p.toString())
+//        }
     }
 
 

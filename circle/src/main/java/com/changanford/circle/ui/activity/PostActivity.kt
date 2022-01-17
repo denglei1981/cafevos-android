@@ -6,10 +6,7 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.KeyEvent
@@ -31,6 +28,7 @@ import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.PostActivityBinding
+import com.changanford.circle.utils.GsonUtils
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
@@ -44,6 +42,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
+import com.changanford.common.sharelib.util.JsonUtil
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -54,6 +53,8 @@ import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.HomeBottomDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -61,6 +62,7 @@ import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import io.reactivex.exceptions.Exceptions
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
@@ -132,7 +134,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         var bthinttxt = "标题 (6-20字之间)"
         var spannableString = SpannableString(bthinttxt)
         var intstart = bthinttxt.indexOf('(')
-        var intend = bthinttxt.length
+        val intend = bthinttxt.length
         spannableString.setSpan(
             AbsoluteSizeSpan(60),
             0,
@@ -185,7 +187,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
             .observe(this,
                 Observer {
-                    buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 2))
+                    buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                     params["topicId"] = it.topicId.toString()
                 })
 
@@ -200,8 +202,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-//                buttomTypeAdapter.setData(4, ButtomTypeBean(it.name, 1, 4))
-                binding.tvLocation.text = it.name
+                buttomTypeAdapter.setData(0, ButtomTypeBean(it.name, 1, 4))
+//                binding.tvLocation.text = it.name
             })
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
@@ -212,7 +214,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 params["lon"] = it.lon
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
                 params["province"] = it.province
-                binding.tvLocation.text = it.address
+                buttomTypeAdapter.setData(0, ButtomTypeBean(address, 1, 4))
             })
 
 
@@ -222,8 +224,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             plateBean = it
             plateBean?.plate?.forEach {
                 if (it.name == "社区") {
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                    buttomTypeAdapter.setData(1, ButtomTypeBean(it.name, 1, 1))
+                    buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 1))
 
                     platename = it.name
                     params["plate"] = it.plate
@@ -242,8 +244,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("cityCode")
                     params.remove("address")
                     address = ""
-//                    buttomTypeAdapter.setData(4, ButtomTypeBean(it, 1, 4))
-                    binding.tvLocation.text = "不显示位置"
+                    buttomTypeAdapter.setData(4, ButtomTypeBean("不显示位置", 1, 4))
+//                    binding.tvLocation.text = "不显示位置"
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -268,20 +270,45 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         viewModel.tagsList.observe(this, Observer { ptList ->
             postTagDataList = ptList
-            val buttomTagList = arrayListOf<PostKeywordBean>()
-            ptList.forEach { td ->
-                run {
-                    for ((index, tag) in td.tags.withIndex()) {
-                        if (index >= td.tagMaxCount) {
-                            break
+            if (locaPostEntity != null) {
+                locaPostEntity?.let { lp ->
+                    val tagsStr = lp.tags
+                    if (!TextUtils.isEmpty(tagsStr)) {
+                        try {
+                            val gson = Gson()
+                            val postTagList = gson.fromJson<List<PostKeywordBean>>(
+                                tagsStr,
+                                object : TypeToken<List<PostKeywordBean>>() {}.type
+                            )
+                            buttomlabelAdapter.addData(postTagList)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                        buttomTagList.add(tag)
+                    } else {
+                        initTags()
                     }
                 }
+            } else {
+                 initTags()
             }
-            buttomlabelAdapter.addData(buttomTagList)
+
         })
 
+    }
+
+    fun initTags() {
+        val buttomTagList = arrayListOf<PostKeywordBean>()
+        postTagDataList?.forEach { td ->
+            run {
+                for ((index, tag) in td.tags.withIndex()) {
+                    if (index >= td.tagMaxCount) {
+                        break
+                    }
+                    buttomTagList.add(tag)
+                }
+            }
+        }
+        buttomlabelAdapter.addData(buttomTagList)
     }
 
     var postTagDataList: List<PostTagData>? = null
@@ -300,7 +327,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postPicAdapter.draggableModule.isDragEnabled = true
         binding.picsrec.adapter = postPicAdapter
         postPicAdapter.setList(selectList)
-
         initlocaData()
         if (isH5Post) {
             postType = intent.extras?.getInt("postType") ?: 0
@@ -314,7 +340,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["circleId"] = intent.extras?.getString("circleId") ?: "0"
             circlename = intent.extras?.getString("circleName") ?: ""
             circlename.isNotEmpty().let {
-                buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
+                buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
         }
 
@@ -322,7 +348,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["topicId"] = intent.extras?.getString("topId") ?: "0"
             params["topicName"] = intent.extras?.getString("topName") ?: ""
             (params["topicName"] as String).isNotEmpty().let {
-                buttomTypeAdapter.setData(2, ButtomTypeBean(params["topicName"] as String, 1, 2))
+                buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
         }
         binding.bottom.tvMore.setOnClickListener {
@@ -353,13 +379,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
-                buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                buttomTypeAdapter.setData(1, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+                buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+                buttomTypeAdapter.setData(2, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
 
             if (locaPostEntity!!.topicName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
-                    2,
+                    3,
                     ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
                 )
             }
@@ -367,16 +393,16 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
             if (locaPostEntity!!.circleName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
-                    3,
+                    4,
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
             }
             if (locaPostEntity!!.address.isNotEmpty()) {
-//                buttomTypeAdapter.setData(
-//                    4,
-//                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-//                )
-                binding.tvLocation.text = locaPostEntity!!.address
+                buttomTypeAdapter.setData(
+                    0,
+                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
+                )
+//                binding.tvLocation.text = locaPostEntity!!.address
             }
         }
     }
@@ -453,29 +479,40 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         buttomTypeAdapter.setOnItemClickListener { adapter, view, position ->
-            if (buttomTypeAdapter.getItem(position).itemType == 0 || buttomTypeAdapter.getItem(
-                    position
-                ).itemType == 1
-            ) {
-                if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
-                    val sList = mutableListOf<String>()
-                    for (bean in plateBean.plate) {
-                        sList.add(bean.name)
-                    }
-                    HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
-                        HomeBottomDialog.OnClickItemListener {
-                        override fun onClickItem(position: Int, str: String) {
-                            buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
-                            buttomTypeAdapter.setData(1, ButtomTypeBean(str, 1, 1))
-                            platename = str
-                            params["plate"] = plateBean.plate[position].plate
-                            params["actionCode"] = plateBean.plate[position].actionCode
-                        }
-                    }).show()
-                } else {
-                    viewModel.getPlate()
+
+            val buttomType = buttomTypeAdapter.getItem(position).itemType
+            when (buttomType) {
+                0, 1 -> { // 选择板块
+                    showPlate()
                 }
+                4 -> { // 选择地址。
+                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                }
+
             }
+//            if (buttomTypeAdapter.getItem(position).itemType == 0 || buttomTypeAdapter.getItem(
+//                    position
+//                ).itemType == 1
+//            ) {
+//                if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
+//                    val sList = mutableListOf<String>()
+//                    for (bean in plateBean.plate) {
+//                        sList.add(bean.name)
+//                    }
+//                    HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
+//                        HomeBottomDialog.OnClickItemListener {
+//                        override fun onClickItem(position: Int, str: String) {
+//                            buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+//                            buttomTypeAdapter.setData(2, ButtomTypeBean(str, 1, 1))
+//                            platename = str
+//                            params["plate"] = plateBean.plate[position].plate
+//                            params["actionCode"] = plateBean.plate[position].actionCode
+//                        }
+//                    }).show()
+//                } else {
+//                    viewModel.getPlate()
+//                }
+//            }
         }
 
         binding.etContent.addTextChangedListener(object : TextWatcher {
@@ -503,9 +540,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.bottom.ivLoc.setOnClickListener {
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
-        binding.tvLocation.setOnClickListener {
-            startARouter(ARouterCirclePath.ChooseLocationActivity)
-        }
+//        binding.tvLocation.setOnClickListener {
+//            startARouter(ARouterCirclePath.ChooseLocationActivity)
+//        }
 
         binding.bottom.ivPic.setOnClickListener {
             PictureUtil.openGallery(
@@ -559,7 +596,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                     })
             } else {
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putParcelableArrayList("picList", selectList)
                 bundle.putInt("position", position)
                 bundle.putInt("showEditType", -1)
@@ -628,11 +665,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.typerec.adapter = buttomTypeAdapter
         buttomTypeAdapter.addData(
             arrayListOf(
-                ButtomTypeBean("选择模块", 1, 0),
-                ButtomTypeBean("", 0, 1),
-                ButtomTypeBean("", 0, 2),
-                ButtomTypeBean("", 0, 3),
-                ButtomTypeBean("", 0, 4)
+                ButtomTypeBean("定位", 1, 4),  //0
+                ButtomTypeBean("选择模块", 1, 0), //1
+                ButtomTypeBean("", 0, 1),//2
+                ButtomTypeBean("", 0, 2),//3
+                ButtomTypeBean("", 0, 3),//4
+
             )
         )
         binding.bottom.labelrec.layoutManager = LinearLayoutManager(this).apply {
@@ -641,14 +679,17 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.bottom.labelrec.adapter = buttomlabelAdapter
 
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            if (buttomlabelAdapter.getItem(position).isselect) {
-                buttomlabelAdapter.getItem(position).isselect = false
-                params.remove("keywords")
-            } else {
-                buttomlabelAdapter.getItem(position).isselect = true
-                params["keywords"] = buttomlabelAdapter.getItem(position).tagName
-            }
+            buttomlabelAdapter.getItem(position).isselect =
+                !buttomlabelAdapter.getItem(position).isselect
             buttomlabelAdapter.notifyDataSetChanged()
+//            if (buttomlabelAdapter.getItem(position).isselect) {
+//                buttomlabelAdapter.getItem(position).isselect = false
+//                params.remove("keywords")
+//            } else {
+//                buttomlabelAdapter.getItem(position).isselect = true
+//                params["keywords"] = buttomlabelAdapter.getItem(position).tagName
+//            }
+//            buttomlabelAdapter.notifyDataSetChanged()
         }
         binding.bottom.emojirec.adapter = emojiAdapter
         val emojiList = ArrayList<String>()
@@ -836,7 +877,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.plateName = platename  //模块名称
                         postEntity.topicId =
                             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-                        postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                        postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
                         postEntity.keywords =
                             if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
@@ -858,6 +899,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
+
+                        // 保存tags
+                        saveCgTags(postEntity)
+
 //                        if (locaPostEntity == null) {
                         viewModel.insertPostentity(postEntity)
 //                        } else {
@@ -878,6 +923,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         }
         return false
+    }
+    fun saveCgTags(postEntity:PostEntity){
+        // 保存tags
+        val data = buttomlabelAdapter.data
+        val gson = Gson()
+        val toJsonTags = gson.toJson(data)
+        postEntity.tags = toJsonTags
     }
 
     fun addPost(dialog: LoadDialog) {
@@ -915,7 +967,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     if (data != null) {
                         params["circleId"] = data.getIntExtra("circleId", 0)
                         circlename = data.getStringExtra("name").toString()
-                        buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
+                        buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
             }
@@ -958,23 +1010,23 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         params["cityCode"] = locaPostEntity!!.cityCode
                         params["city"] = locaPostEntity!!.city
                         if (params["plate"] != 0) {
-                            buttomTypeAdapter.setData(0, ButtomTypeBean("", 0, 0))
+                            buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(
-                                1,
+                                2,
                                 ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
                             )
                         }
                         if (locaPostEntity!!.topicName?.isNotEmpty() == true)
                             buttomTypeAdapter.setData(
-                                2,
+                                3,
                                 ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
                             )
                         if (locaPostEntity!!.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                            3,
+                            4,
                             ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
                         )
                         if (locaPostEntity!!.address?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                            4,
+                            0,
                             ButtomTypeBean(locaPostEntity!!.address, 1, 4)
                         )
                         //选择的标签
@@ -1006,7 +1058,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             return true
         } else if (selectList.size > 0) {
             return true
-        } else if (buttomTypeAdapter.getItem(1).content.isNotEmpty()
+        } else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()
             || buttomTypeAdapter.getItem(2).content.isNotEmpty()
             || buttomTypeAdapter.getItem(3).content.isNotEmpty()
             || buttomTypeAdapter.getItem(4).content.isNotEmpty()
@@ -1022,7 +1074,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun back() {
-        var postsId = intent?.getStringExtra("postsId")
+        val postsId = intent?.getStringExtra("postsId")
         if (!isSave()) {
             finish()
         } else {
@@ -1047,7 +1099,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     postEntity.plateName = platename  //模块名称
                     postEntity.topicId =
                         if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-                    postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+                    postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
                     postEntity.keywords =
                         if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
@@ -1094,7 +1146,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             return
         }
         circlePostTagDialog = CirclePostTagDialog(this, object : CirclePostTagDialog.ICallbackTag {
-            override fun callbackTag(cancel: Boolean, tags: MutableList<PostKeywordBean>,totalTags:Int) {
+            override fun callbackTag(
+                cancel: Boolean,
+                tags: MutableList<PostKeywordBean>,
+                totalTags: Int
+            ) {
                 if (!cancel) {
                     tags.forEach {
                         it.isselect = true
@@ -1106,7 +1162,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         val last = mutableListOf<PostKeywordBean>()
                         buttomlabelAdapter.data.forEach {
                             if (!tags.contains(it)) {
-                                it.isselect=false
+                                it.isselect = false
                                 last.add(it)
                                 if (last.size == totalTags) {
                                     return
@@ -1119,18 +1175,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
             }
         }, postTagDataList!!, buttomlabelAdapter.data)
-//        circlePostTagDialog?.postTagDataList=postTagDataList
+//        circlePostTagDialog?.postTagDataList=postTagDataLists
 //        circlePostTagDialog?.initData()
         circlePostTagDialog?.show()
     }
 
     fun ondesSave() {
-        var postsId = intent?.getStringExtra("postsId")
+        val postsId = intent?.getStringExtra("postsId")
         if (!postsId.isNullOrEmpty()) {
             return
         }
         if (isSave()) {
-            var postEntity =
+            val postEntity =
                 if (locaPostEntity != null) locaPostEntity!! else PostEntity()
             if (postEntity.postsId == 0L) {
                 postEntity.postsId = insertPostId
@@ -1144,7 +1200,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postEntity.plateName = platename  //模块名称
             postEntity.topicId =
                 if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-            postEntity.topicName = buttomTypeAdapter.getItem(2).content ?: ""  //话题名称
+            postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
             postEntity.keywords =
                 if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
@@ -1166,8 +1222,34 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postEntity.cityCode =
                 if (params["cityCode"] != null) params["cityCode"] as String else ""
             postEntity.creattime = System.currentTimeMillis().toString()
+
+            val data = buttomlabelAdapter.data
+            val gson = Gson()
+            val toJsonTags = gson.toJson(data)
+            postEntity.tags = toJsonTags
             viewModel.insertPostentity(postEntity)
 
+        }
+    }
+
+    fun showPlate() {
+        if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
+            val sList = mutableListOf<String>()
+            for (bean in plateBean.plate) {
+                sList.add(bean.name)
+            }
+            HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
+                HomeBottomDialog.OnClickItemListener {
+                override fun onClickItem(position: Int, str: String) {
+                    buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter.setData(2, ButtomTypeBean(str, 1, 1))
+                    platename = str
+                    params["plate"] = plateBean.plate[position].plate
+                    params["actionCode"] = plateBean.plate[position].actionCode
+                }
+            }).show()
+        } else {
+            viewModel.getPlate()
         }
     }
 }

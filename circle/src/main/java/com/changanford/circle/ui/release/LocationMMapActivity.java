@@ -60,6 +60,7 @@ import com.luck.picture.lib.tools.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -78,6 +79,7 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     //经纬度
     private double lat;
     private double lon;
+    private String address;
     private String city;
     private BDLocation mlocation;
     private PoiInfo poiInfo;
@@ -91,7 +93,8 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     private boolean isquerypoi = false;
     private LoadDialog alertDialog;
 
-
+    //    double lat ;
+//    double lan ;
     @Override
     public void initView() {
         AppUtils.setStatusBarHeight(binding.ivBack, this);
@@ -102,14 +105,14 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
                 finish();
             }
         });
+        lat = getIntent().getDoubleExtra("lat", 0.0);
+        lon = getIntent().getDoubleExtra("lon", 0.0);
+        address=getIntent().getStringExtra("address");
+        if(!TextUtils.isEmpty(address)){
+            binding.tvLocationBig.setText(address);
+        }
+        navationLocation=new NavationMap(lat, lon, address);
         initMap();
-
-
-        alertDialog
-                = new LoadDialog(this);
-        alertDialog.setLoadingText("定位中请稍后...");
-        alertDialog.show();
-        alertDialog.setCanceledOnTouchOutside(true);
     }
 
     private void shearch(String shearch) {
@@ -125,16 +128,15 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     @Override
     public void initData() {
 
-       binding.ivNavigation.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(navationLocation!=null){
+        binding.ivNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (navationLocation != null) {
                     Gson mGson = new Gson();
-                   JumpUtils.getInstans().jump(69, mGson.toJson(navationLocation));
-               }
-
-           }
-       });
+                    Objects.requireNonNull(JumpUtils.getInstans()).jump(69, mGson.toJson(navationLocation));
+                }
+            }
+        });
     }
 
     /**
@@ -165,9 +167,20 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         mLocationClient = new LocationClient(this);
         //注册监听函数
         mLocationClient.registerLocationListener(myListener);
-        initLocation();
-        //开始定位
-        mLocationClient.start();
+
+        if (lon >= 0 && lat >= 0) {
+            movedot(lat, lon);
+        } else {
+            initLocation();
+            //开始定位
+            mLocationClient.start();
+            alertDialog = new LoadDialog(this);
+            alertDialog.setLoadingText("定位中请稍后...");
+            alertDialog.show();
+            alertDialog.setCanceledOnTouchOutside(true);
+        }
+
+
     }
 
     @Override
@@ -233,7 +246,6 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
         mLocationClient.setLocOption(locationOption);
         //开始定位
-
         //设置地图单击事件监听
     }
 
@@ -275,6 +287,7 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     }
 
     NavationMap navationLocation;
+
     /**
      * 实现定位监听 位置一旦有所改变就会调用这个方法
      * 可以在这个方法里面获取到定位之后获取到的一系列数据
@@ -324,7 +337,7 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
             lat = location.getLatitude();
             lon = location.getLongitude();
             city = location.getCity();
-             navationLocation=new NavationMap(lat,lon,location.getAddress().address);
+            navationLocation = new NavationMap(lat, lon, location.getAddress().address);
             mapReturnBean.setCid(location.getCityCode());
             mapReturnBean.setCityName(location.getCity());
             mapReturnBean.setShefenName(location.getProvince());
@@ -379,10 +392,10 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     public void movedot(double latitud, double longitude) {
 
         LatLng point = new LatLng(latitud, longitude);
-     //构建Marker图标
+        //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_map_location);
-     //构建MarkerOption，用于在地图上添加Marker
+        //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
                 .icon(bitmap);
@@ -490,8 +503,8 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         viewModel.getCityDetailBylngAndlat(lat, lon, new Function1<CommonResponse<LocationDataBean>, Unit>() {
             @Override
             public Unit invoke(CommonResponse<LocationDataBean> response) {
-                if (response.getCode() == 0){
-                    LocationDataBean locationDataBean=response.getData();
+                if (response.getCode() == 0) {
+                    LocationDataBean locationDataBean = response.getData();
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     mapReturnBean.setSid(locationDataBean.getProvinceCode());

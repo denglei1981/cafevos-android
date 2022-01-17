@@ -14,14 +14,15 @@
             android:id="@+id/btn_check"
             style="@style/materialButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            android:backgroundTint="#FAFBFD"
-            android:minWidth="@dimen/dp_72"
+            android:layout_height="@dimen/dp_25"
+            android:backgroundTint="#66000000"
+            android:minWidth="@dimen/dp_62"
             android:text="线上活动"
-            android:textColor="#8195C8"
+            android:textColor="@color/white"
             app:cornerRadius="@dimen/dp_20"
             android:layout_marginEnd="5dp"
-             />
+            android:textSize="@dimen/sp_12"
+            />
 
     </LinearLayout>
 </layout>

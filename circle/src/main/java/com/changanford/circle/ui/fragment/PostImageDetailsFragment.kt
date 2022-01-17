@@ -1,6 +1,8 @@
 package com.changanford.circle.ui.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,7 @@ import com.changanford.circle.databinding.ActivityPostGraphicBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
+import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.utils.launchWithCatch
@@ -35,6 +38,7 @@ import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -44,6 +48,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.zhpan.bannerview.constants.IndicatorGravity
 
 /**
@@ -214,8 +221,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvTwoCity.visibility = View.VISIBLE
                                 tvTwoCity.text = mData.city
                             }
-
-
                             if (mData.isGood == 1) {
                                 MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
                             }
@@ -313,6 +318,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     val isFol = mData.authorBaseVo?.isFollow
                     viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
                 }
+            }
+            tvTwoCity.setOnClickListener {
+                StartBaduMap()
+            }
+            binding.viewLongType.tvTwoCity.setOnClickListener {
+                StartBaduMap()
             }
         }
         binding.bottomView.run {
@@ -494,7 +505,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 binding.postTag.visibility=View.VISIBLE
             }
         }
-
     }
     fun showPicTag(){
         if(mData.tags==null||mData.tags.size==0){
@@ -507,5 +517,30 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             circlePostDetailsTagAdapter.setNewInstance(mData.tags)
             binding.postTagS.visibility=View.VISIBLE
         }
+    }
+
+    private fun StartBaduMap() {
+        SoulPermission.getInstance()
+            .checkAndRequestPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                object : CheckRequestPermissionListener {
+                    override fun onPermissionOk(permission: Permission) {
+                        val intent = Intent()
+                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+                        intent.putExtra("lat",mData.lat)
+                        intent.putExtra("lon",mData.lon)
+                        intent.putExtra("address",mData.address)
+                        startActivity(intent)
+                    }
+
+                    override fun onPermissionDenied(permission: Permission) {
+                        AlertDialog(MyApp.mContext).builder()
+                            .setTitle("提示")
+                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                            .setNegativeButton("取消") { }.setPositiveButton(
+                                "确定"
+                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+                    }
+                })
     }
 }

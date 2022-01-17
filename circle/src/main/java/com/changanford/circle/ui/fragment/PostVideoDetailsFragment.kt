@@ -1,5 +1,7 @@
 package com.changanford.circle.ui.fragment
 
+import android.Manifest
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Spannable
@@ -11,21 +13,26 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
+import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
+import com.changanford.circle.adapter.circle.CircleVideoPostTagAdapter
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostVideoDetailsBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.activity.PostDetailsActivity
+import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -33,6 +40,9 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.dk.DKPlayerHelper
 import com.changanford.common.utilext.toast
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 /**
  *Author lcw
@@ -117,6 +127,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 tvTalkType.visibility = View.GONE
             }
             tvTalkType.text = mData.topicName
+            showTag()
 
         }
 
@@ -245,6 +256,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     val isFol = mData.authorBaseVo?.isFollow
                     viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
                 }
+            }
+            binding.tvTwoCity.setOnClickListener {
+                StartBaduMap()
             }
         }
 
@@ -407,5 +421,42 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     override fun onDestroy() {
         super.onDestroy()
         playerHelper.release()
+    }
+
+    fun showTag(){
+        if(mData.tags==null||mData.tags.size==0){
+            binding.rvTags.visibility=View.GONE
+            return
+        }
+        if(mData.tags.size>0){
+            val circlePostDetailsTagAdapter = CircleVideoPostTagAdapter()
+            binding.rvTags.adapter=circlePostDetailsTagAdapter
+            circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+            binding.rvTags.visibility=View.VISIBLE
+        }
+    }
+    private fun StartBaduMap() {
+        SoulPermission.getInstance()
+            .checkAndRequestPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                object : CheckRequestPermissionListener {
+                    override fun onPermissionOk(permission: Permission) {
+                        val intent = Intent()
+                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+                        intent.putExtra("lat",mData.lat)
+                        intent.putExtra("lon",mData.lon)
+                        intent.putExtra("address",mData.address)
+                        startActivity(intent)
+                    }
+
+                    override fun onPermissionDenied(permission: Permission) {
+                        AlertDialog(MyApp.mContext).builder()
+                            .setTitle("提示")
+                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                            .setNegativeButton("取消") { }.setPositiveButton(
+                                "确定"
+                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+                    }
+                })
     }
 }

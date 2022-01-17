@@ -40,7 +40,8 @@ data class PostEntity(
     @ColumnInfo(name = "cityCode") var cityCode:String ="",
     @ColumnInfo(name="creattime") var creattime:String="",
     @ColumnInfo(name="longpostFmLocalMeadle") var longpostFmLocalMeadle:String="",//发长图的封面
-    @ColumnInfo(name="longPostDatas") var longPostDatas:String="" //发长图的列表集合 分开存储是因为可能没有选择封面
+    @ColumnInfo(name="longPostDatas") var longPostDatas:String="", //发长图的列表集合 分开存储是因为可能没有选择封面
+    @ColumnInfo(name="tags") var tags:String="" // 标签 存储为json
 ) : Serializable
 
 @Dao

@@ -45,8 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:scaleType="fitXY"
-            android:visibility="gone"
             android:src="@drawable/bg_start_end_circlevideobottom"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -67,9 +67,22 @@
             android:paddingEnd="14dp"
             android:textColor="@color/circle_8195C8"
             android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/guide_line"
+            app:layout_constraintBottom_toTopOf="@+id/rv_tags"
             app:layout_constraintLeft_toLeftOf="parent"
             tools:text="年轻人喜欢什么样的车" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/guide_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <View
             android:id="@+id/guide_line"
@@ -97,13 +110,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_expand"
             android:layout_width="wrap_content"
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
             android:text="展开"
             android:textColor="@color/circle_9eaed8"
+            android:textSize="14sp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintTop_toTopOf="@+id/tv_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintTop_toTopOf="@+id/tv_content" />
 
         <RelativeLayout
             android:id="@+id/ll_form_and_city"
@@ -135,8 +148,8 @@
                 android:textColor="@color/color_cc"
                 android:textSize="13sp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="重庆市" />
+                tools:text="重庆市"
+                tools:visibility="visible" />
 
         </RelativeLayout>
 
@@ -144,13 +157,13 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="14dp"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/ll_form_and_city"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="20dp"
             tools:text="重庆长安福特EVOS华丽登场" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -204,9 +217,9 @@
             android:id="@+id/cl_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:background="@color/white"
             android:visibility="gone"
-            android:animateLayoutChanges="true"
             app:layout_constraintBottom_toTopOf="@+id/ll_bottom">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -222,25 +235,25 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="全部评论"
-                android:textSize="16sp"
                 android:textColor="@color/color_33"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="20dp"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="HardcodedText" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_comment"
                 android:layout_width="match_parent"
+                android:layout_height="400dp"
                 android:layout_marginTop="30dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/iv_close_comment"
-                android:layout_height="400dp"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/iv_close_comment" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
