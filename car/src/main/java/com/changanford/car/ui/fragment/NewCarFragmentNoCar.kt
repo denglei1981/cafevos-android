@@ -23,7 +23,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
@@ -34,9 +33,9 @@ import com.changanford.car.adapter.CarRecommendAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -47,7 +46,6 @@ import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils.handleNullableUrl
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import java.util.*
 
@@ -56,7 +54,7 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
     var carTopBanner = NewCarTopBannerAdapter()
     var carRecommendAdapter = CarRecommendAdapter()
     private var carAuthAdapter = CarAuthAdapter()
-    var topBannerList = ArrayList<AdBean>()
+    var topBannerList = ArrayList<NewCarBannerBean>()
     @SuppressLint("NewApi")
     override fun initView() {
         binding.carTopViewPager.apply {
@@ -67,8 +65,9 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
             setIndicatorView(binding.drIndicator)
             setOnPageClickListener {
                 if (!FastClickUtils.isFastClick()) {
-                    JumpUtils.instans?.jump(topBannerList[it].jumpDataType, topBannerList[it].jumpDataValue)
+//                    JumpUtils.instans?.jump(topBannerList[it].mainJumpType, topBannerList[it].mainJumpVal)
                 }
+                carTopBanner.notifyDataSetChanged()
             }
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -79,20 +78,20 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList.let {
-                        if (it[position].jumpDataValue?.contains("canAuth=true") == true) {
-                            binding.carNoauthLayout.button.apply {
-                                setBackgroundResource(R.drawable.bg_bt_blue_corner39)
-                                isEnabled = true
-                                setTextColor(ContextCompat.getColor(context,R.color.color_withe))
-                            }
-
-                        } else {
-                            binding.carNoauthLayout.button.apply {
-                                setBackgroundResource(R.drawable.bg_bt_gray_corner39)
-                                isEnabled = false
-                                setTextColor(ContextCompat.getColor(context,R.color.color_withe))
-                            }
-                        }
+//                        if (it[position].jumpDataValue?.contains("canAuth=true") == true) {
+//                            binding.carNoauthLayout.button.apply {
+//                                setBackgroundResource(R.drawable.bg_bt_blue_corner39)
+//                                isEnabled = true
+//                                setTextColor(ContextCompat.getColor(context,R.color.color_withe))
+//                            }
+//
+//                        } else {
+//                            binding.carNoauthLayout.button.apply {
+//                                setBackgroundResource(R.drawable.bg_bt_gray_corner39)
+//                                isEnabled = false
+//                                setTextColor(ContextCompat.getColor(context,R.color.color_withe))
+//                            }
+//                        }
                     }
                 }
             })
@@ -119,8 +118,20 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
     }
 
     override fun initData() {
+        viewModel.topBannerBean.observe(this,{
+            it?.apply {
+                if (size == 0) {
+                    binding.carTopViewPager.isVisible = false
+                    return@observe
+                }
+//            setVPHeight()
+                binding.carTopViewPager.isVisible = true
+                topBannerList.clear()
+                topBannerList.addAll(this)
+                binding.carTopViewPager.create(topBannerList)
+            }
+        })
         viewModel.getTopBanner()
-        viewModel.getTopAds()
         viewModel.getMyCar()
         viewModel.queryAuthCarAndIncallList {
             it.onSuccess {
@@ -138,18 +149,6 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
                 showAuthIntroLayout(it)
             }
         }
-        viewModel._ads.observe(this, {
-            "中间页广告数量${it.size}".logE()
-            if (it == null || it.size == 0) {
-                binding.carTopViewPager.isVisible = false
-                return@observe
-            }
-//            setVPHeight()
-            binding.carTopViewPager.isVisible = true
-            topBannerList.clear()
-            topBannerList.addAll(it)
-            binding.carTopViewPager.create(topBannerList)
-        })
         observeData()
     }
 

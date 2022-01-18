@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.changanford.common.BuildConfig
 import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
@@ -56,6 +57,7 @@ fun ImageView.load(url: String?, drawable: Int? = R.mipmap.image_h_one_default) 
             .fitCenter()
             .into(this)
     }
+    if(BuildConfig.DEBUG)string?.logE()
 }
 
 fun ImageView.load(string: Int?, drawable: Int? = null) {

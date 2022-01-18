@@ -133,7 +133,7 @@ interface NetWorkApi {
 
     //爱车首页顶部banner
     @POST("/base/centerbanner/list")
-    suspend fun getCarTopBanner(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MiddlePageBean>
+    suspend fun getCarTopBanner(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<NewCarBannerBean>>
 
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")

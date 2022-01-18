@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.changanford.common.bean.AdBean
-import com.changanford.common.bean.CarAuthBean
-import com.changanford.common.bean.MiddlePageBean
-import com.changanford.common.bean.RecommendData
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.paging.DataRepository
@@ -20,7 +17,8 @@ class CarViewModel : ViewModel() {
     var adsRepository: AdsRepository = AdsRepository(this)
     var _ads: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
     var _middleInfo: MutableLiveData<MiddlePageBean> = MutableLiveData<MiddlePageBean>()
-
+    //首页顶部banenr
+    val topBannerBean= MutableLiveData<MutableList<NewCarBannerBean>?>()
     init {
         _ads = adsRepository._ads
     }
@@ -84,7 +82,7 @@ class CarViewModel : ViewModel() {
                 val rkey = getRandomKey()
                 apiService.getCarTopBanner(hashMap.header(rkey),hashMap.body(rkey))
             }.onSuccess {
-
+                topBannerBean.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
             }
