@@ -85,7 +85,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 //                val intent = Intent()
 //                intent.setClass(MyApp.mContext,LocationMMapActivity::class.java)
 //                context.startActivity(intent)
-                StartBaduMap()
+                StartBaduMap(item)
             }
             if (item.type == 3) {//视频
                 binding.layoutOne.conOne.visibility = View.VISIBLE
@@ -265,7 +265,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         this.notifyDataSetChanged()
     }
 
-    private fun StartBaduMap() {
+    private fun StartBaduMap( mData: PostDataBean) {
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
@@ -273,6 +273,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     override fun onPermissionOk(permission: Permission) {
 
                         val intent = Intent()
+                        intent.putExtra("lat",mData.lat)
+                        intent.putExtra("lon",mData.lon)
+                        intent.putExtra("address",mData.address)
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
                         context.startActivity(intent)
                     }

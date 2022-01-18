@@ -1,5 +1,6 @@
 package com.changanford.home.search.request
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.InfoDataBean
@@ -25,7 +26,7 @@ class PolySearchPostResultViewModel : BaseViewModel() {
      *   搜索具体内容
      * */
     var pageNo = 1
-    fun getSearchContent(skwKeyword: String, isLoadMore: Boolean) {
+    fun getSearchContent(skwKeyword: String, tagId:String,isLoadMore: Boolean) {
         launch(false, {
             val requestBody = HashMap<String, Any>()
             if (isLoadMore) {
@@ -38,6 +39,9 @@ class PolySearchPostResultViewModel : BaseViewModel() {
             var hashMap = HashMap<String, Any>()
             hashMap["skwKeyword"] = skwKeyword
             hashMap["skwType"] = SearchTypeConstant.SEARCH_ACTION_POST
+            if(!TextUtils.isEmpty(tagId)){
+                hashMap["tagId"]=tagId
+            }
             requestBody["queryParams"] = hashMap
             val rkey = getRandomKey()
 

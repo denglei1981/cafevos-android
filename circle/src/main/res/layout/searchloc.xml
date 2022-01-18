@@ -16,7 +16,8 @@
             android:id="@+id/comm_title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+           >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/rltitle"
@@ -69,7 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+          >
 
             <TextView
                 android:id="@+id/tv_location"
@@ -79,8 +81,8 @@
                 android:drawableEnd="@drawable/icon_location_drop"
                 android:drawablePadding="@dimen/dp_2"
                 android:text="重庆"
-                android:visibility="gone"
                 android:textColor="@color/color_33"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/etsearch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/etsearch" />
@@ -121,11 +123,43 @@
                 app:layout_constraintTop_toTopOf="@id/etsearch" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/locrec"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lltitle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_user"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/locrec"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_user" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
 
     </LinearLayout>
 </layout>

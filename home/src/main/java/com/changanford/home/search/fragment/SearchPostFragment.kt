@@ -35,20 +35,23 @@ class SearchPostFragment :
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     companion object {
-        fun newInstance(skwContent: String): SearchPostFragment {
+        fun newInstance(skwContent: String,tagId:String): SearchPostFragment {
             val fg = SearchPostFragment()
             val bundle = Bundle()
             bundle.putString(JumpConstant.SEARCH_CONTENT, skwContent)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID,tagId)
             fg.arguments = bundle
-            fg.arguments = bundle
+
             return fg
         }
     }
 
     var searchContent: String? = null
+    var tagId:String=""
     override fun initView() {
 
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+         tagId = arguments?.getString(JumpConstant.SEARCH_TAG_ID).toString()
         binding.recyclerView.adapter = searchPostsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
@@ -130,13 +133,14 @@ class SearchPostFragment :
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(it, false)
+
+            viewModel.getSearchContent(it, tagId,false)
         }
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(it, true)
+            viewModel.getSearchContent(it, tagId,true)
         }
     }
 }

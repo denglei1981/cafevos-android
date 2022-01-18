@@ -67,3 +67,16 @@ data class NewCircleBean(
     val userId: String = "0",
     val tags:ArrayList<NewCirceTagBean>?=null,
 )
+
+data  class SerachUserAddress(
+    val addrName :String,
+    val address: String,
+    val city : String,
+    val createTime: String,
+    val demo : String,
+    val district: String,
+    val  lat: Double,
+    val lon: Double,
+    val postsAddrId: Long,
+    val province: String,
+)

@@ -2,6 +2,7 @@ package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
 import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
@@ -472,4 +473,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<AdBean>>
+
+
+
+
+    @POST("con/community/postsAddressList")
+    suspend fun getUserPostAdress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<SerachUserAddress>>
 }

@@ -29,7 +29,10 @@ import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
@@ -433,6 +436,19 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             binding.rvTags.adapter=circlePostDetailsTagAdapter
             circlePostDetailsTagAdapter.setNewInstance(mData.tags)
             binding.rvTags.visibility=View.VISIBLE
+            tagsClick(circlePostDetailsTagAdapter)
+        }
+    }
+
+    fun tagsClick(circlePostDetailsTagAdapter:CircleVideoPostTagAdapter){
+        circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
+            // 跳转到搜索
+            val item = circlePostDetailsTagAdapter.getItem(position)
+            val bundle = Bundle()
+            bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
+            bundle.putString(JumpConstant.SEARCH_CONTENT, item.tagName)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID,item.id)
+            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
         }
     }
     private fun StartBaduMap() {

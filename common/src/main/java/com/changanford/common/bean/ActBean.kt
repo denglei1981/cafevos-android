@@ -91,7 +91,7 @@ data class InfoDataBean(
 
     fun getPicCover(): String { // 获取封面。
         if (!TextUtils.isEmpty(pics)) {
-            val asList =pics.split(",")
+            val asList = pics.split(",")
             return asList[0]
         }
         return ""
@@ -127,7 +127,7 @@ data class AuthorBaseVo(
     // 一下三个参数是用户搜索的。
     val headFrameName: String = "",
     val headFrameImage: String = "",
-    val userId: String=""
+    val userId: String = ""
 ) {
     fun getMemberNames(): String {
         return if (TextUtils.isEmpty(memberName)) {
@@ -136,8 +136,9 @@ data class AuthorBaseVo(
             memberName
         }
     }
-    fun showSubtitle():Boolean{
-        if(TextUtils.isEmpty(memberName)){
+
+    fun showSubtitle(): Boolean {
+        if (TextUtils.isEmpty(memberName)) {
             return false
         }
         return true
@@ -204,8 +205,11 @@ data class PostDataBean(
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0,
     val picList: List<String>? = null,
-
-) {
+    val lat: Double = 0.0,
+    val lon: Double = 0.0,
+    val address:String="",
+    val tags:MutableList<PostKeywordBean>
+    ) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
         val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
@@ -227,6 +231,7 @@ data class PostDataBean(
         }
         return ""
     }
+
     var timeAndViewCountResult: String = ""
     fun getTimeAdnViewCount(): String {
         val viewCountStr = CountUtils.formatNum(viewsCount.toString(), false).toString()
@@ -234,15 +239,13 @@ data class PostDataBean(
         return timeAndViewCountResult
     }
 
-    fun getPicsList():List<String>{
+    fun getPicsList(): List<String> {
         if (!TextUtils.isEmpty(pics)) {
-            val asList =pics.split(",")
+            val asList = pics.split(",")
             return asList
         }
         return mutableListOf()
     }
-
-
 
 
 }
@@ -284,7 +287,22 @@ data class ActDataBean(
     val browseCount: Long = 0L
 )
 
-data class  LocationLotLon(val lat:Double,val lon:Double)
+data class LocationLotLon(val lat: Double, val lon: Double)
 
 
-data class  CreateLocation(val address:String,val province:String,val lat:Double,val lon:Double)
+data class CreateLocation(
+    val address: String,
+    val province: String,
+    val lat: Double,
+    val lon: Double
+)
+
+data class PostKeywordBean(
+    val createTime: Long,
+    val id: String,
+    val status: Int,
+    val tagName: String,
+    val tagNameLike: Any,
+    val type: Int,
+    var isselect:Boolean = false
+)

@@ -7,13 +7,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
 import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
-import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -24,28 +25,25 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MediaListBean
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.qw.soul.permission.SoulPermission
@@ -491,6 +489,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
                 binding.viewLongType.postTag.adapter=circlePostDetailsTagAdapter
                 circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+                tagsClick(circlePostDetailsTagAdapter)
                 binding.viewLongType.postTag.visibility=View.VISIBLE
             }
         }else{
@@ -503,6 +502,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 binding.postTag.adapter=circlePostDetailsTagAdapter
                 circlePostDetailsTagAdapter.setNewInstance(mData.tags)
                 binding.postTag.visibility=View.VISIBLE
+                tagsClick(circlePostDetailsTagAdapter)
             }
         }
     }
@@ -516,6 +516,20 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             binding.postTagS.adapter=circlePostDetailsTagAdapter
             circlePostDetailsTagAdapter.setNewInstance(mData.tags)
             binding.postTagS.visibility=View.VISIBLE
+            tagsClick(circlePostDetailsTagAdapter)
+        }
+    }
+    fun tagsClick(circlePostDetailsTagAdapter:CirclePostDetailsTagAdapter){
+        circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
+              // 跳转到搜索
+            val item = circlePostDetailsTagAdapter.getItem(position)
+            val bundle = Bundle()
+            bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
+            bundle.putString(JumpConstant.SEARCH_CONTENT, item.tagName)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID,item.id)
+            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+
+
         }
     }
 

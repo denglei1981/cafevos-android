@@ -107,11 +107,16 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         });
         lat = getIntent().getDoubleExtra("lat", 0.0);
         lon = getIntent().getDoubleExtra("lon", 0.0);
-        address=getIntent().getStringExtra("address");
-        if(!TextUtils.isEmpty(address)){
+        address = getIntent().getStringExtra("address");
+        if (!TextUtils.isEmpty(address)) {
             binding.tvLocationBig.setText(address);
         }
-        navationLocation=new NavationMap(lat, lon, address);
+        try {
+            navationLocation = new NavationMap(lat, lon, address);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initMap();
     }
 
