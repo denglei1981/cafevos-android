@@ -12,7 +12,6 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
-import com.changanford.shop.listener.OnPerformListener
 import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
