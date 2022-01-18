@@ -80,15 +80,17 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
 
     override fun initData() {
         viewModel.cirCleHomeData.observe(this,{
-            binding.composeViewRecommended.setContent {
-                Column {
-                    Spacer(modifier = Modifier.height(15.dp))
-                    //推荐圈子分类
-                    RecommendedCompose(it.circleTypes)
-                    //我的圈子
-                    MyCircleCompose(it.myCircles)
-                    //热门榜单
-                    it.topList?.apply {hotListAdapter.setList(this)}
+            it?.apply {
+                binding.composeViewRecommended.setContent {
+                    Column {
+                        Spacer(modifier = Modifier.height(15.dp))
+                        //推荐圈子分类
+                        RecommendedCompose(circleTypes)
+                        //我的圈子
+                        MyCircleCompose(myCircles)
+                        //热门榜单
+                        topList?.apply {hotListAdapter.setList(this)}
+                    }
                 }
             }
             binding.srl.finishRefresh()

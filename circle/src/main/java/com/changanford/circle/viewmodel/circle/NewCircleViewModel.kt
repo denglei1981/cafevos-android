@@ -18,7 +18,7 @@ import com.changanford.common.utilext.toast
  * @Description : CircleViewModel
  */
 class NewCircleViewModel:BaseViewModel() {
-    val cirCleHomeData=MutableLiveData<CirceHomeBean>()
+    val cirCleHomeData=MutableLiveData<CirceHomeBean?>()
     //猜你喜欢
     val youLikeData=MutableLiveData<MutableList<NewCircleBean>?>()
     //热门榜单分类
@@ -33,8 +33,11 @@ class NewCircleViewModel:BaseViewModel() {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().circleHome(body.header(rKey), body.body(rKey)).onSuccess {
-                it?.apply {cirCleHomeData.postValue(this)  }
-            }.onWithMsgFailure { it?.toast() }
+                cirCleHomeData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+                cirCleHomeData.postValue(null)
+            }
         })
     }
     /**
@@ -46,7 +49,10 @@ class NewCircleViewModel:BaseViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().youLike(body.header(rKey), body.body(rKey)).onSuccess {
                  it?.apply { youLikeData.postValue(this.dataList) }
-                }.onWithMsgFailure { it?.toast() }
+                }.onWithMsgFailure {
+                    it?.toast()
+                    youLikeData.postValue(null)
+                }
         })
     }
     /**
