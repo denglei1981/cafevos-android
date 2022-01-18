@@ -15,7 +15,7 @@
             android:id="@+id/tv_fast_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_6"
             android:text="@string/home_fast_in"
             android:textColor="@color/color_33"
             android:textSize="16sp"

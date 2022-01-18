@@ -17,6 +17,7 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
 import com.changanford.circle.databinding.LayoutSearchLocationFooterBinding
 import com.changanford.circle.databinding.SearchlocBinding
+import com.changanford.circle.viewmodel.SearchLocViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
@@ -28,7 +29,7 @@ import com.changanford.common.utilext.toast
 
 // 搜索位置信息。
 @Route(path = ARouterCirclePath.SearchLocActivity)
-class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
+class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
     OnGetPoiSearchResultListener {
 
     lateinit var locaAdapter: LocaAdapter

@@ -5,6 +5,7 @@ import com.changanford.common.net.CommonResponse
 import com.changanford.home.bean.*
 import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
+import com.changanford.home.data.FastBeanData
 import com.changanford.home.data.TwoAdData
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.NewsExpandData
@@ -275,6 +276,13 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<AdBean>>
+
+    @POST("/con/ads/listV2")
+    suspend fun getFastEnter(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FastBeanData>
+
 
     /**
      * 枚举字典
