@@ -16,7 +16,6 @@ import com.zhpan.bannerview.BaseViewHolder
  * @Description : NewCarTopBannerAdapter
  */
 class NewCarTopBannerAdapter: BaseBannerAdapter<AdBean, NewCarTopBannerViewHolder>() {
-
     override fun createViewHolder(itemView: View?, viewType: Int): NewCarTopBannerViewHolder {
         return NewCarTopBannerViewHolder(itemView!!)
     }
@@ -32,12 +31,12 @@ class NewCarTopBannerAdapter: BaseBannerAdapter<AdBean, NewCarTopBannerViewHolde
 
 class NewCarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
     private val animationControl by lazy { AnimationControl() }
+    private lateinit var binding:ItemCarBannerBinding
     override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
         DataBindingUtil.bind<ItemCarBannerBinding>(itemView)?.apply {
+            binding=this
             imageCarIntro.let { GlideUtils.loadFullSize(data?.adImg, it, R.mipmap.ic_def_square_img) }
-            animationControl.startAnimation(imgTop)
+//            animationControl.startAnimation(imgTop)
         }
-
     }
-
 }

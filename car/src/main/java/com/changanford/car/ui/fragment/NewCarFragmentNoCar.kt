@@ -67,10 +67,7 @@ class NewCarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>(
             setIndicatorView(binding.drIndicator)
             setOnPageClickListener {
                 if (!FastClickUtils.isFastClick()) {
-                    JumpUtils.instans?.jump(
-                        topBannerList[it].jumpDataType,
-                        topBannerList[it].jumpDataValue
-                    )
+                    JumpUtils.instans?.jump(topBannerList[it].jumpDataType, topBannerList[it].jumpDataValue)
                 }
             }
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

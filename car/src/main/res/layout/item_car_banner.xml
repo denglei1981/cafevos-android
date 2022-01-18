@@ -7,15 +7,20 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/imageCarIntro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:layout_gravity="top"
+            android:adjustViewBounds="true"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"
             tools:srcCompat="@mipmap/ic_def_square_img" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_top"
+            android:visibility="gone"
             android:src="@color/color_00095B"
             app:layout_constraintTop_toTopOf="@id/imageCarIntro"
             android:layout_width="match_parent"
