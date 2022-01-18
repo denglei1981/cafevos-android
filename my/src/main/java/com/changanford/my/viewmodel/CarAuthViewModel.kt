@@ -1,5 +1,8 @@
 package com.changanford.my.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +12,12 @@ import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toastShow
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 /**
  *  文件名：CarAuthViewModel
@@ -144,4 +152,67 @@ class CarAuthViewModel : ViewModel() {
             })
         }
     }
+
+    var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun smsCacSmsCode(mobile: String) {
+        if (mobile?.isNullOrEmpty()) {
+            toastShow("请输入手机号")
+            return
+        }
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                var body = HashMap<String, String>()
+                body["phone"] = mobile
+                var rkey = getRandomKey()
+                apiService.sendCacSmsCode(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                smsSuccess.postValue(true)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取验证码倒计时
+     */
+    var subscribe: Disposable? = null
+
+    var smsGetHint: String by mutableStateOf("获取验证码")
+    var btnGetSmsIsEnabled: Boolean by mutableStateOf(true)
+
+    fun smsCountDownTimer() {
+        var time: Long = 60
+        Observable.interval(1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : io.reactivex.rxjava3.core.Observer<Long> {
+                override fun onSubscribe(d: Disposable) {
+                    subscribe = d
+                    btnGetSmsIsEnabled = false
+                }
+
+                override fun onNext(t: Long) {
+                    if (t < 59) {
+                        time -= 1
+                        smsGetHint = "${time}s"
+                    } else {
+                        onComplete()
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                }
+
+                override fun onComplete() {
+                    smsGetHint = "获取验证码"
+                    btnGetSmsIsEnabled = true
+                    subscribe?.dispose()
+                }
+            })
+    }
+
 }
