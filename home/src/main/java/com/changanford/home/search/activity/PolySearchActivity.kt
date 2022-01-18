@@ -123,16 +123,14 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 }
             }
         })
-        searchHotAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val bean = searchHotAdapter.getItem(position)
-                if (bean.jumpDataType != 0) {//jump跳转
-                    JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
-                } else {
-                    search(bean.keyword, true)
-                }
+        searchHotAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = searchHotAdapter.getItem(position)
+            if (bean.jumpDataType != 0) {//jump跳转
+                JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
+            } else {
+                search(bean.keyword, true)
             }
-        })
+        }
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == 0) {
                 HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)

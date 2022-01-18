@@ -10,6 +10,7 @@ import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.bean.PostTagData
 import com.changanford.circle.databinding.DialogCirclePostTagBinding
 import com.changanford.common.ui.dialog.BaseAppCompatDialog
+import kotlin.math.sign
 
 class CirclePostTagDialog(private val activity: AppCompatActivity) : BaseAppCompatDialog(activity) {
 
@@ -48,7 +49,30 @@ class CirclePostTagDialog(private val activity: AppCompatActivity) : BaseAppComp
             dismiss()
         }
         mDatabind.tvSure.setOnClickListener {
-            callback.callbackTag(false, dialogPostTagAdapter.hobbyIds,totalTags)
+            dialogPostTagAdapter.hobbyIds.forEach{
+                it.isselect=true
+            }
+            if(dialogPostTagAdapter.hobbyIds.size>=6){
+                callback.callbackTag(false, dialogPostTagAdapter.hobbyIds,totalTags)
+            }else{// 补齐6个
+                if (dialogPostTagAdapter.hobbyIds.size < totalTags) {
+                    val last = mutableListOf<PostKeywordBean>()
+                    selectTagList?.forEach {
+                        if( !dialogPostTagAdapter.hobbyIds.contains(it)){
+                            if(last.size>=totalTags-dialogPostTagAdapter.hobbyIds.size){
+                                return@forEach
+                            }
+                            it.isselect=false
+                            last.add(it)
+                        }
+                    }
+                    dialogPostTagAdapter.hobbyIds.addAll(last)
+                    callback.callbackTag(false, dialogPostTagAdapter.hobbyIds,totalTags)
+                }
+
+            }
+
+
             dismiss()
         }
 

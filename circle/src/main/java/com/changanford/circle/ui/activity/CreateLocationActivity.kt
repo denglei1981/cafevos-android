@@ -2,7 +2,10 @@ package com.changanford.circle.ui.activity
 
 import android.Manifest
 import android.text.TextUtils
+import android.view.Gravity
+import android.view.View
 import androidx.lifecycle.Observer
+import com.changanford.circle.R
 import com.changanford.circle.databinding.ActvityCreateLocationBinding
 import com.changanford.circle.viewmodel.CreateLocationViewModel
 import com.changanford.common.basic.BaseActivity
@@ -21,6 +24,8 @@ import com.changanford.common.widget.picker.entity.ProvinceEntity
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 class CreateLocationActivity :
     BaseActivity<ActvityCreateLocationBinding, CreateLocationViewModel>() {
@@ -41,7 +46,8 @@ class CreateLocationActivity :
             }
         }
         binding.tvConsle.setOnClickListener {
-            finish()
+            // 加个弹窗
+            onBackPressed()
         }
         binding.tvCommit.setOnClickListener {
             // 完成
@@ -104,7 +110,8 @@ class CreateLocationActivity :
             lon = it.lon
         })
         viewModel.createLocationLiveData.observe(this, Observer {
-            LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java).postValue(true)
+            LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
+                .postValue(true)
             this.finish()
         })
     }
@@ -112,7 +119,6 @@ class CreateLocationActivity :
 
     var cityPicker: CityPicker? = null
     fun chooseCity() { // 选择城市。。
-
         cityPicker = CityPicker(this).apply {
             setAddressMode(provinces, AddressMode.PROVINCE_CITY_COUNTY)
             //
@@ -148,6 +154,7 @@ class CreateLocationActivity :
         })
         cityPicker?.show()
     }
+
     fun soulPermission() {
         SoulPermission.getInstance()
             .checkAndRequestPermission(
@@ -156,9 +163,53 @@ class CreateLocationActivity :
                     override fun onPermissionOk(permission: Permission) {
                         viewModel.getLocation()
                     }
+
                     override fun onPermissionDenied(permission: Permission) {
                         toastShow("拒绝定位,创建位置将失败")
                     }
                 })
+    }
+
+    override fun onBackPressed() {
+        if (hasEdit()) {
+            createLevel()
+        } else {
+            super.onBackPressed()
+        }
+
+
+    }
+
+    fun hasEdit(): Boolean {
+        locationName = binding.cLocaiton.etContent // 位置名字
+        if (!TextUtils.isEmpty(locationName)) {
+            return true
+        }
+        val cAreaName = binding.cArea.etTxt.text.toString() // 省市区
+        if (!TextUtils.isEmpty(cAreaName)) {
+            return true
+        }
+        detailLocation = binding.layoutDetailLocaiton.etContent // 详细地址
+        if (!TextUtils.isEmpty(detailLocation)) {
+            return true
+        }
+
+        return false
+    }
+
+    fun createLevel() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_create_location_warn)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
     }
 }

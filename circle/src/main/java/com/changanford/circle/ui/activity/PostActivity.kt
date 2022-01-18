@@ -1152,26 +1152,27 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 totalTags: Int
             ) {
                 if (!cancel) {
-                    tags.forEach {
-                        it.isselect = true
-                    }
-                    if (tags.size >= totalTags) {//全换了
-                        buttomlabelAdapter.setNewInstance(tags)
-                    }
-                    if (tags.size < totalTags) {
-                        val last = mutableListOf<PostKeywordBean>()
-                        buttomlabelAdapter.data.forEach {
-                            if (!tags.contains(it)) {
-                                it.isselect = false
-                                last.add(it)
-                                if (last.size == totalTags) {
-                                    return
-                                }
-                            }
-                        }
-                        tags.addAll(last)
-                        buttomlabelAdapter.setNewInstance(tags)
-                    }
+                    buttomlabelAdapter.setNewInstance(tags)
+//                    tags.forEach {
+//                        it.isselect = true
+//                    }
+//                    if (tags.size >= totalTags) {//全换了
+//                        buttomlabelAdapter.setNewInstance(tags)
+//                    }
+//                    if (tags.size < totalTags) {
+//                        val last = mutableListOf<PostKeywordBean>()
+//                        buttomlabelAdapter.data.forEach {
+//                            if (!tags.contains(it)) {
+//                                it.isselect = false
+//                                last.add(it)
+//                                if (last.size == totalTags) {
+//                                    return
+//                                }
+//                            }
+//                        }
+//                        tags.addAll(last)
+//                        buttomlabelAdapter.setNewInstance(tags)
+//                    }
                 }
             }
         }, postTagDataList!!, buttomlabelAdapter.data)

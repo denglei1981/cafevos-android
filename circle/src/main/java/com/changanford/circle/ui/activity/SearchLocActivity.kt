@@ -83,14 +83,19 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
             locaAdapter.notifyDataSetChanged()
         }
         binding.tvCommit.setOnClickListener {
-            if (locaAdapter.id == -1&&locaUserAdapter.id==-1) {
-                "请选择地址".toast()
-            } else {
-                LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
-                LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
-                    .postValue(true)
-                finish()
-            }
+
+              //
+            val intent = Intent()
+            intent.setClass(this, CreateLocationActivity::class.java)
+            startActivity(intent)
+//            if (locaAdapter.id == -1&&locaUserAdapter.id==-1) {
+//                "请选择地址".toast()
+//            } else {
+//                LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//                LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+//                    .postValue(true)
+//                finish()
+//            }
         }
         LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
             .observe(this,
@@ -99,6 +104,13 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
                         finish()
                     }
                 })
+    }
+
+    fun choiceOver(){
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+        LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+            .postValue(true)
+        finish()
     }
 
     override fun observe() {
@@ -132,13 +144,13 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
             locaUserAdapter.setOnItemClickListener { adapter, view, position ->
                 locaUserAdapter.setSelectID(position)
                 poiInfo=locaUserAdapter.getItem(position)
-
-                if(locaAdapter.data.size>0){
-                    locaAdapter.setSelectID(-1)
-                    locaAdapter.notifyDataSetChanged()
-                }
-
-                locaUserAdapter.notifyDataSetChanged()
+                choiceOver()
+//                if(locaAdapter.data.size>0){
+//                    locaAdapter.setSelectID(-1)
+//                    locaAdapter.notifyDataSetChanged()
+//                }
+//
+//                locaUserAdapter.notifyDataSetChanged()
             }
 
 
@@ -196,13 +208,14 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
         locaAdapter.setOnItemClickListener { adapter, view, position ->
 //            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(ml[position])
             locaAdapter.setSelectID(position)
-            if(locaUserAdapter.data.size>0){
-                locaUserAdapter.setSelectID(-1)
-                locaUserAdapter.notifyDataSetChanged()
-            }
-
-            locaAdapter.notifyDataSetChanged()
+//            if(locaUserAdapter.data.size>0){
+//                locaUserAdapter.setSelectID(-1)
+//                locaUserAdapter.notifyDataSetChanged()
+//            }
+//
+//            locaAdapter.notifyDataSetChanged()
             poiInfo = ml[position]
+            choiceOver()
         }
         showSoftInputFromWindow(binding.etsearch)
     }
