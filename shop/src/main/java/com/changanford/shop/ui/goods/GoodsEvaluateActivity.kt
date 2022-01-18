@@ -8,6 +8,7 @@ import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.shop.BuildConfig
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsEvalutaeAdapter
 import com.changanford.shop.databinding.ActGoodsEvaluateBinding
@@ -39,7 +40,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
         binding.topBar.setActivity(this)
 //        spuId=intent.getStringExtra("spuId")?:"0"
         val goodsInfo=intent.getStringExtra("goodsInfo")
-        Log.e("okhttp","goodsInfo:$goodsInfo")
+        if(BuildConfig.DEBUG)Log.e("okhttp","goodsInfo:$goodsInfo")
         if(TextUtils.isEmpty(goodsInfo)){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
