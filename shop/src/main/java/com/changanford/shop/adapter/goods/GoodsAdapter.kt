@@ -15,6 +15,10 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsBinding>, item: GoodsItemBean) {
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
+            //维保商品数据需要转换处理
+            item.mallWbGoodsId?.apply {
+                if("0"!=this)item.maintenanceToGoods()
+            }
             dataBinding.model=item
             dataBinding.executePendingBindings()
             val spuImg=item.spuImgs
@@ -58,7 +62,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     setBackgroundResource(R.drawable.shadow_66fa863e_2dp)
                     "秒杀"
                 }
-                else ->{
+                else ->{// MAINTENANCE 维保商品
                     visibility=View.GONE
                     ""
                 }

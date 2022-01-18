@@ -147,14 +147,18 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
+    private val H5_BASE_URL by lazy { if (isCanQeck&&isDebug)"https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
     //H5活动
     private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" }
     /**
      * %s
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
-    val H5_SHOP_BARGAINING =
-        "${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+    val H5_SHOP_BARGAINING ="${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
+    /**
+     * 维保商品订单详情 /order/#/maintain/maintainDetail?orderNo=
+    * */
+    val H5_SHOP_MAINTENANCE ="${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
 
     var isFirstOpenTwoLevel = true // 是首次打开二楼
 }

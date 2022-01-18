@@ -42,6 +42,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         fun start(spuId:String) {
             JumpUtils.instans?.jump(3,spuId)
         }
+        fun start(jumpDataType:Int,jumpDataValue:String?) {
+            JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+        }
         fun start(context: Context,isRefresh:Boolean) {
             context.startActivity(Intent(context,GoodsDetailsActivity::class.java).putExtra("isRefresh",isRefresh))
         }
@@ -148,7 +151,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 }
             }
             //查看评价
-            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(this,spuId)
+            R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(spuId)
             //选择商品属性
             R.id.tv_goodsAttrs ->control.createAttribute()
             //收藏商品

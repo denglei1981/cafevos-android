@@ -12,7 +12,8 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
-import com.changanford.common.listener.OnPerformListener
+import com.changanford.shop.listener.OnPerformListener
+import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
 /**
@@ -83,7 +84,11 @@ class GoodsViewModel: BaseViewModel() {
      * 获取商品列表
      * [tagId]分类id
      * */
-    fun getGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize){
+        if("WB"==tagType){//获取维保商品数据
+            getMaintenanceGoodsList(tagId,pageNo,pageSize)
+            return
+        }
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -96,6 +101,30 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 goodsListData.postValue(it?.responsePageBean)
+            }.onFailure {
+                goodsListData.postValue(null)
+            }.onWithMsgFailure {
+                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
+    /**
+     * 维保商品
+     * [tagId]分类id
+     * */
+   private fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    it["tagId"]=tagId
+                }
+                val randomKey = getRandomKey()
+                shopApiService.maintenanceGoodsList(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                goodsListData.postValue(it)
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {
@@ -182,17 +211,21 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 评价列表
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
+                    if(WConstant.maintenanceType==spuPageType){
+                        it["mallWbGoodsId"] = spuId
+                    }
                     it["mallMallSpuId"] = spuId
                 }
                 val randomKey = getRandomKey()
-                shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
+                if(WConstant.maintenanceType==spuPageType)shopApiService.goodsEvalListWb(body.header(randomKey), body.body(randomKey))
+                else shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentLiveData.postValue(it)
             }.onWithMsgFailure {

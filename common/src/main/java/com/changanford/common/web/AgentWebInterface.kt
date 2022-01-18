@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
-import com.changanford.common.util.bus.*
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -16,18 +15,18 @@ import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
-import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.*
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
@@ -617,5 +616,14 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
             StatusBarUtil.setLightStatusBar(activity, color != 0)
         }
     }
-
+    /**
+     * 设置状态栏是否透明 不透明默认白色
+     * [isTransparent]是否透明
+     */
+    @JavascriptInterface
+    fun setStatusBarIsTransparent(isTransparent:Boolean){
+        activity?.lifecycleScope?.launch {
+            StatusBarUtil.setStatusBarColor(activity, if(isTransparent)R.color.transparent else R.color.white)
+        }
+    }
 }

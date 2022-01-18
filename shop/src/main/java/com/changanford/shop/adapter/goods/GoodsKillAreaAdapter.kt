@@ -72,7 +72,12 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
     private fun clickBtn(dataBinding:ItemGoodsKillAreaBinding,item: GoodsItemBean){
         when(dataBinding.btnStates.getStates()){
             //去抢购
-            0-> GoodsDetailsActivity.start(item.spuId)
+            0->{
+                item.apply {
+//                    GoodsDetailsActivity.start(spuId)
+                    GoodsDetailsActivity.start(getJdType(),jumpDataValue?:spuId)
+                }
+            }
             //设置提醒
             3->{
                 if(!WCommonUtil.isNotificationEnabled(context))SetNoticPop(context).showPopupWindow()

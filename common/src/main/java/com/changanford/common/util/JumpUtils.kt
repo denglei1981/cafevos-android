@@ -629,6 +629,21 @@ class JumpUtils {
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
+            111->{//商品评价列表
+                if (!TextUtils.isEmpty(value)) {
+                  /*"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"
+                  * 或者直接传商品id
+                  * */
+                    bundle.putString("goodsInfo", value)
+                    startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
+                }
+            }
+            112->{//商品订单评价
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("orderNo", value)
+                    startARouter(ARouterShopPath.OrderEvaluationActivity, bundle, true)
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

@@ -332,7 +332,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
             //再次购买
             getString(R.string.str_onceAgainToBuy)->control.onceAgainToBuy(dataBean)
             //评价
-            getString(R.string.str_eval)->OrderEvaluationActivity.start(this,orderNo)
+            getString(R.string.str_eval)->OrderEvaluationActivity.start(orderNo)
             //确认收货
             getString(R.string.str_confirmGoods)->confirmGoods()
             //立即支付

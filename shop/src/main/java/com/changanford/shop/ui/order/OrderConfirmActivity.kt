@@ -4,6 +4,18 @@ import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AddressBeanItem
@@ -19,6 +31,7 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
+import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -40,6 +53,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit=false
+    private var spuPageType=""//商品类型
     override fun initView() {
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
@@ -50,6 +64,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+//        dataBean.spuPageType="MAINTENANCE"
+        spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
         initLiveDataBus()
     }
@@ -71,14 +87,17 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 bindingBaseData()
             })
         }
-        viewModel.addressList.observe(this,{ addressList ->
-            //默认获取地址列表的默认收货地址
-            val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
-            bindingAddress(item)
-        })
-        val addressInfo=dataBean.addressInfo
-        if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
-        else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+        //非维保商品 需要选择地址
+        if(WConstant.maintenanceType!=spuPageType){
+            viewModel.addressList.observe(this,{ addressList ->
+                //默认获取地址列表的默认收货地址
+                val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
+                bindingAddress(item)
+            })
+            val addressInfo=dataBean.addressInfo
+            if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
+            else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+        }
         viewModel.orderInfoLiveData.observe(this,{
             isClickSubmit=false
             val source=it.source
@@ -92,8 +111,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
         //秒杀情况下 原价=现价
-        if("SECKILL"==dataBean.spuPageType){
+        if("SECKILL"==spuPageType){
             dataBean.orginPrice=dataBean.fbPrice
+        }else if(WConstant.maintenanceType==spuPageType){//维保商品
+            manageMaintenance()
         }
         //购买数量
         val buyNum=dataBean.buyNum
@@ -114,7 +135,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val totalOriginalFb=originalPrice*buyNum
             tvAmountValue.setText("$totalOriginalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
-            val spuPageType=dataBean.spuPageType
+//            val spuPageType=dataBean.spuPageType
             //会员折扣、砍价
             if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
                 //会员优惠/砍价优惠=原总价-现总价
@@ -146,9 +167,15 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             updateBtnUi()
         }
     }
+    /**
+     * 更新底部提交按钮状态
+    * */
     private fun updateBtnUi(){
         dataBean.apply {
-            binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
+            if(WConstant.maintenanceType==spuPageType){//维保商品
+                binding.inBottom.btnSubmit.updateEnabled(isAgree&&totalPayFb.toInt()<=acountFb)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
+
         }
     }
     fun onClick(v:View){
@@ -172,7 +199,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
             dataBean.apply {
-                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId)
+                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
             }
         }
         GlobalScope.launch {
@@ -202,5 +229,38 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
             }
         })
+    }
+    /**
+     * 处理维保商品
+    * */
+    private fun manageMaintenance(){
+        binding.apply {
+            //维保商品不需要收货地址
+            inAddress.layoutAddress.visibility=View.GONE
+            composeView.setContent { MaintenanceCompose() }
+        }
+
+    }
+    /**
+     * 维保商品信息
+    * */
+    @Composable
+   private fun MaintenanceCompose(){
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White).padding(bottom = 17.dp)) {
+            Spacer(modifier = Modifier.fillMaxWidth()
+                .height(10.dp)
+                .background(colorResource(R.color.color_F4)))
+            for (i in 0..1){//0 vin码 1车型
+                Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp,top = if(0==i)19.dp else 29.dp)) {
+                    Text(text = stringResource(if(0==i)R.string.str_vinCode else R.string.str_models),color= colorResource(R.color.color_33),fontSize = 14.sp,
+                    modifier = Modifier.weight(1f).padding(end = 10.dp))
+                    Text(text = if(0==i)dataBean.vinCode?:"" else dataBean.models?:"",color= colorResource(R.color.color_33),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
+                }
+            }
+        }
     }
 }

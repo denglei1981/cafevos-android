@@ -60,6 +60,12 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/eval/list")
     suspend fun goodsEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+
+    /**
+     *评价列表-维保
+     * */
+    @POST("/mall/wb/evalsList")
+    suspend fun goodsEvalListWb(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
     /**
      *订单创建
      * */
@@ -131,4 +137,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/updateAdrrByOrderNo")
     suspend fun updateAddressByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
+    /**
+     * 维保商品列表
+     * */
+    @POST("/mall/wb/list")
+    suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
 }

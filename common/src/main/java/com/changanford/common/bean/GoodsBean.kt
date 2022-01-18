@@ -15,6 +15,7 @@ class GoodsClassification : ArrayList<GoodsTypesItemBean>()
 data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
+    val tagType:String?=null,
 )
 
 data class GoodsList(
@@ -40,8 +41,6 @@ data class GoodsItemBean(
     val isOwner: Int = 0,
     val isSeckill: Int = 0,
     val isSingleSpec: Int = 0,
-    val jumpDataType: Int = 0,
-    val jumpDataValue: String = "",
     val jumpTargetName: Any? = null,
     val originalPrice: Int = 0,
     val originalPriceIntegral: Int = 0,
@@ -55,8 +54,8 @@ data class GoodsItemBean(
     val spuCode: String = "",
     val spuDesc: String = "",
     val spuDetail: Any? = null,
-    val spuId: String = "0",
-    val spuName: String = "",
+    var spuId: String = "0",
+    var spuName: String = "",
     val fb: Int? = 0,
     val fbOfLine: String? = "0",
     val imgUrl: String = "",
@@ -83,21 +82,22 @@ data class GoodsItemBean(
     val mallMallCategoryId: Int = 0,
     val mallMallSpuId: String = "0",
     val memo: Any? = null,
-    val normalFb: String = "0",
+    var normalFb: String = "0",
     val onShelveTime: Any? = null,
     val `operator`: String = "",
     val orderNum: Any? = null,
     val params: Params = Params(),
     val remark: Any? = null,
     val searchValue: Any? = null,
-    val secondName: String = "",
+    var secondName: String = "",
     val seeLimit: String = "",
     val skuCodeRule: Any? = null,
     val skuJson: String = "",
     val specJson: String = "",
-    val spuImgs: String = "",
+    var spuImgs: String = "",
     val spuNew: Any? = null,
-    val spuPageTagType: String = "",
+    var spuPageTagType: String = "",
+    var spuPageType: String = "",
     val spuStatus: String = "",
     val stock: Int = 0,
     val updateBy: Any? = null,
@@ -118,6 +118,14 @@ data class GoodsItemBean(
     var sekillCount: Int = 0,
     var totalStock: Int = 1,
     var secondarySpuPageTagType: String? = "",
+    val jumpDataType: Int? = 3,
+    val jumpDataValue: String? = null,
+    val exchageCount:String?=null,
+    val goodsImg:String="",
+    val goodsName:String="",
+    val goodsNameSecond:String="",
+    val mallWbGoodsId:String?=null,
+    val fbPrice:String?="0",
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
@@ -127,6 +135,23 @@ data class GoodsItemBean(
             return true
         }
         return false
+    }
+    fun getJdType():Int{
+        return jumpDataType?:3
+    }
+    fun getJdValue():String{
+        return jumpDataValue?:mallMallSpuId
+    }
+    /**
+     * 将维保商品数据转为普通商品
+    * */
+    fun maintenanceToGoods(){
+        spuImgs= goodsImg
+        spuName=goodsName
+        secondName=goodsNameSecond
+        normalFb=fbPrice?:"0"
+//        spuId=mallWbGoodsId?:"0"
+        spuPageType="MAINTENANCE"//标识为维保商品
     }
 }
 
@@ -190,7 +215,7 @@ data class GoodsDetailBean(
     val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",
     var skuVos: ArrayList<SkuVo> = ArrayList(),
-    val spuPageType: String = "",
+    var spuPageType: String = "",
     var stock: Int = 0,
     var allSkuStock: Int = 0,//sku库存之和
     val mallOrderEval: CommentItem? = null,
@@ -219,6 +244,10 @@ data class GoodsDetailBean(
     var killStates: Int = 0,//秒杀状态
     var secondarySpuPageTagType: String? = "",
     var isUpdateBuyNum:Boolean=true,//是否可以更改购买数量
+    var vinCode:String?=null,//维保商品 VIN码
+    var models:String?=null,//车型
+    var busSourse:String?=null,
+    var mallMallWbVinSpuId:String?=null,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -407,8 +436,8 @@ data class OrderItemBean(
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
     var orderType: Int = 0,
-    val jumpDataType: Int = 0,
-    val jumpDataValue: String = "",
+    val jumpDataType: Int? = null,
+    val jumpDataValue: String? = null,
     val orderBrief: String = "",
     val orderImg: String = "",
     var orderStatusName: String? = "",

@@ -50,6 +50,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         setText(R.string.str_bargaining)
                         View.VISIBLE
                     }
+                    "3"->{//维保
+                        setText(R.string.str_maintenance)
+                        View.VISIBLE
+                    }
                     else -> View.GONE
                 }
             }
@@ -85,7 +89,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             if("2"==busSourse){
                 //砍价
                 JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))
-            }else  GoodsDetailsActivity.start(mallMallSpuId)
+            }else {
+//                GoodsDetailsActivity.start(mallMallSpuId)
+                GoodsDetailsActivity.start(jumpDataType?:3,jumpDataValue?:mallMallSpuId)
+            }
         }
 
 //        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }

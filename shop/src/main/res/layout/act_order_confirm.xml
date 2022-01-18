@@ -33,6 +33,11 @@
                 <include
                     android:id="@+id/in_goodsInfo"
                     layout="@layout/in_order_confirm_goodsinfo"/>
+<!--                维保订单 VIN码-->
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/composeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 <!--                订单信息-->
                 <include
                     android:id="@+id/in_orderInfo"

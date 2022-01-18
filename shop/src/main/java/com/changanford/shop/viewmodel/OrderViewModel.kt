@@ -9,7 +9,8 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
-import com.changanford.common.listener.OnPerformListener
+import com.changanford.shop.listener.OnPerformListener
+import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
 /**
@@ -43,9 +44,11 @@ class OrderViewModel: BaseViewModel() {
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * [mallMallSkuSpuSeckillRangeId]秒杀的skuId
      * [mallMallHaggleUserGoodsId]发起砍价id
-     * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品
+     * [vinCode]维保商品 vin码
+     * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品 3维保商品
      * */
-    fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,payType:String="FB_PAY"){
+    fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",
+                    mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:String="FB_PAY"){
         body.clear()
         var buySource=0
         var skuId=_skuId
@@ -61,6 +64,11 @@ class OrderViewModel: BaseViewModel() {
                 mallMallHaggleUserGoodsId?.let {
                     if("0"!=it)body["mallMallHaggleUserGoodsId"]= it
                 }
+            }
+            WConstant.maintenanceType->{//维保商品
+                buySource=3
+                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
+                body["vin"]= vinCode?:""
             }
         }
         viewModelScope.launch {
