@@ -38,8 +38,8 @@ class NewCarTopBannerViewHolder(itemView: View) : BaseViewHolder<NewCarBannerBea
                 imageCarIntro.let { GlideUtils.loadFullSize(data.mainImg, it, R.mipmap.ic_def_square_img) }
                 imgTop.load(it.topImg)
                 imgBottom.load(it.bottomImg)
-                animationControl.startAnimation(imgTop)
-                animationControl.startAnimation(imgBottom)
+                animationControl.startAnimation(imgTop,it.topAni)
+                animationControl.startAnimation(imgBottom,it.bottomAni)
             }
         }
     }

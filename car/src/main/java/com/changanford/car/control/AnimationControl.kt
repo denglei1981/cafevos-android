@@ -12,7 +12,10 @@ import android.view.animation.TranslateAnimation
  */
 class AnimationControl {
     private val durationTime=1500L
-    fun startAnimation(view: View){
+    /**
+     * [module]1向下 2向上 3向左 4向右
+    * */
+    fun startAnimation(view: View,module:Int?=1){
         val animationSet = AnimationSet(true) //共用动画补间
         animationSet.duration = durationTime
         //位移

@@ -8,7 +8,7 @@ package com.changanford.common.bean
 data class NewCarBean(val id:String?=null)
 
 data class NewCarBannerBean(
-    val bottomAni: Any? = null,
+    val bottomAni: Int? = 1,
     val bottomImg: String = "",
     val bottomJumpType: Int? = null,
     val bottomJumpVal: String? = null,
@@ -23,7 +23,7 @@ data class NewCarBannerBean(
     val name: String = "",
     val sort: Int = 0,
     val status: Int = 0,
-    val topAni: Int = 0,
+    val topAni: Int = 1,
     val topImg: String = "",
     val topJumpType: Int? = null,
     val topJumpVal: String? = null,
