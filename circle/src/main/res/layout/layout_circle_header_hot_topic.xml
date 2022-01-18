@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:drawableEnd="@drawable/icon_home_next"
+                android:drawableEnd="@mipmap/right_74889d"
                 android:drawablePadding="6dp"
                 android:text="@string/more"
                 android:textColor="@color/circle_74889D"
