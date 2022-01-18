@@ -9,10 +9,10 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.MiddlePageBean
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.paging.DataRepository
+import com.changanford.common.utilext.toast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -72,6 +72,22 @@ class CarViewModel : ViewModel() {
                 var rkey = getRandomKey()
                 apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
             })
+        }
+    }
+    /**
+     * 获取爱车首页顶部banner
+    * */
+    fun getTopBanner(){
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                val rkey = getRandomKey()
+                apiService.getCarTopBanner(hashMap.header(rkey),hashMap.body(rkey))
+            }.onSuccess {
+
+            }.onWithMsgFailure {
+                it?.toast()
+            }
         }
     }
 }

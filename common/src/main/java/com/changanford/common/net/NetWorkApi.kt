@@ -131,6 +131,10 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<MiddlePageBean>
 
+    //爱车首页顶部banner
+    @POST("/base/centerbanner/list")
+    suspend fun getCarTopBanner(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MiddlePageBean>
+
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(
