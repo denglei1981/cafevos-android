@@ -157,5 +157,8 @@
             android:name=".ui.CardNumTransparentUI"
             android:screenOrientation="portrait"
             android:theme="@style/Picture.Theme.Translucent" />
+        <activity
+            android:name=".ui.CarDeleteUI"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

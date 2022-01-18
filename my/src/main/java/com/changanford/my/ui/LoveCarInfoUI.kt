@@ -55,6 +55,10 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
             .observe(this, Observer {
                 initData()
             })
+
+        binding.deleteCar.setOnClickListener {
+            RouterManger.startARouter(ARouterMyPath.CarDeleteUI)
+        }
     }
 
     override fun initData() {

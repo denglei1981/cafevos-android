@@ -37,6 +37,7 @@ fun CarAuthHolder(
         }
         var d = it.tvAuth.background as GradientDrawable
         d.setColor(Color.parseColor("#60000000"))
+        item.authStatus = 3
         when {
             isCrmStatusIng(item) -> {
                 it.tvAuth.text = if (item.authStatus == 2) "换绑审核中" else "认证中"
@@ -112,7 +113,7 @@ private fun crmHint(
                 holder.btnAddCarNum.apply {
                     text = "添加车牌"
                     setBackgroundResource(R.drawable.shape_car_auth_btn_bg)
-                    setTextColor(Color.parseColor("#ffffff"))
+                    setTextColor(Color.parseColor("#00095B"))
                 }
             } else {
                 holder.btnAddCarNum.apply {

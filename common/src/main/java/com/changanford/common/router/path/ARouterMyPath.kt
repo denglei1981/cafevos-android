@@ -75,6 +75,7 @@ object ARouterMyPath {
     const val MineMedalUI = "/my/MineMedalUI"
     const val AccountSafeUI = "/my/AccountSafeUI"
     const val BateActivity = "/my/BateActivity"
+    const val CarDeleteUI = "/my/CarDeleteUI"
 
 
 //    const val UniCardBuyLogUI = "/my/UniCardBuyLogUI" //购卡记录、使用记录
