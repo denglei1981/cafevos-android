@@ -25,6 +25,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 
+
+// 搜索位置信息。
 @Route(path = ARouterCirclePath.SearchLocActivity)
 class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
     OnGetPoiSearchResultListener {
