@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.zhpan.bannerview.BannerViewPager
+            android:id="@+id/carTopViewPager"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
+        <com.changanford.common.ui.AutoScaleWidthImageView
+            android:id="@+id/img_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.changanford.common.ui.AutoScaleWidthImageView
+            android:id="@+id/img_top"
+            app:layout_constraintTop_toTopOf="@id/carTopViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.zhpan.bannerview.indicator.DrawableIndicator
+            android:id="@+id/dr_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_car"
+            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="800dp"
+            android:background="@color/color_00095B"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

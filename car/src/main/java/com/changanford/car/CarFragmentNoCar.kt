@@ -30,7 +30,8 @@ import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
 import com.changanford.car.adapter.CarAuthAdapter
 import com.changanford.car.adapter.CarRecommendAdapter
-import com.changanford.car.adapter.CarTopBannerAdapter
+
+import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.databinding.CarFragmentNocarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
@@ -48,11 +49,13 @@ import com.changanford.common.utilext.GlideUtils.handleNullableUrl
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.xiaomi.push.it
 import java.util.*
 
 
 class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
-    var carTopBanner = CarTopBannerAdapter()
+//    var carTopBanner = CarTopBannerAdapter()
+var carTopBanner = NewCarTopBannerAdapter()
     var carRecommendAdapter = CarRecommendAdapter()
     private var carAuthAdapter = CarAuthAdapter()
     var topBannerList = ArrayList<AdBean>()
@@ -65,7 +68,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             setCanLoop(true)
             setAdapter(carTopBanner)
             setIndicatorView(binding.drIndicator)
-            setOnPageClickListener {
+            setOnPageClickListener { _, it ->
                 if (!FastClickUtils.isFastClick()) {
                     JumpUtils.instans?.jump(
                         topBannerList[it].jumpDataType,
