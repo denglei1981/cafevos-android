@@ -59,7 +59,8 @@ class CreateLocationActivity :
                     countyName,
                     detailLocation,
                     lat,
-                    lon
+                    lon,
+                    realCity = realCity
                 )
             }
         }
@@ -74,6 +75,7 @@ class CreateLocationActivity :
     var countyName: String = ""
     var lat: Double = -1.0
     var lon: Double = -1.0
+    var realCity:String=""
 
     private fun canCreate(): Boolean {
         locationName = binding.cLocaiton.etContent // 位置名字
@@ -108,6 +110,7 @@ class CreateLocationActivity :
         viewModel.locationLotLonLiveData.observe(this, Observer {
             lat = it.lat
             lon = it.lon
+            realCity=it.realCity
         })
         viewModel.createLocationLiveData.observe(this, Observer {
             LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)

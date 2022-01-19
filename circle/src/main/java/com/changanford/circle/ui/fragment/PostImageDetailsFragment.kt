@@ -118,7 +118,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     1 -> {//webView布局
                         if (!mData.city.isNullOrEmpty()) {
                             tvOneCity.visibility = View.VISIBLE
-                            tvOneCity.text = mData.city
+                            tvOneCity.text = mData.showCity()
                         }
                         clImageAndText.visibility = View.VISIBLE
                         clImage.visibility = View.GONE
@@ -163,7 +163,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         showPicTag()
                         if (!mData.city.isNullOrEmpty()) {
                             tvTwoCity.visibility = View.VISIBLE
-                            tvTwoCity.text = mData.city
+                            tvTwoCity.text = mData.showCity()
                         }
                         mData.imageList?.let {
                             banner.run {
@@ -217,7 +217,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         viewLongType.run {
                             if (!mData.city.isNullOrEmpty()) {
                                 tvTwoCity.visibility = View.VISIBLE
-                                tvTwoCity.text = mData.city
+                                tvTwoCity.text = mData.showCity()
                             }
                             if (mData.isGood == 1) {
                                 MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
@@ -261,6 +261,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         initListener()
         bus()
     }
+
+
 
     private fun initListener() {
         binding.run {

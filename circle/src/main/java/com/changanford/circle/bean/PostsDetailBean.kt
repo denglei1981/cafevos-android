@@ -62,8 +62,18 @@ data class PostsDetailBean(
     val province: String = "",
     val cityCode: String = "",
     val city: String = "",
-    val tags:MutableList<PostKeywordBean>?= mutableListOf()
+    val tags:MutableList<PostKeywordBean>?= mutableListOf(),
+    var addrName:String?="",
 ) {
+    fun showCity():String{
+        if(addrName?.isNotEmpty() == true){
+            return city.plus("·").plus(addrName)
+        }
+        return city
+    }
+
+
+
 }
 
 data class ImageList(

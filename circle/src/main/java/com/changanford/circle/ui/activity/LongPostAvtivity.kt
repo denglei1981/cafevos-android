@@ -213,13 +213,17 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             {
                 address = it.address ?: it.name ?: ""
                 params["address"] = address
+                params["addrName"]=it.name
                 it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-                buttomTypeAdapter.setData(0, ButtomTypeBean(it.name, 1, 4))
+
+                val showCity = it.city.plus("·").plus(it.name)
+
+                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
 //                binding.tvLocation.text = it.name
             })
 
@@ -228,11 +232,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
                 address = it.address
                 params["address"] = address
+                params["addrName"]=it.addrName
                 params["lat"] = it.lat
                 params["lon"] = it.lon
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
                 params["province"] = it.province
-                buttomTypeAdapter.setData(0, ButtomTypeBean(address, 1, 4))
+
+                val showCity = it.city.plus("·").plus(it.addrName)
+                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
 
         viewModel.plateBean.observe(this, Observer {
@@ -256,6 +263,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     params.remove("province")
                     params.remove("cityCode")
                     params.remove("address")
+                    params.remove("addrName")
                     address = ""
                     buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
@@ -394,7 +402,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
-
+            params["addrName"] =locaPostEntity!!.addrName
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
@@ -414,14 +422,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
             }
-            if (locaPostEntity!!.address.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    0,
-                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-                )
+
+            showLocaPostCity()
+
+
 
 //                binding.tvLocation.text = locaPostEntity!!.address
-            }
+
 
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
                 try {
@@ -444,6 +451,22 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
             }
             jsonStr2obj(locaPostEntity!!.longPostDatas)
+        }
+    }
+
+    private fun showLocaPostCity() {
+        locaPostEntity?.let { lp ->
+            var showCity = ""
+            if (lp.city.isNotEmpty() && lp.addrName.isNotEmpty()) {
+                showCity = locaPostEntity!!.city.plus("·").plus(locaPostEntity!!.addrName)
+            }
+            if (lp.city.isEmpty()) {
+                showCity = "定位"
+            }
+            buttomTypeAdapter.setData(
+                0,
+                ButtomTypeBean(showCity, 1, 4)
+            )
         }
     }
 
@@ -515,29 +538,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 setEditContent(emoji)
             }
         })
-        binding.longpostrec.addOnLayoutChangeListener(object :View.OnLayoutChangeListener{
-            override fun onLayoutChange(
-                v: View?,
-                left: Int,
-                top: Int,
-                right: Int,
-                bottom: Int,
-                oldLeft: Int,
-                oldTop: Int,
-                oldRight: Int,
-                oldBottom: Int
-            ) {
-                if(bottom<oldBottom){
-                    binding.longpostrec.postDelayed(Runnable {
-//                        binding.longpostrec.scrollToPosition(longpostadapter.data.size-1)
 
-                        binding.longpostrec.scrollTo(0,headBinding.etContent.bottom)
-                    },100)
-
-                }
-            }
-
-        })
 //        binding.tvLocation.setOnClickListener {
 //            startARouter(ARouterCirclePath.ChooseLocationActivity)
 //        }
@@ -574,7 +575,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     return@setOnClickListener
                 }
 
-                var postEntity =
+                val postEntity =
                     if (locaPostEntity != null) locaPostEntity!! else PostEntity()
                 if (postEntity.postsId == 0L) {
                     postEntity.postsId = insertPostId
@@ -616,7 +617,11 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         saveCgTags(postEntity)
                         postEntity.creattime = System.currentTimeMillis().toString()
+                        postEntity.addrName =
+                            if (params["addrName"] != null) params["addrName"] as String else ""
                         viewModel.insertPostentity(postEntity)
+
+
                         finish()
                     }
 
@@ -1288,12 +1293,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                 ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
                             )
                         }
-                        if (locaPostEntity!!.address?.isNotEmpty() == true) {
-                            buttomTypeAdapter.setData(
-                                0,
-                                ButtomTypeBean(locaPostEntity!!.address ?: "", 1, 4)
-                            )
-                        }
+                     showLocaPostCity()
 
 //                        if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
 //                            try{
@@ -1495,6 +1495,11 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             postEntity.title = headBinding.etBiaoti.text.toString()
             postEntity.address =
                 if (params["address"] != null) params["address"] as String else ""
+
+            postEntity.addrName =
+                if (params["addrName"] != null) params["addrName"] as String else ""
+
+
             postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
             postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
             postEntity.city =

@@ -196,13 +196,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             {
                 address = it.address ?: it.name ?: ""
                 params["address"] = address
+                params["addrName"]=it.name
                 it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-                buttomTypeAdapter.setData(0, ButtomTypeBean(it.name, 1, 4))
+                val showCity = it.city.plus("·").plus(it.name)
+                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
 //                binding.tvLocation.text = it.name
             })
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
@@ -210,11 +212,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                 address = it.address
                 params["address"] = address
+                params["addrName"]=it.addrName
                 params["lat"] = it.lat
                 params["lon"] = it.lon
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
                 params["province"] = it.province
-                buttomTypeAdapter.setData(0, ButtomTypeBean(address, 1, 4))
+                val showCity = it.city.plus("·").plus(it.addrName)
+                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
 
 
@@ -243,6 +247,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("province")
                     params.remove("cityCode")
                     params.remove("address")
+                    params.remove("addrName")
                     address = ""
                     buttomTypeAdapter.setData(4, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
@@ -375,7 +380,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
-
+            params["addrName"] =locaPostEntity!!.addrName
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
@@ -397,13 +402,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
             }
-            if (locaPostEntity!!.address.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    0,
-                    ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-                )
-//                binding.tvLocation.text = locaPostEntity!!.address
-            }
+            showLocaPostCity()
         }
     }
 
@@ -899,7 +898,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         postEntity.cityCode =
                             if (params["cityCode"] != null) params["cityCode"] as String else ""
                         postEntity.creattime = System.currentTimeMillis().toString()
-
+                        postEntity.addrName =
+                            if (params["addrName"] != null) params["addrName"] as String else ""
                         // 保存tags
                         saveCgTags(postEntity)
 
@@ -1025,10 +1025,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                             4,
                             ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
                         )
-                        if (locaPostEntity!!.address?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                            0,
-                            ButtomTypeBean(locaPostEntity!!.address, 1, 4)
-                        )
+
+
+                        showLocaPostCity()
+
+
                         //选择的标签
                         if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
                             buttomlabelAdapter.data.forEach {
@@ -1042,7 +1043,22 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             viewModel.getPostById(it)
         }
     }
-
+    // 显示城市
+    private fun showLocaPostCity() {
+        locaPostEntity?.let { lp ->
+            var showCity = ""
+            if (lp.city.isNotEmpty() && lp.addrName.isNotEmpty()) {
+                showCity = locaPostEntity!!.city.plus("·").plus(locaPostEntity!!.addrName)
+            }
+            if (lp.city.isEmpty()) {
+                showCity = "定位"
+            }
+            buttomTypeAdapter.setData(
+                0,
+                ButtomTypeBean(showCity, 1, 4)
+            )
+        }
+    }
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             back()
@@ -1223,6 +1239,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             postEntity.cityCode =
                 if (params["cityCode"] != null) params["cityCode"] as String else ""
             postEntity.creattime = System.currentTimeMillis().toString()
+            postEntity.addrName =
+                if (params["addrName"] != null) params["addrName"] as String else ""
 
             val data = buttomlabelAdapter.data
             val gson = Gson()

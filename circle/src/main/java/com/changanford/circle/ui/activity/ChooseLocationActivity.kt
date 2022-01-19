@@ -157,23 +157,28 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             }
         }
         binding.tvBuxs.setOnClickListener {
-            binding.ivselect.visibility = View.VISIBLE
-            locaAdapter.setSelectID(-1)
-            locaAdapter.notifyDataSetChanged()
-            isselected = true
+//            binding.ivselect.visibility = View.VISIBLE
+//            locaAdapter.setSelectID(-1)
+//            locaAdapter.notifyDataSetChanged()
+//            isselected = true
+            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
+                        .postValue(binding.tvBuxs.text.toString())
         }
         binding.title.barTvOther.setOnClickListener {
-            if (isselected) {
-                if (locaAdapter.id == -1) {
-                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-                        .postValue(binding.tvBuxs.text.toString())
-                } else {
-                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
-                }
-                finish()
-            } else {
-                "请选择地址".toast()
-            }
+            val intent = Intent()
+            intent.setClass(this, CreateLocationActivity::class.java)
+            startActivity(intent)
+//            if (isselected) {
+//                if (locaAdapter.id == -1) {
+//                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
+//                        .postValue(binding.tvBuxs.text.toString())
+//                } else {
+//                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//                }
+//                finish()
+//            } else {
+//                "请选择地址".toast()
+//            }
         }
         binding.title.barImgBack.setOnClickListener {
             finish()
@@ -194,7 +199,13 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         }
     }
 
-
+    fun choiceOver(){
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//        LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+//            .postValue(true)
+        finish()
+    }
     /**
      * 实现定位监听 位置一旦有所改变就会调用这个方法
      * 可以在这个方法里面获取到定位之后获取到的一系列数据
@@ -313,12 +324,12 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "所在位置"
+        binding.title.barTvTitle.text = "添加位置"
         binding.title.barTvOther.visibility = View.VISIBLE
-        binding.title.barTvOther.text = "完成"
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+        binding.title.barTvOther.text = "创建地址"
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.circle_00095))
+        binding.title.barTvOther.textSize = 14f
+//        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
@@ -342,11 +353,14 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
         locaAdapter.setOnItemClickListener { adapter, view, position ->
 //            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(ml[position])
-            locaAdapter.setSelectID(position)
-            locaAdapter.notifyDataSetChanged()
-            binding.ivselect.visibility = View.GONE
+//            locaAdapter.setSelectID(position)
+//            locaAdapter.notifyDataSetChanged()
+//            binding.ivselect.visibility = View.GONE
+//
+//            isselected = true
+
             poiInfo = ml[position]
-            isselected = true
+            choiceOver()
         }
     }
 

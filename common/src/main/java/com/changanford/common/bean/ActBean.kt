@@ -208,7 +208,8 @@ data class PostDataBean(
     val lat: Double = 0.0,
     val lon: Double = 0.0,
     val address:String="",
-    var tags:MutableList<PostKeywordBean>?=null
+    var tags:MutableList<PostKeywordBean>?=null,
+    var addrName: String?=""
     ) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
@@ -245,6 +246,16 @@ data class PostDataBean(
             return asList
         }
         return mutableListOf()
+    }
+
+    fun showCity():String{
+        if(addrName?.isNotEmpty() == true){
+            return city.plus("·").plus(addrName)
+        }
+        if(!TextUtils.isEmpty(city)){
+            return  city!!
+        }
+        return ""
     }
 
 
@@ -287,14 +298,16 @@ data class ActDataBean(
     val browseCount: Long = 0L
 )
 
-data class LocationLotLon(val lat: Double, val lon: Double)
+data class LocationLotLon(val lat: Double, val lon: Double,val realCity:String)
 
 
 data class CreateLocation(
     val address: String,
     val province: String,
+    val addrName:String,
     val lat: Double,
-    val lon: Double
+    val lon: Double,
+    val city:String,
 )
 
 data class PostKeywordBean(

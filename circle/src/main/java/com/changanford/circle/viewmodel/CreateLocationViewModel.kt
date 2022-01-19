@@ -63,7 +63,8 @@ class CreateLocationViewModel : BaseViewModel() {
         district: String,
         address: String,
         lat: Double,
-        lon: Double
+        lon: Double,
+        realCity:String
     ) {
         launch(true, block = {
 //            val body = HashMap<String, Any>()
@@ -79,7 +80,7 @@ class CreateLocationViewModel : BaseViewModel() {
             val rkey = getRandomKey()
             ApiClient.apiService.poastsAddressAdd(param.header(rkey), param.body(rkey)).onSuccess {
                 val createLocation =
-                    CreateLocation(city.plus("·").plus(addrName), province, lat = lat, lon = lon)
+                    CreateLocation(address = realCity.plus(address), province, lat = lat, lon = lon,addrName = addrName,city = city)
                 createLocationLiveData.postValue(createLocation)
                 LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION,CreateLocation::class.java).postValue(createLocation)
             }
@@ -102,9 +103,12 @@ class CreateLocationViewModel : BaseViewModel() {
                 //获取经度信息
                 //获取经度信息
                 val longitude: Double = location.longitude
-                val locationLotLon = LocationLotLon(latitude, longitude)
+                val realCity = location.city
+                val locationLotLon = LocationLotLon(latitude, longitude,realCity)
+
                 locationLotLonLiveData.postValue(locationLotLon)
             }
+
         })
         val locationOption = LocationClientOption()
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备

@@ -103,7 +103,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutCount.tvLocation.visibility = View.GONE
             } else {
                 binding.layoutCount.tvLocation.visibility = View.VISIBLE
-                binding.layoutCount.tvLocation.text = item.city
+                binding.layoutCount.tvLocation.text = item.showCity()
             }
 //            if (item.isGood == 1) {
 //                binding.ivVery.visibility = View.VISIBLE
@@ -277,6 +277,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         intent.putExtra("lat",mData.lat)
                         intent.putExtra("lon",mData.lon)
                         intent.putExtra("address",mData.address)
+                        intent.putExtra("addrName",mData.addrName)
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
                         context.startActivity(intent)
                     }

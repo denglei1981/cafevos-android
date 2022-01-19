@@ -80,6 +80,7 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
     private double lat;
     private double lon;
     private String address;
+    private String addrName;
     private String city;
     private BDLocation mlocation;
     private PoiInfo poiInfo;
@@ -108,8 +109,13 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         lat = getIntent().getDoubleExtra("lat", 0.0);
         lon = getIntent().getDoubleExtra("lon", 0.0);
         address = getIntent().getStringExtra("address");
-        if (!TextUtils.isEmpty(address)) {
-            binding.tvLocationBig.setText(address);
+        addrName =getIntent().getStringExtra("addrName");
+        if (!TextUtils.isEmpty(addrName)) {
+            binding.tvLocationBig.setText(addrName);
+
+        }
+        if(!TextUtils.isEmpty(address)){
+            binding.tvLocationSmall.setText(address);
         }
         try {
             navationLocation = new NavationMap(lat, lon, address);

@@ -123,7 +123,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             if (!mData.city.isNullOrEmpty()) {
                 tvTwoCity.visibility = View.VISIBLE
-                tvTwoCity.text = mData.city
+                tvTwoCity.text = mData.showCity()
             }
 
             if (mData.topicName.isNullOrEmpty()) {
@@ -131,9 +131,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvTalkType.text = mData.topicName
             showTag()
-
         }
-
         initListener()
         bus()
     }
@@ -462,6 +460,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         intent.putExtra("lat",mData.lat)
                         intent.putExtra("lon",mData.lon)
                         intent.putExtra("address",mData.address)
+                        intent.putExtra("addrName",mData.showCity())
                         startActivity(intent)
                     }
 
