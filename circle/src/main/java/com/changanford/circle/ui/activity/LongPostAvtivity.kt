@@ -11,6 +11,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -67,8 +68,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 import com.google.gson.reflect.TypeToken
-
-
 
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
@@ -132,7 +131,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     override fun initView() {
-        ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
+        ImmersionBar.with(this)
+            .keyboardEnable(true)
+            .init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvTitle.text = "发帖"
         binding.title.barTvOther.visibility = View.VISIBLE
@@ -238,8 +239,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             plateBean = it
             plateBean?.plate?.forEach {
                 if (it.name == "社区") {
-                    buttomTypeAdapter?.setData(1, ButtomTypeBean("", 0, 0))
-                    buttomTypeAdapter?.setData(2, ButtomTypeBean(it.name, 1, 1))
+                    buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+                    buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 1))
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
@@ -263,7 +264,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
 //            selectList.clear()
 //            selectList.addAll(it as Collection<LocalMedia>)
-            var localMedias = it as List<LocalMedia>
+            val localMedias = it as List<LocalMedia>
             longpostadapter.addData(LongPostBean(localMedias[0].contentDesc ?: "", localMedias[0]))
 //            postPicAdapter.setList(selectList)
         })
@@ -308,6 +309,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         })
 
     }
+
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
         postTagDataList?.forEach { td ->
@@ -322,7 +324,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
         buttomlabelAdapter.addData(buttomTagList)
     }
-    fun saveCgTags(postEntity:PostEntity){
+
+    fun saveCgTags(postEntity: PostEntity) {
         // 保存tags
         val data = buttomlabelAdapter.data
         val gson = Gson()
@@ -334,7 +337,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         initandonclickhead()
         viewModel.getPlate()
         viewModel.getTags() //标签
-        binding.longpostrec.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+//        layoutManager.stackFromEnd=true
+        binding.longpostrec.layoutManager = layoutManager
         longpostadapter.draggableModule.isDragEnabled = true
         binding.longpostrec.adapter = longpostadapter
         longpostadapter.addHeaderView(headview)
@@ -444,7 +449,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     private fun jsonStr2obj(jonson: String) {
         try {
-            val longPostBean :ArrayList<LongPostBean> = Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
+            val longPostBean: ArrayList<LongPostBean> =
+                Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
             selectList.addAll(longPostBean)
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
@@ -466,7 +472,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 ButtomTypeBean("", 0, 2),
                 ButtomTypeBean("", 0, 3),
 
-            )
+                )
         )
         binding.bottom.labelrec.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
@@ -474,7 +480,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         binding.bottom.labelrec.adapter = buttomlabelAdapter
 
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            buttomlabelAdapter.getItem(position).isselect = !buttomlabelAdapter.getItem(position).isselect
+            buttomlabelAdapter.getItem(position).isselect =
+                !buttomlabelAdapter.getItem(position).isselect
             buttomlabelAdapter.notifyDataSetChanged()
         }
 
@@ -497,7 +504,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
         headBinding.etContent.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
+
                 editText = headBinding.etContent
+                binding.longpostrec.postDelayed(Runnable {
+//                        binding.longpostrec.scrollToPosition(longpostadapter.data.size-1)
+
+                    binding.longpostrec.scrollTo(0,headBinding.etContent.bottom)
+                },100)
+
             }
         }
         emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
@@ -505,6 +519,29 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 val emoji = emojiAdapter.getItem(position)
                 setEditContent(emoji)
             }
+        })
+        binding.longpostrec.addOnLayoutChangeListener(object :View.OnLayoutChangeListener{
+            override fun onLayoutChange(
+                v: View?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                oldLeft: Int,
+                oldTop: Int,
+                oldRight: Int,
+                oldBottom: Int
+            ) {
+                if(bottom<oldBottom){
+                    binding.longpostrec.postDelayed(Runnable {
+//                        binding.longpostrec.scrollToPosition(longpostadapter.data.size-1)
+
+                        binding.longpostrec.scrollTo(0,headBinding.etContent.bottom)
+                    },100)
+
+                }
+            }
+
         })
 //        binding.tvLocation.setOnClickListener {
 //            startARouter(ARouterCirclePath.ChooseLocationActivity)
@@ -659,12 +696,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         buttomTypeAdapter.setOnItemClickListener { adapter, view, position ->
 
-            val buttomType= buttomTypeAdapter.getItem(position).itemType
-            when(buttomType){
-                0,1->{ // 选择板块
+            val buttomType = buttomTypeAdapter.getItem(position).itemType
+            when (buttomType) {
+                0, 1 -> { // 选择板块
                     showPlate()
                 }
-                4->{ // 选择地址。
+                4 -> { // 选择地址。
                     startARouter(ARouterCirclePath.ChooseLocationActivity)
                 }
 
@@ -1130,6 +1167,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         JSON.toJSONString(params).logD()
         viewModel.postEdit(params)
     }
+
     private var circlePostTagDialog: CirclePostTagDialog? = null
     var postTagDataList: List<PostTagData>? = null
     fun showMoreTag() {
@@ -1138,7 +1176,11 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             return
         }
         circlePostTagDialog = CirclePostTagDialog(this, object : CirclePostTagDialog.ICallbackTag {
-            override fun callbackTag(cancel: Boolean, tags: MutableList<PostKeywordBean>,totalTags:Int) {
+            override fun callbackTag(
+                cancel: Boolean,
+                tags: MutableList<PostKeywordBean>,
+                totalTags: Int
+            ) {
                 if (!cancel) {
                     buttomlabelAdapter.setNewInstance(tags)
                 }
@@ -1286,7 +1328,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         }
                         //图片下载,第一张图为封面图
                         locaPostEntity?.imageList?.let {
-                            var templist = ArrayList<ImageList>()
+                            val templist = ArrayList<ImageList>()
                             templist.add(ImageList(locaPostEntity.pics))
                             templist.addAll(it)
                             viewModel.downGlideImgs(templist)
@@ -1402,21 +1444,22 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
     }
 
-    fun isSave():Boolean{
-        if (headBinding.etBiaoti.text.toString().isNotEmpty()){
+    fun isSave(): Boolean {
+        if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
             return true
-        }else if(headBinding.etContent.text.toString().isNotEmpty()){
+        } else if (headBinding.etContent.text.toString().isNotEmpty()) {
             return true
-        }else if (selectList.size>0){
+        } else if (selectList.size > 0) {
             return true
-        }else if(buttomTypeAdapter.getItem(1).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(2).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(3).content.isNotEmpty()
-            ||buttomTypeAdapter.getItem(4).content.isNotEmpty()){
+        } else if (buttomTypeAdapter.getItem(1).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(2).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(3).content.isNotEmpty()
+            || buttomTypeAdapter.getItem(4).content.isNotEmpty()
+        ) {
             return true
         }
         buttomlabelAdapter.data.forEach {
-            if (it.isselect){
+            if (it.isselect) {
                 return true
             }
         }
@@ -1471,7 +1514,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
     }
 
-    fun showPlate(){
+    fun showPlate() {
         if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
             val sList = mutableListOf<String>()
             for (bean in plateBean.plate) {

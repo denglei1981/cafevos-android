@@ -39,6 +39,7 @@
         <activity android:name=".ui.activity.VideoChoseFMActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.LongPostAvtivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.SearchCircleActivity"
             android:screenOrientation="portrait"/>
