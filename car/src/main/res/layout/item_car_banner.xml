@@ -17,15 +17,14 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp"
             tools:srcCompat="@mipmap/ic_def_square_img" />
-
-        <com.changanford.common.ui.AutoScaleWidthImageView
-            android:id="@+id/img_top"
-            app:layout_constraintTop_toTopOf="@id/imageCarIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/img_bottom"
             app:layout_constraintBottom_toBottomOf="@id/imageCarIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.changanford.common.ui.AutoScaleWidthImageView
+            android:id="@+id/img_top"
+            app:layout_constraintTop_toTopOf="@id/imageCarIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
