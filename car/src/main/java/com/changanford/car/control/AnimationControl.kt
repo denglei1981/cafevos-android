@@ -1,6 +1,7 @@
 package com.changanford.car.control
 
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
@@ -11,7 +12,10 @@ import android.view.animation.TranslateAnimation
  * @Description : CarControl
  */
 class AnimationControl {
-    private val durationTime=800L
+    //动画持续时间
+    private val durationTime=1000L
+    //位移大小
+    private val displacement=60f
     /**
      * [module]1向下 2向上 3向左 4向右
     * */
@@ -23,20 +27,20 @@ class AnimationControl {
         val toYDelta=if(2==module)10f else -10f
         when(module){
             1->{
-                fromYDelta=-60f
+                fromYDelta=-displacement
                 fromXDelta=0f
             }
             2->{
-                fromYDelta=60f
+                fromYDelta=displacement
                 fromXDelta=0f
             }
             3->{
                 fromYDelta=0f
-                fromXDelta=-60f
+                fromXDelta=-displacement
             }
             4->{
                 fromYDelta=0f
-                fromXDelta=60f
+                fromXDelta=displacement
             }
         }
         //不使用动画
@@ -52,7 +56,7 @@ class AnimationControl {
         }
         //透明
         AlphaAnimation(0.2f, 1f).apply {
-            duration = durationTime+300
+            duration = durationTime
             fillAfter=false
             animationSet.addAnimation(this)
         }
@@ -61,6 +65,10 @@ class AnimationControl {
 //            duration = durationTime+300
 //            animationSet.addAnimation(this)
 //        }
+//      设置动画为先加速在减速(开始速度最快 逐渐减慢)：
+        animationSet.interpolator = AccelerateDecelerateInterpolator()
+//        设置动画为减速动画(动画播放中越来越慢)
+//        animationSet.interpolator = DecelerateInterpolator()
         view.startAnimation(animationSet)
 //        Handler(Looper.myLooper()!!).postDelayed({
 //            startAnimation0(view,module)
