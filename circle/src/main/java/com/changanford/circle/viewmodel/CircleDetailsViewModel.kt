@@ -181,6 +181,7 @@ class CircleDetailsViewModel : BaseViewModel() {
     fun getRecommendTopic(){
         launch(block = {
             val body = MyApp.mContext.createHashMap()
+            body["posCode"]="community_recommend"
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .getRecommendTopic(body.header(rKey), body.body(rKey)).onSuccess {

@@ -216,7 +216,7 @@ object PictureUtil {
             //.glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度 注：已废弃
 //                    .withAspectRatio(aspect_ratio_x, aspect_ratio_y)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
 //                    .hideBottomControls(!cb_hide.isChecked())// 是否显示uCrop工具栏，默认不显示
-            .isGif(false)// 是否显示gif图片
+            .isGif(true)// 是否显示gif图片
             .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
             .circleDimmedLayer(false)// 是否圆形裁剪
             .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
@@ -334,7 +334,7 @@ object PictureUtil {
             //.glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度 注：已废弃
 //                    .withAspectRatio(aspect_ratio_x, aspect_ratio_y)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
 //                    .hideBottomControls(!cb_hide.isChecked())// 是否显示uCrop工具栏，默认不显示
-            .isGif(false)// 是否显示gif图片
+            .isGif(true)// 是否显示gif图片
             .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
             .circleDimmedLayer(false)// 是否圆形裁剪
             .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false

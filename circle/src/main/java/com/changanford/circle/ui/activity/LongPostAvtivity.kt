@@ -506,11 +506,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (hasFocus) {
 
                 editText = headBinding.etContent
-                binding.longpostrec.postDelayed(Runnable {
-//                        binding.longpostrec.scrollToPosition(longpostadapter.data.size-1)
-
-                    binding.longpostrec.scrollTo(0,headBinding.etContent.bottom)
-                },100)
 
             }
         }

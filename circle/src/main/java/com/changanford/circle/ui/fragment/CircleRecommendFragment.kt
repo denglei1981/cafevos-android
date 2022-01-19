@@ -113,9 +113,26 @@ class CircleRecommendFragment :
                 it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
                 it.bViewpager.create()
             }
-
-//            setIndicator()
+            setIndicator(headerBinding)
         }
+    }
+
+    /**
+     * 设置指示器
+     * */
+    private fun setIndicator(binding: LayoutCircleHeaderHotTopicBinding?) {
+        val dp6 = resources.getDimensionPixelOffset(R.dimen.dp_6)
+        binding?.drIndicator?.setIndicatorDrawable(
+            R.drawable.shape_circle_banner_normal,
+            R.drawable.shape_circle_banner_focus
+        )
+            ?.setIndicatorSize(
+                dp6,
+                dp6,
+                resources.getDimensionPixelOffset(R.dimen.dp_20),
+                dp6
+            )
+            ?.setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
     override fun observe() {
@@ -147,7 +164,7 @@ class CircleRecommendFragment :
             if (it.isNotEmpty()) {
                 headerBinding?.bViewpager?.visibility = View.VISIBLE
                 headerBinding?.bViewpager?.refreshData(it)
-            }else{
+            } else {
                 headerBinding?.bViewpager?.visibility = View.GONE
             }
 

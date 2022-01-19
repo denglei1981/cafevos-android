@@ -195,7 +195,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 true
                             )
                             item.likesCount++
-
+                           "点赞成功".toast()
                         } else {
                             item.isLike = 0
                             item.likesCount--
@@ -203,6 +203,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 R.mipmap.circle_no_like_image,
                                 false
                             )
+//                            "取消点赞".toast()
                         }
                         binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {

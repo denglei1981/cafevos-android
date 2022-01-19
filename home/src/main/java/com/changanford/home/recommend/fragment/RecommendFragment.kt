@@ -130,6 +130,12 @@ open class RecommendFragment :
             if(!isSecondHeader){
                 index=0
             }
+            if(dataList.isEmpty()){
+                fi.tvFastIn.visibility=View.GONE
+            }else{
+                fi.tvFastIn.visibility=View.VISIBLE
+            }
+
             recommendAdapter.addHeaderView(fi.root, index)
             fastInAdapter.setList(dataList)
             if (isGrid) {
@@ -178,7 +184,7 @@ open class RecommendFragment :
             if (it.isSuccess) {
                 when (it.data.showType) {
                     "SINGLE" -> {
-                        addHeadFaster(true, it.data.ads)
+                        addHeadFaster(false, it.data.ads)
                     }
                     "MULTI" -> {
                         addHeadFaster(true, it.data.ads)

@@ -208,7 +208,7 @@ data class PostDataBean(
     val lat: Double = 0.0,
     val lon: Double = 0.0,
     val address:String="",
-    val tags:MutableList<PostKeywordBean>?=null
+    var tags:MutableList<PostKeywordBean>?=null
     ) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")

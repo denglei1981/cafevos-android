@@ -35,7 +35,7 @@ class SearchPostsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvContent = holder.getView<TextView>(R.id.tv_content)
 
         val rvTag=holder.getView<RecyclerView>(R.id.rv_tag)
-        if(item.tags!=null&& item.tags?.size!! >0&&item.type==2){// 帖子
+        if(item.tags!=null&&item.tags?.size!! >0&&item.type==2){// 帖子
             val searchPostTagAdapter= SearchPostTagAdapter()
             searchPostTagAdapter.setList(item.tags)
             rvTag.adapter =searchPostTagAdapter
