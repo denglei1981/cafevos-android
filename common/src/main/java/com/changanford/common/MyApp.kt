@@ -62,7 +62,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
     override fun onCreate() {
         super.onCreate()
         mContext = this
-        CrashProtect().doProtect(this)
+        if(!BuildConfig.DEBUG)CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
         LanSoEditor.initSDK(this, "ft")
         LanSongFileUtil.setFileDir(MConstant.ftFilesDir)

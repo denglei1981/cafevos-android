@@ -8,6 +8,7 @@ import com.changanford.home.R
 import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemNewsBarBannerBinding
 import com.changanford.home.databinding.ItemNewsPicDetailsBannerBinding
+import com.changanford.home.databinding.ItemRecommendBarBannerBinding
 import com.changanford.home.news.data.ImageTexts
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -55,7 +56,7 @@ class NewsBannerAdapter : BaseBannerAdapter<SpecialListBean?>() {
     }
     override fun bindData(holder: BaseViewHolder<SpecialListBean?>?, data: SpecialListBean?, position: Int, pageSize: Int) {
         holder?.let {
-            DataBindingUtil.bind<ItemNewsBarBannerBinding>(it.itemView)?.apply {
+            DataBindingUtil.bind<ItemRecommendBarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
                     ivBanner.load(data.pics)
                     ivBanner.setOnClickListener {
