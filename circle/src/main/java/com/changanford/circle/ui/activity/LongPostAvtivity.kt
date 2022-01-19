@@ -748,7 +748,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             override fun onResult(result: MutableList<LocalMedia>?) {
                                 val localMedia = result?.get(0)
                                 localMedia?.let {
-                                    var bundle = Bundle()
+                                    val bundle = Bundle()
                                     bundle.putParcelableArrayList(
                                         "picList",
                                         arrayListOf(localMedia)
