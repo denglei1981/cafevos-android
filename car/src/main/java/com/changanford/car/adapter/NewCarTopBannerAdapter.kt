@@ -9,10 +9,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
-
-
-
-
 /**
  * @Author : wenke
  * @Time : 2022/1/18 0018

@@ -115,8 +115,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onPause() {
         super.onPause()
-        if(oldScrollY>maxSlideY){
-            headerBinding.carTopViewPager.stopLoop()
-        }
+        headerBinding.carTopViewPager.stopLoop()
     }
 }

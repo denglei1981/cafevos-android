@@ -1,39 +1,23 @@
 package com.changanford.car.adapter
 
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarIntroBinding
 import com.changanford.common.bean.AdBean
 import com.changanford.common.utilext.GlideUtils
+import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
 /**
  * 订车顶部广告
  */
-//class CarTopBannerAdapter : BaseBannerAdapter<AdBean, CarTopBannerViewHolder>() {
-//    override fun createViewHolder(itemView: View?, viewType: Int): CarTopBannerViewHolder {
-//        return CarTopBannerViewHolder(itemView!!)
-//    }
-//
-//    override fun onBind(
-//        holder: CarTopBannerViewHolder,
-//        data: AdBean?,
-//        position: Int,
-//        pageSize: Int
-//    ) {
-//        holder!!.bindData(data, position, pageSize)
-//    }
-//
-//    override fun getLayoutId(viewType: Int): Int {
-//        return R.layout.item_car_intro
-//    }
-//}
-
-class CarTopBannerViewHolder(itemView: View) : BaseViewHolder<AdBean>(itemView) {
-    override fun bindData(data: AdBean?, position: Int, pageSize: Int) {
-        var binding = DataBindingUtil.bind<ItemCarIntroBinding>(itemView)
-        binding?.imageCarIntro?.let { GlideUtils.loadFullSize(data?.adImg, it,R.mipmap.ic_def_square_img) }
+class CarTopBannerAdapter : BaseBannerAdapter<AdBean>() {
+    override fun getLayoutId(viewType: Int): Int {
+        return R.layout.item_car_intro
     }
 
+    override fun bindData(holder: BaseViewHolder<AdBean>, data: AdBean?, position: Int, pageSize: Int) {
+        val binding = DataBindingUtil.bind<ItemCarIntroBinding>(holder.itemView)
+        binding?.imageCarIntro?.let { GlideUtils.loadFullSize(data?.adImg, it,R.mipmap.ic_def_square_img) }
+    }
 }

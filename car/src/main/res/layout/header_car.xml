@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_F4">
         <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/carTopViewPager"
             android:layout_width="match_parent"
@@ -29,18 +31,43 @@
             android:id="@+id/dr_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_95"
             android:background="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_car"
-            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_28"
+            android:layout_marginEnd="@dimen/dp_28"
+            app:layout_constraintTop_toBottomOf="@id/dr_indicator"
+            android:background="@drawable/shape_white_24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="800dp"
-            android:background="@color/color_00095B"
+            android:text="@string/str_orderImmediately"
+            android:textColor="@color/color_00095B"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_40"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_29"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:drawableEnd="@mipmap/right_black"
+            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"
+            android:id="@+id/tv_carMore_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="开启赏车之旅"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_17"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_car"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/tv_carMore_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
