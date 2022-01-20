@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.changanford.common.widget.ShadowLayout
+        android:layout_width="@dimen/dp_260"
+        android:layout_height="wrap_content"
+        app:sl_cornerRadius="@dimen/dp_5"
+        app:sl_shadowColor="#14949494"
+        app:sl_shadowRadius="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_m_5">
 
-    </LinearLayout>
+    </com.changanford.common.widget.ShadowLayout>
 </layout>
