@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:binding="http://schemas.android.com/apk/res-auto">
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="author"
             type="com.changanford.common.bean.AuthorBaseVo" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="postBean"
             type="com.changanford.common.bean.PostDataBean" />
@@ -18,8 +21,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <include
             android:id="@+id/layout_header"
             layout="@layout/include_circle_recommend_header_info"
@@ -27,35 +30,60 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_18"
             binding:author="@{author}"
-            binding:postBean="@{postBean}"
-           />
-        <com.changanford.circle.widget.assninegridview.AssNineGridView
-            android:id="@+id/iv_nine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:angv_gridSpace="3dp"
-            app:angv_maxSize="9"
-            app:angv_singleImgRatio="1"
+            binding:postBean="@{postBean}" />
 
-            tools:src="@drawable/image_recommed_default"
-            android:layout_marginTop="@dimen/dp_16"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.changanford.circle.widget.assninegridview.AssNineGridView
+                android:id="@+id/iv_nine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:scaleType="centerCrop"
+                app:angv_gridSpace="3dp"
+                app:angv_maxSize="4"
+                app:angv_singleImgRatio="1"
+                tools:src="@drawable/image_recommed_default" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_more"
+                style="@style/materialButton"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/dp_25"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="#66000000"
+                android:minWidth="@dimen/dp_62"
+                tools:text="+8"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:cornerRadius="@dimen/dp_10"
+                tools:visibility="visible" />
+
+
+        </FrameLayout>
+
 
         <include
             android:id="@+id/layout_one"
             layout="@layout/include_recommend_one_pics"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            tools:src="@drawable/image_recommed_default"
-            android:layout_marginTop="@dimen/dp_16"/>
+            android:layout_marginTop="@dimen/dp_16"
+            android:visibility="gone"
+            tools:src="@drawable/image_recommed_default" />
+
         <include
             android:id="@+id/layout_count"
             layout="@layout/include_circle_recommend_count"
-            binding:postBean="@{postBean}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            binding:postBean="@{postBean}" />
 
 
     </LinearLayout>

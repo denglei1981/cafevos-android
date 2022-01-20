@@ -233,6 +233,13 @@ data class PostDataBean(
         return ""
     }
 
+    fun getShowTitle():String{
+        if (!TextUtils.isEmpty(title)) {
+            return title!!
+        }
+        return ""
+    }
+
     var timeAndViewCountResult: String = ""
     fun getTimeAdnViewCount(): String {
         val viewCountStr = CountUtils.formatNum(viewsCount.toString(), false).toString()

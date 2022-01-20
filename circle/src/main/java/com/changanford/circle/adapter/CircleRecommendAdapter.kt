@@ -93,10 +93,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.ivNine.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
                 binding.layoutOne.tvVideoTimes.text=item.videoTime.toString()
+                binding.btnMore.visibility=View.GONE
             } else {
                 binding.layoutOne.ivPlay.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.text=""
+
             }
 
             if (item.city.isNullOrEmpty()) {
@@ -143,15 +145,23 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.ivNine.visibility=View.VISIBLE
                         binding.layoutOne.ivPlay.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.GONE
+                        if(picList.size>4){
+                            binding.btnMore.visibility=View.VISIBLE
+                            binding.btnMore.text="+".plus(picList.size-4)
+                        }else{
+                            binding.btnMore.visibility=View.GONE
+                        }
                     }
                     picList.size==1 -> {
                         binding.ivNine.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.VISIBLE
                         GlideUtils.loadBD(picList[0],binding.layoutOne.ivPic)
+                        binding.btnMore.visibility=View.GONE
                     }
                     else -> {
                         binding.ivNine.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.GONE
+                        binding.btnMore.visibility=View.GONE
                     }
                 }
 
