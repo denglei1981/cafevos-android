@@ -11,12 +11,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarNotAdapter
+import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.control.AnimationControl
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.bean.NewCirceTagBean
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import java.util.*
@@ -29,7 +31,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val carTopBanner by lazy {NewCarTopBannerAdapter()}
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
-    private val maxSlideY=500
+    private val maxSlideY=500//最大滚动距离
+    private val serviceAdapter by lazy { CarServiceAdapter() }
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -40,6 +43,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             recyclerView.adapter=mAdapter
             recyclerView.addOnScrollListener(onScrollListener)
             mAdapter.addHeaderView(headerBinding.root)
+            headerBinding.apply {
+                rvService.adapter=serviceAdapter
+                bindingService()
+            }
         }
 
         initBanner()
@@ -88,6 +95,19 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         headerBinding.drIndicator.setIndicatorGap(20).setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
         headerBinding.carTopViewPager.isSaveEnabled = false
     }
+    /**
+     * 服务模块
+    * */
+    private fun bindingService(){
+        val dataList = arrayListOf<NewCirceTagBean>()
+        for (i in 0..3){
+            dataList.add(NewCirceTagBean(tagName = "Tag$i"))
+        }
+        serviceAdapter.setList(dataList)
+    }
+    /**
+     * RecyclerView 滚动监听 主要用于控制banner是否自动播放
+    * */
     private val onScrollListener=object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)

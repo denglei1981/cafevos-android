@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.NewCirceTagBean" />
     </data>
 
     <com.changanford.common.widget.ShadowLayout
-        android:layout_width="@dimen/dp_260"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:sl_cornerRadius="@dimen/dp_5"
-        app:sl_shadowColor="#14949494"
-        app:sl_shadowRadius="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_m_5">
-
+        app:sl_shadowColor="#80DADADA"
+        app:sl_shadowRadius="@dimen/dp_5">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_100"
+            android:background="@drawable/shape_whit5_bg"
+            android:orientation="vertical"
+            android:gravity="center">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:src="@mipmap/ic_launcher_round"
+                android:id="@+id/img_cover"
+                android:layout_width="@dimen/dp_34"
+                android:layout_height="@dimen/dp_34"/>
+            <com.changanford.common.ui.view.WTextView
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.tagName}"
+                tools:text="预约试驾"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_13"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.changanford.common.widget.ShadowLayout>
 </layout>
