@@ -5,7 +5,7 @@ package com.changanford.common.bean
  * @Time : 2022/1/18 0018
  * @Description : NewCarBean
  */
-data class NewCarBean(val id:String?=null)
+data class NewCarInfoBean(val id:String?=null,val pic: String?=null)
 
 data class NewCarBannerBean(
     val bottomAni: Int? = 1,
