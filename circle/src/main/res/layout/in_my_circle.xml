@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/composeView_recommended"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/wtv_myCircle"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_myCircle"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_16" />
+        <com.changanford.common.ui.view.WTextView
+            android:drawablePadding="@dimen/dp_5"
+            android:id="@+id/wtv_more"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/wtv_myCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_more"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_14"
+            android:drawableEnd="@mipmap/right_74889d"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_havenJoined"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/wtv_myCircle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_youHavenJoinedCirclesYet"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_12" />
+        <com.changanford.common.ui.view.WTextView
+            android:gravity="center"
+            android:id="@+id/wtv_applyToJoin"
+            android:layout_marginTop="@dimen/dp_12"
+            app:layout_constraintTop_toBottomOf="@id/wtv_havenJoined"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/shadow_f2f4f9_13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_25"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_12"
+            android:text="@string/str_applyToJoin"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_12" />
+        <androidx.recyclerview.widget.RecyclerView
+            tools:visibility="gone"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dp_16"
+            app:layout_constraintTop_toBottomOf="@id/wtv_myCircle"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_109"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/item_mycircle"
+            tools:itemCount="4"
+            app:spanCount="4"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

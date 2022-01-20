@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSONObject
@@ -15,9 +16,12 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
+import com.baidu.mapapi.search.geocode.GeoCodeOption
+import com.baidu.mapapi.search.geocode.GeoCoder
 import com.baidu.mapapi.search.poi.*
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
+import com.changanford.circle.bean.CityEntity
 import com.changanford.circle.databinding.ChooselocationBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
@@ -32,6 +36,8 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 import kotlin.collections.ArrayList
+import com.baidu.mapapi.search.poi.PoiCitySearchOption
+
 
 /**
  * 定位
@@ -121,6 +127,16 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     }
 
     override fun initData() {
+
+
+        LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
+            .observe(this,
+                {
+                    if (it) {
+                        finish()
+                    }
+                })
+
         LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
             .observe(this,
                 {
@@ -129,7 +145,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                     }
                 })
         binding.etsearch.setOnClickListener {
-            city?.let {
+            city.let {
                 var bundle = Bundle()
                 bundle.putDouble("Lat", lat)
                 bundle.putDouble("Lon", lon)
@@ -141,30 +157,55 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             }
         }
         binding.tvBuxs.setOnClickListener {
-            binding.ivselect.visibility = View.VISIBLE
-            locaAdapter?.setSelectID(-1)
-            locaAdapter?.notifyDataSetChanged()
-            isselected = true
+//            binding.ivselect.visibility = View.VISIBLE
+//            locaAdapter.setSelectID(-1)
+//            locaAdapter.notifyDataSetChanged()
+//            isselected = true
+            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
+                        .postValue(binding.tvBuxs.text.toString())
         }
         binding.title.barTvOther.setOnClickListener {
-            if (isselected) {
-                if (locaAdapter?.id == -1) {
-                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-                        .postValue(binding.tvBuxs.text.toString())
-                } else {
-                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
-                }
-                finish()
-            } else {
-               "请选择地址".toast()
-            }
+            val intent = Intent()
+            intent.setClass(this, CreateLocationActivity::class.java)
+            startActivity(intent)
+//            if (isselected) {
+//                if (locaAdapter.id == -1) {
+//                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
+//                        .postValue(binding.tvBuxs.text.toString())
+//                } else {
+//                    LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//                }
+//                finish()
+//            } else {
+//                "请选择地址".toast()
+//            }
         }
         binding.title.barImgBack.setOnClickListener {
             finish()
         }
+        binding.tvLocation.setOnClickListener {
+            val intent = Intent()
+            intent.setClass(this, ChoiceAllCityActivity::class.java)
+            startActivityForResult(intent, 121312)
+//            registerForActivityResult(
+//                ActivityResultContracts.StartActivityForResult()
+//            ) {
+//                val data = it.data
+//                val resultCode = it.resultCode
+//                data?.getSerializableExtra("city").toString().toast()
+//            }.launch(Intent(this,ChoiceAllCityActivity::class.java))
+
+
+        }
     }
 
-
+    fun choiceOver(){
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//        LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+//            .postValue(true)
+        finish()
+    }
     /**
      * 实现定位监听 位置一旦有所改变就会调用这个方法
      * 可以在这个方法里面获取到定位之后获取到的一系列数据
@@ -208,6 +249,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             lat = location.latitude
             lon = location.longitude
             city = location.city
+            binding.tvLocation.text = city
             poi()
         }
     }
@@ -224,7 +266,22 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                     .pageCapacity(99)
             )
         }
-        locationed = true;
+        locationed = true
+    }
+
+
+    // 正地理编码
+    fun rightPoi(cityName: String) {
+
+        mPoiSearch.searchInCity(
+            PoiCitySearchOption()
+                .city(cityName) //必填
+                .keyword("公司") //必填
+                .pageCapacity(99)
+                .pageNum(0)
+        )
+        city=cityName
+
     }
 
     fun hideInput() {
@@ -238,14 +295,14 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     override fun onDestroy() {
         super.onDestroy()
         if (ismLocationClientInitialzed()) {
-            mLocationClient?.stop()
+            mLocationClient.stop()
         }
     }
 
     override fun onGetPoiResult(poiResult: PoiResult?) {
         if (poiResult?.error == SearchResult.ERRORNO.NO_ERROR) {
             ml.clear()
-            ml.addAll(poiResult?.allPoi)
+            ml.addAll(poiResult.allPoi)
             locaAdapter.setList(ml)
             locaAdapter.notifyDataSetChanged()
         }
@@ -267,12 +324,12 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "所在位置"
+        binding.title.barTvTitle.text = "添加位置"
         binding.title.barTvOther.visibility = View.VISIBLE
-        binding.title.barTvOther.text = "完成"
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+        binding.title.barTvOther.text = "创建地址"
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.circle_00095))
+        binding.title.barTvOther.textSize = 14f
+//        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
@@ -296,11 +353,26 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
         locaAdapter.setOnItemClickListener { adapter, view, position ->
 //            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(ml[position])
-            locaAdapter.setSelectID(position)
-            locaAdapter.notifyDataSetChanged()
-            binding.ivselect.visibility = View.GONE
+//            locaAdapter.setSelectID(position)
+//            locaAdapter.notifyDataSetChanged()
+//            binding.ivselect.visibility = View.GONE
+//
+//            isselected = true
+
             poiInfo = ml[position]
-            isselected = true
+            choiceOver()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 121312) {
+                val dataExtra = data?.getSerializableExtra("city")
+                if(dataExtra!=null){
+                    val cityEntity = data?.getSerializableExtra("city") as CityEntity
+                    binding.tvLocation.text = cityEntity.name
+                    rightPoi(cityName = cityEntity.name)
+                }
         }
     }
 }

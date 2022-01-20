@@ -11,3 +11,5 @@ data class ButtomTypeBean(
     override var itemType: Int = 0
         get() = ItemType
 }
+
+data class  NavationMap(val latY:Double,val lngX:Double,val name :String)

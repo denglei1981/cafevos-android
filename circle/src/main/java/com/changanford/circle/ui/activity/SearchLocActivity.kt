@@ -1,31 +1,46 @@
 package com.changanford.circle.ui.activity
 
-import android.os.Bundle
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
 import com.baidu.mapapi.search.poi.*
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
+import com.changanford.circle.adapter.LocaUserAdapter
+import com.changanford.circle.databinding.LayoutSearchLocationFooterBinding
 import com.changanford.circle.databinding.SearchlocBinding
+import com.changanford.circle.viewmodel.SearchLocViewModel
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 
+
+// 搜索位置信息。
 @Route(path = ARouterCirclePath.SearchLocActivity)
-class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
+class SearchLocActivity : BaseActivity<SearchlocBinding, SearchLocViewModel>(),
     OnGetPoiSearchResultListener {
 
     lateinit var locaAdapter: LocaAdapter
+
+    val locaUserAdapter: LocaUserAdapter by lazy {
+        LocaUserAdapter()
+    }
     var lat = 0.0
     var lon = 0.0
     var city = ""
@@ -50,6 +65,7 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
                     binding.ivClose.visibility = View.GONE
                     ml.clear()
                     locaAdapter.setList(ml)
+                    locaUserAdapter.setList(ml)
                     locaAdapter.notifyDataSetChanged()
                 }
             }
@@ -67,16 +83,110 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
             locaAdapter.notifyDataSetChanged()
         }
         binding.tvCommit.setOnClickListener {
-            if (locaAdapter?.id == -1) {
-                "请选择地址".toast()
-            } else {
-                LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
-                LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
-                    .postValue(true)
-                finish()
 
+              //
+            val intent = Intent()
+            intent.setClass(this, CreateLocationActivity::class.java)
+            startActivity(intent)
+//            if (locaAdapter.id == -1&&locaUserAdapter.id==-1) {
+//                "请选择地址".toast()
+//            } else {
+//                LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+//                LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+//                    .postValue(true)
+//                finish()
+//            }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.CREATE_COLSE_LOCATION, Boolean::class.java)
+            .observe(this,
+                {
+                    if (it) {
+                        finish()
+                    }
+                })
+    }
+
+    fun choiceOver(){
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
+        LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
+            .postValue(true)
+        finish()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.searchUserAdressLiveData.observe(this, Observer {
+            val userSelfPoiInfo: MutableList<PoiInfo> = arrayListOf()
+            binding.rvUser.adapter = locaUserAdapter
+            it.forEach { sa ->
+                if(sa.address.contains(rellaySearch)){
+                    val poiInfo = PoiInfo()
+                    poiInfo.location = LatLng(sa.lat, sa.lon)
+                    poiInfo.address = sa.address
+                    poiInfo.province = sa.province
+                    poiInfo.name = sa.province
+                    userSelfPoiInfo.add(poiInfo)
+                }
 
             }
+//            ml.addAll(userSelfPoiInfo)
+//            locaAdapter.setList(ml)
+
+            binding.rvUser.visibility = if (userSelfPoiInfo.size > 0) View.VISIBLE else View.GONE
+            locaUserAdapter.setSelectID(-1)
+            val strlist = rellaySearch.toCharArray()
+            val list = ArrayList<String>()
+            for (e in strlist) {
+                list.add(e.toString())
+            }
+            locaUserAdapter.setTagName(list)
+            locaUserAdapter.setList(userSelfPoiInfo)
+            locaUserAdapter.setOnItemClickListener { adapter, view, position ->
+                locaUserAdapter.setSelectID(position)
+                poiInfo=locaUserAdapter.getItem(position)
+                choiceOver()
+//                if(locaAdapter.data.size>0){
+//                    locaAdapter.setSelectID(-1)
+//                    locaAdapter.notifyDataSetChanged()
+//                }
+//
+//                locaUserAdapter.notifyDataSetChanged()
+            }
+
+
+        })
+    }
+
+    var footerBinding: LayoutSearchLocationFooterBinding? = null
+
+    private fun addFooter() {
+        if (footerBinding == null) {
+            footerBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_search_location_footer,
+                binding.locrec,
+                false
+            )
+            footerBinding?.let {
+                locaAdapter.addFooterView(it.root, 0)
+                it.tvCreateLocation.setOnClickListener {
+                    val intent = Intent()
+                    intent.setClass(this, CreateLocationActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+//            val recommendBannerAdapter = RecommendBannerAdapter()
+//            headNewBinding?.let {
+//                recommendAdapter.addHeaderView(it.root, 0)
+//                it.bViewpager.setAdapter(recommendBannerAdapter)
+//                it.bViewpager.setCanLoop(true)
+//                it.bViewpager.setIndicatorView(it.drIndicator)
+//                it.bViewpager.setAutoPlay(true)
+//                it.bViewpager.setScrollDuration(500)
+//                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+//                it.bViewpager.create()
+//            }
+//            setIndicator()
         }
     }
 
@@ -98,12 +208,19 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
         locaAdapter.setOnItemClickListener { adapter, view, position ->
 //            LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(ml[position])
             locaAdapter.setSelectID(position)
-            locaAdapter.notifyDataSetChanged()
+//            if(locaUserAdapter.data.size>0){
+//                locaUserAdapter.setSelectID(-1)
+//                locaUserAdapter.notifyDataSetChanged()
+//            }
+//
+//            locaAdapter.notifyDataSetChanged()
             poiInfo = ml[position]
+            choiceOver()
         }
         showSoftInputFromWindow(binding.etsearch)
     }
 
+    var  rellaySearch:String=""
     fun shearch(shearch: String) {
         val poiCitySearchOption = PoiCitySearchOption()
         poiCitySearchOption.mIsCityLimit = false
@@ -112,20 +229,28 @@ class SearchLocActivity : BaseActivity<SearchlocBinding, EmptyViewModel>(),
         poiCitySearchOption.pageNum(0)
         poiCitySearchOption.pageCapacity(99)
         mPoiSearch.searchInCity(poiCitySearchOption)
-        var strlist = shearch.toCharArray()
-        var list = ArrayList<String>()
+        val strlist = shearch.toCharArray()
+        val list = ArrayList<String>()
         for (e in strlist) {
             list.add(e.toString())
         }
         list.add(shearch)
         locaAdapter.setTagName(list)
+
+        searchAdress(shearch)
+        addFooter()
+    }
+
+    fun searchAdress(shearch: String) {
+        rellaySearch=shearch
+        viewModel.getSearchUserLocation()
     }
 
     override fun onGetPoiResult(poiResult: PoiResult?) {
 
         if (poiResult?.error == SearchResult.ERRORNO.NO_ERROR) {
             ml.clear()
-            ml.addAll(poiResult?.allPoi)
+            ml.addAll(poiResult.allPoi)
             locaAdapter.setList(ml)
             locaAdapter.setSelectID(-1)
             locaAdapter.notifyDataSetChanged()

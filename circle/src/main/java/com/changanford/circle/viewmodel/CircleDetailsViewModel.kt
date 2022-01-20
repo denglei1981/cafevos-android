@@ -3,12 +3,17 @@ package com.changanford.circle.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleDetailBean
+import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.PostBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -23,6 +28,8 @@ class CircleDetailsViewModel : BaseViewModel() {
     val circleType= arrayListOf("4","2","3")
 
     val circleBean = MutableLiveData<PostBean>()
+
+    val recommondBean = MutableLiveData<PostBean>()
 
     val listBean = MutableLiveData<PostBean>()
 
@@ -50,6 +57,25 @@ class CircleDetailsViewModel : BaseViewModel() {
                 .onFailure { }
         })
     }
+
+
+    fun getRecommendPostData(viewType: Int, page: Int) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = page
+            body["pageSize"] = 20
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["viewType"] = viewType
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getRecommendPosts(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    recommondBean.value = it
+                }
+                .onFailure { }
+        })
+    }
+
 
     fun getListData(viewType: Int, topicId: String, circleId: String, page: Int) {
         launch(block = {
@@ -88,7 +114,7 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
-    fun joinCircle(circleId: String) {
+    fun joinCircle(circleId: String,listener: OnPerformListener?=null) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId
@@ -96,7 +122,12 @@ class CircleDetailsViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().joinCircle(body.header(rKey), body.body(rKey))
                 .also {
                     joinBean.value = it
+                    if(it.code==0)listener?.onFinish(0)
+                    else it.msg.toast()
                 }
+
+        },error = {
+            it.message.toString().toast()
         })
     }
 
@@ -126,5 +157,39 @@ class CircleDetailsViewModel : BaseViewModel() {
                 }
         })
 
+    }
+
+    val topicBean = MutableLiveData<CircleMainBean>()
+
+    fun communityTopic() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .communityTopic(body.header(rKey), body.body(rKey)).onSuccess {
+                    topicBean.value = it
+                }
+
+        }, error = {
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
+            it.message?.toast()
+        })
+    }
+
+    val circleAdBean =MutableLiveData<List<AdBean>>()
+
+    fun getRecommendTopic(){
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["posCode"]="community_recommend"
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getRecommendTopic(body.header(rKey), body.body(rKey)).onSuccess {
+                    circleAdBean.postValue(it)
+                }
+
+        }, error = {
+
+        })
     }
 }

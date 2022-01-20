@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:checked="true"
+        android:button="@null"
+        android:background="@drawable/rb_dot"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_4"/>
+</layout>

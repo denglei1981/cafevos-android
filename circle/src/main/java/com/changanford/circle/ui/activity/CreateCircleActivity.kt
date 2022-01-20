@@ -1,9 +1,11 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
+import com.changanford.circle.adapter.circle.CircleTagAdapter
 import com.changanford.circle.databinding.ActivityCreateCircleBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
@@ -19,7 +21,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
-import com.huawei.hms.scankit.p.da
+import com.changanford.common.wutil.FlowLayoutManager
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
@@ -32,21 +34,43 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCircleViewModel>() {
 
     private var picUrl = ""
-
+    private val mAdapter by lazy { CircleTagAdapter() }
+    private var tagIds:ArrayList<Int>?=null
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        AppUtils.setStatusBarMarginTop(binding.title.rlTitle, this)
-        binding.title.ivBack.setOnClickListener { finish() }
-        binding.title.tvTitle.text = "创建圈子"
+        binding.title.apply {
+            AppUtils.setStatusBarMarginTop(rlTitle, this@CreateCircleActivity)
+            ivBack.setOnClickListener { finish() }
+            tvTitle.text = "创建圈子"
+            wtvCreate.visibility= View.VISIBLE
+            wtvCreate.setOnClickListener { submit() }
+        }
+
         binding.run {
             ivFengmian.setCircular(5)
             etBiaoti.addTextChangedListener {
                 binding.tvNum.text = it?.length.toString() + "/8"
+                btnIsClick()
             }
             etContent.addTextChangedListener {
                 binding.tvNum1.text = it?.length.toString() + "/50"
+                btnIsClick()
             }
         }
+        val flowLayoutManager1 =FlowLayoutManager(this@CreateCircleActivity,true)
+        val flowLayoutManager0 =FlowLayoutManager(this@CreateCircleActivity,2) {
+            binding.cbMore.visibility=if(it>2)View.VISIBLE else View.GONE
+        }
+        binding.recyclerView.apply {
+            this.layoutManager=flowLayoutManager0
+            adapter=mAdapter
+        }
+        binding.cbMore.apply {
+            setOnClickListener {
+                binding.recyclerView.layoutManager=if(isChecked)flowLayoutManager1 else flowLayoutManager0
+            }
+        }
+
         initListener()
     }
 
@@ -87,7 +111,10 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
 
 
     override fun initData() {
+        //获取圈子标签信息
+        viewModel.getTagInfo()
         val data = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
+        tagIds=data?.tagIds
         if (data != null) {
             binding.run {
                 picUrl = data.pic
@@ -135,9 +162,33 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 viewModel.upLoadCircle(content, title, picUrl)
             }
         }
-
+        btnIsClick()
     }
-
+    /**
+     * 创建按钮是否可以点击
+     * */
+    private fun btnIsClick(){
+        binding.title.wtvCreate.apply {
+            val titleLength=binding.etBiaoti.text.length
+            if(picUrl.isEmpty()||titleLength<4||binding.etContent.text.isEmpty()){
+                isEnabled=false
+                setBackgroundResource(R.drawable.shadow_dd_12dp)
+            }else{
+                isEnabled=true
+                setBackgroundResource(R.drawable.shadow_00095b_12dp)
+            }
+        }
+    }
+    private fun submit(){
+        val title = binding.etBiaoti.text.toString()
+        val content = binding.etContent.text.toString()
+        val tagIds= arrayListOf<Int>()
+        //被选中的标签集合
+        mAdapter.data.filter { it.isCheck==true }.apply {
+            forEach { it.tagId?.apply { tagIds.add(this) }}
+        }
+        viewModel.upLoadCircle(content, title, picUrl,tagIds)
+    }
     override fun observe() {
         super.observe()
         viewModel.upLoadBean.observe(this, {
@@ -145,6 +196,18 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             if (it.code == 0) {
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(false)
                 finish()
+            }
+        })
+        viewModel.tagInfoData.observe(this,{tagInfo->
+            tagInfo?.apply {
+                mAdapter.tagMaxCount=tagMaxCount?:0
+                tagIds?.forEach {tagId->
+                    tags?.let {tagItem->
+                        val index=tagItem.indexOfFirst {item->tagId==item.tagId}
+                        if(index>=0)tagItem[index].isCheck=true
+                    }
+                }
+                mAdapter.setList(tags)
             }
         })
     }

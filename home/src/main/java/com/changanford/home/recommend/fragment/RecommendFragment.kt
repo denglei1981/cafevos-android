@@ -1,17 +1,14 @@
 package com.changanford.home.recommend.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
-import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
@@ -21,21 +18,22 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
-import com.changanford.common.widget.ShadowLayout.TAG
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
-import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.data.AdBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
+import com.changanford.home.databinding.LayoutRecommendFastInBinding
 import com.changanford.home.databinding.RecommendHeaderBinding
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
+import com.changanford.home.recommend.adapter.RecommendFastInListAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.xiaomi.push.it
 import com.zhpan.bannerview.constants.PageStyle
 
 
@@ -48,6 +46,7 @@ open class RecommendFragment :
     val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
+
     companion object {
         fun newInstance(): RecommendFragment {
             val fg = RecommendFragment()
@@ -56,6 +55,7 @@ open class RecommendFragment :
             return fg
         }
     }
+
     var selectPosition = -1
     override fun initView() {
         binding.smartLayout.setEnableRefresh(true)
@@ -66,7 +66,7 @@ open class RecommendFragment :
         binding.recyclerView.adapter = recommendAdapter
         recommendAdapter.setOnItemClickListener { adapter, view, position ->
             selectPosition = position
-            val itemViewType = recommendAdapter.getItemViewType(position+1)
+            val itemViewType = recommendAdapter.getItemViewType(position + 1)
             val item = recommendAdapter.getItem(position)
             when (itemViewType) {
                 3 -> { // 跳转到活动
@@ -80,11 +80,16 @@ open class RecommendFragment :
         setLoadSir(binding.smartLayout)
         addHeadView()
         viewModel.getRecommendBanner()
+        viewModel.getFastEnter()
         viewModel.getRecommend(false)
+
     }
 
     var headNewBinding: RecommendHeaderBinding? = null
 
+    var fastInBinding: LayoutRecommendFastInBinding? = null
+
+     var isSecondHeader:Boolean=false
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(
@@ -95,6 +100,7 @@ open class RecommendFragment :
             )
             val recommendBannerAdapter = RecommendBannerAdapter()
             headNewBinding?.let {
+                isSecondHeader=true
                 recommendAdapter.addHeaderView(it.root, 0)
                 it.bViewpager.setAdapter(recommendBannerAdapter)
                 it.bViewpager.setCanLoop(true)
@@ -106,6 +112,40 @@ open class RecommendFragment :
             }
             setIndicator()
         }
+    }
+
+    private fun addHeadFaster(isGrid: Boolean, dataList: List<AdBean>) {
+        if (fastInBinding == null) {
+            fastInBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.layout_recommend_fast_in,
+                binding.recyclerView,
+                false
+            )
+        }
+        val fastInAdapter = RecommendFastInListAdapter()
+        fastInBinding?.let { fi ->
+            fi.rvFastIn.adapter = fastInAdapter
+            var index=1
+            if(!isSecondHeader){
+                index=0
+            }
+            if(dataList.isEmpty()){
+                fi.tvFastIn.visibility=View.GONE
+            }else{
+                fi.tvFastIn.visibility=View.VISIBLE
+            }
+
+            recommendAdapter.addHeaderView(fi.root, index)
+            fastInAdapter.setList(dataList)
+            if (isGrid) {
+                fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
+            } else {
+                fi.rvFastIn.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            }
+        }
+
     }
 
     /**
@@ -125,7 +165,6 @@ open class RecommendFragment :
         super.observe()
         bus()
         viewModel.recommendBannerLiveData.safeObserve(this, Observer {
-            it.toString().logD()
             if (it.isSuccess) {
                 if (it.data == null || it.data.isEmpty()) {
                     headNewBinding?.bViewpager?.visibility = View.GONE
@@ -140,13 +179,23 @@ open class RecommendFragment :
                 headNewBinding?.bViewpager?.visibility = View.GONE
                 headNewBinding?.drIndicator?.visibility = View.GONE
             }
+        })
+        viewModel.fastEnterLiveData.safeObserve(this, Observer {
+            if (it.isSuccess) {
+                when (it.data.showType) {
+                    "SINGLE" -> {
+                        addHeadFaster(false, it.data.ads)
+                    }
+                    "MULTI" -> {
+                        addHeadFaster(true, it.data.ads)
+                    }
+                    else -> {
+                        addHeadFaster(true, it.data.ads)
+                    }
+                }
+            }
 
         })
-
-
-
-
-
     }
 
     private fun toPostOrNews(item: RecommendData) { // 跳转到资讯，或者 帖子
@@ -172,10 +221,10 @@ open class RecommendFragment :
     private fun toActs(item: RecommendData) {
         try {
             CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpValue)
-            if (item.jumpType.toIntOrNull() == 2||item.jumpType.toIntOrNull()==1) {
+            if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {
                 item.wonderfulType?.let { viewModel.AddACTbrid(it) }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -192,7 +241,8 @@ open class RecommendFragment :
             } else {
                 bean.postsLikesCount--
             }
-            recommendAdapter.notifyItemChanged(selectPosition+1)//有t
+            // TODO 要取变量了。
+            recommendAdapter.notifyItemChanged(selectPosition + 1)//有t
         })
 
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
@@ -205,7 +255,8 @@ open class RecommendFragment :
                 item.artLikesCount = it.likeCount
                 item.isLike = it.isLike
                 item.commentCount = it.msgCount
-                recommendAdapter.notifyItemChanged(selectPosition+1)// 有t
+                // TODO 要取变量了。
+                recommendAdapter.notifyItemChanged(selectPosition + 1)// 有t
                 if (item.authors?.isFollow != it.isFollow) {
                     // 关注不相同，以详情的为准。。
                     if (item.authors != null) {
@@ -214,7 +265,7 @@ open class RecommendFragment :
                 }
             })
 
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, Observer{
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this, Observer {
             if (selectPosition == -1) {
                 return@Observer
             }
@@ -226,8 +277,9 @@ open class RecommendFragment :
             }
         })
         //登录回调
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this, Observer{
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, Observer {
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
             })
@@ -236,6 +288,7 @@ open class RecommendFragment :
             homeRefersh()
         })
     }
+
     override fun initData() {
         viewModel.recommendLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {

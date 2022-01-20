@@ -107,27 +107,27 @@ class CircleMainBottomAdapter(context: Context) :
 
             if (item.itemImgHeight == 0) {
                 item.itemImgHeight = imgWidth//默认正方形
-                if (item.pics.isNotEmpty()) {
-                    val lastIndex = item.pics.lastIndexOf("androidios") + 10
-                    val lastdot = item.pics.lastIndexOf(".")
-                    if (lastIndex != -1 && lastdot != -1) {
-                        val wh = item.pics.substring(lastIndex, lastdot).split("_")
-                        if (wh.size == 2) {
-                            item.itemImgHeight =
-                                (imgWidth * wh[1].toDouble() / wh[0].toDouble()).toInt()
-                        }
-                    }
-                }
+//                if (item.pics.isNotEmpty()) {
+//                    val lastIndex = item.pics.lastIndexOf("androidios") + 10
+//                    val lastdot = item.pics.lastIndexOf(".")
+//                    if (lastIndex != -1 && lastdot != -1) {
+//                        val wh = item.pics.substring(lastIndex, lastdot).split("_")
+//                        if (wh.size == 2) {
+//                            item.itemImgHeight =
+//                                (imgWidth * wh[1].toDouble() / wh[0].toDouble()).toInt()
+//                        }
+//                    }
+//                }
             }
             binding.ivBg.layoutParams?.height = item.itemImgHeight
 
-            binding.ivHead.loadImage(
-                item.authorBaseVo?.avatar,
-                ImageOptions().apply {
-                    circleCrop = true
-                    error = R.mipmap.head_default
-                })
-//            GlideUtils.loadBD(GlideUtils.handleImgUrl(item.pics), binding.ivBg)
+//            binding.ivHead.loadImage(
+//                item.authorBaseVo?.avatar,
+//                ImageOptions().apply {
+//                    circleCrop = true
+//                    error = R.mipmap.head_default
+//                })
+            GlideUtils.loadBD( item.authorBaseVo?.avatar, binding.ivHead)
             binding.ivBg.loadImage(
                 item.pics,
                 ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })

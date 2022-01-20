@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:textSize="15sp"
-                android:text="所在位置"
+                android:text="添加位置"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_commit"
@@ -46,42 +46,64 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="完成"
+                android:text="创建地址"
                 android:textSize="14sp"
-                android:textColor="@color/white"
+                android:textColor="@color/color_00095B"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/circle_app_color_20"/>
+       />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/title"
             layout="@layout/comm_bar_title_view"/>
-        <TextView
-            android:id="@+id/etsearch"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            android:background="@drawable/shap_search"
-            android:drawableLeft="@mipmap/c_search"
-            android:textSize="12sp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:hint="搜索附近位置"
-            android:gravity="left|center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="10dp"
-            />
+            android:orientation="horizontal"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:drawableEnd="@drawable/icon_location_drop"
+                android:drawablePadding="@dimen/dp_2"
+                android:text="重庆"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_33"
+                app:layout_constraintBottom_toBottomOf="@+id/etsearch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etsearch" />
+            <TextView
+                android:id="@+id/etsearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:background="@drawable/shap_search"
+                android:drawableLeft="@mipmap/c_search"
+                android:textSize="12sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:hint="搜索附近位置"
+                android:gravity="left|center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                />
+
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:background="@color/line_default_color"

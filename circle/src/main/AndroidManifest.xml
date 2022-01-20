@@ -39,6 +39,7 @@
         <activity android:name=".ui.activity.VideoChoseFMActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.LongPostAvtivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.SearchCircleActivity"
             android:screenOrientation="portrait"/>
@@ -58,5 +59,14 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.CircleMemberManageActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.circle.HotListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.release.LocationMMapActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.activity.ChoiceAllCityActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.activity.CreateLocationActivity"/>
     </application>
 </manifest>

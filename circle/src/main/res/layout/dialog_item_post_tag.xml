@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="title"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <com.donkingliang.labels.LabelsView
+            android:id="@+id/labels_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginRight="@dimen/dp_20"
+            app:labelBackground="@drawable/shape_dialog_post_tag"
+            app:labelTextColor="@drawable/shape_dialog_post_text_color"
+            app:labelTextPaddingBottom="5dp"
+            app:labelTextPaddingLeft="15dp"
+            app:labelTextPaddingRight="15dp"
+            app:labelTextPaddingTop="5dp"
+            app:labelTextSize="13sp"
+            app:labelTextHeight="@dimen/dp_40"
+            app:lineMargin="@dimen/dp_13"
+            app:labelTextWidth="@dimen/dp_100"
+            app:labelGravity="center"
+            app:maxColumns="3"
+            app:selectType="MULTI"
+            app:wordMargin="@dimen/dp_9" />
+    </LinearLayout>
+</layout>

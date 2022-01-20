@@ -50,7 +50,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
                 LiveDataBus.get().with(CircleLiveBusKey.POST_EDIT).postValue(binding.tvTex)
             }
         }
-        var watcher = object : TextWatcher {
+        val watcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 

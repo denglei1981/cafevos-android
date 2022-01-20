@@ -46,20 +46,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_two_title"
             tools:text="来自重庆车友圈" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_two_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:drawableStart="@mipmap/circle_location_details"
-            android:drawablePadding="4dp"
-            android:textColor="@color/color_cc"
-            android:textSize="13sp"
-            android:visibility="invisible"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_two_title"
-            tools:text="2021.09.25  12:25" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_one_content"
@@ -69,22 +55,39 @@
             android:lineSpacingMultiplier="1.5"
             android:textColor="@color/color_33"
             android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_two_from"
-            app:layout_constraintRight_toRightOf="@+id/tv_two_city"
+            app:layout_constraintEnd_toStartOf="@+id/tv_two_time"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_marginStart="@dimen/dp_20"
+            tools:text="@string/app_name"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_two_from" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_99"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@+id/tv_one_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_one_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2021.09.25  12:25" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_two_from"
-            app:layout_constraintRight_toRightOf="@+id/tv_two_city"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_one_content" />
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rl_talk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,6 +95,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content">
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_talk_out"
@@ -109,19 +113,36 @@
                 android:paddingEnd="14dp"
                 android:textColor="@color/circle_8195C8"
                 android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="年轻人喜欢什么样的车" />
-        </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_two_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/color_99"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="@+id/rl_talk"
-            app:layout_constraintTop_toBottomOf="@+id/rl_talk"
-            tools:text="2021.09.25  12:25" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/post_tag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_talk_out" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_two_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@mipmap/circle_location_details"
+                android:drawablePadding="4dp"
+                android:textColor="@color/color_cc"
+                android:textSize="13sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_tag"
+                tools:text="2021.09.25  12:25" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,4 +10,6 @@ object JumpConstant {
     var SEARCH_CONTENT="search_content" // 搜索内容
 
     var SEARCH_KEY_ID="search_key_id" // 搜索关键字。
+
+    var SEARCH_TAG_ID="SEARCH_TAG_ID"// tag_id
 }

@@ -35,6 +35,8 @@ class PloySearchResultActivity :
 
     var searchContent: String = ""
 
+    var tagId:String=""
+
     val searchActsFragment: SearchActsFragment by lazy {
         SearchActsFragment.newInstance(searchContent)
     }
@@ -42,7 +44,7 @@ class PloySearchResultActivity :
         SearchNewsFragment.newInstance(searchContent)
     }
     val searchPostFragment: SearchPostFragment by lazy {
-        SearchPostFragment.newInstance(searchContent)
+        SearchPostFragment.newInstance(searchContent,tagId = tagId)
     }
 
     val searchShopFragment: SearchShopFragment by lazy {
@@ -66,6 +68,8 @@ class PloySearchResultActivity :
 
         val searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
+        tagId= intent.getStringExtra(JumpConstant.SEARCH_TAG_ID).toString()
+
         binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvAuto.adapter = sAdapter
         binding.layoutSearch.searchContent.text = searchContent

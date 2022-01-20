@@ -15,13 +15,10 @@ import kotlinx.coroutines.launch
  *  修改描述：TODO
  */
 class CircleViewModel : ViewModel() {
-
-
     /**
      * 我管理的圈子
      */
     var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
-
     fun myMangerCircle() {
         var circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {

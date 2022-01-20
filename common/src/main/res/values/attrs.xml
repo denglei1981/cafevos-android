@@ -156,5 +156,15 @@
         <attr name="sl_dx" format="dimension" />
         <attr name="sl_dy" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="WTextView">
+        <attr name="w_typeface" format="string" />
+        <attr name="w_start_txt" format="string" />
+        <attr name="w_end_txt" format="string" />
+        <attr name="w_set_int_txt" format="integer" />
+        <!--        0x10 中划线-->
+        <attr name="w_text_flags" format="integer" />
+    </declare-styleable>
+
+
 
 </resources>

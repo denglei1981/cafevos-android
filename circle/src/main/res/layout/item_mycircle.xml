@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.NewCircleBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_108"
+        android:layout_marginEnd="@dimen/dp_10">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            android:src="@drawable/shadow_f9_5dp"/>
+        <com.changanford.common.ui.view.WTextView
+            android:background="@drawable/shadow_e6205768_b5dp"
+            android:id="@+id/wtv_title"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            style="@style/w_style_txt_ellipsize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_26"
+            android:gravity="center"
+            tools:text="玩+"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.NewCircleBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginBottom="@dimen/dp_12">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/img_cover"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            android:src="@color/color_00095B" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_title"
+            android:layout_marginStart="@dimen/dp_11"
+            app:layout_constraintStart_toEndOf="@id/img_cover"
+            app:layout_constraintTop_toTopOf="@id/img_cover"
+            app:layout_constraintBottom_toTopOf="@id/wtv_des"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/w_style_txt_ellipsize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintVertical_weight="1"
+            android:text="@{model.name}"
+            tools:text="旅游街区"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@id/wtv_des"
+            style="@style/w_style_txt_ellipsize"
+            app:layout_constraintStart_toStartOf="@id/wtv_title"
+            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            app:layout_constraintTop_toBottomOf="@id/wtv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintVertical_weight="1"
+            android:text="@{model.description}"
+            tools:text="圈子描述"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_12" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

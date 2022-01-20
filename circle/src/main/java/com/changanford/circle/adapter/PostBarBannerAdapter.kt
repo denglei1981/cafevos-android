@@ -11,6 +11,8 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -21,9 +23,17 @@ class PostBarBannerAdapter : BaseBannerAdapter<ImageList?>() {
     override fun bindData(holder: BaseViewHolder<ImageList?>?, data: ImageList?, position: Int, pageSize: Int) {
         holder!!.bindData(data, position, pageSize)
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
-        binding?.ivBanner?.loadImage(
-            data?.imgUrl,
-            ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
+
+
+//
+//        binding?.ivBanner?.loadImage(
+//            data?.imgUrl,
+//            ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
+
+
+        binding?.ivBanner?.load(GlideUtils.defaultHandleImageUrl(data?.imgUrl))
+
+
         binding?.ivBanner?.setOnClickListener {
             val pics = arrayListOf<MediaListBean>()
             mList.forEach {

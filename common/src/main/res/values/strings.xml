@@ -23,4 +23,5 @@
     <string name="loading_tips">努力加载中</string>
     <string name="str_shareSuccess">分享成功啦~</string>
     <string name="platform_acts">平台</string>
+    <string name="str_text">-------</string>
 </resources>

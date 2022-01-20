@@ -1,6 +1,8 @@
 package com.changanford.common.util
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -8,6 +10,7 @@ import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.annotation.ColorRes
 import com.changanford.common.basic.BaseApplication
 import java.util.regex.Pattern
@@ -69,6 +72,32 @@ object SpannableStringUtils {
             ForegroundColorSpan(BaseApplication.INSTANT.resources.getColor(colorRes))
         spannableString.setSpan(colorSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         return spannableString
+    }
+    fun getSizeColor(
+        hinStr: String,
+        color: String?,
+        size: Int,
+        start: Int,
+        end: Int
+    ): SpannableStringBuilder {
+        val spannableStringBuilder = SpannableStringBuilder(hinStr)
+        val colorSpan = ForegroundColorSpan(Color.parseColor(color))
+        spannableStringBuilder.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableStringBuilder.setSpan(
+            StyleSpan(Typeface.NORMAL),
+            0,
+            hinStr.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val ass = AbsoluteSizeSpan(size, true)
+        spannableStringBuilder.setSpan(ass, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableStringBuilder.setSpan(
+            StyleSpan(Typeface.NORMAL),
+            start,
+            end,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return spannableStringBuilder
     }
 
     /**

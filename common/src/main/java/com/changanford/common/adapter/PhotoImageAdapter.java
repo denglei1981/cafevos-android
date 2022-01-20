@@ -70,8 +70,8 @@ public class PhotoImageAdapter extends PagerAdapter {
             gifImageView.setLayoutParams(layoutParams);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-            Glide.with(activity).asGif().load(url).apply(requestOptions).into(gifImageView);
-            Glide.with(activity).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            Glide.with(activity).asGif().load(GlideUtils.INSTANCE.handleImgUrl(url)).apply(requestOptions).into(gifImageView);
+            Glide.with(activity).asBitmap().load(GlideUtils.INSTANCE.handleImgUrl(url)).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource,  Transition<? super Bitmap> transition) {
                     imageUrls.get(position).setBitmap(resource);

@@ -40,9 +40,9 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="20dp"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_margin="@dimen/dp_20"
                 android:scaleType="center"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +58,7 @@
                 tools:text="旅行街区"
                 android:textStyle="bold"
                 android:textColor="@color/color_33"
-                android:textSize="14sp"
+                android:textSize="@dimen/sp_17"
                 app:layout_constraintLeft_toRightOf="@+id/iv_icon"
                 app:layout_constraintRight_toLeftOf="@+id/tv_join"
                 app:layout_constraintTop_toTopOf="@+id/iv_icon" />
@@ -92,25 +92,35 @@
                 android:id="@+id/tv_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:maxLines="2"
-                android:ellipsize="end"
+                android:gravity="center_vertical"
+                style="@style/w_style_txt_ellipsize"
                 tools:text="自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_title"
-                app:layout_constraintRight_toRightOf="@id/tv_join"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_join"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_marginEnd="@dimen/dp_20"
+                app:layout_constraintBottom_toTopOf="@id/tv_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_circle_tag"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="1233 帖子"
                 android:textColor="@color/color_33"
-                android:layout_marginTop="15dp"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_content"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/iv_icon"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_title" />
 
             <LinearLayout

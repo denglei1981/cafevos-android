@@ -1,8 +1,10 @@
 package com.changanford.home.search.adapter
 
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.AuthorBaseVo
@@ -30,7 +32,17 @@ class SearchPostsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
         val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_post)
         val tvTime = holder.getView<TextView>(R.id.tv_time)
-        var tvContent = holder.getView<TextView>(R.id.tv_content)
+        val tvContent = holder.getView<TextView>(R.id.tv_content)
+
+        val rvTag=holder.getView<RecyclerView>(R.id.rv_tag)
+        if(item.tags!=null&&item.tags?.size!! >0&&item.type==2){// 帖子
+            val searchPostTagAdapter= SearchPostTagAdapter()
+            searchPostTagAdapter.setList(item.tags)
+            rvTag.adapter =searchPostTagAdapter
+            rvTag.visibility= View.VISIBLE
+        }else{
+            rvTag.visibility= View.GONE
+        }
 
         tvContent.text = item.getContentStr()
 
@@ -48,6 +60,7 @@ class SearchPostsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         btnFollow.setOnClickListener {
             item.authorBaseVo?.let { it1 -> followAction(btnFollow, it1) }
         }
+
 
     }
 

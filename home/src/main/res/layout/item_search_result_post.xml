@@ -94,11 +94,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_content"
+        style="@style/AppText.lineSpace"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        style="@style/AppText.lineSpace"
         android:maxLines="2"
         android:textColor="#ff2d2d2d"
         android:textSize="15sp"
@@ -107,28 +107,45 @@
         app:layout_constraintTop_toTopOf="@+id/iv_post"
         tools:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与..." />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toStartOf="@+id/iv_post"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="4dp"
         android:textColor="#ffcccccc"
-
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_count"
         app:layout_constraintEnd_toStartOf="@+id/iv_post"
         app:layout_constraintStart_toStartOf="@+id/iv_header"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
         tools:text="2021-08-12 15:30 " />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:textColor="@color/color_99"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/iv_header"
+        app:layout_constraintTop_toBottomOf="@+id/rv_tag"
         tools:text="12评论29阅读" />
 
 

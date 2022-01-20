@@ -12,7 +12,7 @@ import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
-import com.changanford.shop.listener.OnPerformListener
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
@@ -203,7 +203,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 确认收货
      * */
     private fun confirmGoods(position:Int,item: OrderItemBean){
-        control.confirmGoods(item,object :OnPerformListener{
+        control.confirmGoods(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
                 this@OrderAdapter.apply {
@@ -221,7 +221,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 取消订单
     * */
     private fun cancelOrder(position:Int,item: OrderItemBean){
-        control.cancelOrder(item,object :OnPerformListener{
+        control.cancelOrder(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
                 this@OrderAdapter.apply {

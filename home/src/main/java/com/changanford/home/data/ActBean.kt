@@ -43,9 +43,8 @@ class ActBean {
     fun getEndTimeTips():String{
         return "截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
     }
+}
 
-
-
-
+class FastBeanData(var ads:List<AdBean>,var showType:String=""){
 
 }

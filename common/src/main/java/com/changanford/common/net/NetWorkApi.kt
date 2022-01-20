@@ -1044,4 +1044,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CarAUthResultBean>
+
+
+    @POST("/con/community/postsAddressAdd")
+    suspend fun poastsAddressAdd(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ) :CommonResponse<Any>
+
+
 }
