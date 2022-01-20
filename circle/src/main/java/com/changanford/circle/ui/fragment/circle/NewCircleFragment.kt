@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
+import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,7 +97,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             binding.srl.finishRefresh()
         })
         viewModel.youLikeData.observe(this,{
-            it?.apply {bindingYouLike(this)  }
+            bindingYouLike(it)
             animatorUtil.stopAnimator()
         })
         getData()
@@ -302,7 +303,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     /**
      * 猜你喜欢
     * */
-   private fun bindingYouLike(dataList:MutableList<NewCircleBean>){
+   private fun bindingYouLike(dataList:MutableList<NewCircleBean>?){
+        if(dataList==null||dataList.size==0){
+            binding.inYouLike.root.visibility= View.GONE
+            return
+        }
         //一页几条
         val pageSize = 4
         //page 总共几页
