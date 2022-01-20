@@ -169,7 +169,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
+            }else{
+                viewModel.deleteLastPost()
             }
+            isunSave=true
             "发布成功".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()

@@ -62,7 +62,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 android:visibility="gone"
-                app:cornerRadius="@dimen/dp_10"
+                app:cornerRadius="@dimen/dp_20"
                 tools:visibility="visible" />
 
 

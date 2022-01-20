@@ -63,4 +63,12 @@ interface PostDao {
 
     @Update
     suspend fun update(postEntity: PostEntity)
+
+    // 查询最后一调数据，删掉。
+    @Query("SELECT * FROM post_table ORDER BY postsId DESC LIMIT 1 ")
+    fun findLastPostEntity(): LiveData<PostEntity>
+
+
+
+
 }
