@@ -329,7 +329,8 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 myAdapter=DotAdapter()
                 myAdapter.setList(dots)
                 recyclerViewDot.adapter=myAdapter
-            }
+                recyclerViewDot.visibility=View.VISIBLE
+            }else recyclerViewDot.visibility=View.GONE
             viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -337,7 +338,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                     myAdapter?.selectPosition(position)
                 }
             })
-
         }
     }
 
