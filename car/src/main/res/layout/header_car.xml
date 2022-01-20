@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4">
+        tools:background="@color/color_F4">
         <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/carTopViewPager"
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
             tools:listitem="@layout/item_car_service"
             tools:itemCount="4"/>
         <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/composeView_"
+            android:id="@+id/composeView"
             android:layout_marginTop="@dimen/dp_35"
             app:layout_constraintTop_toBottomOf="@id/rv_carService"
             android:layout_width="match_parent"

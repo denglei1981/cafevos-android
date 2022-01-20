@@ -28,3 +28,4 @@ data class NewCarBannerBean(
     val topJumpType: Int? = null,
     val topJumpVal: String? = null,
 )
+data class NewCarTagBean(val tagId:String?=null,val tagName:String?=null,val pic:String?=null)

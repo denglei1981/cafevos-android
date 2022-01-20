@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.common.bean.NewCirceTagBean" />
+            type="com.changanford.common.bean.NewCarTagBean" />
     </data>
 
     <com.changanford.common.widget.ShadowLayout
