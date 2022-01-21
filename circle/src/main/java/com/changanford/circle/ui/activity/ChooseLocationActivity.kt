@@ -37,6 +37,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 import kotlin.collections.ArrayList
 import com.baidu.mapapi.search.poi.PoiCitySearchOption
+import com.changanford.common.util.LocationServiceUtil
 
 
 /**
@@ -125,6 +126,8 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         mLocationClient.start()
         //设置地图单击事件监听
     }
+
+
 
     override fun initData() {
 
@@ -330,6 +333,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.circle_00095))
         binding.title.barTvOther.textSize = 14f
 //        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
