@@ -223,7 +223,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             if (mData.isGood == 1) {
                                 MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
                             }
-                            ivCover.loadBigImage(mData.pics)
+                            ivCover.load(mData.pics)
                             ivCover.setOnClickListener {
                                 val pics = arrayListOf<MediaListBean>()
                                 pics.add(MediaListBean(mData.pics))

@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shap_search"
                 android:drawableLeft="@mipmap/c_search"
-                android:drawablePadding="5dp"
+                android:drawablePadding="8dp"
                 android:hint="搜索附近位置"
                 android:paddingLeft="5dp"
                 android:paddingTop="6dp"

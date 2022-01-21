@@ -46,7 +46,6 @@ class PostVideoAdapter() : BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout
         //当为添加按钮展示
         if (holder.itemViewType == 0x9843) {
             val addImage = holder.getView<ImageView>(R.id.img)
-            data.size.toString().toast()
             if (data.size >=1) {
                 addImage.visibility = View.GONE
             } else {
