@@ -20,6 +20,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -216,5 +217,26 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null){
                 Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
             }
         }
+    }
+}
+/**
+ * 预览
+* */
+@Preview
+@Composable
+private fun PreviewUI(){
+    val dataList = arrayListOf<NewCarTagBean>()
+    for (i in 0..10){
+        dataList.add(NewCarTagBean(tagName = "Tag$i"))
+    }
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(colorResource(R.color.color_F4))) {
+        //售后服务
+        AfterSalesService(dataList)
+        //寻找经销商
+        LookingDealers()
+        //车主认证
+        OwnerCertification()
     }
 }
