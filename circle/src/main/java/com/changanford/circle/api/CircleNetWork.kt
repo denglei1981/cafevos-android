@@ -294,20 +294,14 @@ interface CircleNetWork {
     /**
      * 创建圈子
      */
-    @POST("con/circle/createCircle")
-    suspend fun addCircle(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    @POST("con/community/circleCreate")
+    suspend fun createCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
 
     /**
      * 编辑圈子
      */
-    @POST("con/circle/editCircle")
-    suspend fun editCircle(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    @POST("con/community/circleEdit")
+    suspend fun editCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
 
     /**
      * 退出圈子

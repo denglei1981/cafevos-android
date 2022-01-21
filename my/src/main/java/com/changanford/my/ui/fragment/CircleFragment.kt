@@ -130,7 +130,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         }
                     }
                     holder.itemView.setOnClickListener {
-                        JumpUtils.instans?.jump(6, item.circleId.toString())
+                        JumpUtils.instans?.jump(6, item.circleId)
                     }
                 }
                 1 -> {
@@ -180,11 +180,11 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             operation.setOnClickListener {
                                 isRefresh = true
                                 RouterManger.param(RouterManger.KEY_TO_ITEM, item.name)
-                                    .param(RouterManger.KEY_TO_ID, item.circleId.toString())
+                                    .param(RouterManger.KEY_TO_ID, item.circleId)
                                     .startARouter(ARouterMyPath.CircleMemberUI)
                             }
                             holder.itemView.setOnClickListener {
-                                JumpUtils.instans?.jump(6, item.circleId.toString())
+                                JumpUtils.instans?.jump(6, item.circleId)
                             }
                         }
                         else -> {
