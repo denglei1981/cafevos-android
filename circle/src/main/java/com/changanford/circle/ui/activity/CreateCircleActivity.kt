@@ -43,7 +43,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         binding.title.apply {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CreateCircleActivity)
             ivBack.setOnClickListener { finish() }
-            tvTitle.text = "创建圈子"
+            tvTitle.setText(R.string.str_createCircle)
             wtvCreate.visibility= View.VISIBLE
             wtvCreate.setOnClickListener { submit() }
         }
@@ -72,7 +72,6 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 binding.recyclerView.layoutManager=if(isChecked)flowLayoutManager1 else flowLayoutManager0
             }
         }
-
         initListener()
     }
 
@@ -85,9 +84,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                         val bean = result?.get(0)
                         val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
                         path?.let { it1 ->
-                            OSSHelper.init(this@CreateCircleActivity)
-                                .getOSSToImage(this@CreateCircleActivity,
-                                    it1, object : OSSHelper.OSSImageListener {
+                            OSSHelper.init(this@CreateCircleActivity).getOSSToImage(this@CreateCircleActivity,it1, object : OSSHelper.OSSImageListener {
                                         override fun getPicUrl(url: String) {
                                             picUrl = url
                                             ivFengmian.post {
@@ -95,27 +92,22 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                                                     placeholder = R.mipmap.add_image
                                                 })
                                             }
+                                            btnIsClick()
                                         }
-
                                     })
                         }
                     }
-
-                    override fun onCancel() {
-
-                    }
-
+                    override fun onCancel() {}
                 })
             }
-
         }
     }
     override fun initData() {
         circleItemBean = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
-        circleItemBean?.let {
+        circleItemBean?.let {//编辑圈子
             picUrl = it.pic
             binding.apply {
-                ivFengmian.loadImage(it.pic)
+                ivFengmian.loadImage(picUrl)
                 etBiaoti.setText(it.name)
                 etContent.setText(it.description)
             }
