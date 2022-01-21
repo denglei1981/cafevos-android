@@ -182,7 +182,8 @@ public class AssNineGridView extends ViewGroup {
             View child = getChildAt(maxImgSize - 1);
             if (child instanceof AssNineGridViewWrapper) {
                 AssNineGridViewWrapper imageView = (AssNineGridViewWrapper) child;
-                imageView.setMoreNum(adapter.getImageInfo().size() - maxImgSize);
+//                imageView.setMoreNum(adapter.getImageInfo().size() - maxImgSize);
+                imageView.setMoreNum(0);
             }
         }else {
             View child = getChildAt(maxImgSize - 1);

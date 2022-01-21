@@ -6,9 +6,10 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCreateCircleTagBinding
 import com.changanford.common.bean.NewCirceTagBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.utilext.toast
 
-class CircleTagAdapter(var tagMaxCount:Int=0): BaseQuickAdapter<NewCirceTagBean, BaseDataBindingHolder<ItemCreateCircleTagBinding>>(R.layout.item_create_circle_tag){
+class CircleTagAdapter(var tagMaxCount:Int=0,private val listener:OnPerformListener): BaseQuickAdapter<NewCirceTagBean, BaseDataBindingHolder<ItemCreateCircleTagBinding>>(R.layout.item_create_circle_tag){
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemCreateCircleTagBinding>, item: NewCirceTagBean) {
         holder.dataBinding?.apply {
@@ -27,6 +28,7 @@ class CircleTagAdapter(var tagMaxCount:Int=0): BaseQuickAdapter<NewCirceTagBean,
                         }
                     }
                     item.isCheck=isChecked
+                    listener.onFinish(0)
                 }
             }
         }

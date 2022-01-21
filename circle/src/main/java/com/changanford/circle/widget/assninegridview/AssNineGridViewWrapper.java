@@ -66,8 +66,12 @@ public class AssNineGridViewWrapper extends AppCompatImageView {
         super.onDraw(canvas);
         if (moreNum > 0) {
             canvas.drawColor(maskColor);
-            float baseY = getHeight() / 2 - (textPaint.ascent() + textPaint.descent()) / 2;
-            canvas.drawText(msg, getWidth() / 2, baseY, textPaint);
+            // 原来的居中显示
+          /*  float baseY = getHeight() / 2 - (textPaint.ascent() + textPaint.descent()) / 2;
+            canvas.drawText(msg, getWidth() / 2, baseY, textPaint);*/
+//
+//            float baseY = getHeight() + (textPaint.ascent() + textPaint.descent()) / 2+20;
+//            canvas.drawText(msg, getWidth() -20, baseY, textPaint);
         }
     }
 

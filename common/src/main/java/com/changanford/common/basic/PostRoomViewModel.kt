@@ -50,6 +50,17 @@ open class PostRoomViewModel() : BaseViewModel() {
                 .delete(id)
         }
     }
+    // 删除最新的一条数据。
+    fun deleteLastPost() {
+        viewModelScope.launch(Dispatchers.IO) {
+           val lastPostEntity= PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                .findAll()
+            if(lastPostEntity.value != null){
+                deletePost(lastPostEntity.value!![lastPostEntity.value!!.size-1].postsId)
+            }
+
+        }
+    }
 
     /**
      * 查询所有帖子
@@ -68,5 +79,7 @@ open class PostRoomViewModel() : BaseViewModel() {
             PostDatabase.getInstance(MyApp.mContext).getPostDao().update(postEntity)
         }
     }
+
+
 
 }

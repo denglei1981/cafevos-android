@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
+import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,7 +97,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             binding.srl.finishRefresh()
         })
         viewModel.youLikeData.observe(this,{
-            it?.apply {bindingYouLike(this)  }
+            bindingYouLike(it)
             animatorUtil.stopAnimator()
         })
         getData()
@@ -302,7 +303,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     /**
      * 猜你喜欢
     * */
-   private fun bindingYouLike(dataList:MutableList<NewCircleBean>){
+   private fun bindingYouLike(dataList:MutableList<NewCircleBean>?){
+        if(dataList==null||dataList.size==0){
+            binding.inYouLike.root.visibility= View.GONE
+            return
+        }
         //一页几条
         val pageSize = 4
         //page 总共几页
@@ -324,7 +329,8 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 myAdapter=DotAdapter()
                 myAdapter.setList(dots)
                 recyclerViewDot.adapter=myAdapter
-            }
+                recyclerViewDot.visibility=View.VISIBLE
+            }else recyclerViewDot.visibility=View.GONE
             viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -332,7 +338,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                     myAdapter?.selectPosition(position)
                 }
             })
-
         }
     }
 

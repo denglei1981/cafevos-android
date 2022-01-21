@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -41,6 +42,8 @@ import com.google.android.material.button.MaterialButton
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 /**
  *Author lcw
@@ -93,10 +96,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.ivNine.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
                 binding.layoutOne.tvVideoTimes.text=item.videoTime.toString()
+                binding.btnMore.visibility=View.GONE
             } else {
                 binding.layoutOne.ivPlay.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.visibility=View.GONE
                 binding.layoutOne.tvVideoTimes.text=""
+
             }
 
             if (item.city.isNullOrEmpty()) {
@@ -143,15 +148,23 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.ivNine.visibility=View.VISIBLE
                         binding.layoutOne.ivPlay.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.GONE
+                        if(picList.size>4){
+                            binding.btnMore.visibility=View.VISIBLE
+                            binding.btnMore.text="+".plus(picList.size-4)
+                        }else{
+                            binding.btnMore.visibility=View.GONE
+                        }
                     }
                     picList.size==1 -> {
                         binding.ivNine.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.VISIBLE
                         GlideUtils.loadBD(picList[0],binding.layoutOne.ivPic)
+                        binding.btnMore.visibility=View.GONE
                     }
                     else -> {
                         binding.ivNine.visibility=View.GONE
                         binding.layoutOne.conOne.visibility=View.GONE
+                        binding.btnMore.visibility=View.GONE
                     }
                 }
 
@@ -228,7 +241,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-        getFollow(authorBaseVo.authorId, followType)
+        if(followType==2){ //取消关注
+            cancelFollowDialog(authorBaseVo.authorId,followType)
+        }else{
+            getFollow(authorBaseVo.authorId, followType)
+        }
+
     }
 
     // 关注。
@@ -255,6 +273,21 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         }
     }
 
+
+    fun cancelFollowDialog(followId: String, type: Int){
+        QuickPopupBuilder.with(context)
+            .contentView(R.layout.dialog_cancel_follow)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                     getFollow(followId,type)
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                    }, true)
+            )
+            .show()
+    }
 
     //关注
     fun notifyAtt(userId: String, isFollow: Int) {
