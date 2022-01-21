@@ -44,6 +44,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.qw.soul.permission.SoulPermission
@@ -136,7 +137,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             )
                         }
                         tvOneTime.text = mData.timeStr
-                        ivCover.loadBigImage(mData.pics)
+                        ivCover.load(mData.pics)
                         ivCover.setOnClickListener {
                             val pics = arrayListOf<MediaListBean>()
                             pics.add(MediaListBean(mData.pics))
@@ -546,6 +547,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         intent.putExtra("lat",mData.lat)
                         intent.putExtra("lon",mData.lon)
                         intent.putExtra("address",mData.address)
+                        intent.putExtra("addrName",mData.showCity())
                         startActivity(intent)
                     }
 

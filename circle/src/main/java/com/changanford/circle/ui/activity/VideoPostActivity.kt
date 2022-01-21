@@ -5,9 +5,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
+import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
@@ -59,6 +61,8 @@ import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.lang.Exception
 import java.util.*
@@ -800,8 +804,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     showPlate()
                 }
                 4->{ // 选择地址。
-                    isunSave=true
-                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                        openLocationService()
+                    }else{
+                        isunSave = true
+                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    }
                 }
 
             }
@@ -1286,5 +1294,31 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         } else {
             viewModel.getPlate()
         }
+    }
+
+    fun openLocationService() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_open_location_service)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        showLoctionServicePermission()
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
+    }
+
+    fun showLoctionServicePermission(){
+        isunSave=true
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivityForResult(intent, PostActivity.REQUEST_LOCATION_SERVICE)
+        return
+
     }
 }

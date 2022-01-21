@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import androidx.compose.ui.res.booleanResource
@@ -62,6 +64,8 @@ import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import io.reactivex.exceptions.Exceptions
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -119,6 +123,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
+        const val REQUEST_LOCATION_SERVICE=0x436
     }
 
     override fun initView() {
@@ -156,6 +161,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
 
     }
+
+
 
     override fun observe() {
         super.observe()
@@ -491,8 +498,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     showPlate()
                 }
                 4 -> { // 选择地址。
-                    isunSave = true
-                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                        openLocationService()
+                    }else{
+                        isunSave = true
+                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    }
                 }
 
             }
@@ -522,6 +533,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
+
+
+
             isunSave = true // 不要自动保存
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
@@ -701,7 +715,32 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         })
     }
+  fun openLocationService() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_open_location_service)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        showLoctionServicePermission()
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
+    }
 
+
+    fun showLoctionServicePermission(){
+           isunSave=true
+       // 没有打开定位服务。
+            LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivityForResult(intent,REQUEST_LOCATION_SERVICE)
+            return
+
+    }
     private fun ispost() {
         var biaoti = binding.etBiaoti.text.toString()
         var content = binding.etContent.text.toString()
@@ -952,6 +991,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
+//                REQUEST_LOCATION_SERVICE->{ //打开了定位回调。
+//                    if(LocationServiceUtil.isLocServiceEnable(this)){
+//                        isunSave = true
+//                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+//                    }
+//                }
             }
         }
     }
