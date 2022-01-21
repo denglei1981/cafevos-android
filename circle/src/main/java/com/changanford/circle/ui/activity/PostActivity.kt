@@ -733,12 +733,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
 
     fun showLoctionServicePermission(){
-           isunSave=true
-       // 没有打开定位服务。
-            LocationServiceUtil.openCurrentAppSystemSettingUI(this)
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivityForResult(intent,REQUEST_LOCATION_SERVICE)
-            return
+
+         try {
+             isunSave=true
+             // 没有打开定位服务。
+             LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+             startActivityForResult(intent,REQUEST_LOCATION_SERVICE)
+             return
+         }catch (e :Exception){
+              e.printStackTrace()
+         }
+
 
     }
     private fun ispost() {

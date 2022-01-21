@@ -28,7 +28,7 @@
             layout="@layout/include_circle_recommend_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_4"
             binding:author="@{author}"
             binding:postBean="@{postBean}" />
 

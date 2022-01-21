@@ -31,17 +31,17 @@
 
         <TextView
             android:id="@+id/lable_key"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/shape_tx_rect"
             android:gravity="center"
-            android:minWidth="20dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="@dimen/dp_2"
+            android:minWidth="14dp"
+
+
             android:text="新"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:visibility="visible" />
 
     </LinearLayout>

@@ -128,7 +128,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
                         tvOneTitle.text = mData.title
                         if (mData.circleName.isNullOrEmpty()) {
-                            tvOneFrom.visibility = View.GONE
+                            tvOneFrom.visibility = View.INVISIBLE
                         } else {
                             MUtils.postDetailsFrom(
                                 tvOneFrom,
@@ -195,7 +195,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
                         tvTwoTitle.text = mData.title
                         if (mData.circleName.isNullOrEmpty()) {
-                            tvTwoFrom.visibility = View.GONE
+                            tvTwoFrom.visibility = View.INVISIBLE
                         } else {
                             MUtils.postDetailsFrom(
                                 tvTwoFrom,

@@ -1048,5 +1048,9 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ) :CommonResponse<Any>
 
-
+    @POST("/user/getIndexPerms")
+    suspend fun getIndexPerms(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<String>>
 }

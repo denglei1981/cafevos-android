@@ -69,8 +69,8 @@
             android:textColor="@color/color_99"
             android:layout_marginEnd="@dimen/dp_20"
             android:textSize="12sp"
-            app:layout_constraintTop_toTopOf="@+id/tv_one_content"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_one_content"
+            app:layout_constraintTop_toTopOf="@+id/tv_two_from"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_two_from"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="2021.09.25  12:25" />
 
