@@ -29,4 +29,6 @@
     <string name="str_upgradeYourCarExperience">升级您的用车体验</string>
     <string name="str_bindYourCar_x">绑定您的爱车，成为认证车主享受更多专属服务</string>
     <string name="str_toCertifyOwner">去认证车主</string>
+    <string name="str_yourCarBindingIsUnderReview_x">您的爱车绑定正在审核，请耐心等待</string>
+    <string name="str_look">查看</string>
 </resources>

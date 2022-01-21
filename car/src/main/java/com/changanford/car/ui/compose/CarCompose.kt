@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -99,7 +97,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
         .padding(start = 20.dp, end = 20.dp)) {
         Spacer(modifier = Modifier.height(40.dp))
         Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween,verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "寻找经销商",color = colorResource(R.color.color_33),fontSize = 17.sp)
+            Text(text = "启程 寻找经销商",color = colorResource(R.color.color_33),fontSize = 17.sp)
             Image(painter = painterResource(R.mipmap.right_black), contentDescription = null,modifier = Modifier.clickable {
 
             })
@@ -198,18 +196,25 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null){
             })
             Spacer(modifier = Modifier.height(18.dp))
             Button(onClick = { },shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),
-//                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(colorResource(R.color.color_00095B))) {
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+                modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.str_toCertifyOwner),fontSize = 15.sp,color = Color.White)
             }
         }
         Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier
             .height(0.5.dp)
             .fillMaxWidth())
-        Row() {
-            
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
+            modifier = Modifier.weight(1f))
+            Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {  }) {
+                Text(text = stringResource(R.string.str_look),fontSize = 12.sp,color=colorResource(R.color.color_99))
+                Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
+            }
         }
     }
 }
