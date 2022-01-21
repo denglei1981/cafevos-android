@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,6 +15,7 @@ import com.changanford.circle.viewmodel.CreateCircleViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.helper.OSSHelper
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
@@ -34,7 +36,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCircleViewModel>() {
 
     private var picUrl = ""
-    private val mAdapter by lazy { CircleTagAdapter() }
+    private val mAdapter by lazy { CircleTagAdapter(listener=listener) }
     private var tagIds:ArrayList<Int>?=null
     @SuppressLint("SetTextI18n")
     override fun initView() {
@@ -170,7 +172,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private fun btnIsClick(){
         binding.title.wtvCreate.apply {
             val titleLength=binding.etBiaoti.text.length
-            if(picUrl.isEmpty()||titleLength<4||binding.etContent.text.isEmpty()){
+            if(picUrl.isEmpty()||titleLength<4||binding.etContent.text.isEmpty()|| mAdapter.data.none { it.isCheck == true }){
                 isEnabled=false
                 setBackgroundResource(R.drawable.shadow_dd_12dp)
             }else{
@@ -188,6 +190,11 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             forEach { it.tagId?.apply { tagIds.add(this) }}
         }
         viewModel.upLoadCircle(content, title, picUrl,tagIds)
+    }
+    private val listener=object : OnPerformListener {
+        override fun onFinish(code: Int) {
+            btnIsClick()
+        }
     }
     override fun observe() {
         super.observe()
@@ -208,6 +215,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                     }
                 }
                 mAdapter.setList(tags)
+                btnIsClick()
             }
         })
     }
