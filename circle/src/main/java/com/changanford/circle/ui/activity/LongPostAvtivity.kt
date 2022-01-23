@@ -579,7 +579,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                    saveInsertPostent()
+                    saveInsertPostent(true)
                 }
                 override fun unsave() {
                     isunSave = true
@@ -723,7 +723,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             PictureUtil.openGalleryOnePic(this,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-                        isunSave=false
+
                         val localMedia = result?.get(0)
                         localMedia?.let {
                             var bundle = Bundle()
@@ -755,7 +755,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
                         object : OnResultCallbackListener<LocalMedia> {
                             override fun onResult(result: MutableList<LocalMedia>?) {
-                                isunSave=false
+
                                 val localMedia = result?.get(0)
                                 localMedia?.let {
                                     val bundle = Bundle()
@@ -926,7 +926,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             isunSave=true
             PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
-                    isunSave=false
                     val localMedia = result?.get(0)
                     localMedia?.let {
                         val bundle = Bundle()
@@ -960,7 +959,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                 PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
                                     object : OnResultCallbackListener<LocalMedia> {
                                         override fun onResult(result: MutableList<LocalMedia>?) {
-                                            isunSave=false
                                             val localMedia = result?.get(0)
                                             localMedia?.let {
                                                 val bundle = Bundle()
@@ -1364,10 +1362,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
         }
     }
- fun    saveInsertPostent(){
+ fun    saveInsertPostent(isHandleSave:Boolean){
      val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
      if (postEntity.postsId == 0L) {
          postEntity.postsId = insertPostId
@@ -1410,6 +1408,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
      postEntity.creattime = System.currentTimeMillis().toString()
      saveCgTags(postEntity)
      viewModel.insertPostentity(postEntity)
+     if(isHandleSave){
+         finish()
+     }
 
  }
     fun showPlate() {

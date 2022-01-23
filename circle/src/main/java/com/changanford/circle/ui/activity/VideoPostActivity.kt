@@ -627,7 +627,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-                            isunSave=false
+
                             if (result != null) {
                                 SelectlocalMedia = result[0]
                                 startARouterForResult(
@@ -692,7 +692,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                         PictureUtil.openGalleryOnePic(this@VideoPostActivity,
                                             object : OnResultCallbackListener<LocalMedia> {
                                                 override fun onResult(result: MutableList<LocalMedia>?) {
-                                                    isunSave=false
+
                                                     val localMedia = result?.get(0)
                                                     val bundle = Bundle()
                                                     val selectList = arrayListOf(localMedia)
@@ -1161,7 +1161,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                  saveInsertPostent()
+                  saveInsertPostent(true)
                 }
                 override fun unsave() {
                     isunSave = true
@@ -1213,7 +1213,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
         }
 
     }
@@ -1223,7 +1223,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         back()
     }
 
-    fun saveInsertPostent(){
+    fun saveInsertPostent(isHandleSave:Boolean){
         var postEntity =
             if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
@@ -1265,6 +1265,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         // 保存tags
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
+        if(isHandleSave){
+            finish()
+        }
     }
 
     fun saveCgTags(postEntity:PostEntity){

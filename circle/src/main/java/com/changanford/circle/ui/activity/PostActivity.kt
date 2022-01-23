@@ -547,12 +547,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 selectList,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-                        isunSave = false
                         if (result != null) {
                             selectList.clear()
                             selectList.addAll(result)
                         }
-                        var bundle = Bundle()
+                        val bundle = Bundle()
                         bundle.putParcelableArrayList("picList", selectList)
                         bundle.putInt("position", 0)
                         bundle.putInt("showEditType", -1)
@@ -577,12 +576,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-                            isunSave = false
                             if (result != null) {
                                 selectList.clear()
                                 selectList.addAll(result)
                             }
-                            var bundle = Bundle()
+                            val bundle = Bundle()
                             bundle.putParcelableArrayList("picList", selectList)
                             bundle.putInt("position", 0)
                             bundle.putInt("showEditType", -1)
@@ -1155,7 +1153,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                    saveInsertPostent()
+                    saveInsertPostent(true)
                 }
 
                 override fun unsave() {
@@ -1169,7 +1167,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
-    fun saveInsertPostent() {
+    fun saveInsertPostent(isHandleFinish:Boolean) {
         val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
@@ -1206,7 +1204,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.addrName = if (params["addrName"] != null) params["addrName"] as String else ""
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
-        finish()
+        if(isHandleFinish){
+            finish()
+        }
+
 
     }
 
@@ -1235,7 +1236,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
 //            val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
 //            if (postEntity.postsId == 0L) {
 //                postEntity.postsId = insertPostId
