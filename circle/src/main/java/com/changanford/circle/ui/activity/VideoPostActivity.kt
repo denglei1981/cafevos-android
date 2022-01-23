@@ -182,6 +182,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
+            isunSave=true
             "发布成功".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
@@ -1010,7 +1011,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private fun getFristVideoPic(): String {
 
         val mmr = MediaMetadataRetriever()
-        var file = File(PictureUtil.getFinallyPath(selectList[0]))
+        val file = File(PictureUtil.getFinallyPath(selectList[0]))
         if (file.exists()) {
             mmr.setDataSource(file.absolutePath);//设置数据源为该文件对象指定的绝对路径
             val bitmap = mmr.frameAtTime //获得视频第一帧的Bitmap对象
@@ -1224,8 +1225,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
 
     fun saveInsertPostent(isHandleSave:Boolean){
-        var postEntity =
-            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+        val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
         }
@@ -1245,12 +1245,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postEntity.localMeadle = JSON.toJSONString(selectList)
         postEntity.actionCode =
             if (params["actionCode"] != null) params["actionCode"] as String else ""
-        postEntity.fmpath =
-            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+        postEntity.fmpath = if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
         postEntity.type = "3"  //视频帖子类型
         postEntity.title = binding.etBiaoti.text.toString()
-        postEntity.address =
-            if (params["address"] != null) params["address"] as String else ""
+        postEntity.address = if (params["address"] != null) params["address"] as String else ""
         postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
         postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
         postEntity.city =

@@ -1167,7 +1167,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        isunSave = true
+        isunSave = false
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 PostActivity.REQUEST_CIRCLE -> {
@@ -1178,7 +1178,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     }
                 }
                 ITEM_SELECTPIC -> {
-                    isunSave = false
                     val media = data!!.getParcelableArrayListExtra<LocalMedia>("itemMedia")
                     val itemposition = data!!.getIntExtra("position", 0)
                     longpostadapter.getItem(itemposition).apply {
