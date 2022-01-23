@@ -1127,7 +1127,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             selectList.apply { clear() },
             object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
-                    isunSave=false
+
                     if (result != null) {
                         selectList.clear()
                         selectList.addAll(result)
