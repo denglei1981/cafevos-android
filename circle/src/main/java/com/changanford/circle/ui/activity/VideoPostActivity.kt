@@ -249,7 +249,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)

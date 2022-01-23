@@ -48,6 +48,9 @@ class PostViewModule() :PostRoomViewModel(){
     var downloadLocalMedias = ArrayList<LocalMedia>()
     var _downloadLocalMedias = MutableLiveData<ArrayList<LocalMedia>>()
 
+
+    val postError= MutableLiveData<String>()
+
     fun postEdit(params: HashMap<String,Any>){
          launch (block = {
               val body = params
@@ -58,7 +61,7 @@ class PostViewModule() :PostRoomViewModel(){
                       postsuccess.value = "upsuccess"
                   }
                   .onFailure {
-
+                      it?.toast()
                   }
           })
       }

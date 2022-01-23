@@ -166,6 +166,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 //            isselected = true
             LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
                         .postValue(binding.tvBuxs.text.toString())
+            finish()
         }
         binding.title.barTvOther.setOnClickListener {
             val intent = Intent()

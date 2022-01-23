@@ -273,7 +273,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 

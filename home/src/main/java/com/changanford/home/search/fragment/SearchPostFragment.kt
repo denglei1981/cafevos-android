@@ -133,7 +133,6 @@ class SearchPostFragment :
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
-
             viewModel.getSearchContent(it, tagId,false)
         }
     }

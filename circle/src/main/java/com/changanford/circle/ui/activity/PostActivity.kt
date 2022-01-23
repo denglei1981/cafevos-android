@@ -262,7 +262,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(4, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -832,11 +832,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 runOnUiThread {
                     dialog.setTvprogress("${scount}/${selectList.size}")
                 }
+                ("上传了几张图呢").plus(scount).logE()
                 if (scount == selectList.size) {
                     params["imgUrl"] = upedimgs
                     params["pics"] = upedimgs[0]?.imgUrl
                     params["isPublish"] = 2
-                    JSON.toJSONString(params).logD()
+                    JSON.toJSONString(params).logE()
                     addPost(dialog)
                     return
                 }
@@ -964,6 +965,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 tagIds += it.id + ","
             }
         }
+
+
+//        val take = tagIds.take(tagIds.length - 1)
         params["tagIds"] = tagIds
         viewModel.postEdit(params)
     }
