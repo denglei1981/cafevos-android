@@ -14,17 +14,14 @@
         app:sl_shadowColor="#14949494"
         app:sl_shadowRadius="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_m_5">
-        <androidx.compose.ui.platform.ComposeView
-            app:layout_constraintTop_toBottomOf="parent"
-            android:id="@+id/composeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="@dimen/dp_15">
+            android:paddingStart="@dimen/dp_15"
+            android:paddingEnd="@dimen/dp_15"
+            android:paddingTop="@dimen/dp_13">
             <com.changanford.common.ui.view.WTextView
                 android:id="@+id/wtv_hotCarCircle"
                 style="@style/w_style_txt_ellipsize"
@@ -61,7 +58,6 @@
                 android:layout_marginTop="@dimen/dp_12"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/view_divider"
-                tools:layout_editor_absoluteX="16dp"
                 tools:listitem="@layout/item2_circle_hotlist" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.changanford.common.widget.ShadowLayout>

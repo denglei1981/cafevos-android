@@ -124,7 +124,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     @Composable
     private fun RecommendedCompose(allCircles: ArrayList<NewCircleBean>?){
         allCircles?.let {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(19.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
                 items(allCircles){itemData->
                     Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
