@@ -400,7 +400,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             params["circleId"] = intent.extras?.getString("circleId") ?: "0"
             circlename = intent.extras?.getString("circleName") ?: ""
             circlename.isNotEmpty().let {
-                buttomTypeAdapter.setData(3, ButtomTypeBean(circlename, 1, 3))
+                buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
         }
 
@@ -408,7 +408,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             params["topicId"] = intent.extras?.getString("topId") ?: "0"
             params["topicName"] = intent.extras?.getString("topName") ?: ""
             (params["topicName"] as String).isNotEmpty().let {
-                buttomTypeAdapter.setData(2, ButtomTypeBean(params["topicName"] as String, 1, 2))
+                buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
         }
     }
