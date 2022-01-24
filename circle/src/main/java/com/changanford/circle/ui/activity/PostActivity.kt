@@ -479,8 +479,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             ispost()
         }
         binding.bottom.ivHuati.setOnClickListener {
-            isunSave=true // 不自动保存
-            startARouter(ARouterCirclePath.ChooseConversationActivity)
+            toHuati()
         }
         buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.buttom_iv_close) {
@@ -519,6 +518,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
+                2->{ // 话题
+                    toHuati()
+                }
+                3->{// 圈子
+                    toQuanzi()
+                }
                 4 -> { // 选择地址。
                     if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
                         openLocationService()
@@ -546,12 +551,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         })
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            isunSave = true // 不要自动保存
-            startARouterForResult(
-                this,
-                ARouterCirclePath.ChoseCircleActivity,
-                REQUEST_CIRCLE
-            )
+            toQuanzi()
         }
 
         binding.bottom.ivLoc.setOnClickListener {
@@ -676,6 +676,20 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
 
         })
+    }
+
+    private fun toQuanzi() {
+        isunSave = true // 不要自动保存
+        startARouterForResult(
+            this,
+            ARouterCirclePath.ChoseCircleActivity,
+            REQUEST_CIRCLE
+        )
+    }
+
+    private fun toHuati() {
+        isunSave = true // 不自动保存
+        startARouter(ARouterCirclePath.ChooseConversationActivity)
     }
 
     private fun initbuttom() {

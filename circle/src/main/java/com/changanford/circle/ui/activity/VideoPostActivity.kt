@@ -788,8 +788,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             ispost()
         }
         binding.bottom.ivHuati.setOnClickListener {
-            isunSave = true
-            startARouter(ARouterCirclePath.ChooseConversationActivity)
+            toHuati()
         }
         buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.buttom_iv_close) {
@@ -826,6 +825,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             when (buttomType) {
                 0, 1 -> { // 选择板块
                     showPlate()
+                }
+                2->{ // 话题
+                    toHuati()
+                }
+                3->{// 圈子
+                    toQuanzi()
                 }
                 4 -> { // 选择地址。
                     if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
@@ -875,12 +880,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         })
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            isunSave = true
-            startARouterForResult(
-                this,
-                ARouterCirclePath.ChoseCircleActivity,
-                PostActivity.REQUEST_CIRCLE
-            )
+            toQuanzi()
         }
 
         binding.bottom.ivLoc.setOnClickListener {
@@ -914,6 +914,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
                 })
         }
+    }
+
+    private fun toQuanzi() {
+        isunSave = true
+        startARouterForResult(
+            this,
+            ARouterCirclePath.ChoseCircleActivity,
+            PostActivity.REQUEST_CIRCLE
+        )
+    }
+
+    private fun toHuati() {
+        isunSave = true
+        startARouter(ARouterCirclePath.ChooseConversationActivity)
     }
 
     private fun uploadFM(stsBean: STSBean, dialog: LoadDialog) {

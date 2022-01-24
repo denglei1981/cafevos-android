@@ -688,6 +688,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
+                2->{ // 话题
+                    toHuati()
+                }
+                3->{// 圈子
+                    toQuanzi()
+                }
                 4 -> { // 选择地址。
                     if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
@@ -726,12 +732,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            isunSave = true
-            startARouterForResult(
-                this,
-                ARouterCirclePath.ChoseCircleActivity,
-                PostActivity.REQUEST_CIRCLE
-            )
+            toQuanzi()
         }
 
         binding.bottom.ivLoc.setOnClickListener {
@@ -739,8 +740,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
         binding.bottom.ivHuati.setOnClickListener {
-            isunSave = true
-            startARouter(ARouterCirclePath.ChooseConversationActivity)
+            toHuati()
         }
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
@@ -898,6 +898,20 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         })
 
 
+    }
+
+    private fun toQuanzi() {
+        isunSave = true
+        startARouterForResult(
+            this,
+            ARouterCirclePath.ChoseCircleActivity,
+            PostActivity.REQUEST_CIRCLE
+        )
+    }
+
+    private fun toHuati() {
+        isunSave = true
+        startARouter(ARouterCirclePath.ChooseConversationActivity)
     }
 
     private fun ispost() {
