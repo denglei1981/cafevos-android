@@ -166,7 +166,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 //            }
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
-            isunSave=false
+            isunSave = false
             FMMeadia = it as LocalMedia
             headBinding.ivFm.visibility = View.VISIBLE
 
@@ -180,10 +180,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             }
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
-            }else{
+            } else {
                 viewModel.deleteLastPost()
             }
-            isunSave=true
+            isunSave = true
             "发布成功".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
@@ -209,7 +209,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
             .observe(this,
                 Observer {
-                    isunSave=false
+                    isunSave = false
                     buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                     params["topicId"] = it.topicId.toString()
                 })
@@ -217,10 +217,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                isunSave=false
+                isunSave = false
                 address = it.address ?: it.name ?: ""
                 params["address"] = address
-                params["addrName"]=it.name
+                params["addrName"] = it.name
                 it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
@@ -236,10 +236,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
-                isunSave=false
+                isunSave = false
                 address = it.address
                 params["address"] = address
-                params["addrName"]=it.addrName
+                params["addrName"] = it.addrName
                 params["lat"] = it.lat
                 params["lon"] = it.lon
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
@@ -264,7 +264,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
-                    isunSave=false
+                    isunSave = false
                     params.remove("lat")
                     params.remove("lon")
                     params.remove("city")
@@ -280,7 +280,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
 //            selectList.clear()
 //            selectList.addAll(it as Collection<LocalMedia>)
-            isunSave=false
+            isunSave = false
             val localMedias = it as List<LocalMedia>
             longpostadapter.addData(LongPostBean(localMedias[0].contentDesc ?: "", localMedias[0]))
 //            postPicAdapter.setList(selectList)
@@ -330,9 +330,26 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
+            showErrorWarn()
         })
 
     }
+
+
+    fun showErrorWarn() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.dialog_post_error)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        saveInsertPostent(true)
+                    }, true)
+
+            )
+            .show()
+    }
+
 
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
@@ -417,7 +434,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
-            params["addrName"] =locaPostEntity!!.addrName
+            params["addrName"] = locaPostEntity!!.addrName
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
@@ -574,7 +591,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
 
-    fun savePostDialog(){
+    fun savePostDialog() {
         val postsId = intent?.getStringExtra("postsId")
         if (!isSave()) {
             finish()
@@ -587,6 +604,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 override fun save() {
                     saveInsertPostent(true)
                 }
+
                 override fun unsave() {
                     isunSave = true
                     finish()
@@ -671,9 +689,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     showPlate()
                 }
                 4 -> { // 选择地址。
-                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                    if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
-                    }else{
+                    } else {
                         isunSave = true
                         startARouter(ARouterCirclePath.ChooseLocationActivity)
                     }
@@ -708,7 +726,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouterForResult(
                 this,
                 ARouterCirclePath.ChoseCircleActivity,
@@ -717,15 +735,15 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
 
         binding.bottom.ivLoc.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
         binding.bottom.ivHuati.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouter(ARouterCirclePath.ChooseConversationActivity)
         }
         binding.bottom.ivPic.setOnClickListener {
-            isunSave=true
+            isunSave = true
             PictureUtil.openGalleryOnePic(this,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
@@ -739,8 +757,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
                         }
                     }
+
                     override fun onCancel() {
-                        isunSave=false
+                        isunSave = false
                     }
 
                 })
@@ -757,7 +776,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 if (view.id == R.id.iv_delete) {
                     longpostadapter.remove(position)
                 } else if (view.id == R.id.iv_addfm) {
-                    isunSave=true
+                    isunSave = true
                     PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
                         object : OnResultCallbackListener<LocalMedia> {
                             override fun onResult(result: MutableList<LocalMedia>?) {
@@ -788,7 +807,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             }
 
                             override fun onCancel() {
-                                isunSave=false
+                                isunSave = false
                             }
 
                         })
@@ -802,7 +821,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             override fun onClickItem(mposition: Int, str: String) {
                                 when (str) {
                                     "编辑图片" -> {
-                                        isunSave=true
+                                        isunSave = true
                                         var bundle = Bundle()
                                         bundle.putParcelableArrayList(
                                             "picList",
@@ -929,7 +948,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         editText = headBinding.etBiaoti
 
         headBinding.ivAddfm.setOnClickListener {
-            isunSave=true
+            isunSave = true
             PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
                     val localMedia = result?.get(0)
@@ -944,7 +963,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
 
                 override fun onCancel() {
-                    isunSave=false
+                    isunSave = false
                 }
 
             })
@@ -959,7 +978,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 .setOnClickItemListener(object :
                     HomeBottomDialog.OnClickItemListener {
                     override fun onClickItem(position: Int, str: String) {
-                        isunSave=true
+                        isunSave = true
                         when (str) {
                             "重选封面" -> {
                                 PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
@@ -981,8 +1000,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                                 )
                                             }
                                         }
+
                                         override fun onCancel() {
-                                            isunSave=false
+                                            isunSave = false
                                         }
 
                                     })
@@ -1250,7 +1270,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                 ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
                             )
                         }
-                     showLocaPostCity()
+                        showLocaPostCity()
 
 //                        if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
 //                            try{
@@ -1340,7 +1360,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             || buttomTypeAdapter.getItem(4).content.isNotEmpty()
         ) {
             return true
-        }else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()) {
+        } else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()) {
             val bottomStr = buttomTypeAdapter.getItem(0).content
             if ("定位" == bottomStr) {
                 return false
@@ -1370,54 +1390,56 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             saveInsertPostent(false)
         }
     }
- fun    saveInsertPostent(isHandleSave:Boolean){
-     val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
-     if (postEntity.postsId == 0L) {
-         postEntity.postsId = insertPostId
-     }
-     postEntity.content = headBinding.etContent.text.toString() //内容
-     postEntity.circleId =
-         if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
-     postEntity.circleName = circlename  //选择圈子的名称
-     postEntity.plate =
-         if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
-     postEntity.plateName = platename  //模块名称
-     postEntity.topicId =
-         if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-     postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
-     postEntity.keywords =
-         if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
+
+    fun saveInsertPostent(isHandleSave: Boolean) {
+        val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+        if (postEntity.postsId == 0L) {
+            postEntity.postsId = insertPostId
+        }
+        postEntity.content = headBinding.etContent.text.toString() //内容
+        postEntity.circleId =
+            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
+        postEntity.circleName = circlename  //选择圈子的名称
+        postEntity.plate =
+            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
+        postEntity.plateName = platename  //模块名称
+        postEntity.topicId =
+            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
+        postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
+        postEntity.keywords =
+            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
-     postEntity.localMeadle = JSON.toJSONString(selectList)
-     postEntity.actionCode =
-         if (params["actionCode"] != null) params["actionCode"] as String else ""
-     postEntity.longpostFmLocalMeadle =
-         if (FMMeadia != null) JSON.toJSONString(FMMeadia) else ""
-     postEntity.longPostDatas = JSON.toJSONString(longpostadapter.data)
-     postEntity.type = "4"  //长图帖子类型
-     postEntity.title = headBinding.etBiaoti.text.toString()
-     postEntity.address =
-         if (params["address"] != null) params["address"] as String else ""
+        postEntity.localMeadle = JSON.toJSONString(selectList)
+        postEntity.actionCode =
+            if (params["actionCode"] != null) params["actionCode"] as String else ""
+        postEntity.longpostFmLocalMeadle =
+            if (FMMeadia != null) JSON.toJSONString(FMMeadia) else ""
+        postEntity.longPostDatas = JSON.toJSONString(longpostadapter.data)
+        postEntity.type = "4"  //长图帖子类型
+        postEntity.title = headBinding.etBiaoti.text.toString()
+        postEntity.address =
+            if (params["address"] != null) params["address"] as String else ""
 
-     postEntity.addrName =
-         if (params["addrName"] != null) params["addrName"] as String else ""
+        postEntity.addrName =
+            if (params["addrName"] != null) params["addrName"] as String else ""
 
-     postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
-     postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
-     postEntity.city =
-         if (params["city"] != null) params["city"] as String else ""
-     postEntity.province =
-         if (params["province"] != null) params["province"] as String else ""
-     postEntity.cityCode =
-         if (params["cityCode"] != null) params["cityCode"] as String else ""
-     postEntity.creattime = System.currentTimeMillis().toString()
-     saveCgTags(postEntity)
-     viewModel.insertPostentity(postEntity)
-     if(isHandleSave){
-         finish()
-     }
+        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
+        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
+        postEntity.city =
+            if (params["city"] != null) params["city"] as String else ""
+        postEntity.province =
+            if (params["province"] != null) params["province"] as String else ""
+        postEntity.cityCode =
+            if (params["cityCode"] != null) params["cityCode"] as String else ""
+        postEntity.creattime = System.currentTimeMillis().toString()
+        saveCgTags(postEntity)
+        viewModel.insertPostentity(postEntity)
+        if (isHandleSave) {
+            finish()
+        }
 
- }
+    }
+
     fun showPlate() {
         if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
             val sList = mutableListOf<String>()
@@ -1455,8 +1477,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             .show()
     }
 
-    fun showLoctionServicePermission(){
-        isunSave=true
+    fun showLoctionServicePermission() {
+        isunSave = true
         // 没有打开定位服务。
         LocationServiceUtil.openCurrentAppSystemSettingUI(this)
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)

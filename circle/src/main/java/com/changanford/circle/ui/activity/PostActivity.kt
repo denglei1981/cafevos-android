@@ -318,9 +318,25 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
+            showErrorWarn()
         })
 
     }
+
+    fun showErrorWarn(){
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.dialog_post_error)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        saveInsertPostent(true)
+                    }, true)
+
+            )
+            .show()
+    }
+
 
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
