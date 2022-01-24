@@ -1,7 +1,6 @@
 package com.changanford.car.ui.fragment
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
+import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
@@ -37,6 +37,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
     private val serviceAdapter by lazy { CarServiceAdapter() }
+    private val carIconAdapter by lazy { CarIconAdapter() }
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -49,6 +50,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             mAdapter.addHeaderView(headerBinding.root)
             headerBinding.apply {
                 rvCarService.adapter=serviceAdapter
+                rvCar.adapter=carIconAdapter
                 bindingService()
                 bindingCompose()
             }
@@ -69,6 +71,30 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 headerBinding.carTopViewPager.create(topBannerList)
             }
         })
+        viewModel.carInfoBean.observe(this,{carInfo->
+            carInfo?.apply {
+                headerBinding.composeView.setContent {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        //赏车之旅
+                        find { it.modelCode=="cars" }?.apply {
+                            headerBinding.tvCarMoreName.text=modelName
+                            carIconAdapter.setList(icons)
+                        }
+                        //购车服务
+                        find { it.modelCode=="buy_service" }?.apply {
+                            headerBinding.tvService.text=modelName
+                            serviceAdapter.setList(icons)
+                        }
+                        //售后服务
+                        AfterSalesService(find { it.modelCode=="after-sales" })
+                        //寻找经销商
+                        LookingDealers(find { it.modelCode=="dealers" })
+                        //车主认证
+                        OwnerCertification()
+                    }
+                }
+            }
+        })
     }
     private fun initBanner(){
         headerBinding.carTopViewPager.apply {
@@ -85,13 +111,13 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    Log.e("wenke","onPageSelected>>position:$position")
-//                    topBannerList[position].apply {
+                    topBannerList[position].apply {
+                        viewModel.getMyCarModelList(carModelCode)
 //                        headerBinding.imgTop.load(topImg)
 //                        headerBinding.imgBottom.load(bottomImg)
 //                        animationControl.startAnimation(headerBinding.imgTop,topAni)
 //                        animationControl.startAnimation(headerBinding.imgBottom,topAni)
-//                    }
+                    }
                 }
             })
             setIndicatorView(headerBinding.drIndicator)
@@ -114,16 +140,16 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         for (i in 0..10){
             dataList.add(NewCarTagBean(tagName = "Tag$i"))
         }
-        headerBinding.composeView.setContent {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                //售后服务
-                AfterSalesService(dataList)
-                //寻找经销商
-                LookingDealers()
-                //车主认证
-                OwnerCertification()
-            }
-        }
+//        headerBinding.composeView.setContent {
+//            Column(modifier = Modifier.fillMaxWidth()) {
+//                //售后服务
+//                AfterSalesService(dataList)
+//                //寻找经销商
+//                LookingDealers()
+//                //车主认证
+//                OwnerCertification()
+//            }
+//        }
     }
 
     /**

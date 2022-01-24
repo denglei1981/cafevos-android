@@ -59,7 +59,7 @@
             android:id="@+id/tv_carMore_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="启程 开启赏车之旅"
+            tools:text="启程 开启赏车之旅"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_17"/>
         <androidx.recyclerview.widget.RecyclerView
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_car_recommend"/>
+            tools:listitem="@layout/item_car_icon"/>
         <com.changanford.common.ui.view.WTextView
             android:gravity="center_vertical"
             android:layout_marginTop="@dimen/dp_36"
@@ -80,7 +80,7 @@
             android:id="@+id/tv_service"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="启程 享受购车服务"
+            tools:text="启程 享受购车服务"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_17"/>
         <androidx.recyclerview.widget.RecyclerView

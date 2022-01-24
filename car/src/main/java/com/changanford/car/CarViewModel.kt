@@ -19,6 +19,8 @@ class CarViewModel : ViewModel() {
     var _middleInfo: MutableLiveData<MiddlePageBean> = MutableLiveData<MiddlePageBean>()
     //首页顶部banenr
     val topBannerBean= MutableLiveData<MutableList<NewCarBannerBean>?>()
+    //爱车首页
+    val carInfoBean=MutableLiveData<MutableList<NewCarInfoBean>?>()
     init {
         _ads = adsRepository._ads
     }
@@ -85,6 +87,24 @@ class CarViewModel : ViewModel() {
                 topBannerBean.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
+            }
+        }
+    }
+    /**
+     * 获取爱车首页
+     * */
+    fun getMyCarModelList(carModelCode:String?=null){
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+//                hashMap["carModelCode"]=carModelCode
+                val rkey = getRandomKey()
+                apiService.getMyCarModelList(hashMap.header(rkey),hashMap.body(rkey))
+            }.onSuccess {
+                carInfoBean.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+                carInfoBean.postValue(null)
             }
         }
     }
