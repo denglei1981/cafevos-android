@@ -273,7 +273,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -324,6 +324,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 initTags()
             }
 
+        })
+
+        viewModel.postError.observe(this, Observer {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
         })
 
     }
@@ -446,7 +452,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         PictureUtil.getFinallyPath(FMMeadia!!),
                         headBinding.ivFm
                     )
-                    selectList.add(LongPostBean("", FMMeadia))
+//                    selectList.add(LongPostBean("", FMMeadia))
                     headBinding.ivAddfm.visibility = View.GONE
                     headBinding.tvFm.visibility = View.GONE
                 } catch (e: Exception) {
@@ -478,7 +484,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         try {
             val longPostBean: ArrayList<LongPostBean> =
                 Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
-            selectList.addAll(longPostBean)
+//            selectList.addAll(longPostBean)
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
         } catch (e: Exception) {

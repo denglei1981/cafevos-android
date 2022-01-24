@@ -33,4 +33,5 @@
     <string name="str_mostOptionalTagX">最多可选%1$d个标签</string>
     <string name="str_applying">申请中</string>
     <string name="str_createCircle">创建圈子</string>
+    <string name="search_location">搜索地点</string>
 </resources>
