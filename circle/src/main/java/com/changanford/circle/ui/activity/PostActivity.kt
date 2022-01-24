@@ -262,7 +262,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -314,7 +314,29 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         })
 
+        viewModel.postError.observe(this, Observer {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+            showErrorWarn()
+        })
+
     }
+
+    fun showErrorWarn(){
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.dialog_post_error)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        saveInsertPostent(true)
+                    }, true)
+
+            )
+            .show()
+    }
+
 
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
