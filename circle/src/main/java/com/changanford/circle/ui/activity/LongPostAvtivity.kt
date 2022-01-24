@@ -251,7 +251,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
-            plateBean?.plate?.forEach {
+            plateBean.plate.forEach {
                 if (it.name == "社区") {
                     buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                     buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 1))
@@ -894,10 +894,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 holder.itemView.alpha = 1f
                 longpostadapter.notifyDataSetChanged()
             }
-
         })
-
-
     }
 
     private fun toQuanzi() {

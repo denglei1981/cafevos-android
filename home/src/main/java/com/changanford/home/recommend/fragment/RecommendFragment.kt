@@ -138,9 +138,12 @@ open class RecommendFragment :
 
             recommendAdapter.addHeaderView(fi.root, index)
             fastInAdapter.setList(dataList)
+
             if (isGrid) {
+                fastInAdapter.isWith=false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
             } else {
+                fastInAdapter.isWith=true
                 fi.rvFastIn.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
