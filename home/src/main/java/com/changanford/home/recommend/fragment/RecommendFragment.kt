@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.manger.UserManger
+import com.changanford.common.ui.videoedit.EditSpacingItemDecoration
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
@@ -18,6 +19,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
@@ -30,6 +32,7 @@ import com.changanford.home.databinding.RecommendHeaderBinding
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
 import com.changanford.home.recommend.adapter.RecommendFastInListAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
+import com.changanford.home.widget.SpacesItemDecoration
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -142,10 +145,13 @@ open class RecommendFragment :
             if (isGrid) {
                 fastInAdapter.isWith=false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
+                fi.rvFastIn.addItemDecoration(EditSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
             } else {
                 fastInAdapter.isWith=true
-                fi.rvFastIn.layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                val linearLayoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                fi.rvFastIn.layoutManager = linearLayoutManager
+                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
+
             }
         }
 
