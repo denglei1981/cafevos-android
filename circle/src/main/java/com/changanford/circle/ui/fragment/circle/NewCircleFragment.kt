@@ -230,7 +230,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                 .height(27.dp)
                                 .fillMaxWidth()
                                 .background(
-                                    colorResource(R.color.color_E6205768),
+                                    colorResource(R.color.color_e6333333),
                                     shape = RoundedCornerShape(0.dp, 0.dp, 5.dp, 5.dp)
                                 )){
                                 Text(modifier = Modifier
