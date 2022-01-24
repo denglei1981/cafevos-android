@@ -2,6 +2,7 @@ package com.changanford.my.ui
 
 import android.graphics.Typeface
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
@@ -37,6 +39,14 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
+        }
+        binding.editSearch.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val content = v.text.toString()
+
+                HideKeyboardUtil.hideKeyboard(binding.editSearch.windowToken)
+            }
+            false
         }
         initViewpager()
     }

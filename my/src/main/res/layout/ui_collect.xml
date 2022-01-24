@@ -9,26 +9,27 @@
     <include
         android:id="@+id/collect_toolbar"
         layout="@layout/view_toolbar" />
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_35"
-        android:gravity="center_vertical"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit_search"
         android:paddingStart="@dimen/dp_12"
         android:paddingEnd="@dimen/dp_12"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:src="@mipmap/ic_search_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edit_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:background="@drawable/shape_f2_18dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_13"
+        android:hint="@string/str_pleaseEnterKeywordSearch"
+        android:textColorHint="@color/color_cc"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:inputType="text"
+        android:drawablePadding="@dimen/dp_5"
+        android:drawableStart="@mipmap/ic_search_hint" />
     <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="@dimen/dp_18"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"

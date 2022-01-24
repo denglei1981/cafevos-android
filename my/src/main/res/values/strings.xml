@@ -14,5 +14,6 @@
     <string name="my_unauth">认证车主可以获得更多权益</string>
     <string name="my_lovecar">我的爱车</string>
     <string name="my_goauth">去认证</string>
+    <string name="str_pleaseEnterKeywordSearch">请输入关键字搜索</string>
 
 </resources>
