@@ -129,7 +129,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(76.dp)
+                                .size(67.dp)
                                 .clip(CircleShape)
                         )
                         Spacer(modifier = Modifier.height(11.dp))
