@@ -48,6 +48,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.AnimatorUtils
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.google.gson.Gson
 
@@ -113,6 +114,8 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     * */
     @Composable
     private fun RecommendedCompose(allCircles: ArrayList<NewCircleBean>?){
+        var imgSize=(ScreenUtils.getScreenWidth(requireContext())-(ScreenUtils.dp2px(requireContext(),19f)*5)-ScreenUtils.dp2px(requireContext(),12f))/4
+        imgSize=ScreenUtils.px2dp(requireContext(),imgSize.toFloat())
         allCircles?.let {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(19.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
                 items(allCircles){itemData->
@@ -129,7 +132,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(67.dp)
+                                .size(imgSize.dp)
                                 .clip(CircleShape)
                         )
                         Spacer(modifier = Modifier.height(11.dp))
