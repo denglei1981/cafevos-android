@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -47,10 +49,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.HideKeyboardUtil
-import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -68,6 +67,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 import com.google.gson.reflect.TypeToken
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 
 @Route(path = ARouterCirclePath.LongPostAvtivity)
@@ -272,7 +273,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -578,7 +579,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                    saveInsertPostent()
+                    saveInsertPostent(true)
                 }
                 override fun unsave() {
                     isunSave = true
@@ -664,7 +665,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     showPlate()
                 }
                 4 -> { // 选择地址。
-                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                        openLocationService()
+                    }else{
+                        isunSave = true
+                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    }
                 }
 
             }
@@ -717,7 +723,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             PictureUtil.openGalleryOnePic(this,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-                        isunSave=false
+
                         val localMedia = result?.get(0)
                         localMedia?.let {
                             var bundle = Bundle()
@@ -749,7 +755,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
                         object : OnResultCallbackListener<LocalMedia> {
                             override fun onResult(result: MutableList<LocalMedia>?) {
-                                isunSave=false
+
                                 val localMedia = result?.get(0)
                                 localMedia?.let {
                                     val bundle = Bundle()
@@ -920,7 +926,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             isunSave=true
             PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
-                    isunSave=false
                     val localMedia = result?.get(0)
                     localMedia?.let {
                         val bundle = Bundle()
@@ -954,7 +959,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                 PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
                                     object : OnResultCallbackListener<LocalMedia> {
                                         override fun onResult(result: MutableList<LocalMedia>?) {
-                                            isunSave=false
                                             val localMedia = result?.get(0)
                                             localMedia?.let {
                                                 val bundle = Bundle()
@@ -1163,7 +1167,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        isunSave = true
+        isunSave = false
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 PostActivity.REQUEST_CIRCLE -> {
@@ -1174,7 +1178,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     }
                 }
                 ITEM_SELECTPIC -> {
-                    isunSave = false
                     val media = data!!.getParcelableArrayListExtra<LocalMedia>("itemMedia")
                     val itemposition = data!!.getIntExtra("position", 0)
                     longpostadapter.getItem(itemposition).apply {
@@ -1358,10 +1361,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
         }
     }
- fun    saveInsertPostent(){
+ fun    saveInsertPostent(isHandleSave:Boolean){
      val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
      if (postEntity.postsId == 0L) {
          postEntity.postsId = insertPostId
@@ -1404,6 +1407,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
      postEntity.creattime = System.currentTimeMillis().toString()
      saveCgTags(postEntity)
      viewModel.insertPostentity(postEntity)
+     if(isHandleSave){
+         finish()
+     }
 
  }
     fun showPlate() {
@@ -1425,5 +1431,31 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         } else {
             viewModel.getPlate()
         }
+    }
+
+    fun openLocationService() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_open_location_service)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        showLoctionServicePermission()
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
+    }
+
+    fun showLoctionServicePermission(){
+        isunSave=true
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivityForResult(intent, PostActivity.REQUEST_LOCATION_SERVICE)
+        return
+
     }
 }

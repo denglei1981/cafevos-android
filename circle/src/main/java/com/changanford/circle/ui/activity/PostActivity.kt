@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import androidx.compose.ui.res.booleanResource
@@ -62,6 +64,8 @@ import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import io.reactivex.exceptions.Exceptions
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -119,6 +123,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
+        const val REQUEST_LOCATION_SERVICE=0x436
     }
 
     override fun initView() {
@@ -156,6 +161,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
 
     }
+
+
 
     override fun observe() {
         super.observe()
@@ -255,7 +262,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(4, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -491,8 +498,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     showPlate()
                 }
                 4 -> { // 选择地址。
-                    isunSave = true
-                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                        openLocationService()
+                    }else{
+                        isunSave = true
+                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    }
                 }
 
             }
@@ -522,6 +533,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
+
+
+
             isunSave = true // 不要自动保存
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
@@ -533,12 +547,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 selectList,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-                        isunSave = false
                         if (result != null) {
                             selectList.clear()
                             selectList.addAll(result)
                         }
-                        var bundle = Bundle()
+                        val bundle = Bundle()
                         bundle.putParcelableArrayList("picList", selectList)
                         bundle.putInt("position", 0)
                         bundle.putInt("showEditType", -1)
@@ -563,12 +576,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-                            isunSave = false
                             if (result != null) {
                                 selectList.clear()
                                 selectList.addAll(result)
                             }
-                            var bundle = Bundle()
+                            val bundle = Bundle()
                             bundle.putParcelableArrayList("picList", selectList)
                             bundle.putInt("position", 0)
                             bundle.putInt("showEditType", -1)
@@ -701,7 +713,38 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         })
     }
+  fun openLocationService() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_open_location_service)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        showLoctionServicePermission()
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
+    }
 
+
+    fun showLoctionServicePermission(){
+
+         try {
+             isunSave=true
+             // 没有打开定位服务。
+             LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+             startActivityForResult(intent,REQUEST_LOCATION_SERVICE)
+             return
+         }catch (e :Exception){
+              e.printStackTrace()
+         }
+
+
+    }
     private fun ispost() {
         var biaoti = binding.etBiaoti.text.toString()
         var content = binding.etContent.text.toString()
@@ -787,11 +830,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 runOnUiThread {
                     dialog.setTvprogress("${scount}/${selectList.size}")
                 }
+                ("上传了几张图呢").plus(scount).logE()
                 if (scount == selectList.size) {
                     params["imgUrl"] = upedimgs
                     params["pics"] = upedimgs[0]?.imgUrl
                     params["isPublish"] = 2
-                    JSON.toJSONString(params).logD()
+                    JSON.toJSONString(params).logE()
                     addPost(dialog)
                     return
                 }
@@ -919,6 +963,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 tagIds += it.id + ","
             }
         }
+
+
+//        val take = tagIds.take(tagIds.length - 1)
         params["tagIds"] = tagIds
         viewModel.postEdit(params)
     }
@@ -952,6 +999,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
+//                REQUEST_LOCATION_SERVICE->{ //打开了定位回调。
+//                    if(LocationServiceUtil.isLocServiceEnable(this)){
+//                        isunSave = true
+//                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+//                    }
+//                }
             }
         }
     }
@@ -1100,7 +1153,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                    saveInsertPostent()
+                    saveInsertPostent(true)
                 }
 
                 override fun unsave() {
@@ -1114,7 +1167,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
-    fun saveInsertPostent() {
+    fun saveInsertPostent(isHandleFinish:Boolean) {
         val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
@@ -1151,7 +1204,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.addrName = if (params["addrName"] != null) params["addrName"] as String else ""
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
-        finish()
+        if(isHandleFinish){
+            finish()
+        }
+
 
     }
 
@@ -1180,7 +1236,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
 //            val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
 //            if (postEntity.postsId == 0L) {
 //                postEntity.postsId = insertPostId

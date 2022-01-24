@@ -1,5 +1,7 @@
 package com.changanford.home.search.activity
 
+import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -11,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
@@ -119,7 +122,8 @@ class PloySearchResultActivity :
             onBackPressed()
         }
         binding.layoutSearch.searchContent.setOnClickListener {
-            onBackPressed()
+
+             backWithTag()
         }
 
         binding.layoutSearch.cancel.setOnClickListener {
@@ -127,6 +131,22 @@ class PloySearchResultActivity :
         }
 
     }
+
+    // 从帖子tag 点击跳转过来
+    fun backWithTag(){
+        if(!TextUtils.isEmpty(tagId)&&"null"!=tagId){
+
+            val intent = Intent(this,PolySearchActivity::class.java)
+            intent.putExtra(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST.toString())
+            startActivity(intent)
+            overridePendingTransition(0, 0);
+
+        }else{
+            onBackPressed()
+        }
+
+    }
+
 
 //    fun search(searchContent: String, needHide: Boolean) {
 //        if (TextUtils.isEmpty(searchContent)) {

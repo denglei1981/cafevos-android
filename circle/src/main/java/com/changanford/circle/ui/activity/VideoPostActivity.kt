@@ -5,9 +5,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
+import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
@@ -59,6 +61,8 @@ import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.lang.Exception
 import java.util.*
@@ -178,6 +182,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
+            isunSave=true
             "发布成功".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
@@ -245,7 +250,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
@@ -623,7 +628,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-                            isunSave=false
+
                             if (result != null) {
                                 SelectlocalMedia = result[0]
                                 startARouterForResult(
@@ -688,7 +693,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                         PictureUtil.openGalleryOnePic(this@VideoPostActivity,
                                             object : OnResultCallbackListener<LocalMedia> {
                                                 override fun onResult(result: MutableList<LocalMedia>?) {
-                                                    isunSave=false
+
                                                     val localMedia = result?.get(0)
                                                     val bundle = Bundle()
                                                     val selectList = arrayListOf(localMedia)
@@ -800,8 +805,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     showPlate()
                 }
                 4->{ // 选择地址。
-                    isunSave=true
-                    startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                        openLocationService()
+                    }else{
+                        isunSave = true
+                        startARouter(ARouterCirclePath.ChooseLocationActivity)
+                    }
                 }
 
             }
@@ -1002,7 +1011,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private fun getFristVideoPic(): String {
 
         val mmr = MediaMetadataRetriever()
-        var file = File(PictureUtil.getFinallyPath(selectList[0]))
+        val file = File(PictureUtil.getFinallyPath(selectList[0]))
         if (file.exists()) {
             mmr.setDataSource(file.absolutePath);//设置数据源为该文件对象指定的绝对路径
             val bitmap = mmr.frameAtTime //获得视频第一帧的Bitmap对象
@@ -1119,7 +1128,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             selectList.apply { clear() },
             object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
-                    isunSave=false
+
                     if (result != null) {
                         selectList.clear()
                         selectList.addAll(result)
@@ -1153,7 +1162,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                  saveInsertPostent()
+                  saveInsertPostent(true)
                 }
                 override fun unsave() {
                     isunSave = true
@@ -1205,7 +1214,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             return
         }
         if (isSave()) {
-            saveInsertPostent()
+            saveInsertPostent(false)
         }
 
     }
@@ -1215,9 +1224,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         back()
     }
 
-    fun saveInsertPostent(){
-        var postEntity =
-            if (locaPostEntity != null) locaPostEntity!! else PostEntity()
+    fun saveInsertPostent(isHandleSave:Boolean){
+        val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
         }
@@ -1237,12 +1245,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postEntity.localMeadle = JSON.toJSONString(selectList)
         postEntity.actionCode =
             if (params["actionCode"] != null) params["actionCode"] as String else ""
-        postEntity.fmpath =
-            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+        postEntity.fmpath = if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
         postEntity.type = "3"  //视频帖子类型
         postEntity.title = binding.etBiaoti.text.toString()
-        postEntity.address =
-            if (params["address"] != null) params["address"] as String else ""
+        postEntity.address = if (params["address"] != null) params["address"] as String else ""
         postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
         postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
         postEntity.city =
@@ -1257,6 +1263,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         // 保存tags
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
+        if(isHandleSave){
+            finish()
+        }
     }
 
     fun saveCgTags(postEntity:PostEntity){
@@ -1286,5 +1295,31 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         } else {
             viewModel.getPlate()
         }
+    }
+
+    fun openLocationService() {
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.pop_open_location_service)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        showLoctionServicePermission()
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                        finish()
+                    }, true)
+            )
+            .show()
+    }
+
+    fun showLoctionServicePermission(){
+        isunSave=true
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivityForResult(intent, PostActivity.REQUEST_LOCATION_SERVICE)
+        return
+
     }
 }

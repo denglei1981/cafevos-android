@@ -30,6 +30,7 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
@@ -150,7 +151,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.layoutOne.conOne.visibility=View.GONE
                         if(picList.size>4){
                             binding.btnMore.visibility=View.VISIBLE
-                            binding.btnMore.text="+".plus(picList.size-4)
+                            binding.btnMore.text="+".plus(picList.size)
                         }else{
                             binding.btnMore.visibility=View.GONE
                         }
@@ -300,6 +301,8 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
     }
 
     private fun StartBaduMap( mData: PostDataBean) {
+
+
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
@@ -310,7 +313,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         intent.putExtra("lat",mData.lat)
                         intent.putExtra("lon",mData.lon)
                         intent.putExtra("address",mData.address)
-                        intent.putExtra("addrName",mData.addrName)
+                        intent.putExtra("addrName",mData.showCity())
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
                         context.startActivity(intent)
                     }

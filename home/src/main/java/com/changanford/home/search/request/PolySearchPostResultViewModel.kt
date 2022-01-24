@@ -38,7 +38,7 @@ class PolySearchPostResultViewModel : BaseViewModel() {
             requestBody["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
             var hashMap = HashMap<String, Any>()
             hashMap["skwType"] = SearchTypeConstant.SEARCH_ACTION_POST
-            if(!TextUtils.isEmpty(tagId)){
+            if(!TextUtils.isEmpty(tagId)&&"null"!=tagId){
                 hashMap["tagId"]=tagId
             }else{
                 hashMap["skwKeyword"] = skwKeyword

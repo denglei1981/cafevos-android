@@ -28,7 +28,7 @@ data class CircleMangerBean(
 
 data class CircleItemBean(
     override var itemType: Int = 0,
-    val circleId: Int = 0,
+    val circleId: String = "0",
     val description: String = "",
     val userId: Int = 0,
     val name: String = "",

@@ -26,6 +26,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -34,16 +35,15 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
  */
 @Route(path = ARouterCirclePath.CreateCircleActivity)
 class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCircleViewModel>() {
-
     private var picUrl = ""
     private val mAdapter by lazy { CircleTagAdapter(listener=listener) }
-    private var tagIds:ArrayList<Int>?=null
+    private var circleItemBean:CircleItemBean?=null
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CreateCircleActivity)
             ivBack.setOnClickListener { finish() }
-            tvTitle.text = "创建圈子"
+            tvTitle.setText(R.string.str_createCircle)
             wtvCreate.visibility= View.VISIBLE
             wtvCreate.setOnClickListener { submit() }
         }
@@ -72,7 +72,6 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 binding.recyclerView.layoutManager=if(isChecked)flowLayoutManager1 else flowLayoutManager0
             }
         }
-
         initListener()
     }
 
@@ -85,9 +84,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                         val bean = result?.get(0)
                         val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
                         path?.let { it1 ->
-                            OSSHelper.init(this@CreateCircleActivity)
-                                .getOSSToImage(this@CreateCircleActivity,
-                                    it1, object : OSSHelper.OSSImageListener {
+                            OSSHelper.init(this@CreateCircleActivity).getOSSToImage(this@CreateCircleActivity,it1, object : OSSHelper.OSSImageListener {
                                         override fun getPicUrl(url: String) {
                                             picUrl = url
                                             ivFengmian.post {
@@ -95,75 +92,28 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                                                     placeholder = R.mipmap.add_image
                                                 })
                                             }
+                                            btnIsClick()
                                         }
-
                                     })
                         }
                     }
-
-                    override fun onCancel() {
-
-                    }
-
+                    override fun onCancel() {}
                 })
             }
-
         }
     }
-
-
     override fun initData() {
-        //获取圈子标签信息
-        viewModel.getTagInfo()
-        val data = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
-        tagIds=data?.tagIds
-        if (data != null) {
-            binding.run {
-                picUrl = data.pic
-                ivFengmian.loadImage(data.pic)
-                etBiaoti.setText(data.name)
-                etContent.setText(data.description)
-                binding.commit.text = "立即编辑"
-
-                commit.setOnClickListener {
-                    val title = binding.etBiaoti.text.toString()
-                    val content = binding.etContent.text.toString()
-
-                    if (picUrl.isEmpty()) {
-                        "请上传封面".toast()
-                        return@setOnClickListener
-                    }
-                    if (title.isEmpty()) {
-                        "请输入标题".toast()
-                        return@setOnClickListener
-                    }
-                    if (content.isEmpty()) {
-                        "请输入详情".toast()
-                        return@setOnClickListener
-                    }
-                    viewModel.editCircle(content, data.circleId.toString(), title, picUrl)
-                }
-            }
-        } else {
-            binding.commit.setOnClickListener {
-                val title = binding.etBiaoti.text.toString()
-                val content = binding.etContent.text.toString()
-
-                if (picUrl.isEmpty()) {
-                    "请上传封面".toast()
-                    return@setOnClickListener
-                }
-                if (title.isEmpty()) {
-                    "请输入标题".toast()
-                    return@setOnClickListener
-                }
-                if (content.isEmpty()) {
-                    "请输入详情".toast()
-                    return@setOnClickListener
-                }
-                viewModel.upLoadCircle(content, title, picUrl)
+        circleItemBean = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
+        circleItemBean?.let {//编辑圈子
+            picUrl = it.pic
+            binding.apply {
+                ivFengmian.loadImage(picUrl)
+                etBiaoti.setText(it.name)
+                etContent.setText(it.description)
             }
         }
+        //获取圈子标签信息
+        viewModel.getTagInfo()
         btnIsClick()
     }
     /**
@@ -189,7 +139,9 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         mAdapter.data.filter { it.isCheck==true }.apply {
             forEach { it.tagId?.apply { tagIds.add(this) }}
         }
-        viewModel.upLoadCircle(content, title, picUrl,tagIds)
+        if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds)
+        else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds)
+
     }
     private val listener=object : OnPerformListener {
         override fun onFinish(code: Int) {
@@ -208,7 +160,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         viewModel.tagInfoData.observe(this,{tagInfo->
             tagInfo?.apply {
                 mAdapter.tagMaxCount=tagMaxCount?:0
-                tagIds?.forEach {tagId->
+                circleItemBean?.tagIds?.forEach {tagId->
                     tags?.let {tagItem->
                         val index=tagItem.indexOfFirst {item->tagId==item.tagId}
                         if(index>=0)tagItem[index].isCheck=true
