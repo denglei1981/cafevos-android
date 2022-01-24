@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import coil.compose.rememberImagePainter
+import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleHotListAdapter
 import com.changanford.circle.adapter.circle.DotAdapter
@@ -39,6 +40,7 @@ import com.changanford.circle.adapter.circle.MyCircleAdapter
 import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.ui.activity.CircleListActivity
 import com.changanford.circle.ui.activity.circle.HotListActivity
+import com.changanford.circle.ui.activity.question.QuestionActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
@@ -61,6 +63,14 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private val myCircleAdapter by lazy { MyCircleAdapter() }
     private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
+        if(BuildConfig.DEBUG){
+            binding.btnTest.apply {
+                visibility=View.VISIBLE
+                setOnClickListener {
+                    QuestionActivity.start()
+                }
+            }
+        }
         binding.srl.setOnRefreshListener {
             getData()
         }

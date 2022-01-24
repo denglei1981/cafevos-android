@@ -35,4 +35,6 @@
     <string name="str_underReview">审核中</string>
     <string name="str_createCircle">创建圈子</string>
     <string name="search_location">搜索地点</string>
+    <string name="str_askQuestions">提问</string>
+    <string name="str_myQuestionAndAnswer">我的问答</string>
 </resources>

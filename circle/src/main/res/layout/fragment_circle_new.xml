@@ -72,6 +72,16 @@
                 <include
                     android:id="@+id/in_youLike"
                     layout="@layout/in_circle_guessyoulike"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_test"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:text="到问答列表"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_margin="@dimen/dp_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
