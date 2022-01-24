@@ -86,6 +86,7 @@ private fun ItemService(itemData: NewCarTagBean?){
         }) {
            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(iconImg) ?: R.mipmap.head_default,
                builder = {placeholder(R.mipmap.head_default)}),
+               contentScale = ContentScale.Crop,
                contentDescription =null,modifier = Modifier.size(32.dp))
            Spacer(modifier = Modifier.height(16.dp))
            Text(text = iconName?:"",fontSize = 12.sp,color = colorResource(R.color.color_33),overflow = TextOverflow.Ellipsis,maxLines = 1)
