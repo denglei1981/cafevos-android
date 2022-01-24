@@ -32,5 +32,6 @@
     <string name="str_appliedForMembership">已申请加入，等待审核</string>
     <string name="str_mostOptionalTagX">最多可选%1$d个标签</string>
     <string name="str_applying">申请中</string>
+    <string name="str_underReview">审核中</string>
     <string name="str_createCircle">创建圈子</string>
 </resources>
