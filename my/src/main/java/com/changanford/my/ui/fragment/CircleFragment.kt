@@ -34,7 +34,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 
     var isRefresh: Boolean = false //回到当前页面刷新列表
 
-    val circleAdapter: CircleAdapter by lazy {
+    private val circleAdapter: CircleAdapter by lazy {
         CircleAdapter()
     }
 
@@ -42,9 +42,9 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 
     companion object {
         fun newInstance(value: Int): CircleFragment {
-            var bundle: Bundle = Bundle()
+            val bundle: Bundle = Bundle()
             bundle.putInt(RouterManger.KEY_TO_ID, value)
-            var medalFragment = CircleFragment()
+            val medalFragment = CircleFragment()
             medalFragment.arguments = bundle
             return medalFragment
         }
@@ -113,13 +113,13 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         override fun convert(holder: BaseViewHolder, item: CircleItemBean) {
             when (getItemViewType(holder.layoutPosition)) {
                 0 -> {
-                    var icon: ShapeableImageView = holder.getView(R.id.item_icon)
+                    val icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
                     //状态 状态 2待审核  1认证失败 3审核通过
-                    var status: TextView = holder.getView(R.id.status_text)
+                    val status: TextView = holder.getView(R.id.status_text)
                     when (item.checkStatus) {
                         "2" -> {
                             status.visibility = View.VISIBLE
@@ -134,20 +134,20 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     }
                 }
                 1 -> {
-                    var title: AppCompatTextView = holder.getView(R.id.circle_user)
+                    val title: AppCompatTextView = holder.getView(R.id.circle_user)
                     title.text = item.typeStr
                     title.visibility = if (item.isShowTitle) View.VISIBLE else View.GONE
 
-                    var icon: ShapeableImageView = holder.getView(R.id.item_icon)
+                    val icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
-                    var status: TextView = holder.getView(R.id.status_text)
-                    var reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
+                    val status: TextView = holder.getView(R.id.status_text)
+                    val reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
                     reasonLayout.visibility = View.GONE
 
-                    var operation: TextView = holder.getView(R.id.item_operation)
+                    val operation: TextView = holder.getView(R.id.item_operation)
                     operation.setOnClickListener(null)
                     //状态 状态 2待审核  1认证失败 3审核通过
                     when (item.checkStatus) {

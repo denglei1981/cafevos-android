@@ -182,11 +182,19 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (locaPostEntity != null) {
                 viewModel.deletePost(locaPostEntity!!.postsId)
             }
-            isunSave=true
+            isunSave = true
             "发布成功".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
+        viewModel.postError.observe(this, Observer {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+            showErrorWarn()
+        })
+
+
         viewModel.stsBean.observe(this, Observer {
             it?.let {
                 upedimgs.clear()
@@ -201,7 +209,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             .observe(this,
                 Observer {
                     // 已改角标
-                    isunSave=false
+                    isunSave = false
                     buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                     params["topicId"] = it.topicId.toString()
                 })
@@ -209,10 +217,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
             {
-                isunSave=false
+                isunSave = false
                 address = it.address ?: it.name ?: ""
                 params["address"] = address
-                params["addrName"]=it.name
+                params["addrName"] = it.name
                 it.location?.let { mit ->
                     params["lat"] = mit.latitude
                     params["lon"] = mit.longitude
@@ -241,7 +249,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
             .observe(this,
                 {
-                    isunSave=false
+                    isunSave = false
                     params.remove("lat")
                     params.remove("lon")
                     params.remove("city")
@@ -250,12 +258,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("定位", 1, 4))
+                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
-                isunSave=false
+                isunSave = false
                 address = it.address
                 params["address"] = address
                 params["lat"] = it.lat
@@ -267,7 +275,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
-            isunSave=false
+            isunSave = false
             postVideoAdapter.fmPath = it.toString()
             postVideoAdapter.notifyDataSetChanged()
         })
@@ -327,7 +335,6 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         })
 
 
-
         //赋值
         viewModel.postDetailsBean.observe(this, {
             it?.let { locaPostEntity ->
@@ -381,8 +388,22 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         })
 
 
-
     }
+
+    fun showErrorWarn(){
+        QuickPopupBuilder.with(this)
+            .contentView(R.layout.dialog_post_error)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        saveInsertPostent(true)
+                    }, true)
+
+            )
+            .show()
+    }
+
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
         postTagDataList?.forEach { td ->
@@ -397,6 +418,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
         buttomlabelAdapter.addData(buttomTagList)
     }
+
     override fun initData() {
         onclick()
         viewModel.getPlate()
@@ -456,7 +478,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             params["province"] = locaPostEntity!!.province
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
-            params["addrName"] =locaPostEntity!!.addrName
+            params["addrName"] = locaPostEntity!!.addrName
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
@@ -511,7 +533,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
         binding.bottom.labelrec.adapter = buttomlabelAdapter
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
-            buttomlabelAdapter.getItem(position).isselect = !buttomlabelAdapter.getItem(position).isselect
+            buttomlabelAdapter.getItem(position).isselect =
+                !buttomlabelAdapter.getItem(position).isselect
             buttomlabelAdapter.notifyDataSetChanged()
         }
 
@@ -611,7 +634,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         }
         postVideoAdapter.setOnItemChildClickListener { adapter, view, position ->
-            isunSave=true
+            isunSave = true
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postVideoAdapter.getItem(position))
                 postVideoAdapter.remove(postVideoAdapter.getItem(position))
@@ -620,7 +643,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         postVideoAdapter.setOnItemClickListener { adapter, view, position ->
-            isunSave=true
+            isunSave = true
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)
             if (holder != null && holder.itemViewType == 0x9843) {//添加
                 PictureUtil.ChoseVideo(
@@ -643,7 +666,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         }
 
                         override fun onCancel() {
-                            isunSave=false
+                            isunSave = false
 
                         }
 
@@ -653,7 +676,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
 
                 val array = ArrayList<String>()
-                if(videoList.size>=1){
+                if (videoList.size >= 1) {
                     array.add("重选视频")
                 }
                 array.add("选择封面")
@@ -661,7 +684,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     array.add("编辑视频")
                 } else {
                     val contains = array.contains("重选视频")
-                    if(!contains){
+                    if (!contains) {
                         array.add("重选视频")
                     }
 
@@ -677,7 +700,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                             when (str) {
                                 "选择封面" -> {
                                     if (canEditVideo) {
-                                        isunSave=true
+                                        isunSave = true
                                         startARouterForResult(
                                             this@VideoPostActivity,
                                             ARouterCirclePath.VideoChoseFMActivity,
@@ -689,7 +712,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                             }, VideoChoseFMActivity.FM_CALLBACK
                                         )
                                     } else {
-                                        isunSave=true
+                                        isunSave = true
                                         PictureUtil.openGalleryOnePic(this@VideoPostActivity,
                                             object : OnResultCallbackListener<LocalMedia> {
                                                 override fun onResult(result: MutableList<LocalMedia>?) {
@@ -731,7 +754,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                         .checkAndRequestPermissions(permissions, object :
                                             CheckRequestPermissionsListener {
                                             override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-                                                isunSave=true
+                                                isunSave = true
                                                 startARouterForResult(
                                                     this@VideoPostActivity,
                                                     ARouterCirclePath.PictureEditAudioActivity,
@@ -765,7 +788,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             ispost()
         }
         binding.bottom.ivHuati.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouter(ARouterCirclePath.ChooseConversationActivity)
         }
         buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
@@ -799,15 +822,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         buttomTypeAdapter.setOnItemClickListener { adapter, view, position ->
-            val buttomType= buttomTypeAdapter.getItem(position).itemType
-            when(buttomType){
-                0,1->{ // 选择板块
+            val buttomType = buttomTypeAdapter.getItem(position).itemType
+            when (buttomType) {
+                0, 1 -> { // 选择板块
                     showPlate()
                 }
-                4->{ // 选择地址。
-                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                4 -> { // 选择地址。
+                    if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
-                    }else{
+                    } else {
                         isunSave = true
                         startARouter(ARouterCirclePath.ChooseLocationActivity)
                     }
@@ -852,7 +875,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         })
 
         binding.bottom.ivQuanzi.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouterForResult(
                 this,
                 ARouterCirclePath.ChoseCircleActivity,
@@ -861,7 +884,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
-            isunSave=true
+            isunSave = true
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
 
@@ -1034,6 +1057,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         params["tagIds"] = tagIds
         viewModel.postEdit(params)
     }
+
     private var circlePostTagDialog: CirclePostTagDialog? = null
     var postTagDataList: List<PostTagData>? = null
     fun showMoreTag() {
@@ -1042,7 +1066,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             return
         }
         circlePostTagDialog = CirclePostTagDialog(this, object : CirclePostTagDialog.ICallbackTag {
-            override fun callbackTag(cancel: Boolean, tags: MutableList<PostKeywordBean>,totalTags:Int) {
+            override fun callbackTag(
+                cancel: Boolean,
+                tags: MutableList<PostKeywordBean>,
+                totalTags: Int
+            ) {
                 if (!cancel) {
                     buttomlabelAdapter.setNewInstance(tags)
                 }
@@ -1050,9 +1078,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }, postTagDataList!!, buttomlabelAdapter.data)
         circlePostTagDialog?.show()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        isunSave=true
+        isunSave = true
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 UCrop.REQUEST_CROP -> {
@@ -1122,7 +1151,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
 
     private fun cxsp() {
-        isunSave=true
+        isunSave = true
         PictureUtil.ChoseVideo(
             this,
             selectList.apply { clear() },
@@ -1162,8 +1191,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
                 override fun save() {
-                  saveInsertPostent(true)
+                    saveInsertPostent(true)
                 }
+
                 override fun unsave() {
                     isunSave = true
                     finish()
@@ -1179,14 +1209,14 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
-    fun isSave():Boolean{
-        if (binding.etBiaoti.text.toString().isNotEmpty()){
+    fun isSave(): Boolean {
+        if (binding.etBiaoti.text.toString().isNotEmpty()) {
             return true
-        }else if(binding.etContent.text.toString().isNotEmpty()){
+        } else if (binding.etContent.text.toString().isNotEmpty()) {
             return true
-        }else if (selectList.size>0){
+        } else if (selectList.size > 0) {
             return true
-        }else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()) {
+        } else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()) {
             val bottomStr = buttomTypeAdapter.getItem(0).content
             if ("定位" == bottomStr) {
                 return false
@@ -1200,7 +1230,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             return true
         }
         buttomlabelAdapter.data.forEach {
-            if (it.isselect){
+            if (it.isselect) {
                 return true
             }
         }
@@ -1224,7 +1254,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         back()
     }
 
-    fun saveInsertPostent(isHandleSave:Boolean){
+    fun saveInsertPostent(isHandleSave: Boolean) {
         val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
@@ -1245,7 +1275,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postEntity.localMeadle = JSON.toJSONString(selectList)
         postEntity.actionCode =
             if (params["actionCode"] != null) params["actionCode"] as String else ""
-        postEntity.fmpath = if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+        postEntity.fmpath =
+            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
         postEntity.type = "3"  //视频帖子类型
         postEntity.title = binding.etBiaoti.text.toString()
         postEntity.address = if (params["address"] != null) params["address"] as String else ""
@@ -1263,12 +1294,12 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         // 保存tags
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
-        if(isHandleSave){
+        if (isHandleSave) {
             finish()
         }
     }
 
-    fun saveCgTags(postEntity:PostEntity){
+    fun saveCgTags(postEntity: PostEntity) {
         // 保存tags
         val data = buttomlabelAdapter.data
         val gson = Gson()
@@ -1276,7 +1307,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postEntity.tags = toJsonTags
     }
 
-    fun showPlate(){
+    fun showPlate() {
         if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
             val sList = mutableListOf<String>()
             for (bean in plateBean.plate) {
@@ -1313,8 +1344,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             .show()
     }
 
-    fun showLoctionServicePermission(){
-        isunSave=true
+    fun showLoctionServicePermission() {
+        isunSave = true
         // 没有打开定位服务。
         LocationServiceUtil.openCurrentAppSystemSettingUI(this)
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)

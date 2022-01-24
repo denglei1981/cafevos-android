@@ -473,7 +473,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             1 -> {
                 binding.topContent.run {
                     tvJoin.setBackgroundResource(R.drawable.circle_ee_12_bg)
-                    tvJoinText.text = "申请中"
+                    tvJoinText.setText(R.string.str_underReview)
                     tvJoinText.setTextColor(
                         ContextCompat.getColor(
                             this@CircleDetailsActivity,

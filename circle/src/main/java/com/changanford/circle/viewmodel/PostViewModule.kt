@@ -60,8 +60,9 @@ class PostViewModule() :PostRoomViewModel(){
                   .onSuccess {
                       postsuccess.value = "upsuccess"
                   }
-                  .onFailure {
+                  .onWithMsgFailure {
                       it?.toast()
+                      postError.value="error"
                   }
           })
       }
