@@ -32,10 +32,10 @@ class RecommendFastInListAdapter :
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
             try{
-                if(isWith){
-                    val layoutParams = ConstraintLayout.LayoutParams(imgSize, imgSize)
-                    it.ivOne.layoutParams= layoutParams
-                }
+//                if(isWith){
+//                    val layoutParams = ConstraintLayout.LayoutParams(imgSize, imgSize)
+//                    it.ivOne.layoutParams= layoutParams
+//                }
 
                 it.tvAdName.text=item.adSubName
             }catch (e:Exception){

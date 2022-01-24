@@ -145,12 +145,12 @@ open class RecommendFragment :
             if (isGrid) {
                 fastInAdapter.isWith=false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
-                fi.rvFastIn.addItemDecoration(EditSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
+//                fi.rvFastIn.addItemDecoration(EditSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
             } else {
                 fastInAdapter.isWith=true
                 val linearLayoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 fi.rvFastIn.layoutManager = linearLayoutManager
-                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
+//                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
 
             }
         }
