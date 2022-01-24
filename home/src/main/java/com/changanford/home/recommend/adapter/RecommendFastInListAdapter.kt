@@ -18,10 +18,16 @@ class RecommendFastInListAdapter :
     ) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.adImg, it.ivOne)
-            it.tvAdName.text=item.adName
+
             it.ivOne.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
+            try{
+                it.tvAdName.text=item.adSubName
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
         }
     }
 }
