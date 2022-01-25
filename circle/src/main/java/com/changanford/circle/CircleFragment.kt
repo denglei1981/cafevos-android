@@ -37,6 +37,7 @@ import com.changanford.common.ui.dialog.PostDialog
 /**
  * 社区
  */
+@Deprecated("被v2代替了")
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
