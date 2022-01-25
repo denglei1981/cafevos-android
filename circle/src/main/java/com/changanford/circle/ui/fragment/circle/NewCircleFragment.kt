@@ -45,11 +45,13 @@ import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCircleBean
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.wutil.AnimatorUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.google.gson.Gson
@@ -62,7 +64,7 @@ import com.google.gson.Gson
 class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
-    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
+//    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
         if(BuildConfig.DEBUG){
             binding.btnTest.apply {
@@ -72,6 +74,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 }
             }
         }
+        addLiveDataBus()
         binding.srl.setOnRefreshListener {
             getData()
         }
@@ -79,7 +82,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             startARouter(ARouterMyPath.MineCircleUI, true)//我的圈子
         }
         binding.inYouLike.wtvInBatch.setOnClickListener {
-            animatorUtil.resumeAnimator()
+//            animatorUtil.resumeAnimator()
             //换一批猜你喜欢的内容
             viewModel.getYouLikeData()
         }
@@ -109,7 +112,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         })
         viewModel.youLikeData.observe(this,{
             bindingYouLike(it)
-            animatorUtil.stopAnimator()
+//            animatorUtil.stopAnimator()
         })
         getData()
 //        bindingMyCircle()
@@ -117,7 +120,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private fun getData(){
         viewModel.getCircleHomeData()
         viewModel.getYouLikeData()
-        animatorUtil.rotateAnimation()
+//        animatorUtil.rotateAnimation()
     }
     /**
      * 推荐圈子
@@ -356,6 +359,16 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
 
     override fun onStop() {
         super.onStop()
-        animatorUtil.stopAnimator()
+//        animatorUtil.stopAnimator()
+    }
+    private fun addLiveDataBus(){
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this,{
+                if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
+                    getData()
+                }
+            })
+
     }
 }

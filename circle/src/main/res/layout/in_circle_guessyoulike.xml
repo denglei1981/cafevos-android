@@ -26,6 +26,7 @@
             android:textSize="@dimen/sp_16" />
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_inBatch"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/wtv_inBatch"
             app:layout_constraintTop_toTopOf="@id/wtv_inBatch"
             app:layout_constraintBottom_toBottomOf="@id/wtv_inBatch"
@@ -34,6 +35,7 @@
             android:src="@mipmap/circle_refresh"
             android:layout_marginEnd="@dimen/dp_3"/>
         <com.changanford.common.ui.view.WTextView
+            android:visibility="gone"
             android:drawablePadding="@dimen/dp_3"
             android:id="@+id/wtv_inBatch"
             android:layout_marginEnd="@dimen/dp_20"

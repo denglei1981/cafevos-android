@@ -1,5 +1,6 @@
 package com.changanford.circle.adapter
 
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
@@ -8,6 +9,8 @@ import com.changanford.circle.bean.PostTagData
 import com.changanford.circle.databinding.DialogItemPostTagBinding
 import com.changanford.common.bean.HobbyItem
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.utilext.toastShow
+import com.donkingliang.labels.LabelsView
 
 
 class DialogPostTagAdapter : BaseQuickAdapter<PostTagData, BaseDataBindingHolder<DialogItemPostTagBinding>>(
@@ -61,6 +64,14 @@ class DialogPostTagAdapter : BaseQuickAdapter<PostTagData, BaseDataBindingHolder
                     }
                 }
             }
+            it.labelsType.setOnLabelClickListener { label, data, position ->
+                val selectLabelDatas = it.labelsType.getSelectLabelDatas<PostKeywordBean>()
+                if (selectLabelDatas.size >= it.labelsType.maxSelect) {
+                    toastShow("最多选择${it.labelsType.maxSelect}个")
+                }
+            }
+
+
         }
     }
 
