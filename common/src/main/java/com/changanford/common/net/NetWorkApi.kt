@@ -138,6 +138,8 @@ interface NetWorkApi {
     @POST("/myCarModel/getMyCarModelList")
     suspend fun getMyCarModelList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<NewCarInfoBean>>
 
+    @POST("/ser/carAuth/getMyCar")
+    suspend fun getMoreCareInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<CarMoreInfoBean>
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(

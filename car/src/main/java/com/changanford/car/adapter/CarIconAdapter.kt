@@ -14,7 +14,7 @@ class CarIconAdapter: BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<Item
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemCarIconBinding>, item: NewCarTagBean) {
         holder.dataBinding?.apply {
-            imgCover.load(item.iconImg)
+            imgCover.load(item.carModelPic)
             model=item
             executePendingBindings()
             root.setOnClickListener {

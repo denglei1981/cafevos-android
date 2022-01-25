@@ -67,4 +67,10 @@ data class NewCarTagBean(
     val jumpDataType: Int = 0,
     val jumpDataValue: String? = null,
     val myCarModelId: Int = 0,
+    val spuId: String?=null,
+    var spuCode: String?=null,//车型编码
+    var spuName: String?=null,//车型编码
+    var carModelPic: String?=null,//车型名称
+    var url: String?=null,
 )
+data class CarMoreInfoBean(var carModelMoreJump:JumpDataBean,var carModels: ArrayList<NewCarTagBean>, var carInfos: ArrayList<NewCarTagBean>)

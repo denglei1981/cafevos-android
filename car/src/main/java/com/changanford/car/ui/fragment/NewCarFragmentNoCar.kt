@@ -52,7 +52,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             headerBinding.apply {
                 rvCarService.adapter=serviceAdapter
                 rvCar.adapter=carIconAdapter
-//                bindingCompose()
+                tvCarMoreName.setOnClickListener {
+                    viewModel.carMoreInfoBean.value?.carModelMoreJump?.apply {
+                        JumpUtils.instans?.jump(this)
+                    }
+                }
             }
         }
         initBanner()
@@ -60,6 +64,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun initData() {
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
+        viewModel.getMoreCar()
         viewModel.topBannerBean.observe(this,{
             it?.apply {
                 if (size == 0) {
@@ -74,6 +79,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         })
         viewModel.carInfoBean.observe(this,{
             bindingCompose()
+        })
+        viewModel.carMoreInfoBean.observe(this,{
+            carIconAdapter.setList(it?.carModels)
         })
     }
     private fun initBanner(){
@@ -100,6 +108,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //                        animationControl.startAnimation(headerBinding.imgTop,topAni)
 //                        animationControl.startAnimation(headerBinding.imgBottom,topAni)
                     }
+                    headerBinding.carTopViewPager.apply {
+                        if(oldScrollY>=maxSlideY){
+                            stopLoop()
+                        }
+                    }
                 }
             })
             setIndicatorView(headerBinding.drIndicator)
@@ -113,7 +126,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             //赏车之旅
             find { it.modelCode=="cars" }?.apply {
                 if(isVisible(carModelCode)){
-                    carIconAdapter.setList(icons)
+//                    carIconAdapter.setList(icons)
                     headerBinding.apply {
                         tvCarMoreName.text=modelName
                         tvCarMoreName.visibility= View.VISIBLE
