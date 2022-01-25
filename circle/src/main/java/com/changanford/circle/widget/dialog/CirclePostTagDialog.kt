@@ -52,7 +52,7 @@ class CirclePostTagDialog(private val activity: AppCompatActivity) : BaseAppComp
             dialogPostTagAdapter.hobbyIds.forEach{
                 it.isselect=true
             }
-            if(dialogPostTagAdapter.hobbyIds.size>=6){
+            if(dialogPostTagAdapter.hobbyIds.size>=totalTags){
                 callback.callbackTag(false, dialogPostTagAdapter.hobbyIds,totalTags)
             }else{// 补齐6个
                 if (dialogPostTagAdapter.hobbyIds.size < totalTags) {
