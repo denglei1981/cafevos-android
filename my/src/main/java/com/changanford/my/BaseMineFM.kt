@@ -26,9 +26,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     private var pageSize: Int = 1
     private var pageNum: Int = 10
     private var isFirst: Boolean = true //首次进入页面
-    val emptyBinding: ViewEmptyBinding by lazy {
-        ViewEmptyBinding.inflate(layoutInflater)
-    }
+    var emptyBinding: ViewEmptyBinding?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +34,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     }
 
     override fun initData() {
+        emptyBinding= ViewEmptyBinding.inflate(layoutInflater)
         bindSmartLayout()?.let {
             it.setEnableLoadMore(hasLoadMore())
             it.setEnableRefresh(hasRefresh())
@@ -124,7 +123,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     }
 
     open fun showEmpty(): View? {
-        return emptyBinding.root
+        return emptyBinding?.root
     }
 
     open fun initRefreshData(pageSize: Int) {
