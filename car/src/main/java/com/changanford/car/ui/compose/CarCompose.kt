@@ -176,7 +176,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
  * 车主认证
 * */
 @Composable
-fun OwnerCertification(dataBean: NewCarInfoBean?=null){
+fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true){
     Spacer(modifier = Modifier.height(18.dp))
     Column(
         Modifier
@@ -205,8 +205,8 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null){
                 }
             })
             Spacer(modifier = Modifier.height(18.dp))
-            Button(onClick = { },shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+            Button(onClick = { },enabled = isUse,shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),
                 modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.str_toCertifyOwner),fontSize = 15.sp,color = Color.White)
             }

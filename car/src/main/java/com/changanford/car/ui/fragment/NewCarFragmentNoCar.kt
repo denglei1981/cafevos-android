@@ -2,6 +2,7 @@ package com.changanford.car.ui.fragment
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.core.view.isVisible
@@ -22,7 +23,6 @@ import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
-import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import java.util.*
@@ -38,6 +38,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val maxSlideY=500//最大滚动距离
     private val serviceAdapter by lazy { CarServiceAdapter() }
     private val carIconAdapter by lazy { CarIconAdapter() }
+    private var carModelCode:String=""
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -51,14 +52,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             headerBinding.apply {
                 rvCarService.adapter=serviceAdapter
                 rvCar.adapter=carIconAdapter
-                bindingService()
-                bindingCompose()
+//                bindingCompose()
             }
         }
         initBanner()
     }
     override fun initData() {
         viewModel.getTopBanner()
+        viewModel.getMyCarModelList()
         viewModel.topBannerBean.observe(this,{
             it?.apply {
                 if (size == 0) {
@@ -71,29 +72,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 headerBinding.carTopViewPager.create(topBannerList)
             }
         })
-        viewModel.carInfoBean.observe(this,{carInfo->
-            carInfo?.apply {
-                headerBinding.composeView.setContent {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        //赏车之旅
-                        find { it.modelCode=="cars" }?.apply {
-                            headerBinding.tvCarMoreName.text=modelName
-                            carIconAdapter.setList(icons)
-                        }
-                        //购车服务
-                        find { it.modelCode=="buy_service" }?.apply {
-                            headerBinding.tvService.text=modelName
-                            serviceAdapter.setList(icons)
-                        }
-                        //售后服务
-                        AfterSalesService(find { it.modelCode=="after-sales" })
-                        //寻找经销商
-                        LookingDealers(find { it.modelCode=="dealers" })
-                        //车主认证
-                        OwnerCertification()
-                    }
-                }
-            }
+        viewModel.carInfoBean.observe(this,{
+            bindingCompose()
         })
     }
     private fun initBanner(){
@@ -112,7 +92,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList[position].apply {
-                        viewModel.getMyCarModelList(carModelCode)
+                        this@NewCarFragmentNoCar.carModelCode=carModelCode
+                        bindingCompose()
+//                        viewModel.getMyCarModelList()
 //                        headerBinding.imgTop.load(topImg)
 //                        headerBinding.imgBottom.load(bottomImg)
 //                        animationControl.startAnimation(headerBinding.imgTop,topAni)
@@ -125,31 +107,57 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         headerBinding.drIndicator.setIndicatorGap(20).setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
         headerBinding.carTopViewPager.isSaveEnabled = false
     }
-    /**
-     * 服务模块
-    * */
-    private fun bindingService(){
-        val dataList = arrayListOf<NewCarTagBean>()
-        for (i in 0..3){
-            dataList.add(NewCarTagBean(tagName = "Tag$i"))
-        }
-        serviceAdapter.setList(dataList)
-    }
+
     private fun bindingCompose(){
-        val dataList = arrayListOf<NewCarTagBean>()
-        for (i in 0..10){
-            dataList.add(NewCarTagBean(tagName = "Tag$i"))
+        viewModel.carInfoBean.value?.apply {
+            //赏车之旅
+            find { it.modelCode=="cars" }?.apply {
+                if(isVisible(carModelCode)){
+                    carIconAdapter.setList(icons)
+                    headerBinding.apply {
+                        tvCarMoreName.text=modelName
+                        tvCarMoreName.visibility= View.VISIBLE
+                        rvCar.visibility=View.VISIBLE
+                    }
+                }else{
+                    headerBinding.tvCarMoreName.visibility= View.GONE
+                    headerBinding.rvCar.visibility=View.GONE
+                }
+            }
+            //购车服务
+            find { it.modelCode=="buy_service" }?.apply {
+                if(isVisible(carModelCode)){
+                    serviceAdapter.setList(icons)
+                    headerBinding.apply {
+                        tvService.text=modelName
+                        tvService.visibility=View.VISIBLE
+                        rvCarService.visibility=View.VISIBLE
+                    }
+                }else{
+                    headerBinding.apply {
+                        tvService.visibility=View.GONE
+                        rvCarService.visibility=View.GONE
+                    }
+                }
+
+            }
+            headerBinding.composeView.setContent {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    //售后服务
+                    find { it.modelCode=="after-sales" }?.apply {
+                        if(isVisible(carModelCode))AfterSalesService(this)
+                    }
+                    //寻找经销商
+                    find { it.modelCode=="dealers" }?.apply {
+                        if(isVisible(carModelCode))LookingDealers(this)
+                    }
+                    //车主认证
+                    find { it.modelCode=="car_auth" }?.apply {
+                        if(isVisible(carModelCode))OwnerCertification(this,isUse(carModelCode))
+                    }
+                }
+            }
         }
-//        headerBinding.composeView.setContent {
-//            Column(modifier = Modifier.fillMaxWidth()) {
-//                //售后服务
-//                AfterSalesService(dataList)
-//                //寻找经销商
-//                LookingDealers()
-//                //车主认证
-//                OwnerCertification()
-//            }
-//        }
     }
 
     /**

@@ -16,7 +16,25 @@ data class NewCarInfoBean(
     val modelCode: String = "",
     val modelName: String = "",
     val searchValue: Any? = null,
-)
+    val isAuth:Any?=null,
+){
+    //该模块是否可见 查询存在即为不可见
+    fun isVisible(carModelCode:String):Boolean{
+        return  if(canNotSeeCarType!=null&&!canNotSeeCarType.contains(",")){
+            carModelCode!=canNotSeeCarType
+        }else{
+            canNotSeeCarType?.split(",")?.find { carModelCode== it }==null
+        }
+    }
+    //是否可用
+    fun isUse(carModelCode:String):Boolean{
+        return  if(canNotUseCarType!=null&&!canNotUseCarType.contains(",")){
+            carModelCode!=canNotUseCarType
+        }else{
+            canNotUseCarType?.split(",")?.find { carModelCode== it }==null
+        }
+    }
+}
 
 data class NewCarBannerBean(
     val bottomAni: Int? = 1,
