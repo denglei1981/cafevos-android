@@ -16,7 +16,7 @@ data class CarAuthBean(
     val userId: Int = 0,
     val isCarOwner: Int = 0,
     val carAuthConfVo: CarAuthConfVo?,
-    val carList: ArrayList<CarItemBean>
+    val carList: ArrayList<CarItemBean>?
 )
 
 data class CarAuthConfVo(

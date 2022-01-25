@@ -17,16 +17,6 @@
             android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
-        <com.changanford.common.ui.AutoScaleWidthImageView
-            android:id="@+id/img_bottom"
-            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <com.changanford.common.ui.AutoScaleWidthImageView
-            android:id="@+id/img_top"
-            app:layout_constraintTop_toTopOf="@id/carTopViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
         <com.zhpan.bannerview.indicator.DrawableIndicator
             android:id="@+id/dr_indicator"
             android:layout_width="wrap_content"

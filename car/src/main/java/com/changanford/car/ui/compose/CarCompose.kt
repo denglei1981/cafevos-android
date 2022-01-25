@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.changanford.car.R
+import com.changanford.common.bean.CarAuthBean
+import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.util.JumpUtils
@@ -142,7 +144,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
                         Spacer(modifier = Modifier.height(10.dp))
                         //位置信息
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(painter = painterResource(R.drawable.icon_home_acts_adress), contentDescription =null )
+                            Image(painter = painterResource(R.mipmap.car_location_small), contentDescription =null )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(text = stringResource(R.string.str_text),color = colorResource(R.color.color_66),fontSize = 12.sp,
                                 overflow = TextOverflow.Ellipsis,maxLines = 1)
@@ -150,7 +152,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
                         Spacer(modifier = Modifier.height(10.dp))
                         //电话
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(painter = painterResource(R.mipmap.common_loc), contentDescription =null )
+                            Image(painter = painterResource(R.mipmap.car_phone), contentDescription =null )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(text = stringResource(R.string.str_text),color = colorResource(R.color.color_66),fontSize = 12.sp,
                                 overflow = TextOverflow.Ellipsis,maxLines = 1)
@@ -176,14 +178,15 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
  * 车主认证
 * */
 @Composable
-fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true){
+fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
+    val carAuthConfVo=carAuthBean?.carAuthConfVo
     Spacer(modifier = Modifier.height(18.dp))
     Column(
         Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
             .background(Color.White, shape = RoundedCornerShape(5.dp))) {
-        Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(dataBean?.pic) ?: R.mipmap.head_default,
+        Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(carAuthConfVo?.img) ?: R.mipmap.head_default,
             builder = {placeholder(R.mipmap.head_default)}),
             contentScale = ContentScale.Crop,
             contentDescription =null,modifier = Modifier
@@ -197,33 +200,40 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true){
             Text(buildAnnotatedString {
                 withStyle(style = ParagraphStyle(lineHeight = 17.sp)) {
                     withStyle(style = SpanStyle(color = colorResource(R.color.color_33),fontSize = 14.sp)) {
-                        append("${stringResource(id = R.string.str_upgradeYourCarExperience)}\n")
+                        append((carAuthConfVo?.title?:stringResource(R.string.str_upgradeYourCarExperience))+"\n")
                     }
                     withStyle(style = SpanStyle(color = colorResource(R.color.color_99),fontSize = 12.sp)) {
-                        append(stringResource(id = R.string.str_bindYourCar_x))
+                        append(carAuthConfVo?.des?:stringResource( R.string.str_bindYourCar_x))
                     }
                 }
             })
             Spacer(modifier = Modifier.height(18.dp))
-            Button(onClick = { },enabled = isUse,shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),
+            Button(onClick = {
+                //去做认证
+                JumpUtils.instans?.jump(17,dataBean?.modelCode)
+            },enabled = isUse,shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),
                 modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.str_toCertifyOwner),fontSize = 15.sp,color = Color.White)
             }
         }
-        Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier
-            .height(0.5.dp)
-            .fillMaxWidth())
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Text(text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
-            modifier = Modifier.weight(1f))
-            Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {  }) {
-                Text(text = stringResource(R.string.str_look),fontSize = 12.sp,color=colorResource(R.color.color_99))
-                Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
+        //待审核
+        if(carItemBean!=null&&carItemBean.authStatus<3){
+            Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier.height(0.5.dp).fillMaxWidth())
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
+                    modifier = Modifier.weight(1f))
+                Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {
+                    //查看审核记录
+                    JumpUtils.instans?.jump(41,carItemBean.authId)
+                }) {
+                    Text(text = stringResource(R.string.str_look),fontSize = 12.sp,color=colorResource(R.color.color_99))
+                    Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
+                }
             }
         }
     }

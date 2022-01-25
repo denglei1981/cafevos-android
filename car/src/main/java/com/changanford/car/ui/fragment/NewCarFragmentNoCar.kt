@@ -9,13 +9,13 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
-import com.changanford.car.control.AnimationControl
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
 import com.changanford.car.ui.compose.AfterSalesService
@@ -31,7 +31,6 @@ import java.util.*
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val mAdapter by lazy { CarNotAdapter() }
     private var topBannerList = ArrayList<NewCarBannerBean>()
-    private val animationControl by lazy { AnimationControl() }
     private val carTopBanner by lazy {NewCarTopBannerAdapter()}
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
@@ -62,9 +61,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         initBanner()
     }
     override fun initData() {
-        viewModel.getTopBanner()
-        viewModel.getMyCarModelList()
-        viewModel.getMoreCar()
         viewModel.topBannerBean.observe(this,{
             it?.apply {
                 if (size == 0) {
@@ -74,15 +70,26 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 headerBinding.carTopViewPager.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
-                headerBinding.carTopViewPager.create(topBannerList)
+                headerBinding.carTopViewPager.apply {
+                    create(topBannerList)
+                    if(oldScrollY>=maxSlideY){
+                        stopLoop()
+                    }
+                }
             }
         })
-        viewModel.carInfoBean.observe(this,{
-            bindingCompose()
+        viewModel.carAuthBean.observe(this,{
+            viewModel.getMyCarModelList()
         })
         viewModel.carMoreInfoBean.observe(this,{
             carIconAdapter.setList(it?.carModels)
         })
+        viewModel.carInfoBean.observe(this,{
+            bindingCompose()
+        })
+        viewModel.getTopBanner()
+        viewModel.getAuthCarInfo()
+        viewModel.getMoreCar()
     }
     private fun initBanner(){
         headerBinding.carTopViewPager.apply {
@@ -102,11 +109,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     topBannerList[position].apply {
                         this@NewCarFragmentNoCar.carModelCode=carModelCode
                         bindingCompose()
-//                        viewModel.getMyCarModelList()
-//                        headerBinding.imgTop.load(topImg)
-//                        headerBinding.imgBottom.load(bottomImg)
-//                        animationControl.startAnimation(headerBinding.imgTop,topAni)
-//                        animationControl.startAnimation(headerBinding.imgBottom,topAni)
                     }
                     headerBinding.carTopViewPager.apply {
                         if(oldScrollY>=maxSlideY){
@@ -166,7 +168,19 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                     //车主认证
                     find { it.modelCode=="car_auth" }?.apply {
-                        if(isVisible(carModelCode))OwnerCertification(this,isUse(carModelCode))
+                        if(isVisible(carModelCode)){
+                            val carAuthBean=viewModel.carAuthBean.value
+                            val carList=carAuthBean?.carList
+                            val findModelCode=carList?.find { it.modelCode==carModelCode }//查指定车型是否有认证 null 则未认证
+                            //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
+                            if(findModelCode!=null&&findModelCode.authStatus==3){//已认证
+                                CarAuthLayout(findModelCode)
+                            }else OwnerCertification(this,isUse(carModelCode),carAuthBean,findModelCode)
+//                            if(carList==null||carList.size<1||findModelCode==null){//未认证
+//                                OwnerCertification(this,isUse(carModelCode),carAuthBean)
+//                            }
+
+                        }
                     }
                 }
             }

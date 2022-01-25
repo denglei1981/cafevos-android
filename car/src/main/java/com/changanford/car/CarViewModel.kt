@@ -23,6 +23,8 @@ class CarViewModel : ViewModel() {
     val carInfoBean=MutableLiveData<MutableList<NewCarInfoBean>?>()
     //更多车型
     val carMoreInfoBean=MutableLiveData<CarMoreInfoBean?>()
+    //认证信息
+    val carAuthBean=MutableLiveData<CarAuthBean?>()
     init {
         _ads = adsRepository._ads
     }
@@ -95,11 +97,10 @@ class CarViewModel : ViewModel() {
     /**
      * 获取爱车首页
      * */
-    fun getMyCarModelList(carModelCode:String?=null){
+    fun getMyCarModelList(){
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
-//                hashMap["carModelCode"]=carModelCode
                 val randomKey = getRandomKey()
                 apiService.getMyCarModelList(hashMap.header(randomKey),hashMap.body(randomKey))
             }.onSuccess {
@@ -121,8 +122,26 @@ class CarViewModel : ViewModel() {
                 apiService.getMoreCareInfo(hashMap.header(randomKey),hashMap.body(randomKey))
             }.onSuccess {
                 carMoreInfoBean.postValue(it)
-            }.onFailure {
+            }.onWithMsgFailure {
                 carMoreInfoBean.postValue(null)
+                it?.toast()
+            }
+        }
+    }
+    /**
+     * 认证信息
+    * */
+    fun getAuthCarInfo() {
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                apiService.queryAuthCarList(hashMap.header(randomKey),hashMap.body(randomKey))
+            }.onSuccess {
+                carAuthBean.postValue(it)
+            }.onWithMsgFailure {
+                carAuthBean.postValue(null)
+                it?.toast()
             }
         }
     }
