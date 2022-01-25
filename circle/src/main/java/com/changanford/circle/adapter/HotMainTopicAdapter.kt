@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -31,15 +32,30 @@ class HotMainTopicAdapter :
             MUtils.setTopMargin(binding.clContent, 18, holder.layoutPosition)
             binding.tvNum.text = "${item.postsCount}帖子     ${item.heat}热度"
             binding.bean = item
-            val position=holder.layoutPosition+1
-            when(position){
-                1,2,3->{
-                    binding.tvIcon.setTextColor(ContextCompat.getColor(context,R.color.color_FC5E42))
-                }else->{
-                    binding.tvIcon.setTextColor(ContextCompat.getColor(context,R.color.color_D1D2D7))
+            val position = holder.layoutPosition + 1
+            when (position) {
+                1 -> {
+                    binding.ivIcon.setImageResource(R.drawable.icon_huati_one)
+                    binding.ivIcon.visibility= View.VISIBLE
+                    binding.tvIcon.visibility=View.INVISIBLE
+                }
+                2 -> {
+                    binding.ivIcon.setImageResource(R.drawable.icon_huati_two)
+                    binding.ivIcon.visibility= View.VISIBLE
+                    binding.tvIcon.visibility=View.INVISIBLE
+                }
+                3 -> {
+                    binding.ivIcon.setImageResource(R.drawable.icon_huati_three)
+                    binding.ivIcon.visibility= View.VISIBLE
+                    binding.tvIcon.visibility=View.INVISIBLE
+                }
+                else->{
+                    binding.ivIcon.setImageResource(R.drawable.icon_huati_three)
+                    binding.ivIcon.visibility= View.INVISIBLE
+                    binding.tvIcon.visibility=View.VISIBLE
+                    binding.tvIcon.text=position.toString()
                 }
             }
-            binding.tvIcon.text=(holder.layoutPosition+1).toString()
 
 
         }

@@ -8,7 +8,9 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.evos.R
 import com.changanford.evos.adapter.LandingAdapter
+import com.changanford.evos.adapter.LandingViewHolder
 import com.changanford.evos.databinding.ActivityLandingBinding
+import com.zhpan.bannerview.BannerViewPager
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -22,11 +24,11 @@ import com.changanford.evos.databinding.ActivityLandingBinding
 @Route(path = ARouterHomePath.LandingActivity)
 class LandingActivity : BaseActivity<ActivityLandingBinding, EmptyViewModel>() {
 
-
+    lateinit var bannerViewPager: BannerViewPager<Int, LandingViewHolder>
     var datas: ArrayList<Int> = ArrayList()
 
     override fun initView() {
-       val bannerViewPager = binding.landingviewpager
+        bannerViewPager = binding.landingviewpager as BannerViewPager<Int, LandingViewHolder>
         bannerViewPager.setAutoPlay(false)
             .setScrollDuration(500)
             .setCanLoop(false)
@@ -45,8 +47,6 @@ class LandingActivity : BaseActivity<ActivityLandingBinding, EmptyViewModel>() {
         datas.add(R.drawable.landing1)
         datas.add(R.drawable.landing2)
         datas.add(R.drawable.landing3)
-//        datas.add(R.drawable.landing4)
-//        datas.add(R.drawable.landing5)
-        binding.landingviewpager.refreshData(datas)
+        bannerViewPager.refreshData(datas)
     }
 }
