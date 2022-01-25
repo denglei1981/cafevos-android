@@ -140,6 +140,9 @@ interface NetWorkApi {
 
     @POST("/ser/carAuth/getMyCar")
     suspend fun getMoreCareInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<CarMoreInfoBean>
+    //获取最近的一家经销商
+    @POST("/baseDealer/nearestlimit")
+    suspend fun getRecentlyDealers( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<NewCarInfoBean>
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(

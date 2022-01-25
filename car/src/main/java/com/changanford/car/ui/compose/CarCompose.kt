@@ -100,14 +100,14 @@ private fun ItemService(itemData: NewCarTagBean?){
  * 寻找经销商
 * */
 @Composable
-fun LookingDealers(dataBean: NewCarInfoBean?=null){
+fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
     dataBean?.apply {
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)) {
             Spacer(modifier = Modifier.height(40.dp))
             Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween,verticalAlignment = Alignment.CenterVertically) {
-                Text(text = modelName,color = colorResource(R.color.color_33),fontSize = 17.sp)
+                Text(text = carModelName?:"",color = colorResource(R.color.color_33),fontSize = 17.sp)
                 Image(painter = painterResource(R.mipmap.right_black), contentDescription = null,modifier = Modifier.clickable {
 
                 })
@@ -140,13 +140,13 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
                     .padding(start = 18.dp, end = 12.dp, top = 10.dp)) {
                     Column(modifier = Modifier.weight(1f)) {
                         //标题
-                        Text(text = stringResource(R.string.str_text),color = colorResource(R.color.color_33),fontSize = 14.sp)
+                        Text(text = dealerName?:"",color = colorResource(R.color.color_33),fontSize = 14.sp)
                         Spacer(modifier = Modifier.height(10.dp))
                         //位置信息
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(painter = painterResource(R.mipmap.car_location_small), contentDescription =null )
                             Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = stringResource(R.string.str_text),color = colorResource(R.color.color_66),fontSize = 12.sp,
+                            Text(text = address?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
                                 overflow = TextOverflow.Ellipsis,maxLines = 1)
                         }
                         Spacer(modifier = Modifier.height(10.dp))
@@ -154,7 +154,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(painter = painterResource(R.mipmap.car_phone), contentDescription =null )
                             Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = stringResource(R.string.str_text),color = colorResource(R.color.color_66),fontSize = 12.sp,
+                            Text(text = phone?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
                                 overflow = TextOverflow.Ellipsis,maxLines = 1)
                         }
                     }
@@ -164,7 +164,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
                         Spacer(modifier = Modifier.height(10.dp))
                         Image(painter = painterResource(R.mipmap.car_location), contentDescription =null )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = stringResource(R.string.str_awayFromYouX,""),color = colorResource(R.color.color_66),fontSize = 12.sp)
+                        Text(text = stringResource(R.string.str_awayFromYouX,distanct?:""),color = colorResource(R.color.color_66),fontSize = 12.sp)
                     }
                 }
                 Spacer(modifier = Modifier.height(14.dp))

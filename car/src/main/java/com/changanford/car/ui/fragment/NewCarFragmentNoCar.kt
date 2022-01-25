@@ -1,5 +1,6 @@
 package com.changanford.car.ui.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
 import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
@@ -25,6 +28,10 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.location.LocationUtils
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 
 
@@ -59,6 +66,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
         }
         initBanner()
+        initLocation()
     }
     override fun initData() {
         viewModel.topBannerBean.observe(this,{
@@ -85,6 +93,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             carIconAdapter.setList(it?.carModels)
         })
         viewModel.carInfoBean.observe(this,{
+            bindingCompose()
+        })
+        //经销商
+        viewModel.dealersBean.observe(this,{
             bindingCompose()
         })
         viewModel.getTopBanner()
@@ -164,7 +176,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                     //寻找经销商
                     find { it.modelCode=="dealers" }?.apply {
-                        if(isVisible(carModelCode))LookingDealers(this)
+                        if(isVisible(carModelCode))LookingDealers(modelName,viewModel.dealersBean.value)
                     }
                     //车主认证
                     find { it.modelCode=="car_auth" }?.apply {
@@ -186,7 +198,23 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
         }
     }
+    private fun initLocation(){
+        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+                object : CheckRequestPermissionListener {
+                    override fun onPermissionOk(permission: Permission) {
+                        LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                            override fun onReceiveLocation(location: BDLocation) {
+                                val latitude = location.latitude //获取纬度信息
+                                val longitude = location.longitude //获取经度信息
+                                viewModel.getRecentlyDealers(longitude,latitude)
+                            }
+                        })
+                    }
+                    override fun onPermissionDenied(permission: Permission) {
 
+                    }
+                })
+    }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
     * */

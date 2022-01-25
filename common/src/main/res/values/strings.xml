@@ -25,7 +25,7 @@
     <string name="platform_acts">平台</string>
     <string name="str_text">-------</string>
     <string name="str_fromYouRecently">距您最近</string>
-    <string name="str_awayFromYouX">距您%1$s</string>
+    <string name="str_awayFromYouX">距您%1$s公里</string>
     <string name="str_upgradeYourCarExperience">升级您的用车体验</string>
     <string name="str_bindYourCar_x">绑定您的爱车，成为认证车主享受更多专属服务</string>
     <string name="str_toCertifyOwner">去认证车主</string>

@@ -25,6 +25,8 @@ class CarViewModel : ViewModel() {
     val carMoreInfoBean=MutableLiveData<CarMoreInfoBean?>()
     //认证信息
     val carAuthBean=MutableLiveData<CarAuthBean?>()
+    //经销商信息
+    val dealersBean=MutableLiveData<NewCarInfoBean?>()
     init {
         _ads = adsRepository._ads
     }
@@ -141,6 +143,29 @@ class CarViewModel : ViewModel() {
                 carAuthBean.postValue(it)
             }.onWithMsgFailure {
                 carAuthBean.postValue(null)
+                it?.toast()
+            }
+        }
+    }
+    /**
+     * 获取最近的一家经销商
+     * [lngX]经度
+     * [latY]纬度
+     * [groupCode]
+     * */
+    fun getRecentlyDealers(lngX:Any,latY:Any,groupCode:String?=null) {
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                hashMap["lngX"]=lngX
+                hashMap["latY"]=latY
+                if(null!=groupCode)hashMap["groupCode"]=groupCode
+                val randomKey = getRandomKey()
+                apiService.getRecentlyDealers(hashMap.header(randomKey),hashMap.body(randomKey))
+            }.onSuccess {
+                dealersBean.postValue(it)
+            }.onWithMsgFailure {
+                dealersBean.postValue(null)
                 it?.toast()
             }
         }

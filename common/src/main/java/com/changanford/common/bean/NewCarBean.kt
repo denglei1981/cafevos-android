@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
+
 /**
  * @Author : wenke
  * @Time : 2022/1/18 0018
@@ -17,10 +19,19 @@ data class NewCarInfoBean(
     val modelName: String = "",
     val searchValue: Any? = null,
     val isAuth:Any?=null,
+    val phone:String?=null,
+    val dealerName:String?=null,
+    val address:String?=null,
+    val dealerId:String?=null,
+    val dealerCode:String?=null,
+    val groupName:String?=null,
+    val groupCode:String?=null,
+    val distanct:String?=null,
 ){
     //该模块是否可见 查询存在即为不可见
     fun isVisible(carModelCode:String):Boolean{
-        return  if(canNotSeeCarType!=null&&!canNotSeeCarType.contains(",")){
+        return if(TextUtils.isEmpty(canNotSeeCarType))true
+        else if(canNotSeeCarType!=null&&!canNotSeeCarType.contains(",")){
             carModelCode!=canNotSeeCarType
         }else{
             canNotSeeCarType?.split(",")?.find { carModelCode== it }==null
@@ -28,7 +39,8 @@ data class NewCarInfoBean(
     }
     //是否可用
     fun isUse(carModelCode:String):Boolean{
-        return  if(canNotUseCarType!=null&&!canNotUseCarType.contains(",")){
+        return if(TextUtils.isEmpty(canNotUseCarType))true
+        else if(canNotUseCarType!=null&&!canNotUseCarType.contains(",")){
             carModelCode!=canNotUseCarType
         }else{
             canNotUseCarType?.split(",")?.find { carModelCode== it }==null
