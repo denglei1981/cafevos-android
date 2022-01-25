@@ -58,7 +58,7 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
             ))
         Box(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 70.dp, start = 20.dp, end = 20.dp)) {
+            .padding(top = 90.dp, start = 20.dp, end = 20.dp)) {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp)){

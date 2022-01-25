@@ -1,7 +1,6 @@
 package com.changanford.circle.ui.activity.question
 
 import android.content.Context
-import android.graphics.Color
 import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -48,7 +47,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     private var isWhite = true//是否是白色状态
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-        binding.run {
+        binding.inHeader.run {
             imgBack.setOnClickListener { finish() }
             topBar.setPadding(0,ScreenUtils.getStatusBarHeight(this@QuestionActivity)+10,0,ScreenUtils.dip2px(this@QuestionActivity,10f))
         }
@@ -85,7 +84,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
 
     private fun initMagicIndicator(tabs:MutableList<CirCleHotList>) {
         val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundColor(Color.WHITE)
+        magicIndicator.setBackgroundResource(R.color.color_F4)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
@@ -133,7 +132,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
-                binding.apply {
+                binding.inHeader.apply {
                     imgBack.setImageResource(R.mipmap.whit_left)
                     tvAskQuestions.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.colorWhite))
                     tvTitle.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.colorWhite))
@@ -142,7 +141,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
-                binding.apply {
+                binding.inHeader.apply {
                     imgBack.setImageResource(R.mipmap.back_xhdpi)
                     tvAskQuestions.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.color_33))
                     tvTitle.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.color_33))
@@ -152,10 +151,10 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             //改变透明度
             if (absOffset <= appBarLayout.height) {
                 val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
-                binding.topBar.background.mutate().alpha = mAlpha
+                binding.inHeader.topBar.background.mutate().alpha = mAlpha
 //                binding.tvTitle.alpha = mAlpha / 255.0F
             } else {
-                binding.topBar.background.mutate().alpha = 255
+                binding.inHeader.topBar.background.mutate().alpha = 255
 //                binding.tvTitle.alpha = 1.0F
             }
         })
