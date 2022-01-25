@@ -20,11 +20,14 @@ class RecommendFastInListAdapter :
 
 
     var isWith=false
+    var imgSize=0
     override fun convert(
         holder: BaseDataBindingHolder<ItemHomeRecommendFastInBinding>,
         item: AdBean
     ) {
-        val imgSize=(ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,60f))/3
+         if(imgSize==0){
+             imgSize=(ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,60f))/3
+         }
 
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.adImg, it.ivOne)
@@ -32,11 +35,8 @@ class RecommendFastInListAdapter :
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
             try{
-//                if(isWith){
-//                    val layoutParams = ConstraintLayout.LayoutParams(imgSize, imgSize)
-//                    it.ivOne.layoutParams= layoutParams
-//                }
-
+                val layoutParams = ConstraintLayout.LayoutParams(imgSize, imgSize)
+                    it.ivOne.layoutParams= layoutParams
                 it.tvAdName.text=item.adSubName
             }catch (e:Exception){
                 e.printStackTrace()

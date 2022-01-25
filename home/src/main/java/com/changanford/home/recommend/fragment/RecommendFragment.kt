@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.manger.UserManger
+import com.changanford.common.ui.GridSpacingItemDecoration
 import com.changanford.common.ui.videoedit.EditSpacingItemDecoration
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
@@ -145,12 +146,12 @@ open class RecommendFragment :
             if (isGrid) {
                 fastInAdapter.isWith=false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
-//                fi.rvFastIn.addItemDecoration(EditSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
+                fi.rvFastIn.addItemDecoration(GridSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
             } else {
                 fastInAdapter.isWith=true
                 val linearLayoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 fi.rvFastIn.layoutManager = linearLayoutManager
-//                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
+                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
 
             }
         }
