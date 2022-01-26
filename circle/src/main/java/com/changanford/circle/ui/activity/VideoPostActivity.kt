@@ -132,7 +132,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        val bthinttxt = "标题 (6-20字之间)"
+        val bthinttxt = "标题 (1-20字之间)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -583,8 +583,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 "请选择视频".toast()
                 return
             }
-            biaoti.isNullOrEmpty() || biaoti.length < 6 || biaoti.length > 20 -> {
-                "请输入6-20字的帖子标题".toast()
+            biaoti.isEmpty() || biaoti.length > 20 -> {
+                "请输入1-20字的帖子标题".toast()
                 return
             }
             content.isNullOrEmpty() -> {

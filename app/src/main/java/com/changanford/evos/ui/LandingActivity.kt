@@ -47,8 +47,6 @@ class LandingActivity : BaseActivity<ActivityLandingBinding, EmptyViewModel>() {
         datas.add(R.drawable.landing1)
         datas.add(R.drawable.landing2)
         datas.add(R.drawable.landing3)
-//        datas.add(R.drawable.landing4)
-//        datas.add(R.drawable.landing5)
         bannerViewPager.refreshData(datas)
     }
 }
