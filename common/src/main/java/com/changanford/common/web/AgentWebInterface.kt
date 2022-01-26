@@ -571,7 +571,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                 GifUtils.saveGif(
                                     url,
                                     activity,
-                                    Environment.getExternalStorageDirectory().absolutePath + "/" + System.currentTimeMillis() + ".gif"
+                                    MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
                                 )
                             } else {
                                 Glide.with(activity!!).asBitmap().load(url)
@@ -580,10 +580,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                             resource: Bitmap,
                                             transition: Transition<in Bitmap?>?
                                         ) {
-                                            FileHelper.saveImageToGallery(
-                                                activity,
-                                                resource
-                                            )
+                                            PictureUtil.saveBitmapPhoto(resource)
                                         }
                                     })
                             }
