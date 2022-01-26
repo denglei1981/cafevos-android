@@ -36,9 +36,9 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, CircleDet
     override fun initData() {
         binding.ryAsk.adapter = recommendAskAdapter.also {
             it.addData(TestBeanUtil.getTestHasAnswerBean())
+            it.addData(TestBeanUtil.getTestHasAnswerOnePicBean())
             it.addData(TestBeanUtil.getTestNOAnswerBean())
             it.addData(TestBeanUtil.getTestHasAnswerBean())
-            it.addData(TestBeanUtil.getTestNOAnswerBean())
         }
 
     }

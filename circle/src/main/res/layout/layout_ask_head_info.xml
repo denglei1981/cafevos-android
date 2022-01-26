@@ -115,7 +115,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@{postBean.showTitle}"
+
             android:textColor="@color/color_66"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"

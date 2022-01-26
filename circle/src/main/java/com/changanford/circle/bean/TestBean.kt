@@ -70,7 +70,7 @@ data class MultiBean(val authorBaseVo: AuthorBaseVo? = null,
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if(TextUtils.isEmpty(answerContent)){
-            return 0
+            return 1
         }
         return 1
     }

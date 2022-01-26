@@ -11,6 +11,7 @@ import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toastShow
 
 /**
  *Author lcw
@@ -45,8 +46,12 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<MultiBean, BaseViewHolder>
 
     fun hasAnswer(view: View,item:MultiBean) { // 有答案
         val binding = DataBindingUtil.bind<ItemRecommendAskAnswerPicBinding>(view)
-        binding?.let { vb->{
-            vb.layoutAnswerInfo.tvContent.text="回答的很好下次不要回答了"
+
+
+
+
+
+        binding?.layoutAnswerInfo?.tvContent?.text=item.answerContent
             val picList = item.picList
             if (picList?.isEmpty() == false) {
                 when {
@@ -59,40 +64,37 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<MultiBean, BaseViewHolder>
                             item.postsId.let {tid->
                                 imageInfo.postId=tid.toString()
                             }
-
                             imageInfoList.add(imageInfo)
                         }
                         val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
-                        binding.layoutAskInfo.ivNine.setAdapter(assNineAdapter)
-                        binding.layoutAskInfo.ivNine.visibility=View.VISIBLE
+                        binding?.layoutAskInfo?.ivNine?.setAdapter(assNineAdapter)
+                        binding?.layoutAskInfo?.ivNine?.visibility=View.VISIBLE
 
                         if(picList.size>4){
-                            binding.layoutAskInfo.btnMore.visibility=View.VISIBLE
-                            binding.layoutAskInfo.btnMore.text="+".plus(picList.size)
+                            binding?.layoutAskInfo?.btnMore?.visibility=View.VISIBLE
+                            binding?.layoutAskInfo?.btnMore?.text="+".plus(picList.size)
                         }else{
-                            binding.layoutAskInfo.btnMore.visibility=View.GONE
+                            binding?.layoutAskInfo?.btnMore?.visibility=View.GONE
                         }
                     }
                     picList.size==1 -> {
-                        binding.layoutAskInfo.ivNine.visibility=View.GONE
+                        binding?.layoutAskInfo?.ivNine?.visibility=View.GONE
 
-                        GlideUtils.loadBD(picList[0],binding.layoutAskInfo.ivPic)
-                        binding.layoutAskInfo.btnMore.visibility=View.GONE
+                        GlideUtils.loadBD(picList[0],binding?.layoutAskInfo?.ivPic!!)
+                        binding.layoutAskInfo.btnMore.visibility =View.GONE
                     }
                     else -> {
-                        binding.layoutAskInfo.ivNine.visibility=View.GONE
-
-                        binding.layoutAskInfo.btnMore.visibility=View.GONE
+                        binding?.layoutAskInfo?.ivNine?.visibility=View.GONE
+                        binding?.layoutAskInfo?.btnMore?.visibility=View.GONE
                     }
                 }
 
-            }else{
-                binding.layoutAskInfo.ivNine.visibility=View.GONE
             }
 
-        } }
+        }
 
-    }
+
+
 
     fun noAnswer(view:View){
         val binding = DataBindingUtil.bind<ItemRecommendAskNoAnswerBinding>(view)

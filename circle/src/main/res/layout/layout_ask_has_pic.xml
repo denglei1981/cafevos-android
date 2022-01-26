@@ -25,6 +25,7 @@
             />
 
         <FrameLayout
+            android:id="@+id/fl_pics_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -40,7 +41,7 @@
                 android:layout_marginTop="@dimen/dp_16"
                 android:scaleType="centerCrop"
                 app:angv_gridSpace="3dp"
-                app:angv_maxSize="4"
+                app:angv_maxSize="2"
                 app:angv_singleImgRatio="1"
                 tools:src="@drawable/image_recommed_default" />
 
@@ -69,6 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+
             app:layout_constraintDimensionRatio="335:190"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_20"
@@ -76,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:src="@drawable/image_recommed_default"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
