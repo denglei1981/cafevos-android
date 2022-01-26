@@ -2,9 +2,11 @@ package com.changanford.circle.ui.ask.fragment
 
 import android.os.Bundle
 import com.changanford.circle.bean.MultiBean
+import com.changanford.circle.bean.TestBean
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
 import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
 import com.changanford.circle.ui.fragment.CircleRecommendFragment
+import com.changanford.circle.utils.TestBeanUtil
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -33,10 +35,10 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, CircleDet
 
     override fun initData() {
         binding.ryAsk.adapter = recommendAskAdapter.also {
-            it.addData(MultiBean())
-            it.addData(MultiBean())
-            it.addData(MultiBean())
-            it.addData(MultiBean())
+            it.addData(TestBeanUtil.getTestHasAnswerBean())
+            it.addData(TestBeanUtil.getTestNOAnswerBean())
+            it.addData(TestBeanUtil.getTestHasAnswerBean())
+            it.addData(TestBeanUtil.getTestNOAnswerBean())
         }
 
     }
@@ -44,4 +46,7 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, CircleDet
     override fun onRefresh(refreshLayout: RefreshLayout) {
 
     }
+
+
+
 }
