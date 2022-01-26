@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="福克斯 穿越千年的丝绸古道，感叹生命的繁盛与荒无之地的寂静仅一步之遥。" />
+            tools:text="@string/test_str" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time"
