@@ -157,7 +157,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.minScale = 1f
                 simplePagerTitleView.text = types[index].name
-                simplePagerTitleView.textSize = 15f
+                simplePagerTitleView.textSize = 18f
 //                if (types.size <= 3) {
 //                    simplePagerTitleView.setPadding(
 //                        30.toIntPx(),
