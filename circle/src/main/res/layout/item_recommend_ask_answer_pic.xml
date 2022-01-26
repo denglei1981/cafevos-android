@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout_ask_info"
+            layout="@layout/layout_ask_has_pic" />
+
+        <include
+            android:id="@+id/layout_answer_info"
+            layout="@layout/layout_ask_head_info" />
+
+        <include
+            android:id="@+id/layout_no_answer"
+            layout="@layout/layout_ask_no_answer" />
+
+        <View style="@style/default_line" />
+
+    </LinearLayout>
+</layout>
