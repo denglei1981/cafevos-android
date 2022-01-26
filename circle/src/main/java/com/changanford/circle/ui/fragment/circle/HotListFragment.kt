@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
+import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleTopAdapter
 import com.changanford.circle.databinding.FragmentHotlistBinding
 import com.changanford.circle.ui.activity.CircleDetailsActivity
@@ -31,25 +32,26 @@ class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>()
     override fun initView() {
         binding.srl.setOnRefreshLoadMoreListener(this)
         binding.recyclerView.adapter=mAdapter
+        mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
             CircleDetailsActivity.start( mAdapter.data[position].circleId)
         }
     }
 
     override fun initData() {
-        viewModel.circleListData.observe(this,{
+        viewModel.circleListData.observe(this) {
             it?.apply {
-                val dataList=this.dataList
-                if(1==pageNo)mAdapter.setList(dataList)
-                else dataList?.let {itemData-> mAdapter.addData(itemData) }
+                val dataList = this.dataList
+                if (1 == pageNo) mAdapter.setList(dataList)
+                else dataList?.let { itemData -> mAdapter.addData(itemData) }
             }
-            if(it == null ||mAdapter.data.size>= it.total)binding.srl.setEnableLoadMore(false)
+            if (it == null || mAdapter.data.size >= it.total) binding.srl.setEnableLoadMore(false)
             else binding.srl.setEnableLoadMore(true)
             binding.srl.apply {
                 finishLoadMore()
                 finishRefresh()
             }
-        })
+        }
         arguments?.getInt("topId",0)?.apply {
             topId=this
             viewModel.getHotList(topId,pageNo)
