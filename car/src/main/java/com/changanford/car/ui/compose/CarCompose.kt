@@ -115,7 +115,9 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
             Spacer(modifier = Modifier.height(17.dp))
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White, shape = RoundedCornerShape(5.dp))) {
+                .background(Color.White, shape = RoundedCornerShape(5.dp)).clickable {
+                    JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                }) {
                 Box(modifier = Modifier.fillMaxWidth(),contentAlignment = Alignment.TopEnd){
                     Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
                         builder = {placeholder(R.mipmap.head_default)}),
@@ -126,7 +128,7 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
                             .clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
                     Row(modifier = Modifier.padding(top = 14.dp,end = 12.dp)) {
                         Box(contentAlignment = Alignment.Center,modifier = Modifier
-                            .defaultMinSize(65.dp, 24.dp)
+                            .size(65.dp, 24.dp)
                             .background(
                                 colorResource(R.color.color_9900142E),
                                 shape = RoundedCornerShape(2.dp)

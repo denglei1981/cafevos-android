@@ -27,6 +27,8 @@ data class NewCarInfoBean(
     val groupName:String?=null,
     val groupCode:String?=null,
     val distanct:String?=null,
+    val jumpDataType: Int? = null,
+    val jumpDataValue: String? = null,
 ){
     //该模块是否可见 查询存在即为不可见
     fun isVisible(carModelCode:String):Boolean{

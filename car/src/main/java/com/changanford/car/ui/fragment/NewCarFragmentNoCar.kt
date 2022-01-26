@@ -2,9 +2,13 @@ package com.changanford.car.ui.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -28,11 +32,8 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.location.LocationUtils
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import java.util.*
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -45,6 +46,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val serviceAdapter by lazy { CarServiceAdapter() }
     private val carIconAdapter by lazy { CarIconAdapter() }
     private var carModelCode:String=""
+    private var longitude:Any?=null//经度
+    private var latitude:Any?=null//维度
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -65,11 +68,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 }
             }
         }
+        initObserve()
         initBanner()
         initLocation()
     }
     override fun initData() {
-        viewModel.topBannerBean.observe(this,{
+        viewModel.getTopBanner()
+        viewModel.getAuthCarInfo()
+        viewModel.getMoreCar()
+    }
+    private fun initObserve(){
+        viewModel.topBannerBean.observe(this) {
             it?.apply {
                 if (size == 0) {
                     headerBinding.carTopViewPager.isVisible = false
@@ -80,28 +89,25 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 topBannerList.addAll(this)
                 headerBinding.carTopViewPager.apply {
                     create(topBannerList)
-                    if(oldScrollY>=maxSlideY){
+                    if (oldScrollY >= maxSlideY) {
                         stopLoop()
                     }
                 }
             }
-        })
-        viewModel.carAuthBean.observe(this,{
+        }
+        viewModel.carAuthBean.observe(this) {
             viewModel.getMyCarModelList()
-        })
-        viewModel.carMoreInfoBean.observe(this,{
+        }
+        viewModel.carMoreInfoBean.observe(this) {
             carIconAdapter.setList(it?.carModels)
-        })
-        viewModel.carInfoBean.observe(this,{
+        }
+        viewModel.carInfoBean.observe(this) {
             bindingCompose()
-        })
+        }
         //经销商
-        viewModel.dealersBean.observe(this,{
+        viewModel.dealersBean.observe(this) {
             bindingCompose()
-        })
-        viewModel.getTopBanner()
-        viewModel.getAuthCarInfo()
-        viewModel.getMoreCar()
+        }
     }
     private fun initBanner(){
         headerBinding.carTopViewPager.apply {
@@ -199,21 +205,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
     }
     private fun initLocation(){
-        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                            override fun onReceiveLocation(location: BDLocation) {
-                                val latitude = location.latitude //获取纬度信息
-                                val longitude = location.longitude //获取经度信息
-                                viewModel.getRecentlyDealers(longitude,latitude)
-                            }
-                        })
-                    }
-                    override fun onPermissionDenied(permission: Permission) {
-
+        if (LocationServiceUtil.isLocServiceEnable(requireContext())&&isGetLocation()) {
+                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                    override fun onReceiveLocation(location: BDLocation) {
+                        latitude = location.latitude //获取纬度信息
+                        longitude = location.longitude //获取经度信息
+                        viewModel.getRecentlyDealers(longitude,latitude)
                     }
                 })
+        }else{//服务端自行ip定位
+            viewModel.getRecentlyDealers()
+        }
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
@@ -246,5 +248,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onPause() {
         super.onPause()
         headerBinding.carTopViewPager.stopLoop()
+    }
+    @TargetApi(23)
+    private fun isGetLocation(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 定位精确位置
+            activity?.apply {
+                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return false
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)return false
+            }
+            return true
+        }
+        return false
     }
 }
