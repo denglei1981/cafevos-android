@@ -95,7 +95,7 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
                     gravity=Gravity.CENTER_HORIZONTAL
                     text = tabs[index].topName
                     textSize = 18f
-                    setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                    setPadding(20.toIntPx(), 0, 20.toIntPx(), 0)
 //                    width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
                     normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
                     selectedColor = ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
