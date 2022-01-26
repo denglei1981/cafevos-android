@@ -919,8 +919,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 "请选择封面".toast()
                 return
             }
-            biaoti.isNullOrEmpty() || biaoti.length < 6 || biaoti.length > 20 -> {
-                "请输入6-20字的帖子标题".toast()
+            biaoti.isEmpty() || biaoti.length > 20 -> {
+                "请输入1-20字的帖子标题".toast()
                 return
             }
             content.isNullOrEmpty() -> {
@@ -938,7 +938,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     private fun initandonclickhead() {
-        val bthinttxt = "标题 (6-20字之间)"
+        val bthinttxt = "标题 (1-20字之间)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length

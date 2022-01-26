@@ -136,7 +136,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         postPicAdapter = PostPicAdapter(type)
-        var bthinttxt = "标题 (6-20字之间)"
+        var bthinttxt = "标题 (1-20字之间)"
         var spannableString = SpannableString(bthinttxt)
         var intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -789,8 +789,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 "请选择图片".toast()
                 return
             }
-            biaoti.isNullOrEmpty() || biaoti.length < 6 || biaoti.length > 20 -> {
-                "请输入6-20字的帖子标题".toast()
+            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 20 -> {
+                "请输入1-20字的帖子标题".toast()
                 return
             }
             content.isNullOrEmpty() -> {
