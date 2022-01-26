@@ -73,7 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             )
             .addItem(
                 newItem(
-                    R.mipmap.icon_caru,
+                    R.mipmap.icon_new_tigger,
                     R.mipmap.icon_new_tigger,
                     R.drawable.translate,
                     "爱车",
