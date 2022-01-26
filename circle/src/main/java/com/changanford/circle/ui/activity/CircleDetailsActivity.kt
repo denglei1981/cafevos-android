@@ -93,7 +93,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
             topContent.recyclerView.apply {
-                layoutManager=FlowLayoutManager(this@CircleDetailsActivity,true,true)
+                layoutManager=FlowLayoutManager(this@CircleDetailsActivity,true)
                 adapter=tagAdapter
             }
         }
@@ -123,10 +123,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             }
         })
         initTabAndViewPager()
-        PostDatabase.getInstance(this).getPostDao().findAll().observe(this,
-            {
-                postEntity = it as ArrayList<PostEntity>
-            })
+        PostDatabase.getInstance(this).getPostDao().findAll().observe(this
+        ) {
+            postEntity = it as ArrayList<PostEntity>
+        }
     }
 
     private fun initListener(circleName: String) {
@@ -258,7 +258,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
-        viewModel.circleDetailsBean.observe(this, {
+        viewModel.circleDetailsBean.observe(this) {
             setJoinType(it.isApply)
             initListener(it.name)
             tagAdapter.setList(it.tags)
@@ -323,8 +323,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     binding.ivPostBar.visibility = View.GONE
                 }
             }
-        })
-        viewModel.joinBean.observe(this, {
+        }
+        viewModel.joinBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 val data = viewModel.circleDetailsBean.value
@@ -335,8 +335,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     }
                 }
             }
-        })
-        viewModel.applyBean.observe(this, {
+        }
+        viewModel.applyBean.observe(this) {
             //response.data.status  1待审核 2审核通过 3审核不过
             if (it.code == 0) {
                 val mBean = it.data
@@ -361,8 +361,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             } else {
                 it.msg.toast()
             }
-        })
-        viewModel.circleRolesBean.observe(this, {
+        }
+        viewModel.circleRolesBean.observe(this) {
             CircleManagementPop(this@CircleDetailsActivity,
                 object : CircleManagementPop.ClickListener {
                     override fun checkPosition(bean: CircleStarRoleDto) {
@@ -402,7 +402,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
                 }
             }
-        })
+        }
     }
 
     private fun initMagicIndicator() {

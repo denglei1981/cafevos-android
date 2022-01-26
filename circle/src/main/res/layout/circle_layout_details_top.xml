@@ -31,10 +31,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            android:padding="@dimen/dp_16"
             android:background="@drawable/circle_white_5_bg"
             app:layout_constraintTop_toTopOf="@+id/v_line">
 
@@ -42,8 +43,8 @@
                 android:id="@+id/iv_icon"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
-                android:layout_margin="@dimen/dp_20"
                 android:scaleType="center"
+                android:src="@color/color_00095B"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,12 +54,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="10dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="旅行街区"
+                tools:text="旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区"
                 android:textStyle="bold"
                 android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_17"
+                android:textSize="@dimen/sp_15"
                 app:layout_constraintLeft_toRightOf="@+id/iv_icon"
                 app:layout_constraintRight_toLeftOf="@+id/tv_join"
                 app:layout_constraintTop_toTopOf="@+id/iv_icon" />
@@ -66,12 +65,11 @@
             <RelativeLayout
                 android:id="@+id/tv_join"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:minWidth="47dp"
-                android:layout_marginEnd="17dp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_25"
+                android:minWidth="@dimen/dp_47"
                 android:background="@drawable/circle_follow_bg"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_title">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -83,9 +81,9 @@
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
                     android:text="加入"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -93,17 +91,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                style="@style/w_style_txt_ellipsize"
-                tools:text="自然可以治愈一切"
+                tools:text="自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="@dimen/sp_13"
+                android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_join"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintBottom_toTopOf="@id/tv_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -115,22 +113,23 @@
                 tools:listitem="@layout/item_circle_tag"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_num"
+                android:layout_marginTop="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="1233 帖子"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="@id/iv_icon"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_title" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                app:layout_constraintStart_toStartOf="@id/tv_title" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/circle_f2_17"
-                app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
-                app:layout_constraintRight_toRightOf="@+id/tv_join"
-                app:layout_constraintTop_toBottomOf="@+id/iv_icon">
+                app:layout_constraintStart_toStartOf="@id/iv_icon"
+                app:layout_constraintEnd_toEndOf="@id/recyclerView"
+                app:layout_constraintTop_toBottomOf="@id/tv_num">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ry_personal"
