@@ -151,19 +151,17 @@ class CarViewModel : ViewModel() {
      * 获取最近的一家经销商
      * [lngX]经度
      * [latY]纬度
-     * [groupCode]
      * [carModelCode]车型编码
      * */
-    fun getRecentlyDealers(lngX:Any?=null, latY:Any?=null, groupCode:String?=null, carModelCode: String? =null) {
+    fun getRecentlyDealers(lngX:Any?=null, latY:Any?=null,carModelCode: String? =null) {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 if(lngX!=null&&latY!=null){
                     hashMap["lngX"]=lngX
                     hashMap["latY"]=latY
-                }
+                }else hashMap["tryIp"]=true
                 if(null!=carModelCode)hashMap["carModelCode"]=carModelCode
-                if(null!=groupCode)hashMap["groupCode"]=groupCode
                 val randomKey = getRandomKey()
                 apiService.getRecentlyDealers(hashMap.header(randomKey),hashMap.body(randomKey))
             }.onSuccess {

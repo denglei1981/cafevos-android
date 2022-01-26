@@ -39,7 +39,7 @@ import com.changanford.common.util.location.LocationUtils
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val mAdapter by lazy { CarNotAdapter() }
     private var topBannerList = ArrayList<NewCarBannerBean>()
-    private val carTopBanner by lazy {NewCarTopBannerAdapter()}
+    private val carTopBanner by lazy {NewCarTopBannerAdapter(requireActivity())}
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
@@ -126,6 +126,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     super.onPageSelected(position)
                     topBannerList[position].apply {
                         this@NewCarFragmentNoCar.carModelCode=carModelCode
+                        carTopBanner.pauseVideo()
+                        if(mainIsVideo==1){//是视频
+                            carTopBanner.startPlayVideo(mainImg)
+                        }else carTopBanner.releaseVideo()
                         bindingCompose()
                     }
                     headerBinding.carTopViewPager.apply {
@@ -242,11 +246,13 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         super.onResume()
         initData()
         if(oldScrollY<maxSlideY){
+            carTopBanner.resumeVideo()
             headerBinding.carTopViewPager.startLoop()
         }
     }
     override fun onPause() {
         super.onPause()
+        carTopBanner.pauseVideo()
         headerBinding.carTopViewPager.stopLoop()
     }
     @TargetApi(23)
