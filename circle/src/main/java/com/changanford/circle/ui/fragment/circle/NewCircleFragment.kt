@@ -354,11 +354,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private fun addLiveDataBus(){
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
-                if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
                     getData()
                 }
-            })
+            }
 
     }
 }
