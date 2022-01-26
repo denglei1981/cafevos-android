@@ -186,13 +186,15 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuth
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
             .background(Color.White, shape = RoundedCornerShape(5.dp))) {
-        Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(carAuthConfVo?.img) ?: R.mipmap.head_default,
-            builder = {placeholder(R.mipmap.head_default)}),
-            contentScale = ContentScale.Crop,
-            contentDescription =null,modifier = Modifier
-                .fillMaxWidth()
-                .height(138.dp)
-                .clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
+        carAuthConfVo?.img?.apply {
+            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this) ?: R.mipmap.head_default,
+                builder = {placeholder(R.mipmap.head_default)}),
+                contentScale = ContentScale.Crop,
+                contentDescription =null,modifier = Modifier
+                    .fillMaxWidth()
+                    .height(138.dp)
+                    .clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
+        }
         Column(
             Modifier
                 .fillMaxWidth()
