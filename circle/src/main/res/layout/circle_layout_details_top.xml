@@ -94,14 +94,14 @@
                 tools:text="自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="@dimen/sp_13"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_5"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_join"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_5"
                 app:layout_constraintBottom_toTopOf="@id/tv_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                 tools:listitem="@layout/item_circle_tag"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_num"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="1233 帖子"
