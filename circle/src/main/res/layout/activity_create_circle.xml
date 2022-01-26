@@ -90,7 +90,7 @@
                             android:layout_weight="1"
                             android:background="@color/transparent"
                             android:hint="@string/str_pleaseInputCircleName"
-                            android:maxLength="8"
+                            android:maxLength="15"
                             android:singleLine="true"
                             android:textColor="@color/textblack"
                             android:textColorHint="#CCCCCC"
@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="bottom"
-                            android:text="0/8"
+                            android:text="0/15"
                             android:textColor="#AFB3B6"
                             android:textSize="13sp" />
                     </LinearLayout>
