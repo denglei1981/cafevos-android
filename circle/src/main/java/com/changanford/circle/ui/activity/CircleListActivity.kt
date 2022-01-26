@@ -109,20 +109,20 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
 
     override fun observe() {
         super.observe()
-        viewModel.typesBean.observe(this, {
+        viewModel.typesBean.observe(this) {
             if (it.isNotEmpty()) {
                 runOnUiThread {
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
-                    val index=it.indexOfFirst {item->item.id.toString()==typeId}
-                    if(index>0)binding.viewPager.currentItem=index
+                    val index = it.indexOfFirst { item -> item.id.toString() == typeId }
+                    if (index > 0) binding.viewPager.currentItem = index
 
                 }
             } else {
                 "没有圈子类型".toast()
                 finish()
             }
-        })
+        }
     }
 
     private fun initMagicIndicator(types: ArrayList<CircleTypesBean>) {
@@ -170,7 +170,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                         20.toIntPx(),
                         10.toIntPx(),
                         20.toIntPx(),
-                        3.toIntPx()
+                        9.toIntPx()
                     )
 //                }
                 simplePagerTitleView.normalColor =
