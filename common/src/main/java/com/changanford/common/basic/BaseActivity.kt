@@ -1,9 +1,15 @@
 package com.changanford.common.basic
 
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo
+import android.content.Context
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -19,13 +25,6 @@ import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
-import android.app.ActivityManager.RunningAppProcessInfo
-
-import android.app.ActivityManager
-import android.content.Context
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration
-import android.util.DisplayMetrics
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -48,6 +47,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //防止应用截屏
+        //window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         curActivity = this
         binding = bindings
         setContentView(binding.root)
