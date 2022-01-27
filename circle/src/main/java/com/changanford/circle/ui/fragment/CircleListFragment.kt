@@ -9,8 +9,11 @@ import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.FragmentCircleListBinding
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.location.LocationUtils
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
@@ -44,7 +47,7 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     }
 
     override fun initView() {
-
+        addLiveDataBus()
         arguments?.getInt("type", 0)?.let {
             type = it
         }
@@ -71,7 +74,23 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
             it.finishRefresh()
         }
     }
-
+    private fun addLiveDataBus(){
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        page = 1
+                        initData()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        page = 1
+                        initData()
+                    }
+                    else -> {}
+                }
+            }
+    }
     override fun initData() {
         if (isRegion == "YES") {//是地域圈子
             binding.refreshLayout.post {
@@ -121,7 +140,7 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
 
     override fun observe() {
         super.observe()
-        viewModel.circleListBean.observe(this, {
+        viewModel.circleListBean.observe(this) {
             if (page == 1) {
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)
@@ -134,6 +153,6 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
+        }
     }
 }
