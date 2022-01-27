@@ -75,7 +75,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         var oldVersionCode = SPUtils.getParam(requireContext(),"versionCode",0) as Int
         var curVersionCode = DeviceUtils.getVersionCode(requireContext())
         if (SPUtils.getParam(requireContext(), "isfirstin", true) as Boolean || oldVersionCode < curVersionCode) {
-            startARouterFinish(requireActivity(), ARouterHomePath.LandingActivity)
+            // TODO 本次不进入引导页。
+//            startARouterFinish(requireActivity(), ARouterHomePath.LandingActivity)
             SPUtils.setParam(requireContext(), "isfirstin", false)
             SPUtils.setParam(requireContext(),"versionCode",curVersionCode)
             return
