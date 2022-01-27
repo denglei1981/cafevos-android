@@ -37,4 +37,5 @@
     <string name="str_adoptTotal">采纳总数</string>
     <string name="str_replyToList">回复榜</string>
     <string name="str_adoptionList">采纳榜</string>
+    <string name="str_vehicleFailure">车辆故障</string>
 </resources>
