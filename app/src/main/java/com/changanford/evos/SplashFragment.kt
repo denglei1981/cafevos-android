@@ -1,5 +1,6 @@
 package com.changanford.evos
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
@@ -72,8 +73,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
      * 处理首次登录
      */
     private fun firstIn(){
-        var oldVersionCode = SPUtils.getParam(requireContext(),"versionCode",0) as Int
-        var curVersionCode = DeviceUtils.getVersionCode(requireContext())
+        val oldVersionCode = SPUtils.getParam(requireContext(),"versionCode",0) as Int
+        val curVersionCode = DeviceUtils.getVersionCode(requireContext())
         if (SPUtils.getParam(requireContext(), "isfirstin", true) as Boolean || oldVersionCode < curVersionCode) {
             // TODO 本次不进入引导页。
 //            startARouterFinish(requireActivity(), ARouterHomePath.LandingActivity)
@@ -84,8 +85,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     }
 
 
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     private fun showAds() {
-        var bundle = requireActivity().intent?.extras?: Bundle()
+        val bundle = requireActivity().intent?.extras?: Bundle()
         if (Intent.ACTION_VIEW == requireActivity().intent.action) {
             val uri = requireActivity().intent.data
             if (uri != null) {
@@ -99,13 +101,13 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 }
             }
         }
-        viewModel.imgBean.observe(this, {
+        viewModel.imgBean.observe(this) {
             firstIn()
             val imgBean = it
             if (imgBean == null || imgBean.adImg.isNullOrEmpty() || !GlideUtils.handleImgUrl(imgBean.adImg)!!
                     .startsWith("http")
             ) {
-                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
+                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity, bundle)
                 return@observe
             }
             if (imgBean.video == 1) {
@@ -145,7 +147,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 binding.chronometer.isCountDown = true
             }
             binding.chronometer.start()
-            var tv = binding.counter
+            val tv = binding.counter
             binding.chronometer.setOnChronometerTickListener { it ->
                 binding.counter.visibility = View.VISIBLE
                 tv.text =
@@ -154,19 +156,19 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                     tv.text = "跳过 ${0}"
                     viewModel.jump = true
                     it.stop()
-                    navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
+                    navFinishActivityTo(R.id.action_splashFragment_to_mainActivity, bundle)
                 }
             }
             binding.counter.setOnClickListener {
-                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity,bundle)
+                navFinishActivityTo(R.id.action_splashFragment_to_mainActivity, bundle)
             }
             binding.splashimg.setOnClickListener { _ ->
                 JumpUtils.instans!!.jump(imgBean.jumpDataType, imgBean.jumpDataValue)
             }
-            binding.splashVideo.setOnTouchListener() { _, _ ->
+            binding.splashVideo.setOnTouchListener { _, _ ->
                 JumpUtils.instans!!.jump(imgBean.jumpDataType, imgBean.jumpDataValue)
                 true
             }
-        })
+        }
     }
 }
