@@ -1,7 +1,6 @@
 package com.changanford.circle.adapter.question
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -57,7 +55,6 @@ fun ItemUI(itemData: QuestionInfoBean?=null){
                     withStyle(style = SpanStyle(color = colorResource(R.color.color_E1A743),fontSize = 10.sp)) {
                         append("\t30福币")
                     }
-                    Image(painter = painterResource(R.mipmap.question_fb), contentDescription = null)
                 }
             })
             Box(contentAlignment = Alignment.Center, modifier = Modifier
