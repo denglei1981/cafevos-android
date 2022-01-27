@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity.question
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
@@ -67,10 +68,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         initMagicIndicator(tabs)
     }
     private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
-        binding.viewPager.apply {
-            adapter = object : FragmentPagerAdapter(supportFragmentManager,
-                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-            ) {
+        binding.viewPager.apply {adapter = @SuppressLint("WrongConstant")
+        object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getCount(): Int {
                     return tabs.size
                 }
