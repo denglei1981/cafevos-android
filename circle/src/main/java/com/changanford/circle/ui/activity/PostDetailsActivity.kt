@@ -84,4 +84,5 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
         onOtherTouchListener?.onTouchEvent(ev)
         return super.dispatchTouchEvent(ev)
     }
+
 }

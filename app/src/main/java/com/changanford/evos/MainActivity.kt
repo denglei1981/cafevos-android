@@ -73,13 +73,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             )
             .addItem(
                 newItem(
-                    R.mipmap.icon_caru,
-                    R.mipmap.icon_car_b,
-                    R.mipmap.icon_car_c,
+                    R.mipmap.icon_new_tigger,
+                    R.mipmap.icon_new_tigger,
+                    R.drawable.translate,
                     "爱车",
                     1f
                 )
             )
+//        R.mipmap.icon_car_b,
+//        R.mipmap.icon_car_c,
             .addItem(
                 newItem(
                     R.mipmap.icon_shopu,

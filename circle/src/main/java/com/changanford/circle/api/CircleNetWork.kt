@@ -1,11 +1,10 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
-import com.changanford.common.bean.CircleListBean
-import com.changanford.common.bean.LocationDataBean
-import com.changanford.common.bean.PostBean
+import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.PostKeywordBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -36,6 +35,14 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<PostBean>
 
+
+    @POST("con/community/recommendPosts")
+    suspend fun getRecommendPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+
     /**
      * 获取话题列表
      */
@@ -57,7 +64,7 @@ interface CircleNetWork {
     /**
      * 获取圈子
      */
-    @POST("con/circle/getAllTypeCircles")
+    @POST("con/community/circleAllTypeList")
     suspend fun getAllTypeCircles(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -66,7 +73,7 @@ interface CircleNetWork {
     /**
      * 查询圈子详情
      */
-    @POST("con/circle/getCircleInfo")
+    @POST("con/community/circleInfo")
     suspend fun queryCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -140,6 +147,16 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<PostKeywordBean>>
+
+
+
+
+
+    @POST("con/community/keyWords")
+    suspend fun getTags(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<PostTagData>>
 
     /**
      * 帖子点赞
@@ -277,20 +294,14 @@ interface CircleNetWork {
     /**
      * 创建圈子
      */
-    @POST("con/circle/createCircle")
-    suspend fun addCircle(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    @POST("con/community/circleCreate")
+    suspend fun createCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
 
     /**
      * 编辑圈子
      */
-    @POST("con/circle/editCircle")
-    suspend fun editCircle(
-        @HeaderMap headMap: Map<String, String>,
-        @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    @POST("con/community/circleEdit")
+    suspend fun editCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
 
     /**
      * 退出圈子
@@ -309,6 +320,14 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleMainBean>
+
+
+    @POST("/con/community/recommend")
+    suspend fun communityTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMainBean>
+
 
     /**
      * 管理员列表
@@ -412,9 +431,49 @@ interface CircleNetWork {
     /**
      * 圈子类型
      */
-    @POST("con/circle/circleTypes")
+    @POST("con/community/circleAllType")
     suspend fun circleTypes(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleTypesBean>>
+    /**
+     * 圈子首页
+    * */
+    @POST("con/community/circle")
+    suspend fun circleHome(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CirceHomeBean>
+    /**
+     * 猜你喜欢
+     */
+    @POST("con/community/circleLike")
+    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    /**
+     * 热门榜单分类
+     */
+    @POST("con/community/circleTop")
+    suspend fun circleHotTypes(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<CirCleHotList>>
+    /**
+     * 热门榜单列表
+     */
+    @POST("con/community/circleTopList")
+    suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    /**
+     * 创建圈子 获取tag标签
+     */
+    @POST("con/community/circleCreateInfo")
+    suspend fun circleCreateInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<TagInfoBean>
+
+    @POST("con/ads/list")
+    suspend fun getRecommendTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<AdBean>>
+
+
+
+
+    @POST("con/community/postsAddressList")
+    suspend fun getUserPostAdress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<SerachUserAddress>>
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="lifeCycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.content.Context" />
+
+        <import type="android.view.View"/>
+        <variable
+            name="postBean"
+            type="com.changanford.common.bean.PostDataBean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_f6f6_corners20"
+            android:drawableStart="@mipmap/icon_circle_location"
+            android:layout_marginTop="@dimen/dp_15"
+            android:drawablePadding="@dimen/dp_4"
+            android:textColor="@color/color_00095B"
+            android:maxLines="1"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="重庆市" />
+
+
+        <com.changanford.common.widget.DrawCenterTextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_7"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:minWidth="75dp"
+            android:textSize="@dimen/sp_12"
+            app:image="@mipmap/circle_no_like_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="1.2k" />
+
+        <com.changanford.common.widget.DrawCenterTextView
+            android:id="@+id/tv_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_7"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_12"
+            app:image="@mipmap/circle_talk_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_like_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:src="@mipmap/circle_talk_image"
+            tools:text="1.2k" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time_look_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_7"
+            android:gravity="end|center_vertical"
+            android:textColor="#74889D"
+            android:textSize="@dimen/sp_12"
+            android:text="@{postBean.timeAdnViewCount}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="12313 3万浏览" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:background="@color/color_f6"
+            app:layout_constraintTop_toBottomOf="@+id/tv_like_count"
+            app:layout_constraintStart_toStartOf="@+id/tv_like_count"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time_look_count"
+            android:layout_marginTop="@dimen/dp_15"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

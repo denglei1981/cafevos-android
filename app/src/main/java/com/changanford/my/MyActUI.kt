@@ -5,15 +5,19 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.home.data.PublishData
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiMyActBinding
+import com.changanford.my.viewmodel.MyActUiViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import java.lang.Exception
 
 /**
  *  文件名：MyActUI
@@ -23,20 +27,41 @@ import com.google.android.material.tabs.TabLayoutMediator
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineJoinAcUI)
-class MyActUI : BaseMineUI<UiMyActBinding, EmptyViewModel>() {
+class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
 
     private val titles = arrayListOf("我发布的", "我参与的")
     private var oldPosition = 0
-
+    val acts: String = "activity_add_wonderful"
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的活动"
-        binding.collectToolbar.toolbarSave.text = "发布"
+//        binding.collectToolbar.toolbarSave.text = "发布"
         binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
             JumpUtils.instans?.jump(13)
             finish()
         }
         initViewpager()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.myActPublishState.observe(this, Observer {
+           changPerm(it)
+        })
+
+    }
+
+    fun changPerm(data: List<String>) {
+        try {
+            if(data.isNotEmpty()){
+                if(data.contains(acts)){
+                    binding.collectToolbar.toolbarSave.text = "发布"
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
     private fun initViewpager() {

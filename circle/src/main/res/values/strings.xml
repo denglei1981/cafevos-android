@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_myCircle">我的圈子</string>
+    <string name="str_more">更多</string>
+    <string name="str_youHavenJoinedCirclesYet">您还未加入任何圈子</string>
+    <string name="str_applyToJoin">申请加入</string>
+    <string name="str_hotList">热门榜单</string>
+    <string name="str_all">全部</string>
+    <string name="str_guessYouLike">猜你喜欢</string>
+    <string name="str_inBatch">换一批</string>
+    <string name="str_members">成员</string>
+    <string name="str_hotCarCircle">热门车型圈</string>
+    <string name="str_hotCarCircle0">热门车友圈</string>
+    <string name="str_circleHotList">圈子热门榜单</string>
+    <string name="str_join">加入</string>
+    <string name="str_hasJoined">已加入</string>
+    <string name="str_create">创建</string>
+    <string name="str_circleName"><font color="#FF0000">*</font>   圈子名称</string>
+    <string name="str_inputDescription"><font color="#FF0000">*</font>   填写描述</string>
+    <string name="str_pleaseInputCircleName">请填写圈子名称（1-15个字）</string>
+    <string name="str_inputDescriptionMorePeopleWillJoin">填写描述会有更多人加入哦~</string>
+    <string name="str_beautifulCircleJoin">漂亮的圈子头像可以吸引更多人加入哦~</string>
+    <string name="str_circleTag"><font color="#FF0000">*</font>   圈子标签</string>
+    <string name="more">更多</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="str_circlePK">圈子PK</string>
+    <string name="str_cycle">周期：</string>
+    <string name="str_inPk">PK中</string>
+    <string name="str_toPlayList">去打榜</string>
+    <string name="str_look">查看</string>
+    <string name="str_appliedForMembership">已申请加入，等待审核</string>
+    <string name="str_mostOptionalTagX">最多可选%1$d个标签</string>
+    <string name="str_applying">申请中</string>
+    <string name="str_underReview">审核中</string>
+    <string name="str_createCircle">创建圈子</string>
+    <string name="search_location">搜索地点</string>
+</resources>

@@ -1,16 +1,20 @@
 package com.changanford.circle.ui.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.PostDetailsLongAdapter
-import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -18,31 +22,34 @@ import com.changanford.circle.databinding.ActivityPostGraphicBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
+import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MediaListBean
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.zhpan.bannerview.constants.IndicatorGravity
 
 /**
@@ -70,6 +77,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
+
         binding.run {
             ryComment.adapter = commentAdapter
             mData.authorBaseVo?.imags?.let {
@@ -111,7 +119,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     1 -> {//webView布局
                         if (!mData.city.isNullOrEmpty()) {
                             tvOneCity.visibility = View.VISIBLE
-                            tvOneCity.text = mData.city
+                            tvOneCity.text = mData.showCity()
                         }
                         clImageAndText.visibility = View.VISIBLE
                         clImage.visibility = View.GONE
@@ -120,7 +128,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
                         tvOneTitle.text = mData.title
                         if (mData.circleName.isNullOrEmpty()) {
-                            tvOneFrom.visibility = View.GONE
+                            tvOneFrom.visibility = View.INVISIBLE
                         } else {
                             MUtils.postDetailsFrom(
                                 tvOneFrom,
@@ -129,7 +137,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             )
                         }
                         tvOneTime.text = mData.timeStr
-                        ivCover.loadBigImage(mData.pics)
+                        ivCover.load(mData.pics)
                         ivCover.setOnClickListener {
                             val pics = arrayListOf<MediaListBean>()
                             pics.add(MediaListBean(mData.pics))
@@ -153,12 +161,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     2 -> {//带banner的帖子
                         clImageAndText.visibility = View.GONE
                         clImage.visibility = View.VISIBLE
-
+                        showPicTag()
                         if (!mData.city.isNullOrEmpty()) {
                             tvTwoCity.visibility = View.VISIBLE
-                            tvTwoCity.text = mData.city
+                            tvTwoCity.text = mData.showCity()
                         }
-
                         mData.imageList?.let {
                             banner.run {
                                 setAutoPlay(true)
@@ -188,7 +195,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
                         tvTwoTitle.text = mData.title
                         if (mData.circleName.isNullOrEmpty()) {
-                            tvTwoFrom.visibility = View.GONE
+                            tvTwoFrom.visibility = View.INVISIBLE
                         } else {
                             MUtils.postDetailsFrom(
                                 tvTwoFrom,
@@ -206,18 +213,17 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     else -> {
                         clImageAndText.visibility = View.GONE
                         clImage.visibility = View.GONE
+                        showTag(true)
                         viewLongType.clImage.visibility = View.VISIBLE
                         viewLongType.run {
                             if (!mData.city.isNullOrEmpty()) {
                                 tvTwoCity.visibility = View.VISIBLE
-                                tvTwoCity.text = mData.city
+                                tvTwoCity.text = mData.showCity()
                             }
-
-
                             if (mData.isGood == 1) {
                                 MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
                             }
-                            ivCover.loadBigImage(mData.pics)
+                            ivCover.load(mData.pics)
                             ivCover.setOnClickListener {
                                 val pics = arrayListOf<MediaListBean>()
                                 pics.add(MediaListBean(mData.pics))
@@ -256,6 +262,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         initListener()
         bus()
     }
+
+
 
     private fun initListener() {
         binding.run {
@@ -311,6 +319,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     val isFol = mData.authorBaseVo?.isFollow
                     viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
                 }
+            }
+            tvTwoCity.setOnClickListener {
+                StartBaduMap()
+            }
+            binding.viewLongType.tvTwoCity.setOnClickListener {
+                StartBaduMap()
             }
         }
         binding.bottomView.run {
@@ -467,5 +481,84 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })
+    }
+    fun showTag(isLong:Boolean){
+        if(isLong){
+            if(mData.tags==null||mData.tags.size==0){
+                binding.viewLongType.postTag.visibility=View.GONE
+                return
+            }
+            if(mData.tags.size>0){
+                val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+                binding.viewLongType.postTag.adapter=circlePostDetailsTagAdapter
+                circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+                tagsClick(circlePostDetailsTagAdapter)
+                binding.viewLongType.postTag.visibility=View.VISIBLE
+            }
+        }else{
+            if(mData.tags==null||mData.tags.size==0){
+                binding.postTag.visibility=View.GONE
+                return
+            }
+            if(mData.tags.size>0){
+                val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+                binding.postTag.adapter=circlePostDetailsTagAdapter
+                circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+                binding.postTag.visibility=View.VISIBLE
+                tagsClick(circlePostDetailsTagAdapter)
+            }
+        }
+    }
+    fun showPicTag(){
+        if(mData.tags==null||mData.tags.size==0){
+            binding.postTagS.visibility=View.GONE
+            return
+        }
+        if(mData.tags.size>0){
+            val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
+            binding.postTagS.adapter=circlePostDetailsTagAdapter
+            circlePostDetailsTagAdapter.setNewInstance(mData.tags)
+            binding.postTagS.visibility=View.VISIBLE
+            tagsClick(circlePostDetailsTagAdapter)
+        }
+    }
+    fun tagsClick(circlePostDetailsTagAdapter:CirclePostDetailsTagAdapter){
+        circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
+              // 跳转到搜索
+            val item = circlePostDetailsTagAdapter.getItem(position)
+            val bundle = Bundle()
+            bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
+            bundle.putString(JumpConstant.SEARCH_CONTENT, item.tagName)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID,item.id)
+            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+
+
+        }
+    }
+
+    private fun StartBaduMap() {
+        SoulPermission.getInstance()
+            .checkAndRequestPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                object : CheckRequestPermissionListener {
+                    override fun onPermissionOk(permission: Permission) {
+                        val intent = Intent()
+                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+                        intent.putExtra("lat",mData.lat)
+                        intent.putExtra("lon",mData.lon)
+                        intent.putExtra("address",mData.address)
+                        intent.putExtra("addrName",mData.showCity())
+                        startActivity(intent)
+                    }
+
+                    override fun onPermissionDenied(permission: Permission) {
+                        AlertDialog(MyApp.mContext).builder()
+                            .setTitle("提示")
+                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                            .setNegativeButton("取消") { }.setPositiveButton(
+                                "确定"
+                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+                    }
+                })
     }
 }

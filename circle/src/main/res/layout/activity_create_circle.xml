@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,135 +17,173 @@
             android:id="@+id/title"
             layout="@layout/circle_layout_title"/>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
+            android:layout_weight="1"
+            android:background="@color/color_FAFBFD"
+            android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="25dp">
-
-                <FrameLayout
-                    android:id="@+id/rl_fmimg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/iv_fengmian"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/add_image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp_4"
-                        android:background="@drawable/circle_shape_blacksolid"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="3dp"
-                        android:text="封面"
-                        android:textColor="@color/white"
-                        android:textSize="9sp"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="漂亮的圈子头像可以吸引更多人加入哦"
-                    android:textColor="#999999"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="圈子标题"
-                    android:textColor="#071726"
-                    android:textSize="15sp" />
-
+                android:orientation="vertical">
                 <LinearLayout
+                    android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dp_20">
 
-                    <EditText
-                        android:id="@+id/et_biaoti"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/transparent"
-                        android:hint="请填写圈子名称"
-                        android:maxLength="8"
-                        android:singleLine="true"
-                        android:textColor="@color/textblack"
-                        android:textColorHint="#CCCCCC"
-                        android:textSize="15sp" />
+                    <FrameLayout
+                        android:id="@+id/rl_fmimg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_fengmian"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/add_image" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_4"
+                            android:background="@drawable/circle_shape_blacksolid"
+                            android:paddingLeft="3dp"
+                            android:paddingRight="3dp"
+                            android:text="封面"
+                            android:textColor="@color/white"
+                            android:textSize="9sp"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
 
                     <TextView
-                        android:id="@+id/tv_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:text="0/8"
-                        android:textColor="#AFB3B6"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:text="@string/str_beautifulCircleJoin"
+                        android:textColor="@color/color_cc"
+                        android:textSize="@dimen/sp_13" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/alertdialog_line" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_35"
+                        android:text="@string/str_circleName"
+                        android:textColor="@color/color_33"
+                        android:textSize="@dimen/sp_15" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="圈子详情"
-                    android:textColor="#ff071726"
-                    android:textSize="15sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
+                        <EditText
+                            android:id="@+id/et_biaoti"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:hint="@string/str_pleaseInputCircleName"
+                            android:maxLength="15"
+                            android:singleLine="true"
+                            android:textColor="@color/textblack"
+                            android:textColorHint="#CCCCCC"
+                            android:textSize="@dimen/sp_14" />
 
+                        <TextView
+                            android:id="@+id/tv_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:text="0/15"
+                            android:textColor="#AFB3B6"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:background="@color/alertdialog_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:text="@string/str_inputDescription"
+                        android:textColor="@color/color_33"
+                        android:textSize="@dimen/sp_15" />
                     <EditText
+                        android:layout_marginTop="@dimen/dp_18"
                         android:id="@+id/et_content"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:background="@color/transparent"
                         android:gravity="top"
-                        android:hint="填写描述会有更多赞哦"
+                        android:hint="@string/str_inputDescriptionMorePeopleWillJoin"
                         android:maxLength="50"
-                        android:padding="4dp"
                         android:textColor="@color/textblack"
                         android:textColorHint="#ffcccccc"
-                        android:textSize="15sp" />
-
+                        android:textSize="@dimen/sp_14" />
                     <TextView
                         android:id="@+id/tv_num1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|right"
+                        android:layout_gravity="bottom|end"
                         android:text="0/50"
                         android:textColor="#AFB3B6"
                         android:textSize="13sp" />
-                </FrameLayout>
+                </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_16"
+                    android:paddingStart="@dimen/dp_20"
+                    android:paddingBottom="@dimen/dp_12">
+                    <com.changanford.common.ui.view.WTextView
+                        android:id="@+id/wtv_circleTag"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_circleTag"
+                        android:textColor="@color/color_33"
+                        android:textSize="@dimen/sp_13" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_23"
+                        app:layout_constraintTop_toBottomOf="@id/wtv_circleTag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_create_circle_tag"/>
+                    <CheckBox
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:id="@+id/cb_more"
+                        android:button="@drawable/cb_more_tag"
+                        android:background="@null"
+                        android:paddingTop="@dimen/dp_30"
+                        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                        android:src="@mipmap/circle_more_0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/commit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -156,6 +196,5 @@
             android:text="立即创建"
             android:textColor="@color/white"
             android:textSize="15sp" />
-
     </LinearLayout>
 </layout>

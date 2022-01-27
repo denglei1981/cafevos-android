@@ -18,69 +18,72 @@
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="21dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="100dp"
-            bindingUrl="@{bean.pic}"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_icon"
+            android:layout_width="wrap_content"
+            tools:text="1"
+            android:textSize="17sp"
             android:scaleType="centerCrop"
-            android:layout_height="100dp"
+            android:textColor="@color/color_D1D2D7"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/iv_icon"
+            app:layout_constraintEnd_toEndOf="@+id/iv_icon"
+            app:layout_constraintTop_toTopOf="@+id/ll_topic"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_topic"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="@+id/ll_topic"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_topic"
+            tools:src="@drawable/icon_huati_one"
+            />
         <LinearLayout
             android:id="@+id/ll_topic"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon">
-
+            app:layout_constraintTop_toTopOf="parent">
             <RelativeLayout
                 android:id="@+id/rl_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:background="@drawable/circle_main_talk_20_bg"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/iv_icon"
                 app:layout_constraintTop_toTopOf="@+id/iv_icon">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="20dp"
-                    android:layout_height="23dp"
-                    android:src="@mipmap/circle_main_talk_hint" />
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:background="@drawable/circle_main_talk_20_bg">
-
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_hint_icon"
                         android:layout_width="20dp"
                         android:layout_height="23dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dp_11"
                         android:src="@mipmap/circle_main_talk_hint"
-                        android:visibility="invisible" />
+                        android:visibility="visible" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_talk"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:layout_toRightOf="@+id/iv_hint_icon"
-                        android:drawablePadding="4dp"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingEnd="8dp"
-                        android:text="@{bean.name}"
-                        android:textColor="@color/circle_01025c"
-                        android:textSize="12sp"
-                        tools:ignore="RtlSymmetry,SmallSp"
-                        tools:text="年轻人喜欢什么样的车" />
-                </RelativeLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_talk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_toRightOf="@+id/iv_hint_icon"
+                    android:drawablePadding="4dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingEnd="8dp"
+                    android:text="@{bean.name}"
+                    android:textColor="@color/circle_01025c"
+                    android:textSize="12sp"
+                    tools:ignore="RtlSymmetry,SmallSp"
+                    tools:text="年轻人喜欢什么样的车" />
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -98,16 +101,18 @@
             app:layout_constraintLeft_toLeftOf="@+id/ll_topic"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_topic"
-            tools:text="这里是描述这里是描述这里是描述这里好是描述。" />
+            tools:text="这里是描述这里是描述这里是描述这里好是描述" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/circle_B0BDDD"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+            android:layout_marginTop="@dimen/dp_16"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            app:layout_constraintStart_toStartOf="@+id/tv_content"
             tools:text="1233 帖子     12353 热度" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

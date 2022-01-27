@@ -16,7 +16,6 @@ import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
-import com.changanford.circle.ui.fragment.CircleMainFragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener

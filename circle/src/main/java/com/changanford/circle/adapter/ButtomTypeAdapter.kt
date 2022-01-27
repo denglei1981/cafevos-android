@@ -23,11 +23,11 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
     override fun convert(holder: BaseViewHolder, item: ButtomTypeBean) {
         if (item.visibility==0){
             holder.itemView.visibility = View.GONE
-            var params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(0,0))
+            val params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(0,0))
             params.setMargins(0,0, 0,0)
             holder.itemView.layoutParams =params
         }else{
-            var params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT))
+            val params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT))
             params.setMargins(0,0, dpToPx(holder.itemView.context,5f).toInt(),0)
             holder.itemView.layoutParams =params
             holder.itemView.visibility = View.VISIBLE
@@ -43,8 +43,10 @@ class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHold
                 holder.getView<TextView>(R.id.tv_other).text=item.content
                 if (holder.itemViewType==4){
                     holder.getView<ImageView>(R.id.ivloc).visibility = View.VISIBLE
+                    holder.getView<ImageView>(R.id.buttom_iv_close).visibility=View.GONE
                 }else{
                     holder.getView<ImageView>(R.id.ivloc).visibility = View.GONE
+                    holder.getView<ImageView>(R.id.buttom_iv_close).visibility=View.VISIBLE
                 }
             }
         }

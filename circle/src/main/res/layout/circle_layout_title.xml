@@ -59,6 +59,22 @@
                 android:layout_marginEnd="22dp"
                 android:gravity="center"
                 tools:ignore="HardcodedText" />
+            <com.changanford.common.ui.view.WTextView
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/wtv_create"
+                android:background="@drawable/shadow_dd_12dp"
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/dp_20"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dp_45"
+                android:minHeight="@dimen/dp_25"
+                android:text="@string/str_create"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
         </RelativeLayout>
 
         <View

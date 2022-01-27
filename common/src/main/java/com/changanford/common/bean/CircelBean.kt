@@ -28,7 +28,7 @@ data class CircleMangerBean(
 
 data class CircleItemBean(
     override var itemType: Int = 0,
-    val circleId: Int = 0,
+    val circleId: String = "0",
     val description: String = "",
     val userId: Int = 0,
     val name: String = "",
@@ -46,6 +46,8 @@ data class CircleItemBean(
     val checkNoReason: String = "", //审核不通过原因
     var typeStr: String,//圈子角色名称
     var isShowTitle: Boolean = false,//是否为圈子角色
+    var tags:List<NewCirceTagBean>?=null,
+    var tagIds:ArrayList<Int>?=null,
 
 ) : MultiItemEntity,Serializable
 

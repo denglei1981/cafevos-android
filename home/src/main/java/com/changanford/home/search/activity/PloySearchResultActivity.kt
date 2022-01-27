@@ -1,5 +1,7 @@
 package com.changanford.home.search.activity
 
+import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -11,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
@@ -35,6 +38,8 @@ class PloySearchResultActivity :
 
     var searchContent: String = ""
 
+    var tagId:String=""
+
     val searchActsFragment: SearchActsFragment by lazy {
         SearchActsFragment.newInstance(searchContent)
     }
@@ -42,7 +47,7 @@ class PloySearchResultActivity :
         SearchNewsFragment.newInstance(searchContent)
     }
     val searchPostFragment: SearchPostFragment by lazy {
-        SearchPostFragment.newInstance(searchContent)
+        SearchPostFragment.newInstance(searchContent,tagId = tagId)
     }
 
     val searchShopFragment: SearchShopFragment by lazy {
@@ -66,6 +71,8 @@ class PloySearchResultActivity :
 
         val searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
+        tagId= intent.getStringExtra(JumpConstant.SEARCH_TAG_ID).toString()
+
         binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvAuto.adapter = sAdapter
         binding.layoutSearch.searchContent.text = searchContent
@@ -115,7 +122,8 @@ class PloySearchResultActivity :
             onBackPressed()
         }
         binding.layoutSearch.searchContent.setOnClickListener {
-            onBackPressed()
+
+             backWithTag()
         }
 
         binding.layoutSearch.cancel.setOnClickListener {
@@ -123,6 +131,22 @@ class PloySearchResultActivity :
         }
 
     }
+
+    // 从帖子tag 点击跳转过来
+    fun backWithTag(){
+        if(!TextUtils.isEmpty(tagId)&&"null"!=tagId){
+
+            val intent = Intent(this,PolySearchActivity::class.java)
+            intent.putExtra(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST.toString())
+            startActivity(intent)
+            overridePendingTransition(0, 0);
+
+        }else{
+            onBackPressed()
+        }
+
+    }
+
 
 //    fun search(searchContent: String, needHide: Boolean) {
 //        if (TextUtils.isEmpty(searchContent)) {

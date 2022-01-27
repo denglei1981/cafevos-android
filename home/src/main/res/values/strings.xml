@@ -28,5 +28,6 @@
     <string name="home_input_key_word">请输入关键字搜索</string>
     <string name="ad_tag">广告</string>
     <string name="comment_all_show">已展示所有评论</string>
+    <string name="home_fast_in">快速入口</string>
 
 </resources>

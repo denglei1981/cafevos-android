@@ -17,17 +17,22 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.H5PostTypeBean
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.ui.dialog.SelectMapDialog
+import com.changanford.common.ui.dialog.SelectPostDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.*
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
 import com.just.agentweb.AgentWeb
@@ -358,7 +363,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         LiveDataBus.get().with(LiveDataBusKey.WEB_BIND_PHONE).postValue(callback)
         if (toast == "1") {
             BindingPhoneDialog(activity!!).show()
-        }else{
+        } else {
             instans!!.jump(18, "")
         }
     }
@@ -416,6 +421,47 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 //                BindingPhoneDialog(context!!).show()
 //            }
             else -> {
+
+                postType.plus("参数$param").logE()
+                val b = Bundle()
+                b.putBoolean("isH5Post", true)
+                b.putInt("postType", postType.toInt())
+                b.putString("jsonStr", param)
+                var  h5PostTypeBean = JSON.parseObject(param, H5PostTypeBean::class.java)
+
+                if(h5PostTypeBean.circleId=="0"){
+                    b.putBoolean("isCirclePost",false)
+                }else{
+                    b.putBoolean("isCirclePost",true)
+                    b.putString("circleId",h5PostTypeBean.circleId)
+                    b.putString("circleName",h5PostTypeBean.circleName)
+                }
+                if(h5PostTypeBean.topicId=="0"){
+                    b.putBoolean("isTopPost",false)
+                }else{
+                    b.putBoolean("isTopPost",true)
+                    b.putString("topicId",h5PostTypeBean.topicId)
+                    b.putString("topName",h5PostTypeBean.topicName)
+                }
+
+                when (postType) {
+                    "0" -> {
+                        startARouter(ARouterCirclePath.LongPostAvtivity, b, true)
+                    }
+                    "1" -> {
+                        startARouter(ARouterCirclePath.PostActivity, b, true)
+
+                    }
+                    "2" -> {
+                        startARouter(ARouterCirclePath.VideoPostActivity, b, true)
+                    }
+                    else -> {
+                        showPostDialog(b)
+                    }
+                }
+
+
+//                startARouter(ARouterHomePath.HomePostActivity, json.toJSONString())
 //                if (activity?.postEntity.isNullOrEmpty()) {
 //                    if (postType == "0") activity?.openGallery_onlyimg(
 //                        postType,
@@ -427,12 +473,12 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 //                        callback
 //                    )
 //                } else {
-                    AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
-                        .setNegativeButton("继续编辑") {
-                            val b = Bundle()
-                            b.putBoolean("isH5Post", true)
-                            b.putInt("postType", postType.toInt())
-                            var json = JSONObject();
+//                    AlertDialog(activity).builder().setGone().setMsg("发现您有草稿还未发布")
+//                        .setNegativeButton("继续编辑") {
+//                            val b = Bundle()
+//                            b.putBoolean("isH5Post", true)
+//                            b.putInt("postType", postType.toInt())
+//                            var json = JSONObject();
 //                            json["circleId"] = activity?.postEntity!![0].circleId ?: "0"
 //                            json["circleName"] = activity?.postEntity!![0].circleName ?: ""
 //                            json["topicId"] = activity?.postEntity!![0].topicId ?: "0"
@@ -443,18 +489,42 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 //                            b.putSerializable("postEntity", activity?.postEntity!![0])
 //                            activity?.h5callback = callback
 //                            startARouter(ARouterHomePath.HomePostActivity, b)
-                        }.setPositiveButton("不使用草稿") {
-                            activity?.clearPost()
-                            if (postType == "0") activity?.openGallery_onlyimg(
-                                postType,
-                                param,
-                                callback
-                            ) else activity?.openGallery_onlyvideo(postType, param, callback)
-                        }.show()
+//                        }.setPositiveButton("不使用草稿") {
+//                            activity?.clearPost()
+//                            if (postType == "0") activity?.openGallery_onlyimg(
+//                                postType,
+//                                param,
+//                                callback
+//                            ) else activity?.openGallery_onlyvideo(postType, param, callback)
+//                        }.show()
 //                }
             }
         }
 //        BuriedUtil.instant!!.click_fatie()
+    }
+    /**
+     *
+     */
+    fun showPostDialog(b: Bundle) {
+
+        try {
+            SelectPostDialog(BaseApplication.curActivity, object : SelectPostDialog.CheckedView {
+                override fun postLong() {
+                    startARouter(ARouterCirclePath.LongPostAvtivity, b, true)
+                }
+
+                override fun postPics() {
+                    startARouter(ARouterCirclePath.PostActivity, b, true)
+                }
+
+                override fun postVideo() {
+                    startARouter(ARouterCirclePath.VideoPostActivity, b, true)
+                }
+            }).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     /**
@@ -501,7 +571,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                 GifUtils.saveGif(
                                     url,
                                     activity,
-                                    Environment.getExternalStorageDirectory().absolutePath + "/" + System.currentTimeMillis() + ".gif"
+                                    MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
                                 )
                             } else {
                                 Glide.with(activity!!).asBitmap().load(url)
@@ -510,10 +580,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                             resource: Bitmap,
                                             transition: Transition<in Bitmap?>?
                                         ) {
-                                            FileHelper.saveImageToGallery(
-                                                activity,
-                                                resource
-                                            )
+                                            PictureUtil.saveBitmapPhoto(resource)
                                         }
                                     })
                             }
@@ -578,10 +645,10 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * @param callBack : 回调函数名
      */
     @JavascriptInterface
-    fun getUrlResult(body: String, url:String,callBack: String){
-        var map :Map<String, Any> = try {
+    fun getUrlResult(body: String, url: String, callBack: String) {
+        var map: Map<String, Any> = try {
             JSON.parseObject(body) as Map<String, Any>
-        } catch (e:Exception){
+        } catch (e: Exception) {
             HashMap()
         }
         activity!!.lifecycleScope.launch(Dispatchers.IO) {
@@ -611,19 +678,25 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * color 0是白，1是黑
      */
     @JavascriptInterface
-    fun setStatusBarTextColor(color:Int){
+    fun setStatusBarTextColor(color: Int) {
         activity!!.lifecycleScope.launch {
             StatusBarUtil.setLightStatusBar(activity, color != 0)
         }
     }
+
     /**
      * 设置状态栏是否透明 不透明默认白色
      * [isTransparent]是否透明
      */
     @JavascriptInterface
-    fun setStatusBarIsTransparent(isTransparent:Boolean){
+    fun setStatusBarIsTransparent(isTransparent: Boolean) {
         activity?.lifecycleScope?.launch {
-            StatusBarUtil.setStatusBarColor(activity, if(isTransparent)R.color.transparent else R.color.white)
+            StatusBarUtil.setStatusBarColor(
+                activity,
+                if (isTransparent) R.color.transparent else R.color.white
+            )
         }
     }
+
+
 }

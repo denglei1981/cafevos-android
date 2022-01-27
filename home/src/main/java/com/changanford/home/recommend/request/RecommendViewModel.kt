@@ -10,6 +10,7 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.data.FastBeanData
 import kotlinx.coroutines.launch
 
 class RecommendViewModel : BaseViewModel() {
@@ -18,7 +19,7 @@ class RecommendViewModel : BaseViewModel() {
 
     val recommendBannerLiveData : SafeMutableLiveData<UpdateUiState<List<AdBean>>> = SafeMutableLiveData()
 
-
+    val fastEnterLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
     var pageNo: Int = 1
     fun getRecommend(isLoadMore: Boolean) {
         viewModelScope.launch {
@@ -56,6 +57,24 @@ class RecommendViewModel : BaseViewModel() {
                     if (it != null) {
                         toastShow(it)
                     }
+                }
+        })
+    }
+
+
+    fun getFastEnter() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
+            body["posCode"] = "discover_quick_entrance"
+            ApiClient.createApi<HomeNetWork>()
+                .getFastEnter(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<FastBeanData>(it, true, "")
+                    fastEnterLiveData.postValue(updateUiState)
+                }.onFailure {
+                    val updateUiState = UpdateUiState<FastBeanData>(it, false, "")
+                    fastEnterLiveData.postValue(updateUiState)
                 }
         })
     }

@@ -1,220 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/transparent"
-    android:orientation="vertical"
     android:id="@+id/ll_bottom"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
 
 
-      <!--  <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/typerec"
-            android:visibility="visible"
-            android:background="@color/transparent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />-->
+    <!--  <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/typerec"
+          android:visibility="visible"
+          android:background="@color/transparent"
+          android:layout_marginLeft="20dp"
+          android:layout_marginBottom="10dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+           />-->
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#fffafbfd"
-        android:paddingBottom="10dp"
-        android:paddingTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#fffafbfd"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_bq"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:gravity="start"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="标签"
             android:textColor="@color/text_color"
             android:textSize="13sp"
-            android:gravity="center"
-            android:layout_marginRight="25dp"
-            android:paddingBottom="10dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="25dp"
-            android:paddingTop="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/labelrec"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/iv_pic"
-            app:layout_constraintEnd_toEndOf="@id/iv_pic"
-            />
+            app:layout_constraintTop_toTopOf="@+id/labelrec" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/labelrec"
-            android:visibility="visible"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/tv_bq"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/iv_pic"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/tv_more"
+            app:layout_constraintStart_toEndOf="@+id/tv_bq" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:drawableEnd="@drawable/circle_right_arrow_black"
+            android:drawablePadding="4dp"
+            android:text="@string/more"
+            android:textColor="@color/color_blue_ff00695b"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/labelrec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/labelrec" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_more_shade"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_more"
+            app:layout_constraintEnd_toStartOf="@+id/tv_more"
+            app:layout_constraintTop_toTopOf="@+id/tv_more" />
+
+
         <LinearLayout
             android:id="@+id/iv_pic"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_huati"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="1.5"
-            android:orientation="horizontal">
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:src="@mipmap/c_pic"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <TextView
                 android:id="@+id/tv_pic"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="图片"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
-                app:layout_constraintTop_toTopOf="@id/iv_pic"
-                android:text="图片"
-                android:layout_marginLeft="5dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color"/>
+                app:layout_constraintTop_toTopOf="@id/iv_pic" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/iv_huati"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@id/iv_pic"
-            app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_bq"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@id/tv_bq">
+
             <androidx.appcompat.widget.AppCompatImageView
 
                 android:layout_width="wrap_content"
-                app:layout_constraintHorizontal_weight="1.5"
-                app:layout_constraintStart_toEndOf="@id/iv_pic"
-                app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_bq"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/c_ht"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
+                app:layout_constraintHorizontal_weight="1.5"
+                app:layout_constraintStart_toEndOf="@id/iv_pic"
+                app:layout_constraintTop_toBottomOf="@id/tv_bq" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="话题"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
-                app:layout_constraintTop_toTopOf="@id/iv_pic"
-                android:text="话题"
-                android:visibility="gone"
-                android:layout_marginLeft="5dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color"/>
+                app:layout_constraintTop_toTopOf="@id/iv_pic" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/iv_quanzi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_loc"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@id/iv_huati"
-            app:layout_constraintEnd_toStartOf="@id/iv_loc"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_bq"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@id/tv_bq">
 
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/c_qz"
-                />
+                android:src="@mipmap/c_qz" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="圈子"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
-                app:layout_constraintTop_toTopOf="@id/iv_pic"
-                android:text="圈子"
-                android:visibility="gone"
-                android:layout_marginLeft="5dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color"/>
+                app:layout_constraintTop_toTopOf="@id/iv_pic" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/iv_loc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_emoj"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@id/iv_quanzi"
-            app:layout_constraintEnd_toStartOf="@id/iv_emoj"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_bq"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@id/tv_bq">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/c_loc"
-                />
+                android:src="@mipmap/c_loc" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="定位"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
-                app:layout_constraintTop_toTopOf="@id/iv_pic"
-                android:text="定位"
-                android:visibility="gone"
-                android:layout_marginLeft="5dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color"/>
+                app:layout_constraintTop_toTopOf="@id/iv_pic" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/iv_emoj"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@id/iv_loc"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_bq"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@id/tv_bq">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/c_bq"
-                />
+                android:src="@mipmap/c_bq" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="表情"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
-                app:layout_constraintTop_toTopOf="@id/iv_pic"
-                android:text="表情"
-                android:visibility="gone"
-                android:layout_marginLeft="5dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color"/>
+                app:layout_constraintTop_toTopOf="@id/iv_pic" />
         </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/emojirec"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="5"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        app:spanCount="5" />
 </LinearLayout>

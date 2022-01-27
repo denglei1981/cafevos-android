@@ -9,10 +9,7 @@ import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.ImageList
-import com.changanford.circle.bean.PlateBean
-import com.changanford.circle.bean.PostKeywordBean
-import com.changanford.circle.bean.PostsDetailBean
+import com.changanford.circle.bean.*
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseViewModel
@@ -46,9 +43,13 @@ class PostViewModule() :PostRoomViewModel(){
     val cityCode = MutableLiveData<LocationDataBean>()
     val stsBean = MutableLiveData<STSBean>()
     val keywords = MutableLiveData<List<PostKeywordBean>>()
+    val tagsList = MutableLiveData<List<PostTagData>>()
     val postDetailsBean = MutableLiveData<PostsDetailBean>()
     var downloadLocalMedias = ArrayList<LocalMedia>()
     var _downloadLocalMedias = MutableLiveData<ArrayList<LocalMedia>>()
+
+
+    val postError= MutableLiveData<String>()
 
     fun postEdit(params: HashMap<String,Any>){
          launch (block = {
@@ -59,8 +60,9 @@ class PostViewModule() :PostRoomViewModel(){
                   .onSuccess {
                       postsuccess.value = "upsuccess"
                   }
-                  .onFailure {
-
+                  .onWithMsgFailure {
+                      it?.toast()
+                      postError.value="error"
                   }
           })
       }
@@ -92,6 +94,20 @@ class PostViewModule() :PostRoomViewModel(){
             ApiClient.createApi<CircleNetWork>().getkeywords(body.header(rKey),body.body(rKey))
                 .onSuccess {
                     keywords.value = it
+                }
+                .onFailure {
+
+                }
+        })
+    }
+
+    fun getTags(){
+        launch(block =  {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getTags(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    tagsList.value = it
                 }
                 .onFailure {
 

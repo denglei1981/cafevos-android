@@ -29,7 +29,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     private var page = 1
     private var needCallback:Boolean =false
     private val adapter by lazy {
-        HotMainTopicAdapter()
+        HotTopicAdapter()
     }
 
     override fun initView() {

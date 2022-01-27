@@ -11,6 +11,7 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.utilext.load
 
 /**
  *Author lcw
@@ -33,5 +34,8 @@ class PostDetailsLongAdapter(context: Context) :
             startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
         }
         binding.bean = item
+
+
+        binding.ivIcon.load(item.imgUrl)
     }
 }

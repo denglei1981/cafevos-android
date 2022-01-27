@@ -118,8 +118,6 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             // 没有sm 活动
             screenData()
             dismiss()
-
-
         }
     }
 
@@ -168,7 +166,6 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
                     provinces.add(province)
                 }
             }
-
         }
     }
 

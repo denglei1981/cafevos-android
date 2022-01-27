@@ -57,12 +57,23 @@ data class PostsDetailBean(
     val circleName: String? = "",
     val isManager: Boolean? = false,
     val address: String = "",
-    val lat: Double = 0.0,
-    val lon: Double = 0.0,
+    var lat: Double = 0.0,
+    var lon: Double = 0.0,
     val province: String = "",
     val cityCode: String = "",
-    val city: String = ""
+    val city: String = "",
+    val tags:MutableList<PostKeywordBean>?= mutableListOf(),
+    var addrName:String?="",
 ) {
+    fun showCity():String{
+        if(addrName?.isNotEmpty() == true){
+            return city.plus("·").plus(addrName)
+        }
+        return city
+    }
+
+
+
 }
 
 data class ImageList(

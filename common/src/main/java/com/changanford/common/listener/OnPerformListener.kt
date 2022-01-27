@@ -1,4 +1,4 @@
-package com.changanford.shop.listener
+package com.changanford.common.listener
 
 /**
  * @Author : wenke

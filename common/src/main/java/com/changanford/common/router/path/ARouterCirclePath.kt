@@ -38,6 +38,7 @@ object ARouterCirclePath {
     const val SearchTopicActivity = "/circle/SearchTopicActivity"
     const val CreateCircleActivity = "/circle/CreateCircleActivity"
     const val CircleMemberManageActivity = "/circle/CircleMemberManageActivity"
+    const val HotListActivity = "/circle/HotListActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////
