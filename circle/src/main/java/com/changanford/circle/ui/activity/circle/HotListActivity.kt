@@ -54,15 +54,15 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
 
     override fun initData() {
         val defaultTopId=intent.getIntExtra("topId",-1)
-        viewModel.hotTypesData.observe(this,{
+        viewModel.hotTypesData.observe(this) {
             it?.apply {
                 initTabAndViewPager(this)
                 initMagicIndicator(this)
-                val index= indexOfFirst { item->item.topId==defaultTopId }
-                if(index>0)binding.viewPager.currentItem = index
+                val index = indexOfFirst { item -> item.topId == defaultTopId }
+                if (index > 0) binding.viewPager.currentItem = index
             }
 
-        })
+        }
         viewModel.getHotTypes()
     }
     private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
