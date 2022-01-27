@@ -365,10 +365,15 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
-                    getData()
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        getData()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        getData()
+                    }
+                    else -> {}
                 }
             }
-
     }
 }
