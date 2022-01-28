@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
@@ -58,7 +59,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
      * 监听登录和认证状态
      */
     private fun observeLoginAndAuthState() {
-        loginState.observe(this, {
+        loginState.observe(this) {
             when (it) {
                 false -> {//未登录
                     binding.myScoreLayout.isVisible = false
@@ -71,9 +72,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     binding.myHeadvipimg.isVisible = false
                 }
             }
-        })
+        }
 
-        authState.observe(this, { type ->
+        authState.observe(this) { type ->
             when (type) {
                 0, 1 -> {//未认证，或者是认证
                     binding.myCarAuthLayout.include2.myCarauthstate.text =
@@ -97,30 +98,30 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     }
                 }
             }
-        })
+        }
         LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
-            .observe(this, {
+            .observe(this) {
                 if (it) {
                     viewModel.getUserInfo()
                 }
-            })
+            }
     }
 
     override fun initData() {
         getUserInfo()
         viewModel.getMenuList()
-        viewModel.menuBean.observe(this, {
+        viewModel.menuBean.observe(this) {
             menuBean.clear()
             menuBean.addAll(it)
             menuAdapter.data = menuBean
             menuAdapter.notifyDataSetChanged()
-        })
+        }
         lifecycleScope.launch {
             if (MConstant.token.isNotEmpty()) {
                 viewModel.mineMedal()
             }
         }
-        viewModel.allMedal.observe(this, {
+        viewModel.allMedal.observe(this) {
             if (it == null) {
                 medalAdapter.data?.clear()
                 medalAdapter.notifyDataSetChanged()
@@ -128,7 +129,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 medalAdapter.data = it
                 medalAdapter.notifyDataSetChanged()
             }
-        })
+        }
     }
 
     /**
@@ -178,6 +179,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     /**
      * 设置值
      */
+    @SuppressLint("SetTextI18n")
     private fun setData(userInfoBean: UserInfoBean?) {
         if (!isRefreshUserInfo) {
             return
@@ -236,7 +238,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
 //        binding.myContent.text =
 //            userInfoBean?.brief
 //                ?: if (UserManger.isLogin()) "" else resources.getString(R.string.my_loginSubTips)
-        binding.myScore.text = "${userInfoBean?.ext?.totalIntegral ?: "0"}"//积分
+        binding.myScore.text = userInfoBean?.ext?.totalIntegral ?: "0"//积分
         binding.myScoreAcc.text = "${getAcc(userInfoBean?.ext?.multiple)} 倍加速"
         binding.myStateLayout.apply {
             myStateFabu.text = "${userInfoBean?.count?.releases ?: "0"}"
@@ -244,23 +246,19 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             myStateGuanzhu.text = "${userInfoBean?.count?.follows ?: "0"}"
             myStateShoucang.text = "${userInfoBean?.count?.collections ?: "0"}"
         }
-        binding.myCarAuthLayout.apply {
-            include.apply {
-                textView9.text = userInfoBean?.ext?.growSeriesName
-                textView11.text =
-                    "${userInfoBean?.ext?.totalGrowth}/${userInfoBean?.ext?.nextSeriesMinGrow}"
-//                myScorelevel.setProgressWithAnimation(
-//                    ((userInfoBean?.ext?.totalGrowth
-//                        ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toFloat()
-//                )
-                myScorelevel.progress = ((userInfoBean?.ext?.totalGrowth
-                    ?: 0) * 100 / (userInfoBean?.ext?.nextSeriesMinGrow ?: 1)).toInt()
+        userInfoBean?.ext?.apply {
+            binding.myCarAuthLayout.apply {
+                include.apply {
+                    textView9.text = growSeriesName
+                    textView11.text ="${totalGrowth}/${nextSeriesMinGrow}"
+                    myScorelevel.progress = if(nextSeriesMinGrow!=0L)(totalGrowth * 100 / (nextSeriesMinGrow)).toInt() else 0
+                }
             }
         }
         binding.myIconRv.isVisible = false
         userInfoBean?.ext?.let {
             //用户图标
-            it.imags?.let {
+            it.imags.let {
                 binding.myIconRv.visibility = View.VISIBLE
                 binding.myIconRv.layoutManager =
                     LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -288,9 +286,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         if (MConstant.token.isNullOrEmpty()) {
             setData(null)
         }
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             setData(it)
-        })
+        }
     }
 
     override fun onPause() {
@@ -304,7 +302,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         if (MConstant.token.isNotEmpty()) {
             viewModel.mineMedal()
         } else {
-            medalAdapter.data?.clear()
+            medalAdapter.data.clear()
             medalAdapter.notifyDataSetChanged()
         }
         viewModel.getMenuList()
