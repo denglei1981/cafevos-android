@@ -33,12 +33,19 @@ android {
         versionCode 404
         versionName "1.0.8"
         resConfigs "zh"
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
+//        ndk {
+//            abiFilters "armeabi-v7a",'arm64-v8a'
+//        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a'
+            universalApk true
+        }
+    }
     buildTypes {
         release {
             signingConfig signingConfigs.keyconfig
