@@ -46,14 +46,14 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoB
         val fbNumber="603福币"
         val tagName="车辆故障"
         var starStr=" ".repeat(tagName.length*3)
-        val str="$starStr  福克斯 穿越千年的丝绸古道，感叹福克斯 穿越千年的丝绸古道，感叹    $fbNumber"
+        val str="$starStr   福克斯 穿越千年的丝绸古道，感叹福克斯 穿越千年的丝绸古道，感叹    $fbNumber"
         holder.dataBinding?.apply {
 //            WCommonUtil.htmlToImgStr(activity,tvTitle,"$str<img src=\"${R.mipmap.question_fb}\"/>" +
 //                    "<font color=\"#E1A743\"><myfont size='30px'>20</myfont></font>","myfont")
             setTxt(context,tvTitle,str,fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                ItemUI()
+//                ItemUI()
             }
         }
     }
