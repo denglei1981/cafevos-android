@@ -35,4 +35,8 @@
     <string name="str_underReview">审核中</string>
     <string name="str_createCircle">创建圈子</string>
     <string name="search_location">搜索地点</string>
+    <string name="question_title_tips">请填写您的问题标题(5-20个字)</string>
+    <string name="please_write">请填写</string>
+    <string name="question_tips">为了便于金牌技师准确的诊断和为您提供优质解答，请详细描述您的问题、选择问题分类，并且尽量提供相关照片</string>
+    <string name="pop_question_tips">提问需花费福币，如未采纳，福币将留存在系统，直至采纳解答后，福币将直接打赏给为您提供优质解答的技师或用户。</string>
 </resources>

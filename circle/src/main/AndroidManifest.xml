@@ -68,5 +68,6 @@
             android:screenOrientation="portrait"
             />
         <activity android:name=".ui.activity.CreateLocationActivity"/>
+        <activity android:name=".ui.ask.activity.QuestionActivity"/>
     </application>
 </manifest>

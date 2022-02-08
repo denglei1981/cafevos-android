@@ -2,15 +2,14 @@ package com.changanford.circle.widget.pop
 
 import android.content.Context
 import android.view.Gravity
-import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.PopCircleDetailsBinding
+
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
-import razerdp.util.animation.ScaleConfig
 import razerdp.util.animation.TranslationConfig
 
 /**

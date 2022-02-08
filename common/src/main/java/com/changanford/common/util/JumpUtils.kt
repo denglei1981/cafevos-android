@@ -647,6 +647,7 @@ class JumpUtils {
             113->{//话题列表
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
+
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {
