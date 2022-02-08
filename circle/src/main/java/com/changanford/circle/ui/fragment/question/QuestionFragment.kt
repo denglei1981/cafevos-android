@@ -6,6 +6,7 @@ import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
 import com.changanford.circle.viewmodel.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.QuestionInfoBean
 
 /**
  * @Author : wenke
@@ -22,7 +23,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding,QuestionViewModel>()
             return fragment
         }
     }
-    private val mAdapter by lazy { QuestionListAdapter() }
+    private val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
     override fun initView() {
         binding.recyclerView.apply {
             adapter=mAdapter
@@ -31,6 +32,10 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding,QuestionViewModel>()
     }
 
     override fun initData() {
-
+        val dataList= arrayListOf<QuestionInfoBean>()
+        for(i in 0..10){
+            dataList.add(QuestionInfoBean())
+        }
+        mAdapter.setList(dataList)
     }
 }

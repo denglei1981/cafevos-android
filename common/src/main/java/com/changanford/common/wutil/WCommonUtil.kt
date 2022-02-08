@@ -158,13 +158,14 @@ object WCommonUtil {
     }
     /**
      * 将图文混合html转为str
+     * [label] 自定义的标签 如 myfont
      * */
-    fun htmlToImgStr(mActivity: Activity, textView: TextView, str: String?){
+    fun htmlToImgStr(mActivity: Activity, textView: TextView, str: String?,label:String?=null){
         textView.movementMethod = LinkMovementMethod.getInstance()//可点击
         textView.text= when {
             TextUtils.isEmpty(str) -> ""
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
-            else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY, MImageGetter(textView, mActivity), MyTagHandler(mActivity,label))
+            else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity,label))
         }
     }
     /**

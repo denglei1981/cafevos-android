@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10">
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/color_2d"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/sp_12"
+            android:minWidth="@dimen/dp_43"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
+            android:paddingStart="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_5"
+            android:textColor="@color/color_00095B"
+            android:background="@drawable/border_0095b_2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <androidx.compose.ui.platform.ComposeView
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             android:id="@+id/composeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
