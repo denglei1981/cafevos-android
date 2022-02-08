@@ -117,7 +117,9 @@ open class RecommendFragment :
             setIndicator()
         }
     }
-
+    var isAddFaster:Boolean=false
+    var isAddGridSpace:Boolean=false
+    var isAddLinearSpace:Boolean=false
     private fun addHeadFaster(isGrid: Boolean, dataList: List<AdBean>) {
         if (fastInBinding == null) {
             fastInBinding = DataBindingUtil.inflate(
@@ -139,20 +141,27 @@ open class RecommendFragment :
             }else{
                 fi.tvFastIn.visibility=View.VISIBLE
             }
-
-            recommendAdapter.addHeaderView(fi.root, index)
+            if(!isAddFaster){
+                recommendAdapter.addHeaderView(fi.root, index)
+                isAddFaster=true
+            }
             fastInAdapter.setList(dataList)
-
             if (isGrid) {
                 fastInAdapter.isWith=false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
-                fi.rvFastIn.addItemDecoration(GridSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
+                if(!isAddGridSpace){
+                    fi.rvFastIn.addItemDecoration(GridSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
+                    isAddGridSpace=true
+                }
+
             } else {
                 fastInAdapter.isWith=true
                 val linearLayoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 fi.rvFastIn.layoutManager = linearLayoutManager
-                fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
-
+                if(!isAddLinearSpace){
+                    fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
+                    isAddLinearSpace=true
+                }
             }
         }
 
@@ -352,6 +361,7 @@ open class RecommendFragment :
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.getRecommend(false)
+        viewModel.getFastEnter()
     }
 
     override fun onPause() {

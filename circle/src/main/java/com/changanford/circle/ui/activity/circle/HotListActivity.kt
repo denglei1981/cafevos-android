@@ -54,15 +54,15 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
 
     override fun initData() {
         val defaultTopId=intent.getIntExtra("topId",-1)
-        viewModel.hotTypesData.observe(this,{
+        viewModel.hotTypesData.observe(this) {
             it?.apply {
                 initTabAndViewPager(this)
                 initMagicIndicator(this)
-                val index= indexOfFirst { item->item.topId==defaultTopId }
-                if(index>0)binding.viewPager.currentItem = index
+                val index = indexOfFirst { item -> item.topId == defaultTopId }
+                if (index > 0) binding.viewPager.currentItem = index
             }
 
-        })
+        }
         viewModel.getHotTypes()
     }
     private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
@@ -95,7 +95,7 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
                     gravity=Gravity.CENTER_HORIZONTAL
                     text = tabs[index].topName
                     textSize = 18f
-                    setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                    setPadding(20.toIntPx(), 0, 20.toIntPx(), 0)
 //                    width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
                     normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
                     selectedColor = ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)

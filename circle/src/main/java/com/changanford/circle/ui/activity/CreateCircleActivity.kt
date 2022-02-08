@@ -51,7 +51,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         binding.run {
             ivFengmian.setCircular(5)
             etBiaoti.addTextChangedListener {
-                binding.tvNum.text = it?.length.toString() + "/8"
+                binding.tvNum.text = it?.length.toString() + "/15"
                 btnIsClick()
             }
             etContent.addTextChangedListener {
@@ -122,7 +122,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private fun btnIsClick(){
         binding.title.wtvCreate.apply {
             val titleLength=binding.etBiaoti.text.length
-            if(picUrl.isEmpty()||titleLength<4||binding.etContent.text.isEmpty()|| mAdapter.data.none { it.isCheck == true }){
+            if(picUrl.isEmpty()||titleLength<1||binding.etContent.text.isEmpty()|| mAdapter.data.none { it.isCheck == true }){
                 isEnabled=false
                 setBackgroundResource(R.drawable.shadow_dd_12dp)
             }else{
@@ -150,25 +150,25 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     }
     override fun observe() {
         super.observe()
-        viewModel.upLoadBean.observe(this, {
+        viewModel.upLoadBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(false)
                 finish()
             }
-        })
-        viewModel.tagInfoData.observe(this,{tagInfo->
+        }
+        viewModel.tagInfoData.observe(this) { tagInfo ->
             tagInfo?.apply {
-                mAdapter.tagMaxCount=tagMaxCount?:0
-                circleItemBean?.tagIds?.forEach {tagId->
-                    tags?.let {tagItem->
-                        val index=tagItem.indexOfFirst {item->tagId==item.tagId}
-                        if(index>=0)tagItem[index].isCheck=true
+                mAdapter.tagMaxCount = tagMaxCount ?: 0
+                circleItemBean?.tagIds?.forEach { tagId ->
+                    tags?.let { tagItem ->
+                        val index = tagItem.indexOfFirst { item -> tagId == item.tagId }
+                        if (index >= 0) tagItem[index].isCheck = true
                     }
                 }
                 mAdapter.setList(tags)
                 btnIsClick()
             }
-        })
+        }
     }
 }

@@ -12,6 +12,9 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
@@ -114,7 +117,14 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
+    /**
+     *申请加入圈子
+    * */
     fun joinCircle(circleId: String,listener: OnPerformListener?=null) {
+        if(MConstant.token.isEmpty()){
+            startARouter(ARouterMyPath.SignUI)
+            return
+        }
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId

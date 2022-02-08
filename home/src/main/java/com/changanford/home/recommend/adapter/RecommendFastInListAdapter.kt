@@ -26,7 +26,7 @@ class RecommendFastInListAdapter :
         item: AdBean
     ) {
          if(imgSize==0){
-             imgSize=(ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,60f))/3
+             imgSize=(ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,70f))/3
          }
 
         holder.dataBinding?.let {

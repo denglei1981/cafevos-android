@@ -84,7 +84,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     }
 
     override fun initData() {
-        viewModel.cirCleHomeData.observe(this,{
+        viewModel.cirCleHomeData.observe(this) {
             it?.apply {
                 binding.composeViewRecommended.setContent {
                     Column {
@@ -94,16 +94,16 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                         //我的圈子
                         MyCircleCompose(myCircles)
                         //热门榜单
-                        topList?.apply {hotListAdapter.setList(this)}
+                        topList?.apply { hotListAdapter.setList(this) }
                     }
                 }
             }
             binding.srl.finishRefresh()
-        })
-        viewModel.youLikeData.observe(this,{
+        }
+        viewModel.youLikeData.observe(this) {
             bindingYouLike(it)
 //            animatorUtil.stopAnimator()
-        })
+        }
         getData()
 //        bindingMyCircle()
     }
@@ -354,11 +354,16 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private fun addLiveDataBus(){
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
-                if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
-                    getData()
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        getData()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        getData()
+                    }
+                    else -> {}
                 }
-            })
-
+            }
     }
 }

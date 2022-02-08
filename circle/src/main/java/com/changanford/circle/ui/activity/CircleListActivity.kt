@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -30,6 +31,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import kotlin.math.abs
 
 /**
@@ -109,20 +111,20 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
 
     override fun observe() {
         super.observe()
-        viewModel.typesBean.observe(this, {
+        viewModel.typesBean.observe(this) {
             if (it.isNotEmpty()) {
                 runOnUiThread {
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
-                    val index=it.indexOfFirst {item->item.id.toString()==typeId}
-                    if(index>0)binding.viewPager.currentItem=index
+                    val index = it.indexOfFirst { item -> item.id.toString() == typeId }
+                    if (index > 0) binding.viewPager.currentItem = index
 
                 }
             } else {
                 "没有圈子类型".toast()
                 finish()
             }
-        })
+        }
     }
 
     private fun initMagicIndicator(types: ArrayList<CircleTypesBean>) {
@@ -153,32 +155,16 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView =
-                    ScaleTransitionPagerTitleView(context)
-                simplePagerTitleView.minScale = 1f
-                simplePagerTitleView.text = types[index].name
-                simplePagerTitleView.textSize = 15f
-//                if (types.size <= 3) {
-//                    simplePagerTitleView.setPadding(
-//                        30.toIntPx(),
-//                        10.toIntPx(),
-//                        30.toIntPx(),
-//                        3.toIntPx()
-//                    )
-//                } else {
-                    simplePagerTitleView.setPadding(
-                        20.toIntPx(),
-                        10.toIntPx(),
-                        20.toIntPx(),
-                        3.toIntPx()
-                    )
-//                }
-                simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
-                simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(this@CircleListActivity, R.color.circle_app_color)
-                simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
-                return simplePagerTitleView
+                val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
+                simplePagerTitleView.apply {
+                    text = types[index].name
+                    textSize = 18f
+                    setPadding(20.toIntPx(), 10.toIntPx(), 20.toIntPx(), 9.toIntPx())
+                    normalColor = ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
+                    selectedColor = ContextCompat.getColor(this@CircleListActivity, R.color.circle_app_color)
+                    setOnClickListener { binding.viewPager.currentItem = index }
+                    return this
+                }
             }
 
             override fun getIndicator(context: Context): IPagerIndicator {
