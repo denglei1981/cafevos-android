@@ -168,6 +168,10 @@ fun QuestionItemUI(itemData: QuestionInfoBean?=null,viewWidthDp:Int=0){
             ImgsUI(imgs,viewWidthDp)
             //立即抢答
             AnswerUI()
+            //用户信息
+            UserInfoUI()
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier.fillMaxWidth().height(0.5.dp))
         }
     }
 }
@@ -207,6 +211,7 @@ private fun TopUI(){
 private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
     imgs?.apply {
         when (size) {
+            0->{}
             1 -> {
                 val pic=imgs[0]
                 val imgSize=viewWidthDp*0.49
@@ -288,9 +293,12 @@ private fun AnswerUI(){
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = {
             //立即抢答
-        },shape = RoundedCornerShape(15.dp),contentPadding = PaddingValues(8.dp),
+        },shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
-            modifier = Modifier.width(87.dp)) {
+            contentPadding= PaddingValues(4.dp),
+            modifier = Modifier
+                .width(87.dp)
+                .height(29.dp)) {
             Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
         }
         Spacer(modifier = Modifier.height(14.dp))
@@ -303,6 +311,7 @@ private fun AnswerUI(){
 @Composable
 private fun UserInfoUI(){
     Column(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.height(20.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
@@ -317,17 +326,48 @@ private fun UserInfoUI(){
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(11.dp))
-            Column {
-                Text(text = "xxxx",color= colorResource(R.color.color_99), fontSize = 13.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    //昵称
+                    Text(buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = colorResource(R.color.color_99),fontSize = 13.sp)) {
+                            append("xxxx")
+                        }
+                        withStyle(style = SpanStyle(color = colorResource(R.color.color_00095B),fontSize = 11.sp)) {
+                            append("   EVOS车主")
+                        }
+                    }, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    //皇冠
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Image(painter = painterResource(R.mipmap.question_crown), contentDescription = null)
+                }
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(text = "2021-08-12 15:30 ",color= colorResource(R.color.color_99), fontSize = 11.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
             }
+            //已采纳
+            Box(contentAlignment = Alignment.Center,modifier = Modifier
+                .defaultMinSize(47.dp, 16.dp)
+                .background(
+                    colorResource(R.color.color_1A00095B),
+                    shape = RoundedCornerShape(8.dp)
+                )) {
+                Text(text = stringResource(R.string.str_hasBeenAdopted),color = colorResource(R.color.color_00095B),fontSize = 11.sp)
+            }
         }
         Spacer(modifier = Modifier.height(14.dp))
+        //内容
         Text(text = "xxx",color= colorResource(R.color.color_66), fontSize = 12.sp)
         Spacer(modifier = Modifier.height(14.dp))
-        Row {
-
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            //浏览
+            Image(painter = painterResource(R.drawable.icon_circle_look_count), contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "0",color = colorResource(R.color.color_99),fontSize = 12.sp)
+            //评论
+            Spacer(modifier = Modifier.width(21.dp))
+            Image(painter = painterResource(R.drawable.icon_circle_msg_count), contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text ="0",color = colorResource(R.color.color_99),fontSize = 12.sp)
         }
     }
 }
