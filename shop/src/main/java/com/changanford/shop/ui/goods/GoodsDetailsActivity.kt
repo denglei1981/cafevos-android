@@ -96,36 +96,36 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         tabClick()
     }
     override fun initData() {
-        viewModel.goodsDetailData.observe(this,{
-            binding.inEmpty.layoutEmpty.visibility=View.GONE
+        viewModel.goodsDetailData.observe(this) {
+            binding.inEmpty.layoutEmpty.visibility = View.GONE
             control.bindingData(it)
-            viewModel.collectionGoodsStates.postValue(it.collect=="YES")
+            viewModel.collectionGoodsStates.postValue(it.collect == "YES")
             GlobalScope.launch {
                 delay(1000L)
                 initH()
             }
-        })
-        viewModel.responseData.observe(this,{
+        }
+        viewModel.responseData.observe(this) {
             it.apply {
-                if(!isSuccess){
+                if (!isSuccess) {
                     binding.inEmpty.apply {
-                        layoutEmpty.visibility=View.VISIBLE
+                        layoutEmpty.visibility = View.VISIBLE
 //                        tvEmptyContent.setText(msg)
                     }
                 }
             }
-        })
-        viewModel.collectionGoodsStates.observe(this,{
-            isCollection= it
-            binding.inBottom.cbCollect.isChecked=isCollection
+        }
+        viewModel.collectionGoodsStates.observe(this) {
+            isCollection = it
+            binding.inBottom.cbCollect.isChecked = isCollection
             binding.inHeader.imgCollection.setImageResource(
                 when {
                     isCollection -> R.mipmap.shop_collect_1
-                    oldScrollY<commentH -> R.mipmap.shop_collect_0
+                    oldScrollY < commentH -> R.mipmap.shop_collect_0
                     else -> R.mipmap.shop_collect_00
                 }
             )
-        })
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -257,20 +257,20 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     }
     private fun addLiveDataBus(){
         //下单回调
-        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this,  {
-            if("2"!=it&&"0"!=spuId)viewModel.queryGoodsDetails(spuId,false)
-        })
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this) {
+            if ("2" != it && "0" != spuId) viewModel.queryGoodsDetails(spuId, false)
+        }
         //分享回调
-        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this,  {
-            if (it==0&&::control.isInitialized) control.shareBack()
-        })
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this) {
+            if (it == 0 && ::control.isInitialized) control.shareBack()
+        }
         //登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this,{
-                if(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS==it) {
-                     if("0"!=spuId)viewModel.queryGoodsDetails(spuId,false)
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                    if ("0" != spuId) viewModel.queryGoodsDetails(spuId, false)
                 }
-            })
+            }
 
     }
 }

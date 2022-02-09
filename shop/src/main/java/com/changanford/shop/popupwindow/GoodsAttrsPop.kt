@@ -52,63 +52,65 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
-        skuCodeLiveData.observe(activity,{ code ->
+        skuCodeLiveData.observe(activity) { code ->
             dataBean.skuVos.apply {
-                _skuCode=code
+                _skuCode = code
                 //首页取选中的sku 然后是最低sku价格的
-                (find { it.skuCode==code }?:find { it.fbPrice==dataBean.orFbPrice }?:sortedBy{it.fbPrice.toFloat()}[0]).apply {
-                    dataBean.skuId=skuId
-                    if(!control.isInvalidSelectAttrs(_skuCode)){
-                        dataBean.stock=stock.toInt()
-                        dataBean.skuImg=skuImg
-                        dataBean.fbPrice=fbPrice
-                        dataBean.orginPrice=orginPrice
+                (find { it.skuCode == code } ?: find { it.fbPrice == dataBean.orFbPrice }
+                ?: sortedBy { it.fbPrice.toFloat() }[0]).apply {
+                    dataBean.skuId = skuId
+                    if (!control.isInvalidSelectAttrs(_skuCode)) {
+                        dataBean.stock = stock.toInt()
+                        dataBean.skuImg = skuImg
+                        dataBean.fbPrice = fbPrice
+                        dataBean.orginPrice = orginPrice
                         viewDataBinding.addSubtractView.setIsAdd(true)
                         viewDataBinding.tvIntegral.setText(fbPrice)
-                    }else{
-                        dataBean.skuImg=dataBean.imgs[0]
-                        dataBean.stock=dataBean.allSkuStock
-                        dataBean.fbPrice=dataBean.orFbPrice
-                        dataBean.orginPrice=dataBean.orginPrice0
+                    } else {
+                        dataBean.skuImg = dataBean.imgs[0]
+                        dataBean.stock = dataBean.allSkuStock
+                        dataBean.fbPrice = dataBean.orFbPrice
+                        dataBean.orginPrice = dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
-                        viewDataBinding.tvIntegral.setText(if("SECKILL"==dataBean.spuPageType)dataBean.fbPrice else dataBean.orginPrice)
+                        viewDataBinding.tvIntegral.setText(if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice)
                     }
-                    dataBean.price=dataBean.orginPrice
-                    dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
+                    dataBean.price = dataBean.orginPrice
+                    dataBean.mallMallSkuSpuSeckillRangeId = mallMallSkuSpuSeckillRangeId
                     control.memberExclusive(dataBean)
-                    val skuCodeTxtArr= arrayListOf<String>()
-                    for((i,item) in dataBean.attributes.withIndex()){
-                        item.optionVos.find { mAdapter.getSkuCodes()[i+1]== it.optionId }?.let {
-                            val optionName= it.optionName
+                    val skuCodeTxtArr = arrayListOf<String>()
+                    for ((i, item) in dataBean.attributes.withIndex()) {
+                        item.optionVos.find { mAdapter.getSkuCodes()[i + 1] == it.optionId }?.let {
+                            val optionName = it.optionName
                             skuCodeTxtArr.add(optionName)
                         }
                     }
-                    dataBean.skuCodeTxts=skuCodeTxtArr
-                    viewDataBinding.sku= this
+                    dataBean.skuCodeTxts = skuCodeTxtArr
+                    viewDataBinding.sku = this
                     viewDataBinding.imgCover.load(dataBean.skuImg)
-                    val limitBuyNum:Int=dataBean.getLimitBuyNum()
-                    val htmlStr=if(limitBuyNum!=0)"<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
-                    val nowStock=dataBean.stock
-                    WCommonUtil.htmlToString( viewDataBinding.tvStock,"（${htmlStr}库存${nowStock}件）")
-                    var isLimitBuyNum=false//是否限购
-                    val max: Int =if(limitBuyNum in 1..nowStock) {
-                        isLimitBuyNum=true
+                    val limitBuyNum: Int = dataBean.getLimitBuyNum()
+                    val htmlStr =
+                        if (limitBuyNum != 0) "<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
+                    val nowStock = dataBean.stock
+                    WCommonUtil.htmlToString(viewDataBinding.tvStock, "（${htmlStr}库存${nowStock}件）")
+                    var isLimitBuyNum = false//是否限购
+                    val max: Int = if (limitBuyNum in 1..nowStock) {
+                        isLimitBuyNum = true
                         limitBuyNum
                     } else nowStock
-                    viewDataBinding.addSubtractView.setMax(max,isLimitBuyNum)
-                    control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
+                    viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
+                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
                 }
             }
-        })
+        }
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
             setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
         }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
-        viewDataBinding.addSubtractView.numberLiveData.observe(activity,{
-            dataBean.buyNum= it
-            control.bindingBtn(dataBean,_skuCode,viewDataBinding.btnSubmit,1)
-        })
+        viewDataBinding.addSubtractView.numberLiveData.observe(activity) {
+            dataBean.buyNum = it
+            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
+        }
         viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
     //动画

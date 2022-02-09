@@ -85,22 +85,22 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         viewModel.getClassification()
     }
     private fun addObserve(){
-        viewModel.advertisingList.observe(this,{
-            BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(),2.5f))
-            ScreenUtils.setMargin(binding.inTop.tvKillTitle,0,if(null!=it&&it.size>0)dp38 else 0,9,0)
-        })
-        viewModel.shopHomeData.observe(this,{
+        viewModel.advertisingList.observe(this) {
+            BannerControl.bindingBanner(binding.inTop.banner,it,ScreenUtils.dp2px(requireContext(), 2.5f))
+            ScreenUtils.setMargin(binding.inTop.tvKillTitle,0,if (null != it && it.size > 0) dp38 else 0,9,0)
+        }
+        viewModel.shopHomeData.observe(this) {
             mAdapter.setList(it.indexSeckillDtoList)
             binding.inTop.apply {
-                val visibility=if(mAdapter.data.size>0) View.VISIBLE else View.GONE
-                tvShopMoreKill.visibility=visibility
-                tvKillTitle.visibility=visibility
+                val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                tvShopMoreKill.visibility = visibility
+                tvKillTitle.visibility = visibility
             }
-        })
-        viewModel.classificationLiveData.observe(this,{
+        }
+        viewModel.classificationLiveData.observe(this) {
             bindingTab(it)
             binding.smartRl.finishRefresh()
-        })
+        }
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         initData()

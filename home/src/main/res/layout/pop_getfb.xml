@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.home.bean.FBBean" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_45"
         android:layout_gravity="center"
-        android:background="@drawable/shape_whit5_bg">
-        <androidx.compose.ui.platform.ComposeView
+        android:background="@drawable/shape_whit5_bg"
+        android:padding="@dimen/dp_16"
+        android:orientation="vertical"
+        android:gravity="center">
+        <com.changanford.common.ui.view.WTextView
+            android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/composeView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{model.title}"
+            tools:text="微客服福币转移到账通知"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_15"/>
+        <com.changanford.common.ui.view.WTextView
+            android:layout_marginTop="@dimen/dp_21"
+            android:background="@drawable/shape_f7_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_85"
+            android:gravity="center"
+            android:text="@{model.integral}"
+            tools:text="+999999999"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_30" />
+        <TextView
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{model.content}"
+            android:layout_marginEnd="@dimen/sp_30"
+            android:layout_marginStart="@dimen/dp_30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="您在微客服的福币已转移到福域APP请点击立即领取"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_12"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="@dimen/dp_32"
+            android:id="@+id/btn_submit"
+            android:background="@drawable/shape_00095b_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp_160"
+            android:minHeight="@dimen/dp_40"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_15"
+            android:gravity="center"
+            android:text="@string/str_immediatelyToReceive"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

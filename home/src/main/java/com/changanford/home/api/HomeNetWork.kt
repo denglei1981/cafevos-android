@@ -358,10 +358,10 @@ interface HomeNetWork {
      *判断用户是否有可领取的微客服小程序积分
     * */
     @POST("/userIntegralImport/isGetIntegral")
-    suspend fun isGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<Any>
+    suspend fun isGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<FBBean>
     /**
      *领取微客服小程序积分
      * */
     @POST("/userIntegralImport/doGetIntegral")
-    suspend fun doGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<Any>
+    suspend fun doGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<WResponseBean>
 }
