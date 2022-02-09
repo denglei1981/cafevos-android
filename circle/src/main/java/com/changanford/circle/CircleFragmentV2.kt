@@ -58,7 +58,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("推荐","圈子","问答")
+    private val tabList = listOf("广场","圈子","问答")
 
 
     override fun onDestroyView() {
@@ -250,7 +250,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
                     return when(position){
                         0->{//帖子推荐
-                             CircleRecommendFragment.newInstance(if (position == 0) 4 else 2)
+                            CircleSquareFragment.newInstance()
                         }
                         1->{//圈子
                              NewCircleFragment()
@@ -259,7 +259,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                              AskRecommendFragment.newInstance()
                         }
                         else -> {
-                            CircleRecommendFragment.newInstance(if (position == 0) 4 else 2)
+                            CircleSquareFragment.newInstance()
                         }
                     }
 

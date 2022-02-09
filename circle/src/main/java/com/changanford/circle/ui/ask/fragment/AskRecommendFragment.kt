@@ -1,17 +1,12 @@
 package com.changanford.circle.ui.ask.fragment
 
-import android.os.Bundle
-import com.changanford.circle.bean.MultiBean
-import com.changanford.circle.bean.TestBean
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
 import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
-import com.changanford.circle.ui.fragment.CircleRecommendFragment
 import com.changanford.circle.utils.TestBeanUtil
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.JumpUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
