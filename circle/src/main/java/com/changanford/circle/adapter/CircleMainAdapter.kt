@@ -35,6 +35,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  *Time on 2021/9/23
  *Purpose
  */
+@Deprecated("过时了")
 class CircleMainAdapter(
     private val context: Context,
     private val supportFragmentManager: FragmentManager
