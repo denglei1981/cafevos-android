@@ -3,6 +3,9 @@ package com.changanford.home.request
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.MConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.data.TwoAdData
@@ -50,5 +53,35 @@ class HomeV2ViewModel : BaseViewModel() {
 //                }
 //        })
 //    }
+    /**
+     * 判断用户是否有可领取的微客服小程序积分
+    * */
+    fun isGetIntegral() {
+        if(MConstant.token.isEmpty())return
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().isGetIntegral(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
 
+                }
+        })
+    }
+    /**
+     * 领取微客服小程序积分
+     * */
+    fun doGetIntegral() {
+        if(MConstant.token.isEmpty()){
+            startARouter(ARouterMyPath.SignUI)
+            return
+        }
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().doGetIntegral(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+
+                }
+        })
+    }
 }

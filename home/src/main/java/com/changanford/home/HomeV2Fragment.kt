@@ -224,6 +224,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             true
         }
         binding.homeViewpager.offscreenPageLimit = 1
+        //是否领取福币
+        viewModel.isGetIntegral()
     }
 
     fun toSearch() {

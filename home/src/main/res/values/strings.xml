@@ -32,4 +32,5 @@
     <string name="str_transferToAccountNotification">微客服福币转移到账通知</string>
     <string name="prompt_getFb">您在微客服的福币已转移到福域APP请点击立即领取</string>
     <string name="str_immediatelyToReceive">立即领取</string>
+    <string name="str_isToReceive">正在领取···</string>
 </resources>
