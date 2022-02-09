@@ -8,7 +8,6 @@ import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
-import android.util.Log
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -17,16 +16,18 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemQuestionBinding
 import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionInfoBean
+import com.changanford.common.wutil.ScreenUtils
 import kotlin.math.floor
 
 
 class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
+    private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context)-60 }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionInfoBean) {
         val fbNumber="603福币"
         val tagName="车辆故障"
-        var starStr=" ".repeat(tagName.length*3)
+        val starStr=" ".repeat(tagName.length*3)
         val str="$starStr   福克斯 穿越千年的丝绸古道，感叹福克斯 穿越千年的丝绸古道，感叹    $fbNumber"
         holder.dataBinding?.apply {
 //            WCommonUtil.htmlToImgStr(activity,tvTitle,"$str<img src=\"${R.mipmap.question_fb}\"/>" +
@@ -34,8 +35,7 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoB
             setTxt(context,tvTitle,str,fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                Log.e("wenke","composeView.width:${composeView.width}>>>>${root.width}")
-                QuestionItemUI(itemData,composeView.width)
+                QuestionItemUI(itemData,viewWidth)
             }
         }
     }

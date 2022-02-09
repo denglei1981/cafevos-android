@@ -34,7 +34,11 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding,QuestionViewModel>()
     override fun initData() {
         val dataList= arrayListOf<QuestionInfoBean>()
         for(i in 0..10){
-            dataList.add(QuestionInfoBean())
+            val imgs= arrayListOf<String>()
+            for (j in 0..i){
+                imgs.add("")
+            }
+            dataList.add(QuestionInfoBean(imgs = imgs))
         }
         mAdapter.setList(dataList)
     }

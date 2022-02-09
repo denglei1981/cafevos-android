@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -156,33 +158,44 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
 
 @Composable
 fun QuestionItemUI(itemData: QuestionInfoBean?=null,viewWidthDp:Int=0){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
-        Box {
-            Text(buildAnnotatedString {
-                withStyle(style = ParagraphStyle(lineHeight = 20.sp)) {
-                    withStyle(style = SpanStyle(color = Color.Transparent,fontSize = 15.sp)) {
-                        append(stringResource(R.string.str_vehicleFailure)+"\t")
-                    }
-                    withStyle(style = SpanStyle(color = colorResource(R.color.color_2d),fontSize = 15.sp)) {
-                        append("福克斯 穿越千年的丝绸古道，感叹".repeat(2))
-                    }
-                    withStyle(style = SpanStyle(color = colorResource(R.color.color_E1A743),fontSize = 10.sp)) {
-                        append("\t30福币")
-                    }
+    itemData?.apply {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)) {
+//            TopUI()
+            Spacer(modifier = Modifier.height(21.dp))
+            //图片列表
+            ImgsUI(imgs,viewWidthDp)
+            //立即抢答
+            AnswerUI()
+        }
+    }
+}
+@Composable
+private fun TopUI(){
+    Box {
+        Text(buildAnnotatedString {
+            withStyle(style = ParagraphStyle(lineHeight = 20.sp)) {
+                withStyle(style = SpanStyle(color = Color.Transparent,fontSize = 15.sp)) {
+                    append(stringResource(R.string.str_vehicleFailure)+"\t")
                 }
-            })
-            Box(contentAlignment = Alignment.Center, modifier = Modifier
-                .border(
-                    0.5.dp,
-                    color = colorResource(R.color.color_00095B),
-                    shape = RoundedCornerShape(2.dp)
-                )
-                .padding(5.dp, 2.dp)
-                .background(color = Color.White)){
-                Text(text = stringResource(R.string.str_vehicleFailure), color = colorResource(R.color.color_00095B), fontSize = 12.sp)
+                withStyle(style = SpanStyle(color = colorResource(R.color.color_2d),fontSize = 15.sp)) {
+                    append("福克斯 穿越千年的丝绸古道，感叹".repeat(2))
+                }
+                withStyle(style = SpanStyle(color = colorResource(R.color.color_E1A743),fontSize = 10.sp)) {
+                    append("\t30福币")
+                }
             }
+        })
+        Box(contentAlignment = Alignment.Center, modifier = Modifier
+            .border(
+                0.5.dp,
+                color = colorResource(R.color.color_00095B),
+                shape = RoundedCornerShape(2.dp)
+            )
+            .padding(5.dp, 2.dp)
+            .background(color = Color.White)){
+            Text(text = stringResource(R.string.str_vehicleFailure), color = colorResource(R.color.color_00095B), fontSize = 12.sp)
         }
     }
 }
@@ -191,11 +204,12 @@ fun QuestionItemUI(itemData: QuestionInfoBean?=null,viewWidthDp:Int=0){
  *[viewWidthDp]view宽度
 * */
 @Composable
-fun ImgUI(imgs:List<String>?,viewWidthDp:Int=0){
+private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
     imgs?.apply {
         when (size) {
             1 -> {
                 val pic=imgs[0]
+                val imgSize=viewWidthDp*0.49
                 Image(
                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
                         builder = {
@@ -206,16 +220,115 @@ fun ImgUI(imgs:List<String>?,viewWidthDp:Int=0){
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .defaultMinSize(minHeight = 152.dp)
+                        .height(imgSize.dp)
                         .clip(RoundedCornerShape(5.dp))
                 )
             }
             2,3 -> {
-                val h=viewWidthDp-30/2
+                val imgSize=(viewWidthDp-((size-1)*10))/size
                 Row(modifier = Modifier.fillMaxWidth()) {
-
+                    for(i in 0 until size){
+                        Image(
+                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgs[i]) ?: R.mipmap.head_default,
+                                builder = {
+                                    crossfade(false)
+                                    placeholder(R.mipmap.head_default)
+                                }),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .weight(1f)
+                                .size(imgSize.dp)
+                                .clip(RoundedCornerShape(5.dp))
+                        )
+                        if(i!=size-1)Spacer(modifier = Modifier.width(10.dp))
+                    }
+                }
+            }
+            else-> {//大于等于4
+                val imgSize=(viewWidthDp-10)/2
+                Column(Modifier.fillMaxWidth()) {
+                    val rowTotal=2//总共几排
+                    val columnSize=2//一排几列
+                    for(row in 0 until rowTotal){
+                        val startIndex=row*columnSize
+                        val endIndex=if(row!=rowTotal-1)(row+1)*columnSize else imgs.size
+                        val itemList=imgs.slice(startIndex until endIndex)
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            for(i in 0 until columnSize){
+                                Image(
+                                    painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemList[i]) ?: R.mipmap.head_default,
+                                        builder = {
+                                            crossfade(false)
+                                            placeholder(R.mipmap.head_default)
+                                        }),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(imgSize.dp)
+                                        .clip(RoundedCornerShape(5.dp))
+                                )
+                                if(i!=columnSize-1)Spacer(modifier = Modifier.width(10.dp))
+                            }
+                        }
+                        if(row!=rowTotal-1)Spacer(modifier = Modifier.height(10.dp))
+                    }
                 }
             }
         }
     }
 }
+/**
+ * 立即抢答
+* */
+@Composable
+private fun AnswerUI(){
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(onClick = {
+            //立即抢答
+        },shape = RoundedCornerShape(15.dp),contentPadding = PaddingValues(8.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+            modifier = Modifier.width(87.dp)) {
+            Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
+        }
+        Spacer(modifier = Modifier.height(14.dp))
+        Text(text = stringResource(R.string.str_questionHasNotBeenAnswered),color= colorResource(R.color.color_99), fontSize = 10.sp)
+    }
+}
+/**
+ * 用户信息
+ * */
+@Composable
+private fun UserInfoUI(){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
+                    builder = {
+                        crossfade(false)
+                        placeholder(R.mipmap.head_default)
+                    }),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(30.dp)
+                    .clip(CircleShape)
+            )
+            Spacer(modifier = Modifier.width(11.dp))
+            Column {
+                Text(text = "xxxx",color= colorResource(R.color.color_99), fontSize = 13.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(text = "2021-08-12 15:30 ",color= colorResource(R.color.color_99), fontSize = 11.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+            }
+        }
+        Spacer(modifier = Modifier.height(14.dp))
+        Text(text = "xxx",color= colorResource(R.color.color_66), fontSize = 12.sp)
+        Spacer(modifier = Modifier.height(14.dp))
+        Row {
+
+        }
+    }
+}
+
