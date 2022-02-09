@@ -104,7 +104,10 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
                     Text(text = stringResource(R.string.str_text),fontSize = 12.sp, color=colorResource(R.color.color_99),
                         lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
                     Spacer(modifier = Modifier.height(28.dp))
-                    Divider(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(colorResource(R.color.color_80EEEEEE)))
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.5.dp)
+                        .background(colorResource(R.color.color_80EEEEEE)))
                     Spacer(modifier = Modifier.height(7.dp))
                     //答题总数、采纳总数、回复榜、采纳绑
                     Row(modifier = Modifier
@@ -124,7 +127,9 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
                                     }
                                 })
                             }
-                            Divider(modifier = Modifier.width(0.5.dp).height(40.dp),color = colorResource( R.color.color_f6))
+                            Divider(modifier = Modifier
+                                .width(0.5.dp)
+                                .height(40.dp),color = colorResource( R.color.color_f6))
                         }
                     }
                 }
@@ -186,5 +191,32 @@ fun ItemUI(itemData: QuestionInfoBean?=null){
 * */
 @Composable
 fun ImgUI(imgs:List<String>?){
+    imgs?.apply {
+        when (size) {
+            1 -> {
+                val pic=imgs[0]
+                Image(
+                    painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
+                        builder = {
+                            crossfade(false)
+                            placeholder(R.mipmap.head_default)
+                        }),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 152.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                )
+            }
+            2 -> {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    
+                }
+            }
+            3 -> {
 
+            }
+        }
+    }
 }
