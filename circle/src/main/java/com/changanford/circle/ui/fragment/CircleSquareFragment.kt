@@ -8,8 +8,10 @@ import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel>()  {
+class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel>() ,OnRefreshListener  {
 
     private val circleSquareAdapter by lazy {
         CircleSquareAdapter(requireContext(), childFragmentManager)
@@ -22,6 +24,7 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
         }
     }
     override fun initView() {
+        binding.refreshLayout.setOnRefreshListener(this)
 
     }
 
@@ -61,5 +64,11 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this, {
             binding.refreshLayout.finishRefresh()
         })
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        circleSquareAdapter.run {
+            outRefresh()
+        }
     }
 }
