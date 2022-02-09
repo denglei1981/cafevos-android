@@ -6,63 +6,207 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="match_parent"
+        android:background="@color/color_FF"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout_title"
+            layout="@layout/layout_sample_title" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:background="@color/color_F4"
-                app:layout_behavior="@string/circle_behavior_app_bar_layout">
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_question_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:contentScrim="@color/transparent"
-                    android:background="@color/color_F4"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_26"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:text="@string/question_title_tips"
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.compose.ui.platform.ComposeView
-                        android:id="@+id/composeView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
-
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_collapseMode="pin"
-                        app:contentInsetStart="@dimen/dp_0">
-                        <include
-                            android:id="@+id/in_header"
-                            layout="@layout/header_questionlist"/>
-
-                    </androidx.appcompat.widget.Toolbar>
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                <net.lucode.hackware.magicindicator.MagicIndicator
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_question_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:background="@color/color_F4"
-                    android:id="@+id/magic_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center_horizontal"/>
-            </com.google.android.material.appbar.AppBarLayout>
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@null"
+                    android:hint="@string/please_write"
+                    android:maxLines="2"
+                    android:textColor="@color/color_33"
+                    android:textColorHint="@color/color_cc"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_question_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_question_title" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/dp_20"
-                android:paddingEnd="@dimen/dp_20"
-                android:background="@color/color_F4"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_question"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_28"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:text="请填写您的问题（20-200字）"
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_question_title" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_question"
+                    style="@style/AppText.lineSpace"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_18"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/question_tips"
+                    android:textColor="@color/color_33"
+                    android:textColorHint="@color/color_cc"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="84dp"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_question"
+                    app:spanCount="4" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:background="#FAFBFD"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_img">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_question_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:drawableStart="@drawable/icon_question_type"
+                        android:drawablePadding="@dimen/dp_8"
+                        android:text="选择问题类型"
+                        android:textColor="#ff333333"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.donkingliang.labels.LabelsView
+                        android:id="@+id/labels_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        app:labelBackground="@drawable/shape_question_type"
+                        app:labelGravity="center"
+                        app:labelTextColor="@drawable/shape_question_type_text_color"
+                        app:labelTextHeight="@dimen/dp_24"
+                        app:labelTextPaddingBottom="5dp"
+                        app:labelTextPaddingLeft="15dp"
+                        app:labelTextPaddingRight="15dp"
+                        app:labelTextPaddingTop="5dp"
+                        app:labelTextSize="12sp"
+                        app:labelTextWidth="@dimen/dp_60"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_question_type"
+                        app:lineMargin="@dimen/dp_10"
+                        app:selectType="SINGLE"
+                        app:wordMargin="@dimen/dp_9" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_ford_reward"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:drawableStart="@drawable/icon_question_ford_money"
+                        android:drawablePadding="@dimen/dp_8"
+                        android:text="福币打赏"
+                        android:textColor="#ff333333"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/labels_type" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:padding="4dp"
+                        android:src="@drawable/icon_question_q"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_ford_reward"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_ford_reward" />
+
+
+                    <com.donkingliang.labels.LabelsView
+                        android:id="@+id/labels_reward"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        app:labelBackground="@drawable/shape_question_type"
+                        app:labelGravity="center"
+                        app:labelTextColor="@drawable/shape_question_type_text_color"
+                        app:labelTextHeight="@dimen/dp_24"
+                        app:labelTextPaddingBottom="5dp"
+                        app:labelTextPaddingLeft="15dp"
+                        app:labelTextPaddingRight="15dp"
+                        app:labelTextPaddingTop="5dp"
+                        app:labelTextSize="12sp"
+                        app:labelTextWidth="@dimen/dp_80"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_ford_reward"
+                        app:lineMargin="@dimen/dp_10"
+                        app:selectType="SINGLE"
+                        app:wordMargin="@dimen/dp_9" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
 </layout>

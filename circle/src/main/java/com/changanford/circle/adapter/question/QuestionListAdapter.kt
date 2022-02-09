@@ -8,12 +8,14 @@ import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
+import android.util.Log
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemQuestionBinding
+import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionInfoBean
 import kotlin.math.floor
 
@@ -21,7 +23,7 @@ import kotlin.math.floor
 class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, item: QuestionInfoBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionInfoBean) {
         val fbNumber="603福币"
         val tagName="车辆故障"
         var starStr=" ".repeat(tagName.length*3)
@@ -32,7 +34,8 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoB
             setTxt(context,tvTitle,str,fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-//                ItemUI()
+                Log.e("wenke","composeView.width:${composeView.width}>>>>${root.width}")
+                QuestionItemUI(itemData,composeView.width)
             }
         }
     }

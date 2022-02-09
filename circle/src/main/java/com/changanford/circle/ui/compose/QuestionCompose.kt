@@ -41,7 +41,7 @@ import com.changanford.common.utilext.GlideUtils
 @Composable
 private fun PreviewUI(){
     ComposeQuestionTop()
-    ItemUI()
+    QuestionItemUI()
 }
 @Composable
 fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
@@ -155,7 +155,7 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun ItemUI(itemData: QuestionInfoBean?=null){
+fun QuestionItemUI(itemData: QuestionInfoBean?=null,viewWidthDp:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
         .background(Color.White)) {
@@ -188,9 +188,10 @@ fun ItemUI(itemData: QuestionInfoBean?=null){
 }
 /**
  * img
+ *[viewWidthDp]view宽度
 * */
 @Composable
-fun ImgUI(imgs:List<String>?){
+fun ImgUI(imgs:List<String>?,viewWidthDp:Int=0){
     imgs?.apply {
         when (size) {
             1 -> {
@@ -209,13 +210,11 @@ fun ImgUI(imgs:List<String>?){
                         .clip(RoundedCornerShape(5.dp))
                 )
             }
-            2 -> {
+            2,3 -> {
+                val h=viewWidthDp-30/2
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    
-                }
-            }
-            3 -> {
 
+                }
             }
         }
     }
