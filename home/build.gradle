@@ -42,8 +42,12 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+        compose true
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion versions_compose
+        kotlinCompilerVersion = "$kotlin_version"
+    }
 }
 kapt {
     arguments {

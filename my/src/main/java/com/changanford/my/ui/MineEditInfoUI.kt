@@ -301,6 +301,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     }
 
     override fun onClick(v: View?) {
+        if(MineUtils.getBindMobileJumpDataType(true))return
         when (v?.id) {
             R.id.edit_icon -> clickInfo(1)
             R.id.edit_sex -> selectSex()
