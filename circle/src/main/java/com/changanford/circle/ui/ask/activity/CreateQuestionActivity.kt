@@ -19,7 +19,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.ButtomTypeBean
-import com.changanford.circle.databinding.ActivityQuestionBinding
+import com.changanford.circle.databinding.ActivityCreateQuestionBinding
+
 import com.changanford.circle.ui.activity.PostActivity
 import com.changanford.circle.ui.ask.adapter.AskPicAdapter
 import com.changanford.circle.ui.ask.pop.QuestionTipsPop
@@ -47,8 +48,8 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 
-@Route(path = ARouterCirclePath.QuestionActivity)
-class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel>() {
+@Route(path = ARouterCirclePath.CreateQuestionActivity)
+class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, QuestionViewModel>() {
 
 
     lateinit var postPicAdapter: AskPicAdapter
