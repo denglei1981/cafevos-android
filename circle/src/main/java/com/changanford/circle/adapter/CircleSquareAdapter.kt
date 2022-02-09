@@ -187,7 +187,12 @@ class CircleSquareAdapter(
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 
+    val  circleRecommendV2Fragment:CircleRecommendV2Fragment=CircleRecommendV2Fragment.newInstance(1)
+    val  lastCircleRecommendV2Fragment:CircleRecommendV2Fragment=CircleRecommendV2Fragment.newInstance(2)
+
+    var viewpagerBinding: ItemCircleMianBottomBinding?=null
     private fun initTabAndViewPager(binding: ItemCircleMianBottomBinding) {
+        viewpagerBinding=binding
         binding.viewPager.apply {
 
             adapter = object : FragmentPagerAdapter(
@@ -199,17 +204,44 @@ class CircleSquareAdapter(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleRecommendV2Fragment.newInstance(if (position == 0) 1 else 2)
 
-//                    return CircleDetailsMainFragment.newInstance(if (position == 0) 4 else 2)
+                    return when(position){
+                        0->{
+                            circleRecommendV2Fragment
+                        }
+                        1->{
+                            lastCircleRecommendV2Fragment
+                        }
+                        else ->{
+                            circleRecommendV2Fragment
+                        }
+                    }
+
+
+
+
+
                 }
-
             }
-
             offscreenPageLimit = 1
         }
-
     }
+
+    fun outRefresh(){
+        viewpagerBinding?.let { vp->
+            when(vp.viewPager.currentItem){
+                0->{
+                    circleRecommendV2Fragment.outRefresh()
+                }
+                1->{
+                    lastCircleRecommendV2Fragment.outRefresh()
+                }
+            }
+
+
+        }
+    }
+
 
     override fun getItemViewType(position: Int): Int {
         return position

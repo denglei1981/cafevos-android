@@ -75,6 +75,7 @@ class CircleDetailsViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().getRecommendPosts(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     recommondBean.value = it
+                    LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
                 }
                 .onFailure { }
         })

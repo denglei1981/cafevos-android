@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.*
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.MineUtils.listPhoto
@@ -36,6 +38,7 @@ import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -299,9 +302,23 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         }
         viewModel.saveUniUserInfo(body)
     }
-
+    private fun createPop(){
+        ConfirmPop(BaseApplication.curActivity).apply {
+            contentText.setText(R.string.prompt_bindMobile)
+            cancelBtn.setText(R.string.str_noBinding)
+            submitBtn.setText(R.string.str_immediatelyBinding)
+            submitBtn.setOnClickListener {
+                JumpUtils.instans?.jump(18)
+                dismiss()
+            }
+            showPopupWindow()
+        }
+    }
     override fun onClick(v: View?) {
-        if(MineUtils.getBindMobileJumpDataType(true))return
+        if(MineUtils.getBindMobileJumpDataType(false)){
+            createPop()
+            return
+        }
         when (v?.id) {
             R.id.edit_icon -> clickInfo(1)
             R.id.edit_sex -> selectSex()

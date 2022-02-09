@@ -29,7 +29,7 @@ import com.zhpan.bannerview.constants.PageStyle
  *Purpose
  */
 class CircleRecommendV2Fragment :
-    BaseFragment<FragmentCircleRecommendV2Binding, CircleDetailsViewModel>(), OnRefreshListener {
+    BaseFragment<FragmentCircleRecommendV2Binding, CircleDetailsViewModel>() {
 
 
 //    private lateinit var mCheckForGapMethod: Method
@@ -136,9 +136,13 @@ class CircleRecommendV2Fragment :
         })
     }
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        page = 1
-        viewModel.getRecommendPostData(type, page)
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//
+//
+//    }
 
-    }
+   fun  outRefresh(){
+       page = 1
+       viewModel.getRecommendPostData(type, page)
+   }
 }
