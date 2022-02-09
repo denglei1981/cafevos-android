@@ -16,6 +16,7 @@ import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleRecommendFragment
+import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.viewmodel.CircleViewModel

@@ -2,12 +2,16 @@ package com.changanford.home
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +23,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -40,6 +45,7 @@ import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.changanford.home.util.AnimScaleInUtil
+import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
@@ -51,6 +57,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import java.lang.Exception
 import java.lang.reflect.Field
+import java.util.logging.Handler
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -92,7 +99,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     override fun initView() {
         //Tab+Fragment
-
+        addLiveDataBus()
         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
         ImmersionBar.with(this).statusBarColor(R.color.white)
         StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent, requireActivity())
@@ -341,16 +348,27 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     override fun initData() {
 //        viewModel.getTwoBanner()
         binding.recommendContent.rvBanner.adapter = twoAdRvListAdapter
-        twoAdRvListAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val item = twoAdRvListAdapter.getItem(position)
-                JumpUtils.instans!!.jump(item.jumpDataType, item.jumpDataValue)
-            }
-        })
+        twoAdRvListAdapter.setOnItemClickListener { _, _, position ->
+            val item = twoAdRvListAdapter.getItem(position)
+            JumpUtils.instans!!.jump(item.jumpDataType, item.jumpDataValue)
+        }
         binding.recommendContent.tvBigTopic.setOnClickListener {
         }
+        viewModel.fBBeanLiveData.observe(this) {
+            it?.apply {
+                if(isPop==1){
+                    android.os.Handler(Looper.myLooper()!!).postDelayed({
+                        GetFbPop(this@HomeV2Fragment,viewModel,this).apply {
+                            setOutSideDismiss(false)
+                            showPopupWindow()
+                        }
+                    },500)
+                }
+            }
+        }
+        //是否领取福币
+        viewModel.isGetIntegral()
     }
-
     @SuppressLint("ClickableViewAccessibility")
     fun backImageViewTouch(adBean:AdBean) {
         binding.recommendContent.ivHome.setOnTouchListener { v, event ->
@@ -486,5 +504,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         animator?.cancel()
     }
 
-
+     private fun addLiveDataBus(){
+         //登录回调
+         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+             .observe(this) {
+                 if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                    viewModel.isGetIntegral()
+                 }
+             }
+     }
 }

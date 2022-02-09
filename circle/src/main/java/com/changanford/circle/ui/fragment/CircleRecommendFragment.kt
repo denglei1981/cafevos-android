@@ -26,6 +26,7 @@ import com.zhpan.bannerview.constants.PageStyle
  *Time on 2021/9/22
  *Purpose
  */
+@Deprecated("过时了")
 class CircleRecommendFragment :
     BaseFragment<FragmentCircleRecommendBinding, CircleDetailsViewModel>(), OnRefreshListener {
 
