@@ -15,6 +15,7 @@ import com.baidu.location.BDLocation
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleRecommendFragment
+import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.viewmodel.CircleViewModel
@@ -56,7 +57,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("推荐","圈子")
+    private val tabList = listOf("广场","圈子")
 
 
     override fun onDestroyView() {
@@ -244,7 +245,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return if(1==position)NewCircleFragment() else CircleRecommendFragment.newInstance(if (position == 0) 4 else 2)
+                    return if(1==position)NewCircleFragment() else CircleSquareFragment.newInstance()
                 }
 
             }

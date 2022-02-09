@@ -69,6 +69,7 @@ class CircleDetailsViewModel : BaseViewModel() {
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
                 it["viewType"] = viewType
+                it["type"] = viewType
             }
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getRecommendPosts(body.header(rKey), body.body(rKey))
