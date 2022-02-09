@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="72dp"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:src="@drawable/icon_home_mechanic_hot_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_header"
+            android:layout_width="49dp"
+            android:layout_height="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_3"
+            android:background="@drawable/image_recommed_default"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_hot"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            app:strokeColor="#F9D24B"
+            app:strokeWidth="2.5dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:ellipsize="end"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_header"
+            tools:text="发顺丰呀啦…" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

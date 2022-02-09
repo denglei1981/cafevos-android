@@ -476,4 +476,31 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<SerachUserAddress>>
+
+
+    @POST("base/dict/getType")
+    suspend fun getQuestionType(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<QuestionData>>
+
+
+
+    /**
+     * 发布提问
+     */
+    @POST("qa/createQuestion")
+    suspend fun createQuestion(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
+     * 提问首页
+     * */
+    @POST("qa/index")
+    suspend fun getInitQuestion(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }

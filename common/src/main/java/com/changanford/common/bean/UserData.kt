@@ -66,7 +66,7 @@ data class UserInfoBean(
     val updateTime: String,
     val userId: String,
     val userName: String
-){
+) {
     /**
      * 处理因is开头属性转json丢失数据的问题
      */
@@ -157,6 +157,13 @@ data class CancelReasonBeanItem(
     var reasonId: Int = 0
 )
 
+data class QuestionData(
+    val dictLabel: String,
+    var isCheck: Boolean = false,
+    var reasonId: Int = 0,
+    var dictCode: Int = 0,
+    var dictValue: String =""
+)
 
 data class AddressBeanItem(
     val addressId: Int = 0,

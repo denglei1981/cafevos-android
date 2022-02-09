@@ -7,7 +7,6 @@ import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainAdapter
 import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.viewmodel.CircleViewModel
-import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.room.PostDatabase
@@ -29,6 +28,7 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import android.content.Intent
 import com.alibaba.android.arouter.launcher.ARouter
+import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterHomePath.SplashActivity
 import com.changanford.common.ui.dialog.PostDialog
@@ -37,6 +37,7 @@ import com.changanford.common.ui.dialog.PostDialog
 /**
  * 社区
  */
+@Deprecated("被v2代替了")
 class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
