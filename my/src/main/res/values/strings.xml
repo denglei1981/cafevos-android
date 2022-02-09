@@ -14,5 +14,7 @@
     <string name="my_unauth">认证车主可以获得更多权益</string>
     <string name="my_lovecar">我的爱车</string>
     <string name="my_goauth">去认证</string>
-
+    <string name="prompt_bindMobile">进行下一步操作之前需要先绑定手机号，是否前往绑定？</string>
+    <string name="str_noBinding">暂不绑定</string>
+    <string name="str_immediatelyBinding">立即绑定</string>
 </resources>
