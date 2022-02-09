@@ -2,6 +2,7 @@ package com.changanford.circle.ui.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +41,7 @@ import com.changanford.common.utilext.GlideUtils
 @Composable
 private fun PreviewUI(){
     ComposeQuestionTop()
+    ItemUI()
 }
 @Composable
 fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
@@ -144,4 +147,44 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
       
         }
     }
+}
+
+@Composable
+fun ItemUI(itemData: QuestionInfoBean?=null){
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.White)) {
+        Box {
+            Text(buildAnnotatedString {
+                withStyle(style = ParagraphStyle(lineHeight = 20.sp)) {
+                    withStyle(style = SpanStyle(color = Color.Transparent,fontSize = 15.sp)) {
+                        append(stringResource(R.string.str_vehicleFailure)+"\t")
+                    }
+                    withStyle(style = SpanStyle(color = colorResource(R.color.color_2d),fontSize = 15.sp)) {
+                        append("福克斯 穿越千年的丝绸古道，感叹".repeat(2))
+                    }
+                    withStyle(style = SpanStyle(color = colorResource(R.color.color_E1A743),fontSize = 10.sp)) {
+                        append("\t30福币")
+                    }
+                }
+            })
+            Box(contentAlignment = Alignment.Center, modifier = Modifier
+                .border(
+                    0.5.dp,
+                    color = colorResource(R.color.color_00095B),
+                    shape = RoundedCornerShape(2.dp)
+                )
+                .padding(5.dp, 2.dp)
+                .background(color = Color.White)){
+                Text(text = stringResource(R.string.str_vehicleFailure), color = colorResource(R.color.color_00095B), fontSize = 12.sp)
+            }
+        }
+    }
+}
+/**
+ * img
+* */
+@Composable
+fun ImgUI(imgs:List<String>?){
+
 }

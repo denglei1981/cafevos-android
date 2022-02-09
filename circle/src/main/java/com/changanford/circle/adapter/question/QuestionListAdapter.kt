@@ -9,27 +9,6 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.widget.TextView
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -81,49 +60,12 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoB
                 val strLength=spannableString.length
                 val numberLength=fbNumber.length
                 val startIndex=strLength-numberLength-1
-                val endIndex=strLength
-                spannableString.setSpan(AbsoluteSizeSpan(30), startIndex, endIndex,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(ForegroundColorSpan(android.graphics.Color.parseColor("#E1A743")),startIndex,endIndex,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                val endIndex=strLength
+                spannableString.setSpan(AbsoluteSizeSpan(30), startIndex, strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(ForegroundColorSpan(android.graphics.Color.parseColor("#E1A743")),startIndex,strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 spannableString.setSpan(imageSpan,startIndex-3,startIndex-1,Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
                 text.text = spannableString
             }
         }
     }
-}
-@Composable
-fun ItemUI(itemData: QuestionInfoBean?=null){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
-        Box {
-            Text(buildAnnotatedString {
-                withStyle(style = ParagraphStyle(lineHeight = 20.sp)) {
-                    withStyle(style = SpanStyle(color = Color.Transparent,fontSize = 15.sp)) {
-                        append(stringResource(R.string.str_vehicleFailure)+"\t")
-                    }
-                    withStyle(style = SpanStyle(color = colorResource(R.color.color_2d),fontSize = 15.sp)) {
-                        append("福克斯 穿越千年的丝绸古道，感叹".repeat(2))
-                    }
-                    withStyle(style = SpanStyle(color = colorResource(R.color.color_E1A743),fontSize = 10.sp)) {
-                        append("\t30福币")
-                    }
-                }
-            })
-            Box(contentAlignment = Alignment.Center, modifier = Modifier
-                .border(
-                    0.5.dp,
-                    color = colorResource(R.color.color_00095B),
-                    shape = RoundedCornerShape(2.dp)
-                )
-                .padding(5.dp, 2.dp)
-                .background(color = Color.White)){
-                Text(text = stringResource(R.string.str_vehicleFailure), color = colorResource(R.color.color_00095B), fontSize = 12.sp)
-            }
-        }
-    }
-}
-@Preview
-@Composable
-fun PreviewUI(){
-    ItemUI()
 }
