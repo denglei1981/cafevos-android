@@ -24,10 +24,10 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/homeFragment" />
     </custom_fragment>
-<!--            android:name="com.changanford.car.CarFragmentNoCar"-->
+<!--   android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"         android:name="com.changanford.car.CarFragmentNoCar"-->
     <custom_fragment
         android:id="@+id/carFragment"
-        android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"
+        android:name="com.changanford.car.CarFragmentNoCar"
         android:label="CarFragment" />
     <custom_fragment
         android:id="@+id/shopFragment"

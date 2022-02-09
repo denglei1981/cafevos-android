@@ -46,7 +46,6 @@ import com.changanford.common.utilext.GlideUtils.handleNullableUrl
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import java.util.*
 
 
 class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
@@ -142,7 +141,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 showAuthIntroLayout(it)
             }
         }
-        viewModel._ads.observe(this, {
+        viewModel._ads.observe(this) {
             "中间页广告数量${it.size}".logE()
             if (it == null || it.size == 0) {
                 binding.carTopViewPager.isVisible = false
@@ -153,12 +152,12 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
             topBannerList.clear()
             topBannerList.addAll(it)
             binding.carTopViewPager.create(topBannerList)
-        })
+        }
         observeData()
     }
 
     private fun observeData() {
-        viewModel._middleInfo.observe(this, { it ->
+        viewModel._middleInfo.observe(this) { it ->
             if (it?.carModels.isNullOrEmpty()) {
                 binding.carRecommendLayout.root.isVisible = false
 //                setMinBottom(0)
@@ -197,7 +196,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 carAuthAdapter.data.clear()
                 carAuthAdapter.data.addAll(cars)
             }
-        })
+        }
     }
 
     fun setVPHeight() {
