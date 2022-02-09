@@ -69,6 +69,6 @@
             />
         <activity android:name=".ui.activity.CreateLocationActivity"/>
         <activity android:name=".ui.activity.question.QuestionActivity"/>
-        <activity android:name=".ui.ask.activity.QuestionActivity"/>
+        <activity android:name=".ui.ask.activity.CreateQuestionActivity"/>
     </application>
 </manifest>

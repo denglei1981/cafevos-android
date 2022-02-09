@@ -45,7 +45,7 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, CircleDet
         }
 
         recommendAskAdapter.setOnItemClickListener { adapter, view, position ->
-            startARouter(ARouterCirclePath.QuestionActivity, true)
+            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
         }
 
     }
