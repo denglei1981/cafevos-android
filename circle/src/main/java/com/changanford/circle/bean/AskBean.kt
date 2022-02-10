@@ -29,6 +29,7 @@ data class AskListMainData(
     val jumpValue: String,
     val qaAnswer: QaAnswer? = null,
     val questionType: String,
+    val questionTypeName:String,
     val title: String,
     val viewVal: Int,
     var pisList: List<String>? = null,
