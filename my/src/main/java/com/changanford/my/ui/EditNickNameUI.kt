@@ -3,6 +3,10 @@ package com.changanford.my.ui
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.view.View
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.toast.ToastUtils
@@ -83,8 +87,20 @@ class EditNickNameUI : BaseMineUI<UiEditNicknameBinding, SignViewModel>() {
 //                return@setOnClickListener
 //            }
             viewModel.nameNick(nickName) {
-                LiveDataBus.get().with("MineNickName").postValue(nickName)
-                finish()
+                it.onSuccess {
+                    LiveDataBus.get().with("MineNickName").postValue(nickName)
+                    finish()
+                }
+                it.onWithMsgFailure {
+                    var pop = ConfirmPop(this)
+                    pop.contentText.text = it
+                    pop.cancelBtn.visibility = View.GONE
+                    pop.submitBtn.text = "确认"
+                    pop.submitBtn.setOnClickListener {
+                        pop.dismiss()
+                    }
+                    pop.showPopupWindow()
+                }
             }
         }
     }
