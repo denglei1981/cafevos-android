@@ -16,7 +16,8 @@ data class QuestionInfoBean(val id:String?=null,
                             val anserRankNum: String? = null,
                             val introduction: String? = null,
                             val questionNum: Int = 0,
-                            val user: QuestionUserInfo = QuestionUserInfo()
+                            val user: QuestionUserInfo = QuestionUserInfo(),
+                            var tabs:List<String>?=null,
 ){
     /**
      * 是否是自己
