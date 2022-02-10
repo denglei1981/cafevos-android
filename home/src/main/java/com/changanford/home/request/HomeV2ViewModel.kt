@@ -2,14 +2,21 @@ package com.changanford.home.request
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.WResponseBean
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.MConstant
+import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.FBBean
 import com.changanford.home.data.TwoAdData
 
 class HomeV2ViewModel : BaseViewModel() {
     val twoBannerLiveData = MutableLiveData<UpdateUiState<TwoAdData>>() //
-
+    val fBBeanLiveData = MutableLiveData<FBBean?>()
+    val responseBeanLiveData = MutableLiveData<WResponseBean?>()
 //    val permsLiveData= MutableLiveData<List<String>>()
 
     //app_index_background 背景长图。
@@ -50,5 +57,38 @@ class HomeV2ViewModel : BaseViewModel() {
 //                }
 //        })
 //    }
-
+    /**
+     * 判断用户是否有可领取的微客服小程序积分
+    * */
+    fun isGetIntegral() {
+        if(MConstant.token.isEmpty())return
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().isGetIntegral(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    fBBeanLiveData.postValue(it)
+                }
+        })
+    }
+    /**
+     * 领取微客服小程序积分
+     * */
+    fun doGetIntegral() {
+        if(MConstant.token.isEmpty()){
+            startARouter(ARouterMyPath.SignUI)
+            return
+        }
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().doGetIntegral(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    responseBeanLiveData.postValue(WResponseBean(isSuccess = true))
+                }.onWithMsgFailure {
+                    it?.toast()
+                    responseBeanLiveData.postValue(null)
+                }
+        })
+    }
 }

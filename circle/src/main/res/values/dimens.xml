@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="common_navigator_height">40dp</dimen>
+
+</resources>

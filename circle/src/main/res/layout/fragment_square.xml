@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+
+        android:paddingBottom="50dp">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlEnableOverScrollDrag="true"
+            app:srlEnableLoadMore="false">
+
+            <com.changanford.common.widget.recy.ParentRecyclerView
+                android:id="@+id/ry_circle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+    </LinearLayout>
+</layout>

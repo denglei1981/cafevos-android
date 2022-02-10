@@ -10,6 +10,8 @@ import com.changanford.circle.adapter.CircleAdBannerAdapter
 import com.changanford.circle.adapter.CircleRecommendAdapter
 import com.changanford.circle.adapter.CircleRecommendHotTopicAdapter
 import com.changanford.circle.databinding.FragmentCircleRecommendBinding
+import com.changanford.circle.databinding.FragmentCircleRecommendV2Binding
+import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
@@ -26,16 +28,15 @@ import com.zhpan.bannerview.constants.PageStyle
  *Time on 2021/9/22
  *Purpose
  */
-@Deprecated("过时了")
-class CircleRecommendFragment :
-    BaseFragment<FragmentCircleRecommendBinding, CircleDetailsViewModel>(), OnRefreshListener {
+class CircleRecommendV2Fragment :
+    BaseFragment<FragmentCircleRecommendV2Binding, CircleDetailsViewModel>() {
 
 
 //    private lateinit var mCheckForGapMethod: Method
 
     private val adapter by lazy { CircleRecommendAdapter(requireContext(), this) }
 
-    private val topicAdapter by lazy { CircleRecommendHotTopicAdapter() }
+
 
     private var type = 0
     private var page = 1
@@ -43,17 +44,17 @@ class CircleRecommendFragment :
     private var checkPosition: Int? = null
 
     companion object {
-        fun newInstance(type: Int): CircleRecommendFragment {
+        fun newInstance(type: Int): CircleRecommendV2Fragment {
             val bundle = Bundle()
             bundle.putInt("type", type)
-            val fragment = CircleRecommendFragment()
+            val fragment = CircleRecommendV2Fragment()
             fragment.arguments = bundle
             return fragment
         }
     }
 
     override fun initView() {
-        type = arguments?.getInt("type", 4)!!
+        type = arguments?.getInt("type", 1)!!
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
 //        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
 //        mCheckForGapMethod.isAccessible = true
@@ -79,68 +80,25 @@ class CircleRecommendFragment :
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             checkPosition = position
         }
-        binding.refreshLayout.setOnRefreshListener(this)
+
         viewModel.communityTopic()
         bus()
-        addHeadView()
+
     }
 
     override fun initData() {
         viewModel.getRecommendPostData(type, 1)
-        viewModel.getRecommendTopic()
+
     }
 
-    var headerBinding: LayoutCircleHeaderHotTopicBinding? = null
-    private fun addHeadView() {
-        if (headerBinding == null) {
-            headerBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(requireContext()),
-                R.layout.layout_circle_header_hot_topic,
-                binding.ryCircle,
-                false
-            )
-            headerBinding?.let {
-                adapter.addHeaderView(it.root, 0)
-                it.tvTopicMore.setOnClickListener {
-                    startARouter(ARouterCirclePath.HotTopicActivity)
-                }
-                it.bViewpager.visibility = View.GONE
-                val recommendAdAdapter = CircleAdBannerAdapter()
-                it.bViewpager.setAdapter(recommendAdAdapter)
-                it.bViewpager.setCanLoop(true)
-                it.bViewpager.setIndicatorView(it.drIndicator)
-                it.bViewpager.setAutoPlay(true)
-                it.bViewpager.setScrollDuration(500)
-                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
-                it.bViewpager.create()
-            }
-            setIndicator(headerBinding)
-        }
-    }
 
-    /**
-     * 设置指示器
-     * */
-    private fun setIndicator(binding: LayoutCircleHeaderHotTopicBinding?) {
-        val dp6 = resources.getDimensionPixelOffset(R.dimen.dp_6)
-        binding?.drIndicator?.setIndicatorDrawable(
-            R.drawable.shape_circle_banner_normal,
-            R.drawable.shape_circle_banner_focus
-        )
-            ?.setIndicatorSize(
-                dp6,
-                dp6,
-                resources.getDimensionPixelOffset(R.dimen.dp_20),
-                dp6
-            )
-            ?.setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
-    }
+
+
 
     override fun observe() {
         super.observe()
         viewModel.recommondBean.observe(this, Observer {
             if (page == 1) {
-                binding.refreshLayout.finishRefresh()
                 adapter.setList(it.dataList)
             } else {
                 adapter.addData(it.dataList)
@@ -150,26 +108,7 @@ class CircleRecommendFragment :
                 adapter.loadMoreModule.loadMoreEnd()
             }
         })
-        viewModel.topicBean.observe(this, Observer {
-            headerBinding?.let { hb ->
-                hb.ryTopic.adapter = topicAdapter
-                topicAdapter.setList(it.topics)
-                topicAdapter.setOnItemClickListener { adapter, view, position ->
-                    val bundle = Bundle()
-                    bundle.putString("topicId", topicAdapter.getItem(position).topicId.toString())
-                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
-                }
-            }
-        })
-        viewModel.circleAdBean.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                headerBinding?.bViewpager?.visibility = View.VISIBLE
-                headerBinding?.bViewpager?.refreshData(it)
-            } else {
-                headerBinding?.bViewpager?.visibility = View.GONE
-            }
 
-        })
     }
 
     private fun bus() {
@@ -197,9 +136,13 @@ class CircleRecommendFragment :
         })
     }
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        page = 1
-        viewModel.getRecommendPostData(type, page)
+//    override fun onRefresh(refreshLayout: RefreshLayout) {
+//
+//
+//    }
 
-    }
+   fun  outRefresh(){
+       page = 1
+       viewModel.getRecommendPostData(type, page)
+   }
 }

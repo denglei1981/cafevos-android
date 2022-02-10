@@ -13,15 +13,17 @@
 
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_tab"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:paddingBottom="5dp" />
-
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="2dp"
+        />
         <com.changanford.circle.widget.CircleViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_marginStart="19dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             android:layout_height="match_parent" />
 
     </LinearLayout>
