@@ -14,7 +14,7 @@ import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.compose.ComposeQuestionTop
 import com.changanford.circle.ui.fragment.question.QuestionFragment
-import com.changanford.circle.viewmodel.QuestionViewModel
+import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CirCleHotList

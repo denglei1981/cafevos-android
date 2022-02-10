@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -127,11 +128,9 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
                                         }
                                         if(i>1)withStyle(style = SpanStyle(color = colorResource(R.color.color_99),fontSize = 10.sp)) { append(stringResource(id = R.string.str_name)) }
                                     }
-                                })
+                                }, textAlign = TextAlign.Center)
                             }
-                            Divider(modifier = Modifier
-                                .width(0.5.dp)
-                                .height(40.dp),color = colorResource( R.color.color_f6))
+                            Divider(modifier = Modifier.width(0.5.dp).height(40.dp),color = colorResource( R.color.color_f6))
                         }
                     }
                 }
@@ -141,7 +140,7 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
                 Image(
                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(dataBean?.pic) ?: R.mipmap.head_default,
                         builder = {
-                            crossfade(false)
+                            
                             placeholder(R.mipmap.head_default)
                         }),
                     contentDescription = null,
@@ -151,7 +150,6 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
                         .clip(CircleShape)
                 )
             }
-      
         }
     }
 }
@@ -218,7 +216,7 @@ private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
                 Image(
                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
                         builder = {
-                            crossfade(false)
+                            
                             placeholder(R.mipmap.head_default)
                         }),
                     contentDescription = null,
@@ -236,7 +234,7 @@ private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
                         Image(
                             painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgs[i]) ?: R.mipmap.head_default,
                                 builder = {
-                                    crossfade(false)
+                                    
                                     placeholder(R.mipmap.head_default)
                                 }),
                             contentDescription = null,
@@ -264,7 +262,6 @@ private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
                                 Image(
                                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemList[i]) ?: R.mipmap.head_default,
                                         builder = {
-                                            crossfade(false)
                                             placeholder(R.mipmap.head_default)
                                         }),
                                     contentDescription = null,
@@ -316,7 +313,6 @@ private fun UserInfoUI(){
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
                     builder = {
-                        crossfade(false)
                         placeholder(R.mipmap.head_default)
                     }),
                 contentDescription = null,
