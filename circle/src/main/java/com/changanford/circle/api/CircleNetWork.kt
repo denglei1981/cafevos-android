@@ -1,7 +1,9 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
+import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.MechanicData
 import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse

@@ -1,8 +1,11 @@
 package com.changanford.circle.ui.ask.fragment
 
 import android.view.LayoutInflater
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
@@ -88,6 +91,16 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                 it.tvScreen.setOnClickListener {
                     showScreenDialog()
                 }
+                hotMechanicAdapter.setOnItemClickListener(object :OnItemClickListener{
+                    override fun onItemClick(
+                        adapter: BaseQuickAdapter<*, *>,
+                        view: View,
+                        position: Int
+                    ) {
+                        startARouter(ARouterCirclePath.MechanicMainActivity)
+                    }
+
+                })
 
             }
 
