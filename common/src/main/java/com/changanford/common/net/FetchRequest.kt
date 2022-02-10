@@ -71,7 +71,7 @@ fun <T> CommonResponse<T>.onFailure(block: (T?) -> Unit): CommonResponse<T> {
  * 请求失败或异常的处理
  */
 fun <T> CommonResponse<T>.onWithCodeFailure(block: (Int) -> Unit): CommonResponse<T> {
-        //TODO 做一些统一的处理
+    //TODO 做一些统一的处理
     if (this.code != 0) {
         block(this.code)
     }

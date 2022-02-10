@@ -5,65 +5,69 @@
     <data>
 
     </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="match_parent"
+        android:id="@+id/smartRl">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:background="@color/color_F4"
-                app:layout_behavior="@string/circle_behavior_app_bar_layout">
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_height="match_parent">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:contentScrim="@color/transparent"
+                    android:elevation="0dp"
                     android:background="@color/color_F4"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                    <androidx.compose.ui.platform.ComposeView
-                        android:id="@+id/composeView"
+                    app:layout_behavior="@string/circle_behavior_app_bar_layout">
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+                        app:contentScrim="@color/transparent"
+                        android:background="@color/color_F4"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_collapseMode="pin"
-                        app:contentInsetStart="@dimen/dp_0">
-                        <include
-                            android:id="@+id/in_header"
-                            layout="@layout/header_questionlist"/>
+                        <androidx.compose.ui.platform.ComposeView
+                            android:id="@+id/composeView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
 
-                    </androidx.appcompat.widget.Toolbar>
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_collapseMode="pin"
+                            app:contentInsetStart="@dimen/dp_0">
+                            <include
+                                android:id="@+id/in_header"
+                                layout="@layout/header_questionlist"/>
 
-                <net.lucode.hackware.magicindicator.MagicIndicator
-                    android:layout_marginTop="@dimen/dp_20"
+                        </androidx.appcompat.widget.Toolbar>
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                    <net.lucode.hackware.magicindicator.MagicIndicator
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:background="@color/color_F4"
+                        android:id="@+id/magic_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_30"
+                        android:layout_gravity="center_horizontal"/>
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/dp_14"
+                    android:paddingStart="@dimen/dp_20"
+                    android:paddingEnd="@dimen/dp_20"
                     android:background="@color/color_F4"
-                    android:id="@+id/magic_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center_horizontal"/>
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/dp_14"
-                android:paddingStart="@dimen/dp_20"
-                android:paddingEnd="@dimen/dp_20"
-                android:background="@color/color_F4"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

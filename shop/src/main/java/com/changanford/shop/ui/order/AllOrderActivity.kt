@@ -48,20 +48,22 @@ class AllOrderActivity:BaseActivity<ActOrderAllBinding, OrderViewModel>(),
     }
 
     override fun initData() {
-        viewModel.shopOrderData.observe(this,{
+        viewModel.shopOrderData.observe(this) {
             it?.let {
-                mAdapter.nowTime=it.nowTime
-                if(1==pageNo)mAdapter.setList(it.dataList)
+                mAdapter.nowTime = it.nowTime
+                if (1 == pageNo) mAdapter.setList(it.dataList)
                 else mAdapter.addData(it.dataList)
             }
-            if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+            if (null == it || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
+                false
+            )
             else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
 //            if(null==it|| it.dataList.isEmpty())pageNo--
 //            binding.smartRl.finishLoadMore()
 //            binding.smartRl.finishRefresh()
-        })
+        }
         viewModel.getAllOrderList(pageNo,showLoading = true)
 //        viewModel.getOrderKey()
     }

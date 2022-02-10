@@ -39,10 +39,10 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
             isRequest=true
         }
-        viewModel.goodsListData.observe(this,{
-            isRequest=false
+        viewModel.goodsListData.observe(this) {
+            isRequest = false
             bindingData(it)
-        })
+        }
         binding.smartRl.setOnLoadMoreListener {
             pageNo++
             viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
