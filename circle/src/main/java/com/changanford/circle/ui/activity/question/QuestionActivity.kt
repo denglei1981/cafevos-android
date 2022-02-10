@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
@@ -52,15 +53,15 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
          * [personalPageType]
         * */
         fun start(conQaUjId:String?=null,type:Int?=0,personalPageType:Int?=0){
-            startARouter(ARouterCirclePath.QuestionActivity)
+//            startARouter(ARouterCirclePath.QuestionActivity)
             JumpUtils.instans?.jump(114,"{\"conQaUjId\": \"$conQaUjId\",\"type\": \"${type?:0}\",\"personalPageType\":\"${personalPageType?:0}\"}")
         }
         /**
          * [conQaUjId]被查看人的问答参与表id
          * */
         fun start(conQaUjId:String?=null){
-            startARouter(ARouterCirclePath.QuestionActivity)
-            JumpUtils.instans?.jump(114,conQaUjId)
+            if(conQaUjId==null&&BuildConfig.DEBUG)JumpUtils.instans?.jump(114,"5")
+            else JumpUtils.instans?.jump(114,conQaUjId)
         }
     }
     private var isWhite = true//是否是白色状态
@@ -69,6 +70,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
+        initAppbarLayout()
         intent.getStringExtra("value")?.apply {
             if(this.startsWith("{")){
                 JSON.parseObject(this)?.apply {
@@ -86,13 +88,12 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 startARouter(ARouterCirclePath.CreateQuestionActivity)
             }
         }
-        initAppbarLayout()
     }
     override fun initData() {
         viewModel.questionInfoBean.observe(this){
             it?.apply {
                 binding.composeView.setContent {
-                    ComposeQuestionTop(this)
+                    ComposeQuestionTop(this@QuestionActivity,this)
                 }
                 val tabs=it.getTabs(this@QuestionActivity)
                 initTabAndViewPager(tabs,isOneself())

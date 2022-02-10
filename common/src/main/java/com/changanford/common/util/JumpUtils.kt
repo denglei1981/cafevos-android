@@ -650,7 +650,7 @@ class JumpUtils {
             114->{//我的问答它的问答
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("value", value)
-                    startARouter(ARouterShopPath.OrderEvaluationActivity, bundle, true)
+                    startARouter(ARouterCirclePath.QuestionActivity, bundle, true)
                 }
             }
             10000 -> {

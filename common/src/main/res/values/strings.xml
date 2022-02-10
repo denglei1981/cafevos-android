@@ -49,4 +49,7 @@
     <string name="str_taQuestions">TA的提问</string>
     <string name="str_taAnswer">TA的回答</string>
     <string name="str_accepted">被采纳</string>
+    <string name="str_questionsTotalNumber">提问总数</string>
+    <string name="str_answerTotalNumber">答题总数</string>
+    <string name="str_acceptedTotalNumber">采纳总数</string>
 </resources>

@@ -16,6 +16,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemQuestionBinding
 import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionItemBean
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
 import kotlin.math.floor
 
@@ -28,15 +29,18 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionItemB
         holder.dataBinding?.apply {
 //            WCommonUtil.htmlToImgStr(activity,tvTitle,"$str<img src=\"${R.mipmap.question_fb}\"/>" +
 //                    "<font color=\"#E1A743\"><myfont size='30px'>20</myfont></font>","myfont")
-            val fbNumber="${itemData.fbReward}福币"
+            val fbReward=itemData.fbReward
+            val fbNumber="${fbReward}福币"
             val tagName=itemData.questionTypeName
             val starStr=" ".repeat(tagName.length*3)
-            val str="$starStr   ${itemData.title}    $fbNumber"
-            setTxt(context,tvTitle,str,fbNumber)
+            val str="$starStr   ${itemData.title}"
+            if(fbReward==null||fbReward=="0")tvTitle.text=str
+            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
                 QuestionItemUI(itemData,viewWidth)
             }
+            root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
         }
     }
     @SuppressLint("SetTextI18n")

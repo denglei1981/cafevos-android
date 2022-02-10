@@ -7,12 +7,12 @@
     </data>
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/smartRl">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/dp_10"
             android:background="@drawable/circle_white_5_bg"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

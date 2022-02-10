@@ -13,12 +13,12 @@ data class QuestionInfoBean(
     val id:String?=null,
     val pic:String?=null,
     val imgs:List<String>?=null,
-    val adoptNum: Int = 0,
+    val adoptNum: String = "0",
     val adoptRankNum: String? = null,
-    val anserNum: Int = 0,
+    val anserNum: String? = "0",
     val anserRankNum: String? = null,
     val introduction: String? = null,
-    val questionNum: Int = 0,
+    val questionNum: String? = "0",
     val user: QuestionUserInfo = QuestionUserInfo(),
     val dataList:ArrayList<QuestionItemBean>?=null,
     val pageNo: Int = 0,
@@ -79,6 +79,35 @@ data class QuestionInfoBean(
         }
         return tabs
     }
+    /**
+     * 个人中心 types
+    * */
+    fun getStatisticalTypes(context:Context):List<QuestionTagBean>{
+        val isOneself=isOneself()
+        val tags= arrayListOf<QuestionTagBean>()
+        when(user.identity){
+            //技师
+            "TECHNICIAN"->{
+                tags.apply {
+                    add(QuestionTagBean(context.getString(R.string.str_answerTotalNumber),anserNum))
+                    add(QuestionTagBean(context.getString(R.string.str_acceptedTotalNumber),adoptNum))
+                    if(isOneself){
+                        add(QuestionTagBean(context.getString(R.string.str_replyToList),anserRankNum))
+                        add(QuestionTagBean(context.getString(R.string.str_adoptionList),adoptRankNum))
+                    }
+                }
+            }
+            //普通 、 车主
+            else->{
+                tags.apply {
+                    add(QuestionTagBean(context.getString(R.string.str_questionsTotalNumber),questionNum))
+                    add(QuestionTagBean(context.getString(R.string.str_answerTotalNumber),anserNum))
+                    add(QuestionTagBean(context.getString(R.string.str_acceptedTotalNumber),adoptNum))
+                }
+            }
+        }
+        return tags
+    }
 }
 data class QuestionUserInfo(
     val avater: String? = null,
@@ -97,13 +126,21 @@ data class QuestionItemBean(
     val conQaQuestionId: String? = null,
     val content: String = "",
     val createTime: Long = 0,
-    val fbReward: Int = 0,
+    val fbReward: String? = null,
     val imgs: String? = null,
-    val jumpType: String = "",
+    val jumpType: Int = 0,
     val jumpValue: String? = null,
-    val qaAnswer: Any? = null,
+    val qaAnswer: AnswerInfoBean? = null,
     val questionType: String = "",
     val questionTypeName: String = "",
     val title: String? = null,
-    val viewVal: Int = 0
+    val viewVal: String? = null,
+)
+data class AnswerInfoBean(
+    val adopt:String?=null,
+    val answerTime:String?=null,
+    val conQaAnswerId:String?=null,
+    val content:String?=null,
+    val replyCount:String?=null,
+    val qaUserVO:QuestionUserInfo?=null,
 )
