@@ -18,13 +18,15 @@ import com.changanford.circle.ui.fragment.question.QuestionFragment
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.CirCleHotList
+import com.changanford.common.bean.QuestionTagBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.tools.ScreenUtils
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -41,7 +43,8 @@ import kotlin.math.abs
  * @Description : 我的问答、TA的问答
  */
 @Route(path = ARouterCirclePath.QuestionActivity)
-class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>() {
+class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(),
+    OnRefreshListener {
     companion object{
         /**
          * [conQaUjId]被查看人的问答参与表id
@@ -61,10 +64,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         }
     }
     private var isWhite = true//是否是白色状态
-    private var conQaUjId:String=""
+    private var conQaUjId:String="5"
     private var type=0
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+        initSmartRefreshLayout()
         intent.getStringExtra("value")?.apply {
             if(this.startsWith("{")){
                 JSON.parseObject(this)?.apply {
@@ -85,39 +89,45 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         initAppbarLayout()
     }
     override fun initData() {
-        initTestData()
         viewModel.questionInfoBean.observe(this){
-            binding.composeView.setContent {
-                ComposeQuestionTop(it)
+            it?.apply {
+                binding.composeView.setContent {
+                    ComposeQuestionTop(this)
+                }
+                val tabs=it.getTabs(this@QuestionActivity)
+                initTabAndViewPager(tabs,isOneself())
+                initMagicIndicator(tabs)
+                binding.smartRl.finishRefresh()
             }
         }
         viewModel.personalQA(conQaUjId)
     }
-    private fun initTestData(){
-        val tabs= arrayListOf<CirCleHotList>()
-        val tabName= arrayListOf("我的提问","我的回答","回答被采纳")
-        for (i in 0..2){
-            tabs.add(CirCleHotList(topName = tabName[i]))
-        }
-        initTabAndViewPager(tabs)
-        initMagicIndicator(tabs)
+    private fun initSmartRefreshLayout(){
+        //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
+            binding.smartRl.isEnabled = i >= 0
+        } as AppBarLayout.BaseOnOffsetChangedListener<*>)
+        binding.smartRl.setOnRefreshListener(this)
     }
-    private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
-        binding.viewPager.apply {adapter = @SuppressLint("WrongConstant")
+    private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean) {
+        binding.viewPager.apply {
+            removeAllViews()
+            adapter = @SuppressLint("WrongConstant")
         object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getCount(): Int {
                     return tabs.size
                 }
                 override fun getItem(position: Int): Fragment {
-                    return QuestionFragment.newInstance(tabs[position].topId)
+                    return QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself)
                 }
             }
             offscreenPageLimit = 3
         }
     }
 
-    private fun initMagicIndicator(tabs:MutableList<CirCleHotList>) {
+    private fun initMagicIndicator(tabs:MutableList<QuestionTagBean>) {
         val magicIndicator = binding.magicTab
+        magicIndicator.removeAllViews()
         magicIndicator.setBackgroundResource(R.color.color_F4)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
@@ -130,7 +140,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.apply {
                     gravity= Gravity.CENTER_HORIZONTAL
-                    text = tabs[index].topName
+                    text = tabs[index].tagName
                     textSize = 18f
                     setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
                     width= com.changanford.common.wutil.ScreenUtils.getScreenWidth(this@QuestionActivity)/3
@@ -192,5 +202,9 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
 //                binding.tvTitle.alpha = 1.0F
             }
         })
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.personalQA(conQaUjId)
     }
 }

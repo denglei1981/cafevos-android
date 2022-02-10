@@ -15,23 +15,23 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemQuestionBinding
 import com.changanford.circle.ui.compose.QuestionItemUI
-import com.changanford.common.bean.QuestionInfoBean
+import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.wutil.ScreenUtils
 import kotlin.math.floor
 
 
-class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoBean, BaseDataBindingHolder<ItemQuestionBinding>>(
+class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
     private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context)-60 }
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionInfoBean) {
-        val fbNumber="603福币"
-        val tagName="车辆故障"
-        val starStr=" ".repeat(tagName.length*3)
-        val str="$starStr   福克斯 穿越千年的丝绸古道，感叹福克斯 穿越千年的丝绸古道，感叹    $fbNumber"
+    override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
 //            WCommonUtil.htmlToImgStr(activity,tvTitle,"$str<img src=\"${R.mipmap.question_fb}\"/>" +
 //                    "<font color=\"#E1A743\"><myfont size='30px'>20</myfont></font>","myfont")
+            val fbNumber="${itemData.fbReward}福币"
+            val tagName=itemData.questionTypeName
+            val starStr=" ".repeat(tagName.length*3)
+            val str="$starStr   ${itemData.title}    $fbNumber"
             setTxt(context,tvTitle,str,fbNumber)
             tvTag.text=tagName
             composeView.setContent {
@@ -53,7 +53,8 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionInfoB
             //计算TextView一行能够放下多少个字符
             val numberPerLine = floor((text.width / widthPerChar).toDouble()).toInt()
             //在原始字符串中插入一个空格，插入的位置为numberPerLine - 1
-            val stringBuilder: StringBuilder =StringBuilder(str).insert(numberPerLine - 1, " ")
+//            val stringBuilder: StringBuilder =StringBuilder(str).insert(numberPerLine - 1, " ")
+            val stringBuilder: StringBuilder =if(str.length<=numberPerLine)StringBuilder(str) else StringBuilder(str).insert(numberPerLine - 1, " ")
             //SpannableString的构建
             val spannableString = SpannableString("$stringBuilder ")
             val drawable = ContextCompat.getDrawable(context,R.mipmap.question_fb)

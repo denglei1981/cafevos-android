@@ -42,4 +42,11 @@
     <string name="str_immediatelyViesToAnswerFirst">立即抢答</string>
     <string name="str_questionHasNotBeenAnswered">该提问还没有人回答</string>
     <string name="str_hasBeenAdopted">已采纳</string>
+    <string name="str_myQuestions">我的提问</string>
+    <string name="str_myAnswer">我的回答</string>
+    <string name="str_answerAccepted">回答被采纳</string>
+    <string name="str_invitedToAnswer">邀请回答</string>
+    <string name="str_taQuestions">TA的提问</string>
+    <string name="str_taAnswer">TA的回答</string>
+    <string name="str_accepted">被采纳</string>
 </resources>

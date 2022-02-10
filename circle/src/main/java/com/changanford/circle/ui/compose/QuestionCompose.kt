@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.changanford.circle.R
 import com.changanford.common.bean.QuestionInfoBean
+import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.utilext.GlideUtils
 
 /**
@@ -150,7 +151,7 @@ fun ComposeQuestionTop(dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun QuestionItemUI(itemData: QuestionInfoBean?=null,viewWidthDp:Int=0){
+fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0){
     itemData?.apply {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -201,12 +202,12 @@ private fun TopUI(){
  *[viewWidthDp]view宽度
 * */
 @Composable
-private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
-    imgs?.apply {
+private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
+    imgs?.split(",")?.filter { it!="" }?.apply {
         when (size) {
             0->{}
             1 -> {
-                val pic=imgs[0]
+                val pic=this[0]
                 val imgSize=viewWidthDp*0.49
                 Image(
                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
@@ -227,7 +228,7 @@ private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
                 Row(modifier = Modifier.fillMaxWidth()) {
                     for(i in 0 until size){
                         Image(
-                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgs[i]) ?: R.mipmap.head_default,
+                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this@apply[i]) ?: R.mipmap.head_default,
                                 builder = {
                                     
                                     placeholder(R.mipmap.head_default)
@@ -250,8 +251,8 @@ private fun ImgsUI(imgs:List<String>?,viewWidthDp:Int=0){
                     val columnSize=2//一排几列
                     for(row in 0 until rowTotal){
                         val startIndex=row*columnSize
-                        val endIndex=if(row!=rowTotal-1)(row+1)*columnSize else imgs.size
-                        val itemList=imgs.slice(startIndex until endIndex)
+                        val endIndex=if(row!=rowTotal-1)(row+1)*columnSize else size
+                        val itemList=slice(startIndex until endIndex)
                         Row(modifier = Modifier.fillMaxWidth()) {
                             for(i in 0 until columnSize){
                                 Image(
