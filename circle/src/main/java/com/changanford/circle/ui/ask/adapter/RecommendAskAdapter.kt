@@ -3,10 +3,14 @@ package com.changanford.circle.ui.ask.adapter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Paint.FontMetricsInt
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.view.View
 import android.widget.TextView
@@ -26,6 +30,7 @@ import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
@@ -40,6 +45,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
         addItemType(0, R.layout.item_recommend_ask_no_answer)  //默认选择模块
         addItemType(1, R.layout.item_recommend_ask_answer_pic)
         addItemType(2, R.layout.item_recommend_ask_no_answer)
+        addItemType(3,R.layout.empty_ask)
     }
 
     override fun convert(holder: BaseViewHolder, item: AskListMainData) {
@@ -51,6 +57,9 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
             1 -> {
                 //有答案。
                 hasAnswer(holder.itemView, item)
+            }
+            3->{
+
             }
             else -> {
                 noAnswer(holder.itemView, item)
@@ -65,7 +74,8 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
     }
 
     private fun showQuestion(binding: ItemRecommendAskAnswerPicBinding?, item: AskListMainData) {
-        binding?.layoutAskInfo?.tvTitle?.text = item.content
+        binding?.layoutAskInfo?.tvTag?.text=item.questionTypeName
+        showTag(binding?.layoutAskInfo?.tvTitle,item)
         val picList = item.getPicLists()
         if (picList?.isEmpty() == false) {
             when {
@@ -75,6 +85,8 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                         val imageInfo = ImageInfo()
                         imageInfo.bigImageUrl = it
                         imageInfo.thumbnailUrl = it
+                        imageInfo.jumpType=item.jumpType
+                        imageInfo.jumpValue=item.jumpValue
                         imageInfoList.add(imageInfo)
                     }
                     val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
@@ -109,7 +121,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
     }
 
     fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
-        binding?.layoutAskInfo?.tvTitle?.text = item.content
+        binding?.layoutAskInfo?.tvTag?.text=item.questionTypeName
         showTag(binding?.layoutAskInfo?.tvTitle,item)
         val picList = item.getPicLists()
         if (picList?.isEmpty() == false) {
@@ -120,6 +132,8 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                         val imageInfo = ImageInfo()
                         imageInfo.bigImageUrl = it
                         imageInfo.thumbnailUrl = it
+                        imageInfo.jumpType=item.jumpType
+                        imageInfo.jumpValue=item.jumpValue
                         imageInfoList.add(imageInfo)
                     }
                     val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
@@ -146,61 +160,69 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
         }
     }
 
-    fun showTag(tvTag: AppCompatTextView?, item: AskListMainData){
-
-
-        var titleAndTag="车辆故障"+item.title
-
-        val tagBg =  ContextCompat.getDrawable(context,R.drawable.shap_00095_shader)
-
-        val spannableString = SpannableString(titleAndTag)
-
-        spannableString.setSpan(ImageSpan(tagBg!!),0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        spannableString.setSpan(object : ImageSpan(tagBg) {
-            override fun draw(
-                canvas: Canvas,
-                text: CharSequence,
-                start: Int,
-                end: Int,
-                x: Float,
-                top: Int,
-                y: Int,
-                bottom: Int,
-                paint: Paint
-            ) {
-                paint.typeface = Typeface.create("normal", Typeface.BOLD)
-                paint.textSize = 50f
-                val len = paint.measureText(text, start, end).roundToInt()
-                drawable.setBounds(0, 0, len, 60)
-                super.draw(canvas, text, start, end, x, top, y, bottom, paint)
-                paint.color = Color.BLUE
-                paint.typeface = Typeface.create("normal", Typeface.BOLD)
-                paint.textSize = 40f
-                canvas.drawText(text.subSequence(start, end).toString(), x + 10, y.toFloat(), paint)
+    fun showTag(text: AppCompatTextView?, item: AskListMainData){
+        if(item.fbReward<=0){
+            showZero(text ,item)
+            return
+        }
+        val fbNumber=item.fbReward.toString().plus("福币")
+        val tagName=item.questionTypeName
+        val starStr=" ".repeat(tagName.length*3)
+        val str="$starStr\t\t\t\t${item.title} [icon] $fbNumber"
+        //先设置原始文本
+        text?.text=str
+        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
+        text?.post { //获取第一行的宽度
+            val stringBuilder: StringBuilder =StringBuilder(str)
+            //SpannableString的构建
+            val spannableString = SpannableString("$stringBuilder ")
+            val drawable = ContextCompat.getDrawable(context,R.mipmap.question_fb)
+            drawable?.apply {
+                val imageSpan = CustomImageSpan(this)
+                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+                val strLength=spannableString.length
+                val numberLength=fbNumber.length
+                val startIndex=strLength-numberLength-1
+                spannableString.setSpan(AbsoluteSizeSpan(30), startIndex, strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#E1A743")),startIndex,strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(imageSpan,str.lastIndexOf("["),str.lastIndexOf("]")+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                text.text = spannableString
             }
-        }, 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
 
+    fun showZero(text: AppCompatTextView?, item: AskListMainData){
+        val tagName=item.questionTypeName
+        val starStr=" ".repeat(tagName.length*3)
+        val str="$starStr\t\t\t\t${item.title}"
+        //先设置原始文本
+        text?.text=str
+    }
 
-//        Drawable bg = getResources().getDrawable(R.drawable.text_background);
-//        msp.setSpan(new ImageSpan(bg) {
-//            @Override
-//            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
-//                int bottom, Paint paint) {
-//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-//                paint.setTextSize(50);
-//                int len = Math.round(paint.measureText(text, start, end));
-//                getDrawable().setBounds(0, 0, len, 60);
-//                super.draw(canvas, text, start, end, x, top, y, bottom, paint);
-//                paint.setColor(Color.BLUE);
-//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-//                paint.setTextSize(40);
-//                canvas.drawText(text.subSequence(start, end).toString(), x + 10, y, paint);
-//            }
-//        }, 57, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    /**
+     * 自定义imageSpan实现图片与文字的居中对齐
+     */
+    internal class CustomImageSpan(drawable: Drawable?) : ImageSpan(drawable!!) {
+        override fun draw(
+            canvas: Canvas,
+            text: CharSequence,
+            start: Int,
+            end: Int,
+            x: Float,
+            top: Int,
+            y: Int,
+            bottom: Int,
+            paint: Paint
+        ) {
+            val fm = paint.fontMetricsInt
+            val drawable = drawable
 
-        tvTag?.text = spannableString
-
+            val transY = (y + fm.descent + y + fm.ascent) / 2-drawable.bounds.bottom / 2 + 2
+            canvas.save()
+            canvas.translate(x, transY.toFloat())
+            drawable.draw(canvas)
+            canvas.restore()
+        }
     }
 
 }
