@@ -647,7 +647,12 @@ class JumpUtils {
             113->{//话题列表
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
-
+            114->{//我的问答它的问答
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("value", value)
+                    startARouter(ARouterShopPath.OrderEvaluationActivity, bundle, true)
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

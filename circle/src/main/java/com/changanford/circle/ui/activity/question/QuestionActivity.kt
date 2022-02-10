@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
@@ -20,6 +21,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.tools.ScreenUtils
@@ -41,25 +43,55 @@ import kotlin.math.abs
 @Route(path = ARouterCirclePath.QuestionActivity)
 class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>() {
     companion object{
+        /**
+         * [conQaUjId]被查看人的问答参与表id
+         * [type]0普通用户问答个人页面 、1车主问答个人页面、2技师问答个人页面  3 TA的问答
+         * [personalPageType]
+        * */
+        fun start(conQaUjId:String?=null,type:Int?=0,personalPageType:Int?=0){
+            startARouter(ARouterCirclePath.QuestionActivity)
+            JumpUtils.instans?.jump(114,"{\"conQaUjId\": \"$conQaUjId\",\"type\": \"${type?:0}\",\"personalPageType\":\"${personalPageType?:0}\"}")
+        }
+        /**
+         * [conQaUjId]被查看人的问答参与表id
+         * */
         fun start(conQaUjId:String?=null){
             startARouter(ARouterCirclePath.QuestionActivity)
+            JumpUtils.instans?.jump(114,conQaUjId)
         }
     }
     private var isWhite = true//是否是白色状态
+    private var conQaUjId:String=""
+    private var type=0
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+        intent.getStringExtra("value")?.apply {
+            if(this.startsWith("{")){
+                JSON.parseObject(this)?.apply {
+                    conQaUjId=getString("conQaUjId")
+                    type=getIntValue("type")
+                }
+            }else{
+                conQaUjId=this
+            }
+        }
         binding.inHeader.run {
             imgBack.setOnClickListener { finish() }
             topBar.setPadding(0,ScreenUtils.getStatusBarHeight(this@QuestionActivity)+10,0,ScreenUtils.dip2px(this@QuestionActivity,10f))
+            tvAskQuestions.setOnClickListener {
+                startARouter(ARouterCirclePath.CreateQuestionActivity)
+            }
         }
         initAppbarLayout()
-        binding.composeView.setContent {
-            ComposeQuestionTop()
-        }
     }
     override fun initData() {
         initTestData()
-        viewModel.personalQA()
+        viewModel.questionInfoBean.observe(this){
+            binding.composeView.setContent {
+                ComposeQuestionTop(it)
+            }
+        }
+        viewModel.personalQA(conQaUjId)
     }
     private fun initTestData(){
         val tabs= arrayListOf<CirCleHotList>()
