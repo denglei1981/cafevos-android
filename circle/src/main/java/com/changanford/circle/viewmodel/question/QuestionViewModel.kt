@@ -18,10 +18,14 @@ class QuestionViewModel:BaseViewModel() {
     val questionInfoBean= MutableLiveData<QuestionInfoBean?>()
     /**
      * 我/TA的问答
+     * [conQaUjId]被查看人的问答参与表id
      * */
-    fun personalQA(){
+    fun personalQA(conQaUjId:String?=null){
         launch(block = {
             val body = MyApp.mContext.createHashMap()
+            conQaUjId?.apply {
+                body["conQaUjId"]=this
+            }
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().personalQA(body.header(rKey), body.body(rKey)).onSuccess {
                 questionInfoBean.postValue(it)

@@ -41,7 +41,7 @@ import kotlin.math.abs
 @Route(path = ARouterCirclePath.QuestionActivity)
 class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>() {
     companion object{
-        fun start(){
+        fun start(conQaUjId:String?=null){
             startARouter(ARouterCirclePath.QuestionActivity)
         }
     }
@@ -57,8 +57,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             ComposeQuestionTop()
         }
     }
-
     override fun initData() {
+        initTestData()
+        viewModel.personalQA()
+    }
+    private fun initTestData(){
         val tabs= arrayListOf<CirCleHotList>()
         val tabName= arrayListOf("我的提问","我的回答","回答被采纳")
         for (i in 0..2){
