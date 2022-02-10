@@ -8,8 +8,10 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.changanford.common.router.path.ARouterCirclePath;
+import com.changanford.common.util.JumpUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -45,13 +47,13 @@ public class AssNineGridViewAskClickAdapter extends AssNineGridViewAdapter {
             info.imageViewX = points[0];
             info.imageViewY = points[1] - statusHeight;
         }
-        // TODO 预览
-        String topicId = imageInfo.get(0).postId;
-        if(!TextUtils.isEmpty(topicId)){
-            Bundle bundle =new  Bundle();
-            bundle.putString("postsId", imageInfo.get(0).postId);
-            startARouter(ARouterCirclePath.PostDetailsActivity, bundle);
-        }
+
+        ImageInfo imageInfo1 = imageInfo.get(0);
+         try{
+             Objects.requireNonNull(JumpUtils.getInstans()).jump(Integer.valueOf(imageInfo1.jumpType),imageInfo1.jumpValue);
+         }catch (Exception e){
+             e.printStackTrace();
+         }
 
     }
 

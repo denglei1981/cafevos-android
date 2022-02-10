@@ -18,25 +18,29 @@ data class TecnicianVo(
 
 
 data class AskListMainData(
-    val adopt: String,
-    val answerCount: Int,
-    val conQaQuestionId: Int,
-    val content: String,
-    val createTime: String,
-    val fbReward: Int,
+    var adopt: String="",
+    var answerCount: Int=-1,
+    var conQaQuestionId: Int=-1,
+    var content: String="",
+    var createTime: String="",
+    var fbReward: Int=0,
     var imgs: String = "",
-    val jumpType: String,
-    val jumpValue: String,
-    val qaAnswer: QaAnswer? = null,
-    val questionType: String,
-    val questionTypeName:String,
-    val title: String,
-    val viewVal: Int,
+    var jumpType: String="",
+    var jumpValue: String="",
+    var qaAnswer: QaAnswer? = null,
+    var questionType: String="",
+    var questionTypeName:String="",
+    var title: String="",
+    var viewVal: Int=-1,
     var pisList: List<String>? = null,
+    var emptyType:Int=-1
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         qaAnswer?.let {
             return 1
+        }
+        if(emptyType==1){
+            return 3
         }
         return 2 //  mei you hui da
     }

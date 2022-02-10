@@ -15,6 +15,8 @@ public class ImageInfo implements Serializable {
     public int imageViewWidth;
     public int imageViewX;
     public int imageViewY;
+    public String jumpType;
+    public String jumpValue;
 
 
     public String postId;
