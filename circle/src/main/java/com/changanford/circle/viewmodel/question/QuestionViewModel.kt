@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.NewCircleDataBean
+import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -15,8 +15,7 @@ import com.changanford.common.utilext.toast
  * @Description : QuestionViewModel
  */
 class QuestionViewModel:BaseViewModel() {
-    //圈子列表
-    val circleListData= MutableLiveData<NewCircleDataBean?>()
+    val questionInfoBean= MutableLiveData<QuestionInfoBean?>()
     /**
      * 我/TA的问答
      * */
@@ -24,7 +23,8 @@ class QuestionViewModel:BaseViewModel() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().circleHome(body.header(rKey), body.body(rKey)).onSuccess {
+            ApiClient.createApi<CircleNetWork>().personalQA(body.header(rKey), body.body(rKey)).onSuccess {
+                questionInfoBean.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
             }
