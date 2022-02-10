@@ -16,7 +16,6 @@
             android:id="@+id/iv_hot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
             android:src="@drawable/icon_home_mechanic_hot_one"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +23,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_header"
-            android:layout_width="49dp"
-            android:layout_height="@dimen/dp_49"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginTop="@dimen/dp_3"
             android:background="@drawable/image_recommed_default"
             android:padding="3dp"

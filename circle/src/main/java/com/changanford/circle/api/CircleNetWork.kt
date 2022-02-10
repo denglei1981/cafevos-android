@@ -502,6 +502,16 @@ interface CircleNetWork {
     suspend fun getInitQuestion(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
+    ): CommonResponse<MechanicData>
+
+
+
+
+    @POST("qa/qustions")
+    suspend fun getRecommendQuestionList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<AskListMainData>>
     ): CommonResponse<String>
     /**
      * 我/TA的问答
