@@ -126,8 +126,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                         override fun onCancel() {
 
                         }
-
-                    })
+                    },    maxNum = 10)
             } else {
                 val bundle = Bundle()
                 bundle.putParcelableArrayList("picList", selectList)
