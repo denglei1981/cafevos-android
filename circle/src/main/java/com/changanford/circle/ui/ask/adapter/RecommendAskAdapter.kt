@@ -183,7 +183,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 //                val endIndex=strLength
                 spannableString.setSpan(AbsoluteSizeSpan(30), startIndex, strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#E1A743")),startIndex,strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(imageSpan,str.indexOf("["),str.indexOf("]")+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(imageSpan,str.lastIndexOf("["),str.lastIndexOf("]")+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 text.text = spannableString
             }
         }
