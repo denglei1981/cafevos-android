@@ -38,7 +38,6 @@ import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -62,6 +61,10 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     var headIconUrl: String = ""//头像Http地址
 
     var cityBean: CityBean = CityBean()
+
+    val twoBtnPop: ConfirmTwoBtnPop by lazy {
+        ConfirmTwoBtnPop(this)
+    }
 
     lateinit var dialog: LoadDialog
 
@@ -192,6 +195,20 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         binding.tvFordAuth.setOnClickListener {
             JumpUtils.instans?.jump(49)
         }
+
+        LiveDataBus.get().with(
+            "MineNickName",
+            String::class.java
+        ).observe(this, Observer<String?> {
+            Log.e("---------", it)
+            //需要审核
+//            binding.editNickname.rightDesc = it
+            body["nickname"] = it.toString()
+
+            var map = HashMap<String, String>()
+            map["nickname"] = it.toString()
+            saveUserInfo(true, map)
+        })
     }
 
     override fun initData() {
@@ -302,7 +319,8 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         }
         viewModel.saveUniUserInfo(body)
     }
-    private fun createPop(){
+
+    private fun createPop() {
         ConfirmPop(BaseApplication.curActivity).apply {
             contentText.setText(R.string.prompt_bindMobile)
             cancelBtn.setText(R.string.str_noBinding)
@@ -314,8 +332,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             showPopupWindow()
         }
     }
+
     override fun onClick(v: View?) {
-        if(MineUtils.getBindMobileJumpDataType(false)){
+        if (MineUtils.getBindMobileJumpDataType(false)) {
             createPop()
             return
         }
@@ -368,23 +387,6 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 )
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        LiveDataBus.get().with(
-            "MineNickName",
-            String::class.java
-        ).observe(this, Observer<String?> {
-            Log.e("---------", it)
-            //需要审核
-//            binding.editNickname.rightDesc = it
-            body["nickname"] = it.toString()
-
-            var map = HashMap<String, String>()
-            map["nickname"] = it.toString()
-            saveUserInfo(true, map)
-        })
     }
 
     /**
@@ -484,7 +486,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             response.onSuccess {
                 dialog.dismiss()
                 if (isShowDialog) {
-                    ConfirmTwoBtnPop(this).apply {
+                    twoBtnPop.apply {
                         contentText.text = response.msg
                         btnCancel.visibility = View.GONE
                         btnConfirm.text = "我知道了"
@@ -497,6 +499,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 }
             }
             response.onFailure {
+                dialog.dismiss()
                 showToast(response.msg)
             }
         }
