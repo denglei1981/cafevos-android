@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity.question
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -92,6 +93,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     override fun initData() {
         viewModel.questionInfoBean.observe(this){
             it?.apply {
+                //是否显示提问入口
+                binding.inHeader.tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
                 binding.composeView.setContent {
                     ComposeQuestionTop(this@QuestionActivity,this)
                 }

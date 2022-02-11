@@ -44,6 +44,13 @@ data class QuestionInfoBean(
         }
     }
     /**
+     * 是否可以提问
+     * 是自己并且不是技师才可以提问
+    * */
+    fun getIsQuestion():Boolean{
+        return isOneself()&&getIdentity()!=1
+    }
+    /**
      * 获取tab
     * */
     fun getTabs(context:Context):ArrayList<QuestionTagBean>{
