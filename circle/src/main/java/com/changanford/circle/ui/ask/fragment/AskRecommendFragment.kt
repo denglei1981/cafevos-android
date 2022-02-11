@@ -103,6 +103,10 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
 
                 })
 
+                it.tvLook.setOnClickListener {
+                   JumpUtils.instans?.jump(114)
+                }
+
             }
 
         }
@@ -114,24 +118,31 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
         })
         viewModel.questionListLiveData.observe(this, Observer {
-            if(it.isLoadMore){
-                binding.refreshLayout.finishLoadMore()
-                recommendAskAdapter.addData(it.data.dataList)
-            }else{
-                binding.refreshLayout.finishRefresh()
-                binding.refreshLayout.setEnableLoadMore(true)
-                if(it.data.dataList.size==0){
-                    val emptyList = arrayListOf<AskListMainData>()
-                    val askEmpty=AskListMainData(emptyType = 1)
-                    emptyList.add(askEmpty)
-                    recommendAskAdapter.setNewInstance(emptyList)
-                }else{
-                    recommendAskAdapter.setNewInstance(it.data.dataList)
+            try {
+                if(it.isSuccess){
+                    if(it.isLoadMore){
+                        binding.refreshLayout.finishLoadMore()
+                        recommendAskAdapter.addData(it.data.dataList)
+                    }else{
+                        binding.refreshLayout.finishRefresh()
+                        binding.refreshLayout.setEnableLoadMore(true)
+                        if(it.data.dataList.size==0){
+                            val emptyList = arrayListOf<AskListMainData>()
+                            val askEmpty=AskListMainData(emptyType = 1)
+                            emptyList.add(askEmpty)
+                            recommendAskAdapter.setNewInstance(emptyList)
+                        }else{
+                            recommendAskAdapter.setNewInstance(it.data.dataList)
+                        }
+                    }
+                    if(it.data==null||it.data.dataList.size<20){
+                        binding.refreshLayout.finishLoadMoreWithNoMoreData()
+                        binding.refreshLayout.setEnableLoadMore(false)
+                    }
                 }
-            }
-            if(it.data==null||it.data.dataList.size<20){
-                binding.refreshLayout.finishLoadMoreWithNoMoreData()
-                binding.refreshLayout.setEnableLoadMore(false)
+
+            }catch (e :Exception){
+                e.printStackTrace()
             }
 
         })

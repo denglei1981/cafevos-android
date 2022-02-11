@@ -24,14 +24,16 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
 
 
 
+    var isMult=false
 
 
 
-    constructor(acts: Context, lifecycleOwner: LifecycleOwner, callback: AskCallback) : this(
+    constructor(acts: Context, lifecycleOwner: LifecycleOwner, callback: AskCallback,isMult:Boolean=false) : this(
         acts,
         lifecycleOwner
     ) {
         this.callback = callback
+        this.isMult=isMult
         mDatabind = DataBindingUtil.inflate(
             LayoutInflater.from(context),
             R.layout.dialog_circle_ask_screen,
@@ -52,9 +54,9 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
     }
 
     fun initView() {
-
-
-
+      if(isMult){
+          mDatabind.labelsType.maxSelect=3
+      }
 
     }
 
@@ -63,9 +65,10 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
 
         mDatabind.btnRest.setOnClickListener {
             mDatabind.labelsType.clearAllSelect()
-            screenData()
-            dismiss()
-
+            if(!isMult){
+                screenData()
+                dismiss()
+            }
         }
         mDatabind.homeBtnSure.setOnClickListener {
             screenData()

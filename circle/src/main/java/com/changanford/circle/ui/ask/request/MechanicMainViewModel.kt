@@ -12,10 +12,7 @@ import com.changanford.circle.bean.MechanicData
 import com.changanford.circle.interf.UploadPicCallback
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.CancelReasonBeanItem
-import com.changanford.common.bean.QuestionData
-import com.changanford.common.bean.RecommendListBean
-import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
@@ -32,13 +29,7 @@ import kotlinx.coroutines.launch
 class MechanicMainViewModel : BaseViewModel() {
 
 
-
-    var  mechanicLiveData: MutableLiveData<MechanicData> = MutableLiveData()
-
-
-
-
-
+    var technicianLiveData: MutableLiveData<TechnicianData> = MutableLiveData()
 
 
     /**
@@ -136,8 +127,6 @@ class MechanicMainViewModel : BaseViewModel() {
     }
 
 
-
-
     /**
      * 取文件后缀名 创建文件名
      */
@@ -148,19 +137,45 @@ class MechanicMainViewModel : BaseViewModel() {
     }
 
 
-
-    fun getTechniciaPersonalInfo( technicianId:String) {
+    fun getTechniciaPersonalInfo(technicianId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["technicianId"] = technicianId
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .techniciaPersonalInfo(body.header(rKey), body.body(rKey)).also {
-//                    questTypeList.postValue(it.data)
+                    technicianLiveData.postValue(it.data)
+                }.onWithMsgFailure {
+                    it?.toast()
                 }
         })
     }
 
+    var questTypeList: MutableLiveData<ArrayList<QuestionData>> = MutableLiveData()
+    fun getQuestionType() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["dictType"] = "qa_question_type"
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getQuestionType(body.header(rKey), body.body(rKey)).also {
+                    questTypeList.postValue(it.data)
+                }
+        })
+    }
+
+    // 更换技师个人资料
+    fun upTechniciaInfo( isHeader:Boolean,map: HashMap<String, String>) {
+
+            launch(true, block = {
+                val rKey = getRandomKey()
+                ApiClient.createApi<CircleNetWork>()
+                    .updateTechniciaPersonalInfo(map.header(rKey), map.body(rKey)).also {
+//                        questTypeList.postValue(it.data)
+                    }
+            })
+
+    }
 
 
 }

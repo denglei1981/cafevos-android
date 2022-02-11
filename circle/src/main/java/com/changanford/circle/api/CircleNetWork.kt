@@ -528,7 +528,11 @@ interface CircleNetWork {
     @POST("/qa/techniciaPersonalInfo")
     suspend fun techniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<TechnicianData>
 
+   /**
+    * 更换技师个人资料
+    * */
 
-
+   @POST("/qa/updateTechniciaPersonalInfo")
+   suspend fun updateTechniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<String>
 
 }
