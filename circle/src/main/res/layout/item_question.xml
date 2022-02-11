@@ -27,6 +27,7 @@
             android:paddingEnd="@dimen/dp_5"
             android:gravity="center"
             android:minHeight="@dimen/dp_19"
+            android:minWidth="@dimen/dp_43"
             android:maxWidth="@dimen/dp_90"
             style="@style/w_style_txt_ellipsize"
             android:textColor="@color/color_00095B"

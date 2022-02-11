@@ -43,6 +43,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             isOneself=getBoolean("isOneself",false)
         }
         binding.apply {
+            mAdapter.setHasStableIds(true)
             recyclerView.adapter=mAdapter
             smartRl.setOnLoadMoreListener {
                 pageNo++
@@ -58,7 +59,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     override fun initData() {
         viewModel.questionListBean.observe(this){
             it?.dataList?.apply {
-                if (1 == pageNo) mAdapter.setList(this)
+                if (1 == pageNo)mAdapter.setList(this)
                 else mAdapter.addData(this)
             }
             binding.smartRl.apply {

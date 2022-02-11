@@ -129,7 +129,6 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     return QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself)
                 }
             }
-            offscreenPageLimit = 3
             binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){
                 addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
                     override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}

@@ -3,17 +3,20 @@ package com.changanford.circle.adapter.question
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemQuestionBinding
+import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
 import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
@@ -27,20 +30,45 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionItemB
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
-//            WCommonUtil.htmlToImgStr(activity,tvTitle,"$str<img src=\"${R.mipmap.question_fb}\"/>" +
-//                    "<font color=\"#E1A743\"><myfont size='30px'>20</myfont></font>","myfont")
             val fbReward=itemData.fbReward
-            val fbNumber="${fbReward}福币"
             val tagName=itemData.questionTypeName
-            val starStr=" ".repeat(tagName.length*3)
-            val str="$starStr   ${itemData.title}"
-            if(fbReward==null||fbReward=="0")tvTitle.text=str
-            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
+            if(fbReward==null||fbReward=="0"){
+                val starStr=" ".repeat(tagName.length*3)
+                val str="$starStr\t\t\t\t${itemData.title}"
+                tvTitle.text=str
+            }else showTag(tvTitle,itemData)
+//            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
                 QuestionItemUI(itemData,viewWidth)
             }
             root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
+        }
+    }
+   private fun showTag(text: AppCompatTextView?, item: QuestionItemBean){
+        val fbNumber=item.fbReward.plus("福币")
+        val tagName=item.questionTypeName
+        val starStr=" ".repeat(tagName.length*3)
+        val str="$starStr\t\t\t\t${item.title} [icon] $fbNumber"
+        //先设置原始文本
+        text?.text=str
+        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
+        text?.post { //获取第一行的宽度
+            val stringBuilder: StringBuilder =StringBuilder(str)
+            //SpannableString的构建
+            val spannableString = SpannableString("$stringBuilder ")
+            val drawable = ContextCompat.getDrawable(context,R.mipmap.question_fb)
+            drawable?.apply {
+                val imageSpan = RecommendAskAdapter.CustomImageSpan(this)
+                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+                val strLength=spannableString.length
+                val numberLength=fbNumber.length
+                val startIndex=strLength-numberLength-1
+                spannableString.setSpan(AbsoluteSizeSpan(30), startIndex, strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#E1A743")),startIndex,strLength,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(imageSpan,str.lastIndexOf("["),str.lastIndexOf("]")+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                text.text = spannableString
+            }
         }
     }
     @SuppressLint("SetTextI18n")
