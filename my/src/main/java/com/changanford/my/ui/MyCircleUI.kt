@@ -34,7 +34,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
     private val titles = arrayListOf("我参与的", "我管理的")
     private var oldPosition = 0
-
+    private val fragments= arrayListOf<CircleFragment>()
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {
@@ -42,9 +42,11 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         }
         binding.editSearch.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val content = v.text.toString()
-
                 HideKeyboardUtil.hideKeyboard(binding.editSearch.windowToken)
+                val content = v.text.toString()
+//                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(content)
+                val currentItem=binding.viewpager.currentItem
+                if(currentItem<fragments.size)fragments[currentItem].startSearch(content)
             }
             false
         }
@@ -62,6 +64,10 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     }
 
     private fun initViewpager() {
+        fragments.clear()
+        for(position in 0 until titles.size){
+            fragments.add(CircleFragment.newInstance(position))
+        }
         binding.viewpager.run {
             adapter = object : FragmentStateAdapter(this@MyCircleUI) {
                 override fun getItemCount(): Int {
@@ -69,7 +75,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return CircleFragment.newInstance(position)
+                    return fragments[position]
                 }
             }
 

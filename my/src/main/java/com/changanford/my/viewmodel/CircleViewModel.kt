@@ -19,12 +19,15 @@ class CircleViewModel : ViewModel() {
      * 我管理的圈子
      */
     var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
-    fun myMangerCircle() {
-        var circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
+    fun myMangerCircle(searchKeys:String?=null) {
+        val circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {
             fetchRequest {
-                var body = HashMap<String, Any>()
-                var rkey = getRandomKey()
+                val body = HashMap<String, Any>()
+                searchKeys?.apply {
+                    body["searchKeys"]=searchKeys
+                }
+                val rkey = getRandomKey()
                 apiService.queryMineMangerCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 if (null != it && it.size > 0) {
@@ -38,8 +41,11 @@ class CircleViewModel : ViewModel() {
                 }
             }
             fetchRequest {
-                var body = HashMap<String, Any>()
-                var rkey = getRandomKey()
+                val body = HashMap<String, Any>()
+                searchKeys?.apply {
+                    body["searchKeys"]=searchKeys
+                }
+                val rkey = getRandomKey()
                 apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
@@ -61,11 +67,14 @@ class CircleViewModel : ViewModel() {
      */
     var mJoinCircle: MutableLiveData<CircleListBean> = MutableLiveData()
 
-    fun myJoinCircle() {
+    fun myJoinCircle(searchKeys:String?=null) {
         viewModelScope.launch {
             fetchRequest {
-                var body = HashMap<String, Any>()
-                var rkey = getRandomKey()
+                val body = HashMap<String, Any>()
+                searchKeys?.apply {
+                    body["searchKeys"]=searchKeys
+                }
+                val rkey = getRandomKey()
                 apiService.queryMineJoinCircleList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 mJoinCircle.postValue(it)

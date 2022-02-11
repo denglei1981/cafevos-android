@@ -49,7 +49,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
             return medalFragment
         }
     }
-
+    private var searchKeys:String?=null
     override fun initView() {
         arguments?.getInt(RouterManger.KEY_TO_ID)?.let {
             index = it
@@ -75,18 +75,25 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         })
 
         LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).observe(this, Observer {
+//            searchKeys="${it?:""}"
             initRefreshData(1)
         })
     }
-
+    /**
+     * 搜索
+    * */
+    fun startSearch(searchKeys:String?=null){
+        this.searchKeys=searchKeys
+        binding.rcyCollect.smartCommonLayout.autoRefresh()
+    }
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         when (index) {
             0 -> {
-                viewModel.myJoinCircle()
+                viewModel.myJoinCircle(searchKeys)
             }
             1 -> {
-                viewModel.myMangerCircle()
+                viewModel.myMangerCircle(searchKeys)
             }
         }
     }
