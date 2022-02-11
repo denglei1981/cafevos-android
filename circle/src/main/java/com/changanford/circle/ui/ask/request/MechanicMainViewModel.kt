@@ -17,7 +17,10 @@ import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.DeviceUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
 
@@ -165,13 +168,19 @@ class MechanicMainViewModel : BaseViewModel() {
     }
 
     // 更换技师个人资料
-    fun upTechniciaInfo( isHeader:Boolean,map: HashMap<String, String>) {
-
+    var changTechLiveData:MutableLiveData<Boolean> = MutableLiveData()
+    fun upTechniciaInfo( isHeader:Boolean,map: HashMap<String, Any>) {
+        map.toString().plus("上传参数").logE()
             launch(true, block = {
                 val rKey = getRandomKey()
                 ApiClient.createApi<CircleNetWork>()
                     .updateTechniciaPersonalInfo(map.header(rKey), map.body(rKey)).also {
 //                        questTypeList.postValue(it.data)
+                        changTechLiveData.postValue(true)
+                        LiveDataBus.get().with(LiveDataBusKey.CHANGE_TEACH_INFO).postValue(true)
+                    }.onWithMsgFailure {
+                        it?.toast()
+
                     }
             })
 

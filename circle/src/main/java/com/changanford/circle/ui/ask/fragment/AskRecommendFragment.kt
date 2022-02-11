@@ -19,9 +19,12 @@ import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -69,6 +72,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getInitQuestion()
         viewModel.getQuestionList(false,questionTypes)
     }
 
@@ -98,7 +102,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                         position: Int
                     ) {
 //                        startARouter(ARouterCirclePath.MechanicMainActivity,)
-                        JumpUtils.instans?.jump(115,hotMechanicAdapter.getItem(position = position).qaTechnicianId.toString())
+                        JumpUtils.instans?.jump(114,hotMechanicAdapter.getItem(position = position).qaTechnicianId.toString())
                     }
 
                 })
@@ -148,6 +152,22 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
             }
 
         })
+        LiveDataBus.get().with(LiveDataBusKey.CHANGE_TEACH_INFO).observe(this, Observer {
+             viewModel.getInitQuestion()
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        viewModel.getInitQuestion()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        viewModel.getInitQuestion()
+                    }
+                    else -> {}
+                }
+            }
 
     }
 
