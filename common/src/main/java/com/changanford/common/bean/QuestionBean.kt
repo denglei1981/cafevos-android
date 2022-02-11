@@ -61,7 +61,7 @@ data class QuestionInfoBean(
             "TECHNICIAN"->{
                 tabs.apply {
                     if(isOneself){
-                        add(QuestionTagBean(context.getString(R.string.str_invitedToAnswer),"QUESTION"))
+                        add(QuestionTagBean(context.getString(R.string.str_invitedToAnswer),"TECHNICIAN"))
                         add(QuestionTagBean(context.getString(R.string.str_myAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
                     }else{
@@ -121,8 +121,8 @@ data class QuestionUserInfo(
     val conQaTechnicianId: String? = null,
     val conQaUjId: String? = null,
     val identity: String = "",
-    val modelCode: Any? = null,
-    val modelName: Any? = null,
+    val modelCode: String? = null,
+    val modelName: String? = null,
     val nickName: String? = null,
     val userId: String? = null
 )
@@ -145,7 +145,7 @@ data class QuestionItemBean(
 )
 data class AnswerInfoBean(
     val adopt:String?=null,
-    val answerTime:String?=null,
+    val answerTime:Long?=null,
     val conQaAnswerId:String?=null,
     val content:String?=null,
     val replyCount:String?=null,

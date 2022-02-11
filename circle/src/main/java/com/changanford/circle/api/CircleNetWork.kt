@@ -520,6 +520,11 @@ interface CircleNetWork {
      * */
     @POST("/qa/qustionOfpersonal")
     suspend fun questionOfPersonal(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    /**
+     * 技师邀请回答列表
+     * */
+    @POST("/qa/qustionOfInvite")
+    suspend fun questionOfInvite(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
 
 
     /**

@@ -54,4 +54,20 @@ class QuestionViewModel:BaseViewModel() {
             }
         })
     }
+    /**
+     *技师邀请回答列表
+     * */
+    fun questionOfInvite(pageNo:Int=1,pageSize:Int=this.pageSize){
+        launch(block = {
+            body.clear()
+            body["pageNo"]=pageNo
+            body["pageSize"]=pageSize
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().questionOfInvite(body.header(rKey), body.body(rKey)).onSuccess {
+                questionListBean.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        })
+    }
 }

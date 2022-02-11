@@ -40,16 +40,13 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
         arguments?.apply {
             conQaUjId=getString("conQaUjId","0")
             personalPageType=getString("personalPageType","0")
-            isOneself=getBoolean("isOneself")
+            isOneself=getBoolean("isOneself",false)
         }
         binding.apply {
-            recyclerView.apply {
-                adapter=mAdapter
-//            mAdapter.setEmptyView(R.layout.empty_ask)
-            }
+            recyclerView.adapter=mAdapter
             smartRl.setOnLoadMoreListener {
                 pageNo++
-                viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
+                getData()
             }
             composeView.setContent {
                 if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose() //是自己并且是提问tab 则展示提问特有缺省页
@@ -72,6 +69,11 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
                 finishRefresh()
             }
         }
-        viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
+        getData()
+    }
+    private fun getData(){
+        //是自己并且是技师，查看邀请回答列表
+        if(personalPageType=="TECHNICIAN"&&isOneself) viewModel.questionOfInvite(pageNo)
+        else viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
     }
 }

@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.compose
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,12 +36,15 @@ import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
+import java.text.SimpleDateFormat
 
 /**
  * @Author : wenke
  * @Time : 2022/1/24
  * @Description : QuestionCompose
  */
+@SuppressLint("SimpleDateFormat")
+private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
 @Preview
 @Composable
 private fun PreviewUI(){
@@ -55,6 +59,7 @@ fun EmptyCompose(noContext:String?=null){
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
+        .background(colorResource(R.color.color_F4))
         .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,6 +74,7 @@ fun EmptyQuestionCompose(){
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
+        .background(colorResource(R.color.color_F4))
         .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
@@ -94,7 +100,9 @@ fun EmptyQuestionCompose(){
 fun BtnQuestionCompose(){
     Column(modifier = Modifier
         .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
-        .defaultMinSize(45.dp).padding(5.dp).clickable {
+        .defaultMinSize(45.dp)
+        .padding(5.dp)
+        .clickable {
             JumpUtils.instans?.jump(116)
         }, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(painter = painterResource(id = R.mipmap.circle_edit_pb), contentDescription = null,tint = Color.White)
@@ -409,9 +417,9 @@ private fun UserInfoUI(itemData: QuestionItemBean){
     if(answerInfo==null||userInfo==null)return
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl("") ?: R.mipmap.head_default,
+                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater) ?: R.mipmap.head_default,
                     builder = {
                         placeholder(R.mipmap.head_default)
                     }),
@@ -423,23 +431,27 @@ private fun UserInfoUI(itemData: QuestionItemBean){
             )
             Spacer(modifier = Modifier.width(11.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.Top) {
                     //昵称
                     Text(buildAnnotatedString {
                         withStyle(style = SpanStyle(color = colorResource(R.color.color_99),fontSize = 13.sp)) {
                             append(userInfo.nickName ?:"")
                         }
-                        withStyle(style = SpanStyle(color = colorResource(R.color.color_00095B),fontSize = 11.sp)) {
-                            append("   ${userInfo.modelName}车主")
+                        userInfo.modelName?.let {
+                            withStyle(style = SpanStyle(color = colorResource(R.color.color_00095B),fontSize = 11.sp)) {
+                                append("   ${it}车主")
+                            }
                         }
                     }, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Spacer(modifier = Modifier.width(4.dp))
                     //皇冠-是技师
                     if(userInfo.conQaTechnicianId!=null)Image(painter = painterResource(R.mipmap.question_crown), contentDescription = null)
                 }
-                Spacer(modifier = Modifier.height(6.dp))
+//                Spacer(modifier = Modifier.height(6.dp))
                 //回答时间
-                Text(text = answerInfo.answerTime?:"",color= colorResource(R.color.color_99), fontSize = 11.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                answerInfo.answerTime?.let {
+                    Text(text = simpleDateFormat.format(it),color= colorResource(R.color.color_99), fontSize = 11.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                }
             }
             if(answerInfo.adopt=="YES"){//已采纳
                 Box(contentAlignment = Alignment.Center,modifier = Modifier
