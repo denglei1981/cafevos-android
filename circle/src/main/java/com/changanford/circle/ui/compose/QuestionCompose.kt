@@ -58,9 +58,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
         Box(contentAlignment = Alignment.TopCenter,modifier = Modifier
             .fillMaxWidth()
             .background(colorResource(R.color.color_F4))) {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(189.dp)
+            Spacer(modifier = Modifier.fillMaxWidth().height(189.dp)
                 .background(
                     Brush.horizontalGradient(
                         colors = listOf(
@@ -110,21 +108,20 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                             Row(modifier = Modifier
                                 .padding(start = 92.dp)
                                 .clickable {
-
+                                    JumpUtils.instans?.jump(115, userInfo.conQaTechnicianId)
                                 },verticalAlignment =Alignment.CenterVertically) {
                                 Image(painter = painterResource(R.mipmap.question_edit), contentDescription = null)
                                 Spacer(modifier = Modifier.width(3.dp))
                                 Text(text = stringResource(R.string.str_modifyData),fontSize = 11.sp, color=colorResource(R.color.color_99))
                             }
                         }
-                        Spacer(modifier = Modifier.height(18.dp))
-                        //个人简介
-                        Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
+                        if(introduction!=null){
+                            Spacer(modifier = Modifier.height(18.dp))
+                            //个人简介
+                            Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
+                        }
                         Spacer(modifier = Modifier.height(28.dp))
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(colorResource(R.color.color_80EEEEEE)))
+                        Divider(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(colorResource(R.color.color_80EEEEEE)))
                         Spacer(modifier = Modifier.height(7.dp))
                         //答题总数、采纳总数、回复榜、采纳绑
                         Row(modifier = Modifier
@@ -281,12 +278,12 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
                         val endIndex=if(row!=rowTotal-1)(row+1)*columnSize else size
                         val itemList=slice(startIndex until endIndex)
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            for(i in 0 until columnSize){
+                            for(column in 0 until columnSize){
                                 Box(modifier = Modifier
                                     .weight(1f)
                                     .height(imgSize.dp), contentAlignment = Alignment.BottomEnd){
                                     Image(
-                                        painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemList[i]) ?: R.mipmap.head_default,
+                                        painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemList[column]) ?: R.mipmap.head_default,
                                             builder = {
                                                 placeholder(R.mipmap.head_default)
                                             }),
@@ -297,14 +294,19 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
                                             .height(imgSize.dp)
                                             .clip(RoundedCornerShape(5.dp))
                                     )
-                                    if(size>4){
-                                        Text(text = "$size+",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center,
-                                            modifier = Modifier.defaultMinSize(minWidth = 30.dp).padding(top = 2.dp, bottom = 2.dp)
-                                                .background(color = colorResource(R.color.color_4D000000), shape = RoundedCornerShape(6.dp))
-                                        )
+                                    //最后一张图片显示总图片数
+                                    if(rowTotal-1==row&&columnSize-1==column&&size>4){
+                                        Row(modifier = Modifier.padding(bottom =9.dp)) {
+                                            Box(contentAlignment = Alignment.Center,modifier = Modifier
+                                                .background(color = colorResource(R.color.color_4D000000),shape = RoundedCornerShape(6.dp))
+                                                .padding(8.dp, 1.dp)){
+                                                Text(text = "$size+",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
+                                            }
+                                            Spacer(modifier = Modifier.width(20.dp))
+                                        }
                                     }
                                 }
-                                if(i!=columnSize-1)Spacer(modifier = Modifier.width(10.dp))
+                                if(column!=columnSize-1)Spacer(modifier = Modifier.width(10.dp))
                             }
                         }
                         if(row!=rowTotal-1)Spacer(modifier = Modifier.height(10.dp))
