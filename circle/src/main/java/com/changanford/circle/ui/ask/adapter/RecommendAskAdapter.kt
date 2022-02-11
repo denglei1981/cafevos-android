@@ -95,7 +95,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 
                     if (picList.size > 4) {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
-                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size)
+                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size-1)
                     } else {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
                     }
@@ -142,7 +142,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 
                     if (picList.size > 4) {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
-                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size)
+                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size-1)
                     } else {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
                     }
