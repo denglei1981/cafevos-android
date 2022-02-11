@@ -91,13 +91,25 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyPost.smartCommonLayout
     }
+    var searchKeys:String=""
 
+    fun  mySerachInfo(){
+        var total: Int = 0
+        viewModel.queryMineCollectPost(1,searchKeys) { response ->
+            response?.data?.total?.let {
+                total = it
+            }
+            response.onSuccess {
+                completeRefresh(it?.dataList, postAdapter, total)
+            }
+        }
+    }
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
         when (type) {
             "collectPost" -> {
-                viewModel.queryMineCollectPost(pageSize) { response ->
+                viewModel.queryMineCollectPost(pageSize,searchKeys) { response ->
                     response?.data?.total?.let {
                         total = it
                     }

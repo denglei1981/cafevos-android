@@ -24,6 +24,8 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var type: String = ""
     var userId: String = ""
 
+    var searchKeys:String=""
+
     val infoAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
@@ -40,6 +42,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     }
 
     var isRefresh: Boolean = false
+
 
     override fun onPause() {
         super.onPause()
@@ -102,6 +105,16 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         }
     }
 
+    fun  myCollectInfo(pageSize: Int){
+        var total: Int = 0
+        viewModel.queryMineCollectInfo(pageSize,searchKeys) { reponse ->
+            reponse?.data?.total?.let {
+                total=it
+            }
+            completeRefresh(reponse.data?.dataList, infoAdapter, total)
+        }
+    }
+
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
@@ -109,12 +122,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         when (type) {
             "collectInformation" -> {
                 infoAdapter.isShowTag = true
-                viewModel.queryMineCollectInfo(pageSize) { reponse ->
-                    reponse?.data?.total?.let {
-                        total = it
-                    }
-                    completeRefresh(reponse?.data?.dataList, infoAdapter, total)
-                }
+                myCollectInfo(pageSize)
             }
             "footInformation" -> {
                 infoAdapter.isShowTag = true

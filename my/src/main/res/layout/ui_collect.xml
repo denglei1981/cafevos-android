@@ -9,26 +9,13 @@
     <include
         android:id="@+id/collect_toolbar"
         layout="@layout/view_toolbar" />
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_search"
-        android:paddingStart="@dimen/dp_12"
-        android:paddingEnd="@dimen/dp_12"
-        android:gravity="center_vertical"
-        android:background="@drawable/shape_f2_18dp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_35"
-        android:textColor="@color/color_33"
-        android:textSize="@dimen/sp_13"
-        android:hint="@string/str_pleaseEnterKeywordSearch"
-        android:textColorHint="@color/color_cc"
-        android:imeOptions="actionSearch"
-        android:maxLines="1"
-        android:inputType="text"
-        android:drawablePadding="@dimen/dp_5"
-        android:drawableStart="@mipmap/ic_search_hint" />
+<include
+    android:id="@+id/layout_search"
+    layout="@layout/layout_my_search"
+    android:layout_height="@dimen/dp_44"
+    android:layout_width="match_parent"
+    android:layout_marginTop="12dp"
+    />
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="@dimen/dp_18"
         android:id="@+id/tab_layout"

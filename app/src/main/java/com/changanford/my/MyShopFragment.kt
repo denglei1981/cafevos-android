@@ -64,13 +64,22 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyAct.smartCommonLayout
     }
-
+    var searchKeys:String=""
+    fun  mySerachInfo(){
+        var total: Int = 0
+        viewModel.queryShopCollect(1,searchKeys) {
+            it?.data?.let {
+                total = it.total
+            }
+            completeRefresh(it?.data?.dataList, shopAdapter, total)
+        }
+    }
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
         when (type) {
             "collectShop" -> {
-                viewModel.queryShopCollect(pageSize) {
+                viewModel.queryShopCollect(pageSize,searchKeys) {
                     it?.data?.let {
                         total = it.total
                     }

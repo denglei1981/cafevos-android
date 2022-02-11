@@ -40,11 +40,11 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
         }
-        binding.editSearch.setOnEditorActionListener { v, actionId, _ ->
+        binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val content = v.text.toString()
 
-                HideKeyboardUtil.hideKeyboard(binding.editSearch.windowToken)
+                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
             }
             false
         }
