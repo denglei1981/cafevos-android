@@ -18,6 +18,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
             />
 
 
@@ -65,8 +67,6 @@
             app:layout_constraintStart_toStartOf="@+id/layout_nick_name"
             android:layout_marginStart="@dimen/dp_20"
             />
-
-
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_info"
             android:layout_width="0dp"

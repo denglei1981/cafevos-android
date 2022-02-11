@@ -1,11 +1,15 @@
 package com.changanford.circle.ui.ask.request
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.ChildCommentListBean
 import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.MechanicData
+import com.changanford.circle.interf.UploadPicCallback
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CancelReasonBeanItem
@@ -14,9 +18,11 @@ import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.DeviceUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import kotlinx.coroutines.launch
 
 /**
  *Author lcw
@@ -31,61 +37,129 @@ class MechanicMainViewModel : BaseViewModel() {
 
 
 
-    var  questionListLiveData: MutableLiveData<UpdateUiState<HomeDataListBean<AskListMainData>>> = MutableLiveData()
 
 
 
 
+    /**
+     * 上传图片
+     */
+
+    fun uploadFile(cp: Context, upfiles: List<String>, callback: UploadPicCallback) {
+        GetOSS(cp, upfiles, 0, callback)
+    }
+
+    /**
+     * 获取上传图片得凭证
+     */
+    lateinit var upimgs: ArrayList<String>
+
+    fun GetOSS(
+        context: Context,
+        upfiles: List<String>,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        viewModelScope.launch {
+            var body = HashMap<String, Any>()
+            var rkey = getRandomKey()
+            fetchRequest {
+                apiService.getOSS(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                initAliYunOss(context, it!!)//
+                upimgs = ArrayList()
+                uploadImgs(
+                    context,
+                    upfiles,
+                    it,
+                    count,
+                    callback
+                )
+            }.onFailure {
+                var msg = "上传失败"
+                msg.toast()
+                callback.onUploadFailed(msg)
+            }
+        }
+    }
 
 
-    fun getInitQuestion(){
-        launch (block = {
-            val body = MyApp.mContext.createHashMap()
-            val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getInitQuestion(body.header(rKey),body.body(rKey))
-                .onSuccess {
-                    mechanicLiveData.postValue(it)
+    /**
+     * 初始化oss上传
+     */
+    private fun initAliYunOss(context: Context, stsBean: STSBean) {
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+    }
+
+    private fun uploadImgs(
+        context: Context,
+        upfiles: List<String>,
+        stsBean: STSBean,
+        count: Int,
+        callback: UploadPicCallback
+    ) {
+        val size = upfiles.size
+        AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
+            stsBean.endpoint, stsBean.accessKeyId,
+            stsBean.accessKeySecret, stsBean.securityToken
+        )
+        var path = createFileName(upfiles[count], stsBean.tempFilePath)
+        upimgs.add(path)
+        AliYunOssUploadOrDownFileConfig.getInstance(context)
+            .uploadFile(stsBean.bucketName, path, upfiles[count], "", 0)
+        AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
+            AliYunOssUploadOrDownFileConfig.OnUploadFile {
+            override fun onUploadFileSuccess(info: String) {
+                val scount = count + 1
+                if (scount == size) {
+                    callback.onUploadSuccess(upimgs)
+
                 }
-                .onWithMsgFailure {
-                    it?.toast()
+                uploadImgs(context, upfiles, stsBean, scount, callback)
+            }
 
-                }
+            override fun onUploadFileFailed(errCode: String) {
+                callback.onUploadFailed(errCode)
+            }
+
+            override fun onuploadFileprogress(
+                request: PutObjectRequest,
+                currentSize: Long,
+                totalSize: Long
+            ) {
+                //currentSize*100/totalSize
+            }
         })
     }
 
 
 
-   var page:Int =1
-    fun getQuestionList(isLoadMore:Boolean, questionTypes:MutableList<String>){
-        launch (block = {
-            val body = MyApp.mContext.createHashMap()
-            if(isLoadMore){
-                page+=1
-            }else{
-                page=1
-            }
-            body["pageNo"] = page
-            body["pageSize"] = 20
-            body["queryParams"] = HashMap<String, Any>().also {
-                if(questionTypes.size>0){
-                    it["questionTypes"] =questionTypes
-                }
-            }
-            val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getRecommendQuestionList(body.header(rKey),body.body(rKey))
-                .onSuccess {
-                    val updateUiState = UpdateUiState<HomeDataListBean<AskListMainData>>(it, true, isLoadMore, "")
-                    questionListLiveData.postValue(updateUiState)
-                }
-                .onWithMsgFailure {
-                    val updateUiState = UpdateUiState<HomeDataListBean<AskListMainData>>(false, it, isLoadMore)
-                    questionListLiveData.postValue(updateUiState)
-                    it?.toast()
 
+    /**
+     * 取文件后缀名 创建文件名
+     */
+    private fun createFileName(uploadFilePath: String, tempFilePath: String): String {
+        var type = uploadFilePath
+            .substring(uploadFilePath.lastIndexOf(".") + 1, uploadFilePath.length)
+        return tempFilePath + System.currentTimeMillis() + "." + type
+    }
+
+
+
+    fun getTechniciaPersonalInfo( technicianId:String) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["technicianId"] = technicianId
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .techniciaPersonalInfo(body.header(rKey), body.body(rKey)).also {
+//                    questTypeList.postValue(it.data)
                 }
         })
     }
-
 
 
 

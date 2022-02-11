@@ -76,3 +76,9 @@ data class QaUserVO(
     val nickName: String,
     val userId: Int
 )
+data class TechnicianData(
+    val avater: String,
+    val introduction: String,
+    val nickName: String,
+    val questionTypeCodes: List<String>
+)

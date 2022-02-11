@@ -97,7 +97,8 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                         view: View,
                         position: Int
                     ) {
-                        startARouter(ARouterCirclePath.MechanicMainActivity)
+//                        startARouter(ARouterCirclePath.MechanicMainActivity,)
+                        JumpUtils.instans?.jump(115,hotMechanicAdapter.getItem(position = position).qaTechnicianId.toString())
                     }
 
                 })
