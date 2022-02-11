@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:background="@drawable/shape_f2_18dp"
-            android:drawableLeft="@mipmap/icon_common_gray_search"
+            android:drawableLeft="@mipmap/ic_search_hint"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:hint="请输入搜索关键词"
