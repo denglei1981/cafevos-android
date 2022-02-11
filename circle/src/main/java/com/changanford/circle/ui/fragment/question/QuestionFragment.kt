@@ -43,7 +43,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             isOneself=getBoolean("isOneself",false)
         }
         binding.apply {
-            mAdapter.setHasStableIds(true)
+//            mAdapter.setHasStableIds(true)
             recyclerView.adapter=mAdapter
             smartRl.setOnLoadMoreListener {
                 pageNo++
