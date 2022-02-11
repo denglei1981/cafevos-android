@@ -60,12 +60,12 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
          * [conQaUjId]被查看人的问答参与表id
          * */
         fun start(conQaUjId:String?=null){
-            if(conQaUjId==null&&BuildConfig.DEBUG)JumpUtils.instans?.jump(114,"5")
+            if(conQaUjId==null&&BuildConfig.DEBUG)JumpUtils.instans?.jump(114,"15")
             else JumpUtils.instans?.jump(114,conQaUjId)
         }
     }
     private var isWhite = true//是否是白色状态
-    private var conQaUjId:String="5"
+    private var conQaUjId:String="15"
     private var type=0
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
