@@ -8,10 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +47,62 @@ private fun PreviewUI(){
     ComposeQuestionTop(MyApp.mContext)
     QuestionItemUI()
 }
+/**
+ * 暂无内容
+* */
+@Composable
+fun EmptyCompose(noContext:String?=null){
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
+    }
+}
+/**
+ * 缺省页-问答
+* */
+@Composable
+fun EmptyQuestionCompose(){
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(onClick = {
+            //去提问
+            JumpUtils.instans?.jump(116)
+        },shape = RoundedCornerShape(15.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+            contentPadding= PaddingValues(4.dp),
+            modifier = Modifier
+                .width(82.dp)
+                .height(26.dp)) {
+            Text(stringResource(R.string.str_toAskQuestions),fontSize = 12.sp,color = Color.White)
+        }
+    }
+}
+/**
+ * 提问按钮
+* */
+@Composable
+fun BtnQuestionCompose(){
+    Column(modifier = Modifier
+        .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
+        .defaultMinSize(45.dp).padding(5.dp).clickable {
+            JumpUtils.instans?.jump(116)
+        }, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(painter = painterResource(id = R.mipmap.circle_edit_pb), contentDescription = null,tint = Color.White)
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(text = stringResource(R.string.str_questions), fontSize = 10.sp, color = Color.White)
+    }
+}
+
 @Composable
 fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
     dataBean?.apply {
@@ -58,7 +111,9 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
         Box(contentAlignment = Alignment.TopCenter,modifier = Modifier
             .fillMaxWidth()
             .background(colorResource(R.color.color_F4))) {
-            Spacer(modifier = Modifier.fillMaxWidth().height(189.dp)
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(189.dp)
                 .background(
                     Brush.horizontalGradient(
                         colors = listOf(
@@ -121,7 +176,10 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                             Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
                         }
                         Spacer(modifier = Modifier.height(28.dp))
-                        Divider(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(colorResource(R.color.color_80EEEEEE)))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(0.5.dp)
+                            .background(colorResource(R.color.color_80EEEEEE)))
                         Spacer(modifier = Modifier.height(7.dp))
                         //答题总数、采纳总数、回复榜、采纳绑
                         Row(modifier = Modifier
@@ -298,7 +356,10 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
                                     if(rowTotal-1==row&&columnSize-1==column&&size>4){
                                         Row(modifier = Modifier.padding(bottom =9.dp)) {
                                             Box(contentAlignment = Alignment.Center,modifier = Modifier
-                                                .background(color = colorResource(R.color.color_4D000000),shape = RoundedCornerShape(6.dp))
+                                                .background(
+                                                    color = colorResource(R.color.color_4D000000),
+                                                    shape = RoundedCornerShape(6.dp)
+                                                )
                                                 .padding(8.dp, 1.dp)){
                                                 Text(text = "$size+",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
                                             }

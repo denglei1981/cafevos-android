@@ -9,12 +9,14 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
+import com.changanford.circle.ui.compose.BtnQuestionCompose
 import com.changanford.circle.ui.compose.ComposeQuestionTop
 import com.changanford.circle.ui.fragment.question.QuestionFragment
 import com.changanford.circle.viewmodel.question.QuestionViewModel
@@ -22,7 +24,6 @@ import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.QuestionTagBean
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.google.android.material.appbar.AppBarLayout
@@ -86,8 +87,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             imgBack.setOnClickListener { finish() }
             topBar.setPadding(0,ScreenUtils.getStatusBarHeight(this@QuestionActivity)+10,0,ScreenUtils.dip2px(this@QuestionActivity,10f))
             tvAskQuestions.setOnClickListener {
-                startARouter(ARouterCirclePath.CreateQuestionActivity)
+                JumpUtils.instans?.jump(116)
             }
+        }
+        binding.composeViewQuestion.setContent {
+            BtnQuestionCompose()
         }
     }
     override fun initData() {
@@ -101,8 +105,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 val tabs=it.getTabs(this@QuestionActivity)
                 initTabAndViewPager(tabs,isOneself())
                 initMagicIndicator(tabs)
-                binding.smartRl.finishRefresh()
             }
+            binding.smartRl.finishRefresh()
         }
         viewModel.personalQA(conQaUjId)
     }
@@ -126,6 +130,16 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 }
             }
             offscreenPageLimit = 3
+            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){
+                addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+                    override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
+                    override fun onPageSelected(position: Int) {
+                        binding.composeViewQuestion.visibility=if(tabs[position].tag=="QUESTION")View.VISIBLE else View.GONE
+                    }
+                    override fun onPageScrollStateChanged(state: Int) {}
+                })
+                View.VISIBLE
+            }else View.GONE
         }
     }
 

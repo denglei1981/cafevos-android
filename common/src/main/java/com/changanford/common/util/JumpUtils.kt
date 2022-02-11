@@ -659,6 +659,9 @@ class JumpUtils {
                     startARouter(ARouterCirclePath.MechanicMainActivity, bundle, true)
                 }
             }
+            116->{ //提问
+                startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

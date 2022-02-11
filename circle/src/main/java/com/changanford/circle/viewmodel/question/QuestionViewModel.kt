@@ -27,6 +27,7 @@ class QuestionViewModel:BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().personalQA(body.header(rKey), body.body(rKey)).onSuccess {
                 questionInfoBean.postValue(it)
             }.onWithMsgFailure {
+                questionInfoBean.postValue(null)
                 it?.toast()
             }
         })

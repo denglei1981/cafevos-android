@@ -52,4 +52,8 @@
     <string name="str_questionsTotalNumber">提问总数</string>
     <string name="str_answerTotalNumber">答题总数</string>
     <string name="str_acceptedTotalNumber">采纳总数</string>
+    <string name="empty_question">买车用车，您想了解的都可以在这里得到解答</string>
+    <string name="str_toAskQuestions">去提问</string>
+    <string name="str_noContent">暂无内容</string>
+    <string name="str_questions">提问</string>
 </resources>

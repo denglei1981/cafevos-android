@@ -1,9 +1,11 @@
 package com.changanford.circle.ui.fragment.question
 
 import android.os.Bundle
-import com.changanford.circle.R
+import android.view.View
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
+import com.changanford.circle.ui.compose.EmptyCompose
+import com.changanford.circle.ui.compose.EmptyQuestionCompose
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
 
@@ -35,34 +37,41 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     private var isOneself=true
     private var pageNo=1
     override fun initView() {
-        binding.recyclerView.apply {
-            adapter=mAdapter
-            mAdapter.setEmptyView(R.layout.base_layout_empty)
-        }
-        binding.smartRl.setOnLoadMoreListener {
-            pageNo++
-            viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
-        }
-    }
-
-    override fun initData() {
         arguments?.apply {
             conQaUjId=getString("conQaUjId","0")
             personalPageType=getString("personalPageType","0")
             isOneself=getBoolean("isOneself")
-            viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
         }
+        binding.apply {
+            recyclerView.apply {
+                adapter=mAdapter
+//            mAdapter.setEmptyView(R.layout.empty_ask)
+            }
+            smartRl.setOnLoadMoreListener {
+                pageNo++
+                viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
+            }
+            composeView.setContent {
+                if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose() //是自己并且是提问tab 则展示提问特有缺省页
+                else EmptyCompose()//普通缺省页
+            }
+        }
+
+    }
+    override fun initData() {
         viewModel.questionListBean.observe(this){
             it?.dataList?.apply {
                 if (1 == pageNo) mAdapter.setList(this)
                 else mAdapter.addData(this)
             }
             binding.smartRl.apply {
+                binding.composeView.visibility=if(1==pageNo&&it?.dataList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 if (null == it || mAdapter.data.size >= it.total) setEnableLoadMore(false)
                 else setEnableLoadMore(true)
                 finishLoadMore()
                 finishRefresh()
             }
         }
+        viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
     }
 }
