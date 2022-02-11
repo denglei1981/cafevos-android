@@ -653,6 +653,12 @@ class JumpUtils {
                     startARouter(ARouterCirclePath.QuestionActivity, bundle, true)
                 }
             }
+            115->{ // 自己可以编辑技术详情的主页
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("value", value)
+                    startARouter(ARouterCirclePath.MechanicMainActivity, bundle, true)
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

@@ -1026,7 +1026,6 @@ class SignViewModel : ViewModel() {
         var type = uploadFilePath
             .substring(uploadFilePath.lastIndexOf(".") + 1, uploadFilePath.length)
         return tempFilePath + System.currentTimeMillis() + "." + type
-
     }
 
     /**
