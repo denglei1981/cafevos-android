@@ -119,25 +119,28 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
         })
         viewModel.questionListLiveData.observe(this, Observer {
             try {
-                if(it.isLoadMore){
-                    binding.refreshLayout.finishLoadMore()
-                    recommendAskAdapter.addData(it.data.dataList)
-                }else{
-                    binding.refreshLayout.finishRefresh()
-                    binding.refreshLayout.setEnableLoadMore(true)
-                    if(it.data.dataList.size==0){
-                        val emptyList = arrayListOf<AskListMainData>()
-                        val askEmpty=AskListMainData(emptyType = 1)
-                        emptyList.add(askEmpty)
-                        recommendAskAdapter.setNewInstance(emptyList)
+                if(it.isSuccess){
+                    if(it.isLoadMore){
+                        binding.refreshLayout.finishLoadMore()
+                        recommendAskAdapter.addData(it.data.dataList)
                     }else{
-                        recommendAskAdapter.setNewInstance(it.data.dataList)
+                        binding.refreshLayout.finishRefresh()
+                        binding.refreshLayout.setEnableLoadMore(true)
+                        if(it.data.dataList.size==0){
+                            val emptyList = arrayListOf<AskListMainData>()
+                            val askEmpty=AskListMainData(emptyType = 1)
+                            emptyList.add(askEmpty)
+                            recommendAskAdapter.setNewInstance(emptyList)
+                        }else{
+                            recommendAskAdapter.setNewInstance(it.data.dataList)
+                        }
+                    }
+                    if(it.data==null||it.data.dataList.size<20){
+                        binding.refreshLayout.finishLoadMoreWithNoMoreData()
+                        binding.refreshLayout.setEnableLoadMore(false)
                     }
                 }
-                if(it.data==null||it.data.dataList.size<20){
-                    binding.refreshLayout.finishLoadMoreWithNoMoreData()
-                    binding.refreshLayout.setEnableLoadMore(false)
-                }
+
             }catch (e :Exception){
                 e.printStackTrace()
             }
