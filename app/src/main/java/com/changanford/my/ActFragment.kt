@@ -79,13 +79,23 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             initRefreshData(1)
         }
     }
+    var searchKeys:String=""
 
+    fun  mySerachInfo(){
+        var total: Int = 0
+        viewModel.queryMineCollectAc(1,searchKeys) { reponse ->
+            reponse?.data?.total?.let {
+                total = it
+            }
+            completeRefresh(reponse?.data?.dataList, actAdapter, total)
+        }
+    }
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
         when (type) {
             "collectAct" -> {
-                viewModel.queryMineCollectAc(pageSize) { reponse ->
+                viewModel.queryMineCollectAc(pageSize,searchKeys) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
                     }

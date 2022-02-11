@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.graphics.Typeface
+import android.view.KeyEvent
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +13,9 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import android.view.inputmethod.EditorInfo
+import com.changanford.common.util.HideKeyboardUtil
+
 
 /**
  *  文件名：MyCollectUI
@@ -26,9 +30,74 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private val titles = arrayListOf("资讯", "帖子", "活动", "商品")
     private var oldPosition = 0
 
+    val informationFragment :InformationFragment by lazy {
+        InformationFragment.newInstance("collectInformation")
+    }
+
+    val postFragment:PostFragment by lazy {
+        PostFragment.newInstance("collectPost")
+    }
+
+    val actFragment: ActFragment by lazy {
+        ActFragment.newInstance("collectAct")
+    }
+
+    val  myShopFragment:MyShopFragment by lazy{
+        MyShopFragment.newInstance("collectShop")
+    }
+
+
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的收藏"
         initViewpager()
+        binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
+                    search()
+
+
+
+
+//                    hideKeyboard(binding.editSearch.windowToken)
+                }
+            false
+        }
+        binding.layoutSearch.cancel.setOnClickListener {
+            binding.layoutSearch.searchContent.setText("")
+            informationFragment.searchKeys=""
+            postFragment.searchKeys=""
+            myShopFragment.searchKeys=""
+            actFragment.searchKeys=""
+            search()
+
+        }
+    }
+
+    // 搜搜索
+    private fun search() {
+        when (binding.viewpager.currentItem) {
+            0 -> {
+                informationFragment.searchKeys =
+                    binding.layoutSearch.searchContent.text.toString().trim()
+                informationFragment.myCollectInfo(1)
+                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            }
+            1 -> {
+                postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+                postFragment.mySerachInfo()
+                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            }
+            2 -> {
+                actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+                actFragment.mySerachInfo()
+                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            }
+            3 -> {
+                myShopFragment.searchKeys =
+                    binding.layoutSearch.searchContent.text.toString().trim()
+                myShopFragment.mySerachInfo()
+                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            }
+        }
     }
 
     private fun initViewpager() {
@@ -43,16 +112,16 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
                         0 -> {
-                            InformationFragment.newInstance("collectInformation")
+                            informationFragment
                         }
                         1 -> {
-                            PostFragment.newInstance("collectPost")
+                            postFragment
                         }
                         2 -> {
-                            ActFragment.newInstance("collectAct")
+                            actFragment
                         }
                         3 -> {
-                            MyShopFragment.newInstance("collectShop")
+                            myShopFragment
                         }
                         else -> {
                             ActFragment.newInstance("$position")

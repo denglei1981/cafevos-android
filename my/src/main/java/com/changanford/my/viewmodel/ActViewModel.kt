@@ -21,12 +21,17 @@ class ActViewModel : ViewModel() {
     /**
      * 我收藏的 资讯 1
      */
-    fun queryMineCollectInfo(pageNo: Int, result: (CommonResponse<InfoBean>) -> Unit) {
+    fun queryMineCollectInfo(pageNo: Int,searchKeys:String, result: (CommonResponse<InfoBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
+                body["queryParams"] = HashMap<String, Any>().also {
+
+                        it["searchKeys"] =searchKeys
+
+                }
                 var rkey = getRandomKey()
                 apiService.queryMineCollectList(body.header(rkey), body.body(rkey))
             })
@@ -59,7 +64,7 @@ class ActViewModel : ViewModel() {
     /**
      * 我收藏的帖子
      */
-    fun queryMineCollectPost(pageNo: Int, result: (CommonResponse<PostBean>) -> Unit) {
+    fun queryMineCollectPost(pageNo: Int, searchKeys:String,result: (CommonResponse<PostBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
@@ -75,7 +80,7 @@ class ActViewModel : ViewModel() {
     /**
      * 我收藏的活动
      */
-    fun queryMineCollectAc(pageNo: Int, result: (CommonResponse<AccBean>) -> Unit) {
+    fun queryMineCollectAc(pageNo: Int,searchKeys:String, result: (CommonResponse<AccBean>) -> Unit) {
 
         viewModelScope.launch {
             result(fetchRequest {
@@ -288,7 +293,7 @@ class ActViewModel : ViewModel() {
     /**
      * 我的收藏 商品
      */
-    fun queryShopCollect(pageNo: Int, result: (CommonResponse<ShopBean>) -> Unit) {
+    fun queryShopCollect(pageNo: Int, searchKeys:String,result: (CommonResponse<ShopBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()

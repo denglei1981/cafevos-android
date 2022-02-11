@@ -139,6 +139,8 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                         binding.refreshLayout.finishLoadMoreWithNoMoreData()
                         binding.refreshLayout.setEnableLoadMore(false)
                     }
+                }else{
+                    binding.refreshLayout.finishRefresh()
                 }
 
             }catch (e :Exception){
