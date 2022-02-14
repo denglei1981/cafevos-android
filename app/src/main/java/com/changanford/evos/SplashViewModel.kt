@@ -78,18 +78,18 @@ class SplashViewModel : ViewModel() {
      */
     private fun getConfig() {
         viewModelScope.launch {
-            var request = fetchRequest {
-                var body = HashMap<String, Any>()
+            val request = fetchRequest {
+                val body = HashMap<String, Any>()
                 body["configKey"] = "app.init.config"
                 body["obj"] = true
-                var rKey = getRandomKey()
+                val rKey = getRandomKey()
                 apiService.getConfigByKey(body.header(rKey), body.body(rKey))
             }
             if (request.code == 0) {//处理成功和失败
-                var config = request.data
+                val config = request.data
+                MConstant.configBean=config
                 if (config != null && !config.imgCdn.isNullOrEmpty()) {
                     Db.myDb.saveData("imgCdn", config.imgCdn)
-                    MConstant.imgcdn = config.imgCdn
                     key.postValue(MConstant.pubKey)
                 }
             } else {

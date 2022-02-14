@@ -44,7 +44,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
     private val serviceAdapter by lazy { CarServiceAdapter() }
-    private val carIconAdapter by lazy { CarIconAdapter() }
+    private val carIconAdapter by lazy { CarIconAdapter(requireActivity()) }
     private var carModelCode:String=""
     private var longitude:Any?=null//经度
     private var latitude:Any?=null//维度

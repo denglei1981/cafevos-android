@@ -1,13 +1,18 @@
 package com.changanford.common.utilext
 
+import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.changanford.common.BuildConfig
@@ -15,6 +20,7 @@ import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import com.changanford.common.wutil.SimpleTargetUtils
 
 
 /**********************************************************************************
@@ -316,5 +322,24 @@ object GlideUtils {
                     .error(errorDefaultRes)
             }
         }.fitCenter().into(imageView)
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun glideLoadWidth(activity: Activity,url: String?,imageView: ImageView,width: Int,default_image: Int = R.mipmap.image_h_one_default) {
+        url?.apply {
+            if (!activity.isDestroyed) {
+                var imgUrl=this
+                if (!imgUrl.startsWith("http")) {
+                    imgUrl = MConstant.imgcdn + url
+                }
+                if (!imgUrl.contains(".gif")) {
+                    val options =RequestOptions.bitmapTransform(RoundedCorners(1)).placeholder(default_image).error(default_image).skipMemoryCache(false)
+                    Glide.with(activity).load(imgUrl).apply(options)
+                        .into(SimpleTargetUtils(activity, imageView, width))
+                } else imageView.load(imgUrl,default_image)
+            }else {
+                Log.i("TAG", "Picture loading failed,activity is Destroyed")
+            }
+        }
     }
 }

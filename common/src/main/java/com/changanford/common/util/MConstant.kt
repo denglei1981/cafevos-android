@@ -2,6 +2,7 @@ package com.changanford.common.util
 
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.ConfigBean
 import java.io.File
 
 /**********************************************************************************
@@ -78,7 +79,7 @@ object MConstant {
     var token: String = ""
     var imgcdn = ""
     var userId = ""
-
+    var configBean:ConfigBean?=null
     var totalWebNum = 0//AgentWebActivity的个数
 
     //app更新
