@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -70,7 +71,8 @@
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeView_question"
-                android:visibility="visible"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_marginEnd="@dimen/dp_11"
                 android:layout_marginBottom="@dimen/dp_100"
                 app:layout_constraintEnd_toEndOf="parent"

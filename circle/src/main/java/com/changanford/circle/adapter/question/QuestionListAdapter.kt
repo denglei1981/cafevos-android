@@ -21,26 +21,30 @@ import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.WCommonUtil
 import kotlin.math.floor
 
 
-class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
+class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
     private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context)-60 }
+    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
+            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
             val fbReward=itemData.fbReward
             val tagName=itemData.questionTypeName
             if(fbReward==null||fbReward=="0"){
-                val starStr=" ".repeat(tagName.length*3)
+                val tagLength= tagName.length
+                val starStr=" ".repeat(tagLength*(if(tagLength<2)5 else 3))
                 val str="$starStr\t\t\t\t${itemData.title}"
                 tvTitle.text=str
             }else showTag(tvTitle,itemData)
 //            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                QuestionItemUI(itemData,viewWidth)
+                QuestionItemUI(itemData,viewWidth,identity)
             }
             root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
         }
@@ -48,7 +52,8 @@ class QuestionListAdapter(val activity:Activity): BaseQuickAdapter<QuestionItemB
    private fun showTag(text: AppCompatTextView?, item: QuestionItemBean){
         val fbNumber=item.fbReward.plus("福币")
         val tagName=item.questionTypeName
-        val starStr=" ".repeat(tagName.length*3)
+        val tagLength= tagName.length
+        val starStr=" ".repeat(tagLength*(if(tagLength<2)5 else 3))
         val str="$starStr\t\t\t\t${item.title} [icon] $fbNumber"
         //先设置原始文本
         text?.text=str

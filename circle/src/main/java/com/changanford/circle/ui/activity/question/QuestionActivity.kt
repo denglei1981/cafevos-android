@@ -107,7 +107,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     fragments[binding.viewPager.currentItem].startRefresh()
                 }else{
                     val tabs=it.getTabs(this@QuestionActivity)
-                    initTabAndViewPager(tabs,isOneself())
+                    initTabAndViewPager(tabs,isOneself(),getIdentity())
                     initMagicIndicator(tabs)
                 }
             }
@@ -122,9 +122,9 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
         binding.smartRl.setOnRefreshListener(this)
     }
-    private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean) {
+    private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean,identity:Int) {
         for(position in 0 until tabs.size){
-            fragments.add(QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself))
+            fragments.add(QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself,identity))
         }
         binding.viewPager.apply {
             removeAllViews()

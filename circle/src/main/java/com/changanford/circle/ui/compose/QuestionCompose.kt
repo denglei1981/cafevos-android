@@ -237,7 +237,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0){
+fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:Int?=null){
     itemData?.apply {
         val answerInfoBean=qaAnswer//答案 可能为null
         Column(modifier = Modifier
@@ -252,10 +252,12 @@ fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0){
             }else{//有回答
                 UserInfoUI(this@apply) //用户信息
             }
-            Spacer(modifier = Modifier.height(15.dp))
-            Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier
-                .fillMaxWidth()
-                .height(0.5.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+            if(identity!=1){
+                Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier
+                    .fillMaxWidth()
+                    .height(0.5.dp))
+            }
         }
     }
 }
@@ -419,7 +421,9 @@ private fun UserInfoUI(itemData: QuestionItemBean){
     if(answerInfo==null||userInfo==null)return
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxWidth().clickable {
+                                                         JumpUtils.instans?.jump(114,userInfo.conQaUjId)
+        }, verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater) ?: R.mipmap.head_default,
                     builder = {

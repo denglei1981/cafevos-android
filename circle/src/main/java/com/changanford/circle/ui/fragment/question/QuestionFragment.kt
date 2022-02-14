@@ -2,6 +2,7 @@ package com.changanford.circle.ui.fragment.question
 
 import android.os.Bundle
 import android.view.View
+import com.changanford.circle.R
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
 import com.changanford.circle.ui.compose.EmptyCompose
@@ -21,11 +22,12 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
          * [personalPageType]
          * [isOneself]是否是自己查看
         * */
-        fun newInstance(conQaUjId:String,personalPageType: String,isOneself:Boolean): QuestionFragment {
+        fun newInstance(conQaUjId:String,personalPageType: String,isOneself:Boolean,identity:Int): QuestionFragment {
             val bundle = Bundle()
             bundle.putString("conQaUjId", conQaUjId)
             bundle.putString("personalPageType", personalPageType)
             bundle.putBoolean("isOneself", isOneself)
+            bundle.putInt("identity", identity)
             val fragment = QuestionFragment()
             fragment.arguments = bundle
             return fragment
@@ -36,15 +38,21 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     private var personalPageType=""
     private var isOneself=true
     private var pageNo=1
+    private var identity=0//身份标识 0 普通  1 技师  2车主
     override fun initView() {
         arguments?.apply {
             conQaUjId=getString("conQaUjId","0")
             personalPageType=getString("personalPageType","0")
             isOneself=getBoolean("isOneself",false)
+            identity=getInt("identity",0)
         }
         binding.apply {
 //            mAdapter.setHasStableIds(true)
-            recyclerView.adapter=mAdapter
+            mAdapter.identity=identity
+            recyclerView.apply {
+                adapter=mAdapter
+                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
+            }
             smartRl.setOnLoadMoreListener {
                 pageNo++
                 getData()

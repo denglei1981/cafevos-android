@@ -16,8 +16,6 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/dp_10"
-                android:background="@drawable/circle_white_5_bg"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeView"
