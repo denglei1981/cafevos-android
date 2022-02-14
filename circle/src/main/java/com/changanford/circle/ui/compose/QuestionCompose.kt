@@ -159,7 +159,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                             shape = RoundedCornerShape(8.dp)
                                         )
                                         .padding(7.dp, 2.dp)) {
-                                    Text(text = "${userInfo.modelName} 车主",fontSize = 10.sp, color=colorResource(R.color.color_00095B),maxLines = 1,
+                                    Text(text = userInfo.modelName.plus("车主"),fontSize = 10.sp, color=colorResource(R.color.color_00095B),maxLines = 1,
                                         overflow = TextOverflow.Ellipsis)
                                 }
                             }
