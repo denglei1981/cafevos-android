@@ -1,6 +1,5 @@
 package com.changanford.circle.bean
 
-import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 data class MechanicData(
@@ -12,8 +11,8 @@ data class MechanicData(
 data class TecnicianVo(
     val avater: String,
     val nickName: String,
-    val qaTechnicianId: Int
-
+    val qaTechnicianId: Int,
+    val conQaUjId:String?=null,
 )
 
 

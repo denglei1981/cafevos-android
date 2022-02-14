@@ -14,7 +14,6 @@ import com.changanford.circle.ui.ask.adapter.HotMechanicAdapter
 import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
 import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.AskRecommendViewModel
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
@@ -102,7 +101,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                         position: Int
                     ) {
 //                        startARouter(ARouterCirclePath.MechanicMainActivity,)
-                        JumpUtils.instans?.jump(114,hotMechanicAdapter.getItem(position = position).qaTechnicianId.toString())
+                        JumpUtils.instans?.jump(114,hotMechanicAdapter.getItem(position = position).conQaUjId)
                     }
 
                 })

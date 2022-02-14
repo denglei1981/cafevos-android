@@ -69,6 +69,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     private var isWhite = true//是否是白色状态
     private var conQaUjId:String="15"
     private var type=0
+    private val fragments= arrayListOf<QuestionFragment>()
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
@@ -102,9 +103,13 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 binding.composeView.setContent {
                     ComposeQuestionTop(this@QuestionActivity,this)
                 }
-                val tabs=it.getTabs(this@QuestionActivity)
-                initTabAndViewPager(tabs,isOneself())
-                initMagicIndicator(tabs)
+                if(fragments.size>0){
+                    fragments[binding.viewPager.currentItem].startRefresh()
+                }else{
+                    val tabs=it.getTabs(this@QuestionActivity)
+                    initTabAndViewPager(tabs,isOneself())
+                    initMagicIndicator(tabs)
+                }
             }
             binding.smartRl.finishRefresh()
         }
@@ -118,6 +123,9 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean) {
+        for(position in 0 until tabs.size){
+            fragments.add(QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself))
+        }
         binding.viewPager.apply {
             removeAllViews()
             adapter = @SuppressLint("WrongConstant")
@@ -126,7 +134,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     return tabs.size
                 }
                 override fun getItem(position: Int): Fragment {
-                    return QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself)
+                    return fragments[position]
                 }
             }
             binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){

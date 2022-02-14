@@ -77,4 +77,8 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
         if(personalPageType=="TECHNICIAN"&&isOneself) viewModel.questionOfInvite(pageNo)
         else viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
     }
+    fun startRefresh(){
+        pageNo=1
+        getData()
+    }
 }

@@ -164,8 +164,8 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                 }
                             }
                         }
-                        //技师可修改资料
-                        if(identityType==1){
+                        //技师自己可修改资料
+                        if(isOneself()&&identityType==1){
 //                            Spacer(modifier = Modifier.height(5.dp))
                             //修改资料
                             Row(modifier = Modifier
