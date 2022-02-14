@@ -24,7 +24,7 @@ class ConfigBean(
     val topads: ArrayList<GoodServiceBean>, //订车顶部入口
     val bottomads: ArrayList<GoodServiceBean>, //订车底部入口
     val unishopCartUrl:String,     //购物车地址
-    val recarDisScale:Float?=null,//爱车页推荐图片展示比例
+    val recarDisScale:Float?=0f,//爱车页推荐图片展示比例
 ) {
     class FloatBt(
         val img:String,
