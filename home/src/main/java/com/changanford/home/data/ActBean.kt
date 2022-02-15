@@ -22,6 +22,7 @@ class ActBean {
     val provinceName: String = ""
     val recommend: String? = null
     val hot: String? = null
+    var needSignUp:String?="YES"
     fun getAddress(): String {
         if (!TextUtils.isEmpty(cityName)) {
             return cityName

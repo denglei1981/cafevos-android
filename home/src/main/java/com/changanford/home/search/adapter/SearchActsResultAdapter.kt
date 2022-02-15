@@ -15,7 +15,8 @@ import com.changanford.home.databinding.ItemHomeActsBinding
  * 活动列表。
  */
 class SearchActsResultAdapter :
-    BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts) ,LoadMoreModule{
+    BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts),
+    LoadMoreModule {
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)
@@ -24,9 +25,9 @@ class SearchActsResultAdapter :
             it.tvHomeActAddress.text = item.getAddress()
             it.tvHomeActTimes.text = item.getActTimeS()
 
-            try{
+            try {
                 when {
-                    item.serverTime<item.beginTime -> {
+                    item.serverTime < item.beginTime -> {
                         it.btnState.text = "未开始"
                     }
                     item.deadLineTime <= item.serverTime -> {
@@ -36,19 +37,25 @@ class SearchActsResultAdapter :
                         it.btnState.text = "进行中"
                     }
                 }
-            }catch (e:Exception){
+                if (item.wonderfulType != 2) {// 不是问卷活动
+                    if (item.jumpType == 3) { // 是常规活动 及报名活动
+                        if (item.needSignUp == "NO") { // 是否显示截止时间。
+                            it.tvHomeSignUpTime.visibility = View.GONE
+                        } else {
+                            it.tvHomeSignUpTime.visibility = View.VISIBLE
+                        }
+                        it.tvHomeSignUpTime.text = item.getSignTimes()
+                    } else {
+                        it.tvHomeSignUpTime.visibility = View.GONE
+                    }
+                }
+
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
 
-            if(item.wonderfulType!=2){// 不是问卷活动
-                if(item.jumpType==3){ // 是常规活动 及报名活动
-                    it.tvHomeSignUpTime.visibility=View.VISIBLE
-                    it.tvHomeSignUpTime.text=item.getSignTimes()
-                }else{
-                    it.tvHomeSignUpTime.visibility=View.GONE
-                }
-            }
+
             it.tvTagTwo.actTypeText(item.wonderfulType)
 
             when (item.wonderfulType) {
