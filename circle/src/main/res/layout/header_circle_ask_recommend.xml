@@ -93,6 +93,7 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cd_my_ask"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_62"
             android:layout_marginTop="@dimen/dp_30"
