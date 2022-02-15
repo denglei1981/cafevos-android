@@ -112,6 +112,7 @@
             android:layout_marginStart="@dimen/dp_24"
             android:layout_marginBottom="@dimen/dp_24"
             android:src="@mipmap/ic_medel_logo"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -124,6 +125,7 @@
             android:textColor="#50ffffff"
             android:textSize="@dimen/sp_11"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
