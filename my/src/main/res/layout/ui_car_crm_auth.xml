@@ -35,6 +35,7 @@
             android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/shape_c_ff_r_24_stroke_95"
             android:text="列表里没有我的爱车？点击添加"
-            android:textColor="@color/color_00142E" />
+            android:textColor="@color/color_00142E"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>

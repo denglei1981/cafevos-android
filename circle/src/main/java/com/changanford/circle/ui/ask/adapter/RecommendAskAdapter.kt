@@ -29,6 +29,8 @@ import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -92,7 +94,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                     val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
                     binding?.layoutAskInfo?.ivNine?.setAdapter(assNineAdapter)
                     binding?.layoutAskInfo?.ivNine?.visibility = View.VISIBLE
-
+                    binding?.layoutAskInfo?.ivPic?.visibility=View.GONE
                     if (picList.size > 4) {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
                         binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size-1)
@@ -103,13 +105,20 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 picList.size == 1 -> {
                     binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
                     GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
+                    binding?.layoutAskInfo?.ivPic?.visibility=View.VISIBLE
                     binding.layoutAskInfo.btnMore.visibility = View.GONE
                 }
                 else -> {
                     binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
                     binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
+                    binding?.layoutAskInfo?.ivPic?.visibility=View.GONE
+
                 }
             }
+        }else{
+            binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
+            binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
+            binding?.layoutAskInfo?.ivPic?.visibility=View.GONE
         }
     }
 
@@ -139,7 +148,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                     val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
                     binding?.layoutAskInfo?.ivNine?.setAdapter(assNineAdapter)
                     binding?.layoutAskInfo?.ivNine?.visibility = View.VISIBLE
-
+                    binding?.layoutAskInfo?.ivPic?.visibility=View.GONE
                     if (picList.size > 4) {
                         binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
                         binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size-1)
@@ -149,6 +158,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 }
                 picList.size == 1 -> {
                     binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
+                    binding?.layoutAskInfo?.ivPic?.visibility=View.VISIBLE
                     GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
                     binding.layoutAskInfo.btnMore.visibility = View.GONE
                 }
@@ -157,6 +167,10 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                     binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
                 }
             }
+        }else{
+            binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
+            binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
+            binding?.layoutAskInfo?.ivPic?.visibility=View.GONE
         }
     }
 

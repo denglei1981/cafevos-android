@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.ask.fragment
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -20,8 +21,12 @@ import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -107,17 +112,36 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                 })
 
                 it.tvLook.setOnClickListener {
-                   JumpUtils.instans?.jump(114)
+                    if(isLogin()){
+                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
+                        JumpUtils.instans?.jump(114,param.toString())
+                    }
+                }
+                it.cdMyAsk.setOnClickListener {
+                    //  跳转到我的问答
+                    if(isLogin()){
+                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
+                        JumpUtils.instans?.jump(114,param.toString())
+                    }
+
                 }
 
             }
 
         }
     }
-
+    fun isLogin(): Boolean {
+        return if (TextUtils.isEmpty(MConstant.token)) {
+            startARouter(ARouterMyPath.SignUI)
+            false
+        } else {
+            true
+        }
+    }
     override fun observe() {
         super.observe()
         viewModel.mechanicLiveData.observe(this, Observer {
+            SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
         })
         viewModel.questionListLiveData.observe(this, Observer {
