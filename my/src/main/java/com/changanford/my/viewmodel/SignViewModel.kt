@@ -1,7 +1,6 @@
 package com.changanford.my.viewmodel
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
-import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
@@ -499,25 +497,14 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun nameNick(nameNick: String, callback: (String) -> Unit) {
+    fun nameNick(nameNick: String, callback: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
-            fetchRequest {
+            callback(fetchRequest {
                 var body = HashMap<String, String>()
                 body["nickname"] = nameNick
                 var rkey = getRandomKey()
                 apiService.nameNick(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                callback(it ?: "")
-            }.onWithMsgFailure {
-                var pop = ConfirmPop(BaseApplication.curActivity)
-                pop.contentText.text = it
-                pop.cancelBtn.visibility = View.GONE
-                pop.submitBtn.text = "确认"
-                pop.submitBtn.setOnClickListener {
-                    pop.dismiss()
-                }
-                pop.showPopupWindow()
-            }
+            })
         }
     }
 
@@ -1039,7 +1026,6 @@ class SignViewModel : ViewModel() {
         var type = uploadFilePath
             .substring(uploadFilePath.lastIndexOf(".") + 1, uploadFilePath.length)
         return tempFilePath + System.currentTimeMillis() + "." + type
-
     }
 
     /**

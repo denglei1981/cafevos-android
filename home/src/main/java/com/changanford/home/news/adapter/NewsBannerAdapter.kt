@@ -15,7 +15,7 @@ import com.zhpan.bannerview.BaseViewHolder
 
 class NewsPicDetailsBannerAdapter : BaseBannerAdapter<ImageTexts?>() {
     override fun getLayoutId(viewType: Int): Int {
-        return R.layout.item_recommend_bar_banner
+        return R.layout.item_news_pic_details_banner
     }
     override fun bindData(holder: BaseViewHolder<ImageTexts?>?, data: ImageTexts?, position: Int, pageSize: Int) {
         holder?.let {

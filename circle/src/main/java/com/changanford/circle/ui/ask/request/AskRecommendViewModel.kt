@@ -55,14 +55,21 @@ class AskRecommendViewModel : BaseViewModel() {
 
 
 
-
-    fun getQuestionList(isLoadMore:Boolean,page: Int){
+   var page:Int =1
+    fun getQuestionList(isLoadMore:Boolean, questionTypes:MutableList<String>){
         launch (block = {
             val body = MyApp.mContext.createHashMap()
+            if(isLoadMore){
+                page+=1
+            }else{
+                page=1
+            }
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
-
+                if(questionTypes.size>0){
+                    it["questionTypes"] =questionTypes
+                }
             }
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getRecommendQuestionList(body.header(rKey),body.body(rKey))

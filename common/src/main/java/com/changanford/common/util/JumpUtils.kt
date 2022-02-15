@@ -647,7 +647,21 @@ class JumpUtils {
             113->{//话题列表
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
-
+            114->{//我的问答它的问答
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("value", value)
+                    startARouter(ARouterCirclePath.QuestionActivity, bundle, true)
+                }
+            }
+            115->{ // 自己可以编辑技术详情的主页
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("value", value)
+                    startARouter(ARouterCirclePath.MechanicMainActivity, bundle, true)
+                }
+            }
+            116->{ //提问
+                startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

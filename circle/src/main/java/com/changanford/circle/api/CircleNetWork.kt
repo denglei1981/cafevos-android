@@ -1,7 +1,9 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.*
+import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.MechanicData
 import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
@@ -503,13 +505,39 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MechanicData>
-
-
-
-
     @POST("qa/qustions")
     suspend fun getRecommendQuestionList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<AskListMainData>>
+    /**
+     * 我/TA的问答
+    * */
+    @POST("/qa/personalQA")
+    suspend fun personalQA(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    /**
+     * 我/TA 的 提问/回答/被采纳
+     * */
+    @POST("/qa/qustionOfpersonal")
+    suspend fun questionOfPersonal(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    /**
+     * 技师邀请回答列表
+     * */
+    @POST("/qa/qustionOfInvite")
+    suspend fun questionOfInvite(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+
+
+    /**
+     * 编辑技术详情
+     * */
+    @POST("/qa/techniciaPersonalInfo")
+    suspend fun techniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<TechnicianData>
+
+   /**
+    * 更换技师个人资料
+    * */
+
+   @POST("/qa/updateTechniciaPersonalInfo")
+   suspend fun updateTechniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<String>
+
 }

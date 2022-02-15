@@ -1,28 +1,40 @@
 package com.changanford.circle.ui.ask.fragment
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleAdBannerAdapter
+import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
 import com.changanford.circle.databinding.HeaderCircleAskRecommendBinding
-import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.ui.ask.adapter.HotMechanicAdapter
 import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
+import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.AskRecommendViewModel
-import com.changanford.circle.utils.TestBeanUtil
-import com.changanford.circle.viewmodel.CircleDetailsViewModel
-import com.changanford.common.basic.BaseFragment
+import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.QuestionData
+import com.changanford.common.bean.ResultData
+import com.changanford.common.listener.AskCallback
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SPUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.zhpan.bannerview.constants.PageStyle
 
-class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, AskRecommendViewModel>(),
-    OnRefreshListener {
+class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, AskRecommendViewModel>(),
+    OnRefreshListener,OnLoadMoreListener {
 
     val recommendAskAdapter: RecommendAskAdapter by lazy {
         RecommendAskAdapter()
@@ -32,7 +44,9 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, AskRecomm
         HotMechanicAdapter()
 
     }
+    var circleAskScreenDialog: CircleAskScreenDialog?=null
 
+    var  questionTypes = mutableListOf<String>()
     companion object {
         fun newInstance(): AskRecommendFragment {
 //            val bundle = Bundle()
@@ -50,15 +64,20 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, AskRecomm
     override fun initData() {
         binding.ryAsk.adapter = recommendAskAdapter
         recommendAskAdapter.setOnItemClickListener { adapter, view, position ->
-            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
+//            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
+               val recommendData= recommendAskAdapter.getItem(position = position)
+             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(),recommendData.jumpValue)
         }
         addHeadView()
         viewModel.getInitQuestion()
-        viewModel.getQuestionList(false,1)
+        viewModel.getQuestionList(false,questionTypes)
+        binding.refreshLayout.setOnRefreshListener(this)
+        binding.refreshLayout.setOnLoadMoreListener(this)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-
+        viewModel.getInitQuestion()
+        viewModel.getQuestionList(false,questionTypes)
     }
 
 
@@ -77,22 +96,131 @@ class AskRecommendFragment : BaseFragment<FragmentAskRecommendBinding, AskRecomm
                     startARouter(ARouterCirclePath.HotTopicActivity)
                 }
                 it.ryTopic.adapter=hotMechanicAdapter
+                it.tvScreen.setOnClickListener {
+                    showScreenDialog()
+                }
+                hotMechanicAdapter.setOnItemClickListener(object :OnItemClickListener{
+                    override fun onItemClick(
+                        adapter: BaseQuickAdapter<*, *>,
+                        view: View,
+                        position: Int
+                    ) {
+//                        startARouter(ARouterCirclePath.MechanicMainActivity,)
+                        JumpUtils.instans?.jump(114,hotMechanicAdapter.getItem(position = position).conQaUjId)
+                    }
+
+                })
+
+                it.tvLook.setOnClickListener {
+                    if(isLogin()){
+                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
+                        JumpUtils.instans?.jump(114,param.toString())
+                    }
+                }
+                it.cdMyAsk.setOnClickListener {
+                    //  跳转到我的问答
+                    if(isLogin()){
+                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
+                        JumpUtils.instans?.jump(114,param.toString())
+                    }
+
+                }
 
             }
 
         }
     }
-
+    fun isLogin(): Boolean {
+        return if (TextUtils.isEmpty(MConstant.token)) {
+            startARouter(ARouterMyPath.SignUI)
+            false
+        } else {
+            true
+        }
+    }
     override fun observe() {
         super.observe()
         viewModel.mechanicLiveData.observe(this, Observer {
+            SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
         })
         viewModel.questionListLiveData.observe(this, Observer {
-            recommendAskAdapter.setNewInstance(it.data.dataList)
+            try {
+                if(it.isSuccess){
+                    if(it.isLoadMore){
+                        binding.refreshLayout.finishLoadMore()
+                        recommendAskAdapter.addData(it.data.dataList)
+                    }else{
+                        binding.refreshLayout.finishRefresh()
+                        binding.refreshLayout.setEnableLoadMore(true)
+                        if(it.data.dataList.size==0){
+                            val emptyList = arrayListOf<AskListMainData>()
+                            val askEmpty=AskListMainData(emptyType = 1)
+                            emptyList.add(askEmpty)
+                            recommendAskAdapter.setNewInstance(emptyList)
+                        }else{
+                            recommendAskAdapter.setNewInstance(it.data.dataList)
+                        }
+                    }
+                    if(it.data==null||it.data.dataList.size<20){
+                        binding.refreshLayout.finishLoadMoreWithNoMoreData()
+                        binding.refreshLayout.setEnableLoadMore(false)
+                    }
+                }else{
+                    binding.refreshLayout.finishRefresh()
+                }
+
+            }catch (e :Exception){
+                e.printStackTrace()
+            }
+
         })
+        LiveDataBus.get().with(LiveDataBusKey.CHANGE_TEACH_INFO).observe(this, Observer {
+             viewModel.getInitQuestion()
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        viewModel.getInitQuestion()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        viewModel.getInitQuestion()
+                    }
+                    else -> {}
+                }
+            }
 
     }
 
+
+    fun showScreenDialog(){
+        if(circleAskScreenDialog==null){
+            circleAskScreenDialog= CircleAskScreenDialog(requireActivity(),this,object :AskCallback{
+                override fun onResult(result: ResultData) {
+                    when(result.resultCode){
+                        ResultData.OK->{
+                           val  questionData=  result.data  as List<QuestionData>
+                            questionTypes.clear()
+                            questionData.forEach {
+                                questionTypes.add(it.dictValue)
+                            }
+                            viewModel.getQuestionList(false,questionTypes)
+                        }
+                    }
+                }
+            })
+        }
+        circleAskScreenDialog?.show()
+    }
+
+    override fun onLoadMore(refreshLayout: RefreshLayout) {
+        viewModel.getQuestionList(true,questionTypes)
+    }
+
+    override fun onRetryBtnClick() {
+
+    }
 
 }

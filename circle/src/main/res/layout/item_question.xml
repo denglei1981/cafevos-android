@@ -7,9 +7,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_15">
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_16"
+        android:background="@drawable/circle_white_5_bg"
+        android:layout_marginBottom="@dimen/dp_12">
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_title"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,11 +28,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="@dimen/sp_12"
-            android:minWidth="@dimen/dp_43"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingBottom="@dimen/dp_2"
             android:paddingStart="@dimen/dp_5"
             android:paddingEnd="@dimen/dp_5"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_19"
+            android:minWidth="@dimen/dp_43"
+            android:maxWidth="@dimen/dp_90"
+            style="@style/w_style_txt_ellipsize"
             android:textColor="@color/color_00095B"
             android:background="@drawable/border_0095b_2dp"
             android:layout_width="wrap_content"

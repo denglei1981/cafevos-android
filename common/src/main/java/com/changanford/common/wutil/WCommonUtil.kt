@@ -15,6 +15,7 @@ import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -283,5 +284,15 @@ object WCommonUtil {
           }
         }
         return mobile?:""
+    }
+    /**
+     * 设置控件的Margin
+    * */
+    fun setMargin(v: View, l: Int, t: Int, r: Int, b: Int) {
+        if (v.layoutParams is MarginLayoutParams) {
+            val p = v.layoutParams as MarginLayoutParams
+            p.setMargins(l, t, r, b)
+            v.requestLayout()
+        }
     }
 }

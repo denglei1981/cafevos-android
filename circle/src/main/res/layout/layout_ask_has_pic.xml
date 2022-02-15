@@ -24,6 +24,23 @@
             style="@style/AppText.lineSpace"
             />
 
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/sp_12"
+            android:minWidth="@dimen/dp_43"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
+            android:paddingStart="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_5"
+            android:gravity="center"
+            android:textColor="@color/color_00095B"
+            android:background="@drawable/border_0095b_2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
         <FrameLayout
             android:id="@+id/fl_pics_content"
             android:layout_width="match_parent"
@@ -70,7 +87,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-
             app:layout_constraintDimensionRatio="335:190"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_20"

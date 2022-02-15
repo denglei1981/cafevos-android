@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_18"
         android:orientation="vertical">
 
         <include

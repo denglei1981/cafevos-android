@@ -45,6 +45,8 @@
 
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_askQuestions"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:paddingEnd="@dimen/dp_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

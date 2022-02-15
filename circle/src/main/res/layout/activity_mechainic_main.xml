@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+        <include
+            android:id="@+id/layout_title"
+            layout="@layout/layout_sample_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
+            />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_header"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_28"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            />
+
+        <include
+            android:id="@+id/layout_good_at"
+            app:layout_constraintTop_toBottomOf="@+id/iv_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_42"
+            android:layout_marginStart="20dp"
+            android:layout_height="45dp"
+            layout="@layout/include_mechainc_next"/>
+
+        <include
+            android:id="@+id/layout_nick_name"
+            app:layout_constraintTop_toBottomOf="@+id/layout_good_at"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginStart="20dp"
+            android:layout_height="45dp"
+            layout="@layout/include_mechainc_nickename_next"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_info_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textColor="#ff333333"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_nick_name"
+            app:layout_constraintStart_toStartOf="@+id/layout_nick_name"
+            android:layout_marginStart="@dimen/dp_20"
+            />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15"
+            android:background="@drawable/shape_f9f9_corners5"
+            android:maxLength="8"
+            app:layout_constraintStart_toStartOf="@+id/tv_info_tips"
+            android:minHeight="130dp"
+            android:maxHeight="280dp"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="留下你的自我介绍，让更多人了解你"
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@+id/tv_info_tips"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

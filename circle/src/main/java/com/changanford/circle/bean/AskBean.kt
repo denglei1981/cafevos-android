@@ -1,6 +1,5 @@
 package com.changanford.circle.bean
 
-import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 data class MechanicData(
@@ -12,40 +11,49 @@ data class MechanicData(
 data class TecnicianVo(
     val avater: String,
     val nickName: String,
-    val qaTechnicianId: Int
-
+    val qaTechnicianId: Int,
+    val conQaUjId: String? = null,
 )
 
 
 data class AskListMainData(
-    val adopt: String,
-    val answerCount: Int,
-    val conQaQuestionId: Int,
-    val content: String,
-    val createTime: String,
-    val fbReward: Int,
-    var imgs: String = "",
-    val jumpType: String,
-    val jumpValue: String,
-    val qaAnswer: QaAnswer? = null,
-    val questionType: String,
-    val title: String,
-    val viewVal: Int,
-    var pisList: List<String>? = null,
+    var adopt: String = "",
+    var answerCount: Int = -1,
+    var conQaQuestionId: Int = -1,
+    var content: String = "",
+    var createTime: String = "",
+    var fbReward: Int = 0,
+    var imgs: String? = "",
+    var jumpType: String = "",
+    var jumpValue: String = "",
+    var qaAnswer: QaAnswer? = null,
+    var questionType: String = "",
+    var questionTypeName: String = "",
+    var title: String = "",
+    var viewVal: Int = -1,
+    var pisList: List<String>? = arrayListOf(),
+    var emptyType: Int = -1
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         qaAnswer?.let {
             return 1
         }
+        if (emptyType == 1) {
+            return 3
+        }
         return 2 //  mei you hui da
     }
+
     override var itemType: Int = getItemTypeLocal()
 
-     fun getPicLists(): List<String>? {
-        if (imgs.isEmpty()) {
+    fun getPicLists(): List<String>? {
+        if (imgs == null) {
             return pisList
+        }
+        return if (imgs?.isEmpty() == true) {
+            pisList
         } else {
-            return  imgs.split(",")
+            imgs?.split(",")
         }
     }
 
