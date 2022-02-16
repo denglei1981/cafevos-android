@@ -231,4 +231,7 @@ dependencies {
     api "jp.wasabeef:glide-transformations:4.3.0"
     kapt "com.github.bumptech.glide:compiler:$versions_glide"
 
+    //埋点需要引入
+    api "com.squareup.retrofit2:converter-scalars:2.8.1"
+    api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
 }

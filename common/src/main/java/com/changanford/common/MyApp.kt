@@ -1,6 +1,9 @@
 package com.changanford.common
 
+import android.app.Activity
 import android.content.Context
+import android.os.Bundle
+import android.util.Log
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.changanford.common.basic.BaseApplication
@@ -72,6 +75,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             MConstant.mine_phone = "${it.mobile}"
         }
         initLoadSir()// 初始化界面管理类。
+        isRunInBackGround()
     }
 
     override fun getCameraXConfig(): CameraXConfig {
@@ -87,5 +91,51 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
             .commit()
     }
+    /**
+     * app是否处于后台H
+     */
+    @JvmField
+    var isRunBack = false
 
+    /**
+     * 判断app是否处于后台 0：后台 ；1：前台
+     */
+    @JvmField
+    var mFinalCount = 0
+
+    /**
+     * 判断app是否处于后台
+     *
+     * @return
+     */
+    private fun isRunInBackGround() {
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity,savedInstanceState: Bundle?) {}
+            override fun onActivityStarted(activity: Activity) {
+                mFinalCount++
+                if (mFinalCount == 1 && isRunBack) { //说明从后台回到了前台
+                    isRunBack = false
+                }
+                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStarted>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
+            }
+            override fun onActivityResumed(activity: Activity) {
+            }
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {
+                mFinalCount--
+                //如果mFinalCount ==0，说明是前台到后台
+                if (mFinalCount == 0) { //说明从前台回到了后台
+                    isRunBack = true
+//                    WidgetTimerUtils.updateDistance(this@MyApplication)
+                }
+                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStopped>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
+            }
+
+            override fun onActivitySaveInstanceState(
+                activity: Activity,
+                outState: Bundle
+            ) {}
+            override fun onActivityDestroyed(activity: Activity) {}
+        })
+    }
 }

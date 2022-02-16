@@ -162,4 +162,7 @@ object MConstant {
     val H5_SHOP_MAINTENANCE ="${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
 
     var isFirstOpenTwoLevel = true // 是首次打开二楼
+    var bdLocation = "{}"
+    //埋点
+    val BASE_URL_BURIED="https://evosmdqa.changanford.cn"
 }

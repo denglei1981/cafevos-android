@@ -3,6 +3,7 @@ package com.changanford.common.net
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.changanford.common.MyApp
+import com.changanford.common.buried.RetrofitClient
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
@@ -121,4 +122,25 @@ fun plusSalt(content: String): String {
         content.plus("hyzh-unistar-8KWAKH291IpaFB")
     }
 
+}
+/**
+ * 获取埋点的头部
+ */
+fun getBuriedHeader(body: String?): HashMap<String, String> {
+    val timestamp = System.currentTimeMillis().toString()
+    val map = HashMap<String, String>()
+    if (body.isNullOrEmpty())
+        return map
+    map["Content-Type"] = "application/json"
+    map["timestamp"] = timestamp
+    map[RetrofitClient.BASE_URL_NAME] =MConstant.BASE_URL_BURIED
+    map["sign"] = signMD("${body}${timestamp}")
+    return map
+}
+/**
+ * 将埋点body信息转化为传输内容
+ */
+fun getBuriedRequestBody(body: String?): RequestBody {
+    return body?.toRequestBody("application/json;charset=utf-8".toMediaType())
+        ?: "".toRequestBody("application/json;charset=utf-8".toMediaType())
 }

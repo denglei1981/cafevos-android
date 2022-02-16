@@ -32,6 +32,10 @@ import java.nio.channels.FileChannel;
 import java.util.Locale;
 import java.util.Objects;
 
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
+
 /**
  * @author：luck
  * @date：2017-5-30 19:30
@@ -228,7 +232,7 @@ public class PictureFileUtils {
      * Callers should check whether the path is local before assuming it
      * represents a local file.
      *
-     * @param context The context.
+     * @param ctx The context.
      * @param uri     The Uri to query.
      * @author paulburke
      */
@@ -608,4 +612,26 @@ public class PictureFileUtils {
             }
         }
     }
+    /**
+     * 拷贝文件
+     *
+     * @param outputStream
+     * @return
+     */
+    public static boolean bufferCopy(BufferedSource inBuffer, OutputStream outputStream) {
+        BufferedSink outBuffer = null;
+        try {
+            outBuffer = Okio.buffer(Okio.sink(outputStream));
+            outBuffer.writeAll(inBuffer);
+            outBuffer.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(inBuffer);
+            close(outBuffer);
+        }
+        return false;
+    }
+
 }

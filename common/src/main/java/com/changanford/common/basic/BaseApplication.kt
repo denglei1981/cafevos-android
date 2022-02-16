@@ -7,7 +7,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -18,6 +17,8 @@ import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory
 import com.alibaba.sdk.android.push.register.*
 import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
+import com.changanford.common.buried.RetrofitClient
+import com.changanford.common.buried.RetrofitClientConfig
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.ConfigUtils
@@ -56,6 +57,7 @@ abstract class BaseApplication : MultiDexApplication() {
             initshare()
             initUmeng()
         }
+        initRetrofitClientConfig()
     }
 
 
@@ -158,6 +160,14 @@ abstract class BaseApplication : MultiDexApplication() {
         lateinit var INSTANT: Application
         lateinit var curActivity: Activity
         lateinit var currentViewModelScope  :CoroutineScope
-
+    }
+    /**
+     * 配置Retrofit + OkHttp
+     */
+    private fun initRetrofitClientConfig() {
+        val config = RetrofitClientConfig.Builder()
+            .url(MConstant.BASE_URL)
+            .build()
+        RetrofitClient.setRetrofitClientConfig(config)
     }
 }

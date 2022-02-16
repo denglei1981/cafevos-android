@@ -1,6 +1,8 @@
 package com.changanford.common.net
 
 import com.changanford.common.bean.*
+import com.changanford.common.buried.BaseBean
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -1065,4 +1067,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<String>>
+
+    /**
+     * 埋点
+     */
+    @POST("/buried")
+    fun buried(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): Observable<BaseBean<String>>
 }
