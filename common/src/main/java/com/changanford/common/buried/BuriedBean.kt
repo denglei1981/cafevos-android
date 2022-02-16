@@ -61,7 +61,8 @@ class BuriedBean {
             targetName: String,
             targetId:String,
             userId: String,
-            pageStayTime: String
+            pageStayTime: String,
+            extend:String
         ) {
             this.actName = actName
             this.actionType = actionType
@@ -69,6 +70,7 @@ class BuriedBean {
             this.targetId = targetId
             this.userId = userId
             this.pageStayTime = pageStayTime
+            this.extend=extend
         }
     }
 

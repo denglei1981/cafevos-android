@@ -165,4 +165,6 @@ object MConstant {
     var bdLocation = "{}"
     //埋点
     val BASE_URL_BURIED="https://evosmdqa.changanford.cn"
+    //保存打开的页面，处理埋点时间
+    var classesMap: HashMap<String, Long> = HashMap()
 }

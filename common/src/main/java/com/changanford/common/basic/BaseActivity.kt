@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.util.MConstant
 import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
 
@@ -36,19 +37,16 @@ import java.lang.reflect.ParameterizedType
  * *********************************************************************************
  */
 abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivity(), BaseInterface {
-
-
     lateinit var binding: VB
     lateinit var viewModel: VM
-
     var isDarkFont=true
-
-
+    var isPortrait:Boolean=true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //防止应用截屏
         //window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        MConstant.classesMap[getClassName()] = System.currentTimeMillis()
         curActivity = this
         binding = bindings
         setContentView(binding.root)
@@ -73,7 +71,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         metrics.scaledDensity = config.fontScale * metrics.density
         res.updateConfiguration(config,metrics)
     }
-    var isPortrait:Boolean=true
+    private fun getClassName() = javaClass.simpleName
     override fun initView(savedInstanceState: Bundle?) {
         if(isPortrait){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
