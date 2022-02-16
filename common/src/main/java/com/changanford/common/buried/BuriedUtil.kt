@@ -44,14 +44,8 @@ class BuriedUtil {
         MBuriedWorkerManager.instant?.buried(JSON.toJSONString(data))
     }
 
-    private fun buried(
-        actName: String,
-        actionType: String,
-        targetId: String,
-        targetName: String
-    ) {
+    private fun buried(actName: String,actionType: String,targetId: String,targetName: String) {
         buried(actName, actionType, targetId, targetName,"")
-
     }
 
     private fun buried(
@@ -100,7 +94,6 @@ class BuriedUtil {
     fun click_uni_orderCar(){buried("点击Uni订车","click_uni_orderCar")}//,点击Uni订车,1
     fun click_uni_orderCar(targetId: String,targetName: String){buried("点击Uni订车","click_uniBanner_orderCar",targetId,targetName)}//,点击Uni订车,1
     fun click_mail_jifenmingxi(){buried("点击商城U币明细","click_mail_jifenmingxi")}//,点击商城U币明细,1
-    fun click_mall_banner(bannerId: String,bannerName: String){buried("banner名字","click_mall_banner",bannerId,bannerName)}//【banner的id】,点击商城banner【banner名字】,1
     fun click_mall_p(pId:String,pName:String){buried("商品名称","click_mall_p",pId,pName)}//【商品id】,点击商品【商品名称】,1
     fun click_my_woyaoqiandao(){buried("点击我要签到","click_my_woyaoqiandao")}//,点击我要签到,1
     fun click_my_setting(){buried("点击设置","click_my_setting")}//,点击设置,1
@@ -137,4 +130,12 @@ class BuriedUtil {
     fun stay_my_fans(time: String){buried("粉丝页停留时长","stay_my_fans","","",time)}//,粉丝页停留时长,1
     fun stay_my_follow(time: String){buried("关注页停留时长","stay_my_follow","","",time)}//,关注页停留时长,1
 
+    /**
+     * 商城 START
+    * */
+    //【banner的id】,点击商城banner【banner名字】,1
+    fun clickMallBanner(bannerId: String,bannerName: String){
+        buried("banner名字","click_mall_banner",bannerId,bannerName)
+    }
+    //商城END
 }
