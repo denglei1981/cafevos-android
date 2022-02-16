@@ -4,7 +4,6 @@ import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
