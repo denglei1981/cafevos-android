@@ -85,17 +85,37 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
             }
             binding.layoutCount.tvLocation.setOnClickListener {
-
-//                val intent = Intent()
-//                intent.setClass(MyApp.mContext,LocationMMapActivity::class.java)
-//                context.startActivity(intent)
                 StartBaduMap(item)
+            }
+
+            GlideUtils.loadBD(
+                item.authorBaseVo?.avatar,
+                binding.layoutHeader.ivHeader,
+                R.mipmap.head_default
+            )
+            val labelAdapter = LabelAdapter(context, 15)
+            labelAdapter.setItems(item.authorBaseVo?.imags)
+            binding.layoutHeader.rvUserTag.adapter = labelAdapter
+            binding.postBean = item
+            binding.author = item.authorBaseVo
+            if (item.authorBaseVo != null) {
+                setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
+            }
+            if (item.city.isNullOrEmpty()) {
+                binding.layoutCount.tvLocation.visibility = View.GONE
+            } else {
+                binding.layoutCount.tvLocation.visibility = View.VISIBLE
+                binding.layoutCount.tvLocation.text = item.showCity()
             }
             if (item.type == 3) {//视频
                 binding.layoutOne.conOne.visibility = View.VISIBLE
                 binding.layoutOne.ivPlay.visibility=View.VISIBLE
                 binding.ivNine.visibility=View.GONE
-                binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
+                if(item.videoTime==null){
+                    binding.layoutOne.tvVideoTimes.visibility=View.GONE
+                }else{
+                    binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
+                }
                 binding.layoutOne.tvVideoTimes.text=item.videoTime.toString()
                 binding.btnMore.visibility=View.GONE
             } else {
@@ -105,32 +125,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 
             }
 
-            if (item.city.isNullOrEmpty()) {
-                binding.layoutCount.tvLocation.visibility = View.GONE
-            } else {
-                binding.layoutCount.tvLocation.visibility = View.VISIBLE
-                binding.layoutCount.tvLocation.text = item.showCity()
-            }
-//            if (item.isGood == 1) {
-//                binding.ivVery.visibility = View.VISIBLE
-//            } else {
-//                binding.ivVery.visibility = View.GONE
-//            }
 
             val picList = item.picList
             if (picList?.isEmpty() == false) {
-
-//                val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
-//                picList.forEach {
-//                    val imageInfo = ImageInfo()
-//                    imageInfo.bigImageUrl = it
-//                    imageInfo.thumbnailUrl = it
-//                    imageInfoList.add(imageInfo)
-//                }
-//                val assNineAdapter = AssNineGridViewAdapter(context, imageInfoList)
-//                binding.ivNine.setAdapter(assNineAdapter)
-//                binding.ivNine.visibility=View.VISIBLE
-//                binding.layoutOne.ivPlay.visibility=View.GONE
                 when {
                     picList.size>1 -> {
                         val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
@@ -172,19 +169,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             }else{
                 binding.ivNine.visibility=View.GONE
             }
-            GlideUtils.loadBD(
-                item.authorBaseVo?.avatar,
-                binding.layoutHeader.ivHeader,
-                R.mipmap.head_default
-            )
-            val labelAdapter = LabelAdapter(context, 15)
-            labelAdapter.setItems(item.authorBaseVo?.imags)
-            binding.layoutHeader.rvUserTag.adapter = labelAdapter
-            binding.postBean = item
-            binding.author = item.authorBaseVo
-            if (item.authorBaseVo != null) {
-                setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
-            }
+
         }
     }
 
