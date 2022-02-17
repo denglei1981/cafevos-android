@@ -73,6 +73,21 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
     fun hasAnswer(view: View, item: AskListMainData) { // 有答案
         val binding = DataBindingUtil.bind<ItemRecommendAskAnswerPicBinding>(view)
         showQuestion(binding, item)
+        showAnswer(binding,item)
+    }
+
+    private fun showAnswer(binding: ItemRecommendAskAnswerPicBinding?, item: AskListMainData) {
+
+        binding?.let {
+                 item.qaAnswer?.let { answer->
+                     GlideUtils.loadBD(answer.qaUserVO.avater, it.layoutAnswerInfo.ivHeader)
+
+
+                 }
+
+
+        }
+
     }
 
     private fun showQuestion(binding: ItemRecommendAskAnswerPicBinding?, item: AskListMainData) {

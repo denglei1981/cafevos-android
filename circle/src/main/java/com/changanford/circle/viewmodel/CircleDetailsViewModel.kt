@@ -77,7 +77,9 @@ class CircleDetailsViewModel : BaseViewModel() {
                     recommondBean.value = it
                     LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
                 }
-                .onFailure { }
+                .onFailure {
+                    LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
+                }
         })
     }
 

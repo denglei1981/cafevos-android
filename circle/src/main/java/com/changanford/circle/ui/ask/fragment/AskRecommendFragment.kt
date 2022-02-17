@@ -147,6 +147,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
     override fun observe() {
         super.observe()
         viewModel.mechanicLiveData.observe(this, Observer {
+
             SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)
             moreJumpData=it.moreTecnicians
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
@@ -159,7 +160,6 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                         recommendAskAdapter.addData(it.data.dataList)
                     }else{
                         binding.refreshLayout.finishRefresh()
-                        binding.refreshLayout.setEnableLoadMore(true)
                         if(it.data.dataList.size==0){
                             val emptyList = arrayListOf<AskListMainData>()
                             val askEmpty=AskListMainData(emptyType = 1)
@@ -167,6 +167,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                             recommendAskAdapter.setNewInstance(emptyList)
                         }else{
                             recommendAskAdapter.setNewInstance(it.data.dataList)
+                            binding.refreshLayout.setEnableLoadMore(true)
                         }
                     }
                     if(it.data==null||it.data.dataList.size<20){

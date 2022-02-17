@@ -241,6 +241,18 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
 
+   val   circleSquareFragment: CircleSquareFragment by  lazy{
+       CircleSquareFragment.newInstance()
+
+   }
+    val  askRecommendFragment:AskRecommendFragment by lazy{
+        AskRecommendFragment.newInstance()
+    }
+    val   newCircleFragment:NewCircleFragment by lazy{
+        NewCircleFragment()
+
+    }
+
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
             adapter = object : FragmentPagerAdapter(
@@ -256,16 +268,16 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
                     return when(position){
                         0->{//帖子推荐
-                            CircleSquareFragment.newInstance()
+                            circleSquareFragment
                         }
                         1->{//圈子
-                             NewCircleFragment()
+                            newCircleFragment
                         }
                         2->{// 问答
-                             AskRecommendFragment.newInstance()
+                            askRecommendFragment
                         }
                         else -> {
-                            CircleSquareFragment.newInstance()
+                            circleSquareFragment
                         }
                     }
 

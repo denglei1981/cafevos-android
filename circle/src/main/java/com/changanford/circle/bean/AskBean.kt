@@ -41,7 +41,8 @@ data class AskListMainData(
     var emptyType: Int = -1
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
-        qaAnswer?.let {
+
+        if(qaAnswer!=null){
             return 1
         }
         if (emptyType == 1) {

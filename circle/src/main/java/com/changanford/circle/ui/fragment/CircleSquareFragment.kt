@@ -18,8 +18,6 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
     }
     companion object {
         fun newInstance(): CircleSquareFragment {
-//            val bundle = Bundle()
-            //            fragment.arguments = bundle
             return CircleSquareFragment()
         }
     }
@@ -51,6 +49,7 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
             binding.refreshLayout.finishRefresh()
         })
         viewModel.circleAdBean.observe(this,  {
+            binding.refreshLayout.finishRefresh()
             circleSquareAdapter.run {
                 if (it.isNotEmpty()) {
                     circleSquareAdapter.topBinding.bViewpager.visibility = View.VISIBLE
