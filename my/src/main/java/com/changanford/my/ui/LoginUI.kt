@@ -223,6 +223,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.back.setOnClickListener {
             back()
         }
+//        viewModel.downLoginBgUrl()
     }
 
     /**
@@ -238,38 +239,43 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
    private fun playInit() {
-        mPlayer?.let { player ->
-            binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
-                override fun surfaceCreated(holder: SurfaceHolder) {
-                }
+       mPlayer.let { player ->
+           binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
+               override fun surfaceCreated(holder: SurfaceHolder) {
+               }
 
-                override fun surfaceChanged(
-                    holder: SurfaceHolder,
-                    format: Int,
-                    width: Int,
-                    height: Int
-                ) {
-                    player.setDisplay(holder)
-                }
+               override fun surfaceChanged(
+                   holder: SurfaceHolder,
+                   format: Int,
+                   width: Int,
+                   height: Int
+               ) {
+                   player.setDisplay(holder)
+               }
 
-                override fun surfaceDestroyed(holder: SurfaceHolder) {
-                }
+               override fun surfaceDestroyed(holder: SurfaceHolder) {
+               }
 
-            })
-            player.setOnPreparedListener {
-                player.setDisplay(binding.loginVideo.holder)
-                player.start()
-            }
-            player.setOnErrorListener { mp, what, extra ->
-                binding.loginVideo.visibility = View.GONE
-                binding.imBg.visibility = View.VISIBLE
-                false
-            }
-        }
+           })
+           player.setOnPreparedListener {
+               try {
+                   if(!player.isPlaying){
+                       player.setDisplay(binding.loginVideo.holder)
+                       player.start()
+                   }
+               }catch (e :Exception){
+               }
+           }
+           player.setOnErrorListener { mp, what, extra ->
+               binding.loginVideo.visibility = View.GONE
+               binding.imBg.visibility = View.VISIBLE
+               false
+           }
+       }
     }
 
    private fun play(videoUrl: String) {
-        "${videoUrl}".logE()
+        videoUrl.logE()
         binding.loginVideo.visibility = View.VISIBLE
         mPlayer.reset()
         mPlayer.setDataSource(videoUrl)
@@ -338,7 +344,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         timerTask?.cancel()
         timer = null
         timerTask = null
-        mPlayer?.let {
+        mPlayer.let {
             if (it.isPlaying)
                 it.stop()
             it.release()
@@ -376,6 +382,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 isForeground = true
             }
             viewModel.downLoginBgUrl()
+//            mPlayer.start()
             timer = Timer()
             timerTask = MyTimerTask()
             timer?.schedule(timerTask, 50, 50)
@@ -396,7 +403,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             }
         }
         if (mPlayer.isPlaying) {
-            mPlayer.pause()
+            mPlayer.stop()
         }
     }
 
