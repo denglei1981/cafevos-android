@@ -21,7 +21,7 @@ def versions_multidex = "2.0.1"
 //def versions_fragment = "1.2.5"
 def versions_animation = "1.1.0-alpha03"
 def versions_material = "1.4.0"
-def versions_smart = "2.0.0"
+def versions_smart = "2.0.5"
 
 
 android {
@@ -176,9 +176,12 @@ dependencies {
     api 'androidx.camera:camera-core:1.0.0-beta03'
     api 'com.gyf.immersionbar:immersionbar:3.0.0'
     //SmartRefresh
-    api "com.scwang.smart:refresh-layout-kernel:$versions_smart"
-    api "com.scwang.smart:refresh-header-classics:$versions_smart"
-    api "com.scwang.smart:refresh-header-two-level:$versions_smart"
+//    api "com.scwang.smart:refresh-layout-kernel:$versions_smart"
+//    api "com.scwang.smart:refresh-header-classics:$versions_smart"
+//    api "com.scwang.smart:refresh-header-two-level:$versions_smart"
+    api "io.github.scwang90:refresh-layout-kernel:$versions_smart"
+    api "io.github.scwang90:refresh-header-classics:$versions_smart"
+    api "io.github.scwang90:refresh-header-two-level:$versions_smart"
 
     //dk
     api 'com.github.dueeeke.dkplayer:dkplayer-java:3.2.6'
