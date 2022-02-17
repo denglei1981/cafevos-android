@@ -122,9 +122,13 @@ class BuriedUtil {
     /**
      * 商城 START
     * */
-    //【banner的id】,点击商城banner【banner名字】,1
-    fun clickMallBanner(bannerId: String,bannerName: String){
-        buried("app商城_顶部banner_点击","click_mall_banner",bannerId,bannerName)
+
+    /**
+     * app商城_顶部banner_点击
+     * [bannerName]banner商品名称
+    * */
+    fun clickMallBanner(bannerName: String){
+        buried("app商城_顶部banner_点击","app_mall_top_banner", extend = "{\"goods_name\": \"$bannerName\"}")
     }
     //【商品id】,点击商品【商品名称】,1
     fun clickMall(pId:String,pName:String){

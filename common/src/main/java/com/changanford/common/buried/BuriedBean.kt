@@ -54,6 +54,7 @@ class BuriedBean {
         var userId: String = ""// userId
         var agent: String = ""// 渠道号
         var pageStayTime: String = ""// 停留时长
+        var user_id: String = ""// userId
 
         constructor(
             actName: String,
@@ -71,6 +72,7 @@ class BuriedBean {
             this.userId = userId
             this.pageStayTime = pageStayTime
             this.extend=extend
+            this.user_id=userId
         }
     }
 
