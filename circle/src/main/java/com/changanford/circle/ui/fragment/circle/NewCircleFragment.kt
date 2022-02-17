@@ -66,14 +66,6 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     private val myCircleAdapter by lazy { MyCircleAdapter() }
 //    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
-        if(BuildConfig.DEBUG){
-            binding.btnTest.apply {
-                visibility=View.VISIBLE
-                setOnClickListener {
-                    QuestionActivity.start()
-                }
-            }
-        }
         addLiveDataBus()
         binding.srl.setOnRefreshListener {
             getData()
