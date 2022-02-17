@@ -1,11 +1,17 @@
 package com.changanford.circle.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.changanford.common.bean.JumpDataBean
 
 data class MechanicData(
     val identityType: String,
     val qaUjId: Int,
-    val tecnicianVoList: MutableList<TecnicianVo>
+    val tecnicianVoList: MutableList<TecnicianVo>,
+    var  moreTecnicians: moreJumpData?=null,
+)
+data class moreJumpData(
+    val jumpCode:String="",
+    val jumpValue: String=""
 )
 
 data class TecnicianVo(

@@ -57,7 +57,9 @@ class PloySearchResultActivity :
     val searchUserFragment: SearchUserFragment by lazy {
         SearchUserFragment.newInstance(searchContent)
     }
-
+    val searchAskFragment: SearchAskFragment by lazy {
+        SearchAskFragment.newInstance(searchContent)
+    }
 
     //搜索列表
     private val sAdapter by lazy {
@@ -81,11 +83,13 @@ class PloySearchResultActivity :
         fragmentList.add(searchPostFragment)
         fragmentList.add(searchShopFragment)
         fragmentList.add(searchUserFragment)
+        fragmentList.add(searchAskFragment)
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_search_post))
         titleList.add(getString(R.string.home_search_shop))
         titleList.add(getString(R.string.home_search_user))
+        titleList.add("问答")
         pagerAdapter = SearchResultViewpagerAdapter(this, fragmentList)
         binding.viewpager.adapter = pagerAdapter
         if(searchType!=-1){

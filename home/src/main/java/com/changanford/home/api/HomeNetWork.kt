@@ -188,6 +188,14 @@ interface HomeNetWork {
 
 
     /**
+     *搜索问答
+     * */
+    @POST("/con/search/s")
+    suspend fun searchAsk(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<AskListMainData>>
+    /**
      * 搜索搜索资讯
      */
     @POST("con/search/s")

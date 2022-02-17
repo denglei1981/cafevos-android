@@ -129,7 +129,13 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
         }
         binding.tvSearch.setOnClickListener {
-            JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
+            if(binding.viewPager.currentItem==2){
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ASK.toString())
+            }else{
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
+            }
+
+
         }
 //        binding.refreshLayout.setOnRefreshListener {
 //            initData()

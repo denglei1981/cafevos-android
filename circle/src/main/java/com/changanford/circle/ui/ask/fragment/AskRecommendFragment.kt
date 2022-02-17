@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.bean.AskListMainData
+import com.changanford.circle.bean.moreJumpData
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
 import com.changanford.circle.databinding.HeaderCircleAskRecommendBinding
 import com.changanford.circle.ui.ask.adapter.HotMechanicAdapter
@@ -16,6 +17,7 @@ import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
 import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.AskRecommendViewModel
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
@@ -82,6 +84,8 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
 
 
     var headerBinding: HeaderCircleAskRecommendBinding? = null
+
+    var moreJumpData:moreJumpData?=null
     private fun addHeadView() {
         if (headerBinding == null) {
             headerBinding = DataBindingUtil.inflate(
@@ -93,7 +97,9 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
             headerBinding?.let {
                 recommendAskAdapter.addHeaderView(it.root)
                 it.tvMore.setOnClickListener {
-                    startARouter(ARouterCirclePath.HotTopicActivity)
+                    if(moreJumpData!=null){
+                        JumpUtils.instans?.jump(moreJumpData!!.jumpCode.toInt(),moreJumpData!!.jumpValue)
+                    }
                 }
                 it.ryTopic.adapter=hotMechanicAdapter
                 it.tvScreen.setOnClickListener {
@@ -142,6 +148,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
         super.observe()
         viewModel.mechanicLiveData.observe(this, Observer {
             SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)
+            moreJumpData=it.moreTecnicians
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
         })
         viewModel.questionListLiveData.observe(this, Observer {

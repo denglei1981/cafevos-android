@@ -11,4 +11,5 @@ package com.changanford.common.bean
 class JumpDataBean {
     val jumpDataType: Int = 0
     val jumpDataValue: String = ""
+
 }

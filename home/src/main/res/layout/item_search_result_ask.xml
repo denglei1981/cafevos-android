@@ -10,12 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="75dp"
         android:background="@drawable/shape_whit5_bg">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,8 +29,10 @@
 
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_tag"
+            android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="13dp"
             android:textSize="@dimen/sp_12"
             android:minWidth="@dimen/dp_43"
             android:paddingTop="@dimen/dp_2"

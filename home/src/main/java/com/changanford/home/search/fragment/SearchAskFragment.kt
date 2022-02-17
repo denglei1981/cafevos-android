@@ -10,13 +10,14 @@ import com.changanford.home.PageConstant
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchAskResultAdapter
 import com.changanford.home.search.adapter.SearchUserResultAdapter
+import com.changanford.home.search.request.PolySearchAskViewModel
 import com.changanford.home.search.request.PolySearchUserViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 class SearchAskFragment :
-    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchUserViewModel>(),
+    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchAskViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
     var searchContent: String? = null
     val searchAskResultAdapter: SearchAskResultAdapter by lazy {
@@ -37,8 +38,8 @@ class SearchAskFragment :
         binding.recyclerView.adapter = searchAskResultAdapter
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         searchAskResultAdapter.setOnItemClickListener { adapter, view, position ->
-//            var item = searchUserResultAdapter.getItem(position)
-//            JumpUtils.instans!!.jump(35,item.userId) // 跳转到他人主页。
+            val item = searchAskResultAdapter.getItem(position)
+            JumpUtils.instans!!.jump(item.jumpType.toIntOrNull(),item.jumpValue)
         }
 
     }
@@ -50,33 +51,33 @@ class SearchAskFragment :
 
     override fun observe() {
         super.observe()
-//        viewModel.searchHistoryLiveData.observe(this, Observer {
-//            if (it.isSuccess) {
-//                if (it.isLoadMore) {
-//                    binding.smartLayout.finishLoadMore()
-//                    searchAskResultAdapter.addData(it.data.dataList)
-//                } else {
-//                    showContent()
-//                    binding.smartLayout.finishRefresh()
-//                    searchAskResultAdapter.setNewInstance(it.data.dataList)
-//                    if (it.data.dataList.size == 0) {
-//                        showEmpty()
-//                    }
-//                }
-//                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
-//                    binding.smartLayout.setEnableLoadMore(false)
-//                } else {
-//                    binding.smartLayout.setEnableLoadMore(true)
-//                }
-//            } else {
-//                showFailure(it.message)
-//            }
-//        })
+        viewModel.searchHistoryLiveData.observe(this, Observer {
+            if (it.isSuccess) {
+                if (it.isLoadMore) {
+                    binding.smartLayout.finishLoadMore()
+                    searchAskResultAdapter.addData(it.data.dataList)
+                } else {
+                    showContent()
+                    binding.smartLayout.finishRefresh()
+                    searchAskResultAdapter.setNewInstance(it.data.dataList)
+                    if (it.data.dataList.size == 0) {
+                        showEmpty()
+                    }
+                }
+                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                    binding.smartLayout.setEnableLoadMore(false)
+                } else {
+                    binding.smartLayout.setEnableLoadMore(true)
+                }
+            } else {
+                showFailure(it.message)
+            }
+        })
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_USER, it, true)
+            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_ASK, it, true)
         }
     }
     fun outRefresh(keyWord: String) { // 暴露给外部的耍新
@@ -85,7 +86,7 @@ class SearchAskFragment :
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_USER, it, false)
+            viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_ASK, it, false)
         }
     }
 
