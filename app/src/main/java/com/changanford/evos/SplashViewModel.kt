@@ -1,6 +1,7 @@
 package com.changanford.evos
 
 import android.os.SystemClock
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,8 +44,12 @@ class SplashViewModel : ViewModel() {
 
     fun getKey() {
         viewModelScope.launch {
-            MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
-            MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
+            Db.myDb.getData("pubKey")?.storeValue?.apply {
+                MConstant.pubKey = this
+            }
+            Db.myDb.getData("imgCdn")?.storeValue?.apply {
+                MConstant.imgcdn = if(TextUtils.isEmpty(this))MConstant.defaultImgCdn else this
+            }
             if (MConstant.pubKey.isNotEmpty()) {
 //                key.postValue(MConstant.pubKey)
 //                if (MConstant.imgcdn.isNullOrEmpty()) {

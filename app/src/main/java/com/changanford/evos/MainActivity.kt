@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -296,8 +297,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             .observe(this, Observer {
                 if (it) {
                     lifecycleScope.launch {
-                        MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
-                        MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
+//                        MConstant.pubKey = Db.myDb.getData("pubKey")?.storeValue ?: ""
+//                        MConstant.imgcdn = Db.myDb.getData("imgCdn")?.storeValue ?: ""
+                        Db.myDb.getData("pubKey")?.storeValue?.apply {
+                            MConstant.pubKey = this
+                        }
+                        Db.myDb.getData("imgCdn")?.storeValue?.apply {
+                            MConstant.imgcdn = if(TextUtils.isEmpty(this))MConstant.defaultImgCdn else this
+                        }
                     }
                 }
             })

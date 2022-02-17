@@ -77,7 +77,8 @@ object MConstant {
 
     var pubKey = ""
     var token: String = ""
-    var imgcdn = ""
+    val defaultImgCdn by lazy { if(isDebug&& isCanQeck)"https://evosuserqa.changanford.cn/" else "https://evosuser.changanford.cn/" }
+    var imgcdn = defaultImgCdn
     var userId = ""
     var configBean:ConfigBean?=null
     var totalWebNum = 0//AgentWebActivity的个数

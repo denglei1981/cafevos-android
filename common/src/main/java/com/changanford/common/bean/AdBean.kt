@@ -29,7 +29,7 @@ class AdBean(
 
 }
 
-class LoginVideoBean(val video: String? = "")
+class LoginVideoBean(val video: String? = null)
 
 //{
 //  "img": "ford-manager/2021/11/29/11d59da44e2c460ab2a54127f6ef4311.png",

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -89,9 +90,10 @@ object GlideUtils {
      * 图片地址没有前缀时加上
      */
     fun handleImgUrl(preUrl: String?): String =
-        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
-            preUrl
-        )
+        if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl
+        else if(!TextUtils.isEmpty(MConstant.imgcdn))MConstant.imgcdn.plus(preUrl)
+        else MConstant.defaultImgCdn.plus(preUrl)
+
     fun handleNullableUrl(preUrl: String?) :String? =
         if (preUrl.isNullOrEmpty()) null else {if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
             preUrl
