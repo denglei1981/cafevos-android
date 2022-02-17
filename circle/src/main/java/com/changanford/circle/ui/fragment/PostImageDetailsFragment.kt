@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -208,7 +209,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
                         tvTalkOut.text = mData.topicName
                         tvTwoTime.text = mData.timeStr
-                        tvContent.text = mData.content
+//                        tvContent.text = mData.content
+                        //todo
+                        tvContent.text=Html.fromHtml(mData.content)
+
                     }
                     else -> {
                         clImageAndText.visibility = View.GONE
@@ -247,7 +251,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             }
                             tvTalkOut.text = mData.topicName
                             tvTwoTime.text = mData.timeStr
-                            tvOneContent.text = mData.content
+//                            tvOneContent.text = mData.content
+                            //todo
+                            tvOneContent.text=Html.fromHtml(mData.content)
                             val adapter = PostDetailsLongAdapter(requireContext())
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)
                             tvContent.adapter = adapter

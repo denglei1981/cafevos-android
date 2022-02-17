@@ -44,7 +44,7 @@ class SearchPostsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
             rvTag.visibility= View.GONE
         }
 
-        tvContent.text = item.getContentStr()
+        tvContent.text = item.getShowTitle()
 
         tvTime.text = item.timeStr
         GlideUtils.loadBD(item.authorBaseVo?.avatar, ivHeader)

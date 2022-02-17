@@ -11,7 +11,7 @@ data class MechanicData(
 )
 data class moreJumpData(
     val jumpCode:String="",
-    val jumpValue: String=""
+    val jumpVal: String=""
 )
 
 data class TecnicianVo(
@@ -32,18 +32,17 @@ data class AskListMainData(
     var imgs: String? = "",
     var jumpType: String = "",
     var jumpValue: String = "",
-    var qaAnswer: QaAnswer? = null,
+    var qaAnswer: QaAnswer?=null,
     var questionType: String = "",
     var questionTypeName: String = "",
     var title: String = "",
     var viewVal: Int = -1,
     var pisList: List<String>? = arrayListOf(),
-    var emptyType: Int = -1
+    var emptyType: Int = -1,
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
-        qaAnswer?.let {
-            return 1
-        }
+
+
         if (emptyType == 1) {
             return 3
         }
@@ -68,7 +67,7 @@ data class AskListMainData(
 
 data class QaAnswer(
     val adopt: String,
-    val answerTime: String,
+    var answerTime: Long=0,
     val conQaAnswerId: Int,
     val content: String,
     val qaUserVO: QaUserVO,

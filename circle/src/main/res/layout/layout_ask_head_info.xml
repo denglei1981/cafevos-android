@@ -18,6 +18,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_answer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
@@ -52,7 +53,7 @@
             android:ellipsize="end"
             android:maxLength="12"
             android:maxLines="1"
-            android:text="@{author.nickname}"
+
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
@@ -66,7 +67,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_11"
-            android:visibility="@{author.showSubtitle()?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintStart_toStartOf="@+id/tv_author_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
@@ -128,7 +128,7 @@
             android:id="@+id/layout_count"
             layout="@layout/layout_answer_count"
             android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginTop="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

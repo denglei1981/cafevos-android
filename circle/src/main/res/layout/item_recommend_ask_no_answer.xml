@@ -19,7 +19,11 @@
 
         <include
             android:id="@+id/layout_no_answer"
-            layout="@layout/layout_ask_no_answer" />
+            layout="@layout/layout_ask_no_answer"
+            />
+        <include android:id="@+id/layout_answer"
+            layout="@layout/layout_ask_head_info"
+            />
 
         <View style="@style/default_line" />
 
