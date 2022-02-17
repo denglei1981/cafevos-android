@@ -74,6 +74,7 @@ class AskRecommendViewModel : BaseViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getRecommendQuestionList(body.header(rKey),body.body(rKey))
                 .onSuccess {
+
                     val updateUiState = UpdateUiState<HomeDataListBean<AskListMainData>>(it, true, isLoadMore, "")
                     questionListLiveData.postValue(updateUiState)
                 }

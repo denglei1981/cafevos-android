@@ -98,7 +98,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
                 recommendAskAdapter.addHeaderView(it.root)
                 it.tvMore.setOnClickListener {
                     if(moreJumpData!=null){
-                        JumpUtils.instans?.jump(moreJumpData!!.jumpCode.toInt(),moreJumpData!!.jumpValue)
+                        JumpUtils.instans?.jump(moreJumpData!!.jumpCode.toInt(),moreJumpData!!.jumpVal)
                     }
                 }
                 it.ryTopic.adapter=hotMechanicAdapter
