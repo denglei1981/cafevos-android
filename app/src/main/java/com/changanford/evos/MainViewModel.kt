@@ -46,14 +46,14 @@ class MainViewModel : ViewModel() {
     fun requestDownLogin() {
         viewModelScope.launch {
             fetchRequest {
-                var body = java.util.HashMap<String, Any>()
+                val body = java.util.HashMap<String, Any>()
                 body["configKey"] = "login_background"
                 body["obj"] = true
-                var rkey = getRandomKey()
+                val rkey = getRandomKey()
                 apiService.loginBg(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                it?.video?.let {
-                    downLoginBg(it)
+                it?.video?.apply {
+                    downLoginBg(this)
                 }
             }.onFailure {
             }

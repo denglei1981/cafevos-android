@@ -115,7 +115,7 @@ class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
  * 下载文件
  */
 fun downFile(url: String, listener: OnDownloadListener) {
-    val request = Request.Builder().url(url).build();
+    val request = Request.Builder().url(url).build()
     OkHttpClient().newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, p: IOException) {
             listener.onFail()
@@ -174,7 +174,7 @@ fun downFile(url: String, listener: OnDownloadListener) {
 
 //登录和绑定手机号获取权限
 var refusePermission: Boolean = false
-fun downLoginBg(videoUrl: String) {
+fun downLoginBg(videoUrl: String?) {
     if (refusePermission)
         return
     SoulPermission.getInstance().checkAndRequestPermissions(
