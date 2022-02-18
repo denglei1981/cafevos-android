@@ -39,11 +39,14 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:contentDescription="@string/app_name"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_header"
-            app:layout_constraintCircle="@id/iv_header"
-            app:layout_constraintCircleAngle="120"
-            app:layout_constraintCircleRadius="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_header" />
+            android:src="@mipmap/question_crown"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_author_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_author_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_author_name"
+            android:layout_marginStart="4dp"
+            android:visibility="gone"
+
+            />
 
         <TextView
             android:id="@+id/tv_author_name"
@@ -53,7 +56,6 @@
             android:ellipsize="end"
             android:maxLength="12"
             android:maxLines="1"
-
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"

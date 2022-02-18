@@ -14,8 +14,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.JumpConstant.SEARCH_CONTENT
 import com.changanford.common.constant.JumpConstant.SEARCH_TYPE
+import com.changanford.common.constant.SearchTypeConstant.SEARCH_POST
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
@@ -212,6 +214,12 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+        when(searchType){
+            SEARCH_POST->{ //搜索帖子。 埋点。
+                BuriedUtil.instant?.communityMainTopSearsh(searchContent)
+            }
+        }
+
     }
 
     fun isPs() {

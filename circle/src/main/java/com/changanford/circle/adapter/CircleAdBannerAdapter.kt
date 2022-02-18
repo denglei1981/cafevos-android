@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleRecommendAdBinding
 import com.changanford.common.bean.AdBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.zhpan.bannerview.BaseBannerAdapter
@@ -27,6 +28,8 @@ class CircleAdBannerAdapter : BaseBannerAdapter<AdBean>() {
 //        binding?.ivBanner?.load(data.adImg)
         GlideUtils.loadRound(data.adImg,binding?.ivBanner!!)
         binding.ivBanner.setOnClickListener {
+            // 埋点
+            data.adName?.let { it1 -> BuriedUtil.instant?.communityMainBanner(it1) }
             JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
         }
     }

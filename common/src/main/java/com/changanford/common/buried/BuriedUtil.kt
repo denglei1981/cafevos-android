@@ -135,4 +135,86 @@ class BuriedUtil {
         buried("商品名称","click_mall_p",pId,pName)
     }
     //商城END
+
+
+
+    //发现start
+    /**
+     *  点击发现 顶部 banner
+     * */
+    fun discoverTopMenu(tabName:String){
+        //推荐、活动、资讯、大咖
+        buried("app发现_顶部_菜单栏_点击","app_discovery_top_menu", extend = "{\"top_menu_name\": \"$tabName\"}")
+    }
+
+    /**
+     *  点击发现 banner
+     * */
+    fun discoverBanner(banner_name:String){
+        buried("app发现_顶部_banner_点击","app_discovery_top_banner", extend = "{\"banner_name\": \"$banner_name\"}")
+    }
+    /**
+     *  点击发现 快速入口
+     * */
+    fun discoverFastIn(fast_entrance_name:String){
+        buried("app发现_快速入口_点击","app_discovery_Fast_entrance", extend = "{\"Fast_entrance_name\": \"$fast_entrance_name\"}")
+    }
+    /**
+     *  点击发现 资讯
+     * */
+    fun discoverNews(information_name:String){
+        buried("app发现_资讯_点击","app_discovery_information", extend = "{\"information_name\": \"$information_name\"}")
+    }
+    /**
+     *  点击发现 关注
+     * */
+    fun discoverFollow(nickname:String){
+        buried("app发现_关注_点击","app_discovery_follow", extend = "{\"nickname\": \"$nickname\"}")
+    }
+    /**
+     *  首页底部按钮
+     *  @bottom_menu_name 发现、社区、爱车、商城、我的
+     * */
+    fun mainButtomMenu(bottom_menu_name:String){
+        buried("app发现_底部_菜单栏_点击","app_discovery_bottom_menu", extend = "{\"bottom_menu_name\": \"$bottom_menu_name\"}")
+    }
+    //发现end
+
+    // 社区帖子start
+    /**
+     *  社区 热门话题。
+     * */
+    fun communityMainHotTopic(hot_topic_name:String){
+        buried("app社区_热门话题","app_community_hot_topic", extend = "{\"hot_topic_name\": \"$hot_topic_name\"}")
+    }
+    /**
+     *  社区 banner
+     * */
+    fun communityMainBanner(banner_name:String){
+        buried("app社区_推荐banner","app_community_recommend_banner", extend = "{\"hot_topic_name\": \"$banner_name\"}")
+    }
+    /**
+     *  点击发现 关注
+     * */
+    fun communityFollow(nickname:String){
+        buried("app社区_关注","app_community_follow", extend = "{\"nickname\": \"$nickname\"}")
+    }
+
+    /**
+     * app社区_顶部_菜单栏
+     * */
+    fun communityMainTopMenu(menu_name:String){
+        buried("app社区_顶部_菜单栏","app_community_top_menu", extend = "{\"menu_name\": \"$menu_name\"}")
+    }
+
+    /**
+     *  app社区_顶部_菜单栏
+     * */
+    fun communityMainTopSearsh(keyword:String){
+        buried("app社区_顶部_菜单栏","app_community_top_search", extend = "{\"keyword\": \"$keyword\"}")
+    }
+    // 社区帖子end
+
+
+
 }

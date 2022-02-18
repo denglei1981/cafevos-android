@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -24,6 +25,7 @@ import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
@@ -83,7 +85,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 postEntity = it as ArrayList<PostEntity>
             })
         binding.ivMenu.setOnClickListener {
-
             if (MConstant.token.isNotEmpty()) {
                 if (!MineUtils.getBindMobileJumpDataType()) {
                     if (postEntity?.size == 0) {
@@ -137,13 +138,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
 
         }
-//        binding.refreshLayout.setOnRefreshListener {
-//            initData()
-//            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT).postValue(false)
-//        }
         initTabAndViewPager()
         initMagicIndicator()
-//        initRecyclerData()
     }
 
     private fun showMenuPop() {
@@ -211,33 +207,11 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     override fun observe() {
         super.observe()
-//        viewModel.circleBean.observe(this, {
-//            circleAdapter.run {
-//                allCircleAdapter.setItems(it.allCircles)
-//                allCircleAdapter.notifyDataSetChanged()
-//                circleAdapter.topicAdapter.setItems(it.topics)
-//                topicAdapter.notifyDataSetChanged()
-//
-////                topFragments.forEachIndexed { index, circleMainFragment ->
-////                    when (index) {
-////                        0 -> {
-////                            circleMainFragment.setData(it.regionCircles?.circleInfos)
-////                        }
-////                        1 -> {
-////                            circleMainFragment.setData(it.interestCircles?.circleInfos)
-////                        }
-////
-////                    }
-////                }
-//            }
-//            binding.refreshLayout.finishRefresh()
-//        })
+
     }
 
     private fun bus() {
-//        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this, {
-//            binding.refreshLayout.finishRefresh()
-//        })
+
     }
 
 
@@ -264,7 +238,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
                 override fun getItem(position: Int): Fragment {
-
 
                     return when(position){
                         0->{//帖子推荐
@@ -335,6 +308,39 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
         }
         magicIndicator.navigator = commonNavigator
-        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
+//        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
+
+        binding.viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageSelected(position: Int) {
+                // 埋点
+                 when(position){
+                     0->{
+                         BuriedUtil.instant?.communityMainTopMenu("广场")
+                     }
+                     1->{
+                         BuriedUtil.instant?.communityMainTopMenu("圈子")
+                     }
+                     2->{
+                         BuriedUtil.instant?.communityMainTopMenu("问答")
+                     }
+                 }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                magicIndicator.onPageScrollStateChanged(state)
+            }
+
+        })
+
+
+
     }
 }

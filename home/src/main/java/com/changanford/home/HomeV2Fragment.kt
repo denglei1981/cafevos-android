@@ -22,6 +22,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.DisplayUtil
@@ -31,6 +32,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.base.response.UpdateUiState
@@ -253,6 +255,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         val mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
         if (isSelect) {
+            // 埋点
+            BuriedUtil.instant?.discoverTopMenu(tab.text.toString())
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
             mTabText?.paint?.isFakeBoldText = true

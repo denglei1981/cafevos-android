@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
@@ -75,8 +76,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             .addItem(
                 newItem(
                     R.mipmap.icon_caru,
-                            R.mipmap.icon_car_b,
-                     R.mipmap.icon_car_c,
+                    R.mipmap.icon_car_b,
+                    R.mipmap.icon_car_c,
                     "爱车",
                     1f
                 )
@@ -107,10 +108,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-                R.id.carFragment, R.id.myFragment, R.id.shopFragment -> {
+
+                R.id.carFragment -> {
+                    // 埋点
+                    BuriedUtil.instant?.mainButtomMenu("爱车")
+                    StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                }
+                R.id.myFragment -> {
+                    // 埋点
+                    BuriedUtil.instant?.mainButtomMenu("我的")
+                    StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                }
+                R.id.circleFragment -> {
+                    // 埋点
+                    BuriedUtil.instant?.mainButtomMenu("社区")
+                    StatusBarUtil.setStatusBarColor(this, R.color.white)
+                }
+
+                R.id.shopFragment -> {
+                    // 埋点
+                    BuriedUtil.instant?.mainButtomMenu("商城")
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                 }
                 R.id.homeFragment -> {
+                    // 埋点
+                    BuriedUtil.instant?.mainButtomMenu("发现")
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let {
                         val homeV2Fragment = it as HomeV2Fragment
@@ -303,7 +325,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                             MConstant.pubKey = this
                         }
                         Db.myDb.getData("imgCdn")?.storeValue?.apply {
-                            MConstant.imgcdn = if(TextUtils.isEmpty(this))MConstant.defaultImgCdn else this
+                            MConstant.imgcdn =
+                                if (TextUtils.isEmpty(this)) MConstant.defaultImgCdn else this
                         }
                     }
                 }
