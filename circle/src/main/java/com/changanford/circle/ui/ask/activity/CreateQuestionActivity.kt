@@ -6,6 +6,9 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -67,13 +70,18 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         }
     }
 
+    var title: String = ""
+    var cotnent: String = ""
+
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.layoutTitle.tvTitle.text = "提问"
         binding.layoutTitle.barTvOther.text = "发布"
         binding.layoutTitle.barTvOther.visibility = View.VISIBLE
         binding.layoutTitle.barTvOther.background =
-            resources.getDrawable(R.drawable.question_btn_can_release)
+            resources.getDrawable(R.drawable.question_btn_enable_release)
+//            resources.getDrawable(R.drawable.question_btn_can_release)
+
         binding.layoutTitle.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -83,6 +91,51 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         binding.layoutTitle.barTvOther.setOnClickListener {
             isPublish()
         }
+
+
+        binding.etQuestion.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                cotnent = s.toString()
+                setReleaseBg()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+
+        binding.etQuestionTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                title = s.toString()
+                setReleaseBg()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+
+
+    }
+
+    fun setReleaseBg() {
+        if (TextUtils.isEmpty(title) && TextUtils.isEmpty(cotnent)) {
+            binding.layoutTitle.barTvOther.background =
+                resources.getDrawable(R.drawable.question_btn_enable_release)
+        } else {
+            binding.layoutTitle.barTvOther.background =
+                resources.getDrawable(R.drawable.question_btn_can_release)
+        }
+
     }
 
     override fun initData() {
@@ -126,7 +179,8 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                         override fun onCancel() {
 
                         }
-                    },    maxNum = 10)
+                    }, maxNum = 10
+                )
             } else {
                 val bundle = Bundle()
                 bundle.putParcelableArrayList("picList", selectList)
@@ -281,12 +335,12 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请选择图片".toast()
                 return
             }
-            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 20 -> {
+            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length < 5 || biaoti.length > 20 -> {
                 "请输入5-20字的标题".toast()
                 return
             }
-            content.isNullOrEmpty() -> {
-                "请输入正文内容".toast()
+            content.isNullOrEmpty() || content.length < 20 || content.length > 200 -> {
+                "请输入20-200的正文内容".toast()
             }
             questionTypes.isEmpty() || questionTypes.size <= 0 -> {
                 "请选择问题类型".toast()
