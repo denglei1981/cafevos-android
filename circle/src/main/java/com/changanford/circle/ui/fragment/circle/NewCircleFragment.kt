@@ -43,6 +43,7 @@ import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCircleBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -124,6 +125,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 items(allCircles){itemData->
                     Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
+                            WBuriedUtil.clickCircleTop(itemData.name)
                             CircleListActivity.start(itemData.id)
                         }){
                         Image(
@@ -187,6 +189,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }) {
+                            WBuriedUtil.clickCircleJoin()
                             //到全部圈子列表
                             startARouter(ARouterCirclePath.CircleListActivity)
                         }){
