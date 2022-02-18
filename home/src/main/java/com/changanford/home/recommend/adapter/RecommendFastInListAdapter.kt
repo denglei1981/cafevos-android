@@ -6,6 +6,7 @@ import android.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.buried.BuriedUtil
 
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
@@ -33,6 +34,8 @@ class RecommendFastInListAdapter :
             GlideUtils.loadBD(item.adImg, it.ivOne)
             it.ivOne.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
+                // 埋点
+                item.adName?.let { ad -> BuriedUtil.instant?.discoverFastIn(ad) }
             }
             try{
                 val layoutParams = ConstraintLayout.LayoutParams(imgSize, imgSize)

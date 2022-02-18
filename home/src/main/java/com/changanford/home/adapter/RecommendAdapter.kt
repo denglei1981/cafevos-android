@@ -14,6 +14,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
@@ -291,8 +292,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-//        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
+        if(followType==1){
+            // 埋点 关注
+            BuriedUtil.instant?.discoverFollow(authorBaseVo.nickname)
+        }
+
     }
 
     // 关注。

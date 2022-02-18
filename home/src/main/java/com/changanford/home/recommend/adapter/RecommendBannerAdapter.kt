@@ -2,6 +2,7 @@ package com.changanford.home.recommend.adapter
 
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.bean.AdBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 import com.changanford.home.R
@@ -20,6 +21,8 @@ class RecommendBannerAdapter : BaseBannerAdapter<AdBean?>() {
                     ivBanner.load(data.adImg)
                     ivBanner.setOnClickListener {
                         JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
+                        // banner 埋点
+                        data.adName?.let { ad -> BuriedUtil.instant?.discoverBanner(ad) }
                     }
                 }
             }

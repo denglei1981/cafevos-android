@@ -90,6 +90,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 it.layoutAnswer.tvContent.text = answer.content
                 it.layoutAnswer.layoutCount.tvCommentCount.text = answer.replyCount.toString()
                 it.layoutAnswer.layoutCount.tvLikeCount.setPageTitleText(item.viewVal.toString())
+                if(answer.qaUserVO.identity=="TECHNICIAN") it.layoutAnswer.ivVip.visibility=View.VISIBLE else it.layoutAnswer.ivVip.visibility= View.GONE
             }
 
 

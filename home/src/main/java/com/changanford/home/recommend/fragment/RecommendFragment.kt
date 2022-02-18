@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GridSpacingItemDecoration
 import com.changanford.common.ui.videoedit.EditSpacingItemDecoration
@@ -224,6 +225,8 @@ open class RecommendFragment :
 //                    val newsValueData = NewsValueData(item.artId, item.artType)
 //                    val values = Gson().toJson(newsValueData)
                     JumpUtils.instans?.jump(2, item.artId)
+                    // 埋点--- 资讯名称。
+                    BuriedUtil.instant?.discoverNews(item.getTopic())
                 } else {
                     toastShow("没有作者")
                 }

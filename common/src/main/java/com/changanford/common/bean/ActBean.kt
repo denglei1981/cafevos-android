@@ -117,7 +117,7 @@ data class AuthorBaseVo(
     val authorId: String,
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
-    var isFollow: Int = 0,
+    var isFollow: Int = 0, //1 是已关注
     val medalImage: Any? = Any(),
     val medalName: Any? = Any(),
     val memberIcon: String = "",
