@@ -145,15 +145,15 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     return fragments[position]
                 }
             }
-            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"&&fragments[currentItem].mAdapter.data.size>0){
+            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){
                 addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
                     override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
                     override fun onPageSelected(position: Int) {
-                        binding.composeViewQuestion.visibility=if(isOneself&&tabs[position].tag=="QUESTION"&&fragments[position].mAdapter.data.size>0)View.VISIBLE else View.GONE
+                        binding.composeViewQuestion.visibility=if(tabs[position].tag=="QUESTION"&&fragments[position].mAdapter.data.size>0)View.VISIBLE else View.GONE
                     }
                     override fun onPageScrollStateChanged(state: Int) {}
                 })
-                View.VISIBLE
+                if(fragments[currentItem].mAdapter.data.size>0)View.VISIBLE else View.GONE
             }else View.GONE
         }
     }
@@ -242,6 +242,6 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     }
 
     override fun onFinish(code: Int) {
-        binding.composeViewQuestion.visibility=if(code!=0&&isOneself&& tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
+        binding.composeViewQuestion.visibility=if(code!=0&&isOneself&&tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
     }
 }
