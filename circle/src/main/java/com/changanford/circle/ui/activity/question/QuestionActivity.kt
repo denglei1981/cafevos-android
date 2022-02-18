@@ -71,6 +71,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     private var conQaUjId:String="15"
     private var type=0
     private val fragments= arrayListOf<QuestionFragment>()
+    private var isOneself=false
+    private var tabs :ArrayList<QuestionTagBean>?=null
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
@@ -104,12 +106,14 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 binding.composeView.setContent {
                     ComposeQuestionTop(this@QuestionActivity,this)
                 }
+                isOneself=isOneself()
                 if(fragments.size>0){
                     fragments[binding.viewPager.currentItem].startRefresh()
                 }else{
-                    val tabs=it.getTabs(this@QuestionActivity)
-                    initTabAndViewPager(tabs,isOneself(),getIdentity())
-                    initMagicIndicator(tabs)
+                    tabs=it.getTabs(this@QuestionActivity).apply {
+                        initTabAndViewPager(this,isOneself,getIdentity())
+                        initMagicIndicator(this)
+                    }
                 }
             }
             binding.smartRl.finishRefresh()
@@ -145,7 +149,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
                     override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
                     override fun onPageSelected(position: Int) {
-                        binding.composeViewQuestion.visibility=if(tabs[position].tag=="QUESTION")View.VISIBLE else View.GONE
+                        binding.composeViewQuestion.visibility=if(isOneself&&tabs[position].tag=="QUESTION"&&fragments[position].mAdapter.data.size>0)View.VISIBLE else View.GONE
                     }
                     override fun onPageScrollStateChanged(state: Int) {}
                 })
@@ -238,6 +242,6 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     }
 
     override fun onFinish(code: Int) {
-        binding.composeViewQuestion.visibility=if(code==0)View.GONE else View.VISIBLE
+        binding.composeViewQuestion.visibility=if(code!=0&&isOneself&& tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
     }
 }
