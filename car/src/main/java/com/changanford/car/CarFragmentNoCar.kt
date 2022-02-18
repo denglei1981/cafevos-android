@@ -34,6 +34,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -229,6 +230,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
                 }
             }
             button.setOnClickListener {
+                WBuriedUtil.clickCarCertification()
                 JumpUtils.instans?.jump(type, "")
             }
             carAuthBean?.carAuthConfVo?.let {

@@ -5,8 +5,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.car.R
 import com.changanford.common.bean.CarModels
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 
 class CarRecommendAdapter :
@@ -17,6 +17,7 @@ class CarRecommendAdapter :
         holder.getView<ImageView>(R.id.carimg).apply {
             load(item.carModelPic,R.mipmap.ic_def_square_img)
             setOnClickListener {
+                WBuriedUtil.clickCarEnjoy(item.spuName)
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }
