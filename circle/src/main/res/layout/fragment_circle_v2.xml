@@ -88,7 +88,7 @@
                 android:layout_marginStart="10dp"
                 android:paddingBottom="5dp" />
 
-            <com.changanford.circle.widget.CircleViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

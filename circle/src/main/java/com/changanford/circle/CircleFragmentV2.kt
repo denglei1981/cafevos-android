@@ -9,10 +9,13 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
+import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
@@ -51,6 +54,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import java.lang.Exception
+import java.lang.reflect.Field
 
 
 /**
@@ -78,6 +83,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
     override fun initView() {
+        easyViewPager()
         bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
@@ -213,7 +219,19 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     private fun bus() {
 
     }
-
+    private fun easyViewPager() {
+        try {
+            val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+            recyclerViewField.isAccessible = true
+            val recyclerView: RecyclerView =
+                recyclerViewField.get(binding.viewPager) as RecyclerView
+            val touchSlopField: Field = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+            touchSlopField.isAccessible = true
+            val touchSlop = touchSlopField.get(recyclerView) as Int
+            touchSlopField.set(recyclerView, touchSlop * 4) //6 is empirical value
+        } catch (ignore: Exception) {
+        }
+    }
 
    val   circleSquareFragment: CircleSquareFragment by  lazy{
        CircleSquareFragment.newInstance()
@@ -226,40 +244,44 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         NewCircleFragment()
 
     }
-
+    var fragmentList: ArrayList<Fragment> = arrayListOf()
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
-            adapter = object : FragmentPagerAdapter(
-                childFragmentManager,
-                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-            ) {
-                override fun getCount(): Int {
-                    return tabList.size
-                }
-
-                override fun getItem(position: Int): Fragment {
-
-                    return when(position){
-                        0->{//帖子推荐
-                            circleSquareFragment
-                        }
-                        1->{//圈子
-                            newCircleFragment
-                        }
-                        2->{// 问答
-                            askRecommendFragment
-                        }
-                        else -> {
-                            circleSquareFragment
-                        }
-                    }
-
-                }
-
-            }
+//            adapter = object : FragmentPagerAdapter(
+//                childFragmentManager,
+//                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+//            ) {
+//                override fun getCount(): Int {
+//                    return tabList.size
+//                }
+//
+//                override fun getItem(position: Int): Fragment {
+//
+//                    return when(position){
+//                        0->{//帖子推荐
+//                            circleSquareFragment
+//                        }
+//                        1->{//圈子
+//                            newCircleFragment
+//                        }
+//                        2->{// 问答
+//                            askRecommendFragment
+//                        }
+//                        else -> {
+//                            circleSquareFragment
+//                        }
+//                    }
+//
+//                }
+//
+//            }
 
             offscreenPageLimit = 1
         }
+        fragmentList.add(circleSquareFragment)
+        fragmentList.add(newCircleFragment)
+        fragmentList.add(askRecommendFragment)
+        binding.viewPager.adapter=   CircleMainViewPagerAdapter(this,fragmentList)
 
     }
 
@@ -310,35 +332,68 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         magicIndicator.navigator = commonNavigator
 //        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
 
-        binding.viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
 
-            override fun onPageSelected(position: Int) {
-                // 埋点
-                 when(position){
-                     0->{
-                         BuriedUtil.instant?.communityMainTopMenu("广场")
-                     }
-                     1->{
-                         BuriedUtil.instant?.communityMainTopMenu("圈子")
-                     }
-                     2->{
-                         BuriedUtil.instant?.communityMainTopMenu("问答")
-                     }
-                 }
             }
-
             override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
                 magicIndicator.onPageScrollStateChanged(state)
             }
 
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                // 埋点
+                when(position){
+                    0->{
+                        BuriedUtil.instant?.communityMainTopMenu("广场")
+                    }
+                    1->{
+                        BuriedUtil.instant?.communityMainTopMenu("圈子")
+                    }
+                    2->{
+                        BuriedUtil.instant?.communityMainTopMenu("问答")
+                    }
+                }
+            }
+
         })
+//        binding.viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+//            override fun onPageScrolled(
+//                position: Int,
+//                positionOffset: Float,
+//                positionOffsetPixels: Int
+//            ) {
+//                magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
+//            }
+//
+//            override fun onPageSelected(position: Int) {
+//                // 埋点
+//                when(position){
+//                    0->{
+//                        BuriedUtil.instant?.communityMainTopMenu("广场")
+//                    }
+//                    1->{
+//                        BuriedUtil.instant?.communityMainTopMenu("圈子")
+//                    }
+//                    2->{
+//                        BuriedUtil.instant?.communityMainTopMenu("问答")
+//                    }
+//                }
+//            }
+//
+//            override fun onPageScrollStateChanged(state: Int) {
+//                magicIndicator.onPageScrollStateChanged(state)
+//            }
+//
+//        })
 
 
 
