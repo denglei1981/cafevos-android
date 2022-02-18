@@ -194,7 +194,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         if (mData.isGood == 1) {
                             MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
                         }
-                        tvTwoTitle.text = mData.title
+//                        tvTwoTitle.text = mData.title
+                        //todo
+                        tvTwoTitle.text=Html.fromHtml(mData.title)
                         if (mData.circleName.isNullOrEmpty()) {
                             tvTwoFrom.visibility = View.INVISIBLE
                         } else {
@@ -236,7 +238,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 bundle.putInt("count", 1)
                                 startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
                             }
-                            tvTwoTitle.text = mData.title
+//                            tvTwoTitle.text = mData.title
+                           // todo
+                            tvTwoTitle.text=Html.fromHtml(mData.title)
                             if (mData.circleName.isNullOrEmpty()) {
                                 tvTwoFrom.visibility = View.GONE
                             } else {

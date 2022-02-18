@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -140,7 +141,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         binding.tvContent.post {
             val textView = binding.tvContent
             binding.tvExpand.text = if (isExpand) "收起" else "展开"
-            val originText = mData.content
+            val originText = Html.fromHtml(mData.content)
             if (isExpand) {
                 textView.text = mData.content
             } else {
