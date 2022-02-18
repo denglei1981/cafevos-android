@@ -9,6 +9,7 @@ import com.changanford.circle.ui.compose.EmptyCompose
 import com.changanford.circle.ui.compose.EmptyQuestionCompose
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.listener.OnPerformListener
 
 /**
  * @Author : wenke
@@ -33,12 +34,13 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             return fragment
         }
     }
-    private val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
+    val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
     private var conQaUjId=""
     private var personalPageType=""
     private var isOneself=true
     private var pageNo=1
     private var identity=0//身份标识 0 普通  1 技师  2车主
+    private var listener: OnPerformListener?=null
     override fun initView() {
         arguments?.apply {
             conQaUjId=getString("conQaUjId","0")
@@ -71,6 +73,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
                 else mAdapter.addData(this)
             }
             binding.smartRl.apply {
+                listener?.onFinish(mAdapter.data.size)
                 binding.composeView.visibility=if(1==pageNo&&it?.dataList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 if (null == it || mAdapter.data.size >= it.total) setEnableLoadMore(false)
                 else setEnableLoadMore(true)
@@ -88,5 +91,8 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     fun startRefresh(){
         pageNo=1
         getData()
+    }
+    fun setOnPerformListener(listener: OnPerformListener){
+        this.listener=listener
     }
 }

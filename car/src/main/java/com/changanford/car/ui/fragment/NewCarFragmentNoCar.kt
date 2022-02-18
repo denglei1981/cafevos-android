@@ -30,6 +30,7 @@ import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
@@ -65,6 +66,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     viewModel.carMoreInfoBean.value?.carModelMoreJump?.apply {
                         JumpUtils.instans?.jump(this)
                     }
+                }
+                btnSubmit.setOnClickListener { //立即订购
+                    WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
                 }
             }
         }

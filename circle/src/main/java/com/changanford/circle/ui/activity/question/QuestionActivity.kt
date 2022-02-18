@@ -23,6 +23,7 @@ import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.QuestionTagBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -47,7 +48,7 @@ import kotlin.math.abs
  */
 @Route(path = ARouterCirclePath.QuestionActivity)
 class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(),
-    OnRefreshListener {
+    OnRefreshListener, OnPerformListener {
     companion object{
         /**
          * [conQaUjId]被查看人的问答参与表id
@@ -124,7 +125,10 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     }
     private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean,identity:Int) {
         for(position in 0 until tabs.size){
-            fragments.add(QuestionFragment.newInstance(conQaUjId,tabs[position].tag?:"",isOneself,identity))
+            val tag=tabs[position].tag?:""
+            val fragment=QuestionFragment.newInstance(conQaUjId,tag,isOneself,identity)
+            if(isOneself&&tag=="QUESTION")fragment.setOnPerformListener(this)
+            fragments.add(fragment)
         }
         binding.viewPager.apply {
             removeAllViews()
@@ -137,7 +141,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     return fragments[position]
                 }
             }
-            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){
+            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"&&fragments[currentItem].mAdapter.data.size>0){
                 addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
                     override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
                     override fun onPageSelected(position: Int) {
@@ -231,5 +235,9 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.personalQA(conQaUjId)
+    }
+
+    override fun onFinish(code: Int) {
+        binding.composeViewQuestion.visibility=if(code==0)View.GONE else View.VISIBLE
     }
 }

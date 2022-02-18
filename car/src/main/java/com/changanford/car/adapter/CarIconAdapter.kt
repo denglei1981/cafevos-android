@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarIconBinding
 import com.changanford.common.bean.NewCarTagBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
@@ -23,6 +24,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
             model=item
             executePendingBindings()
             root.setOnClickListener {
+                WBuriedUtil.clickCarEnjoy(item.spuName)
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }
