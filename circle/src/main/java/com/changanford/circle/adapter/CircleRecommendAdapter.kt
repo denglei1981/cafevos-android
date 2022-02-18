@@ -26,6 +26,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -109,19 +110,19 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             }
             if (item.type == 3) {//视频
                 binding.layoutOne.conOne.visibility = View.VISIBLE
-                binding.layoutOne.ivPlay.visibility=View.VISIBLE
-                binding.ivNine.visibility=View.GONE
-                if(item.videoTime==null){
-                    binding.layoutOne.tvVideoTimes.visibility=View.GONE
-                }else{
-                    binding.layoutOne.tvVideoTimes.visibility=View.VISIBLE
+                binding.layoutOne.ivPlay.visibility = View.VISIBLE
+                binding.ivNine.visibility = View.GONE
+                if (item.videoTime == null) {
+                    binding.layoutOne.tvVideoTimes.visibility = View.GONE
+                } else {
+                    binding.layoutOne.tvVideoTimes.visibility = View.VISIBLE
                 }
-                binding.layoutOne.tvVideoTimes.text=item.videoTime.toString()
-                binding.btnMore.visibility=View.GONE
+                binding.layoutOne.tvVideoTimes.text = item.videoTime.toString()
+                binding.btnMore.visibility = View.GONE
             } else {
-                binding.layoutOne.ivPlay.visibility=View.GONE
-                binding.layoutOne.tvVideoTimes.visibility=View.GONE
-                binding.layoutOne.tvVideoTimes.text=""
+                binding.layoutOne.ivPlay.visibility = View.GONE
+                binding.layoutOne.tvVideoTimes.visibility = View.GONE
+                binding.layoutOne.tvVideoTimes.text = ""
 
             }
 
@@ -129,45 +130,45 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             val picList = item.picList
             if (picList?.isEmpty() == false) {
                 when {
-                    picList.size>1 -> {
+                    picList.size > 1 -> {
                         val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
                         picList.forEach {
                             val imageInfo = ImageInfo()
                             imageInfo.bigImageUrl = it
                             imageInfo.thumbnailUrl = it
-                            item.postsId.let {tid->
-                                imageInfo.postId=tid.toString()
+                            item.postsId.let { tid ->
+                                imageInfo.postId = tid.toString()
                             }
 
                             imageInfoList.add(imageInfo)
                         }
                         val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
                         binding.ivNine.setAdapter(assNineAdapter)
-                        binding.ivNine.visibility=View.VISIBLE
-                        binding.layoutOne.ivPlay.visibility=View.GONE
-                        binding.layoutOne.conOne.visibility=View.GONE
-                        if(picList.size>4){
-                            binding.btnMore.visibility=View.VISIBLE
-                            binding.btnMore.text="+".plus(picList.size)
-                        }else{
-                            binding.btnMore.visibility=View.GONE
+                        binding.ivNine.visibility = View.VISIBLE
+                        binding.layoutOne.ivPlay.visibility = View.GONE
+                        binding.layoutOne.conOne.visibility = View.GONE
+                        if (picList.size > 4) {
+                            binding.btnMore.visibility = View.VISIBLE
+                            binding.btnMore.text = "+".plus(picList.size)
+                        } else {
+                            binding.btnMore.visibility = View.GONE
                         }
                     }
-                    picList.size==1 -> {
-                        binding.ivNine.visibility=View.GONE
-                        binding.layoutOne.conOne.visibility=View.VISIBLE
-                        GlideUtils.loadBD(picList[0],binding.layoutOne.ivPic)
-                        binding.btnMore.visibility=View.GONE
+                    picList.size == 1 -> {
+                        binding.ivNine.visibility = View.GONE
+                        binding.layoutOne.conOne.visibility = View.VISIBLE
+                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
+                        binding.btnMore.visibility = View.GONE
                     }
                     else -> {
-                        binding.ivNine.visibility=View.GONE
-                        binding.layoutOne.conOne.visibility=View.GONE
-                        binding.btnMore.visibility=View.GONE
+                        binding.ivNine.visibility = View.GONE
+                        binding.layoutOne.conOne.visibility = View.GONE
+                        binding.btnMore.visibility = View.GONE
                     }
                 }
 
-            }else{
-                binding.ivNine.visibility=View.GONE
+            } else {
+                binding.ivNine.visibility = View.GONE
             }
 
         }
@@ -194,7 +195,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 true
                             )
                             item.likesCount++
-                           "点赞成功".toast()
+                            "点赞成功".toast()
                         } else {
                             item.isLike = 0
                             item.likesCount--
@@ -227,9 +228,11 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-        if(followType==2){ //取消关注
-            cancelFollowDialog(authorBaseVo.authorId,followType)
-        }else{
+        if (followType == 2) { //取消关注
+            cancelFollowDialog(authorBaseVo.authorId, followType)
+        } else {
+            //埋点
+            BuriedUtil.instant?.communityFollow(authorBaseVo.nickname)
             getFollow(authorBaseVo.authorId, followType)
         }
 
@@ -260,14 +263,14 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
     }
 
 
-    fun cancelFollowDialog(followId: String, type: Int){
+    fun cancelFollowDialog(followId: String, type: Int) {
         QuickPopupBuilder.with(context)
             .contentView(R.layout.dialog_cancel_follow)
             .config(
                 QuickPopupConfig()
                     .gravity(Gravity.CENTER)
                     .withClick(R.id.btn_comfir, View.OnClickListener {
-                     getFollow(followId,type)
+                        getFollow(followId, type)
                     }, true)
                     .withClick(R.id.btn_cancel, View.OnClickListener {
                     }, true)
@@ -285,7 +288,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         this.notifyDataSetChanged()
     }
 
-    private fun StartBaduMap( mData: PostDataBean) {
+    private fun StartBaduMap(mData: PostDataBean) {
 
 
         SoulPermission.getInstance()
@@ -295,10 +298,10 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     override fun onPermissionOk(permission: Permission) {
 
                         val intent = Intent()
-                        intent.putExtra("lat",mData.lat)
-                        intent.putExtra("lon",mData.lon)
-                        intent.putExtra("address",mData.address)
-                        intent.putExtra("addrName",mData.showCity())
+                        intent.putExtra("lat", mData.lat)
+                        intent.putExtra("lon", mData.lon)
+                        intent.putExtra("address", mData.address)
+                        intent.putExtra("addrName", mData.showCity())
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
                         context.startActivity(intent)
                     }

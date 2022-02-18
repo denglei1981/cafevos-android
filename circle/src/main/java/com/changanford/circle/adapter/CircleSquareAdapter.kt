@@ -24,6 +24,7 @@ import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.zhpan.bannerview.constants.PageStyle
@@ -98,8 +99,11 @@ class CircleSquareAdapter(
             }
 
             topicAdapter.setOnItemClickListener { adapter, view, position ->
+                val item = topicAdapter.getItem(position)
+                // 埋点
+                BuriedUtil.instant?.communityMainHotTopic(item.name)
                 val bundle = Bundle()
-                bundle.putString("topicId", topicAdapter.getItem(position).topicId.toString())
+                bundle.putString("topicId", item.topicId.toString())
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
 
