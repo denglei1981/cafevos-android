@@ -29,6 +29,7 @@ import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.bean.NewCarTagBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil
@@ -84,6 +85,7 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?){
 private fun ItemService(itemData: NewCarTagBean?){
     itemData?.apply {
         Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxWidth().clickable {
+            WBuriedUtil.clickCarAfterSalesService(iconName)
             JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
         }) {
            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(iconImg) ?: R.mipmap.head_default,
@@ -118,7 +120,9 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
                 .background(Color.White, shape = RoundedCornerShape(5.dp)).clickable {
                     JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                 }) {
-                Box(modifier = Modifier.fillMaxWidth(),contentAlignment = Alignment.TopEnd){
+                Box(modifier = Modifier.fillMaxWidth().clickable {
+                    WBuriedUtil.clickCarDealer(dealerName)
+                },contentAlignment = Alignment.TopEnd){
                     Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
                         builder = {placeholder(R.mipmap.head_default)}),
                         contentScale = ContentScale.Crop,
@@ -161,8 +165,10 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
                         }
                     }
                     Spacer(modifier = Modifier.width(37.dp))
-                    //位置距离
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    //位置距离 导航
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
+                        WBuriedUtil.clickCarAfterSalesNavigate()
+                    }) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Image(painter = painterResource(R.mipmap.car_location), contentDescription =null )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -213,6 +219,7 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuth
             })
             Spacer(modifier = Modifier.height(18.dp))
             Button(onClick = {
+                WBuriedUtil.clickCarCertification()
                 //去做认证
                 JumpUtils.instans?.jump(17,dataBean?.modelCode)
             },enabled = isUse,shape = RoundedCornerShape(24.dp),contentPadding = PaddingValues(10.dp),

@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarServiceBinding
 import com.changanford.common.bean.NewCarTagBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
 
@@ -17,6 +18,7 @@ class CarServiceAdapter: BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<I
             model=item
             executePendingBindings()
             root.setOnClickListener {
+                WBuriedUtil.clickCarBuyService(item.iconName)
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }

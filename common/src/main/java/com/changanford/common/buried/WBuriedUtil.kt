@@ -40,7 +40,7 @@ object WBuriedUtil {
     }
     //商城END
 
-    //社区
+    //=======================================社区
     /**
      * 用户点击顶部圈子图标时触发
      * [circleName]圈子名称
@@ -69,7 +69,7 @@ object WBuriedUtil {
         buried("app社区_猜你喜欢","app_community_guess", extend = "{\"Moments_type\": \"$circleName\"}")
     }
 
-    //爱车
+    //===========================================爱车
     /**
      * 用户点击立即订购时触发
      * [modelName]车型名称
