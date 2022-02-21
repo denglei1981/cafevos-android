@@ -148,68 +148,8 @@
                     android:paddingStart="@dimen/dp_20"
                     android:paddingBottom="@dimen/dp_12">
                     <com.changanford.common.ui.view.WTextView
-                        android:id="@+id/tv_circleType"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_circleClassification"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_13" />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/tv_circleTypeValue"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:focusable="false"
-                        android:background="@null"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_circleType"
-                        android:drawableEnd="@mipmap/right_99"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/color_33"
-                        android:hint="@string/str_pleaseSelectA"
-                        android:textColorHint="@color/color_99"
-                        android:textSize="@dimen/sp_13" />
-                    <View
-                        android:id="@+id/view_divider"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_16"
-                        app:layout_constraintTop_toBottomOf="@id/tv_circleType"
-                        android:background="@color/color_ee"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"/>
-                    <com.changanford.common.ui.view.WTextView
-                        android:id="@+id/tv_circleAudit"
-                        app:layout_constraintTop_toTopOf="@id/checkBox"
-                        app:layout_constraintBottom_toBottomOf="@id/checkBox"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_circleAudit"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_13" />
-                    <CheckBox
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:id="@+id/checkBox"
-                        android:background="@null"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/view_divider"
-                        android:button="@drawable/cb_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <View
-                        android:id="@+id/view_divider1"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_10"
-                        app:layout_constraintTop_toBottomOf="@id/checkBox"
-                        android:background="@color/color_ee"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"/>
-                    <com.changanford.common.ui.view.WTextView
                         android:id="@+id/wtv_circleTag"
-                        android:layout_marginTop="@dimen/dp_16"
-                        app:layout_constraintTop_toBottomOf="@id/view_divider1"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
