@@ -395,10 +395,10 @@ interface NetWorkApi {
 
     //扫描二维码 扫一扫
     @POST("base/app/scan")
-    fun scan(
+    suspend fun scan(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<CommonResponse<JumpDataBean>>
+    ): CommonResponse<JumpDataBean>
 
     /**
      * 获取验证码
