@@ -141,8 +141,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }else{
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
             }
-
-
         }
         initTabAndViewPager()
         initMagicIndicator()

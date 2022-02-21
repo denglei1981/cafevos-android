@@ -7,6 +7,7 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.home.PageConstant
+import com.changanford.home.databinding.FragmentSearchAskBinding
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchAskResultAdapter
 import com.changanford.home.search.adapter.SearchUserResultAdapter
@@ -17,7 +18,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 class SearchAskFragment :
-    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchAskViewModel>(),
+    BaseLoadSirFragment<FragmentSearchAskBinding, PolySearchAskViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
     var searchContent: String? = null
     val searchAskResultAdapter: SearchAskResultAdapter by lazy {
