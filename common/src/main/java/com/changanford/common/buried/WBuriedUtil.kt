@@ -52,7 +52,7 @@ object WBuriedUtil {
      * 用户点击申请加入时触发
      * */
     fun clickCircleJoin(){
-        buried("app社区_我的圈子_申请加入","app_community_mymoments_join")
+        buried("app社区_我的圈子_申请加入","app_community_mymoments_join", extend = "{\"Moments_list\": \"Moments_list\"}")
     }
     /**
      * 用户点击热门车型圈时触发
