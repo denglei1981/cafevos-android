@@ -331,23 +331,28 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         val labelsReaward = binding.labelsReward.getSelectLabelDatas<QuestionData>()
         val questionTypes = binding.labelsType.getSelectLabelDatas<QuestionData>()
         when {
-            selectList.size == 0 -> {
-                "请选择图片".toast()
-                return
-            }
+
             biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length < 5 || biaoti.length > 20 -> {
                 "请输入5-20字的标题".toast()
                 return
             }
             content.isNullOrEmpty() || content.length < 20 || content.length > 200 -> {
                 "请输入20-200的正文内容".toast()
+                return
+            }
+            selectList.size == 0 -> {
+                "请选择图片".toast()
+                return
             }
             questionTypes.isEmpty() || questionTypes.size <= 0 -> {
                 "请选择问题类型".toast()
+                return
             }
             labelsReaward.isEmpty() || labelsReaward.size <= 0 -> {
                 "请选择打赏福币".toast()
+                return
             }
+
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
