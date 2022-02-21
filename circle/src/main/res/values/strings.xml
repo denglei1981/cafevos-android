@@ -45,4 +45,7 @@
     <string name="str_circleClassification"><font color="#FF0000">*</font>   圈子分类</string>
     <string name="str_pleaseSelectA">请选择</string>
     <string name="str_circleAudit"><font color="#FF0000">*</font>   入圈审核</string>
+    <string name="str_circleType">圈子分类</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_determine">确定</string>
 </resources>

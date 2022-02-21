@@ -1,7 +1,6 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -12,8 +11,11 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.viewmodel.CreateCircleViewModel
+import com.changanford.circle.widget.pop.CircleSelectTypePop
+import com.changanford.circle.widget.pop.OnSelectedBackListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleItemBean
+import com.changanford.common.bean.NewCirceTagBean
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.manger.RouterManger
@@ -26,7 +28,6 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -38,6 +39,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private var picUrl = ""
     private val mAdapter by lazy { CircleTagAdapter(listener=listener) }
     private var circleItemBean:CircleItemBean?=null
+    private var pop:CircleSelectTypePop?=null
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
@@ -57,6 +59,9 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             etContent.addTextChangedListener {
                 binding.tvNum1.text = it?.length.toString() + "/50"
                 btnIsClick()
+            }
+            edtCircleTypeValue.setOnClickListener {
+                createPop()
             }
         }
         val flowLayoutManager1 =FlowLayoutManager(this@CreateCircleActivity,true)
@@ -170,5 +175,18 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 btnIsClick()
             }
         }
+    }
+    /**
+     * 创建分类弹窗
+    * */
+    private fun createPop(){
+        if(pop==null){
+            pop=CircleSelectTypePop(this,object : OnSelectedBackListener{
+                override fun onSelectedBackListener(itemBean: NewCirceTagBean?) {
+                    binding.edtCircleTypeValue.setText(itemBean?.tagName)
+                }
+            })
+        }
+        pop?.showPopupWindow()
     }
 }
