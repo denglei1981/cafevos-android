@@ -8,14 +8,17 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/smartRl">
+        android:id="@+id/smartRl"
+        android:paddingBottom="@dimen/dp_20">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_white_5_bg"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeView"

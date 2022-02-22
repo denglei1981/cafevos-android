@@ -21,7 +21,6 @@ import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
-import com.changanford.common.wutil.WCommonUtil
 import kotlin.math.floor
 
 
@@ -32,7 +31,8 @@ class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQui
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
-            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
+            val position=holder.absoluteAdapterPosition
+//            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
             val fbReward=itemData.fbReward
             val tagName=itemData.questionTypeName
             if(fbReward==null||fbReward=="0"){
@@ -44,7 +44,7 @@ class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQui
 //            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                QuestionItemUI(itemData,viewWidth,identity)
+                QuestionItemUI(itemData,viewWidth,identity,position==data.size-1)
             }
             root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
         }

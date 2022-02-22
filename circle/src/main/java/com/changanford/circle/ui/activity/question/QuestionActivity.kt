@@ -101,12 +101,21 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     override fun initData() {
         viewModel.questionInfoBean.observe(this){
             it?.apply {
-                //是否显示提问入口
-                binding.inHeader.tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
+                isOneself=isOneself()
+                binding.inHeader.apply {
+                    //是否显示提问入口
+                    tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
+                    tvTitle.setText(
+                        when {
+                            isOneself -> R.string.str_myQuestionAndAnswer
+                            getIdentity()==1 -> R.string.str_technicianInformation
+                            else -> R.string.str_taQuestionAndAnswer
+                        }
+                    )
+                }
                 binding.composeView.setContent {
                     ComposeQuestionTop(this@QuestionActivity,this)
                 }
-                isOneself=isOneself()
                 if(fragments.size>0){
                     fragments[binding.viewPager.currentItem].startRefresh()
                 }else{
@@ -176,7 +185,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     text = tabs[index].tagName
                     textSize = 18f
                     setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
-                    width= com.changanford.common.wutil.ScreenUtils.getScreenWidth(this@QuestionActivity)/3
+                    width= ScreenUtils.getScreenWidth(this@QuestionActivity)/3
                     normalColor = ContextCompat.getColor(this@QuestionActivity, R.color.color_33)
                     selectedColor = ContextCompat.getColor(this@QuestionActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }

@@ -2,7 +2,6 @@ package com.changanford.circle.ui.fragment.question
 
 import android.os.Bundle
 import android.view.View
-import com.changanford.circle.R
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
 import com.changanford.circle.ui.compose.EmptyCompose
@@ -52,9 +51,8 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             mAdapter.identity=identity
             recyclerView.apply {
                 adapter=mAdapter
-                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
+//                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
             }
-//            mAdapter.setEmptyView(R.layout.empty_ask)
             smartRl.setOnLoadMoreListener {
                 pageNo++
                 getData()

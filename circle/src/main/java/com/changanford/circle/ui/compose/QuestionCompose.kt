@@ -184,10 +184,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                             Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
                         }
                         Spacer(modifier = Modifier.height(28.dp))
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(colorResource(R.color.color_80EEEEEE)))
+                        Divider(modifier = Modifier.fillMaxWidth().height(0.5.dp), color = colorResource(R.color.color_80EEEEEE))
                         Spacer(modifier = Modifier.height(7.dp))
                         //答题总数、采纳总数、回复榜、采纳绑
                         Row(modifier = Modifier
@@ -208,9 +205,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                             }
                                         }, textAlign = TextAlign.Center)
                                     }
-                                    Divider(modifier = Modifier
-                                        .width(0.5.dp)
-                                        .height(40.dp),color = colorResource( R.color.color_f6))
+                                    if(i!=size-1)Divider(modifier = Modifier.width(0.5.dp).height(40.dp),color = colorResource( R.color.color_f6))
                                 }
                             }
                         }
@@ -237,7 +232,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:Int?=null){
+fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:Int?=null,isLast:Boolean=false){
     itemData?.apply {
         val answerInfoBean=qaAnswer//答案 可能为null
         Column(modifier = Modifier
@@ -253,10 +248,9 @@ fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:
                 UserInfoUI(this@apply) //用户信息
             }
             Spacer(modifier = Modifier.height(16.dp))
-            if(identity!=1){
-                Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier
-                    .fillMaxWidth()
-                    .height(0.5.dp))
+//            if(identity!=1&&!isLast){
+            if(!isLast){
+                Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier.fillMaxWidth().height(0.5.dp))
             }
         }
     }
