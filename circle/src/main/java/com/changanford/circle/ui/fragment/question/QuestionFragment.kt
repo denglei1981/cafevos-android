@@ -9,6 +9,7 @@ import com.changanford.circle.ui.compose.EmptyQuestionCompose
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.wutil.ScreenUtils
 
 /**
  * @Author : wenke
@@ -57,9 +58,11 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
                 pageNo++
                 getData()
             }
+            //待优化
+            val h:Int=ScreenUtils.getScreenHeight(requireContext())-1035
             composeView.setContent {
-                if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose() //是自己并且是提问tab 则展示提问特有缺省页
-                else EmptyCompose()//普通缺省页
+                if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose(ScreenUtils.px2dp(requireContext(),h.toFloat())) //是自己并且是提问tab 则展示提问特有缺省页
+                else EmptyCompose(height = ScreenUtils.px2dp(requireContext(),h.toFloat()))//普通缺省页
             }
         }
 

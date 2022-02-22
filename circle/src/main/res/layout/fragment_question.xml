@@ -19,14 +19,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/circle_white_5_bg"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeView"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:background="@color/color_F4"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

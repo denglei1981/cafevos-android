@@ -129,8 +129,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     fragments[binding.viewPager.currentItem].startRefresh()
                 }else{
                     tabs=it.getTabs(this@QuestionActivity).apply {
-                        initTabAndViewPager(this,isOneself,getIdentity())
                         initMagicIndicator(this)
+                        initTabAndViewPager(this,isOneself,getIdentity())
                     }
                 }
             }

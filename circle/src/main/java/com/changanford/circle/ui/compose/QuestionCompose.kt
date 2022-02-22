@@ -55,12 +55,12 @@ private fun PreviewUI(){
  * 暂无内容
 * */
 @Composable
-fun EmptyCompose(noContext:String?=null){
+fun EmptyCompose(noContext:String?=null,height:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
+        .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -70,12 +70,12 @@ fun EmptyCompose(noContext:String?=null){
  * 缺省页-问答
 * */
 @Composable
-fun EmptyQuestionCompose(){
+fun EmptyQuestionCompose(height:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
+        .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -392,7 +392,7 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
                                                         shape = RoundedCornerShape(6.dp)
                                                     )
                                                     .padding(8.dp, 1.dp)){
-                                                    Text(text = "$size+",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
+                                                    Text(text = "+$size",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
                                                 }
                                                 Spacer(modifier = Modifier.width(20.dp))
                                             }

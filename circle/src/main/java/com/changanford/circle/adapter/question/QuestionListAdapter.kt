@@ -33,6 +33,17 @@ class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQui
         holder.dataBinding?.apply {
             val position=holder.absoluteAdapterPosition
 //            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
+            layoutRoot.apply {
+                if(data.size==1)
+                    setBackgroundResource(R.drawable.circle_white_5_bg)
+                else{
+                    when (position) {
+                        0 -> setBackgroundResource(R.drawable.shape_white_t_5dp)
+                        data.size-1 -> setBackgroundResource(R.drawable.shape_white_b_5dp)
+                        else -> setBackgroundResource(R.color.colorWhite)
+                    }
+                }
+            }
             val fbReward=itemData.fbReward
             val tagName=itemData.questionTypeName
             if(fbReward==null||fbReward=="0"){
