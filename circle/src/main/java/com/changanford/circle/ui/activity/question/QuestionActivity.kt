@@ -120,7 +120,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     tvTitle.setText(
                         when {
                             isOneself -> R.string.str_myQuestionAndAnswer
-                            identity==1 ->R.string.str_technicianInformation
+                            identity==1 ->R.string.str_redskinsInformation
                             else -> R.string.str_taQuestionAndAnswer
                         }
                     )
