@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.databinding.DialogCircleAskScreenBinding
 import com.changanford.circle.ui.ask.adapter.AskScreenItemAdapter
 import com.changanford.circle.utils.launchWithCatch
@@ -15,9 +16,11 @@ import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.BaseAppCompatDialog
+import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.utilext.toastShow
 
 
-class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner) :
+class AnswerGoodAtDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner) :
     BaseAppCompatDialog(acts) {
     lateinit var mDatabind: DialogCircleAskScreenBinding
     lateinit var callback: AskCallback
@@ -49,9 +52,7 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
     }
 
 
-    fun setAskTypeTitle(title: String = "选择擅长") {
-        mDatabind.tvAskType.text = title
-    }
+
 
     override fun initAd() {
 
@@ -61,7 +62,9 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
         if (isMult) {
             mDatabind.labelsType.maxSelect = 3
         }
-
+         val titleStr ="选择擅长(最多3个)"
+        val questionSpan= SpannableStringUtils.getSizeColor(titleStr,"#cccccc",12,titleStr.indexOf("("),titleStr.indexOf(")")+1)
+        mDatabind.tvAskType.text =questionSpan
     }
 
     fun initData() {
@@ -77,6 +80,12 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
         mDatabind.homeBtnSure.setOnClickListener {
             screenData()
             dismiss()
+        }
+        mDatabind.labelsType.setOnLabelClickListener { label, data, position ->
+            val selectLabelDatas = mDatabind.labelsType.getSelectLabelDatas<PostKeywordBean>()
+            if (selectLabelDatas.size >= 3) {
+                toastShow("最多选择3个")
+            }
         }
     }
 

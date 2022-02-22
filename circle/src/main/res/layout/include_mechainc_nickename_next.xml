@@ -16,7 +16,7 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_18"
+
             android:text="技师昵称"
             android:textColor="#ff333333"
             android:textSize="@dimen/sp_15"

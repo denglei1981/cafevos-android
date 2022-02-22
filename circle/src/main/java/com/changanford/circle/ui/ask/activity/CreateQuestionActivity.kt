@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -39,6 +40,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
@@ -91,6 +93,28 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         binding.layoutTitle.barTvOther.setOnClickListener {
             isPublish()
         }
+
+        val questionTitle = binding.tvQuestionTitle.text.toString()
+
+        val colorTitle = SpannableStringUtils.colorSpan(
+            questionTitle,
+            questionTitle.indexOf("("),
+            questionTitle.indexOf(")")+1,
+            R.color.color_cc
+        )
+        binding.tvQuestionTitle.text=colorTitle
+
+
+        val questionStr= binding.tvQuestion.text.toString()
+
+        val questionSpan= SpannableStringUtils.colorSpan(
+            questionStr,
+            questionStr.indexOf("("),
+            questionStr.indexOf(")")+1,
+            R.color.color_cc
+        )
+        binding.tvQuestion.text=questionSpan
+
 
 
         binding.etQuestion.addTextChangedListener(object : TextWatcher {
@@ -318,6 +342,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 }
 
             }).run {
+            setBackgroundColor(Color.TRANSPARENT)
             setBlurBackgroundEnable(false)
             setOverlayMask(false)
             showPopupWindow(binding.ivQuestion)

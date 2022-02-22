@@ -1,6 +1,8 @@
 package com.changanford.circle.ui.ask.adapter
 
+import android.content.res.ColorStateList
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -30,17 +32,21 @@ class HotMechanicAdapter :
                 0->{
                     it.ivHot.visibility= View.VISIBLE
                     it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_one)
+                    it.ivHeader.strokeColor= ColorStateList.valueOf(ContextCompat.getColor(context,R.color.color_yellow_F9D24B))
                 }
                 1->{
                     it.ivHot.visibility= View.VISIBLE
                     it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_two)
+                    it.ivHeader.strokeColor= ColorStateList.valueOf(ContextCompat.getColor(context,R.color.color_yellow_F9D24B))
                 }
                 2->{
                     it.ivHot.visibility= View.VISIBLE
                     it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_three)
+                    it.ivHeader.strokeColor= ColorStateList.valueOf(ContextCompat.getColor(context,R.color.color_yellow_F9D24B))
                 }
                 else->{
                     it.ivHot.visibility= View.INVISIBLE
+                    it.ivHeader.strokeColor=null
                 }
             }
         }
