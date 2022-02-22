@@ -16,7 +16,7 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_18"
+
             android:text="擅长"
             android:textColor="#ff333333"
             android:textSize="@dimen/sp_15"
@@ -28,7 +28,7 @@
             android:id="@+id/tv_remember_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="18dp"
             android:drawableEnd="@drawable/tech_right_arrow_common"
             android:drawablePadding="6dp"
             android:textColor="@color/color_99"

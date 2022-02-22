@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityMechainicMainBinding
 import com.changanford.circle.interf.UploadPicCallback
+import com.changanford.circle.ui.ask.pop.AnswerGoodAtDialog
 import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.MechanicMainViewModel
 import com.changanford.circle.ui.ask.request.QuestionViewModel
@@ -35,7 +36,7 @@ import java.io.File
 @Route(path = ARouterCirclePath.MechanicMainActivity)
 class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, MechanicMainViewModel>() {
 
-    var circleAskScreenDialog: CircleAskScreenDialog? = null
+    var circleAskScreenDialog: AnswerGoodAtDialog? = null
 
 
     override fun initView() {
@@ -257,7 +258,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
     var questionTypes = mutableListOf<String>()
     fun showScreenDialog() {
         if (circleAskScreenDialog == null) {
-            circleAskScreenDialog = CircleAskScreenDialog(this, this, object :
+            circleAskScreenDialog = AnswerGoodAtDialog(this, this, object :
                 AskCallback {
                 override fun onResult(result: ResultData) {
                     when (result.resultCode) {

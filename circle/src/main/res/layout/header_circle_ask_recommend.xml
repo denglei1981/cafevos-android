@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
+
         android:orientation="vertical">
 
         <View
@@ -57,13 +56,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             android:background="@color/white"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="热门技师"
+                android:text="问答红人"
                 android:textColor="@color/color_33"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -88,21 +89,32 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dp_20"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
            />
 
 
-        <androidx.cardview.widget.CardView
+        <com.changanford.common.widget.ShadowLayout
             android:id="@+id/cd_my_ask"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_62"
-            android:layout_marginTop="@dimen/dp_30"
-            android:layout_marginStart="@dimen/dp_4"
-            android:layout_marginEnd="4dp"
+            android:layout_height="@dimen/dp_82"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@color/white"
+            app:sl_cornerRadius="@dimen/dp_5"
+            app:sl_shadowColor="#14949494"
+            app:sl_shadowRadius="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginEnd="@dimen/dp_24"
             >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/dp_15"
+                android:paddingEnd="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:background="@color/white"
+                >
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_tips"
                     android:layout_width="wrap_content"
@@ -144,13 +156,14 @@
 
 
 
-        </androidx.cardview.widget.CardView>
+        </com.changanford.common.widget.ShadowLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             android:background="@color/white"
             android:orientation="horizontal">
 

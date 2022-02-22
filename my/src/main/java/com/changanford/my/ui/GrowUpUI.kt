@@ -73,8 +73,8 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                             binding.myGradeDes.text =
                                 "再获取${(it.nextSeriesMinGrow - it.growthSum).toInt()}成长值即可升级为${it.nextGrowSeriesName}"
                             binding.myGradeNum.text =
-                                "${it.growthSum.toInt()}/${it.nextSeriesMinGrow.toInt()}"
-                            binding.myGradeProgressbar.setProgressWithAnimation((it.growthSum * 100 / it.nextSeriesMinGrow).toFloat())
+                                "${it.growthSum.toInt()}/${it.growSeriesMaxGrow.toInt()}"
+                            binding.myGradeProgressbar.setProgressWithAnimation((it.growthSum * 100 / it.growSeriesMaxGrow.toInt()).toFloat())
 
                         } catch (e: Exception) {
                             e.printStackTrace()

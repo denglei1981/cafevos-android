@@ -80,5 +80,6 @@ data class GrowUpExtend(
     val multiple: String?,
     val rulesDesc: String,
     val historyDesc: String,
-    val source: String
+    val source: String,
+    val growSeriesMaxGrow: String
 )
