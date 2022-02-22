@@ -42,4 +42,7 @@
     <string name="question_tips">为了便于金牌技师准确的诊断和为您提供优质解答，请详细描述您的问题、选择问题分类，并且尽量提供相关照片</string>
     <string name="pop_question_tips">提问需花费福币，如未采纳，福币将留存在系统，直至采纳解答后，福币将直接打赏给为您提供优质解答的技师或用户。</string>
     <string name="reset">重置</string>
+    <string name="str_circleClassification"><font color="#FF0000">*</font>   圈子分类</string>
+    <string name="str_pleaseSelectA">请选择</string>
+    <string name="str_circleAudit"><font color="#FF0000">*</font>   入圈审核</string>
 </resources>
