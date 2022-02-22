@@ -22,6 +22,7 @@ import com.changanford.circle.ui.fragment.question.QuestionFragment
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.bean.QuestionTagBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
@@ -73,6 +74,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     private val fragments= arrayListOf<QuestionFragment>()
     private var isOneself=false
     private var tabs :ArrayList<QuestionTagBean>?=null
+    private var tagIdList:ArrayList<String>?=null
+    private var questionInfoBean:QuestionInfoBean?=null
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
@@ -101,20 +104,26 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     override fun initData() {
         viewModel.questionInfoBean.observe(this){
             it?.apply {
+                questionInfoBean=this
                 isOneself=isOneself()
+                val identity=getIdentity()
+                if(identity==1){
+                    tagIdList=questionTypesCode
+                    viewModel.getQuestionType()
+                }
+                binding.composeView.setContent {
+                    ComposeQuestionTop(this@QuestionActivity,this)
+                }
                 binding.inHeader.apply {
                     //是否显示提问入口
                     tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
                     tvTitle.setText(
                         when {
                             isOneself -> R.string.str_myQuestionAndAnswer
-                            getIdentity()==1 -> R.string.str_technicianInformation
+                            identity==1 ->R.string.str_technicianInformation
                             else -> R.string.str_taQuestionAndAnswer
                         }
                     )
-                }
-                binding.composeView.setContent {
-                    ComposeQuestionTop(this@QuestionActivity,this)
                 }
                 if(fragments.size>0){
                     fragments[binding.viewPager.currentItem].startRefresh()
@@ -126,6 +135,18 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 }
             }
             binding.smartRl.finishRefresh()
+        }
+        viewModel.questTagList.observe(this){dataList->
+            val tagNameArr= arrayListOf<String>()
+            tagIdList?.forEach {tagId->
+                dataList?.find { it.dictValue==tagId }?.dictLabel?.apply {
+                    tagNameArr.add(this)
+                }
+            }
+            questionInfoBean?.tagNameArr=tagNameArr
+            binding.composeView.setContent {
+                ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
+            }
         }
         viewModel.personalQA(conQaUjId)
     }

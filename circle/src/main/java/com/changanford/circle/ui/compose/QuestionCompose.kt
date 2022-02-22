@@ -100,7 +100,7 @@ fun EmptyQuestionCompose(){
 fun BtnQuestionCompose(){
     Column(modifier = Modifier
         .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
-        .defaultMinSize(minWidth = 45.dp,minHeight = 45.dp)
+        .defaultMinSize(minWidth = 45.dp, minHeight = 45.dp)
         .padding(5.dp)
         .clickable {
             JumpUtils.instans?.jump(116)
@@ -178,13 +178,35 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                 Text(text = stringResource(R.string.str_modifyData),fontSize = 11.sp, color=colorResource(R.color.color_99))
                             }
                         }
+                        if(identityType==1&&!tagNameArr.isNullOrEmpty()){
+                            Spacer(modifier = Modifier.height(15.dp))
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, end = 15.dp)) {
+                                tagNameArr?.forEach {tagName->
+                                    Box(modifier = Modifier
+                                        .size(width = 60.dp, height = 19.dp)
+                                        .border(
+                                            0.5.dp,
+                                            color = colorResource(R.color.color_00095B),
+                                            shape = RoundedCornerShape(2.dp)
+                                        ),
+                                        contentAlignment = Alignment.Center){
+                                        Text(text = tagName, color = colorResource(R.color.color_00095B), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    }
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                }
+                            }
+                        }
                         if(introduction!=null){
-                            Spacer(modifier = Modifier.height(18.dp))
+                            Spacer(modifier = Modifier.height(15.dp))
                             //个人简介
                             Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
                         }
                         Spacer(modifier = Modifier.height(28.dp))
-                        Divider(modifier = Modifier.fillMaxWidth().height(0.5.dp), color = colorResource(R.color.color_80EEEEEE))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(0.5.dp), color = colorResource(R.color.color_80EEEEEE))
                         Spacer(modifier = Modifier.height(7.dp))
                         //答题总数、采纳总数、回复榜、采纳绑
                         Row(modifier = Modifier
@@ -205,7 +227,9 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                             }
                                         }, textAlign = TextAlign.Center)
                                     }
-                                    if(i!=size-1)Divider(modifier = Modifier.width(0.5.dp).height(40.dp),color = colorResource( R.color.color_f6))
+                                    if(i!=size-1)Divider(modifier = Modifier
+                                        .width(0.5.dp)
+                                        .height(40.dp),color = colorResource( R.color.color_f6))
                                 }
                             }
                         }
@@ -250,7 +274,9 @@ fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:
             Spacer(modifier = Modifier.height(16.dp))
 //            if(identity!=1&&!isLast){
             if(!isLast){
-                Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier.fillMaxWidth().height(0.5.dp))
+                Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier
+                    .fillMaxWidth()
+                    .height(0.5.dp))
             }
         }
     }
@@ -415,9 +441,11 @@ private fun UserInfoUI(itemData: QuestionItemBean){
     if(answerInfo==null||userInfo==null)return
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.fillMaxWidth().clickable {
-                                                         JumpUtils.instans?.jump(114,userInfo.conQaUjId)
-        }, verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                JumpUtils.instans?.jump(114, userInfo.conQaUjId)
+            }, verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater) ?: R.mipmap.head_default,
                     builder = {

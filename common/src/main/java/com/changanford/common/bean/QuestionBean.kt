@@ -25,6 +25,8 @@ data class QuestionInfoBean(
     val pageSize: Int = 0,
     val totalPage: Int = 0,
     val total: Int = 0,
+    val questionTypesCode:ArrayList<String>?=null,
+    var tagNameArr:ArrayList<String>?=null,
 ){
     /**
      * 是否是自己
