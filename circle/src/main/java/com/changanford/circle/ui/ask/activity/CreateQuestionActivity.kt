@@ -340,10 +340,10 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请输入20-200的正文内容".toast()
                 return
             }
-            selectList.size == 0 -> {
-                "请选择图片".toast()
-                return
-            }
+//            selectList.size == 0 -> {
+//                "请选择图片".toast()
+//                return
+//            }
             questionTypes.isEmpty() || questionTypes.size <= 0 -> {
                 "请选择问题类型".toast()
                 return
