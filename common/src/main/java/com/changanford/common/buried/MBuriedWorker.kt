@@ -31,12 +31,9 @@ class MBuriedWorker(context: Context, workerParams: WorkerParameters) :
             .compose(ResponseTransformer())
             .subscribe(object : ResponseObserver<BaseBean<String>>(null, true) {
 
-                override fun onFail(e: ApiException) {
-//                    Log.e(TAG, e.msg)
-                }
-
+                override fun onFail(e: ApiException) {}
                 override fun onSuccess(response: BaseBean<String>) {
-//                    Log.e(TAG, response.msg)
+                    Log.e("okhttp", "onSuccess:$response")
                 }
             })
 

@@ -44,8 +44,9 @@ abstract class ResponseObserver<T> constructor(
      * 请求失败
      */
     override fun onError(e: Throwable) {
+        Log.e("okhttp", "onError:${e.message}")
         if (e is ApiException) {
-            Log.e("result error:", e.msg)
+            Log.e("okhttp", "onError>>code:${e.code}>>>msg:${e.msg}")
             if (e.code != StatusCode.REDIRECT_NOT_FOUND_PAGE) {
                 onFail(e)
             }
