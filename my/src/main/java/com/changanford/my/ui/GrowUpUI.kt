@@ -67,7 +67,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
                 if (pageSize == 1) {
                     var growUp = it.extend
                     growUp?.let {
-                        binding.myGradeV.text = it.growSeriesName
+                        binding.myGradeV.text = it.growSeriesName.plus(" ")
 
                         try {
                             binding.myGradeDes.text =
