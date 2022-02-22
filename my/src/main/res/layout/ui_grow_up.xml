@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,23 +78,22 @@
                         android:id="@+id/my_grade_v"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_32"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="@dimen/dp_20"
-                        android:text="LV0"
+                        tools:text="LV0"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_20"
                         android:textStyle="bold|italic"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/my_grade_des"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/my_grade_des"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_19"
+                        android:layout_marginStart="@dimen/dp_19"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:text=""
+                        tools:text="2343"
                         android:textColor="#AFB3B6"
                         android:textSize="@dimen/text_size_small"
                         app:layout_constraintLeft_toRightOf="@+id/my_grade_v"

@@ -348,6 +348,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                magicIndicator.onPageSelected(position)
                 // 埋点
                 when(position){
                     0->{
