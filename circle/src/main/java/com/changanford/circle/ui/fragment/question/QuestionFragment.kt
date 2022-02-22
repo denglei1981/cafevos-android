@@ -49,12 +49,12 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             identity=getInt("identity",0)
         }
         binding.apply {
-//            mAdapter.setHasStableIds(true)
             mAdapter.identity=identity
             recyclerView.apply {
                 adapter=mAdapter
                 setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
             }
+//            mAdapter.setEmptyView(R.layout.empty_ask)
             smartRl.setOnLoadMoreListener {
                 pageNo++
                 getData()

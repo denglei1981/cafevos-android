@@ -58,9 +58,8 @@ private fun PreviewUI(){
 fun EmptyCompose(noContext:String?=null){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -73,9 +72,8 @@ fun EmptyCompose(noContext:String?=null){
 fun EmptyQuestionCompose(){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
