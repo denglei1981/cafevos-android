@@ -112,7 +112,14 @@ data class RecommendData(
             return 3
         }
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
-            pisList = postsPics.split(",")
+            if(postsType==3){
+                 val list=arrayListOf<String>()
+                list.add(postsPics)
+                pisList=list
+            }else{
+                pisList = postsPics.split(",")
+            }
+
         } else if (!TextUtils.isEmpty(artPics)) {
             pisList = artPics.split(",")
         }
@@ -153,7 +160,7 @@ data class RecommendData(
             }
         }
         if (likeCount == 0L) {
-            return "赞"
+            return "0"
         }
         likeCountResult = CountUtils.formatNum(likeCount.toString(), false).toString()
         return likeCountResult
