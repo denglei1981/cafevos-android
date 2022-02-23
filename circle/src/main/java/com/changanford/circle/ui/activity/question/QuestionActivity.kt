@@ -76,7 +76,6 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     private val fragments= arrayListOf<QuestionFragment>()
     private var isOneself=false
     private var tabs :ArrayList<QuestionTagBean>?=null
-    private var tagIdList:ArrayList<String>?=null
     private var questionInfoBean:QuestionInfoBean?=null
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
@@ -110,11 +109,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 isOneself=isOneself()
                 val identity=getIdentity()
                 if(identity==1){
-                    tagIdList=questionTypesCode
                     viewModel.getQuestionType()
-                }
-                binding.composeView.setContent {
-                    ComposeQuestionTop(this@QuestionActivity,this)
+                }else {
+                    binding.composeView.setContent {
+                        ComposeQuestionTop(this@QuestionActivity,this)
+                    }
                 }
                 binding.inHeader.apply {
                     //是否显示提问入口
@@ -141,14 +140,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             }
             binding.smartRl.finishRefresh()
         }
-        viewModel.questTagList.observe(this){dataList->
-            val tagNameArr= arrayListOf<String>()
-            tagIdList?.forEach {tagId->
-                dataList?.find { it.dictValue==tagId }?.dictLabel?.apply {
-                    tagNameArr.add(this)
-                }
-            }
-            questionInfoBean?.tagNameArr=tagNameArr
+        viewModel.questTagList.observe(this){
+            questionInfoBean?.setTagNames()
             binding.composeView.setContent {
                 ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
             }

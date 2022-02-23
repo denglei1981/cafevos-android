@@ -7,6 +7,7 @@ import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.WConstant
 
 /**
  * @Author : wenke
@@ -76,11 +77,16 @@ class QuestionViewModel:BaseViewModel() {
      *获取技师标签
      * */
     fun getQuestionType(){
+        if(WConstant.questionTagList!=null&&WConstant.questionTagList!!.isNotEmpty()){
+            questTagList.postValue(WConstant.questionTagList)
+            return
+        }
         launch(block = {
             body.clear()
             body["dictType"] = "qa_question_type"
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getQuestionType(body.header(rKey), body.body(rKey)).onSuccess {
+                WConstant.questionTagList=it
                 questTagList.postValue(it)
             }.onWithMsgFailure {
                 questTagList.postValue(null)

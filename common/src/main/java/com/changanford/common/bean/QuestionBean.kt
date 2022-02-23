@@ -3,6 +3,7 @@ package com.changanford.common.bean
 import android.content.Context
 import com.changanford.common.R
 import com.changanford.common.util.MConstant
+import com.changanford.common.wutil.WConstant
 
 /**
  * @Author : wenke
@@ -116,6 +117,14 @@ data class QuestionInfoBean(
             }
         }
         return tags
+    }
+    fun setTagNames(tagIdList:ArrayList<String>?=questionTypesCode){
+        tagNameArr= arrayListOf()
+        tagIdList?.forEach {tagId->
+            WConstant.questionTagList?.find { it.dictValue==tagId }?.dictLabel?.apply {
+                tagNameArr?.add(this)
+            }
+        }
     }
 }
 data class QuestionUserInfo(

@@ -1076,4 +1076,9 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): Observable<BaseBean<String>>
+    /**
+     * 问答tagInfo
+    * */
+    @POST("base/dict/getType")
+    suspend fun getQuestionTagInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ArrayList<QuestionData>>
 }

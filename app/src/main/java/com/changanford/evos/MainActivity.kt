@@ -243,6 +243,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         })
         registerConnChange()
+        viewModel.getQuestionTagInfo()
     }
 
     private lateinit var currentNavController: LiveData<NavController>
