@@ -2,6 +2,7 @@ package com.changanford.my
 
 import android.graphics.Typeface
 import android.view.KeyEvent
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -50,13 +51,10 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的收藏"
         initViewpager()
+        binding.layoutSearch.cancel.visibility= View.GONE
         binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
                     search()
-
-
-
-
 //                    hideKeyboard(binding.editSearch.windowToken)
                 }
             false
