@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -154,7 +153,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
             }
         }
-        viewModel.personalQA(conQaUjId)
+        viewModel.personalQA(conQaUjId,true)
     }
     private fun initSmartRefreshLayout(){
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
@@ -164,7 +163,6 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean,identity:Int) {
-        val topHeight=binding.magicTab.bottom
         for(position in 0 until tabs.size){
             val tag=tabs[position].tag?:""
             val fragment=QuestionFragment.newInstance(conQaUjId,tag,isOneself,identity)

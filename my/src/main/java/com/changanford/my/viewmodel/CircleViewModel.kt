@@ -25,9 +25,7 @@ class CircleViewModel : ViewModel() {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 searchKeys?.apply {
-                    body["queryParams"]=HashMap<String,Any>().also {
-                        it["searchKeys"]=searchKeys
-                    }
+                    body["searchKeys"]=searchKeys
                 }
                 val rkey = getRandomKey()
                 apiService.queryMineMangerCircle(body.header(rkey), body.body(rkey))
@@ -45,9 +43,7 @@ class CircleViewModel : ViewModel() {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 searchKeys?.apply {
-                    body["queryParams"]=HashMap<String,Any>().also {
-                        it["searchKeys"]=searchKeys
-                    }
+                    body["searchKeys"]=searchKeys
                 }
                 val rkey = getRandomKey()
                 apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
@@ -76,9 +72,7 @@ class CircleViewModel : ViewModel() {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 searchKeys?.apply {
-                    body["queryParams"]=HashMap<String,Any>().also {
-                        it["searchKeys"]=searchKeys
-                    }
+                    body["searchKeys"]=searchKeys
                 }
                 val rkey = getRandomKey()
                 apiService.queryMineJoinCircleList(body.header(rkey), body.body(rkey))
