@@ -4,6 +4,7 @@ import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
@@ -37,7 +38,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         addObserve()
         initKill()
         initTab()
-        binding.inTop.btnToTask.setOnClickListener { JumpUtils.instans?.jump(16) }
+        binding.inTop.btnToTask.setOnClickListener {
+            WBuriedUtil.clickShopIntegral()
+            JumpUtils.instans?.jump(16)
+        }
         binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
         binding.smartRl.setOnRefreshListener(this)
     }
@@ -45,6 +49,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                viewModel.classificationLiveData.value?.get(position)?.apply {
+                    WBuriedUtil.clickShopType(tagName)
+                }
                 fragments[position].startRefresh()
             }
         })
@@ -71,7 +78,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
-//                GoodsDetailsActivity.start(mallMallSpuId)
+                WBuriedUtil.clickShopKill(position,spuName,seckillFb)
                 GoodsDetailsActivity.start(getJdType(),getJdValue())
             }
 

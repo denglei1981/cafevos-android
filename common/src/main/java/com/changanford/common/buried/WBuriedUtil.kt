@@ -28,15 +28,34 @@ object WBuriedUtil {
     }
     //商城 START
     /**
-     * app商城_顶部banner_点击
-     * [bannerName]banner商品名称
-    * */
-    fun clickMallBanner(bannerName: String){
-        buried("app商城_顶部banner_点击","app_mall_top_banner", extend = "{\"goods_name\": \"$bannerName\"}")
+     *
+     * */
+    fun clickMallBanner(goodsName:String,price:String){
+        buried("app商城_限时秒杀_banner","app_mall_seckill_banner",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
     }
-    //【商品id】,点击商品【商品名称】,1
-    fun clickMall(pId:String,pName:String){
-        buried("商品名称","click_mall_p",pId,pName)
+    /**
+     *用户点击限时秒杀banner按钮时触发
+    * */
+    fun clickShopKill(position:Int,goodsName:String,price:String){
+        buried("app商城_限时秒杀_banner${position}","app_mall_seckill_banner${position}",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
+    }
+    /**
+     *用户点击立即前往按钮时触发
+     * */
+    fun clickShopIntegral(){
+        buried("app商城_赚取积分_立即前往","app_mall_get_integral_link")
+    }
+    /**
+     *用户点击商品分类菜单栏时触发
+     * */
+    fun clickShopType(goodsCategory:String){
+        buried("app商城_商品分类_菜单栏","app_mall_goods_category_menu", extend = "{\"goods_category\": \"$goodsCategory\"}")
+    }
+    /**
+     *用户点击商品详情banner时触发
+     * */
+    fun clickShopItem(goodsName:String,price:String){
+        buried("app商城_商品详情_banner","app_mall_goods_details_banner",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
     }
     //商城END
 

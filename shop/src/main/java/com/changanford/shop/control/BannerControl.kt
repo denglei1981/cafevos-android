@@ -55,6 +55,6 @@ object BannerControl {
     }
     private fun advJumpTo(itemData:AdBean){
         JumpUtils.instans?.jump(itemData.jumpDataType,itemData.jumpDataValue)
-        WBuriedUtil.clickMallBanner(itemData.adName?:"")
+        WBuriedUtil.clickMallBanner(itemData.adName?:"","")
     }
 }
