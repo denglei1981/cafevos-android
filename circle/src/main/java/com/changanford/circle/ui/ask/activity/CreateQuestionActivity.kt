@@ -296,6 +296,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
             if ("upsuccess".equals(it)) {
                 "发布成功".toast()
                 //TODO 通知刷新。
+                LiveDataBus.get().with(LiveDataBusKey.CIRCLE_CREATE_QUESTION).postValue(true)
                 this.finish()
             }
         })

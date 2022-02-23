@@ -248,5 +248,8 @@ object LiveDataBusKey {
     const val SHOP_CREATE_ORDER_BACK = "shop_create_order_back"//商品创建订单回调
 
     const val CHANGE_TEACH_INFO="CHANGE_TEACH_INFO" // 自定义位置
+
+
+    const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
 }
 
