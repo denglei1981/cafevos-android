@@ -19,6 +19,7 @@ data class TecnicianVo(
     val nickName: String,
     val qaTechnicianId: Int,
     val conQaUjId: String? = null,
+    var anserRankNum:Int=0
 )
 
 
