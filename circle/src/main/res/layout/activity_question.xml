@@ -22,6 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
+                    app:elevation="0dp"
                     android:background="@color/color_F4"
                     app:layout_behavior="@string/circle_behavior_app_bar_layout">
                     <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -63,7 +64,7 @@
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/dp_14"
+                    android:paddingTop="@dimen/dp_10"
                     android:paddingStart="@dimen/dp_20"
                     android:paddingEnd="@dimen/dp_20"
                     android:background="@color/color_F4"
