@@ -50,6 +50,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
                 R.color.color_00095B
             )
         )
+        binding.layoutTitle.vLine.background=ContextCompat.getDrawable(this,R.color.transparent)
 
         binding.ivHeader.setOnClickListener {
             selectIcon()

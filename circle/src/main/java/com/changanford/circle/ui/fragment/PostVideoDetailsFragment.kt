@@ -141,7 +141,12 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         binding.tvContent.post {
             val textView = binding.tvContent
             binding.tvExpand.text = if (isExpand) "收起" else "展开"
-            val originText = Html.fromHtml(mData.content)
+            var originText:String?=""
+            if(!TextUtils.isEmpty(mData.content)){
+                originText = Html.fromHtml(mData.content).toString()
+            }else{
+                originText=mData.content
+            }
             if (isExpand) {
                 textView.text = mData.content
             } else {
