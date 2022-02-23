@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment.question
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
@@ -58,14 +59,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
                 pageNo++
                 getData()
             }
-            //待优化
-            val h:Int=ScreenUtils.getScreenHeight(requireContext())-1035
-            composeView.setContent {
-                if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose(ScreenUtils.px2dp(requireContext(),h.toFloat())) //是自己并且是提问tab 则展示提问特有缺省页
-                else EmptyCompose(height = ScreenUtils.px2dp(requireContext(),h.toFloat()))//普通缺省页
-            }
         }
-
     }
     override fun initData() {
         viewModel.questionListBean.observe(this){
@@ -95,5 +89,14 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     }
     fun setOnPerformListener(listener: OnPerformListener){
         this.listener=listener
+    }
+    fun setEmpty(topHeight:Int=1035){
+        Log.e("wenke","topHeight:$topHeight")
+        //待优化
+        val h:Int=ScreenUtils.getScreenHeight(requireContext())-topHeight
+        binding.composeView.setContent {
+            if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose(ScreenUtils.px2dp(requireContext(),h.toFloat())) //是自己并且是提问tab 则展示提问特有缺省页
+            else EmptyCompose(height = ScreenUtils.px2dp(requireContext(),h.toFloat()))//普通缺省页
+        }
     }
 }

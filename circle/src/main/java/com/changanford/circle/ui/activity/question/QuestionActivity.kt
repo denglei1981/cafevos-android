@@ -2,6 +2,9 @@ package com.changanford.circle.ui.activity.question
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -131,6 +134,9 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     tabs=it.getTabs(this@QuestionActivity).apply {
                         initMagicIndicator(this)
                         initTabAndViewPager(this,isOneself,getIdentity())
+                        Handler(Looper.myLooper()!!).postDelayed({
+                            fragments.forEach {fragment-> fragment.setEmpty(binding.magicTab.bottom) }
+                        },100)
                     }
                 }
             }
@@ -158,6 +164,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         binding.smartRl.setOnRefreshListener(this)
     }
     private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean,identity:Int) {
+        val topHeight=binding.magicTab.bottom
         for(position in 0 until tabs.size){
             val tag=tabs[position].tag?:""
             val fragment=QuestionFragment.newInstance(conQaUjId,tag,isOneself,identity)
