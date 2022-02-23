@@ -43,26 +43,28 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
             mAdapter.orderSource=statesId
 //            viewModel.getShopOrderList(statesId,pageNo,showLoading = -1==statesId)
         }
-        viewModel.shopOrderData.observe(this,{
+        viewModel.shopOrderData.observe(this) {
             it?.let {
-                mAdapter.nowTime=it.nowTime
-                if(1==pageNo)mAdapter.setList(it.dataList)
+                mAdapter.nowTime = it.nowTime
+                if (1 == pageNo) mAdapter.setList(it.dataList)
                 else mAdapter.addData(it.dataList)
             }
             //            if(null==it|| it.dataList.isEmpty())pageNo--
-            if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+            if (null == it || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
+                false
+            )
             else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.apply {
-                when(state){
-                    RefreshState.Refreshing->finishRefresh()
-                    RefreshState.Loading->finishLoadMore()
+                when (state) {
+                    RefreshState.Refreshing -> finishRefresh()
+                    RefreshState.Loading -> finishLoadMore()
                     else -> {
                         finishRefresh()
                         finishLoadMore()
                     }
                 }
             }
-        })
+        }
     }
 
     override fun onStart() {

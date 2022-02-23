@@ -68,7 +68,7 @@ data class QuestionInfoBean(
                         add(QuestionTagBean(context.getString(R.string.str_myAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
                     }else{
-                        add(QuestionTagBean(context.getString(R.string.str_taAnswer),"QUESTION"))
+                        add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))
                     }
                 }
