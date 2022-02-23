@@ -247,6 +247,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                         modifier = Modifier
                             .size(69.dp)
                             .clip(CircleShape)
+                            .border(1.dp, color =Color.White, shape = CircleShape)
                     )
                 }
             }

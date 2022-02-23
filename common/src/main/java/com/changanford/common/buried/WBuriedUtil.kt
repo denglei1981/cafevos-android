@@ -52,7 +52,7 @@ object WBuriedUtil {
         buried("app商城_商品分类_菜单栏","app_mall_goods_category_menu", extend = "{\"goods_category\": \"$goodsCategory\"}")
     }
     /**
-     *用户点击商品详情banner时触发
+     *用户点击商品图文区域banner时触发
      * */
     fun clickShopItem(goodsName:String,price:String){
         buried("app商城_商品详情_banner","app_mall_goods_details_banner",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")

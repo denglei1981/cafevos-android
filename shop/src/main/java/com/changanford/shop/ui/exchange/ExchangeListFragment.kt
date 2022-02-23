@@ -54,7 +54,8 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
-                WBuriedUtil.clickShopItem(spuName,normalFb)
+                val price=if(spuPageTagType=="MEMBER_DISCOUNT"||spuPageTagType=="MEMBER_EXCLUSIVE")vipFb else normalFb
+                WBuriedUtil.clickShopItem(spuName,price)
                 GoodsDetailsActivity.start(getJdType(),getJdValue())
             }
         }
