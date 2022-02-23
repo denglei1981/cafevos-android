@@ -71,7 +71,7 @@ class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: Lifec
             mDatabind.labelsType.clearAllSelect()
             if (!isMult) {
                 screenData()
-                dismiss()
+//                dismiss()
             }
         }
         mDatabind.homeBtnSure.setOnClickListener {
