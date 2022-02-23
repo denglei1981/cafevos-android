@@ -47,7 +47,7 @@ class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseVie
                 holder.itemView.visibility=View.VISIBLE
             }
         }else{
-            var path = PictureUtil.getFinallyPath(item)
+            val path = PictureUtil.getFinallyPath(item)
             GlideUtils.loadRoundLocal(
                 path,
                 holder.getView(R.id.img),
