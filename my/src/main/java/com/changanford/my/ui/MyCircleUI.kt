@@ -40,15 +40,17 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
         }
-        binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-                val content = v.text.toString()
-//                LiveDataBus.get().with(CircleLiveBusKey.REFRESH_MANAGEMENT_CIRCLE).postValue(content)
-                val currentItem=binding.viewpager.currentItem
-                if(currentItem<fragments.size)fragments[currentItem].startSearch(content)
+        binding.layoutSearch.apply {
+            searchContent.setOnEditorActionListener { v, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+                    val content = v.text.toString()
+                    val currentItem=binding.viewpager.currentItem
+                    if(currentItem<fragments.size)fragments[currentItem].startSearch(content)
+                }
+                false
             }
-            false
+            cancel.visibility=View.GONE
         }
         initViewpager()
     }
