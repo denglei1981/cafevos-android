@@ -28,16 +28,16 @@ object WBuriedUtil {
     }
     //商城 START
     /**
-     *
+     *用户点击Banner图片时触发
      * */
-    fun clickMallBanner(goodsName:String,price:String){
-        buried("app商城_限时秒杀_banner","app_mall_seckill_banner",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
+    fun clickShopBanner(bannerName:String?){
+        buried("app商城_推荐banner","app_mall_recommend_banner",extend = "{\"banner_name\": \"$bannerName\"}")
     }
     /**
-     *用户点击限时秒杀banner按钮时触发
+     *用户点击限时秒杀商品图文区域触发
     * */
-    fun clickShopKill(position:Int,goodsName:String,price:String){
-        buried("app商城_限时秒杀_banner${position}","app_mall_seckill_banner${position}",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
+    fun clickShopKill(goodsName:String,price:String){
+        buried("app商城_限时秒杀","app_mall_seckill",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
     }
     /**
      *用户点击立即前往按钮时触发

@@ -78,7 +78,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.recyclerView.adapter=mAdapter
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
-                WBuriedUtil.clickShopKill(position,spuName,seckillFb)
+                WBuriedUtil.clickShopKill(spuName,seckillFb)
                 GoodsDetailsActivity.start(getJdType(),getJdValue())
             }
 
