@@ -74,7 +74,7 @@
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_28"
                     android:layout_marginEnd="@dimen/dp_20"
-                    android:text="请填写您的问题(20-200字)"
+                    android:text="问题描述(20-200字)"
                     android:textColor="#ff333333"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
