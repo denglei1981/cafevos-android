@@ -28,11 +28,13 @@
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/layout_title"
             app:layout_constraintBottom_toTopOf="@+id/lable_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_question_title"
@@ -108,7 +110,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_question"
-                    app:spanCount="4" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:spanCount="4"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -152,13 +155,13 @@
                 app:labelBackground="@drawable/shape_question_type"
                 app:labelGravity="center"
                 app:labelTextColor="@drawable/shape_question_type_text_color"
-                app:labelTextHeight="@dimen/dp_24"
+                app:labelTextHeight="wrap_content"
                 app:labelTextPaddingBottom="5dp"
                 app:labelTextPaddingLeft="15dp"
                 app:labelTextPaddingRight="15dp"
                 app:labelTextPaddingTop="5dp"
                 app:labelTextSize="12sp"
-                app:labelTextWidth="@dimen/dp_60"
+                app:labelTextWidth="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_type"
@@ -203,13 +206,13 @@
                 app:labelBackground="@drawable/shape_question_type"
                 app:labelGravity="center"
                 app:labelTextColor="@drawable/shape_question_type_text_color"
-                app:labelTextHeight="@dimen/dp_24"
+                app:labelTextHeight="wrap_content"
                 app:labelTextPaddingBottom="5dp"
                 app:labelTextPaddingLeft="15dp"
                 app:labelTextPaddingRight="15dp"
                 app:labelTextPaddingTop="5dp"
                 app:labelTextSize="12sp"
-                app:labelTextWidth="@dimen/dp_80"
+                app:labelTextWidth="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_ford_reward"

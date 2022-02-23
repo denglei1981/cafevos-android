@@ -20,7 +20,7 @@ class CustomImageSpan(drawable: Drawable?) : ImageSpan(drawable!!) {
         val fm = paint.fontMetricsInt
         val drawable = drawable
 
-        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + 2
+        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top+4
         canvas.save()
         canvas.translate(x, transY.toFloat())
         drawable.draw(canvas)

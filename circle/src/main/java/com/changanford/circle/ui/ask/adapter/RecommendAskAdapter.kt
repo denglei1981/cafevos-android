@@ -88,7 +88,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
 
                 it.layoutAnswer.tvContent.text = answer.content
-                it.layoutAnswer.layoutCount.tvCommentCount.text = answer.replyCount.toString()
+                it.layoutAnswer.layoutCount.tvCommentCount.text =item.answerCount.toString()
                 it.layoutAnswer.layoutCount.tvLikeCount.setPageTitleText(item.viewVal.toString())
                 if(answer.qaUserVO.identity=="TECHNICIAN") it.layoutAnswer.ivVip.visibility=View.VISIBLE else it.layoutAnswer.ivVip.visibility= View.GONE
             }
@@ -278,7 +278,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
             val fm = paint.fontMetricsInt
             val drawable = drawable
 
-            val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + 2
+            val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top+4
             canvas.save()
             canvas.translate(x, transY.toFloat())
             drawable.draw(canvas)

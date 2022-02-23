@@ -106,38 +106,56 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             .build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
 
+
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
 
                 R.id.carFragment -> {
                     // 埋点
-                    BuriedUtil.instant?.mainButtomMenu("爱车")
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    if(!isJumpMenu){
+                        BuriedUtil.instant?.mainButtomMenu("爱车")
+                    }
+                    isJumpMenu=false
                 }
                 R.id.myFragment -> {
                     // 埋点
-                    BuriedUtil.instant?.mainButtomMenu("我的")
+
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    if(!isJumpMenu){
+                        BuriedUtil.instant?.mainButtomMenu("我的")
+                    }
+                    isJumpMenu=false
                 }
                 R.id.circleFragment -> {
                     // 埋点
-                    BuriedUtil.instant?.mainButtomMenu("社区")
+
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
+                    if(!isJumpMenu){
+                        BuriedUtil.instant?.mainButtomMenu("社区")
+                    }
+                    isJumpMenu=false
                 }
 
                 R.id.shopFragment -> {
                     // 埋点
-                    BuriedUtil.instant?.mainButtomMenu("商城")
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    if(!isJumpMenu){
+                        BuriedUtil.instant?.mainButtomMenu("商城")
+                    }
+                    isJumpMenu=false
                 }
                 R.id.homeFragment -> {
                     // 埋点
-                    BuriedUtil.instant?.mainButtomMenu("发现")
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let {
                         val homeV2Fragment = it as HomeV2Fragment
                         homeV2Fragment.closeTwoLevel()// 关掉二楼
                     }
+                    if(!isJumpMenu){
+                        BuriedUtil.instant?.mainButtomMenu("发现")
+                    }
+                    isJumpMenu=false
                 }
                 else -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
@@ -349,6 +367,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     /**
      * 处理外部浏览
      */
+    var isJumpMenu:Boolean=false // 是否要点击 的埋点标志。
     private fun handleViewIntent(intent: Intent) {
         if (Intent.ACTION_VIEW == intent.action) {
             val uri = intent.data
@@ -364,7 +383,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         } else {
             intent.extras?.let {
-                var jumpValue = it.getInt("jumpValue")
+                val jumpValue = it.getInt("jumpValue")
+                isJumpMenu=true
                 if (jumpValue > 0)
                     when (jumpValue) {
                         1 -> {
