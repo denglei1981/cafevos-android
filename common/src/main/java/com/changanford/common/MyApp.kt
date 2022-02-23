@@ -18,6 +18,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.crash.CrashProtect
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
+import com.changanford.common.wutil.DebuggerUtils
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
@@ -76,6 +77,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         }
         initLoadSir()// 初始化界面管理类。
         isRunInBackGround()
+        DebuggerUtils.checkDebuggableInNotDebugModel(this)
     }
 
     override fun getCameraXConfig(): CameraXConfig {
