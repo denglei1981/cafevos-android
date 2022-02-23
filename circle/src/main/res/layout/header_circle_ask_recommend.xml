@@ -103,8 +103,8 @@
             app:sl_cornerRadius="@dimen/dp_5"
             app:sl_shadowColor="#14949494"
             app:sl_shadowRadius="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_24"
-            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
             >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
