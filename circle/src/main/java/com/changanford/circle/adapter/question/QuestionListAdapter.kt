@@ -24,10 +24,10 @@ import com.changanford.common.wutil.ScreenUtils
 import kotlin.math.floor
 
 
-class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
+class QuestionListAdapter(val activity:Activity,var identity:Int?=null,var personalPageType:String?=null): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
     private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context)-60 }
-    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
+//    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
@@ -55,7 +55,7 @@ class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQui
 //            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                QuestionItemUI(itemData,viewWidth,identity,position==data.size-1)
+                QuestionItemUI(itemData, viewWidth, position==data.size-1,personalPageType)
             }
             root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
         }

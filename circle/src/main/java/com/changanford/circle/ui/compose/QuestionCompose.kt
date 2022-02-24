@@ -257,7 +257,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:Int?=null,isLast:Boolean=false){
+fun QuestionItemUI(itemData: QuestionItemBean? = null,viewWidthDp: Int = 0,isLast: Boolean = false,personalPageType:String?=null){
     itemData?.apply {
         val answerInfoBean=qaAnswer//答案 可能为null
         Column(modifier = Modifier
@@ -268,7 +268,7 @@ fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:
             //图片列表
             ImgsUI(imgs,viewWidthDp)
             if(answerInfoBean==null){//无人回答
-                AnswerUI(this@apply) //立即抢答
+                AnswerUI(this@apply,personalPageType) //立即抢答
             }else{//有回答
                 UserInfoUI(this@apply) //用户信息
             }
@@ -414,19 +414,22 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
  * 立即抢答
 * */
 @Composable
-private fun AnswerUI(itemData: QuestionItemBean){
+private fun AnswerUI(itemData: QuestionItemBean,personalPageType:String?=null){
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {
-            //立即抢答
-            JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue)
-        },shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
-            contentPadding= PaddingValues(4.dp),
-            modifier = Modifier
-                .width(87.dp)
-                .height(29.dp)) {
-            Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
+        //技师邀请回答下面才有立即抢答
+        if("TECHNICIAN"==personalPageType){
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(onClick = {
+                //立即抢答
+                JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue)
+            },shape = RoundedCornerShape(15.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+                contentPadding= PaddingValues(4.dp),
+                modifier = Modifier
+                    .width(87.dp)
+                    .height(29.dp)) {
+                Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
+            }
         }
         Spacer(modifier = Modifier.height(14.dp))
         Text(text = stringResource(R.string.str_questionHasNotBeenAnswered),color= colorResource(R.color.color_99), fontSize = 10.sp)

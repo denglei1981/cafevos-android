@@ -49,6 +49,7 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             identity=getInt("identity",0)
         }
         binding.apply {
+            mAdapter.personalPageType=personalPageType
             mAdapter.identity=identity
             recyclerView.apply {
                 adapter=mAdapter

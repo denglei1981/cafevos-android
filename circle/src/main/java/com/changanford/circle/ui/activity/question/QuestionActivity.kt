@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -14,7 +15,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
-import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
@@ -30,6 +30,7 @@ import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.tools.ScreenUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -66,12 +67,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
          * [conQaUjId]被查看人的问答参与表id
          * */
         fun start(conQaUjId:String?=null){
-            if(conQaUjId==null&&BuildConfig.DEBUG)JumpUtils.instans?.jump(114,"15")
-            else JumpUtils.instans?.jump(114,conQaUjId)
+            JumpUtils.instans?.jump(114,conQaUjId)
         }
     }
     private var isWhite = true//是否是白色状态
-    private var conQaUjId:String="15"
+    private var conQaUjId:String=""
     private var type=0
     private val fragments= arrayListOf<QuestionFragment>()
     private var isOneself=false
@@ -90,6 +90,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             }else{
                 conQaUjId=this
             }
+        }
+        if(TextUtils.isEmpty(conQaUjId)){
+            getString(R.string.str_parametersOfIllegal).toast()
+            this.finish()
+            return
         }
         binding.inHeader.run {
             imgBack.setOnClickListener { finish() }
@@ -146,7 +151,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                 ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
             }
         }
-        viewModel.personalQA(conQaUjId,true)
+//        viewModel.personalQA(conQaUjId,true)
     }
     private fun initSmartRefreshLayout(){
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
@@ -271,5 +276,10 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
 
     override fun onFinish(code: Int) {
         binding.composeViewQuestion.visibility=if(code!=0&&isOneself&&tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.personalQA(conQaUjId)
     }
 }
