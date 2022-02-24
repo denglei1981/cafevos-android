@@ -163,7 +163,13 @@ class BuriedUtil {
      *  点击发现 资讯
      * */
     fun discoverNews(information_name:String){
-        buried("app发现_资讯_点击","app_discovery_information", extend = "{\"information_name\": \"$information_name\"}")
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"information_name\": \"$information_name\"}")
+    }
+    fun discoverPost(post_name:String){
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"post_name\": \"$post_name\"}")
+    }
+    fun discoverAct(activity_name:String){
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"activity_name\": \"$activity_name\"}")
     }
     /**
      *  点击发现 关注

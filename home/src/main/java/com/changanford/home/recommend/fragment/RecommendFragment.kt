@@ -236,6 +236,8 @@ open class RecommendFragment :
 //                bundle.putString("postsId", value)
 //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
                 JumpUtils.instans!!.jump(4, item.postsId)
+                // 埋点--- 资讯名称。
+                BuriedUtil.instant?.discoverPost(item.getTopic())
             }
         }
     }
@@ -246,6 +248,7 @@ open class RecommendFragment :
             if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {
                 item.wonderfulType?.let { viewModel.AddACTbrid(it) }
             }
+            BuriedUtil.instant?.discoverAct(item.title)
         } catch (e: Exception) {
             e.printStackTrace()
         }
