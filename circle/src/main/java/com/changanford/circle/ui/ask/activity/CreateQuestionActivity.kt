@@ -362,7 +362,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请输入5-20字的标题".toast()
                 return
             }
-            content.isNullOrEmpty() || content.length > 200 -> {
+            !TextUtils.isEmpty(content) && content.length > 200 -> {
                 "请输入200字以内的内容".toast()
                 return
             }
@@ -380,7 +380,11 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
             }
 
             else -> {
-                params["content"] = content
+                if(TextUtils.isEmpty(content)){
+                    params["content"] = ""
+                }else{
+                    params["content"] = content
+                }
                 params["title"] = biaoti
                 params["fbReward"] = labelsReaward[0].dictValue.toInt()
                 params["questionType"] = questionTypes[0].dictValue

@@ -2,11 +2,15 @@ package com.changanford.circle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.CircleMainBean
+import com.changanford.circle.bean.HomeDataListBean
+import com.changanford.circle.bean.MechanicData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.bean.AdBean
 import com.changanford.common.net.*
+import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
@@ -70,6 +74,23 @@ class CircleViewModel : PostRoomViewModel() {
         }, error = {
             LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
             it.message?.toast()
+        })
+    }
+
+    var  popupLiveData: MutableLiveData<MechanicData> = MutableLiveData()
+
+
+    fun getInitQuestion(){
+        launch (block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getInitQuestion(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    popupLiveData.postValue(it)
+                }
+                .onWithMsgFailure {
+                    it?.toast()
+                }
         })
     }
 }

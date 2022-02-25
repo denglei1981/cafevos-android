@@ -1,6 +1,7 @@
 package com.changanford.circle.widget.pop
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -10,6 +11,7 @@ import com.changanford.circle.adapter.CircleMainMenuAdapter
 import com.changanford.circle.bean.CircleMainMenuBean
 import com.changanford.circle.databinding.PopCircleMainMenuBinding
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.util.SPUtils
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
@@ -51,12 +53,15 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
     }
 
     fun initData() {
+        val param = SPUtils.getParam(context, "identityType", "").toString()
         val list = arrayListOf(
             CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发长帖"),
             CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
             CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
-            CircleMainMenuBean(R.mipmap.circle_post_question,"提问")
         )
+        if(param!="TECHNICIAN"){
+            list.add(CircleMainMenuBean(R.mipmap.circle_post_question,"提问"))
+        }
         adapter.setItems(list)
         binding.ryManagement.adapter = adapter
 

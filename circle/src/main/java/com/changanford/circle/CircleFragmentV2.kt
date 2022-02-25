@@ -8,6 +8,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
@@ -28,6 +29,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -36,11 +38,9 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -139,6 +139,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         }
         initTabAndViewPager()
         initMagicIndicator()
+//        viewModel.getInitQuestion()
     }
 
     private fun showMenuPop() {
@@ -210,6 +211,23 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     override fun observe() {
         super.observe()
+        viewModel.popupLiveData.observe(this, Observer {
+               // 保存用户技师相关信息
+               SPUtils.setParam(requireContext(),"identityType",it.identityType)
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        viewModel.getInitQuestion()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        SPUtils.setParam(requireContext(),"identityType","")
+                    }
+                    else -> {}
+                }
+            }
 
     }
 
