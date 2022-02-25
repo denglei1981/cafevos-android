@@ -362,8 +362,8 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请输入5-20字的标题".toast()
                 return
             }
-            content.isNullOrEmpty() || content.length < 20 || content.length > 200 -> {
-                "请输入20-200的正文内容".toast()
+            content.isNullOrEmpty() || content.length > 200 -> {
+                "请输入200字以内的内容".toast()
                 return
             }
 //            selectList.size == 0 -> {

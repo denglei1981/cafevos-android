@@ -74,9 +74,10 @@
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_28"
                     android:layout_marginEnd="@dimen/dp_20"
-                    android:text="问题描述(20-200字)"
+                    android:text="补充说明(200字内,选填)"
                     android:textColor="#ff333333"
                     android:textSize="15sp"
+                    android:maxLength="200"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_question_title" />

@@ -39,7 +39,7 @@
     <string name="str_myQuestionAndAnswer">我的问答</string>
     <string name="str_taQuestionAndAnswer">TA的问答</string>
     <string name="str_technicianInformation">技师信息</string>
-    <string name="question_title_tips">问题标题(5-20个字)</string>
+    <string name="question_title_tips">问题(5-20个字)</string>
     <string name="please_write">请填写</string>
     <string name="question_tips">为了便于问答红人准确的诊断和为您提供优质解答，请详细描述您的问题、选择问题分类，并且尽量提供相关照片</string>
     <string name="pop_question_tips">提问需花费福币，如未采纳，福币将留存在系统，直至采纳解答后，福币将直接打赏给为您提供优质解答的问答红人或用户。</string>
