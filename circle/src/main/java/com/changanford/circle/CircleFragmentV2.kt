@@ -214,7 +214,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         viewModel.popupLiveData.observe(this, Observer {
                // 保存用户技师相关信息
                    try{
-                       SPUtils.setParam(requireContext(),"identityType",it.identityType)
+                       if(it.identityType!=null){
+                           SPUtils.setParam(requireContext(),"identityType",it.identityType!!)
+                       }
                    }catch (e:Exception){
                        e.toString()
                    }

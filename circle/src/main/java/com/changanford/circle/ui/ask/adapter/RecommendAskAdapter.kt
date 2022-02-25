@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
@@ -88,9 +89,10 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
 
                 it.layoutAnswer.tvContent.text = answer.content
-                it.layoutAnswer.layoutCount.tvCommentCount.text =item.answerCount.toString()
+                it.layoutAnswer.layoutCount.tvCommentCount.text = item.answerCount.toString()
                 it.layoutAnswer.layoutCount.tvLikeCount.setPageTitleText(item.viewVal.toString())
-                if(answer.qaUserVO.identity=="TECHNICIAN") it.layoutAnswer.ivVip.visibility=View.VISIBLE else it.layoutAnswer.ivVip.visibility= View.GONE
+                if (answer.qaUserVO.identity == "TECHNICIAN") it.layoutAnswer.ivVip.visibility =
+                    View.VISIBLE else it.layoutAnswer.ivVip.visibility = View.GONE
             }
 
 
@@ -212,7 +214,10 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
             return
         }
         val fbNumber = item.fbReward.toString().plus("福币")
-        val tagName = item.questionTypeName
+        var tagName = item.questionTypeName
+        if (TextUtils.isEmpty(tagName)) {
+            tagName = "其他"
+        }
         val starStr = " ".repeat(tagName.length * 3)
         val str = "$starStr\t\t\t\t${item.title} [icon] $fbNumber"
         //先设置原始文本
@@ -254,10 +259,13 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 
     fun showZero(text: AppCompatTextView?, item: AskListMainData) {
         val tagName = item.questionTypeName
-        val starStr = " ".repeat(tagName.length * 3)
-        val str = "$starStr\t\t\t\t${item.title}"
-        //先设置原始文本
-        text?.text = str
+        if (!TextUtils.isEmpty(tagName)) {
+            val starStr = " ".repeat(tagName.length * 3)
+            val str = "$starStr\t\t\t\t${item.title}"
+            //先设置原始文本
+            text?.text = str
+        }
+
     }
 
     /**
@@ -278,7 +286,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
             val fm = paint.fontMetricsInt
             val drawable = drawable
 
-            val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top+4
+            val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top + 4
             canvas.save()
             canvas.translate(x, transY.toFloat())
             drawable.draw(canvas)
