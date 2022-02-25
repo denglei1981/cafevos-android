@@ -139,7 +139,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         }
         initTabAndViewPager()
         initMagicIndicator()
-//        viewModel.getInitQuestion()
+        viewModel.getInitQuestion()
     }
 
     private fun showMenuPop() {
