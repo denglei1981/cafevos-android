@@ -662,6 +662,17 @@ class JumpUtils {
             116->{ //提问
                 startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
             }
+            117->{ //圈子成员列表
+                if(!TextUtils.isEmpty(value)){
+                    JSON.parseObject(value)?.apply {
+                        val circleId =getString("circleId")
+                        val isApply = getString("isApply")
+                        bundle.putString("circleId", circleId)
+                        bundle.putString("isApply", isApply)
+                        startARouter(ARouterCirclePath.PersonalActivity, bundle)
+                    }
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {
