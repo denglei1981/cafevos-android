@@ -213,7 +213,11 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         super.observe()
         viewModel.popupLiveData.observe(this, Observer {
                // 保存用户技师相关信息
-               SPUtils.setParam(requireContext(),"identityType",it.identityType)
+                   try{
+                       SPUtils.setParam(requireContext(),"identityType",it.identityType)
+                   }catch (e:Exception){
+                       e.toString()
+                   }
         })
 
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
