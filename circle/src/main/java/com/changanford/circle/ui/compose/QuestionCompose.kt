@@ -55,12 +55,12 @@ private fun PreviewUI(){
  * 暂无内容
 * */
 @Composable
-fun EmptyCompose(noContext:String?=null){
+fun EmptyCompose(noContext:String?=null,height:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
+        .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -70,12 +70,12 @@ fun EmptyCompose(noContext:String?=null){
  * 缺省页-问答
 * */
 @Composable
-fun EmptyQuestionCompose(){
+fun EmptyQuestionCompose(height:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
+        .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 50.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -100,7 +100,7 @@ fun EmptyQuestionCompose(){
 fun BtnQuestionCompose(){
     Column(modifier = Modifier
         .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
-        .defaultMinSize(minWidth = 45.dp,minHeight = 45.dp)
+        .defaultMinSize(minWidth = 45.dp, minHeight = 45.dp)
         .padding(5.dp)
         .clickable {
             JumpUtils.instans?.jump(116)
@@ -178,16 +178,35 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                 Text(text = stringResource(R.string.str_modifyData),fontSize = 11.sp, color=colorResource(R.color.color_99))
                             }
                         }
+                        if(identityType==1&&!tagNameArr.isNullOrEmpty()){
+                            Spacer(modifier = Modifier.height(15.dp))
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, end = 15.dp)) {
+                                tagNameArr?.forEach {tagName->
+                                    Box(modifier = Modifier
+                                        .size(width = 60.dp, height = 19.dp)
+                                        .border(
+                                            0.5.dp,
+                                            color = colorResource(R.color.color_00095B),
+                                            shape = RoundedCornerShape(2.dp)
+                                        ),
+                                        contentAlignment = Alignment.Center){
+                                        Text(text = tagName, color = colorResource(R.color.color_00095B), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    }
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                }
+                            }
+                        }
                         if(introduction!=null){
-                            Spacer(modifier = Modifier.height(18.dp))
+                            Spacer(modifier = Modifier.height(15.dp))
                             //个人简介
                             Text(text = introduction?:"",fontSize = 12.sp, color=colorResource(R.color.color_99),lineHeight =17.sp,modifier = Modifier.padding(start = 18.dp,end = 18.dp))
                         }
                         Spacer(modifier = Modifier.height(28.dp))
                         Divider(modifier = Modifier
                             .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(colorResource(R.color.color_80EEEEEE)))
+                            .height(0.5.dp), color = colorResource(R.color.color_80EEEEEE))
                         Spacer(modifier = Modifier.height(7.dp))
                         //答题总数、采纳总数、回复榜、采纳绑
                         Row(modifier = Modifier
@@ -208,7 +227,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                             }
                                         }, textAlign = TextAlign.Center)
                                     }
-                                    Divider(modifier = Modifier
+                                    if(i!=size-1)Divider(modifier = Modifier
                                         .width(0.5.dp)
                                         .height(40.dp),color = colorResource( R.color.color_f6))
                                 }
@@ -228,6 +247,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                         modifier = Modifier
                             .size(69.dp)
                             .clip(CircleShape)
+                            .border(1.dp, color =Color.White, shape = CircleShape)
                     )
                 }
             }
@@ -237,7 +257,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
 }
 
 @Composable
-fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:Int?=null){
+fun QuestionItemUI(itemData: QuestionItemBean? = null,viewWidthDp: Int = 0,isLast: Boolean = false,personalPageType:String?=null){
     itemData?.apply {
         val answerInfoBean=qaAnswer//答案 可能为null
         Column(modifier = Modifier
@@ -248,12 +268,13 @@ fun QuestionItemUI(itemData: QuestionItemBean?=null, viewWidthDp:Int=0,identity:
             //图片列表
             ImgsUI(imgs,viewWidthDp)
             if(answerInfoBean==null){//无人回答
-                AnswerUI(this@apply) //立即抢答
+                AnswerUI(this@apply,personalPageType) //立即抢答
             }else{//有回答
                 UserInfoUI(this@apply) //用户信息
             }
             Spacer(modifier = Modifier.height(16.dp))
-            if(identity!=1){
+//            if(identity!=1&&!isLast){
+            if(!isLast){
                 Divider(color = colorResource(id = R.color.color_ee), modifier = Modifier
                     .fillMaxWidth()
                     .height(0.5.dp))
@@ -372,7 +393,7 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
                                                         shape = RoundedCornerShape(6.dp)
                                                     )
                                                     .padding(8.dp, 1.dp)){
-                                                    Text(text = "$size+",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
+                                                    Text(text = "+$size",color = Color.White,fontSize = 10.sp,textAlign = TextAlign.Center)
                                                 }
                                                 Spacer(modifier = Modifier.width(20.dp))
                                             }
@@ -393,19 +414,22 @@ private fun ImgsUI(imgs:String?,viewWidthDp:Int=0){
  * 立即抢答
 * */
 @Composable
-private fun AnswerUI(itemData: QuestionItemBean){
+private fun AnswerUI(itemData: QuestionItemBean,personalPageType:String?=null){
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {
-            //立即抢答
-            JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue)
-        },shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
-            contentPadding= PaddingValues(4.dp),
-            modifier = Modifier
-                .width(87.dp)
-                .height(29.dp)) {
-            Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
+        //技师邀请回答下面才有立即抢答
+        if("TECHNICIAN"==personalPageType){
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(onClick = {
+                //立即抢答
+                JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue)
+            },shape = RoundedCornerShape(15.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+                contentPadding= PaddingValues(4.dp),
+                modifier = Modifier
+                    .width(87.dp)
+                    .height(29.dp)) {
+                Text(stringResource(R.string.str_immediatelyViesToAnswerFirst),fontSize = 13.sp,color = Color.White)
+            }
         }
         Spacer(modifier = Modifier.height(14.dp))
         Text(text = stringResource(R.string.str_questionHasNotBeenAnswered),color= colorResource(R.color.color_99), fontSize = 10.sp)
@@ -421,9 +445,11 @@ private fun UserInfoUI(itemData: QuestionItemBean){
     if(answerInfo==null||userInfo==null)return
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.fillMaxWidth().clickable {
-                                                         JumpUtils.instans?.jump(114,userInfo.conQaUjId)
-        }, verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                JumpUtils.instans?.jump(114, userInfo.conQaUjId)
+            }, verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater) ?: R.mipmap.head_default,
                     builder = {

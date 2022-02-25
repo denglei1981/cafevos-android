@@ -184,6 +184,10 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
             }
 
+            override fun checkQuestion() {
+
+            }
+
         }).run {
             //无透明背景
             setBackgroundColor(Color.TRANSPARENT)

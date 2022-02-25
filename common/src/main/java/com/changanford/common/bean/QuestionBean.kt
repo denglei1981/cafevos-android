@@ -3,6 +3,7 @@ package com.changanford.common.bean
 import android.content.Context
 import com.changanford.common.R
 import com.changanford.common.util.MConstant
+import com.changanford.common.wutil.WConstant
 
 /**
  * @Author : wenke
@@ -25,6 +26,8 @@ data class QuestionInfoBean(
     val pageSize: Int = 0,
     val totalPage: Int = 0,
     val total: Int = 0,
+    val questionTypesCode:ArrayList<String>?=null,
+    var tagNameArr:ArrayList<String>?=null,
 ){
     /**
      * 是否是自己
@@ -65,7 +68,7 @@ data class QuestionInfoBean(
                         add(QuestionTagBean(context.getString(R.string.str_myAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
                     }else{
-                        add(QuestionTagBean(context.getString(R.string.str_taAnswer),"QUESTION"))
+                        add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))
                     }
                 }
@@ -114,6 +117,14 @@ data class QuestionInfoBean(
             }
         }
         return tags
+    }
+    fun setTagNames(tagIdList:ArrayList<String>?=questionTypesCode){
+        tagNameArr= arrayListOf()
+        tagIdList?.forEach {tagId->
+            WConstant.questionTagList?.find { it.dictValue==tagId }?.dictLabel?.apply {
+                tagNameArr?.add(this)
+            }
+        }
     }
 }
 data class QuestionUserInfo(

@@ -21,18 +21,29 @@ import com.changanford.circle.ui.compose.QuestionItemUI
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
-import com.changanford.common.wutil.WCommonUtil
 import kotlin.math.floor
 
 
-class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
+class QuestionListAdapter(val activity:Activity,var identity:Int?=null,var personalPageType:String?=null): BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
     R.layout.item_question){
     private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context)-60 }
-    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
+//    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemQuestionBinding>, itemData: QuestionItemBean) {
         holder.dataBinding?.apply {
-            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
+            val position=holder.absoluteAdapterPosition
+//            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
+            layoutRoot.apply {
+                if(data.size==1)
+                    setBackgroundResource(R.drawable.circle_white_5_bg)
+                else{
+                    when (position) {
+                        0 -> setBackgroundResource(R.drawable.shape_white_t_5dp)
+                        data.size-1 -> setBackgroundResource(R.drawable.shape_white_b_5dp)
+                        else -> setBackgroundResource(R.color.colorWhite)
+                    }
+                }
+            }
             val fbReward=itemData.fbReward
             val tagName=itemData.questionTypeName
             if(fbReward==null||fbReward=="0"){
@@ -44,7 +55,7 @@ class QuestionListAdapter(val activity:Activity,var identity:Int?=null): BaseQui
 //            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
             tvTag.text=tagName
             composeView.setContent {
-                QuestionItemUI(itemData,viewWidth,identity)
+                QuestionItemUI(itemData, viewWidth, position==data.size-1,personalPageType)
             }
             root.setOnClickListener { JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue) }
         }

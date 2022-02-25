@@ -44,6 +44,14 @@
             android:background="@drawable/border_0095b_2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_ee"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

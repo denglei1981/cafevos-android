@@ -8,9 +8,8 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
@@ -19,7 +18,6 @@ import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
-import com.changanford.circle.ui.fragment.CircleRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.utils.GlideImageLoader
@@ -31,6 +29,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.manger.UserManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -39,14 +38,11 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
-import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -54,7 +50,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
-import java.lang.Exception
 import java.lang.reflect.Field
 
 
@@ -141,11 +136,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }else{
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
             }
-
-
         }
         initTabAndViewPager()
         initMagicIndicator()
+        viewModel.getInitQuestion()
     }
 
     private fun showMenuPop() {
@@ -162,6 +156,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
                 override fun checkVideo() {
                     startARouter(ARouterCirclePath.VideoPostActivity, true)
+                }
+
+                override fun checkQuestion() {
+                    JumpUtils.instans?.jump(116)
                 }
 
             }).run {
@@ -213,6 +211,29 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     override fun observe() {
         super.observe()
+        viewModel.popupLiveData.observe(this, Observer {
+               // 保存用户技师相关信息
+                   try{
+                       if(it.identityType!=null){
+                           SPUtils.setParam(requireContext(),"identityType",it.identityType!!)
+                       }
+                   }catch (e:Exception){
+                       e.toString()
+                   }
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        viewModel.getInitQuestion()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        SPUtils.setParam(requireContext(),"identityType","")
+                    }
+                    else -> {}
+                }
+            }
 
     }
 
@@ -350,6 +371,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                magicIndicator.onPageSelected(position)
                 // 埋点
                 when(position){
                     0->{

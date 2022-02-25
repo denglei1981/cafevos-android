@@ -17,7 +17,7 @@ class CommonViewModel : ViewModel() {
                 apiService.scan(map.header(rkey), map.body(rkey))
             }
             if (request.code == 0) {
-                callBack.success(request?.data)
+                callBack.success(request)
             }
         }
 

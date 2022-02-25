@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -196,7 +197,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
 //                        tvTwoTitle.text = mData.title
                         //todo
-                        tvTwoTitle.text=Html.fromHtml(mData.title)
+                        if(!TextUtils.isEmpty(mData.title)){
+                            tvTwoTitle.text=Html.fromHtml(mData.title)
+                        }
+
+
                         if (mData.circleName.isNullOrEmpty()) {
                             tvTwoFrom.visibility = View.INVISIBLE
                         } else {
@@ -213,7 +218,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         tvTwoTime.text = mData.timeStr
 //                        tvContent.text = mData.content
                         //todo
-                        tvContent.text=Html.fromHtml(mData.content)
+                        if(!TextUtils.isEmpty(mData.content)){
+                            tvContent.text=Html.fromHtml(mData.content)
+                        }else{
+                            tvContent.text=""
+                        }
+
 
                     }
                     else -> {
@@ -240,7 +250,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             }
 //                            tvTwoTitle.text = mData.title
                            // todo
-                            tvTwoTitle.text=Html.fromHtml(mData.title)
+                            if(!TextUtils.isEmpty(mData.title)){
+                                tvTwoTitle.text=Html.fromHtml(mData.title)
+                            }
+
                             if (mData.circleName.isNullOrEmpty()) {
                                 tvTwoFrom.visibility = View.GONE
                             } else {
@@ -257,7 +270,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             tvTwoTime.text = mData.timeStr
 //                            tvOneContent.text = mData.content
                             //todo
-                            tvOneContent.text=Html.fromHtml(mData.content)
+                            if(!TextUtils.isEmpty(mData.content)){
+                                tvOneContent.text=Html.fromHtml(mData.content)
+                            }
+
                             val adapter = PostDetailsLongAdapter(requireContext())
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)
                             tvContent.adapter = adapter

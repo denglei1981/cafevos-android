@@ -22,6 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
+                    app:elevation="0dp"
                     android:background="@color/color_F4"
                     app:layout_behavior="@string/circle_behavior_app_bar_layout">
                     <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -56,14 +57,14 @@
                         android:id="@+id/magic_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_30"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_vertical"/>
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/dp_14"
+                    android:paddingTop="@dimen/dp_10"
                     android:paddingStart="@dimen/dp_20"
                     android:paddingEnd="@dimen/dp_20"
                     android:background="@color/color_F4"

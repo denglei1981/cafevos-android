@@ -264,6 +264,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                        player.start()
                    }
                }catch (e :Exception){
+                   binding.loginVideo.visibility = View.GONE
+                   binding.imBg.visibility = View.VISIBLE
                }
            }
            player.setOnErrorListener { mp, what, extra ->

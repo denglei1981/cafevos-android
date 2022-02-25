@@ -70,6 +70,10 @@ class ActViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =searchKeys
+
+                }
                 var rkey = getRandomKey()
                 apiService.queryMineCollectInfo(body.header(rkey), body.body(rkey))
             })
@@ -87,6 +91,10 @@ class ActViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =searchKeys
+
+                }
                 var rkey = getRandomKey()
                 apiService.queryMineCollectAc(body.header(rkey), body.body(rkey))
             })
@@ -299,6 +307,10 @@ class ActViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =searchKeys
+
+                }
                 var rkey = getRandomKey()
                 apiService.queryShopCollect(body.header(rkey), body.body(rkey))
             })

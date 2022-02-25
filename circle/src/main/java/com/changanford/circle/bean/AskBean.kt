@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.bean.JumpDataBean
 
 data class MechanicData(
-    val identityType: String,
+    var identityType: String?="",
     val qaUjId: Int,
     val tecnicianVoList: MutableList<TecnicianVo>,
     var  moreTecnicians: moreJumpData?=null,
@@ -19,6 +19,7 @@ data class TecnicianVo(
     val nickName: String,
     val qaTechnicianId: Int,
     val conQaUjId: String? = null,
+    var anserRankNum:Int=0
 )
 
 

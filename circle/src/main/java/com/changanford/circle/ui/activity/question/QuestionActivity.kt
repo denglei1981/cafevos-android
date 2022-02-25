@@ -2,6 +2,9 @@ package com.changanford.circle.ui.activity.question
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -12,7 +15,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
-import com.changanford.circle.BuildConfig
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
 import com.changanford.circle.ext.toIntPx
@@ -22,11 +24,13 @@ import com.changanford.circle.ui.fragment.question.QuestionFragment
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.bean.QuestionTagBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.tools.ScreenUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -63,16 +67,16 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
          * [conQaUjId]被查看人的问答参与表id
          * */
         fun start(conQaUjId:String?=null){
-            if(conQaUjId==null&&BuildConfig.DEBUG)JumpUtils.instans?.jump(114,"15")
-            else JumpUtils.instans?.jump(114,conQaUjId)
+            JumpUtils.instans?.jump(114,conQaUjId)
         }
     }
     private var isWhite = true//是否是白色状态
-    private var conQaUjId:String="15"
+    private var conQaUjId:String=""
     private var type=0
     private val fragments= arrayListOf<QuestionFragment>()
     private var isOneself=false
     private var tabs :ArrayList<QuestionTagBean>?=null
+    private var questionInfoBean:QuestionInfoBean?=null
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
@@ -86,6 +90,11 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             }else{
                 conQaUjId=this
             }
+        }
+        if(TextUtils.isEmpty(conQaUjId)){
+            getString(R.string.str_parametersOfIllegal).toast()
+            this.finish()
+            return
         }
         binding.inHeader.run {
             imgBack.setOnClickListener { finish() }
@@ -101,24 +110,48 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     override fun initData() {
         viewModel.questionInfoBean.observe(this){
             it?.apply {
-                //是否显示提问入口
-                binding.inHeader.tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
-                binding.composeView.setContent {
-                    ComposeQuestionTop(this@QuestionActivity,this)
-                }
+                questionInfoBean=this
                 isOneself=isOneself()
+                val identity=getIdentity()
+                if(identity==1){
+                    viewModel.getQuestionType()
+                }else {
+                    binding.composeView.setContent {
+                        ComposeQuestionTop(this@QuestionActivity,this)
+                    }
+                }
+                binding.inHeader.apply {
+                    //是否显示提问入口
+                    tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
+                    tvTitle.setText(
+                        when {
+                            isOneself -> R.string.str_myQuestionAndAnswer
+                            identity==1 ->R.string.str_redskinsInformation
+                            else -> R.string.str_taQuestionAndAnswer
+                        }
+                    )
+                }
                 if(fragments.size>0){
                     fragments[binding.viewPager.currentItem].startRefresh()
                 }else{
                     tabs=it.getTabs(this@QuestionActivity).apply {
-                        initTabAndViewPager(this,isOneself,getIdentity())
                         initMagicIndicator(this)
+                        initTabAndViewPager(this,isOneself,getIdentity())
+                        Handler(Looper.myLooper()!!).postDelayed({
+                            fragments.forEach {fragment-> fragment.setEmpty(binding.magicTab.bottom) }
+                        },100)
                     }
                 }
             }
             binding.smartRl.finishRefresh()
         }
-        viewModel.personalQA(conQaUjId)
+        viewModel.questTagList.observe(this){
+            questionInfoBean?.setTagNames()
+            binding.composeView.setContent {
+                ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
+            }
+        }
+//        viewModel.personalQA(conQaUjId,true)
     }
     private fun initSmartRefreshLayout(){
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
@@ -176,7 +209,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
                     text = tabs[index].tagName
                     textSize = 18f
                     setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
-                    width= com.changanford.common.wutil.ScreenUtils.getScreenWidth(this@QuestionActivity)/3
+                    width= ScreenUtils.getScreenWidth(this@QuestionActivity)/3
                     normalColor = ContextCompat.getColor(this@QuestionActivity, R.color.color_33)
                     selectedColor = ContextCompat.getColor(this@QuestionActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
@@ -243,5 +276,10 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
 
     override fun onFinish(code: Int) {
         binding.composeViewQuestion.visibility=if(code!=0&&isOneself&&tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.personalQA(conQaUjId)
     }
 }

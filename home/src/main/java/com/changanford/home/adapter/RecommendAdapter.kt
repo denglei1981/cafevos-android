@@ -254,7 +254,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             labelAdapter.setNewInstance(item.authors?.imags)
         }
         when (item.rtype) {
-            1 -> {
+            1 -> {// 资讯
                 tvNewsTag.visibility = View.VISIBLE
                 if (!TextUtils.isEmpty(item.artVideoTime)) {
                     tvVideoTime.text = item.artVideoTime
@@ -264,6 +264,15 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 tvNewsTag.text = "资讯"
                 ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
                 tvVideoTime.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
+            }
+            2->{// 帖子
+                tvNewsTag.visibility = View.GONE
+                if (!TextUtils.isEmpty(item.postsVideoTime)) {
+                    tvVideoTime.text = item.postsVideoTime
+                }
+                tvVideoTime.visibility = View.VISIBLE
+                ivPlay.visibility = if (item.postsType==3) View.VISIBLE else View.GONE
+                tvVideoTime.visibility = if (item.postsType==3) View.VISIBLE else View.GONE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE

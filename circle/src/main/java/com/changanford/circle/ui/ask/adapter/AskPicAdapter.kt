@@ -41,13 +41,13 @@ class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseVie
             holder.setImageResource(R.id.img, R.mipmap.add_image)
             holder.setGone(R.id.fm_tv, true)
             holder.setGone(R.id.iv_delete,true)
-            if (getDefItemCount()==10){
+            if (getDefItemCount()==11){
                 holder.itemView.visibility=View.GONE
             }else{
                 holder.itemView.visibility=View.VISIBLE
             }
         }else{
-            var path = PictureUtil.getFinallyPath(item)
+            val path = PictureUtil.getFinallyPath(item)
             GlideUtils.loadRoundLocal(
                 path,
                 holder.getView(R.id.img),

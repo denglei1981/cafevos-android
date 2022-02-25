@@ -88,8 +88,16 @@ class CircleMainBottomAdapter(context: Context) :
 
             if (item.type == 3) {//视频
                 binding.ivPlay.visibility = View.VISIBLE
+                binding.tvVideoTimes.visibility=View.VISIBLE
+                if (item.videoTime == null) {
+                    binding.tvVideoTimes.visibility = View.GONE
+                } else {
+                    binding.tvVideoTimes.visibility = View.VISIBLE
+                }
+                binding.tvVideoTimes.text = item.videoTime.toString()
             } else {
                 binding.ivPlay.visibility = View.GONE
+                binding.tvVideoTimes.visibility=View.GONE
             }
 
             if (item.city.isNullOrEmpty()) {

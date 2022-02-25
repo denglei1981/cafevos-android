@@ -2,7 +2,6 @@ package com.changanford.circle.ui.fragment.question
 
 import android.os.Bundle
 import android.view.View
-import com.changanford.circle.R
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
 import com.changanford.circle.ui.compose.EmptyCompose
@@ -10,6 +9,7 @@ import com.changanford.circle.ui.compose.EmptyQuestionCompose
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.wutil.ScreenUtils
 
 /**
  * @Author : wenke
@@ -49,22 +49,17 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             identity=getInt("identity",0)
         }
         binding.apply {
-//            mAdapter.setHasStableIds(true)
+            mAdapter.personalPageType=personalPageType
             mAdapter.identity=identity
             recyclerView.apply {
                 adapter=mAdapter
-                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
+//                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
             }
             smartRl.setOnLoadMoreListener {
                 pageNo++
                 getData()
             }
-            composeView.setContent {
-                if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose() //是自己并且是提问tab 则展示提问特有缺省页
-                else EmptyCompose()//普通缺省页
-            }
         }
-
     }
     override fun initData() {
         viewModel.questionListBean.observe(this){
@@ -94,5 +89,12 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
     }
     fun setOnPerformListener(listener: OnPerformListener){
         this.listener=listener
+    }
+    fun setEmpty(topHeight:Int=1035){
+        val h:Int=ScreenUtils.getScreenHeight(requireContext())-topHeight
+        binding.composeView.setContent {
+            if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose(ScreenUtils.px2dp(requireContext(),h.toFloat())) //是自己并且是提问tab 则展示提问特有缺省页
+            else EmptyCompose(height = ScreenUtils.px2dp(requireContext(),h.toFloat()))//普通缺省页
+        }
     }
 }

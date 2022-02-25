@@ -9,10 +9,11 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.SnapshotOfAttrOption
+import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
-import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.ui.order.OrderEvaluationActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
@@ -123,7 +124,12 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 dataBinding.btnConfirm.apply {
                     visibility=View.VISIBLE
                     setText(R.string.str_eval)
-                    setOnClickListener { OrderEvaluationActivity.start(item.orderNo) }
+                    setOnClickListener {
+                        item.apply {
+                            WBuriedUtil.clickShopOrderComment(orderNo,spuName,fbOfUnitPrice)
+                        }
+                        OrderEvaluationActivity.start(item.orderNo)
+                    }
                 }
             }else{
                 when(orderStatus){
@@ -132,7 +138,12 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_immediatePayment)
-                            setOnClickListener { control.toPay(item) }
+                            setOnClickListener {
+                                item.apply {
+                                    WBuriedUtil.clickShopOrderPay(orderNo,spuName,fbOfUnitPrice)
+                                }
+                                control.toPay(item)
+                            }
                         }
                         dataBinding.btnCancel.apply {
                             visibility=View.VISIBLE
@@ -158,7 +169,12 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             dataBinding.btnConfirm.apply {
                                 visibility=View.VISIBLE
                                 setText(R.string.str_onceAgainToBuy)
-                                setOnClickListener {control.onceAgainToBuy(item)}
+                                setOnClickListener {
+                                    item.apply {
+                                        WBuriedUtil.clickShopOrderBuy(orderNo,spuName,fbOfUnitPrice)
+                                    }
+                                    control.onceAgainToBuy(item)
+                                }
                             }
                         }else dataBinding.btnConfirm.visibility=View.INVISIBLE
                     }
@@ -203,6 +219,9 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 确认收货
      * */
     private fun confirmGoods(position:Int,item: OrderItemBean){
+        item.apply {
+            WBuriedUtil.clickShopOrderTakeDelivery(orderNo,spuName,fbOfUnitPrice)
+        }
         control.confirmGoods(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {
@@ -221,6 +240,9 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 取消订单
     * */
     private fun cancelOrder(position:Int,item: OrderItemBean){
+        item.apply {
+            WBuriedUtil.clickShopOrderCancel(orderNo,spuName,fbOfUnitPrice)
+        }
         control.cancelOrder(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onFinish(code: Int) {

@@ -3,6 +3,7 @@ package com.changanford.shop.ui.exchange
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsList
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.FragmentExchangeBinding
@@ -53,7 +54,8 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
         mAdapter.setEmptyView(R.layout.view_empty)
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
-//                GoodsDetailsActivity.start(mallMallSpuId)
+                val price=if(spuPageTagType=="MEMBER_DISCOUNT"||spuPageTagType=="MEMBER_EXCLUSIVE")vipFb else normalFb
+                WBuriedUtil.clickShopItem(spuName,price)
                 GoodsDetailsActivity.start(getJdType(),getJdValue())
             }
         }

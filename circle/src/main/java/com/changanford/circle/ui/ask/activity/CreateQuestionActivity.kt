@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -39,6 +40,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
@@ -91,6 +93,28 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         binding.layoutTitle.barTvOther.setOnClickListener {
             isPublish()
         }
+
+        val questionTitle = binding.tvQuestionTitle.text.toString()
+
+        val colorTitle = SpannableStringUtils.colorSpan(
+            questionTitle,
+            questionTitle.indexOf("("),
+            questionTitle.indexOf(")")+1,
+            R.color.color_cc
+        )
+        binding.tvQuestionTitle.text=colorTitle
+
+
+        val questionStr= binding.tvQuestion.text.toString()
+
+        val questionSpan= SpannableStringUtils.colorSpan(
+            questionStr,
+            questionStr.indexOf("("),
+            questionStr.indexOf(")")+1,
+            R.color.color_cc
+        )
+        binding.tvQuestion.text=questionSpan
+
 
 
         binding.etQuestion.addTextChangedListener(object : TextWatcher {
@@ -272,6 +296,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
             if ("upsuccess".equals(it)) {
                 "发布成功".toast()
                 //TODO 通知刷新。
+                LiveDataBus.get().with(LiveDataBusKey.CIRCLE_CREATE_QUESTION).postValue(true)
                 this.finish()
             }
         })
@@ -318,6 +343,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 }
 
             }).run {
+            setBackgroundColor(Color.TRANSPARENT)
             setBlurBackgroundEnable(false)
             setOverlayMask(false)
             showPopupWindow(binding.ivQuestion)
@@ -331,25 +357,34 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         val labelsReaward = binding.labelsReward.getSelectLabelDatas<QuestionData>()
         val questionTypes = binding.labelsType.getSelectLabelDatas<QuestionData>()
         when {
-            selectList.size == 0 -> {
-                "请选择图片".toast()
-                return
-            }
+
             biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length < 5 || biaoti.length > 20 -> {
                 "请输入5-20字的标题".toast()
                 return
             }
-            content.isNullOrEmpty() || content.length < 20 || content.length > 200 -> {
-                "请输入20-200的正文内容".toast()
+            !TextUtils.isEmpty(content) && content.length > 200 -> {
+                "请输入200字以内的内容".toast()
+                return
             }
+//            selectList.size == 0 -> {
+//                "请选择图片".toast()
+//                return
+//            }
             questionTypes.isEmpty() || questionTypes.size <= 0 -> {
                 "请选择问题类型".toast()
+                return
             }
             labelsReaward.isEmpty() || labelsReaward.size <= 0 -> {
                 "请选择打赏福币".toast()
+                return
             }
+
             else -> {
-                params["content"] = content
+                if(TextUtils.isEmpty(content)){
+                    params["content"] = ""
+                }else{
+                    params["content"] = content
+                }
                 params["title"] = biaoti
                 params["fbReward"] = labelsReaward[0].dictValue.toInt()
                 params["questionType"] = questionTypes[0].dictValue

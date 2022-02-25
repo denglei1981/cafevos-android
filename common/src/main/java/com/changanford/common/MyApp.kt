@@ -76,6 +76,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         }
         initLoadSir()// 初始化界面管理类。
         isRunInBackGround()
+//        DebuggerUtils.checkDebuggableInNotDebugModel(this)
     }
 
     override fun getCameraXConfig(): CameraXConfig {

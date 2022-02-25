@@ -89,7 +89,7 @@ class BuriedBean {
         record.deviceId = ""
 //            DeviceUtils.getIMEI(BaseApplication.INSTANT)//: String = ""// 设备唯一标识,IMEI或IDFA（APP端）
         record.enterPageTime = time //: String = ""// 页面访问时间（yyyy-MM-dd HH:ss:mm）
-        record.extend = "" //: String = ""// 扩展字段
+//        record.extend = "" //: String = ""// 扩展字段
         record.ip = DeviceUtils.getHostIP() //: String = ""// 用户ip,可以不传
         record.mac = "" //DeviceUtils.getMac() //: String = ""// Mac地址（APP端）
         record.openId = "" //: String = ""// 微信openId(小程序端)

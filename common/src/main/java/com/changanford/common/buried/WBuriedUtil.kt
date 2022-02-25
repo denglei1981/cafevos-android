@@ -26,19 +26,72 @@ object WBuriedUtil {
         )
         MBuriedWorkerManager.instant?.buried(JSON.toJSONString(data))
     }
-    //商城 START
+    //=======================================商城 START
     /**
-     * app商城_顶部banner_点击
-     * [bannerName]banner商品名称
+     *用户点击Banner图片时触发
+     * */
+    fun clickShopBanner(bannerName:String?){
+        buried("app商城_推荐banner","app_mall_recommend_banner",extend = "{\"banner_name\": \"$bannerName\"}")
+    }
+    /**
+     *用户点击限时秒杀商品图文区域触发
     * */
-    fun clickMallBanner(bannerName: String){
-        buried("app商城_顶部banner_点击","app_mall_top_banner", extend = "{\"goods_name\": \"$bannerName\"}")
+    fun clickShopKill(goodsName:String,price:String){
+        buried("app商城_限时秒杀","app_mall_seckill",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
     }
-    //【商品id】,点击商品【商品名称】,1
-    fun clickMall(pId:String,pName:String){
-        buried("商品名称","click_mall_p",pId,pName)
+    /**
+     *用户点击立即前往按钮时触发
+     * */
+    fun clickShopIntegral(){
+        buried("app商城_赚取积分_立即前往","app_mall_get_integral_link")
     }
-    //商城END
+    /**
+     *用户点击商品分类菜单栏时触发
+     * */
+    fun clickShopType(goodsCategory:String){
+        buried("app商城_商品分类_菜单栏","app_mall_goods_category_menu", extend = "{\"goods_category\": \"$goodsCategory\"}")
+    }
+    /**
+     *用户点击商品图文区域banner时触发
+     * */
+    fun clickShopItem(goodsName:String,price:String){
+        buried("app商城_商品详情_banner","app_mall_goods_details_banner",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\"}")
+    }
+
+
+    //商城==============订单-START
+    /**
+     *用户点击确认收货按钮时触发
+     * */
+    fun clickShopOrderTakeDelivery(orderNo:String,goodsName:String?,price:String){
+        buried("app商城_商品订单_确认收货","app_mall_order_Confirm",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
+    }
+    /**
+     *用户点击评价按钮时触发
+     * */
+    fun clickShopOrderComment(orderNo:String,goodsName:String?,price:String){
+        buried("app商城_商品订单_评价","app_mall_order_comment",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
+    }
+    /**
+     *用户点击取消订单按钮时触发
+     * */
+    fun clickShopOrderCancel(orderNo:String,goodsName:String?,price:String){
+        buried("app商城_商品订单_取消订单","app_mall_order_cancel",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
+    }
+    /**
+     *用户点击立即支付按钮时触发
+     * */
+    fun clickShopOrderPay(orderNo:String,goodsName:String?,price:String){
+        buried("app商城_商品订单_立即支付","app_mall_order_pay",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
+    }
+    /**
+     *用户点击再次购买按钮时触发
+     * */
+    fun clickShopOrderBuy(orderNo:String,goodsName:String?,price:String){
+        buried("app商城_商品订单_再次购买","app_mall_order_buyagain",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
+    }
+    //商城==============订单-END
+    //=======================================商城END
 
     //=======================================社区
     /**

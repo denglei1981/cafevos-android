@@ -56,4 +56,5 @@
     <string name="str_toAskQuestions">去提问</string>
     <string name="str_noContent">暂无内容</string>
     <string name="str_questions">提问</string>
+    <string name="str_parametersOfIllegal">参数非法！</string>
 </resources>

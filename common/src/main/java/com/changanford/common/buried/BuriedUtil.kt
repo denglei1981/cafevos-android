@@ -163,7 +163,13 @@ class BuriedUtil {
      *  点击发现 资讯
      * */
     fun discoverNews(information_name:String){
-        buried("app发现_资讯_点击","app_discovery_information", extend = "{\"information_name\": \"$information_name\"}")
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"information_name\": \"$information_name\"}")
+    }
+    fun discoverPost(post_name:String){
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"post_name\": \"$post_name\"}")
+    }
+    fun discoverAct(activity_name:String){
+        buried("app发现_推荐列表_点击","app_discovery_recommendation_list", extend = "{\"activity_name\": \"$activity_name\"}")
     }
     /**
      *  点击发现 关注
@@ -211,7 +217,7 @@ class BuriedUtil {
      *  app社区_顶部_菜单栏
      * */
     fun communityMainTopSearsh(keyword:String){
-        buried("app社区_顶部_菜单栏","app_community_top_search", extend = "{\"keyword\": \"$keyword\"}")
+        buried("app社区_顶部_搜索栏","app_community_top_search", extend = "{\"keyword\": \"$keyword\"}")
     }
     // 社区帖子end
 
