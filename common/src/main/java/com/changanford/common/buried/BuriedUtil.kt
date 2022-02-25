@@ -217,7 +217,7 @@ class BuriedUtil {
      *  app社区_顶部_菜单栏
      * */
     fun communityMainTopSearsh(keyword:String){
-        buried("app社区_顶部_菜单栏","app_community_top_search", extend = "{\"keyword\": \"$keyword\"}")
+        buried("app社区_顶部_搜索栏","app_community_top_search", extend = "{\"keyword\": \"$keyword\"}")
     }
     // 社区帖子end
 

@@ -157,6 +157,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                     startARouter(ARouterCirclePath.VideoPostActivity, true)
                 }
 
+                override fun checkQuestion() {
+                    JumpUtils.instans?.jump(116)
+                }
+
             }).run {
             setBlurBackgroundEnable(false)
             showPopupWindow(binding.ivMenu)

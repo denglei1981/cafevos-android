@@ -200,6 +200,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 startARouter(ARouterCirclePath.VideoPostActivity, bundle)
             }
 
+            override fun checkQuestion() {
+
+            }
+
         }).run {
             //无透明背景
             setBackgroundColor(Color.TRANSPARENT)

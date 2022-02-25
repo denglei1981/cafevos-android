@@ -54,7 +54,8 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
         val list = arrayListOf(
             CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发长帖"),
             CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
-            CircleMainMenuBean(R.mipmap.circle_post_video, "视频")
+            CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
+            CircleMainMenuBean(R.mipmap.circle_post_question,"提问")
         )
         adapter.setItems(list)
         binding.ryManagement.adapter = adapter
@@ -72,6 +73,9 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                     2 -> {
                         listener.checkVideo()
                     }
+                    3->{
+                        listener.checkQuestion()
+                    }
                 }
                 dismiss()
             }
@@ -83,5 +87,6 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
         fun checkLongBar()
         fun checkPic()
         fun checkVideo()
+        fun checkQuestion()
     }
 }
