@@ -127,6 +127,15 @@ object WBuriedUtil {
     fun clickCircleJoin(momentsName: String?){
         buried("app社区_圈子_加入","app_community_moments_join", extend = "{\"Moments_name\": \"$momentsName\"}")
     }
+    /**
+     * 用户点击顶部创建按钮时候触发
+     * [title]圈子名称
+     * [des]填写描述
+     * [tag]圈子标签
+     * */
+    fun clickCircleCreate(title: String?,des:String?,tag:String?,isAudit:Boolean,type:String?){
+        buried("app圈子_创建","app_moments_create", extend = "{\"moments_name\": \"$title\",\"moments_describe\": \"$des\",\"moments_lable\": \"$tag\",\"isAudit\": \"$isAudit\",\"type\": \"$type\"}")
+    }
 
     //===========================================爱车
     /**

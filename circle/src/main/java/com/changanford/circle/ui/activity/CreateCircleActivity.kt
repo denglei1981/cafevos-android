@@ -16,6 +16,7 @@ import com.changanford.circle.widget.pop.OnSelectedBackListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.bean.NewCirceTagBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.manger.RouterManger
@@ -137,16 +138,24 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         }
     }
     private fun submit(){
-        val title = binding.etBiaoti.text.toString()
-        val content = binding.etContent.text.toString()
-        val tagIds= arrayListOf<Int>()
-        //被选中的标签集合
-        mAdapter.data.filter { it.isCheck==true }.apply {
-            forEach { it.tagId?.apply { tagIds.add(this) }}
+        binding.apply {
+            val title = etBiaoti.text.toString()
+            val content = etContent.text.toString()
+            val isAudit= checkBox.isChecked
+            val type=edtCircleTypeValue.text.toString()
+            val tagIds= arrayListOf<Int>()
+            var tagName =""
+            //被选中的标签集合
+            mAdapter.data.filter { it.isCheck==true }.apply {
+                forEach {
+                    tagName+="${it.tagName}、"
+                    it.tagId?.apply { tagIds.add(this) }
+                }
+            }
+            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),isAudit,type)
+            if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds,isAudit,type)
+            else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds,isAudit,type)
         }
-        if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds)
-        else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds)
-
     }
     private val listener=object : OnPerformListener {
         override fun onFinish(code: Int) {
