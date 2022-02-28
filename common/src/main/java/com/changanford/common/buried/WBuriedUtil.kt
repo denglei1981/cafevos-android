@@ -132,6 +132,8 @@ object WBuriedUtil {
      * [title]圈子名称
      * [des]填写描述
      * [tag]圈子标签
+     * [isAudit]是否审核
+     * [type]圈子类型
      * */
     fun clickCircleCreate(title: String?,des:String?,tag:String?,isAudit:Boolean,type:String?){
         buried("app圈子_创建","app_moments_create", extend = "{\"moments_name\": \"$title\",\"moments_describe\": \"$des\",\"moments_lable\": \"$tag\",\"isAudit\": \"$isAudit\",\"type\": \"$type\"}")
