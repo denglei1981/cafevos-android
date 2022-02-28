@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -128,7 +129,8 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private fun btnIsClick(){
         binding.title.wtvCreate.apply {
             val titleLength=binding.etBiaoti.text.length
-            if(picUrl.isEmpty()||titleLength<1||binding.etContent.text.isEmpty()|| mAdapter.data.none { it.isCheck == true }){
+            if(picUrl.isEmpty()||titleLength<1||binding.etContent.text.isEmpty()||TextUtils.isEmpty(binding.edtCircleTypeValue.text)
+                || mAdapter.data.none { it.isCheck == true }){
                 isEnabled=false
                 setBackgroundResource(R.drawable.shadow_dd_12dp)
             }else{
