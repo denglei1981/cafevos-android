@@ -93,7 +93,7 @@ object WBuriedUtil {
     //商城==============订单-END
     //=======================================商城END
 
-    //=======================================社区
+    //=======================================社区圈子
     /**
      * 用户点击顶部圈子图标时触发
      * [circleName]圈子名称
@@ -120,6 +120,12 @@ object WBuriedUtil {
      * */
     fun clickCircleYouLike(circleName: String?){
         buried("app社区_猜你喜欢","app_community_guess", extend = "{\"Moments_type\": \"$circleName\"}")
+    }
+    /**
+     * 用户点击加入按钮时触发
+     * */
+    fun clickCircleJoin(momentsName: String?){
+        buried("app社区_圈子_加入","app_community_moments_join", extend = "{\"Moments_name\": \"$momentsName\"}")
     }
 
     //===========================================爱车
@@ -176,4 +182,30 @@ object WBuriedUtil {
     fun clickCarExamined(){
         buried("app爱车首页_审核_查看","app_car_homepage_examined_view")
     }
+    //===========================================社区-问答
+    /**
+     * 用户点击右上角提问时触发
+     * */
+    fun clickQuestionAskTop(){
+        buried("app社区_我的问答_顶部提问","app_community_Q&A_ask_top")
+    }
+    /**
+     * 用户点击悬浮窗提问时触发
+     * */
+    fun clickQuestionAskFloat(){
+        buried("app社区_我的问答_悬浮窗提问","app_community_Q&A_ask_Float")
+    }
+    /**
+     * 用户点击去提问时触发
+     * */
+    fun clickQuestionAskCenter(){
+        buried("app社区_我的问答_我的提问_去提问","app_community_Q&A_my_ask")
+    }
+    /**
+     * 用户点击立即抢答时触发
+     * */
+    fun clickQuestionAnswer(type: String?,title:String?){
+        buried("app社区_我的问答_邀请问答_立即抢答","app_community_Q&A_answer", extend = "{\"QA_type\": \"$type\",\"Q&A_title\": \"$title\"}")
+    }
+
 }
