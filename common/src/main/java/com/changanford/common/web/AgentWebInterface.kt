@@ -37,6 +37,10 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -698,6 +702,37 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     @JavascriptInterface
     fun opePdf(pdfUrl:String) {
         JumpUtils.instans?.jump(1,"http://mozilla.github.io/pdf.js/web/viewer.html?file=$pdfUrl")
+    }
+    /**
+     * 小程序分享
+     * [webpageUrl]兼容低版本的网页链接 限制长度不超过 10KB
+     * [miniprogramType]正式版:0，测试版:1，体验版:2
+     * [userName]小程序原始id（gh_d43f693ca31f）
+     * [path]小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+     * [title] 小程序消息title
+     * [description]小程序消息desc
+     * [thumbData]小程序消息封面图片，小于128k ByteArray(byte[])
+     */
+    @JavascriptInterface
+    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,thumbData:ByteArray) {
+        val api = WXAPIFactory.createWXAPI(activity, ConfigUtils.WXAPPID)
+        val miniProgramObj = WXMiniProgramObject().apply {
+            this.webpageUrl = webpageUrl // 兼容低版本的网页链接
+//            this.miniprogramType =WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
+            this.miniprogramType =miniprogramType
+            this.userName = userName // 小程序原始id
+            this.path =path //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+        }
+        val msg = WXMediaMessage(miniProgramObj)
+        msg.title = title // 小程序消息title
+        msg.description = description // 小程序消息desc
+        msg.thumbData = thumbData // 小程序消息封面图片，小于128k
+        val req = SendMessageToWX.Req()
+//        req.transaction = buildTransaction("miniProgram")
+        req.transaction =System.currentTimeMillis().toString()
+        req.message = msg
+        req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
+        api.sendReq(req)
     }
 
 }
