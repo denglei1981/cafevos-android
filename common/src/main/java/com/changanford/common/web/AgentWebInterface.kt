@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Environment
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -22,11 +21,8 @@ import com.changanford.common.bean.MediaListBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.ui.dialog.SelectPostDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
@@ -45,7 +41,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.collections.set
 
 
@@ -697,6 +692,12 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
             )
         }
     }
-
+    /**
+     * 打开PDF文件
+     */
+    @JavascriptInterface
+    fun opePdf(pdfUrl:String) {
+        JumpUtils.instans?.jump(1,"http://mozilla.github.io/pdf.js/web/viewer.html?file=$pdfUrl")
+    }
 
 }
