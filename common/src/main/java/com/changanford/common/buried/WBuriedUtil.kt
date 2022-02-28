@@ -203,9 +203,11 @@ object WBuriedUtil {
     }
     /**
      * 用户点击立即抢答时触发
+     * [type]问题类型
+     * [title]问答标题
      * */
     fun clickQuestionAnswer(type: String?,title:String?){
-        buried("app社区_我的问答_邀请问答_立即抢答","app_community_Q&A_answer", extend = "{\"QA_type\": \"$type\",\"Q&A_title\": \"$title\"}")
+        buried("app社区_我的问答_邀请问答_立即抢答","app_community_Q&A_answer", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
     }
 
 }
