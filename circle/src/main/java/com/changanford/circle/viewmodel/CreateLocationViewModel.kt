@@ -5,6 +5,7 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
+import com.baidu.mapapi.common.BaiduMapSDKException
 import com.baidu.mapapi.search.poi.PoiSearch
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.HotPicBean
@@ -92,7 +93,12 @@ class CreateLocationViewModel : BaseViewModel() {
     val locationLotLonLiveData = MutableLiveData<LocationLotLon>()
     fun getLocation() {
         //声明LocationClient类
-        mLocationClient = LocationClient(MyApp.mContext)
+        try {
+            mLocationClient = LocationClient(MyApp.mContext)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
         //注册监听函数
         //注册监听函数
         mLocationClient?.registerLocationListener(object : BDAbstractLocationListener() {

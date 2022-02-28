@@ -62,7 +62,11 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
     private fun initlocation() {
         //声明LocationClient类
-        mLocationClient = LocationClient(this)
+        try{
+            mLocationClient = LocationClient(this)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
         //注册监听函数
         //注册监听函数
         mLocationClient.registerLocationListener(MyLocationListener())

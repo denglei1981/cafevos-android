@@ -3,15 +3,8 @@ package com.changanford.circle.ui.release;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.location.BDLocation;
@@ -38,18 +31,14 @@ import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.changanford.circle.R;
 import com.changanford.circle.bean.NavationMap;
-import com.changanford.circle.databinding.MmapActivityBinding;
 import com.changanford.circle.databinding.MmapLocationActivityBinding;
 import com.changanford.common.basic.BaseActivity;
 import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.bean.LocationDataBean;
 import com.changanford.common.bean.MapReturnBean;
 import com.changanford.common.net.CommonResponse;
-import com.changanford.common.sharelib.util.JsonUtil;
 import com.changanford.common.ui.dialog.LoadDialog;
 import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.JumpUtils;
@@ -175,7 +164,13 @@ public class LocationMMapActivity extends BaseActivity<MmapLocationActivityBindi
         // 开启定位图层
         baiduMap.setMyLocationEnabled(true);
         //声明LocationClient类
-        mLocationClient = new LocationClient(this);
+        try {
+            LocationClient.setAgreePrivacy(true);
+            mLocationClient = new LocationClient(this);
+        }catch (Exception e){
+         e.printStackTrace();
+        }
+
         //注册监听函数
         mLocationClient.registerLocationListener(myListener);
 

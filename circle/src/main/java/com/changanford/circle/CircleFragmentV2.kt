@@ -182,32 +182,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     override fun initData() {
         AssNineGridView.setImageLoader(GlideImageLoader())
-         // 权限申请
-//        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,object : CheckRequestPermissionListener{
-//            override fun onPermissionOk(permission: com.qw.soul.permission.bean.Permission?) {
-//                if (JumpUtils.instans?.isOPen(requireContext()) == true) {
-//                    getLocationData()
-//                } else {
-////                    viewModel.communityIndex()
-//                }
-//            }
-//
-//            override fun onPermissionDenied(permission: com.qw.soul.permission.bean.Permission?) {
-////                viewModel.communityIndex()
-//            }
-//        })
+
 
     }
 
-    private fun getLocationData() {
-        LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-            override fun onReceiveLocation(location: BDLocation) {
-                val latitude = location.latitude //获取纬度信息
-                val longitude = location.longitude //获取经度信息
-//                viewModel.communityIndex(longitude, latitude)
-            }
-        })
-    }
 
     override fun observe() {
         super.observe()
