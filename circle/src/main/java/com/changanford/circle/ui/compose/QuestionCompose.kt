@@ -60,7 +60,7 @@ fun EmptyCompose(noContext:String?=null,height:Int=0){
         .fillMaxWidth()
         .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(20.dp, 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
@@ -75,7 +75,7 @@ fun EmptyQuestionCompose(height:Int=0){
         .fillMaxWidth()
         .height(height.dp)
         .background(colorResource(R.color.color_F4))
-        .padding(90.dp, 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(20.dp, 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
