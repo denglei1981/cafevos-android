@@ -170,4 +170,10 @@ object WBuriedUtil {
     fun clickCarCertification(){
         buried("app爱车首页_去认证车主_点击","app_car_homepage_Certified_owner")
     }
+    /**
+     * 用户点击查看时触发
+     * */
+    fun clickCarExamined(){
+        buried("app爱车首页_审核_查看","app_car_homepage_examined_view")
+    }
 }

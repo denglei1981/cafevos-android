@@ -239,6 +239,7 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuth
                 Text(text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
                     modifier = Modifier.weight(1f))
                 Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {
+                    WBuriedUtil.clickCarExamined()
                     //查看审核记录
                     JumpUtils.instans?.jump(41,carItemBean.authId)
                 }) {
