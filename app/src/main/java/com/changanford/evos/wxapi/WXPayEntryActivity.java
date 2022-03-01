@@ -82,6 +82,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
                 Log.d(TAG,msg);
             }
             UnifyPayPlugin.getInstance(this).getWXListener().onResponse(this, resp);
+            finish();
         }
     }
 }
