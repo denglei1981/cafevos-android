@@ -93,7 +93,6 @@ data class QuestionInfoBean(
      * 个人中心 types
     * */
     fun getStatisticalTypes(context:Context):List<QuestionTagBean>{
-        val isOneself=isOneself()
         val tags= arrayListOf<QuestionTagBean>()
         when(user.identity){
             //技师
@@ -101,10 +100,8 @@ data class QuestionInfoBean(
                 tags.apply {
                     add(QuestionTagBean(context.getString(R.string.str_answerTotalNumber),anserNum))
                     add(QuestionTagBean(context.getString(R.string.str_acceptedTotalNumber),adoptNum))
-                    if(isOneself){
-                        add(QuestionTagBean(context.getString(R.string.str_replyToList),anserRankNum))
-                        add(QuestionTagBean(context.getString(R.string.str_adoptionList),adoptRankNum))
-                    }
+                    add(QuestionTagBean(context.getString(R.string.str_replyToList),anserRankNum))
+                    add(QuestionTagBean(context.getString(R.string.str_adoptionList),adoptRankNum))
                 }
             }
             //普通 、 车主

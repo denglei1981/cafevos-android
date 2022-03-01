@@ -174,7 +174,13 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
         // 开启定位图层
         baiduMap.setMyLocationEnabled(true);
         //声明LocationClient类
-        mLocationClient = new LocationClient(this);
+        try{
+            LocationClient.setAgreePrivacy(true);
+            mLocationClient = new LocationClient(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         //注册监听函数
         mLocationClient.registerLocationListener(myListener);
         initLocation();

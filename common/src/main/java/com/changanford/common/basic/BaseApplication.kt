@@ -15,8 +15,10 @@ import com.alibaba.sdk.android.push.huawei.HuaWeiRegister
 import com.alibaba.sdk.android.push.impl.*
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory
 import com.alibaba.sdk.android.push.register.*
+import com.baidu.location.LocationClient
 import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
+import com.baidu.mapapi.common.BaiduMapSDKException
 import com.changanford.common.buried.RetrofitClient
 import com.changanford.common.buried.RetrofitClientConfig
 import com.changanford.common.sharelib.ModuleConfigureConstant
@@ -44,7 +46,15 @@ abstract class BaseApplication : MultiDexApplication() {
 //            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
         //阿里云push初始化
         PushServiceFactory.init(this)
-        SDKInitializer.initialize(this);
+        initBaiduSdk()
+        // 在SDK初始化时捕获抛出的异常
+        // 在SDK初始化时捕获抛出的异常
+        try {
+            // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+            SDKInitializer.initialize(this)
+        } catch (e: BaiduMapSDKException) {
+        }
+//        SDKInitializer.initialize(this);
         //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
@@ -169,5 +179,14 @@ abstract class BaseApplication : MultiDexApplication() {
             .url(MConstant.BASE_URL)
             .build()
         RetrofitClient.setRetrofitClientConfig(config)
+    }
+    fun initBaiduSdk(){
+        /**
+         * 隐私政策统一接口：：该接口必须在调用SDK初始化接口之前设置
+         * 设为false不同意隐私政策：不支持发起检索、路线规划等数据请求，SDK抛出异常；
+         * 设为true同意隐私政策：支持发起检索、路线规划等数据请求
+         */
+        SDKInitializer.setAgreePrivacy(this, true)
+        LocationClient.setAgreePrivacy(true)
     }
 }

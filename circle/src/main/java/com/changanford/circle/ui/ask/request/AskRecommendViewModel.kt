@@ -35,6 +35,7 @@ class AskRecommendViewModel : BaseViewModel() {
 
 
 
+//    var  errorLiveData: MutableLiveData<String> = MutableLiveData()
 
 
 
