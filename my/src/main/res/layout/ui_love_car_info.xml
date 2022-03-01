@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -288,10 +289,10 @@
                 android:layout_marginTop="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:gravity="center"
-                android:text="若本车已转售，可点击删除车辆信息 >"
+                tools:text="若本车已转售，可点击删除车辆信息 >"
                 android:textColor="@color/color_95b"
                 android:textSize="@dimen/sp_13"
-                android:visibility="gone"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/car_content" />

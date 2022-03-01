@@ -44,9 +44,9 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         viewModel.carAuthQY() {
             it.onSuccess {
                 it?.let {
-                    binding.group.visibility =
-                        if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
+                    binding.group.visibility = if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
                     binding.carContent.text = it.authDetailRightsContent
+                    binding.deleteCar.text=it.removeCarNotice
                 }
             }
         }
@@ -88,6 +88,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         binding.cardDealer.text = "${auth.dealerName ?: ""}"
         binding.cardDealerPhone.text = "${auth.dealerPhone ?: ""}"
         binding.carPic.load(auth.modelUrl, R.mipmap.ic_car_auth_ex)
+
         setCarNum()
     }
 
