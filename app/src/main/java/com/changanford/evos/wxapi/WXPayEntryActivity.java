@@ -3,16 +3,20 @@ package com.changanford.evos.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
+import com.changanford.evos.BuildConfig;
 import com.changanford.evos.R;
+import com.chinaums.pppay.unify.UnifyPayPlugin;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -67,7 +71,18 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
             }
             finish();
         }
-
+        //小程序支付-银商支付
+        if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
+            if(BuildConfig.DEBUG){
+                WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
+                String extraData =launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+                Log.d(TAG,"onResp   ---   " + extraData);
+                String msg = "onResp   ---   errStr：" + resp.errStr + " --- errCode： " + resp.errCode + " --- transaction： "
+                        + resp.transaction + " --- openId：" + resp.openId + " --- extMsg：" + launchMiniProResp.extMsg;
+                Log.d(TAG,msg);
+            }
+            UnifyPayPlugin.getInstance(this).getWXListener().onResponse(this, resp);
+        }
     }
 }
 
