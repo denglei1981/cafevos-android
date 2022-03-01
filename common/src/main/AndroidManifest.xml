@@ -42,6 +42,15 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--    银商支付-->
+
+    <uses-permission
+        android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
+    <uses-feature
+        android:name="android.hardware.nfc.hce"
+        android:required="true"/>
     <application>
         <activity android:name=".ui.CaptureActivity"
             android:screenOrientation="portrait"/>
@@ -93,6 +102,39 @@
         <!--<meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="56913eab3a5c4f59dd961dbc1b1b909c" />-->
+
+        <!--银商支付 START-->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <meta-data
+            android:name="CurrentEnvironment"
+            android:value="PROD"> <!-- PROD or TEST -->
+        </meta-data>
+        <meta-data
+            android:name="PPPaySDK"
+            android:value="true" />
+
+        <uses-library
+            android:name="org.simalliance.openmobileapi"
+            android:required="false" />
+
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.unionpay.UPPayWapActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+        <!--银商支付 END-->
     </application>
 
 </manifest>
