@@ -171,11 +171,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).observe(this, Observer {
             if (totalWebNum == localWebNum) {
                 val map = it as HashMap<*, *>
-                val payType = map["payType"]
+                val payType:Int = map["payType"] as Int
                 val appPayRequest = map["appPayRequest"].toString()
                 val serverMode = map["serverMode"].toString()
                 payCallback = map["callback"].toString()
-                UnionPayUtils.goUnionPay(this, payType as Int, appPayRequest,serverMode)
+                UnionPayUtils.goUnionPay(this, payType, appPayRequest,serverMode)
             }
         })
         //支付
