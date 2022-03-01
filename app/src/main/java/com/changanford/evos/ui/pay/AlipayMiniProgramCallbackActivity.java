@@ -1,11 +1,9 @@
 package com.changanford.evos.ui.pay;
 
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,24 +69,12 @@ public class AlipayMiniProgramCallbackActivity extends AppCompatActivity {
     }
 
     private void showMsgDialog(final String  msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog dialog = new AlertDialog.Builder(AlipayMiniProgramCallbackActivity.this).setMessage(msg).
-                        setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create();
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
-            }
+        runOnUiThread(() -> {
+            AlertDialog dialog = new AlertDialog.Builder(AlipayMiniProgramCallbackActivity.this).setMessage(msg).
+                    setPositiveButton("确定", (dialogInterface, i) -> dialogInterface.dismiss()).create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         });
-    }
-    public void toast(String click) {
-        Toast.makeText(this,click,Toast.LENGTH_SHORT).show();
-
     }
 
 

@@ -8,7 +8,7 @@ buildscript {
         compileSDKVersion = 30
         buildToolsVersion = "30.0.3"
         targetSDKVersion = 30
-        minSDKVersion = 21
+        minSDKVersion = 22
         versions_router_compiler = "1.5.2"
         versions_compose = '1.0.5'
         //TODO
