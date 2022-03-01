@@ -51,12 +51,9 @@ public class AlipayMiniProgramCallbackActivity extends AppCompatActivity {
                 Uri uri = getIntent().getData();
                 //完整路径
                 String url = uri.toString();
-
                 String errCode = uri.getQueryParameter("errCode");
                 String errStr = uri.getQueryParameter("errStr");
-
                 String str = "支付结果 ===》 errCode = " + errCode + " ------ errStr = " + errStr + "\n 支付状态 ---> " + getResultMsg(errCode);
-
                 tv.setText("Scheme url="+url+"\n ------------ \n" + str );
             }catch (Exception e){
                 e.getStackTrace();
