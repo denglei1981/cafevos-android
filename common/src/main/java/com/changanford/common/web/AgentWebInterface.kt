@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -14,6 +15,7 @@ import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.common.BuildConfig
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.H5PostTypeBean
@@ -734,5 +736,21 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
         api.sendReq(req)
     }
-
+    /**
+     * 银联支付
+     * [payType]支付类型 0云闪付、1支付宝、2 微信
+     * [appPayRequest]拉起支付的参数（具体参考对应文档）
+     * [callback]支付回调
+     * [serverMode] 云闪付使用 为后台环境标识，不传或者null默认使用“00”生产环境
+     */
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?="00") {
+        if(BuildConfig.DEBUG)Log.d("wenke","H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback")
+        val map = HashMap<String, Any>()
+        map["payType"] = payType
+        map["appPayRequest"] = appPayRequest
+        map["callback"] = callback
+        map["serverMode"] = serverMode?:"00"
+        LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
+    }
 }

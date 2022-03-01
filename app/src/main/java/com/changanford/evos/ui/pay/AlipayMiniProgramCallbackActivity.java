@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.changanford.common.util.bus.LiveDataBus;
+import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.evos.R;
 
 import java.util.HashMap;
@@ -55,6 +57,9 @@ public class AlipayMiniProgramCallbackActivity extends AppCompatActivity {
                 String errStr = uri.getQueryParameter("errStr");
                 String str = "支付结果 ===》 errCode = " + errCode + " ------ errStr = " + errStr + "\n 支付状态 ---> " + getResultMsg(errCode);
                 tv.setText("Scheme url="+url+"\n ------------ \n" + str );
+                boolean isSuccess= errCode.equals("0000");
+                LiveDataBus.get().with(LiveDataBusKey.ALIPAY_RESULT).postValue(isSuccess);
+                finish();
             }catch (Exception e){
                 e.getStackTrace();
                 showMsgDialog(e.getMessage());

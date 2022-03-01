@@ -251,5 +251,10 @@ object LiveDataBusKey {
 
 
     const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
+
+    //银联支付
+    const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"
+    //银联支付回调-暂只代表云闪付
+    const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
 }
 

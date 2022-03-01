@@ -26,8 +26,6 @@ import org.json.JSONObject
  * *********************************************************************************
  */
 open class PayViewModule : ViewModel() {
-
-
     fun goPay(activity: Activity, type: String, jsonStr: String) {
         //支付
         if (type == "2") {  //微信支付

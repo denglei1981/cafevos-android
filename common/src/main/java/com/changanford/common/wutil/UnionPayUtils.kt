@@ -1,9 +1,14 @@
 package com.changanford.common.wutil
 
+import android.app.Activity
 import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import com.changanford.common.BuildConfig
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.toastShow
 import com.chinaums.pppay.unify.UnifyPayListener
 import com.chinaums.pppay.unify.UnifyPayPlugin
 import com.chinaums.pppay.unify.UnifyPayRequest
@@ -16,12 +21,33 @@ import org.json.JSONObject
  * @Time : 2022/3/1
  * @Description : 银商支付
  */
-object PayUtils {
+object UnionPayUtils {
     private const val TAG="PayUtils"
+    /**
+     * 银联支付
+     * */
+    fun goUnionPay(activity: Activity, type: Int, appPayRequest: String,serverMode:String?="00") {
+        when(type){
+            //云闪付
+            0-> payCloudQuickPay(activity,appPayRequest,serverMode)
+
+            //支付宝小程序支付
+            1->{
+                if(AppUtils.checkAliPayInstalled(activity)) payAliPayMiniPro(activity,appPayRequest)
+                else toastShow("未安装支付宝")
+            }
+
+            //微信支付
+            2->{
+                if(AppUtils.isWeixinAvilible(activity)) payWx(activity,appPayRequest)
+                else toastShow("未安装微信")
+            }
+        }
+    }
     /**
      * 微信支付
     * */
-    fun payWx(context:Context,appPayRequest:String,listener: UnifyPayListener?=null){
+    private fun payWx(context:Context,appPayRequest:String,listener: UnifyPayListener?=null){
         UnifyPayRequest().apply {
             payChannel = UnifyPayRequest.CHANNEL_ALIPAY
             payData = appPayRequest
@@ -34,7 +60,7 @@ object PayUtils {
     /**
      * 支付宝小程序支付方式
      * */
-    fun payAliPayMiniPro(context:Context,appPayRequest:String){
+    private fun payAliPayMiniPro(context:Context,appPayRequest:String){
         UnifyPayRequest().apply {
             payChannel = UnifyPayRequest.CHANNEL_ALIPAY_MINI_PROGRAM
             payData = appPayRequest
@@ -45,7 +71,7 @@ object PayUtils {
      * 云闪付
      * [serverMode]为后台环境标识，默认使用“00”生产环境
      * */
-    fun payCloudQuickPay(context:Context,appPayRequest:String,serverMode:String="00"){
+    private fun payCloudQuickPay(activity: Activity, appPayRequest:String,serverMode:String?="00"){
         var tn = "空"
         try {
             val e = JSONObject(appPayRequest)
@@ -53,19 +79,19 @@ object PayUtils {
         } catch (e1: JSONException) {
             e1.printStackTrace()
         }
-        UPPayAssistEx.startPay(context, null, null, tn, serverMode)
+        UPPayAssistEx.startPay(activity, null, null, tn, serverMode?:"00")
         if(BuildConfig.DEBUG)Log.d(TAG, "云闪付支付 tn = $tn")
     }
     /**
      * 云闪付 -支付回调
      * pay_result:支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
     * */
-    fun payOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun payOnActivityResult(extras: Bundle?) {
         /**
          * 处理银联云闪付手机支付控件返回的支付结果
          */
-        var msg = "resultCode:$resultCode"
-        data?.extras?.getString("pay_result")?.apply {
+        var msg = "extras:$extras"
+        extras?.getString("pay_result")?.apply {
             when {
                 equals("success", ignoreCase = true) -> {
                     //如果想对结果数据校验确认，直接去商户后台查询交易结果，
@@ -79,15 +105,18 @@ object PayUtils {
                      * tn —— 订单号
                      */
                     msg = "云闪付支付成功"
+                    LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY_BACK).postValue(0)
                 }
                 equals("fail", ignoreCase = true) -> {
                     msg = "云闪付支付失败！"
+                    LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY_BACK).postValue(1)
                 }
                 equals("cancel", ignoreCase = true) -> {
                     msg = "用户取消了云闪付支付"
+                    LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY_BACK).postValue(2)
                 }
             }
         }
-        if(BuildConfig.DEBUG)Log.d(TAG, "onActivityResult>>msg:$msg")
+        if(BuildConfig.DEBUG)Log.d(TAG, "payOnActivityResult>>msg:$msg")
     }
 }
