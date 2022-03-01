@@ -48,6 +48,7 @@ object UnionPayUtils {
      * 微信支付
     * */
     private fun payWx(context:Context,appPayRequest:String,listener: UnifyPayListener?=null){
+        if(BuildConfig.DEBUG)Log.d(TAG, "微信支付 appPayRequest = $appPayRequest")
         UnifyPayRequest().apply {
             payChannel = UnifyPayRequest.CHANNEL_ALIPAY
             payData = appPayRequest
@@ -61,6 +62,7 @@ object UnionPayUtils {
      * 支付宝小程序支付方式
      * */
     private fun payAliPayMiniPro(context:Context,appPayRequest:String){
+        if(BuildConfig.DEBUG)Log.d(TAG, "支付宝小程序支付 appPayRequest = $appPayRequest")
         UnifyPayRequest().apply {
             payChannel = UnifyPayRequest.CHANNEL_ALIPAY_MINI_PROGRAM
             payData = appPayRequest
