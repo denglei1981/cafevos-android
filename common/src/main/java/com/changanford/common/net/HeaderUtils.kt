@@ -7,6 +7,7 @@ import com.changanford.common.buried.RetrofitClient
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
+import com.changanford.common.utilext.logE
 import com.gofo.widget.SwipeHelper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
@@ -138,8 +139,8 @@ fun getBuriedHeader(body: String?): HashMap<String, String> {
     }else{
         map[RetrofitClient.BASE_URL_NAME] =MConstant.BASE_URL_BURIED_PROD
     }
-
-    map["sign"] = signMD("${body}${timestamp}")
+    val signMD = signMD("${body}${timestamp}")
+    map["sign"] = signMD
 //    map["sign"] = "${body}${timestamp}"
     return map
 }
