@@ -184,14 +184,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
             headerBinding.composeView.setContent {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    //售后服务
-                    find { it.modelCode=="after-sales" }?.apply {
-                        if(isVisible(carModelCode))AfterSalesService(this)
-                    }
-                    //寻找经销商
-                    find { it.modelCode=="dealers" }?.apply {
-                        if(isVisible(carModelCode))LookingDealers(modelName,viewModel.dealersBean.value)
-                    }
                     //车主认证
                     find { it.modelCode=="car_auth" }?.apply {
                         if(isVisible(carModelCode)){
@@ -207,6 +199,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //                            }
 
                         }
+                    }
+                    //售后服务
+                    find { it.modelCode=="after-sales" }?.apply {
+                        if(isVisible(carModelCode))AfterSalesService(this)
+                    }
+                    //寻找经销商
+                    find { it.modelCode=="dealers" }?.apply {
+                        if(isVisible(carModelCode))LookingDealers(modelName,viewModel.dealersBean.value)
                     }
                 }
             }

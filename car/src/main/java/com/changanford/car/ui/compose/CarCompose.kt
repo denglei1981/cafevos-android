@@ -181,7 +181,15 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
     }
 
 }
+/**
+ * 车主认证-未认证
+ * */
+@Composable
+fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
+    val carAuthConfVo=carAuthBean?.carAuthConfVo
+    Spacer(modifier = Modifier.height(18.dp))
 
+}
 /**
  * 车主认证
 * */

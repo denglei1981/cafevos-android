@@ -27,7 +27,7 @@
 <!--   android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"         android:name="com.changanford.car.CarFragmentNoCar"-->
     <custom_fragment
         android:id="@+id/carFragment"
-        android:name="com.changanford.car.CarFragmentNoCar"
+        android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"
         android:label="CarFragment" />
     <custom_fragment
         android:id="@+id/shopFragment"
