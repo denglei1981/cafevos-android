@@ -1,5 +1,6 @@
 package com.changanford.car.ui.compose
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?){
     val columnSize=3
     //总共几排
     val rowTotal= WCommonUtil.getHeatNumUP("${dataList.size/columnSize.toFloat()}",0).toInt()
+    Spacer(modifier = Modifier.height(18.dp))
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp)) {
@@ -67,7 +69,9 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?){
                 val itemListSize=itemList.size
                 Row(modifier = Modifier.fillMaxWidth()) {
                     for (i in 0 until columnSize){
-                        Box(modifier = Modifier.weight(1f).padding(start = 10.dp, end = 10.dp)) {
+                        Box(modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 10.dp, end = 10.dp)) {
                             ItemService(if(itemListSize>i)itemList[i] else null)
                         }
                         if(i<2) Spacer(modifier = Modifier.width(20.dp))
@@ -84,10 +88,12 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?){
 @Composable
 private fun ItemService(itemData: NewCarTagBean?){
     itemData?.apply {
-        Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxWidth().clickable {
-            WBuriedUtil.clickCarAfterSalesService(iconName)
-            JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
-        }) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                WBuriedUtil.clickCarAfterSalesService(iconName)
+                JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
+            }) {
            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(iconImg) ?: R.mipmap.head_default,
                builder = {placeholder(R.mipmap.head_default)}),
                contentScale = ContentScale.Crop,
@@ -117,12 +123,15 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
             Spacer(modifier = Modifier.height(17.dp))
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White, shape = RoundedCornerShape(5.dp)).clickable {
-                    JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                .background(Color.White, shape = RoundedCornerShape(5.dp))
+                .clickable {
+                    JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
                 }) {
-                Box(modifier = Modifier.fillMaxWidth().clickable {
-                    WBuriedUtil.clickCarDealer(dealerName)
-                },contentAlignment = Alignment.TopEnd){
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        WBuriedUtil.clickCarDealer(dealerName)
+                    },contentAlignment = Alignment.TopEnd){
                     Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
                         builder = {placeholder(R.mipmap.head_default)}),
                         contentScale = ContentScale.Crop,
@@ -185,16 +194,56 @@ fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
  * 车主认证-未认证
  * */
 @Composable
-fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
-    val carAuthConfVo=carAuthBean?.carAuthConfVo
-    Spacer(modifier = Modifier.height(18.dp))
-
+fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null){
+    carAuthBean?.carAuthConfVo?.apply {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp)) {
+            Spacer(modifier = Modifier.height(18.dp))
+            Box(modifier = Modifier
+                .padding(bottom = 5.dp)
+                .background(Color.White, shape = RoundedCornerShape(8.dp)), contentAlignment = Alignment.BottomEnd){
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, top = 18.dp, end = 0.dp, bottom = 29.dp)) {
+                    Text(text = title?:stringResource(R.string.str_upgradeYourCarExperience), fontSize = 24.sp, color = colorResource(R.color.color_33))
+                    Spacer(modifier = Modifier.height(9.dp))
+                    Text(text =des?:stringResource( R.string.str_bindYourCar_x), fontSize = 13.sp, color = colorResource(R.color.color_66),modifier = Modifier.width(180.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
+                    Button(onClick = {
+                        WBuriedUtil.clickCarCertification()
+                        //去做认证
+                        JumpUtils.instans?.jump(17,dataBean?.modelCode)
+                    },enabled = isUse,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
+                        colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),contentPadding = PaddingValues(10.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+                        modifier = Modifier.width(96.dp)) {
+                        Text(stringResource(R.string.str_goToCertification),fontSize = 15.sp,color =  colorResource(if(isUse)R.color.color_00095B else R.color.color_DD))
+                    }
+                }
+                Column(modifier = Modifier.padding(bottom = 24.dp, end = 20.dp)) {
+                    img?.apply {
+                        Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this) ?: R.mipmap.head_default,
+                            builder = {placeholder(R.mipmap.head_default)}),
+                            contentScale = ContentScale.Crop,
+                            contentDescription =null,modifier = Modifier.size(170.dp,72.dp).clip(RoundedCornerShape(5.dp)))
+                    }
+                }
+            }
+        }
+    }
 }
 /**
  * 车主认证
 * */
 @Composable
 fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
+    if(carItemBean==null){//未认证
+        OwnerCertificationUnauthorized(dataBean,isUse,carAuthBean)
+        return
+    }
     val carAuthConfVo=carAuthBean?.carAuthConfVo
     Spacer(modifier = Modifier.height(18.dp))
     Column(
@@ -238,7 +287,9 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuth
         }
         //待审核
         if(carItemBean!=null&&carItemBean.authStatus<3){
-            Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier.height(0.5.dp).fillMaxWidth())
+            Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier
+                .height(0.5.dp)
+                .fillMaxWidth())
             Row(
                 Modifier
                     .fillMaxWidth()

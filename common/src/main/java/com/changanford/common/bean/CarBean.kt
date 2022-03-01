@@ -20,9 +20,9 @@ data class CarAuthBean(
 )
 
 data class CarAuthConfVo(
-    val img: String = "",
-    val title: String = "",
-    val des: String = ""
+    val img: String? = "",
+    val title: String? = "",
+    val des: String? = ""
 )
 
 /**

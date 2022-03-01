@@ -12,7 +12,6 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
-import com.changanford.common.wutil.WCommonUtil
 
 
 class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon){
@@ -23,7 +22,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
         holder.dataBinding?.apply {
             val position=holder.absoluteAdapterPosition
 //            imgCover.load(item.carModelPic)
-            WCommonUtil.setMargin(layoutRoot,if(0==position)dp20 else 0,0,dp20,0)
+//            WCommonUtil.setMargin(layoutRoot,if(0==position)dp20 else 0,0,dp20,0)
             GlideUtils.glideLoadWidth(activity,item.carModelPic,imgCover,imgWidth)
             model=item
             executePendingBindings()
