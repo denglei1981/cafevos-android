@@ -146,6 +146,13 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
     }
     override fun observe() {
         super.observe()
+
+//        viewModel.errorLiveData.observe(this, Observer {
+//
+//            binding.refreshLayout.finishRefresh()
+//
+//        })
+
         viewModel.mechanicLiveData.observe(this, Observer {
 
             SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)

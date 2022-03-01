@@ -133,8 +133,14 @@ fun getBuriedHeader(body: String?): HashMap<String, String> {
         return map
     map["Content-Type"] = "application/json"
     map["timestamp"] = timestamp
-    map[RetrofitClient.BASE_URL_NAME] =MConstant.BASE_URL_BURIED
+    if(MConstant.isDebug){
+        map[RetrofitClient.BASE_URL_NAME] =MConstant.BASE_URL_BURIED
+    }else{
+        map[RetrofitClient.BASE_URL_NAME] =MConstant.BASE_URL_BURIED_PROD
+    }
+
     map["sign"] = signMD("${body}${timestamp}")
+//    map["sign"] = "${body}${timestamp}"
     return map
 }
 /**
