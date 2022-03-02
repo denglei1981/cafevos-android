@@ -251,5 +251,8 @@ object LiveDataBusKey {
 
 
     const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
+
+    const val REMOVE_CAR="remove_car" // 移除爱车。
+
 }
 

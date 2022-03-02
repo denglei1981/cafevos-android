@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.graphics.Color
 import android.text.method.ReplacementTransformationMethod
 import android.view.View
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.*
@@ -30,7 +31,10 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  *  文件名：CarAuthUI
@@ -778,7 +782,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         ocrBean?.path?.let {
             body["ownerCertImg"] = it
         }
-        body["vin"] = vinNum //vin
+        body["vin"] = vinNum.toUpperCase(Locale.CHINA)//vin
 
         if (!binding.authCheckbox.isChecked) {
             showToast("请阅读并勾选隐私协议")

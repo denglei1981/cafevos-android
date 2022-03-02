@@ -1081,4 +1081,25 @@ interface NetWorkApi {
     * */
     @POST("base/dict/getType")
     suspend fun getQuestionTagInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ArrayList<QuestionData>>
+
+
+
+
+
+    // 设置为默认车辆
+    @POST("ser/carAuth/setDefaultCar")
+    suspend fun setDefaultCar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    // 删除车辆
+    @POST("ser/carAuth/removeCar")
+    suspend fun deleteCar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
+
 }
