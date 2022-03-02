@@ -128,8 +128,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage(i: String) {
-        activity?.finish()
-//        LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).postValue(i)
+        LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).postValue(i)
     }
 
     /**
