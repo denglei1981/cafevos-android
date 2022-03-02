@@ -135,16 +135,31 @@ interface NetWorkApi {
 
     //爱车首页顶部banner
     @POST("/base/centerbanner/list")
-    suspend fun getCarTopBanner(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<NewCarBannerBean>>
+    suspend fun getCarTopBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<NewCarBannerBean>>
+
     //爱车首页
     @POST("/myCarModel/getMyCarModelList")
-    suspend fun getMyCarModelList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<NewCarInfoBean>>
+    suspend fun getMyCarModelList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<NewCarInfoBean>>
 
     @POST("/ser/carAuth/getMyCar")
-    suspend fun getMoreCareInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<CarMoreInfoBean>
+    suspend fun getMoreCareInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CarMoreInfoBean>
+
     //获取最近的一家经销商
     @POST("/baseDealer/nearestlimit")
-    suspend fun getRecentlyDealers( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<NewCarInfoBean>
+    suspend fun getRecentlyDealers(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewCarInfoBean>
+
     /**--------------------------------my---------------------------------------**/
     @POST("/base/oss/getSTS")
     suspend fun getOSS(
@@ -1060,7 +1075,7 @@ interface NetWorkApi {
     suspend fun poastsAddressAdd(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ) :CommonResponse<Any>
+    ): CommonResponse<Any>
 
     @POST("/user/getIndexPerms")
     suspend fun getIndexPerms(
@@ -1076,14 +1091,15 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): Observable<BaseBean<String>>
+
     /**
      * 问答tagInfo
-    * */
+     * */
     @POST("base/dict/getType")
-    suspend fun getQuestionTagInfo( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ArrayList<QuestionData>>
-
-
-
+    suspend fun getQuestionTagInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<QuestionData>>
 
 
     // 设置为默认车辆
@@ -1101,5 +1117,10 @@ interface NetWorkApi {
     ): CommonResponse<String>
 
 
-
+    // 查询有没有带绑定的车辆， 如果有请弹窗。
+    @POST("ser/carAuth/waitBindCarList")
+    suspend fun waitBindCarList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }

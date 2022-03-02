@@ -10,6 +10,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.BindCarBean
 import com.changanford.home.bean.FBBean
 import com.changanford.home.data.TwoAdData
 
@@ -88,6 +89,20 @@ class HomeV2ViewModel : BaseViewModel() {
                 }.onWithMsgFailure {
                     it?.toast()
                     responseBeanLiveData.postValue(null)
+                }
+        })
+    }
+
+
+    val waitCarLiveData = MutableLiveData<List<BindCarBean>>()
+    fun isWaitBindingCar() {
+        if(MConstant.token.isEmpty())return
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().waitBindCarList(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    waitCarLiveData.postValue(it)
                 }
         })
     }

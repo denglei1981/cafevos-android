@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatDialog
 import com.changanford.common.MyApp
 
 
-abstract class BaseAppCompatDialog(context: Context) : AppCompatDialog(context) {
+abstract class BaseAppCompatDialog(context: Context,var gravity: Int=Gravity.BOTTOM) : AppCompatDialog(context) {
 
 
     abstract fun initAd()
@@ -22,7 +22,7 @@ abstract class BaseAppCompatDialog(context: Context) : AppCompatDialog(context) 
         wl?.width = getScreenWidth()
         wl?.height = WindowManager.LayoutParams.WRAP_CONTENT
         wl?.alpha = 1f // 设置对话框的透明度,1f不透明
-        wl?.gravity = Gravity.BOTTOM //设置显示在中间
+        wl?.gravity = gravity //设置显示在中间
         window?.attributes = wl
         initAd()
     }

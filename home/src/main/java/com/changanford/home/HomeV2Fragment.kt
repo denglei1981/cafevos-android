@@ -33,6 +33,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
+import com.changanford.home.acts.dialog.WaitBindingCarDialog
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.base.response.UpdateUiState
@@ -48,6 +49,7 @@ import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.widget.pop.GetFbPop
+import com.changanford.home.widget.pop.WaitBindingCarPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
@@ -64,8 +66,7 @@ import java.util.logging.Handler
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>()
-     {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -315,7 +316,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         } catch (ignore: Exception) {
         }
     }
-    var publishPopup:PublishPopup?=null
+
+    var publishPopup: PublishPopup? = null
     private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
@@ -344,7 +346,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         )
-        publishPopup?.contentView?.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        publishPopup?.contentView?.measure(
+            View.MeasureSpec.UNSPECIFIED,
+            View.MeasureSpec.UNSPECIFIED
+        )
 
         publishPopup?.showAsDropDown(publishLocationView)
     }
@@ -360,26 +365,29 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         viewModel.fBBeanLiveData.observe(this) {
             it?.apply {
-                if(isPop==1){
+                if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        GetFbPop(this@HomeV2Fragment,viewModel,this).apply {
+                        GetFbPop(this@HomeV2Fragment, viewModel, this).apply {
                             setOutSideDismiss(false)
                             showPopupWindow()
                         }
-                    },500)
+                    }, 500)
+                } else {
+                    viewModel.isWaitBindingCar()
                 }
             }
         }
         //是否领取福币
         viewModel.isGetIntegral()
     }
+
     @SuppressLint("ClickableViewAccessibility")
-    fun backImageViewTouch(adBean:AdBean) {
+    fun backImageViewTouch(adBean: AdBean) {
         binding.recommendContent.ivHome.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                 }
-                MotionEvent.ACTION_UP->{
+                MotionEvent.ACTION_UP -> {
                     JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -393,6 +401,31 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
+
+        viewModel.waitCarLiveData.observe(this, Observer { data ->
+            if (data.isNotEmpty()) {
+                // 弹窗
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    data.forEach {
+                        WaitBindingCarPop(this@HomeV2Fragment, viewModel,it).apply {
+                            setOutSideDismiss(true)
+                            showPopupWindow()
+                        }
+                    }
+
+                }, 500)
+//                val waitBindingCarDialog =
+//                    WaitBindingCarDialog(requireActivity(), this@HomeV2Fragment,object :ICallback{
+//                        override fun onResult(result: ResultData) {
+//
+//                        }
+//
+//                    })
+//                waitBindingCarDialog.show()
+            }
+        })
+
+
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
 //            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
 //                if (t.isSuccess) {
@@ -508,13 +541,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         animator?.cancel()
     }
 
-     private fun addLiveDataBus(){
-         //登录回调
-         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-             .observe(this) {
-                 if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+    private fun addLiveDataBus() {
+        //登录回调
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
                     viewModel.isGetIntegral()
-                 }
-             }
-     }
+                }
+            }
+    }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp">
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:button="@drawable/my_car_check_box"
+            android:checked="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dp_4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="这是我的车"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/sp_13"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_is_your"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是我的车"
+            android:visibility="gone"
+            android:textColor="@color/color_33"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkbox"
+            app:layout_constraintStart_toEndOf="@+id/checkbox"
+            app:layout_constraintTop_toTopOf="@+id/checkbox" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
