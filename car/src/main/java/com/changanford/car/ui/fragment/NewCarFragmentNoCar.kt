@@ -39,6 +39,7 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.util.location.LocationUtils
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
