@@ -19,7 +19,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
-import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.changanford.car.CarAuthLayout
@@ -249,26 +248,26 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 tvLocation.visibility=View.GONE
                 tvFromYouRecently.visibility=View.VISIBLE
 
-                headerBinding.mapView.showZoomControls(false)
-                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
-                mBaiduMap.isTrafficEnabled = true
-                // 开启定位图层
-                mBaiduMap.isMyLocationEnabled = true
-                //声明LocationClient类
-                try {
-                    LocationClient.setAgreePrivacy(true)
-                    mLocationClient = LocationClient(requireContext())
-                    val option = LocationClientOption()
-                    option.isOpenGps = true // 打开gps
-                    option.setCoorType("bd09ll") // 设置坐标类型
-//                    option.setScanSpan(3000)
-                    mLocationClient?.registerLocationListener(myLocationListener)
-                    mLocationClient?.locOption = option
-                    mLocationClient?.start()//开始定位
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-//                LocationUtils.circleLocation(myLocationListener)
+//                headerBinding.mapView.showZoomControls(false)
+//                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
+//                mBaiduMap.isTrafficEnabled = true
+//                // 开启定位图层
+//                mBaiduMap.isMyLocationEnabled = true
+//                //声明LocationClient类
+//                try {
+//                    LocationClient.setAgreePrivacy(true)
+//                    mLocationClient = LocationClient(requireContext())
+//                    val option = LocationClientOption()
+//                    option.isOpenGps = true // 打开gps
+//                    option.setCoorType("bd09ll") // 设置坐标类型
+////                    option.setScanSpan(3000)
+//                    mLocationClient?.registerLocationListener(myLocationListener)
+//                    mLocationClient?.locOption = option
+//                    mLocationClient?.start()//开始定位
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+                LocationUtils.circleLocation(myLocationListener)
             }else{//服务端自行ip定位
                 tvFromYouRecently.visibility=View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
