@@ -170,9 +170,11 @@
         <activity
             android:name="com.changanford.my.MyPostUI"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.pay.AlipayMiniProgramCallbackActivity"
+
+        <activity android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
             android:launchMode="singleTask"
-            android:taskAffinity="com.chinaums.onlineservice">
+            android:taskAffinity="com.changanford.evos">
+<!--            android:taskAffinity="com.chinaums.onlineservice"-->
             <intent-filter>
                 <!--action.VIEW和category.DEFAULT必须设置-->
                 <action android:name="android.intent.action.VIEW"/>
