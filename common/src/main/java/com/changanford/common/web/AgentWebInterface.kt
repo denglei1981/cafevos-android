@@ -121,7 +121,6 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage() {
-        Log.e("wenke","closePage")
         activity?.finish()
     }
 
@@ -130,7 +129,6 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage(i: String) {
-        Log.e("wenke","closePage>>i:$i")
         activity?.finish()
 //        LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).postValue(i)
     }
