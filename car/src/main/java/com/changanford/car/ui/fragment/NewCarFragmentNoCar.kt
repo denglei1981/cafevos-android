@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
+import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.changanford.car.CarAuthLayout
@@ -38,7 +40,6 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
-import com.changanford.common.util.location.LocationUtils
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -51,8 +52,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val serviceAdapter by lazy { CarServiceAdapter() }
     private val carIconAdapter by lazy { CarIconAdapter(requireActivity()) }
     private var carModelCode:String=""
-    private var longitude:Double?=null//经度
-    private var latitude:Double?=null//维度
     private val mMapView by lazy { headerBinding.mapView}
     private val mBaiduMap by lazy { headerBinding.mapView.map }
     private var mLocationClient:LocationClient?=null
@@ -228,8 +227,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         viewModel.dealersBean.value?.apply {
                             val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                             addMarker(p1)
-                            addTextOptions(p1)
-                            if(latitude!=null&&longitude!=null)addPolyline(LatLng(latitude!!,longitude!!),p1)
+//                            addTextOptions(p1,dealerName?:"")
+                            addInfoWindow(p1,dealerName?:"")
+                            latLng?.apply { addPolyline(this,p1) }
                             composeViewDealers.setContent {
                                 Column(modifier = Modifier.fillMaxWidth()) {
                                     LookingDealers(viewModel.dealersBean.value)
@@ -248,29 +248,27 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
                 tvLocation.visibility=View.GONE
                 tvFromYouRecently.visibility=View.VISIBLE
+
                 headerBinding.mapView.showZoomControls(false)
-                LocationUtils.circleLocation(myLocationListener)
-//                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
-//                mBaiduMap.isTrafficEnabled = true
-//                //关闭缩放按钮
-//                headerBinding.mapView.showZoomControls(false)
-//                // 开启定位图层
-//                mBaiduMap.isMyLocationEnabled = true
-//                //声明LocationClient类
-//                try {
-//                    LocationClient.setAgreePrivacy(true)
-//                    mLocationClient = LocationClient(requireContext())
-//                    val option = LocationClientOption()
-//                    option.isOpenGps = true // 打开gps
-//                    option.setCoorType("bd09ll") // 设置坐标类型
-//                    option.setScanSpan(1000)
-//                    mLocationClient?.registerLocationListener(myLocationListener)
-//                    mLocationClient?.locOption = option
-//                    mLocationClient?.start()//开始定位
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                    Log.e("wenke","定位：Exception:${e.message}")
-//                }
+                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
+                mBaiduMap.isTrafficEnabled = true
+                // 开启定位图层
+                mBaiduMap.isMyLocationEnabled = true
+                //声明LocationClient类
+                try {
+                    LocationClient.setAgreePrivacy(true)
+                    mLocationClient = LocationClient(requireContext())
+                    val option = LocationClientOption()
+                    option.isOpenGps = true // 打开gps
+                    option.setCoorType("bd09ll") // 设置坐标类型
+//                    option.setScanSpan(3000)
+                    mLocationClient?.registerLocationListener(myLocationListener)
+                    mLocationClient?.locOption = option
+                    mLocationClient?.start()//开始定位
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+//                LocationUtils.circleLocation(myLocationListener)
             }else{//服务端自行ip定位
                 tvFromYouRecently.visibility=View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
@@ -281,26 +279,21 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     }
     private var isFirstLoc=true
+    private var latLng:LatLng?=null
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
             location?.apply {
-                latitude = latitude //获取纬度信息
-                longitude = longitude //获取经度信息
                 Log.e("wenke","latitude:$latitude>>>longitude:$longitude")
-//                val locData = MyLocationData.Builder()
-//                    .accuracy(radius) // 此处设置开发者获取到的方向信息，顺时针0-360
-//                    .direction(direction).latitude(latitude)
-//                    .longitude(longitude).build()
-//                mBaiduMap.setMyLocationData(locData)
-                val latLng = LatLng(latitude, longitude)
+                latLng= LatLng(latitude, longitude)
                 if (isFirstLoc) {
                     isFirstLoc = false
                     val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(20.0f)
+                    builder.target(latLng).zoom(12.0f)
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
-                addMarker(latLng)
-                addTextOptions(latLng)
+                addMarker(latLng!!)
+//                addTextOptions(latLng!!,getString(R.string.str_currentPosition))
+                addInfoWindow(latLng!!,getString(R.string.str_currentPosition))
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
         }
@@ -312,10 +305,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         val points: MutableList<LatLng> = ArrayList()
         points.add(p1)
         points.add(p2)
+        Log.e("wenke","绘制折线》》${points.size}")
         //设置折线的属性
         val mOverlayOptions: OverlayOptions = PolylineOptions()
-            .width(10)
-            .color(-0x55010000)
+            .width(2)
+            .color(-0x00979797)
             .points(points)
             .dottedLine(true) //设置折线显示为虚线
 
@@ -328,7 +322,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     * */
     private fun addMarker(latLng:LatLng){
         //构建Marker图标
-        val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_plate_add)
+        val bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location)
         //构建MarkerOption，用于在地图上添加Marker
         val option: OverlayOptions = MarkerOptions()
             .position(latLng)
@@ -337,19 +331,37 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         mBaiduMap.addOverlay(option)
     }
     /**
-     * 添加位置覆盖物
+     * 添加文字覆盖物
      * */
-    private fun addTextOptions(latLng:LatLng){
+    private fun addTextOptions(latLng:LatLng,str:String){
+        Log.e("wenke","添加文字覆盖物》》$str")
         //构建TextOptions对象
         val mTextOptions: OverlayOptions = TextOptions()
-            .text(getString(R.string.str_currentPosition))
-            .bgColor(-0xffffff) //背景色
+            .text(str)
+            .bgColor(0x00ffffff) //背景色
             .fontSize(26) //字号
-            .fontColor(-0x333333) //文字颜色
+            .fontColor(0x00333333) //文字颜色
             .rotate(0f) //旋转角度
             .position(latLng)
         //在地图上显示文字覆盖物
         mBaiduMap.addOverlay(mTextOptions)
+    }
+    /**
+     * 添加信息窗
+     * */
+    private fun addInfoWindow(latLng:LatLng,str:String){
+        Log.e("wenke","添加信息窗》》$str")
+        //用来构造InfoWindow的Button
+        val button = Button(context)
+        button.setBackgroundResource(R.drawable.shape_whit15_bg)
+        button.setPadding(20,0,20,0)
+        button.text = str
+        //构造InfoWindow
+     //point 描述的位置点
+        //-100 InfoWindow相对于point在y轴的偏移量
+        val mInfoWindow = InfoWindow(button, latLng, 0)
+        //使InfoWindow生效
+        mBaiduMap.showInfoWindow(mInfoWindow)
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
