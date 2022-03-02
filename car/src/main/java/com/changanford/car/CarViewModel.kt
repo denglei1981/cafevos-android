@@ -153,7 +153,7 @@ class CarViewModel : ViewModel() {
      * [latY]纬度
      * [carModelCode]车型编码
      * */
-    fun getRecentlyDealers(lngX:Any?=null, latY:Any?=null,carModelCode: String? =null) {
+    fun getRecentlyDealers(lngX:Double?=null, latY:Double?=null,carModelCode: String? =null) {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()

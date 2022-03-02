@@ -5,4 +5,5 @@
     <string name="car_updateExperience">升级您的用车体验</string>
     <string name="car_bindTips">绑定您的爱车，成为认证车主享受更多专属服务</string>
     <string name="str_orderImmediately">立即订购</string>
+    <string name="str_pleaseOnYourMobilePhoneFirst">请先打开手机定位</string>
 </resources>

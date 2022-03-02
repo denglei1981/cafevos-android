@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
+import com.baidu.location.LocationClient
+import com.baidu.mapapi.map.*
+import com.baidu.mapapi.model.LatLng
 import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
@@ -47,8 +51,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val serviceAdapter by lazy { CarServiceAdapter() }
     private val carIconAdapter by lazy { CarIconAdapter(requireActivity()) }
     private var carModelCode:String=""
-    private var longitude:Any?=null//经度
-    private var latitude:Any?=null//维度
+    private var longitude:Double?=null//经度
+    private var latitude:Double?=null//维度
+    private val mMapView by lazy { headerBinding.mapView}
+    private val mBaiduMap by lazy { headerBinding.mapView.map }
+    private var mLocationClient:LocationClient?=null
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -74,7 +81,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         initObserve()
         initBanner()
-        initLocation()
+        initMap()
     }
     override fun initData() {
         viewModel.getTopBanner()
@@ -204,26 +211,105 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     find { it.modelCode=="after-sales" }?.apply {
                         if(isVisible(carModelCode))AfterSalesService(this)
                     }
-                    //寻找经销商
-                    find { it.modelCode=="dealers" }?.apply {
-                        if(isVisible(carModelCode))LookingDealers(modelName,viewModel.dealersBean.value)
+                }
+            }
+            headerBinding.apply {
+                layoutDealers.visibility=View.GONE
+                //寻找经销商
+                find { it.modelCode=="dealers" }?.apply {
+                    if(isVisible(carModelCode)) {
+                        layoutDealers.visibility=View.VISIBLE
+                        tvDealers.apply {
+                            text=modelName
+                            setOnClickListener {
+
+                            }
+                        }
+                        composeViewDealers.setContent {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                LookingDealers(viewModel.dealersBean.value)
+                            }
+                        }
                     }
                 }
+
             }
         }
     }
-    private fun initLocation(){
-        if (LocationServiceUtil.isLocServiceEnable(requireContext())&&isGetLocation()) {
-                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                    override fun onReceiveLocation(location: BDLocation) {
-                        latitude = location.latitude //获取纬度信息
-                        longitude = location.longitude //获取经度信息
-                        viewModel.getRecentlyDealers(longitude,latitude)
-                    }
-                })
-        }else{//服务端自行ip定位
-            viewModel.getRecentlyDealers()
+    private fun initMap(){
+        headerBinding.apply {
+            if (LocationServiceUtil.isLocServiceEnable(requireContext())&&isGetLocation()) {
+                viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
+                tvLocation.visibility=View.GONE
+                tvFromYouRecently.visibility=View.VISIBLE
+                headerBinding.mapView.showZoomControls(false)
+                LocationUtils.circleLocation(myLocationListener)
+//                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
+//                mBaiduMap.isTrafficEnabled = true
+//                //关闭缩放按钮
+//                headerBinding.mapView.showZoomControls(false)
+//                // 开启定位图层
+//                mBaiduMap.isMyLocationEnabled = true
+//                //声明LocationClient类
+//                try {
+//                    LocationClient.setAgreePrivacy(true)
+//                    mLocationClient = LocationClient(requireContext())
+//                    val option = LocationClientOption()
+//                    option.isOpenGps = true // 打开gps
+//                    option.setCoorType("bd09ll") // 设置坐标类型
+//                    option.setScanSpan(1000)
+//                    mLocationClient?.registerLocationListener(myLocationListener)
+//                    mLocationClient?.locOption = option
+//                    mLocationClient?.start()//开始定位
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                    Log.e("wenke","定位：Exception:${e.message}")
+//                }
+            }else{//服务端自行ip定位
+                tvFromYouRecently.visibility=View.GONE
+                viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
+                tvLocation.visibility=View.VISIBLE
+                viewModel.getRecentlyDealers()
+            }
         }
+
+    }
+    private var isFirstLoc=true
+    private val myLocationListener =object :BDAbstractLocationListener(){
+        override fun onReceiveLocation(location: BDLocation?) {
+            location?.apply {
+                latitude = latitude //获取纬度信息
+                longitude = longitude //获取经度信息
+//                val locData = MyLocationData.Builder()
+//                    .accuracy(radius) // 此处设置开发者获取到的方向信息，顺时针0-360
+//                    .direction(direction).latitude(latitude)
+//                    .longitude(longitude).build()
+//                mBaiduMap.setMyLocationData(locData)
+                if (isFirstLoc) {
+                    isFirstLoc = false
+                    val latLng = LatLng(latitude, longitude)
+                    val builder = MapStatus.Builder()
+                    builder.target(latLng).zoom(20.0f)
+                    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
+                }
+                addMarker(latitude,longitude)
+                viewModel.getRecentlyDealers(longitude,latitude)
+            }
+        }
+    }
+    private fun addMarker(latitude: Double?,longitude:Double?){
+        Log.e("wenke","latitude:$latitude>>>longitude:$longitude")
+        if(latitude==null||longitude==null)return
+        //定义Maker坐标点
+        val point = LatLng(latitude,longitude)
+        //构建Marker图标
+        val bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.fordicon)
+        //构建MarkerOption，用于在地图上添加Marker
+        val option: OverlayOptions = MarkerOptions()
+            .position(point)
+            .icon(bitmap)
+        //在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option)
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
@@ -249,6 +335,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onResume() {
         super.onResume()
         initData()
+        mMapView.onResume()
         if(oldScrollY<maxSlideY){
             carTopBanner.resumeVideo()
             headerBinding.carTopViewPager.startLoop()
@@ -257,7 +344,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onPause() {
         super.onPause()
         carTopBanner.pauseVideo()
+        mMapView.onPause();
         headerBinding.carTopViewPager.stopLoop()
+    }
+
+    override fun onDestroy() {
+        mLocationClient?.apply {
+            stop()
+            mBaiduMap.isMyLocationEnabled = false
+            mMapView.onDestroy();
+        }
+        super.onDestroy()
     }
     @TargetApi(23)
     private fun isGetLocation(): Boolean {

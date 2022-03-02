@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -120,7 +121,8 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage() {
-        if (activity != null) activity!!.finish()
+        Log.e("wenke","closePage")
+        activity?.finish()
     }
 
     /**
@@ -128,7 +130,9 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage(i: String) {
-        LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).postValue(i)
+        Log.e("wenke","closePage>>i:$i")
+        activity?.finish()
+//        LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).postValue(i)
     }
 
     /**

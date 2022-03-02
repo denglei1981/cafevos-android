@@ -108,85 +108,45 @@ private fun ItemService(itemData: NewCarTagBean?){
  * 寻找经销商
 * */
 @Composable
-fun LookingDealers(carModelName:String?=null,dataBean: NewCarInfoBean?=null){
+fun LookingDealers(dataBean: NewCarInfoBean?=null){
     dataBean?.apply {
-        Column(modifier = Modifier
+        Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp)) {
-            Spacer(modifier = Modifier.height(40.dp))
-            Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween,verticalAlignment = Alignment.CenterVertically) {
-                Text(text = carModelName?:"",color = colorResource(R.color.color_33),fontSize = 17.sp)
-                Image(painter = painterResource(R.mipmap.right_black), contentDescription = null,modifier = Modifier.clickable {
-
-                })
+            .background(color = Color.White,RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp))
+            .padding(end = 15.dp, top = 10.dp, bottom = 15.dp)) {
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                //标题
+                Text(text = dealerName?:"",color = colorResource(R.color.color_33),fontSize = 14.sp)
+                Spacer(modifier = Modifier.height(10.dp))
+                //位置信息
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(R.mipmap.car_location_small), contentDescription =null )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(text = address?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
+                        overflow = TextOverflow.Ellipsis,maxLines = 1)
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                //电话
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(R.mipmap.car_phone), contentDescription =null )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(text = phone?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
+                        overflow = TextOverflow.Ellipsis,maxLines = 1)
+                }
             }
-            Spacer(modifier = Modifier.height(17.dp))
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White, shape = RoundedCornerShape(5.dp))
-                .clickable {
-                    JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
-                }) {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        WBuriedUtil.clickCarDealer(dealerName)
-                    },contentAlignment = Alignment.TopEnd){
-                    Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic) ?: R.mipmap.head_default,
-                        builder = {placeholder(R.mipmap.head_default)}),
-                        contentScale = ContentScale.Crop,
-                        contentDescription =null,modifier = Modifier
-                            .fillMaxWidth()
-                            .height(154.dp)
-                            .clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
-                    Row(modifier = Modifier.padding(top = 14.dp,end = 12.dp)) {
-                        Box(contentAlignment = Alignment.Center,modifier = Modifier
-                            .size(65.dp, 24.dp)
-                            .background(
-                                colorResource(R.color.color_9900142E),
-                                shape = RoundedCornerShape(2.dp)
-                            )) {
-                            Text(text = stringResource(R.string.str_fromYouRecently),color = Color.White,fontSize = 12.sp)
-                        }
-                    }
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 18.dp, end = 12.dp, top = 10.dp)) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        //标题
-                        Text(text = dealerName?:"",color = colorResource(R.color.color_33),fontSize = 14.sp)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        //位置信息
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(painter = painterResource(R.mipmap.car_location_small), contentDescription =null )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = address?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
-                                overflow = TextOverflow.Ellipsis,maxLines = 1)
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
-                        //电话
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(painter = painterResource(R.mipmap.car_phone), contentDescription =null )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = phone?:"",color = colorResource(R.color.color_66),fontSize = 12.sp,
-                                overflow = TextOverflow.Ellipsis,maxLines = 1)
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(37.dp))
-                    //位置距离 导航
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
-                        WBuriedUtil.clickCarAfterSalesNavigate()
-                    }) {
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Image(painter = painterResource(R.mipmap.car_location), contentDescription =null )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = stringResource(R.string.str_awayFromYouX,distanct?:""),color = colorResource(R.color.color_66),fontSize = 12.sp)
-                    }
-                }
-                Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.width(37.dp))
+            //位置距离 导航
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
+                WBuriedUtil.clickCarAfterSalesNavigate()
+            }) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Image(painter = painterResource(R.mipmap.car_location), contentDescription =null )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = stringResource(R.string.str_awayFromYouX,distanct?:""),color = colorResource(R.color.color_66),fontSize = 12.sp)
             }
         }
+
     }
 
 }
