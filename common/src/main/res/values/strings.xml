@@ -58,4 +58,5 @@
     <string name="str_noContent">暂无内容</string>
     <string name="str_questions">提问</string>
     <string name="str_parametersOfIllegal">参数非法！</string>
+    <string name="str_currentPosition">当前位置</string>
 </resources>

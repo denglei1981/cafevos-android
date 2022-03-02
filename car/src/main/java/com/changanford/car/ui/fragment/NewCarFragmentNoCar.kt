@@ -225,9 +225,15 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
                             }
                         }
-                        composeViewDealers.setContent {
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                LookingDealers(viewModel.dealersBean.value)
+                        viewModel.dealersBean.value?.apply {
+                            val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
+                            addMarker(p1)
+                            addTextOptions(p1)
+                            if(latitude!=null&&longitude!=null)addPolyline(LatLng(latitude!!,longitude!!),p1)
+                            composeViewDealers.setContent {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    LookingDealers(viewModel.dealersBean.value)
+                                }
                             }
                         }
                     }
@@ -280,36 +286,70 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             location?.apply {
                 latitude = latitude //获取纬度信息
                 longitude = longitude //获取经度信息
+                Log.e("wenke","latitude:$latitude>>>longitude:$longitude")
 //                val locData = MyLocationData.Builder()
 //                    .accuracy(radius) // 此处设置开发者获取到的方向信息，顺时针0-360
 //                    .direction(direction).latitude(latitude)
 //                    .longitude(longitude).build()
 //                mBaiduMap.setMyLocationData(locData)
+                val latLng = LatLng(latitude, longitude)
                 if (isFirstLoc) {
                     isFirstLoc = false
-                    val latLng = LatLng(latitude, longitude)
                     val builder = MapStatus.Builder()
                     builder.target(latLng).zoom(20.0f)
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
-                addMarker(latitude,longitude)
+                addMarker(latLng)
+                addTextOptions(latLng)
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
         }
     }
-    private fun addMarker(latitude: Double?,longitude:Double?){
-        Log.e("wenke","latitude:$latitude>>>longitude:$longitude")
-        if(latitude==null||longitude==null)return
-        //定义Maker坐标点
-        val point = LatLng(latitude,longitude)
+    /**
+     * 绘制折线
+     * */
+    private fun addPolyline(p1:LatLng,p2:LatLng){
+        val points: MutableList<LatLng> = ArrayList()
+        points.add(p1)
+        points.add(p2)
+        //设置折线的属性
+        val mOverlayOptions: OverlayOptions = PolylineOptions()
+            .width(10)
+            .color(-0x55010000)
+            .points(points)
+            .dottedLine(true) //设置折线显示为虚线
+
+        //在地图上绘制折线
+        //mPloyline 折线对象
+       mBaiduMap.addOverlay(mOverlayOptions)
+    }
+    /**
+     * 绘制点标记
+    * */
+    private fun addMarker(latLng:LatLng){
         //构建Marker图标
-        val bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.fordicon)
+        val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_plate_add)
         //构建MarkerOption，用于在地图上添加Marker
         val option: OverlayOptions = MarkerOptions()
-            .position(point)
+            .position(latLng)
             .icon(bitmap)
         //在地图上添加Marker，并显示
         mBaiduMap.addOverlay(option)
+    }
+    /**
+     * 添加位置覆盖物
+     * */
+    private fun addTextOptions(latLng:LatLng){
+        //构建TextOptions对象
+        val mTextOptions: OverlayOptions = TextOptions()
+            .text(getString(R.string.str_currentPosition))
+            .bgColor(-0xffffff) //背景色
+            .fontSize(26) //字号
+            .fontColor(-0x333333) //文字颜色
+            .rotate(0f) //旋转角度
+            .position(latLng)
+        //在地图上显示文字覆盖物
+        mBaiduMap.addOverlay(mTextOptions)
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
