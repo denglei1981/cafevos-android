@@ -233,10 +233,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         }
                         viewModel.dealersBean.value?.apply {
                             val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
-                            addMarker(p1,R.mipmap.ic_car_location,dealerName)
-//                            addTextOptions(p1,dealerName?:"")
 //                            addInfoWindow(p1,dealerName?:"")
                             latLng?.apply { addPolyline(this,p1) }
+                            addMarker(p1,R.mipmap.ic_car_location,dealerName)
                             composeViewDealers.setContent {
                                 Column(modifier = Modifier.fillMaxWidth()) {
                                     LookingDealers(viewModel.dealersBean.value)
