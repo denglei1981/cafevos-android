@@ -106,4 +106,24 @@ class HomeV2ViewModel : BaseViewModel() {
                 }
         })
     }
+
+    val  confirmCarLiveData = MutableLiveData<String>()
+    var vinStr :String=""
+    fun confirmBindCar(isConfirm:Int,vin:String) {
+        vinStr=vin
+        if(MConstant.token.isEmpty())return
+        launch(false, {
+            val body = HashMap<String, Any>()
+            body["isConfirm"]=isConfirm
+            body["vin"]=vin
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().confirmBindCar(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+
+                    confirmCarLiveData.postValue(it)
+                }
+        })
+    }
+
+
 }
