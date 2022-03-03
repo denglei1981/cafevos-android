@@ -21,10 +21,10 @@ data class CarAuthBean(
 
 data class CarAuthConfVo(
     val removeCarNotice:String="",
-    val contactCustomerService:String=""
+    val contactCustomerService:String="",
     val img: String? = "",
     val title: String? = "",
-    val des: String? = ""
+    val des: String? = "",
 )
 
 /**
