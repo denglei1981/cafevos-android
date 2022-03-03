@@ -250,8 +250,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             binding.myCarAuthLayout.apply {
                 include.apply {
                     textView9.text = growSeriesName
-                    textView11.text ="${totalGrowth}/${nextSeriesMinGrow}"
-                    myScorelevel.progress = if(nextSeriesMinGrow!=0L)(totalGrowth * 100 / (nextSeriesMinGrow)).toInt() else 0
+                    try {
+                        textView11.text ="${totalGrowth}/${growSeriesMaxGrow}"
+                        myScorelevel.progress = if(nextSeriesMinGrow!=0L)(totalGrowth * 100 / (growSeriesMaxGrow.toInt())).toInt() else 0
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
+
                 }
             }
         }
