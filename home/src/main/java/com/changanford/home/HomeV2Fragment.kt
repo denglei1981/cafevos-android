@@ -403,7 +403,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         super.observe()
 
         viewModel.waitCarLiveData.observe(this, Observer { data ->
-            if (data.isNotEmpty()) {
+            if (data!=null&&data.isNotEmpty()) {
                 // 弹窗
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
                     data.forEach {
