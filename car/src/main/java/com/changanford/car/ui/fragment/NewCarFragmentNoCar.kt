@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Button
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -226,9 +228,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         }
                         viewModel.dealersBean.value?.apply {
                             val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
-                            addMarker(p1)
+                            addMarker(p1,R.mipmap.ic_car_location)
 //                            addTextOptions(p1,dealerName?:"")
-//                            addInfoWindow(p1,dealerName?:"")
+                            addInfoWindow(p1,dealerName?:"")
                             latLng?.apply { addPolyline(this,p1) }
                             composeViewDealers.setContent {
                                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -287,12 +289,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 if (isFirstLoc) {
                     isFirstLoc = false
                     val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(14.0f)
+                    builder.target(latLng).zoom(13.0f)
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
-                addMarker(latLng!!)
+                addMarker(latLng!!,R.mipmap.ic_car_current_lacation)
 //                addTextOptions(latLng!!,getString(R.string.str_currentPosition))
-                addInfoWindow(latLng!!,getString(R.string.str_currentPosition))
+//                addInfoWindow(latLng!!,getString(R.string.str_currentPosition))
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
         }
@@ -319,9 +321,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     /**
      * 绘制点标记
     * */
-    private fun addMarker(latLng:LatLng){
+    private fun addMarker(latLng:LatLng,iconId:Int?){
         //构建Marker图标
-        val bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location)
+        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
         //构建MarkerOption，用于在地图上添加Marker
         val option: OverlayOptions = MarkerOptions()
             .position(latLng)
@@ -352,16 +354,23 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         Log.e("wenke","添加信息窗》》$str")
         //用来构造InfoWindow的Button
         val view = Button(context).apply {
-            setBackgroundResource(R.drawable.shape_whit15_bg)
+            setBackgroundResource(R.drawable.shape_car_location_bg)
             setPadding(20,0,20,0)
+            maxLines=1
+            maxWidth=100
+//            gravity=Gravity.TOP or Gravity.CENTER
+            ellipsize=  TextUtils.TruncateAt.END
+            isSingleLine=true
 //            minHeight=0
 //            height=28
+            textSize=13f
+            setTextColor(ContextCompat.getColor(requireContext(),R.color.color_33))
             text = str
         }
         //构造InfoWindow
         //point 描述的位置点
         //-100 InfoWindow相对于point在y轴的偏移量
-        val mInfoWindow = InfoWindow(view, latLng, -100)
+        val mInfoWindow = InfoWindow(view, latLng, -10)
         //使InfoWindow生效
         mBaiduMap.showInfoWindow(mInfoWindow)
     }
