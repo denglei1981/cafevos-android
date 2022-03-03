@@ -50,5 +50,7 @@ data class CarAuthQYBean(
     val rightsDetailContent: String = "",
     val authDetailRightsIsShow: Boolean = false,
     val authDetailRightsContent: String = "",
-    val authPrompt: String? = ""
+    val authPrompt: String? = "",
+    val removeCarNotice: String? = "",
+    val contactCustomerService:String?=""
 )

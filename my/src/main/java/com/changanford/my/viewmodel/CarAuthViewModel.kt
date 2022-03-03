@@ -215,4 +215,38 @@ class CarAuthViewModel : ViewModel() {
             })
     }
 
+
+    fun setDefalutCar(vin: String, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest(true) {
+                val body = HashMap<String, Any>()
+                body["vin"] = vin
+                val rKey = getRandomKey()
+                apiService.setDefaultCar(body.header(rKey), body.body(rKey))
+
+            })
+        }
+    }
+
+    fun deleteCar(
+        vin: String,
+        phone: String? = "",
+        smsCode: String? = "",
+        result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(
+                fetchRequest {
+                    var body = HashMap<String, Any>()
+                    body["phone"] = phone ?: ""
+                    body["smsCode"] = smsCode ?: ""
+                    body["vin"] = vin
+                    val rKey = getRandomKey()
+                    apiService.deleteCar(body.header(rKey), body.body(rKey))
+
+                }
+            )
+        }
+    }
+
 }

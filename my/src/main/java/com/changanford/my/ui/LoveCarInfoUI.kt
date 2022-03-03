@@ -2,11 +2,15 @@ package com.changanford.my.ui
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
@@ -14,6 +18,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiLoveCarInfoBinding
@@ -33,8 +38,8 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
 
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
-        var d = binding.tvAuth.background as GradientDrawable
-        d.setColor(Color.parseColor("#6900095B"))
+
+
 
         auth = CarItemBean()
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
@@ -47,7 +52,25 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                     binding.group.visibility =
                         if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
                     binding.carContent.text = it.authDetailRightsContent
+                    binding.deleteCar.text = it.removeCarNotice
                 }
+            }
+        }
+
+        binding.tvAuth.setOnClickListener {
+            // 设置为默认车辆
+            if (auth.isDefault == 0) {
+                viewModel.setDefalutCar(auth.vin) {
+                    it.onSuccess {
+                        auth.isDefault = 1
+                        setDefalut()
+                        "设置成功".toast()
+                    }.onFailure {
+                        it?.toast()
+                    }
+                }
+            } else {
+                "已经是默认车辆".toast()
             }
         }
 
@@ -56,8 +79,19 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                 initData()
             })
 
+        LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR, Boolean::class.java)
+            .observe(this, Observer {
+                if (it) {
+                    this.finish()
+                }
+            })
         binding.deleteCar.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.CarDeleteUI)
+            if (!TextUtils.isEmpty(auth.vin)) {
+                val bundle = Bundle()
+                bundle.putString("vin", auth.vin)
+                RouterManger.startARouter(ARouterMyPath.CarDeleteUI, bundle = bundle)
+            }
+
         }
     }
 
@@ -70,6 +104,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                         auth = it
                     }
                     setAuthInfo()
+                    setDefalut()
                 }
                 it.onWithMsgFailure {
                     it?.let {
@@ -88,7 +123,21 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         binding.cardDealer.text = "${auth.dealerName ?: ""}"
         binding.cardDealerPhone.text = "${auth.dealerPhone ?: ""}"
         binding.carPic.load(auth.modelUrl, R.mipmap.ic_car_auth_ex)
+
         setCarNum()
+    }
+
+    private fun setDefalut() {
+        var d = binding.tvAuth.background as GradientDrawable
+        if (auth.isDefault == 0) {
+            binding.tvAuth.text = "设为默认"
+            d.setColor(Color.parseColor("#6900095B"))
+        } else {
+            binding.tvAuth.text = "默认"
+            d.setColor(Color.parseColor("#b300095B"))
+            binding.tvAuth.setTextColor(ContextCompat.getColor(this, R.color.white))
+        }
+
     }
 
     private fun setCarNum() {

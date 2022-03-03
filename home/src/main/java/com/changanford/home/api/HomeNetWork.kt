@@ -372,4 +372,14 @@ interface HomeNetWork {
      * */
     @POST("/userIntegralImport/doGetIntegral")
     suspend fun doGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<WResponseBean>
+
+
+
+
+    // 查询有没有带绑定的车辆， 如果有请弹窗。
+    @POST("ser/carAuth/waitBindCarList")
+    suspend fun waitBindCarList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<List<BindCarBean>>
 }

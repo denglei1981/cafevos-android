@@ -20,6 +20,8 @@ data class CarAuthBean(
 )
 
 data class CarAuthConfVo(
+    val removeCarNotice:String="",
+    val contactCustomerService:String=""
     val img: String? = "",
     val title: String? = "",
     val des: String? = ""
@@ -101,6 +103,7 @@ data class CarItemBean(
     var realnameAuthStatus: String = "",
     val incallAuthRemake: String = "",
     val carName: String = "",
+    var isDefault:Int=0 // 是否为默认车辆
 
     ) : Serializable
 

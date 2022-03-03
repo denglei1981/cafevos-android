@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.home.bean.BindCarBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/dp_285"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_whit5_bg"
+        android:minHeight="@dimen/dp_180"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_12">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="车主认证确认"
+            android:textColor="#ff333333"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tips"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:gravity="center"
+            android:text="检测到车辆与您手机号一致"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_car"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="23dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_recommed_default"
+            app:layout_constraintDimensionRatio="255:114"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tips"
+            app:layout_constraintWidth_percent="0.89" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_car_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:text="@{model.seriesName}"
+            android:textColor="#ff333333"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/iv_car"
+            app:layout_constraintTop_toBottomOf="@+id/iv_car" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_car_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginEnd="@dimen/dp_12"
+            android:text="@{model.materialName}"
+            android:textColor="#ff999999"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_car_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_car_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_vin_num"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/dp_3"
+            android:text="@{model.vinStr}"
+            android:textColor="#ff999999"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_car_tag"
+            app:layout_constraintTop_toBottomOf="@+id/tv_car_tag"
+            tools:text="VIN码：21846814774" />
+
+        <include
+            android:id="@+id/layout_is_my"
+            layout="@layout/layout_car_check"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+            app:layout_constraintTop_toBottomOf="@+id/tv_vin_num" />
+
+        <include
+            android:id="@+id/layout_is_not_my"
+            layout="@layout/layout_car_check"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+            app:layout_constraintTop_toBottomOf="@+id/layout_is_my" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_submit"
+            android:layout_width="@dimen/dp_160"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_32"
+            android:background="@drawable/shape_00095b_20dp"
+            android:gravity="center"
+            android:text="@string/home_sure"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_is_not_my" />
+
+        <TextView
+            android:id="@+id/tv_sure_tips"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="@dimen/dp_26"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_12"
+            android:gravity="center"
+            android:text="确认后将自动将爱车与您账户绑定"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
