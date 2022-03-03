@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.graphics.Typeface
+import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.text.*
@@ -15,6 +12,7 @@ import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.View.DRAWING_CACHE_QUALITY_HIGH
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -294,5 +292,26 @@ object WCommonUtil {
             p.setMargins(l, t, r, b)
             v.requestLayout()
         }
+    }
+
+    /**
+     * 该方式原理主要是：View组件显示的内容可以通过cache机制保存为bitmap
+     */
+    fun createBitmapFromView(view: View): Bitmap? {
+        var bitmap: Bitmap? = null
+        //开启view缓存bitmap
+        view.isDrawingCacheEnabled = true
+        //设置view缓存Bitmap质量
+        view.drawingCacheQuality = DRAWING_CACHE_QUALITY_HIGH
+        //获取缓存的bitmap
+        val cache = view.drawingCache
+        if (cache != null && !cache.isRecycled) {
+            bitmap = Bitmap.createBitmap(cache)
+        }
+        //销毁view缓存bitmap
+        view.destroyDrawingCache()
+        //关闭view缓存bitmap
+        view.isDrawingCacheEnabled = false
+        return bitmap
     }
 }

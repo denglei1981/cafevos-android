@@ -43,6 +43,7 @@ import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.wutil.WCommonUtil
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -232,9 +233,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         }
                         viewModel.dealersBean.value?.apply {
                             val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
-                            addMarker(p1,R.mipmap.ic_car_location)
+                            addMarker(p1,R.mipmap.ic_car_location,dealerName)
 //                            addTextOptions(p1,dealerName?:"")
-                            addInfoWindow(p1,dealerName?:"")
+//                            addInfoWindow(p1,dealerName?:"")
                             latLng?.apply { addPolyline(this,p1) }
                             composeViewDealers.setContent {
                                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -291,11 +292,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 if (isFirstLoc) {
                     isFirstLoc = false
                     val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(13.0f)
+                    builder.target(latLng).zoom(13.2f)
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
-                addMarker(latLng!!,R.mipmap.ic_car_current_lacation)
-//                addTextOptions(latLng!!,getString(R.string.str_currentPosition))
+                addMarker(latLng!!,R.mipmap.ic_car_location_green,getString(R.string.str_currentPosition))
 //                addInfoWindow(latLng!!,getString(R.string.str_currentPosition))
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
@@ -315,39 +315,22 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             .color(-0x00979797)
             .points(points)
             .dottedLine(true) //设置折线显示为虚线
-
-        //在地图上绘制折线
-        //mPloyline 折线对象
        mBaiduMap.addOverlay(mOverlayOptions)
     }
     /**
      * 绘制点标记
     * */
-    private fun addMarker(latLng:LatLng,iconId:Int?){
-        //构建Marker图标
-        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
-        //构建MarkerOption，用于在地图上添加Marker
-        val option: OverlayOptions = MarkerOptions()
-            .position(latLng)
-            .icon(bitmap)
-        //在地图上添加Marker，并显示
-        mBaiduMap.addOverlay(option)
-    }
-    /**
-     * 添加文字覆盖物
-     * */
-    private fun addTextOptions(latLng:LatLng,str:String){
-        Log.e("wenke","添加文字覆盖物》》$str")
-        //构建TextOptions对象
-        val mTextOptions: OverlayOptions = TextOptions()
-            .text(str)
-            .bgColor(0x00ffffff) //背景色
-            .fontSize(26) //字号
-            .fontColor(0x00333333) //文字颜色
-            .rotate(0f) //旋转角度
-            .position(latLng)
-        //在地图上显示文字覆盖物
-        mBaiduMap.addOverlay(mTextOptions)
+    private fun addMarker(latLng:LatLng,iconId:Int,dealersName:String?){
+//        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
+        headerBinding.apply {
+            imgLocationIc.setImageResource(iconId)
+            tvLocationTitle.setText(dealersName)
+            val bitmap = BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(layoutLocation))
+            val option: OverlayOptions = MarkerOptions()
+                .position(latLng)
+                .icon(bitmap)
+            mBaiduMap.addOverlay(option)
+        }
     }
     /**
      * 添加信息窗
@@ -360,20 +343,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             setPadding(20,0,20,0)
             maxLines=1
             maxWidth=100
-//            gravity=Gravity.TOP or Gravity.CENTER
             ellipsize=  TextUtils.TruncateAt.END
             isSingleLine=true
-//            minHeight=0
-//            height=28
 //            setTextSize(TypedValue.COMPLEX_UNIT_SP,13f)
             setTextColor(ContextCompat.getColor(requireContext(),R.color.color_33))
             text = str
         }
-        //构造InfoWindow
-        //point 描述的位置点
-        //-100 InfoWindow相对于point在y轴的偏移量
+        //构造InfoWindow point 描述的位置点  -100 InfoWindow相对于point在y轴的偏移量
         val mInfoWindow = InfoWindow(view, latLng, -20)
-        //使InfoWindow生效
         mBaiduMap.showInfoWindow(mInfoWindow)
     }
     /**

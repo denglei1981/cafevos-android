@@ -118,7 +118,7 @@
                 app:layout_constraintTop_toTopOf="@id/view_mapBg"
                 app:layout_constraintBottom_toBottomOf="@id/view_mapBg"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_150"
+                android:layout_height="@dimen/dp_154"
                 android:id="@+id/mapView" />
             <View
                 android:id="@+id/view_mapBg"
@@ -126,7 +126,7 @@
                 android:background="@drawable/shape_40black_5dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_dealers"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_155" />
+                android:layout_height="@dimen/dp_164" />
             <com.changanford.common.ui.view.WTextView
                 android:id="@+id/tv_location"
                 app:layout_constraintTop_toTopOf="@id/view_mapBg"
@@ -169,7 +169,8 @@
                 android:layout_height="wrap_content"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
-            android:visibility="gone"
+            android:id="@+id/layout_location"
+            android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible"
@@ -178,16 +179,21 @@
             android:orientation="vertical"
             android:gravity="center">
             <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_locationTitle"
                 android:background="@drawable/shape_whit15_bg"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_28"
+                android:maxWidth="@dimen/dp_120"
                 android:gravity="center"
                 android:textSize="@dimen/sp_13"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingEnd="@dimen/dp_10"
                 android:textColor="@color/color_33"
+                style="@style/w_style_txt_ellipsize"
                 android:text="@string/str_currentPosition"/>
             <ImageView
+                android:layout_marginTop="@dimen/dp_2"
+                android:id="@+id/img_locationIc"
                 android:src="@mipmap/ic_car_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
