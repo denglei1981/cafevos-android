@@ -408,8 +408,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
                     data.forEach {
                         WaitBindingCarPop(this@HomeV2Fragment, viewModel,it).apply {
-                            setOutSideDismiss(true)
                             showPopupWindow()
+
                         }
                     }
 

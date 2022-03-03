@@ -12,7 +12,7 @@
         android:minHeight="30dp">
 
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/checkbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

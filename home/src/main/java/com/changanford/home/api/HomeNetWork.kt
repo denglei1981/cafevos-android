@@ -382,4 +382,12 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<BindCarBean>>
+
+
+
+    @POST("ser/carAuth/confirmBindCar")
+    suspend fun confirmBindCar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }

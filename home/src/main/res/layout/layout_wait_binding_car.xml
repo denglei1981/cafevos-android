@@ -57,28 +57,31 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_tips"
             app:layout_constraintWidth_percent="0.89" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_car_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_12"
             android:text="@{model.seriesName}"
             android:textColor="#ff333333"
             android:textSize="13sp"
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/iv_car"
             app:layout_constraintTop_toBottomOf="@+id/iv_car" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_car_tag"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"
             android:layout_marginEnd="@dimen/dp_12"
+            android:gravity="start"
             android:text="@{model.materialName}"
             android:textColor="#ff999999"
             android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_car_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_car_name" />
 
@@ -94,25 +97,41 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_car_tag"
             tools:text="VIN码：21846814774" />
 
-        <include
-            android:id="@+id/layout_is_my"
-            layout="@layout/layout_car_check"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
-            app:layout_constraintTop_toBottomOf="@+id/tv_vin_num" />
 
-        <include
-            android:id="@+id/layout_is_not_my"
-            layout="@layout/layout_car_check"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
-            app:layout_constraintTop_toBottomOf="@+id/layout_is_my" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_vin_num">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:button="@drawable/my_car_check_box"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="这是我的车"
+                android:textSize="@dimen/sp_13" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox_not"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="这不是我的车"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
+        </RadioGroup>
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -127,21 +146,21 @@
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_is_not_my" />
+            app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
         <TextView
             android:id="@+id/tv_sure_tips"
             android:layout_width="0dp"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_26"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_12"
             android:gravity="center"
-            android:text="确认后将自动将爱车与您账户绑定"
             android:textColor="#ff666666"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_submit"
+            tools:text="确认后将自动将爱车与您账户绑定" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
