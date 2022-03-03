@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.baidu.location.BDAbstractLocationListener
@@ -57,6 +58,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val mMapView by lazy { headerBinding.mapView}
     private val mBaiduMap by lazy { headerBinding.mapView.map }
     private var mLocationClient:LocationClient?=null
+    private var isFirstLoc=true
+    private var latLng:LatLng?=null
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -180,6 +183,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     headerBinding.apply {
                         tvService.text=modelName
                         tvService.visibility=View.VISIBLE
+                        if(icons!=null)rvCarService.layoutManager=GridLayoutManager(requireContext(),if(icons!!.size>3)4 else 3)
                         rvCarService.visibility=View.VISIBLE
                     }
                 }else{
@@ -279,8 +283,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
 
     }
-    private var isFirstLoc=true
-    private var latLng:LatLng?=null
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
             location?.apply {
@@ -363,14 +365,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             isSingleLine=true
 //            minHeight=0
 //            height=28
-            textSize=13f
+//            setTextSize(TypedValue.COMPLEX_UNIT_SP,13f)
             setTextColor(ContextCompat.getColor(requireContext(),R.color.color_33))
             text = str
         }
         //构造InfoWindow
         //point 描述的位置点
         //-100 InfoWindow相对于point在y轴的偏移量
-        val mInfoWindow = InfoWindow(view, latLng, -10)
+        val mInfoWindow = InfoWindow(view, latLng, -20)
         //使InfoWindow生效
         mBaiduMap.showInfoWindow(mInfoWindow)
     }
@@ -407,7 +409,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onPause() {
         super.onPause()
         carTopBanner.pauseVideo()
-        mMapView.onPause();
+        mMapView.onPause()
         headerBinding.carTopViewPager.stopLoop()
     }
 
