@@ -228,7 +228,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                             val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                             addMarker(p1)
 //                            addTextOptions(p1,dealerName?:"")
-                            addInfoWindow(p1,dealerName?:"")
+//                            addInfoWindow(p1,dealerName?:"")
                             latLng?.apply { addPolyline(this,p1) }
                             composeViewDealers.setContent {
                                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -248,8 +248,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
                 tvLocation.visibility=View.GONE
                 tvFromYouRecently.visibility=View.VISIBLE
-
-//                headerBinding.mapView.showZoomControls(false)
+                headerBinding.mapView.showZoomControls(false)
 //                mBaiduMap.mapType = BaiduMap.MAP_TYPE_NORMAL
 //                mBaiduMap.isTrafficEnabled = true
 //                // 开启定位图层
@@ -288,7 +287,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 if (isFirstLoc) {
                     isFirstLoc = false
                     val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(12.0f)
+                    builder.target(latLng).zoom(14.0f)
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
                 addMarker(latLng!!)
@@ -352,14 +351,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun addInfoWindow(latLng:LatLng,str:String){
         Log.e("wenke","添加信息窗》》$str")
         //用来构造InfoWindow的Button
-        val button = Button(context)
-        button.setBackgroundResource(R.drawable.shape_whit15_bg)
-        button.setPadding(20,0,20,0)
-        button.text = str
+        val view = Button(context).apply {
+            setBackgroundResource(R.drawable.shape_whit15_bg)
+            setPadding(20,0,20,0)
+//            minHeight=0
+//            height=28
+            text = str
+        }
         //构造InfoWindow
-     //point 描述的位置点
+        //point 描述的位置点
         //-100 InfoWindow相对于point在y轴的偏移量
-        val mInfoWindow = InfoWindow(button, latLng, 0)
+        val mInfoWindow = InfoWindow(view, latLng, -100)
         //使InfoWindow生效
         mBaiduMap.showInfoWindow(mInfoWindow)
     }
