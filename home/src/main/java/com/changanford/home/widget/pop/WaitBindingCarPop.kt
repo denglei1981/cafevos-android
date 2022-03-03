@@ -73,7 +73,7 @@ class WaitBindingCarPop(
         }
         viewModel.confirmCarLiveData.observe(fragment) {
             if(isConfirm==1){
-                "绑定成功".toast()
+                "车辆绑定成功".toast()
             }else{
                 "已确认".toast()
             }
