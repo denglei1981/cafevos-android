@@ -48,6 +48,8 @@ data class CircleItemBean(
     var isShowTitle: Boolean = false,//是否为圈子角色
     var tags:List<NewCirceTagBean>?=null,
     var tagIds:ArrayList<Int>?=null,
+    val type:String,
+    val needAudit:String,
 
 ) : MultiItemEntity,Serializable
 

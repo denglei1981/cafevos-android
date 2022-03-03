@@ -18,7 +18,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:id="@+id/radioButton"
-            android:text="@{model.tagName}"
+            android:text="@{model.name}"
             android:gravity="center"
             android:textSize="@dimen/sp_13"
             android:button="@null"

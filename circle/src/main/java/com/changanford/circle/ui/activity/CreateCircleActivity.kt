@@ -42,6 +42,8 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     private val mAdapter by lazy { CircleTagAdapter(listener=listener) }
     private var circleItemBean:CircleItemBean?=null
     private var pop:CircleSelectTypePop?=null
+    private var circleTypeArr:List<NewCirceTagBean>?=null
+    private var typeId:String?=""
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
@@ -112,11 +114,13 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
     override fun initData() {
         circleItemBean = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
         circleItemBean?.let {//编辑圈子
+            typeId=it.type
             picUrl = it.pic
             binding.apply {
                 ivFengmian.loadImage(picUrl)
                 etBiaoti.setText(it.name)
                 etContent.setText(it.description)
+                checkBox.isChecked=it.needAudit=="YES"
             }
         }
         //获取圈子标签信息
@@ -144,7 +148,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             val title = etBiaoti.text.toString()
             val content = etContent.text.toString()
             val isAudit= checkBox.isChecked
-            val type=edtCircleTypeValue.text.toString()
+            val typeName=edtCircleTypeValue.text.toString()
             val tagIds= arrayListOf<Int>()
             var tagName =""
             //被选中的标签集合
@@ -154,9 +158,9 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                     it.tagId?.apply { tagIds.add(this) }
                 }
             }
-            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),isAudit,type)
-            if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds,isAudit,type)
-            else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds,isAudit,type)
+            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),isAudit,typeName)
+            if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds,isAudit,typeId)
+            else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds,isAudit,typeId)
         }
     }
     private val listener=object : OnPerformListener {
@@ -175,6 +179,14 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         }
         viewModel.tagInfoData.observe(this) { tagInfo ->
             tagInfo?.apply {
+                val typeIndex:Int = circleTypes?.indexOfFirst { item -> typeId == item.id }?:-1
+                if(typeIndex>-1){
+                    circleTypes?.get(typeIndex)?.apply {
+                        isCheck =true
+                        binding.edtCircleTypeValue.setText(name)
+                    }
+                }
+                circleTypeArr=circleTypes
                 mAdapter.tagMaxCount = tagMaxCount ?: 0
                 circleItemBean?.tagIds?.forEach { tagId ->
                     tags?.let { tagItem ->
@@ -191,13 +203,17 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
      * 创建分类弹窗
     * */
     private fun createPop(){
-        if(pop==null){
-            pop=CircleSelectTypePop(this,object : OnSelectedBackListener{
-                override fun onSelectedBackListener(itemBean: NewCirceTagBean?) {
-                    binding.edtCircleTypeValue.setText(itemBean?.tagName)
-                }
-            })
+        circleTypeArr?.let {
+            if(pop==null){
+                pop=CircleSelectTypePop(this,it,object : OnSelectedBackListener{
+                    override fun onSelectedBackListener(itemBean: NewCirceTagBean?) {
+                        typeId=itemBean?.id
+                        binding.edtCircleTypeValue.setText(itemBean?.name)
+                        btnIsClick()
+                    }
+                })
+            }
+            pop?.showPopupWindow()
         }
-        pop?.showPopupWindow()
     }
 }

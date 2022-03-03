@@ -16,7 +16,7 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2022/2/21
  * @Description : CircleSelectType
  */
-class CircleSelectTypePop(activity: Activity,val listener:OnSelectedBackListener):BasePopupWindow(activity) {
+class CircleSelectTypePop(activity: Activity, private val circleTypeArr:List<NewCirceTagBean>, val listener:OnSelectedBackListener):BasePopupWindow(activity) {
     private var viewDataBinding: PopCreateCircleSelecttypeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_create_circle_selecttype))!!
     private val mAdapter by lazy { CircleSelectTypeAdapter() }
     init {
@@ -32,11 +32,7 @@ class CircleSelectTypePop(activity: Activity,val listener:OnSelectedBackListener
                 dismiss()
             }
         }
-        val dataList= arrayListOf<NewCirceTagBean>()
-        for (i in 0..3){
-            dataList.add(NewCirceTagBean(tagName = "item$i"))
-        }
-        mAdapter.setList(dataList)
+        mAdapter.setList(circleTypeArr)
     }
     override fun onCreateShowAnimation(): Animation? {
         return AnimationHelper.asAnimation()

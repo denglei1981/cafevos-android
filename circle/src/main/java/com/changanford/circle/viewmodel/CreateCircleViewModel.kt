@@ -21,16 +21,17 @@ class CreateCircleViewModel : BaseViewModel() {
     val tagInfoData=MutableLiveData<TagInfoBean?>()
     /**
      * 创建圈子
+     * [isAudit]是否审核
     * */
-    fun createCircle(name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,type:String?) {
+    fun createCircle(name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,typeId:String?) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["description"] = description
             body["name"] = name
             body["pic"] = pic
             body["tagIds"] = tagIds
-            body["isAudit"] = isAudit
-            body["type"] = type?:""
+            body["needAudit"] = if(isAudit)"YES" else "NO"
+            body["type"] = typeId?:""
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().createCircle(body.header(rKey), body.body(rKey))
                 .also {
@@ -43,7 +44,7 @@ class CreateCircleViewModel : BaseViewModel() {
     /**
      * 编辑圈子
     * */
-    fun editCircle(circleId: String?,name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,type:String?) {
+    fun editCircle(circleId: String?,name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,typeId:String?) {
         if(null==circleId)return
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -52,8 +53,8 @@ class CreateCircleViewModel : BaseViewModel() {
             body["circleId"] = circleId
             body["pic"] = pic
             body["tagIds"] = tagIds
-            body["isAudit"] = isAudit
-            body["type"] = type?:""
+            body["needAudit"] = if(isAudit)"YES" else "NO"
+            body["type"] = typeId?:""
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().editCircle(body.header(rKey), body.body(rKey))
                 .also {
