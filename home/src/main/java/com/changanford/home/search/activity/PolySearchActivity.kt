@@ -17,6 +17,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.JumpConstant.SEARCH_CONTENT
 import com.changanford.common.constant.JumpConstant.SEARCH_TYPE
+import com.changanford.common.constant.SearchTypeConstant.SEARCH_ASK
 import com.changanford.common.constant.SearchTypeConstant.SEARCH_POST
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
@@ -217,6 +218,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         when(searchType){
             SEARCH_POST->{ //搜索帖子。 埋点。
                 BuriedUtil.instant?.communityMainTopSearsh(searchContent)
+            }
+            SEARCH_ASK->{
+                BuriedUtil.instant?.communityQuestionSerach(searchContent)
             }
         }
 

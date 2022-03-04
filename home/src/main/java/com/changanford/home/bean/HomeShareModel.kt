@@ -12,6 +12,8 @@ import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
@@ -372,7 +374,7 @@ fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: In
                     ApiClient.createApi<HomeNetWork>()
                         .ShareBack(body.header(rkey), body.body(rkey))
                         .onSuccess {
-
+                            LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
                         }.onWithMsgFailure {
 
                         }

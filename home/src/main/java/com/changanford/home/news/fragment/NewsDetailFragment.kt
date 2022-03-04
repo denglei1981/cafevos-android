@@ -398,6 +398,12 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 shareBackUpHttp(this, newsDetailData?.shares)
             }
         })
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
+            newsDetailData?.shareCount?.plus(1)?.let {
+                newsDetailData?.shareCount=it
+                binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
+            }
+        })
     }
 
     private fun setCommentCount() {

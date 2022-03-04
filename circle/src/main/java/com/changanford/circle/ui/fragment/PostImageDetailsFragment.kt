@@ -8,6 +8,7 @@ import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -29,6 +30,7 @@ import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
+import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
@@ -46,6 +48,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
@@ -197,8 +200,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
 //                        tvTwoTitle.text = mData.title
                         //todo
-                        if(!TextUtils.isEmpty(mData.title)){
-                            tvTwoTitle.text=Html.fromHtml(mData.title)
+                        if (!TextUtils.isEmpty(mData.title)) {
+                            tvTwoTitle.text = Html.fromHtml(mData.title)
                         }
 
 
@@ -218,10 +221,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         tvTwoTime.text = mData.timeStr
 //                        tvContent.text = mData.content
                         //todo
-                        if(!TextUtils.isEmpty(mData.content)){
-                            tvContent.text=Html.fromHtml(mData.content)
-                        }else{
-                            tvContent.text=""
+                        if (!TextUtils.isEmpty(mData.content)) {
+                            tvContent.text = Html.fromHtml(mData.content)
+                        } else {
+                            tvContent.text = ""
                         }
 
 
@@ -249,9 +252,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
                             }
 //                            tvTwoTitle.text = mData.title
-                           // todo
-                            if(!TextUtils.isEmpty(mData.title)){
-                                tvTwoTitle.text=Html.fromHtml(mData.title)
+                            // todo
+                            if (!TextUtils.isEmpty(mData.title)) {
+                                tvTwoTitle.text = Html.fromHtml(mData.title)
                             }
 
                             if (mData.circleName.isNullOrEmpty()) {
@@ -270,8 +273,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             tvTwoTime.text = mData.timeStr
 //                            tvOneContent.text = mData.content
                             //todo
-                            if(!TextUtils.isEmpty(mData.content)){
-                                tvOneContent.text=Html.fromHtml(mData.content)
+                            if (!TextUtils.isEmpty(mData.content)) {
+                                tvOneContent.text = Html.fromHtml(mData.content)
                             }
 
                             val adapter = PostDetailsLongAdapter(requireContext())
@@ -288,7 +291,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         initListener()
         bus()
     }
-
 
 
     private fun initListener() {
@@ -483,6 +485,22 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 it.msg.toast()
             }
         })
+
+        //分享
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(
+                    this, mData.shares, when {
+                        MConstant.userId == mData.userId && mData.type == 1 -> 5//自己的帖子没有编辑按钮
+                        MConstant.userId == mData.userId -> 3//是自己的帖子
+                        mData.isManager == true -> 4//有管理权限
+                        else -> 1
+                    }
+                )
+            }
+        })
+
+
     }
 
     private fun bus() {
@@ -508,54 +526,57 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             commentAdapter.notifyItemChanged(checkPosition)
         })
     }
-    fun showTag(isLong:Boolean){
-        if(isLong){
-            if(mData.tags==null||mData.tags.size==0){
-                binding.viewLongType.postTag.visibility=View.GONE
+
+    fun showTag(isLong: Boolean) {
+        if (isLong) {
+            if (mData.tags == null || mData.tags.size == 0) {
+                binding.viewLongType.postTag.visibility = View.GONE
                 return
             }
-            if(mData.tags.size>0){
+            if (mData.tags.size > 0) {
                 val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
-                binding.viewLongType.postTag.adapter=circlePostDetailsTagAdapter
+                binding.viewLongType.postTag.adapter = circlePostDetailsTagAdapter
                 circlePostDetailsTagAdapter.setNewInstance(mData.tags)
                 tagsClick(circlePostDetailsTagAdapter)
-                binding.viewLongType.postTag.visibility=View.VISIBLE
+                binding.viewLongType.postTag.visibility = View.VISIBLE
             }
-        }else{
-            if(mData.tags==null||mData.tags.size==0){
-                binding.postTag.visibility=View.GONE
+        } else {
+            if (mData.tags == null || mData.tags.size == 0) {
+                binding.postTag.visibility = View.GONE
                 return
             }
-            if(mData.tags.size>0){
+            if (mData.tags.size > 0) {
                 val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
-                binding.postTag.adapter=circlePostDetailsTagAdapter
+                binding.postTag.adapter = circlePostDetailsTagAdapter
                 circlePostDetailsTagAdapter.setNewInstance(mData.tags)
-                binding.postTag.visibility=View.VISIBLE
+                binding.postTag.visibility = View.VISIBLE
                 tagsClick(circlePostDetailsTagAdapter)
             }
         }
     }
-    fun showPicTag(){
-        if(mData.tags==null||mData.tags.size==0){
-            binding.postTagS.visibility=View.GONE
+
+    fun showPicTag() {
+        if (mData.tags == null || mData.tags.size == 0) {
+            binding.postTagS.visibility = View.GONE
             return
         }
-        if(mData.tags.size>0){
+        if (mData.tags.size > 0) {
             val circlePostDetailsTagAdapter = CirclePostDetailsTagAdapter()
-            binding.postTagS.adapter=circlePostDetailsTagAdapter
+            binding.postTagS.adapter = circlePostDetailsTagAdapter
             circlePostDetailsTagAdapter.setNewInstance(mData.tags)
-            binding.postTagS.visibility=View.VISIBLE
+            binding.postTagS.visibility = View.VISIBLE
             tagsClick(circlePostDetailsTagAdapter)
         }
     }
-    fun tagsClick(circlePostDetailsTagAdapter:CirclePostDetailsTagAdapter){
+
+    fun tagsClick(circlePostDetailsTagAdapter: CirclePostDetailsTagAdapter) {
         circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
-              // 跳转到搜索
+            // 跳转到搜索
             val item = circlePostDetailsTagAdapter.getItem(position)
             val bundle = Bundle()
             bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
             bundle.putString(JumpConstant.SEARCH_CONTENT, item.tagName)
-            bundle.putString(JumpConstant.SEARCH_TAG_ID,item.id)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID, item.id)
             startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
 
 
@@ -570,10 +591,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     override fun onPermissionOk(permission: Permission) {
                         val intent = Intent()
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
-                        intent.putExtra("lat",mData.lat)
-                        intent.putExtra("lon",mData.lon)
-                        intent.putExtra("address",mData.address)
-                        intent.putExtra("addrName",mData.showCity())
+                        intent.putExtra("lat", mData.lat)
+                        intent.putExtra("lon", mData.lon)
+                        intent.putExtra("address", mData.address)
+                        intent.putExtra("addrName", mData.showCity())
                         startActivity(intent)
                     }
 

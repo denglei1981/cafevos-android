@@ -39,6 +39,7 @@ import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -123,7 +124,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
-        const val REQUEST_LOCATION_SERVICE=0x436
+        const val REQUEST_LOCATION_SERVICE = 0x436
     }
 
     override fun initView() {
@@ -161,7 +162,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
 
     }
-
 
 
     override fun observe() {
@@ -323,7 +323,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     }
 
-    fun showErrorWarn(){
+    fun showErrorWarn() {
         QuickPopupBuilder.with(this)
             .contentView(R.layout.dialog_post_error)
             .config(
@@ -518,16 +518,16 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
-                2->{ // 话题
+                2 -> { // 话题
                     toHuati()
                 }
-                3->{// 圈子
+                3 -> {// 圈子
                     toQuanzi()
                 }
                 4 -> { // 选择地址。
-                    if(!LocationServiceUtil.isLocServiceEnable(this)){//没有打开定位服务
+                    if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
-                    }else{
+                    } else {
                         isunSave = true
                         startARouter(ARouterCirclePath.ChooseLocationActivity)
                     }
@@ -555,7 +555,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
-
 
 
             isunSave = true // 不要自动保存
@@ -749,7 +748,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         })
     }
-  fun openLocationService() {
+
+    fun openLocationService() {
         QuickPopupBuilder.with(this)
             .contentView(R.layout.pop_open_location_service)
             .config(
@@ -766,21 +766,22 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
 
-    fun showLoctionServicePermission(){
+    fun showLoctionServicePermission() {
 
-         try {
-             isunSave=true
-             // 没有打开定位服务。
-             LocationServiceUtil.openCurrentAppSystemSettingUI(this)
-             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-             startActivityForResult(intent,REQUEST_LOCATION_SERVICE)
-             return
-         }catch (e :Exception){
-              e.printStackTrace()
-         }
+        try {
+            isunSave = true
+            // 没有打开定位服务。
+            LocationServiceUtil.openCurrentAppSystemSettingUI(this)
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivityForResult(intent, REQUEST_LOCATION_SERVICE)
+            return
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
 
     }
+
     private fun ispost() {
         var biaoti = binding.etBiaoti.text.toString()
         var content = binding.etContent.text.toString()
@@ -802,6 +803,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
+
+
                 viewModel.getOSS()
             }
         }
@@ -993,16 +996,21 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
-
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
             }
         }
-
-
 //        val take = tagIds.take(tagIds.length - 1)
         params["tagIds"] = tagIds
+
+        try {
+            val biaoti = params["title"]
+            val content = params["content"]
+            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagIds)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         viewModel.postEdit(params)
     }
 
@@ -1203,7 +1211,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
-    fun saveInsertPostent(isHandleFinish:Boolean) {
+    fun saveInsertPostent(isHandleFinish: Boolean) {
         val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
@@ -1240,7 +1248,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.addrName = if (params["addrName"] != null) params["addrName"] as String else ""
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
-        if(isHandleFinish){
+        if (isHandleFinish) {
             finish()
         }
 
