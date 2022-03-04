@@ -57,7 +57,6 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
         }
     }
     fun startPlayVideo(videoUrl:String?){
-        Log.e("wenke","startPlayVideo>>>videoUrl:$videoUrl>>>${videoHashMap[videoUrl]}")
         videoHashMap[videoUrl]?.apply {
             videoUrl?.apply {
                 Log.e("wenke","startPlay")
@@ -66,19 +65,16 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
         }
     }
     fun pauseVideo(videoUrl:String?){
-        Log.e("wenke","pauseVideo")
         videoHashMap[videoUrl]?.apply {
             pause()
         }
     }
     fun resumeVideo(videoUrl:String?){
-        Log.e("wenke","resumeVideo")
         videoHashMap[videoUrl]?.apply {
             resume()
         }
     }
     fun releaseVideo(){
-        Log.e("wenke","releaseVideo")
 //        playerHelper?.release()
 //        playerHelper=null
     }

@@ -6,7 +6,6 @@ import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -87,7 +86,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
                 }
                 tvLocation.setOnClickListener {
-                    Log.e("wenke","locationType:$locationType")
                     when (locationType) {
                         //未开启定位
                         1 -> WCommonUtil.showLocationServicePermission(requireActivity())
@@ -156,7 +154,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList[position].apply {
-                        Log.e("wenke","onPageSelected>>>position:$position")
                         this@NewCarFragmentNoCar.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)
                         if(mainIsVideo==1){//是视频
@@ -283,7 +280,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             })
     }
     private fun updateLocationUi(){
-        Log.e("wenke",">>>locationType:$locationType")
         headerBinding.apply {
             if(locationType==0){
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
@@ -302,7 +298,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
             location?.apply {
-                Log.e("wenke","latitude:$latitude>>>longitude:$longitude")
                 latLng= LatLng(latitude, longitude)
                 if (isFirstLoc) {
                     isFirstLoc = false
@@ -323,7 +318,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         val points: MutableList<LatLng> = ArrayList()
         points.add(p1)
         points.add(p2)
-        Log.e("wenke","绘制折线》》${points.size}")
         //设置折线的属性
         val mOverlayOptions: OverlayOptions = PolylineOptions()
             .width(2)
@@ -351,7 +345,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * 添加信息窗
      * */
     private fun addInfoWindow(latLng:LatLng,str:String){
-        Log.e("wenke","添加信息窗》》$str")
         //用来构造InfoWindow的Button
         val view = Button(context).apply {
             setBackgroundResource(R.drawable.shape_car_location_bg)
