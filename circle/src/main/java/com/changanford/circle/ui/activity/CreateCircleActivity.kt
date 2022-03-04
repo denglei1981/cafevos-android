@@ -158,7 +158,7 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                     it.tagId?.apply { tagIds.add(this) }
                 }
             }
-            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),isAudit,typeName)
+            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),if(isAudit)"是" else "否",typeName)
             if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds,isAudit,typeId)
             else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds,isAudit,typeId)
         }

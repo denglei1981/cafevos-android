@@ -135,8 +135,8 @@ object WBuriedUtil {
      * [isAudit]是否审核
      * [type]圈子类型
      * */
-    fun clickCircleCreate(title: String?,des:String?,tag:String?,isAudit:Boolean,type:String?){
-        buried("app圈子_创建","app_moments_create", extend = "{\"moments_name\": \"$title\",\"moments_describe\": \"$des\",\"moments_lable\": \"$tag\",\"isAudit\": \"$isAudit\",\"type\": \"$type\"}")
+    fun clickCircleCreate(title: String?,des:String?,tag:String?,isAudit:String,type:String?){
+        buried("app圈子_创建","app_moments_create", extend = "{\"moments_name\": \"$title\",\"moments_describe\": \"$des\",\"moments_lable\": \"$tag\",\"moments_review\": \"$isAudit\",\"moments_type\": \"$type\"}")
     }
 
     //===========================================爱车
@@ -198,19 +198,19 @@ object WBuriedUtil {
      * 用户点击右上角提问时触发
      * */
     fun clickQuestionAskTop(){
-        buried("app社区_我的问答_顶部提问","app_community_Q&A_ask_top")
+        buried("app社区_我的问答_顶部提问","app_community_QA_ask_top")
     }
     /**
      * 用户点击悬浮窗提问时触发
      * */
     fun clickQuestionAskFloat(){
-        buried("app社区_我的问答_悬浮窗提问","app_community_Q&A_ask_Float")
+        buried("app社区_我的问答_悬浮窗提问","app_community_QA_ask_Float")
     }
     /**
      * 用户点击去提问时触发
      * */
     fun clickQuestionAskCenter(){
-        buried("app社区_我的问答_我的提问_去提问","app_community_Q&A_my_ask")
+        buried("app社区_我的问答_我的提问_去提问","app_community_QA_my_ask")
     }
     /**
      * 用户点击立即抢答时触发
@@ -218,7 +218,7 @@ object WBuriedUtil {
      * [title]问答标题
      * */
     fun clickQuestionAnswer(type: String?,title:String?){
-        buried("app社区_我的问答_邀请问答_立即抢答","app_community_Q&A_answer", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
+        buried("app社区_我的问答_邀请问答_立即抢答","app_community_QA_answer", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
     }
 
 }
