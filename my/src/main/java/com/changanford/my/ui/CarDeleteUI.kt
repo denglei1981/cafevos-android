@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
@@ -32,6 +33,7 @@ class CarDeleteUI : BaseMineUI<UiCarDeleteBinding, CarAuthViewModel>() {
             val data = qy.data
 
             binding.deleteCarCompose.setContent {
+
                 DeleteCarScreen(viewModel,data?.removeCarNotice,data?.contactCustomerService, onGetSmsClick = {
                     if (it.isNullOrEmpty()) {
                         showToast("请输入手机号")
@@ -39,7 +41,8 @@ class CarDeleteUI : BaseMineUI<UiCarDeleteBinding, CarAuthViewModel>() {
                     }
                     viewModel.smsCacSmsCode(it)
                 }, onSubmitClick = { mobile, sms ->
-                    showToast("提交$mobile  $sms")
+//                    showToast("提交$mobile  $sms")
+                    BuriedUtil.instant?.carDelete(mobile)
                     if (vin != null) {
                         viewModel.deleteCar(vin, mobile, sms) {
                             it.onSuccess {

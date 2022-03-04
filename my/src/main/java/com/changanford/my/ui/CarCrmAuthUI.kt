@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
@@ -47,6 +48,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
         headView.look.setOnClickListener {
+            BuriedUtil.instant?.carQy()
             JumpUtils.instans?.jump(1, MConstant.H5_CAR_QY)
         }
         carAdapter.addHeaderView(headView.root)
@@ -60,6 +62,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         })
 
         binding.btnAddCar.setOnClickListener {
+            BuriedUtil.instant?.carAdd()
             RouterManger.startARouter(ARouterMyPath.UniCarAuthUI)
         }
 
