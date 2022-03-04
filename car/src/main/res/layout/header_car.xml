@@ -21,12 +21,13 @@
             android:id="@+id/dr_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_95"
+            android:layout_marginBottom="@dimen/dp_20"
             android:background="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/btn_submit"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginStart="@dimen/dp_28"

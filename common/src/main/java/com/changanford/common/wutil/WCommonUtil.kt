@@ -7,6 +7,7 @@ import android.content.res.AssetManager
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
@@ -20,6 +21,7 @@ import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.changanford.common.bean.EditTextBean
+import com.changanford.common.util.LocationServiceUtil
 import com.google.android.material.tabs.TabLayout
 import java.io.BufferedReader
 import java.io.IOException
@@ -313,5 +315,15 @@ object WCommonUtil {
         //关闭view缓存bitmap
         view.isDrawingCacheEnabled = false
         return bitmap
+    }
+    /**
+     * 打开定位
+    * */
+    fun showLocationServicePermission(activity: Activity) {
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(activity)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        activity.startActivityForResult(intent, 0x436)
+        return
     }
 }

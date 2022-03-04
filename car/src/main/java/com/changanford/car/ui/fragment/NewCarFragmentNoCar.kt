@@ -82,6 +82,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 btnSubmit.setOnClickListener { //立即订购
                     WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
                 }
+                tvLocation.setOnClickListener {
+                    WCommonUtil.showLocationServicePermission(requireActivity())
+                }
             }
         }
         initObserve()
@@ -263,7 +266,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 viewModel.getRecentlyDealers()
             }
         }
-
     }
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
