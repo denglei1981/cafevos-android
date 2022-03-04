@@ -20,6 +20,7 @@ import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.listener.AskCallback
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
@@ -35,8 +36,9 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, AskRecommendViewModel>(),
-    OnRefreshListener,OnLoadMoreListener {
+class AskRecommendFragment :
+    BaseLoadSirFragment<FragmentAskRecommendBinding, AskRecommendViewModel>(),
+    OnRefreshListener, OnLoadMoreListener {
 
     val recommendAskAdapter: RecommendAskAdapter by lazy {
         RecommendAskAdapter()
@@ -46,9 +48,10 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
         HotMechanicAdapter()
 
     }
-    var circleAskScreenDialog: CircleAskScreenDialog?=null
+    var circleAskScreenDialog: CircleAskScreenDialog? = null
 
-    var  questionTypes = mutableListOf<String>()
+    var questionTypes = mutableListOf<String>()
+
     companion object {
         fun newInstance(): AskRecommendFragment {
 //            val bundle = Bundle()
@@ -67,25 +70,27 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
         binding.ryAsk.adapter = recommendAskAdapter
         recommendAskAdapter.setOnItemClickListener { adapter, view, position ->
 //            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
-               val recommendData= recommendAskAdapter.getItem(position = position)
-             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(),recommendData.jumpValue)
+            val recommendData = recommendAskAdapter.getItem(position = position)
+            // 埋点
+            BuriedUtil.instant?.communityQuestion(recommendData.questionType, recommendData.title)
+            JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
         }
         addHeadView()
         viewModel.getInitQuestion()
-        viewModel.getQuestionList(false,questionTypes)
+        viewModel.getQuestionList(false, questionTypes)
         binding.refreshLayout.setOnRefreshListener(this)
         binding.refreshLayout.setOnLoadMoreListener(this)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.getInitQuestion()
-        viewModel.getQuestionList(false,questionTypes)
+        viewModel.getQuestionList(false, questionTypes)
     }
 
 
     var headerBinding: HeaderCircleAskRecommendBinding? = null
 
-    var moreJumpData:moreJumpData?=null
+    var moreJumpData: moreJumpData? = null
     private fun addHeadView() {
         if (headerBinding == null) {
             headerBinding = DataBindingUtil.inflate(
@@ -97,37 +102,42 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
             headerBinding?.let {
                 recommendAskAdapter.addHeaderView(it.root)
                 it.tvMore.setOnClickListener {
-                    if(moreJumpData!=null){
-                        JumpUtils.instans?.jump(moreJumpData!!.jumpCode.toInt(),moreJumpData!!.jumpVal)
+                    if (moreJumpData != null) {
+                        JumpUtils.instans?.jump(
+                            moreJumpData!!.jumpCode.toInt(),
+                            moreJumpData!!.jumpVal
+                        )
                     }
                 }
-                it.ryTopic.adapter=hotMechanicAdapter
+                it.ryTopic.adapter = hotMechanicAdapter
                 it.tvScreen.setOnClickListener {
                     showScreenDialog()
                 }
-                hotMechanicAdapter.setOnItemClickListener(object :OnItemClickListener{
+                hotMechanicAdapter.setOnItemClickListener(object : OnItemClickListener {
                     override fun onItemClick(
                         adapter: BaseQuickAdapter<*, *>,
                         view: View,
                         position: Int
                     ) {
-//                        startARouter(ARouterCirclePath.MechanicMainActivity,)
-                        JumpUtils.instans?.jump(114,hotMechanicAdapter.getItem(position = position).conQaUjId)
+                        val item = hotMechanicAdapter.getItem(position = position)
+                        // 埋点
+                        BuriedUtil.instant?.communityHOtEngineer(item.nickName)
+                        JumpUtils.instans?.jump(114, item.conQaUjId)
                     }
 
                 })
 
                 it.tvLook.setOnClickListener {
-                    if(isLogin()){
-                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
-                        JumpUtils.instans?.jump(114,param.toString())
+                    if (isLogin()) {
+                        val param = SPUtils.getParam(requireContext(), "qaUjId", "")
+                        JumpUtils.instans?.jump(114, param.toString())
                     }
                 }
                 it.cdMyAsk.setOnClickListener {
                     //  跳转到我的问答
-                    if(isLogin()){
-                        val param = SPUtils.getParam(requireContext(), "qaUjId","")
-                        JumpUtils.instans?.jump(114,param.toString())
+                    if (isLogin()) {
+                        val param = SPUtils.getParam(requireContext(), "qaUjId", "")
+                        JumpUtils.instans?.jump(114, param.toString())
                     }
 
                 }
@@ -136,6 +146,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
 
         }
     }
+
     fun isLogin(): Boolean {
         return if (TextUtils.isEmpty(MConstant.token)) {
             startARouter(ARouterMyPath.SignUI)
@@ -144,6 +155,7 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
             true
         }
     }
+
     override fun observe() {
         super.observe()
 
@@ -155,83 +167,90 @@ class AskRecommendFragment : BaseLoadSirFragment<FragmentAskRecommendBinding, As
 
         viewModel.mechanicLiveData.observe(this, Observer {
 
-            SPUtils.setParam(requireContext(),"qaUjId",it.qaUjId)
-            moreJumpData=it.moreTecnicians
+            SPUtils.setParam(requireContext(), "qaUjId", it.qaUjId)
+            moreJumpData = it.moreTecnicians
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
         })
         viewModel.questionListLiveData.observe(this, Observer {
             try {
-                if(it.isSuccess){
-                    if(it.isLoadMore){
+                if (it.isSuccess) {
+                    if (it.isLoadMore) {
                         binding.refreshLayout.finishLoadMore()
                         recommendAskAdapter.addData(it.data.dataList)
-                    }else{
+                    } else {
                         binding.refreshLayout.finishRefresh()
-                        if(it.data.dataList.size==0){
+                        if (it.data.dataList.size == 0) {
                             val emptyList = arrayListOf<AskListMainData>()
-                            val askEmpty=AskListMainData(emptyType = 1)
+                            val askEmpty = AskListMainData(emptyType = 1)
                             emptyList.add(askEmpty)
                             recommendAskAdapter.setNewInstance(emptyList)
-                        }else{
+                        } else {
                             recommendAskAdapter.setNewInstance(it.data.dataList)
                             binding.refreshLayout.setEnableLoadMore(true)
                         }
                     }
-                    if(it.data==null||it.data.dataList.size<20){
+                    if (it.data == null || it.data.dataList.size < 20) {
                         binding.refreshLayout.finishLoadMoreWithNoMoreData()
                         binding.refreshLayout.setEnableLoadMore(false)
                     }
-                }else{
+                } else {
                     binding.refreshLayout.finishRefresh()
                 }
 
-            }catch (e :Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
         })
         LiveDataBus.get().with(LiveDataBusKey.CHANGE_TEACH_INFO).observe(this, Observer {
-             viewModel.getInitQuestion()
+            viewModel.getInitQuestion()
         })
 
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                when(it){
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
                         viewModel.getInitQuestion()
                     }
-                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
                         viewModel.getInitQuestion()
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
 
     }
 
 
-    fun showScreenDialog(){
-        if(circleAskScreenDialog==null){
-            circleAskScreenDialog= CircleAskScreenDialog(requireActivity(),this,object :AskCallback{
-                override fun onResult(result: ResultData) {
-                    when(result.resultCode){
-                        ResultData.OK->{
-                           val  questionData=  result.data  as List<QuestionData>
-                            questionTypes.clear()
-                            questionData.forEach {
-                                questionTypes.add(it.dictValue)
+    fun showScreenDialog() {
+        if (circleAskScreenDialog == null) {
+            circleAskScreenDialog =
+                CircleAskScreenDialog(requireActivity(), this, object : AskCallback {
+                    override fun onResult(result: ResultData) {
+                        when (result.resultCode) {
+                            ResultData.OK -> {
+                                val questionData = result.data as List<QuestionData>
+                                questionTypes.clear()
+                                questionData.forEach {
+                                    questionTypes.add(it.dictValue)
+                                }
+                                //埋点
+                                if(questionTypes.size>0){
+                                    BuriedUtil.instant?.communityScreen(questionTypes.toString())
+                                }
+                                viewModel.getQuestionList(false, questionTypes)
                             }
-                            viewModel.getQuestionList(false,questionTypes)
                         }
                     }
-                }
-            })
+                })
         }
         circleAskScreenDialog?.show()
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
-        viewModel.getQuestionList(true,questionTypes)
+        viewModel.getQuestionList(true, questionTypes)
     }
 
     override fun onRetryBtnClick() {

@@ -221,6 +221,41 @@ class BuriedUtil {
     }
     // 社区帖子end
 
+    // 提问 star
+    fun communityQuestionPost(questionTitle:String,questionDeatail:String,question_type:String,fubiReward:String){
+        buried("app社区_提问_发布","app_community_question_post", extend = "{\"question_title\": \"$questionTitle\",\"question_deatail\": \"$questionDeatail\",\"question_type\": \"$question_type\",\"Fubi_Reward\": \"$fubiReward\"}")
+    }
+    // 提问 end
+   //问答 star
+
+    fun communityHOtEngineer(nickname:String){
+        buried("app社区_问答_热门技师","app_community_Q&A_hot_engineer", extend = "{\"nickname\": \"$nickname\"}")
+    }
+    fun communityQuestion(type:String,title:String){
+        buried("app社区_问答_热门问答","app_community_Q&A_banner", extend = "{\"Q&A_type\": \"$type\",\"Q&A_title\": \"$title\"}")
+    }
+     /**
+      *  筛选
+      * */
+    fun communityScreen(type:String){
+        buried("app社区_问答_问答筛选_确定","app_community_Q&A_Filter_confirm", extend = "{\"Q&A_type\": \"$type\"")
+    }
+    /**
+     * 问答搜索
+     * */
+    fun communityQuestionSerach(type:String){
+        buried("app社区_问答_搜索","app_community_search", extend = "{\"keyword\": \"$type\"")
+    }
+
+
+   //问答 end
+
+     // 发帖 start
+     fun post(post_title:String,post_content:String,post_lable:String){
+         buried("app社区_发帖_发布","app_community_question_post", extend = "{\"post_title\": \"$post_title\",\"post_content\": \"$post_content\",\"post_lable\": \"$post_lable\"}")
+     }
+
+     // 发帖 end
 
 
 }

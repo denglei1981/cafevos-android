@@ -43,6 +43,7 @@ import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.bean.SnapshotOfAttrOption
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -932,6 +933,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
+                //埋点
+
                 viewModel.getOSS()
             }
         }
@@ -1175,6 +1178,14 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
         params["tagIds"] = tagIds
         JSON.toJSONString(params).logD()
+
+        try {
+            val biaoti = params["title"]
+            val content = params["content"]
+            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagIds)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
         viewModel.postEdit(params)
     }
 
