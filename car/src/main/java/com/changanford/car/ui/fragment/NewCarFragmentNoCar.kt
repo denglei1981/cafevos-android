@@ -375,7 +375,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         mLocationClient?.apply {
             stop()
             mBaiduMap.isMyLocationEnabled = false
-            mMapView.onDestroy();
+            mMapView.onDestroy()
         }
         super.onDestroy()
     }
