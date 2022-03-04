@@ -232,7 +232,7 @@ class BuriedUtil {
         buried("app社区_问答_热门技师","app_community_QA_hot_engineer", extend = "{\"nickname\": \"$nickname\"}")
     }
     fun communityQuestion(type:String,title:String){
-        buried("app社区_问答_热门问答","app_community_QA_banner", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
+        buried("app社区_问答_热门问答","app_community_QA_list", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
     }
      /**
       *  筛选
