@@ -7,6 +7,7 @@ import android.content.res.AssetManager
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
@@ -20,7 +21,10 @@ import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.changanford.common.bean.EditTextBean
+import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.util.LocationServiceUtil
 import com.google.android.material.tabs.TabLayout
+import com.qw.soul.permission.SoulPermission
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -313,5 +317,25 @@ object WCommonUtil {
         //关闭view缓存bitmap
         view.isDrawingCacheEnabled = false
         return bitmap
+    }
+    /**
+     * 打开定位
+    * */
+    fun showLocationServicePermission(activity: Activity) {
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(activity)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        activity.startActivityForResult(intent, 0x436)
+    }
+    /**
+     * 创建定位获取权限对话框
+     * 去设置中心给应用设置定位权限
+     * */
+    fun setSettingLocation(context: Context) {
+        AlertDialog(context).builder()
+            .setTitle("提示")
+            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+            .setNegativeButton("取消") { }.setPositiveButton("确定"
+            ) { SoulPermission.getInstance().goApplicationSettings() }.show()
     }
 }

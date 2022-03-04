@@ -44,6 +44,9 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.wutil.WCommonUtil
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -61,6 +64,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var mLocationClient:LocationClient?=null
     private var isFirstLoc=true
     private var latLng:LatLng?=null
+    private var locationType=0// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -82,11 +86,22 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 btnSubmit.setOnClickListener { //立即订购
                     WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
                 }
+                tvLocation.setOnClickListener {
+                    Log.e("wenke","locationType:$locationType")
+                    when (locationType) {
+                        //未开启定位
+                        1 -> WCommonUtil.showLocationServicePermission(requireActivity())
+                        //未授权-询问授权
+                        2 -> getLocationPermissions()
+                        //拒绝授权
+                        3 -> WCommonUtil.setSettingLocation(requireContext())
+                    }
+                }
             }
         }
         initObserve()
         initBanner()
-        initMap()
+        initLocation()
     }
     override fun initData() {
         viewModel.getTopBanner()
@@ -141,8 +156,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList[position].apply {
+                        Log.e("wenke","onPageSelected>>>position:$position")
                         this@NewCarFragmentNoCar.carModelCode=carModelCode
-                        carTopBanner.pauseVideo()
+                        carTopBanner.pauseVideo(mainImg)
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
                         }else carTopBanner.releaseVideo()
@@ -248,22 +264,40 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
         }
     }
-    private fun initMap(){
+    private fun initLocation(){
+        locationType =if(!LocationServiceUtil.isLocServiceEnable(requireContext()))1 else if(!isGetLocation())2 else 0
+        updateLocationUi()
+    }
+    private fun getLocationPermissions(){
+        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+            object : CheckRequestPermissionListener {
+                override fun onPermissionOk(permission: Permission) {
+                    locationType=0
+                    updateLocationUi()
+                }
+                override fun onPermissionDenied(permission: Permission) {
+                    locationType=3
+                    updateLocationUi()
+                    WCommonUtil.setSettingLocation(requireContext())
+                }
+            })
+    }
+    private fun updateLocationUi(){
+        Log.e("wenke",">>>locationType:$locationType")
         headerBinding.apply {
-            if (LocationServiceUtil.isLocServiceEnable(requireContext())&&isGetLocation()) {
+            if(locationType==0){
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
                 tvLocation.visibility=View.GONE
                 tvFromYouRecently.visibility=View.VISIBLE
                 headerBinding.mapView.showZoomControls(false)
                 LocationUtils.circleLocation(myLocationListener)
-            }else{//服务端自行ip定位
+            }else{
                 tvFromYouRecently.visibility=View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
                 tvLocation.visibility=View.VISIBLE
-                viewModel.getRecentlyDealers()
+//                viewModel.getRecentlyDealers()
             }
         }
-
     }
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
@@ -355,18 +389,27 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             oldScrollY+=dy
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(locationType==1||locationType==3)initLocation()
+    }
     override fun onResume() {
         super.onResume()
         initData()
         mMapView.onResume()
-        if(oldScrollY<maxSlideY){
-            carTopBanner.resumeVideo()
+        if(oldScrollY<maxSlideY&&topBannerList.size>0){
+            val position=headerBinding.carTopViewPager.currentItem
+            carTopBanner.resumeVideo(topBannerList[position].mainImg)
             headerBinding.carTopViewPager.startLoop()
         }
     }
     override fun onPause() {
         super.onPause()
-        carTopBanner.pauseVideo()
+        if(topBannerList.size>0){
+            val position=headerBinding.carTopViewPager.currentItem
+            carTopBanner.pauseVideo(topBannerList[position].mainImg)
+        }
         mMapView.onPause()
         headerBinding.carTopViewPager.stopLoop()
     }
@@ -375,7 +418,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         mLocationClient?.apply {
             stop()
             mBaiduMap.isMyLocationEnabled = false
-            mMapView.onDestroy();
+            mMapView.onDestroy()
         }
         super.onDestroy()
     }

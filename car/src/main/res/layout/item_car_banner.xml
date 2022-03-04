@@ -11,7 +11,8 @@
             android:id="@+id/videoView"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/dp_500"/>
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/imageCarIntro"
             android:layout_width="match_parent"

@@ -19,7 +19,7 @@ class AnimationControl {
     /**
      * [module]1向下 2向上 3向左 4向右
     * */
-    fun startAnimation(view: View,module:Int?=1,position:Int=0){
+    fun startAnimation(view: View,module:Int?=1){
         val animationSet = AnimationSet(true)
 //        animationSet.duration = durationTime
         var fromYDelta=0f

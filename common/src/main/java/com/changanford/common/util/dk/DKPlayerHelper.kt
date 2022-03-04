@@ -64,6 +64,12 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
         }
     }
 
+    /**
+     * 循环播放， 默认不循环播放
+     */
+    fun setLooping(looping: Boolean) {
+        mVideoView.setLooping(looping)
+    }
     fun resume() {
         mVideoView.resume()
     }
@@ -80,5 +86,8 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
         if (!mVideoView.onBackPressed()) {
             back()
         }
+    }
+    fun setVideoController(mediaController: StandardVideoController?){
+        mVideoView.setVideoController(mController)
     }
 }

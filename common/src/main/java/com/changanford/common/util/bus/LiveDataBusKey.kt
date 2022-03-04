@@ -254,5 +254,10 @@ object LiveDataBusKey {
 
     const val REMOVE_CAR="remove_car" // 移除爱车。
 
+
+    //银联支付
+    const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"
+    //银联支付回调-暂只代表云闪付
+    const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
 }
 
