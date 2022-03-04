@@ -3,7 +3,6 @@ package com.changanford.common
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.changanford.common.basic.BaseApplication
@@ -117,7 +116,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
                 if (mFinalCount == 1 && isRunBack) { //说明从后台回到了前台
                     isRunBack = false
                 }
-                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStarted>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
+//                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStarted>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
             }
             override fun onActivityResumed(activity: Activity) {
             }
@@ -129,7 +128,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
                     isRunBack = true
 //                    WidgetTimerUtils.updateDistance(this@MyApplication)
                 }
-                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStopped>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
+//                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStopped>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
             }
 
             override fun onActivitySaveInstanceState(

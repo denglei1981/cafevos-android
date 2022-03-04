@@ -156,8 +156,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     topBannerList[position].apply {
+                        Log.e("wenke","onPageSelected>>>position:$position")
                         this@NewCarFragmentNoCar.carModelCode=carModelCode
-                        carTopBanner.pauseVideo()
+                        carTopBanner.pauseVideo(mainImg)
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
                         }else carTopBanner.releaseVideo()
@@ -282,7 +283,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             })
     }
     private fun updateLocationUi(){
-        Log.e("wenke",">>>locationType$locationType")
+        Log.e("wenke",">>>locationType:$locationType")
         headerBinding.apply {
             if(locationType==0){
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
@@ -397,14 +398,18 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         super.onResume()
         initData()
         mMapView.onResume()
-        if(oldScrollY<maxSlideY){
-            carTopBanner.resumeVideo()
+        if(oldScrollY<maxSlideY&&topBannerList.size>0){
+            val position=headerBinding.carTopViewPager.currentItem
+            carTopBanner.resumeVideo(topBannerList[position].mainImg)
             headerBinding.carTopViewPager.startLoop()
         }
     }
     override fun onPause() {
         super.onPause()
-        carTopBanner.pauseVideo()
+        if(topBannerList.size>0){
+            val position=headerBinding.carTopViewPager.currentItem
+            carTopBanner.pauseVideo(topBannerList[position].mainImg)
+        }
         mMapView.onPause()
         headerBinding.carTopViewPager.stopLoop()
     }
