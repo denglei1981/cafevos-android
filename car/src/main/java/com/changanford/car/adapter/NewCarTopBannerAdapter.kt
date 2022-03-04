@@ -1,6 +1,7 @@
 package com.changanford.car.adapter
 
 import android.app.Activity
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.control.AnimationControl
@@ -32,7 +33,9 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         imgBottom.load(bottomImg)
                         animationControl.startAnimation(imgTop,topAni,position)
                         animationControl.startAnimation(imgBottom,bottomAni,position)
+                        videoView.visibility= View.GONE
                     }else{//是视频
+                        videoView.visibility= View.VISIBLE
                         releaseVideo()
                         playerHelper = DKPlayerHelper(activity, videoView).apply {
                             fullScreenGone()
