@@ -30,13 +30,12 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
         holder?.let {
             DataBindingUtil.bind<ItemCarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
-                    val position=holder.absoluteAdapterPosition
                     if(mainIsVideo==0){
                         GlideUtils.loadFullSize(mainImg, imageCarIntro, R.mipmap.ic_def_square_img)
                         imgTop.load(topImg)
                         imgBottom.load(bottomImg)
-                        animationControl.startAnimation(imgTop,topAni,position)
-                        animationControl.startAnimation(imgBottom,bottomAni,position)
+                        animationControl.startAnimation(imgTop,topAni)
+                        animationControl.startAnimation(imgBottom,bottomAni)
                         videoView.visibility= View.GONE
                         imageCarIntro.visibility=View.VISIBLE
                         imgTop.visibility=View.VISIBLE
@@ -51,7 +50,6 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                             fullScreenGone()
                             startPlay(mainImg)
                         }
-                        Log.e("wenke","mainImg：$mainImg>>>.初始化playerHelper")
                         videoHashMap[mainImg]= playerHelper
                     }
                 }
@@ -59,10 +57,6 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
         }
     }
     fun startPlayVideo(videoUrl:String?){
-//        Log.e("wenke","startPlayVideo>>>videoUrl:$videoUrl>>>$playerHelper")
-//        videoUrl?.apply {
-//            playerHelper?.startPlay(this)
-//        }
         Log.e("wenke","startPlayVideo>>>videoUrl:$videoUrl>>>${videoHashMap[videoUrl]}")
         videoHashMap[videoUrl]?.apply {
             videoUrl?.apply {
@@ -73,14 +67,12 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     }
     fun pauseVideo(videoUrl:String?){
         Log.e("wenke","pauseVideo")
-//        playerHelper?.pause()
         videoHashMap[videoUrl]?.apply {
             pause()
         }
     }
     fun resumeVideo(videoUrl:String?){
         Log.e("wenke","resumeVideo")
-//        playerHelper?.resume()
         videoHashMap[videoUrl]?.apply {
             resume()
         }
