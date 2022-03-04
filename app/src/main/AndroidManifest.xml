@@ -53,7 +53,7 @@
         android:roundIcon="@mipmap/fordicon"
         android:supportsRtl="true"
         android:theme="@style/Theme.EVOS"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup,android:theme">
         <meta-data
             android:name="CHANNEL_VALUE"
             android:value="${channel_value}" />
@@ -125,6 +125,7 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:taskAffinity="com.changanford.evos"
             android:theme="@style/Theme.AppCompat.NoActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -170,6 +171,20 @@
             android:name="com.changanford.my.MyPostUI"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.changanford.evos">
+<!--            android:taskAffinity="com.chinaums.onlineservice"-->
+            <intent-filter>
+                <!--action.VIEW和category.DEFAULT必须设置-->
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!--如果需要浏览器支持打开，则category.BROWSABLE-->
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <!--schema的协议类型：可以自行设置，只要按照统一规则，前后端一致就行-->
+                <data android:scheme="qmfpppay"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
