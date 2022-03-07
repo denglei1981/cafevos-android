@@ -718,8 +718,10 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?) {
-        Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
-        Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath")
+        if(BuildConfig.DEBUG){
+            Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath")
+        }
         activity?.apply {
             if(!TextUtils.isEmpty(imgPath)){
                 WCommonUtil.pathUrlToBitmap(this,imgPath!!,object :OnDownBitmapListener{

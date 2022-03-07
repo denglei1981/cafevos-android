@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.common.BuildConfig
 import com.changanford.common.bean.EditTextBean
 import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.ui.dialog.AlertDialog
@@ -375,6 +376,10 @@ object WCommonUtil {
      * [thumbData] 小程序消息封面图片，小于128k ByteArray(byte[])
      */
     fun shareSmallProgram(context:Context,webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,thumbData:ByteArray) {
+        if(BuildConfig.DEBUG){
+            Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>thumbData:$thumbData")
+        }
         val api = WXAPIFactory.createWXAPI(context, ConfigUtils.WXAPPID)
         val miniProgramObj = WXMiniProgramObject().apply {
             this.webpageUrl = webpageUrl // 兼容低版本的网页链接
@@ -383,8 +388,6 @@ object WCommonUtil {
             this.userName = userName // 小程序原始id
             this.path =path //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
         }
-        Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
-        Log.e("wenke","小程序分享：title：$title>>>description:$description>>>thumbData:$thumbData")
         val msg = WXMediaMessage(miniProgramObj)
         msg.title = title // 小程序消息title
         msg.description = description // 小程序消息desc
