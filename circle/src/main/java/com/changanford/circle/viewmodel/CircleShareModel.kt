@@ -260,7 +260,7 @@ device	string
 非必须
 分享设备id
  */
-fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: CircleShareBean?, type: Int) {
+fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: CircleShareBean?, postType: Int,type: Int=0) {
     when (type) {
         0 -> {
             toastShow("分享成功")

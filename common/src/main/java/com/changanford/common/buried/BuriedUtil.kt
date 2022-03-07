@@ -229,16 +229,16 @@ class BuriedUtil {
    //问答 star
 
     fun communityHOtEngineer(nickname:String){
-        buried("app社区_问答_热门技师","app_community_Q&A_hot_engineer", extend = "{\"nickname\": \"$nickname\"}")
+        buried("app社区_问答_热门技师","app_community_QA_hot_engineer", extend = "{\"nickname\": \"$nickname\"}")
     }
     fun communityQuestion(type:String,title:String){
-        buried("app社区_问答_热门问答","app_community_Q&A_banner", extend = "{\"Q&A_type\": \"$type\",\"Q&A_title\": \"$title\"}")
+        buried("app社区_问答_热门问答","app_community_QA_list", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
     }
      /**
       *  筛选
       * */
     fun communityScreen(type:String){
-        buried("app社区_问答_问答筛选_确定","app_community_Q&A_Filter_confirm", extend = "{\"Q&A_type\": \"$type\"")
+        buried("app社区_问答_问答筛选_确定","app_community_QA_Filter_confirm", extend = "{\"QA_type\": \"$type\"")
     }
     /**
      * 问答搜索
@@ -256,6 +256,23 @@ class BuriedUtil {
      }
 
      // 发帖 end
+
+    // 爱车 埋点
+    fun  carQy(){
+        buried("app爱车_爱车列表_权益查看","app_car_carlist_view")
+    }
+    fun  carAdd(){
+        buried("app爱车_爱车列表_添加","app_car_carlist_add")
+    }
+
+    fun carDelete(phone:String){
+        buried("app爱车_删除车辆_提交","app_car_delete_Submit",extend = "{\"phone\": \"$phone\"")
+    }
+    fun carLicense(license_plate:String){
+        buried("app爱车_爱车列表_弹窗_确定","app_car_carlist_Popup_confirm",extend = "{\"license_plate\": \"$license_plate\"")
+    }
+
+    // 爱车埋点
 
 
 }
