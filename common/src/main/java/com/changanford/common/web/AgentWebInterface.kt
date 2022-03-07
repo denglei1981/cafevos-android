@@ -4,7 +4,9 @@ import android.Manifest
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +22,7 @@ import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.H5PostTypeBean
 import com.changanford.common.bean.MediaListBean
+import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
@@ -33,16 +36,13 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
+import com.changanford.common.wutil.WCommonUtil
 import com.just.agentweb.AgentWeb
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
-import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
-import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -694,7 +694,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         activity?.lifecycleScope?.launch {
             StatusBarUtil.setStatusBarColor(
                 activity,
-                if (isTransparent) R.color.transparent else R.color.white
+                if (isTransparent) com.changanford.common.R.color.transparent else R.color.white
             )
         }
     }
@@ -713,28 +713,27 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * [path]小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
      * [title] 小程序消息title
      * [description]小程序消息desc
-     * [thumbData]小程序消息封面图片，小于128k ByteArray(byte[])
+     * * thumbData 小程序消息封面图片，小于128k ByteArray(byte[])
+     * [imgPath]小程序消息封面图片，imgPath 图片路径 没有传 null
      */
     @JavascriptInterface
-    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,thumbData:ByteArray) {
-        val api = WXAPIFactory.createWXAPI(activity, ConfigUtils.WXAPPID)
-        val miniProgramObj = WXMiniProgramObject().apply {
-            this.webpageUrl = webpageUrl // 兼容低版本的网页链接
-//            this.miniprogramType =WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
-            this.miniprogramType =miniprogramType
-            this.userName = userName // 小程序原始id
-            this.path =path //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?) {
+        Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+        Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath")
+        activity?.apply {
+            if(!TextUtils.isEmpty(imgPath)){
+                WCommonUtil.pathUrlToBitmap(this,imgPath!!,object :OnDownBitmapListener{
+                    override fun onFinish(bitmap: Bitmap) {
+                        val thumbData=WCommonUtil.bitmap2Bytes(bitmap)
+                        WCommonUtil.shareSmallProgram(this@apply, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+                    }
+                })
+            }else{
+                val bmp = BitmapFactory.decodeResource(resources, R.mipmap.fordicon)
+                val thumbData=WCommonUtil.bitmap2Bytes(bmp)
+                WCommonUtil.shareSmallProgram(this, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+            }
         }
-        val msg = WXMediaMessage(miniProgramObj)
-        msg.title = title // 小程序消息title
-        msg.description = description // 小程序消息desc
-        msg.thumbData = thumbData // 小程序消息封面图片，小于128k
-        val req = SendMessageToWX.Req()
-//        req.transaction = buildTransaction("miniProgram")
-        req.transaction =System.currentTimeMillis().toString()
-        req.message = msg
-        req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
-        api.sendReq(req)
     }
     /**
      * 银联支付

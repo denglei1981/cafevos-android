@@ -10,6 +10,7 @@ import android.os.Build
 import android.provider.Settings
 import android.text.*
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -20,12 +21,22 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.bean.EditTextBean
+import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.google.android.material.tabs.TabLayout
 import com.qw.soul.permission.SoulPermission
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.math.BigDecimal
@@ -337,5 +348,52 @@ object WCommonUtil {
             .setMsg("您已禁止了定位权限，请到设置中心去打开")
             .setNegativeButton("取消") { }.setPositiveButton("确定"
             ) { SoulPermission.getInstance().goApplicationSettings() }.show()
+    }
+    fun pathUrlToBitmap(context: Context,url:String,listener: OnDownBitmapListener){
+        Glide.with(context).asBitmap().load(url).into(object : SimpleTarget<Bitmap?>() {
+            override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap?>?) {
+                listener.onFinish(bitmap)
+            }
+        })
+    }
+    /**
+    * 把Bitmap转Byte
+    */
+    fun bitmap2Bytes(bm: Bitmap): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+    /**
+     * 小程序分享
+     * [webpageUrl]兼容低版本的网页链接 限制长度不超过 10KB
+     * [miniprogramType]正式版:0，测试版:1，体验版:2
+     * [userName]小程序原始id（gh_d43f693ca31f）
+     * [path]小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+     * [title] 小程序消息title
+     * [description]小程序消息desc
+     * [thumbData] 小程序消息封面图片，小于128k ByteArray(byte[])
+     */
+    fun shareSmallProgram(context:Context,webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,thumbData:ByteArray) {
+        val api = WXAPIFactory.createWXAPI(context, ConfigUtils.WXAPPID)
+        val miniProgramObj = WXMiniProgramObject().apply {
+            this.webpageUrl = webpageUrl // 兼容低版本的网页链接
+//                       this.miniprogramType =WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
+            this.miniprogramType =miniprogramType
+            this.userName = userName // 小程序原始id
+            this.path =path //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+        }
+        Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+        Log.e("wenke","小程序分享：title：$title>>>description:$description>>>thumbData:$thumbData")
+        val msg = WXMediaMessage(miniProgramObj)
+        msg.title = title // 小程序消息title
+        msg.description = description // 小程序消息desc
+        msg.thumbData = thumbData // 小程序消息封面图片，小于128k
+        val req = SendMessageToWX.Req()
+//        req.transaction = buildTransaction("miniProgram")
+        req.transaction =System.currentTimeMillis().toString()
+        req.message = msg
+        req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
+        api.sendReq(req)
     }
 }
