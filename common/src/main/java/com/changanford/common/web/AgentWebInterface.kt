@@ -715,26 +715,30 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * [description]小程序消息desc
      * * thumbData 小程序消息封面图片，小于128k ByteArray(byte[])
      * [imgPath]小程序消息封面图片，imgPath 图片路径 没有传 null
+     * [shareCallBack]回调
      */
     @JavascriptInterface
-    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?) {
+    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?,shareCallBack:String) {
         if(BuildConfig.DEBUG){
             Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
-            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath")
+            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath》》》shareCallBack:$shareCallBack")
         }
         activity?.apply {
             if(!TextUtils.isEmpty(imgPath)){
                 WCommonUtil.pathUrlToBitmap(this,imgPath!!,object :OnDownBitmapListener{
                     override fun onFinish(bitmap: Bitmap) {
                         val thumbData=WCommonUtil.bitmap2Bytes(bitmap)
+                        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
                         WCommonUtil.shareSmallProgram(this@apply, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
                     }
                 })
             }else{
                 val bmp = BitmapFactory.decodeResource(resources, R.mipmap.fordicon)
                 val thumbData=WCommonUtil.bitmap2Bytes(bmp)
+                LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
                 WCommonUtil.shareSmallProgram(this, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
             }
+
         }
     }
     /**

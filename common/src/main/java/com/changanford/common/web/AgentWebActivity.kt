@@ -151,10 +151,14 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WEB_SHARE).observe(this, Observer {
-            var map: HashMap<String, String> = it as HashMap<String, String>
-            var jsonStr = map["jsonStr"].toString()
+            val map: HashMap<String, String> = it as HashMap<String, String>
+            val jsonStr = map["jsonStr"].toString()
             shareCallBack = map["shareCallBack"].toString()
             handleShare(jsonStr)
+        })
+        //分享-小程序
+        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).observe(this, Observer {
+            shareCallBack = it as String
         })
         //设置头部，全部
 //        LiveDataBus.get().with(LiveDataBusKey.WEB_SET_NAV_TITLE).observe(this, Observer { it ->
@@ -276,11 +280,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-
                 agentWeb.jsAccessEntrace.quickCallJs(shareCallBack, it.toString())
                 shareViewModule.shareBack(shareBean)
             }
-
         })
         //登录
         LiveDataBus.get().with(LiveDataBusKey.WEB_LOGIN_APP).observe(this, Observer {
