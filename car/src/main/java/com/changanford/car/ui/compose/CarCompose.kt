@@ -139,6 +139,7 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
             //位置距离 导航
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
                 WBuriedUtil.clickCarAfterSalesNavigate()
+                JumpUtils.instans?.jump(69,"{\"lngX\": \"${lngX}\",\"latY\": \"${latY}\",\"name\": \"$dealerName\"}")
             }) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Image(painter = painterResource(R.mipmap.car_location), contentDescription =null )

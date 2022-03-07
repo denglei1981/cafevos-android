@@ -1,6 +1,7 @@
 package com.changanford.common.bean
 
 import android.text.TextUtils
+import com.chad.library.adapter.base.entity.MultiItemEntity
 
 /**
  * @Author : wenke
@@ -87,6 +88,6 @@ data class NewCarTagBean(
     var spuCode: String?=null,//车型编码
     var spuName: String?=null,//车型编码
     var carModelPic: String?=null,//车型名称
-    var url: String?=null,
-)
+    var url: String?=null, override val itemType: Int=0,
+):MultiItemEntity
 data class CarMoreInfoBean(var carModelMoreJump:JumpDataBean,var carModels: ArrayList<NewCarTagBean>, var carInfos: ArrayList<NewCarTagBean>)
