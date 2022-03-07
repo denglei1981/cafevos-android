@@ -6,6 +6,7 @@ import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -21,6 +22,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
+import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.changanford.car.CarAuthLayout
@@ -41,7 +43,6 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
-import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
@@ -241,7 +242,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         tvDealers.apply {
                             text=modelName
                             setOnClickListener {
-
+                                JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                             }
                         }
                         viewModel.dealersBean.value?.apply {
@@ -286,7 +287,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 tvLocation.visibility=View.GONE
                 tvFromYouRecently.visibility=View.VISIBLE
                 headerBinding.mapView.showZoomControls(false)
-                LocationUtils.circleLocation(myLocationListener)
+                startLocation()
+                Log.e("wenke","开始定位")
             }else{
                 tvFromYouRecently.visibility=View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
@@ -295,8 +297,24 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
         }
     }
+    private fun startLocation(){
+        mLocationClient = LocationClient(requireContext()).apply {
+            //通过LocationClientOption设置LocationClient相关参数
+            val option = LocationClientOption()
+            option.isOpenGps = true
+            option.setCoorType("bd09ll")
+            option.setScanSpan(0)
+            //设置locationClientOption
+            locOption = option
+            //注册LocationListener监听器
+            registerLocationListener(myLocationListener)
+            //开启地图定位图层
+            start()
+        }
+    }
     private val myLocationListener =object :BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
+            Log.e("wenke","onReceiveLocation:${location?.latitude}")
             location?.apply {
                 latLng= LatLng(latitude, longitude)
                 if (isFirstLoc) {
@@ -408,11 +426,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
 
     override fun onDestroy() {
-        mLocationClient?.apply {
-            stop()
-            mBaiduMap.isMyLocationEnabled = false
-            mMapView.onDestroy()
-        }
+        mLocationClient?.stop()
+        mBaiduMap.isMyLocationEnabled = false
+        mMapView.onDestroy()
         super.onDestroy()
     }
     @TargetApi(23)
