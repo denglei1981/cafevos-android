@@ -12,7 +12,6 @@
         android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_dealers"
-            android:visibility="gone"
             tools:visibility="visible"
             android:layout_marginTop="@dimen/dp_28"
             app:layout_constraintTop_toTopOf="parent"
