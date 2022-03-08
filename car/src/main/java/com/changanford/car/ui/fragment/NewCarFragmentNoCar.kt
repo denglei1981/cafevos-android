@@ -183,7 +183,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onResume() {
         super.onResume()
         getData()
-         carControl.mMapView?.onResume()
+        carControl.mMapView?.onResume()
         if(oldScrollY<maxSlideY&&topBannerList.size>0){
             val position=headerBinding.carTopViewPager.currentItem
             carTopBanner.resumeVideo(topBannerList[position].mainImg)
