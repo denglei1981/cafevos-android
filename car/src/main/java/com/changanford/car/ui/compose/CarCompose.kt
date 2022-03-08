@@ -161,7 +161,6 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
             Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp)) {
-            Spacer(modifier = Modifier.height(18.dp))
             Box(modifier = Modifier
                 .padding(bottom = 5.dp)
                 .background(Color.White, shape = RoundedCornerShape(8.dp)), contentAlignment = Alignment.BottomEnd){
@@ -206,7 +205,6 @@ fun OwnerCertification(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuth
         return
     }
     val carAuthConfVo=carAuthBean?.carAuthConfVo
-    Spacer(modifier = Modifier.height(18.dp))
     Column(
         Modifier
             .fillMaxWidth()

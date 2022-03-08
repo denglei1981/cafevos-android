@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -138,6 +141,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
                     composeView.setContent {
                         Column {
+                            Spacer(modifier = Modifier.height(27.dp))
                             if(findModelCode!=null&&findModelCode.authStatus==3){//已认证
                                 CarAuthLayout(findModelCode)
                             }else OwnerCertification(this@apply,isUse(carModelCode),carAuthBean,findModelCode)
