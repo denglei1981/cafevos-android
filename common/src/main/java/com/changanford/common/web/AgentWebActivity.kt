@@ -266,6 +266,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                             if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
                                 viewModel.initLocationOption()
                             } else {
+                                agentWeb.jsAccessEntrace.quickCallJs(getLocationCallback, "false")
                                 toastShow("手机没有打开定位权限,请手动去设置页打开权限")
                             }
                         }

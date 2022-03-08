@@ -2,6 +2,8 @@ package com.changanford.car.control
 
 import android.Manifest
 import android.app.Activity
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -84,7 +86,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         JumpUtils.instans?.jump(this)
                     }
                 }
-                mAdapter.setFooterView(root, sort)
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.setFooterView(root, sort)
+                },1000)
             }
         }
         hRecommendBinding?.apply {
@@ -103,7 +107,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     fun setFooterOwner(dataBean:NewCarInfoBean?,sort:Int){
         if(hOwnerBinding==null) {
             hOwnerBinding = DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.from(fragment.requireContext()),R.layout.layout_composeview,null,false).apply {
-                mAdapter.setFooterView(root, sort)
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.setFooterView(root, sort)
+                },1000)
             }
         }
         hOwnerBinding?.apply {
@@ -128,7 +134,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         if(hCertificationBinding==null){
             hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
             from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
-                mAdapter.setFooterView(root, sort)
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.setFooterView(root, sort)
+                },1000)
             }
         }
         hCertificationBinding?.apply {
@@ -161,7 +169,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         if(hBuyBinding==null){
             hBuyBinding=DataBindingUtil.inflate<HeaderCarBuyBinding?>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_buy, null, false).apply {
                 rvCarService.adapter=serviceAdapter
-                mAdapter.setFooterView(root, sort)
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.setFooterView(root, sort)
+                },1000)
             }
         }
         hBuyBinding?.apply {
@@ -197,7 +207,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         3 -> WCommonUtil.setSettingLocation(activity)
                     }
                 }
-                mAdapter.setFooterView(root,sort)
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.setFooterView(root, sort)
+                },1000)
             }
         }
         hDealersBinding?.apply {

@@ -33,7 +33,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
-    private val carControl by lazy { CarControl(requireActivity(),this,viewModel, mAdapter,headerBinding) }
+    private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
