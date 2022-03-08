@@ -29,6 +29,7 @@ import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.wutil.WCommonUtil
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
@@ -39,12 +40,13 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
  * @Time : 2022/3/7 0007
  * @Description : CarControl
  */
-class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarViewModel, private val mAdapter: CarNotAdapter) {
+class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: CarViewModel, private val mAdapter: CarNotAdapter,
+                 private val headerBinding: HeaderCarBinding) {
     var carModelCode:String=""
     private var isFirstLoc=true
     private var latLng:LatLng?=null
     var mLocationClient:LocationClient?=null
-    var locationType=0// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权
+    var locationType=-1// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权
     private val carIconAdapter by lazy { CarIconAdapter(activity) }
     private val serviceAdapter by lazy { CarServiceAdapter() }
     //推荐
@@ -52,9 +54,9 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
     //购车服务
     private var hBuyBinding:HeaderCarBuyBinding?=null
     //车主服务
-    private var hOwnerBinding:HeaderCarOwnerBinding?=null
+    private var hOwnerBinding:LayoutComposeviewBinding?=null
     //认证
-    private var hCertificationBinding:HeaderCarCertificationBinding?=null
+    private var hCertificationBinding:LayoutComposeviewBinding?=null
     //经销商
     var hDealersBinding:HeaderCarDealersBinding?=null
     var mMapView: MapView?=null
@@ -95,8 +97,12 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
      * 车主服务
      * */
     fun setFooterOwner(dataBean:NewCarInfoBean?,sort:Int){
-        if(hOwnerBinding!=null)return
-        hOwnerBinding=DataBindingUtil.inflate<HeaderCarOwnerBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_owner, null, false).apply {
+        if(hOwnerBinding==null) {
+            hOwnerBinding = DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.from(fragment.requireContext()),R.layout.layout_composeview,null,false).apply {
+                mAdapter.setFooterView(root, sort)
+            }
+        }
+        hOwnerBinding?.apply {
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -108,15 +114,20 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
                     }
                 }
             }
-            mAdapter.setFooterView(root,sort)
         }
+
     }
     /**
      * 认证
      * */
     fun setFooterCertification(dataBean:NewCarInfoBean?,sort:Int){
-        if(hCertificationBinding!=null)return
-        hCertificationBinding=DataBindingUtil.inflate<HeaderCarCertificationBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_certification, null, false).apply {
+        if(hCertificationBinding==null){
+            hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
+            from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
+                mAdapter.setFooterView(root, sort)
+            }
+        }
+        hCertificationBinding?.apply {
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -135,40 +146,61 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
 
                 }
             }
-            mAdapter.setFooterView(root, sort)
         }
+
     }
     /**
      * 购车
      * */
     fun setFooterBuy(dataBean:NewCarInfoBean?,sort:Int){
-        if(hBuyBinding!=null)return
-        hBuyBinding=DataBindingUtil.inflate<HeaderCarBuyBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_buy, null, false).apply {
+        if(hBuyBinding==null){
+            hBuyBinding=DataBindingUtil.inflate<HeaderCarBuyBinding?>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_buy, null, false).apply {
+                rvCarService.adapter=serviceAdapter
+                mAdapter.setFooterView(root, sort)
+            }
+        }
+        hBuyBinding?.apply {
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
                     root.visibility=View.VISIBLE
                     if(icons!=null)rvCarService.layoutManager= GridLayoutManager(activity,if(icons!!.size>3)4 else 3)
-                    rvCarService.adapter=serviceAdapter
                     serviceAdapter.setList(icons)
                     tvService.text=modelName
                 }
             }
-            mAdapter.setFooterView(root, sort)
         }
     }
     /**
      * 经销商
      * */
     fun setFooterDealers(dataBean:NewCarInfoBean?,sort:Int){
-        if(hDealersBinding!=null)return
-        hDealersBinding=DataBindingUtil.inflate<HeaderCarDealersBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_dealers, null, false).apply {
+        if(hDealersBinding==null) {
+            hDealersBinding=DataBindingUtil.inflate<HeaderCarDealersBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_dealers, null, false).apply {
+                mMapView=mapView
+                mBaiduMap=mapView.map
+                viewMapBg.setOnClickListener {
+                    JumpUtils.instans?.jump(1,MConstant.H5_CAR_DEALER)
+                }
+                tvLocation.setOnClickListener {
+                    when (locationType) {
+                        //未开启定位
+                        1 -> WCommonUtil.showLocationServicePermission(activity)
+                        //未授权-询问授权
+                        2 -> getLocationPermissions()
+                        //拒绝授权
+                        3 -> WCommonUtil.setSettingLocation(activity)
+                    }
+                }
+                mAdapter.setFooterView(root,sort)
+            }
+            updateLocationUi()
+        }
+        hDealersBinding?.apply {
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)) {
                     root.visibility=View.VISIBLE
-                    mMapView=mapView
-                    mBaiduMap=mapView.map
                     tvDealers.apply {
                         text=modelName
                         setOnClickListener {
@@ -185,20 +217,11 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
                             }
                         }
                     }
-                    tvLocation.setOnClickListener {
-                        when (locationType) {
-                            //未开启定位
-                            1 -> WCommonUtil.showLocationServicePermission(activity)
-                            //未授权-询问授权
-                            2 -> getLocationPermissions()
-                            //拒绝授权
-                            3 -> WCommonUtil.setSettingLocation(activity)
-                        }
-                    }
                 }
             }
-            mAdapter.setFooterView(root,sort)
+
         }
+
     }
     private fun getLocationPermissions(){
         SoulPermission.getInstance().checkAndRequestPermission(
@@ -222,29 +245,29 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
                 tvLocation.visibility= View.GONE
                 tvFromYouRecently.visibility= View.VISIBLE
                 mapView.showZoomControls(false)
-                startLocation()
-                Log.e("wenke","开始定位")
             }else{
                 tvFromYouRecently.visibility= View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
                 tvLocation.visibility= View.VISIBLE
-//                viewModel.getRecentlyDealers()
             }
         }
     }
-    private fun startLocation(){
-        mLocationClient = LocationClient(activity).apply {
-            //通过LocationClientOption设置LocationClient相关参数
-            val option = LocationClientOption()
-            option.isOpenGps = true
-            option.setCoorType("bd09ll")
-            option.setScanSpan(0)
-            //设置locationClientOption
-            locOption = option
-            //注册LocationListener监听器
-            registerLocationListener(myLocationListener)
-            //开启地图定位图层
-            start()
+    fun startLocation(){
+        if(locationType==0&&mLocationClient==null){
+            mLocationClient = LocationClient(activity).apply {
+                Log.e("wenke","开始定位")
+                //通过LocationClientOption设置LocationClient相关参数
+                val option = LocationClientOption()
+                option.isOpenGps = true
+                option.setCoorType("bd09ll")
+                option.setScanSpan(0)
+                //设置locationClientOption
+                locOption = option
+                //注册LocationListener监听器
+                registerLocationListener(myLocationListener)
+                //开启地图定位图层
+                start()
+            }
         }
     }
     private val myLocationListener =object : BDAbstractLocationListener(){
@@ -259,7 +282,6 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
                     mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
                 addMarker(latLng!!,R.mipmap.ic_car_location_green,activity.getString(R.string.str_currentPosition))
-//                addInfoWindow(latLng!!,getString(R.string.str_currentPosition))
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
         }
@@ -269,7 +291,7 @@ class CarControl(val activity:Activity,val fragment:Fragment,val viewModel: CarV
      * */
     private fun addMarker(latLng:LatLng,iconId:Int,dealersName:String?){
 //        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
-        hDealersBinding?.apply {
+        headerBinding.apply {
             imgLocationIc.setImageResource(iconId)
             tvLocationTitle.setText(dealersName)
             val bitmap = BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(layoutLocation))

@@ -33,7 +33,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
-    private val carControl by lazy { CarControl(requireActivity(),this,viewModel, mAdapter) }
+    private val carControl by lazy { CarControl(requireActivity(),this,viewModel, mAdapter,headerBinding) }
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -52,7 +52,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         initObserve()
         initBanner()
-        initLocation()
     }
     override fun initData() {
         viewModel.getTopBanner()
@@ -80,6 +79,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             viewModel.getMyCarModelList()
         }
         viewModel.carInfoBean.observe(this) {
+            initLocation()
             bindingCompose()
         }
         //经销商
@@ -146,7 +146,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     private fun initLocation(){
         carControl.locationType =if(!LocationServiceUtil.isLocServiceEnable(requireContext()))1 else if(!isGetLocation())2 else 0
-        carControl.updateLocationUi()
+        carControl.startLocation()
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
@@ -198,6 +198,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         carControl.mLocationClient?.stop()
         carControl.mBaiduMap?.isMyLocationEnabled = false
         carControl.mMapView?.onDestroy()
+        carControl.mLocationClient=null
         super.onDestroy()
     }
     @TargetApi(23)
