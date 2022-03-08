@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -170,12 +171,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if(!hidden)initData()
+    }
     override fun onStart() {
         super.onStart()
         if(carControl.locationType==1||carControl.locationType==3)initLocation()
     }
     override fun onResume() {
         super.onResume()
+        Log.e("wenke","onResume")
         initData()
          carControl.mMapView?.onResume()
         if(oldScrollY<maxSlideY&&topBannerList.size>0){
