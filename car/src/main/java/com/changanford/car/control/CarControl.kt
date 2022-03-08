@@ -210,7 +210,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     viewModel.dealersBean.value?.apply {
                         val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                         latLng?.apply { addPolyline(this,p1) }
-                        addMarker(p1,R.mipmap.ic_car_location,dealerName)
+                        addMarker(p1,dealerName)
                         composeViewDealers.setContent {
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 LookingDealers(viewModel.dealersBean.value)
@@ -281,7 +281,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     builder.target(latLng).zoom(13.2f)
                     mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
-                addMarker(latLng!!,R.mipmap.ic_car_location_green,activity.getString(R.string.str_currentPosition))
+                addMarker(latLng!!,null)
                 viewModel.getRecentlyDealers(longitude,latitude)
             }
         }
@@ -289,12 +289,11 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 绘制点标记
      * */
-    private fun addMarker(latLng:LatLng,iconId:Int,dealersName:String?){
+    private fun addMarker(latLng:LatLng,dealersName:String?){
 //        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
         headerBinding.apply {
-            imgLocationIc.setImageResource(iconId)
-            tvLocationTitle.setText(dealersName)
-            val bitmap = BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(layoutLocation))
+            if(dealersName!=null)tvLocationTitle.setText(dealersName)
+            val bitmap = BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(if(dealersName==null)layoutLocation0 else layoutLocation1))
             val option: OverlayOptions = MarkerOptions()
                 .position(latLng)
                 .icon(bitmap)

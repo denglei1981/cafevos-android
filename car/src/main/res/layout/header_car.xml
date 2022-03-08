@@ -41,7 +41,35 @@
             android:gravity="center"
             android:minHeight="@dimen/dp_40"/>
         <LinearLayout
-            android:id="@+id/layout_location"
+            android:id="@+id/layout_location0"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <com.changanford.common.ui.view.WTextView
+                android:background="@drawable/shape_whit15_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_28"
+                android:maxWidth="@dimen/dp_120"
+                android:gravity="center"
+                android:textSize="@dimen/sp_13"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:textColor="@color/color_33"
+                style="@style/w_style_txt_ellipsize"
+                android:text="@string/str_currentPosition"/>
+            <ImageView
+                android:layout_marginTop="@dimen/dp_2"
+                android:src="@mipmap/ic_car_location_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_location1"
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
