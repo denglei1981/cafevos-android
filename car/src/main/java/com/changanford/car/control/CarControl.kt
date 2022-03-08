@@ -2,8 +2,6 @@ package com.changanford.car.control
 
 import android.Manifest
 import android.app.Activity
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +38,7 @@ import com.changanford.common.wutil.WCommonUtil
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import org.jetbrains.anko.doAsync
 
 /**
  * @Author : wenke
@@ -86,9 +85,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         JumpUtils.instans?.jump(this)
                     }
                 }
-                Handler(Looper.myLooper()!!).postDelayed({
-                    mAdapter.setFooterView(root, sort)
-                },1000)
+                addFooterView(root,sort)
             }
         }
         hRecommendBinding?.apply {
@@ -107,9 +104,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     fun setFooterOwner(dataBean:NewCarInfoBean?,sort:Int){
         if(hOwnerBinding==null) {
             hOwnerBinding = DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.from(fragment.requireContext()),R.layout.layout_composeview,null,false).apply {
-                Handler(Looper.myLooper()!!).postDelayed({
-                    mAdapter.setFooterView(root, sort)
-                },1000)
+                addFooterView(root,sort)
             }
         }
         hOwnerBinding?.apply {
@@ -134,9 +129,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         if(hCertificationBinding==null){
             hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
             from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
-                Handler(Looper.myLooper()!!).postDelayed({
-                    mAdapter.setFooterView(root, sort)
-                },1000)
+                addFooterView(root,sort)
             }
         }
         hCertificationBinding?.apply {
@@ -169,9 +162,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         if(hBuyBinding==null){
             hBuyBinding=DataBindingUtil.inflate<HeaderCarBuyBinding?>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_buy, null, false).apply {
                 rvCarService.adapter=serviceAdapter
-                Handler(Looper.myLooper()!!).postDelayed({
-                    mAdapter.setFooterView(root, sort)
-                },1000)
+                addFooterView(root,sort)
             }
         }
         hBuyBinding?.apply {
@@ -207,9 +198,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         3 -> WCommonUtil.setSettingLocation(activity)
                     }
                 }
-                Handler(Looper.myLooper()!!).postDelayed({
-                    mAdapter.setFooterView(root, sort)
-                },1000)
+                addFooterView(root,sort)
             }
         }
         hDealersBinding?.apply {
@@ -240,6 +229,12 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             }
         }
 
+    }
+    private fun addFooterView(view:View, sort:Int){
+//        Handler(Looper.myLooper()!!).postDelayed({
+//            mAdapter.setFooterView(view, sort)
+//        },1000)
+        doAsync { mAdapter.setFooterView(view, sort) }
     }
     private fun getLocationPermissions(){
         SoulPermission.getInstance().checkAndRequestPermission(
