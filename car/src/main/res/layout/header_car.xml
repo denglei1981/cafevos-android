@@ -81,9 +81,8 @@
             <com.changanford.common.ui.view.WTextView
                 android:id="@+id/tv_locationTitle"
                 android:background="@drawable/shape_whit15_bg"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_120"
                 android:layout_height="@dimen/dp_28"
-                android:maxWidth="@dimen/dp_120"
                 android:gravity="center"
                 android:textSize="@dimen/sp_13"
                 android:paddingStart="@dimen/dp_10"

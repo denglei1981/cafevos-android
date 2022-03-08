@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -39,7 +38,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun initView() {
         binding.apply {
             srl.setOnRefreshListener {
-                initData()
+                getData()
                 it.finishRefresh()
             }
             recyclerView.adapter=mAdapter
@@ -54,9 +53,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         initObserve()
         initBanner()
     }
-    override fun initData() {
+    override fun initData() {}
+    private fun getData(){
         viewModel.getTopBanner()
-        viewModel.getAuthCarInfo()
+//        viewModel.getAuthCarInfo()
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {
@@ -75,6 +75,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                 }
             }
+            viewModel.getAuthCarInfo()
         }
         viewModel.carAuthBean.observe(this) {
             viewModel.getMyCarModelList()
@@ -146,7 +147,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
     }
     private fun initLocation(){
-        carControl.locationType =if(!LocationServiceUtil.isLocServiceEnable(requireContext()))1 else if(!isGetLocation())2 else 0
+        carControl.locationType=if(!LocationServiceUtil.isLocServiceEnable(requireContext()))1 else if(!isGetLocation())2 else 0
         carControl.startLocation()
     }
     /**
@@ -173,7 +174,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(!hidden)initData()
+        if(!hidden)getData()
     }
     override fun onStart() {
         super.onStart()
@@ -181,8 +182,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onResume() {
         super.onResume()
-        Log.e("wenke","onResume")
-        initData()
+        getData()
          carControl.mMapView?.onResume()
         if(oldScrollY<maxSlideY&&topBannerList.size>0){
             val position=headerBinding.carTopViewPager.currentItem

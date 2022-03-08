@@ -92,6 +92,7 @@ class CarViewModel : ViewModel() {
             }.onSuccess {
                 topBannerBean.postValue(it)
             }.onWithMsgFailure {
+                topBannerBean.postValue(null)
                 it?.toast()
             }
         }

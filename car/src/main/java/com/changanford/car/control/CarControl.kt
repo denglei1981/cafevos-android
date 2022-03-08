@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -49,7 +50,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var isFirstLoc=true
     private var latLng:LatLng?=null
     var mLocationClient:LocationClient?=null
-    var locationType=-1// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权
+    var locationType=-1// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权  4附近没有经销商
     private val carIconAdapter by lazy { CarIconAdapter(activity) }
     private val serviceAdapter by lazy { CarServiceAdapter() }
     //推荐
@@ -198,7 +199,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                 }
                 mAdapter.setFooterView(root,sort)
             }
-            updateLocationUi()
         }
         hDealersBinding?.apply {
             root.visibility=View.GONE
@@ -211,19 +211,21 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                             JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                         }
                     }
+                    locationType=4
                     viewModel.dealersBean.value?.apply {
+                        locationType=0
                         val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                         latLng?.apply { addPolyline(this,p1) }
                         addMarker(p1,dealerName)
                         composeViewDealers.setContent {
                             Column(modifier = Modifier.fillMaxWidth()) {
-                                LookingDealers(viewModel.dealersBean.value)
+                                LookingDealers(this@apply)
                             }
                         }
                     }
+                    updateLocationUi()
                 }
             }
-
         }
 
     }
@@ -252,7 +254,12 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             }else{
                 tvFromYouRecently.visibility= View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
-                tvLocation.visibility= View.VISIBLE
+                tvLocation.apply {
+                    visibility= View.VISIBLE
+                    setText(if(locationType!=4)R.string.str_pleaseOnYourMobilePhoneFirst else R.string.str_thereIsNoDealerNearby)
+                    val drawable=if(locationType!=4)ContextCompat.getDrawable(fragment.requireContext(),R.mipmap.ic_location) else null
+                    setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null)
+                }
             }
         }
     }

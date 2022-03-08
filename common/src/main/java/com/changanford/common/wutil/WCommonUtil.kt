@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -18,6 +20,7 @@ import android.view.View.DRAWING_CACHE_QUALITY_HIGH
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -309,11 +312,30 @@ object WCommonUtil {
             v.requestLayout()
         }
     }
-
+    /**
+    *新建Bitmap，将View中内容绘制到Bitmap上
+    * */
+    fun createBitmapFromView(view: View): Bitmap? {
+        //是ImageView直接获取
+        if (view is ImageView) {
+            val drawable: Drawable = view.drawable
+            if (drawable is BitmapDrawable) {
+                return drawable.bitmap
+            }
+        }
+        view.clearFocus()
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        if (bitmap != null) {
+            val canvas = Canvas(bitmap)
+            view.draw(canvas)
+            canvas.setBitmap(null)
+        }
+        return bitmap
+    }
     /**
      * 该方式原理主要是：View组件显示的内容可以通过cache机制保存为bitmap
      */
-    fun createBitmapFromView(view: View): Bitmap? {
+    fun createBitmapFromViewFromCache(view: View): Bitmap? {
         var bitmap: Bitmap? = null
         //开启view缓存bitmap
         view.isDrawingCacheEnabled = true
