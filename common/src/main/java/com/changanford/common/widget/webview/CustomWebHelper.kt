@@ -11,6 +11,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import com.changanford.common.util.DensityUtils
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.toastShow
 import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.AgentWebUtils
 import com.just.agentweb.DefaultWebClient
@@ -21,10 +23,10 @@ import com.just.agentweb.WebViewClient
  * @Date: 2020/6/6
  * @Des: WebView基础配置
  */
-class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargin:Boolean=true) {
+class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargin: Boolean = true) {
     init {
         if (webView != null) {
-            if (isMargin&&webView?.layoutParams is ViewGroup.MarginLayoutParams) {
+            if (isMargin && webView?.layoutParams is ViewGroup.MarginLayoutParams) {
                 val params = webView?.layoutParams as ViewGroup.MarginLayoutParams
                 params.leftMargin = DensityUtils.dip2px(15F)
                 params.rightMargin = DensityUtils.dip2px(15F)
@@ -77,6 +79,32 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                     request: WebResourceRequest?
                 ): Boolean {
                     val url = request?.url.toString()
+                    // todo 超链接跳转
+//                    if (url.contains("jumpDataType=") && url.contains("jumpDataValue=")) {
+//                        try {
+//                            val paramStr = url.indexOf("?")
+//                            val param = url.subSequence(paramStr, url.length)
+//                            val split = param.split("&")
+//                            var jumpType = ""
+//                            var jumpData = ""
+//                            split.forEach {s->
+//                                if(s.contains("jumpDataType=")){
+//                                    jumpType=s.substring(s.indexOf("=")+1,s.length)
+//                                }
+//                                if(s.contains("jumpDataValue=")){
+//                                    jumpData=s.substring(s.indexOf("=")+1,s.length)
+//                                }
+//                            }
+//                            try {
+//                                JumpUtils.instans?.jump(jumpType.toInt(), jumpData)
+//                            } catch (e: NumberFormatException) {
+//                                toastShow("获取链接失败")
+//                            }
+//                        } catch (e: StringIndexOutOfBoundsException) {
+//                            toastShow("获取链接失败")
+//                        }
+//                        return true
+//                    }
                     if (url.startsWith(DefaultWebClient.HTTP_SCHEME) || url.startsWith(
                             DefaultWebClient.HTTPS_SCHEME
                         )
@@ -106,12 +134,13 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
     fun loadDataWithBaseURL(htmlData: String) {
         webView?.loadDataWithBaseURL(
             null,
-            HHtmlUtils.getHtmlData(htmlData)?:"",
+            HHtmlUtils.getHtmlData(htmlData) ?: "",
             "text/html",
             "utf-8",
             null
         )
     }
+
     fun onResume() {
         webView?.let {
             if (Build.VERSION.SDK_INT >= 21) {
