@@ -1,10 +1,6 @@
 package com.changanford.car.ui.fragment
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.content.pm.PackageManager
-import android.os.Build
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -23,7 +19,6 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.LocationServiceUtil
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -34,6 +29,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
+    private var carInfoBean:MutableList<NewCarInfoBean>?=null
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -81,11 +77,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             viewModel.getMyCarModelList()
         }
         viewModel.carInfoBean.observe(this) {
-            initLocation()
-            bindingCompose()
-        }
-        //经销商
-        viewModel.dealersBean.observe(this) {
             bindingCompose()
         }
     }
@@ -124,31 +115,36 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         headerBinding.drIndicator.setIndicatorGap(20).setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
         headerBinding.carTopViewPager.isSaveEnabled = false
     }
-
     private fun bindingCompose(){
         viewModel.carInfoBean.value?.apply {
-            for ((index,item) in withIndex()){
-                bindView(index,item.modelCode,item)
+            for ((sort,item) in withIndex()){
+                val modelCode=item.modelCode
+                var isUpdateSort=true
+                carInfoBean?.find { it.modelCode==modelCode }?.let {
+                    isUpdateSort=it.modelSort!=sort
+                }
+                bindView(sort,isUpdateSort,modelCode,item)
+                item.modelSort=sort
             }
+            carInfoBean=this
         }
     }
-    private fun bindView(index:Int,modelCode:String,dataBean: NewCarInfoBean?){
+    /**
+     * [isUpdateSort]是否更改排序
+    * */
+    private fun bindView(sort:Int,isUpdateSort:Boolean,modelCode:String,dataBean: NewCarInfoBean?){
         when(modelCode){
             //推荐
-            "cars"->carControl.setFooterRecommended(dataBean,index)
+            "cars"->carControl.setFooterRecommended(dataBean,sort,isUpdateSort)
             //购车
-            "buy_service"->carControl.setFooterBuy(dataBean,index)
+            "buy_service"->carControl.setFooterBuy(dataBean,sort,isUpdateSort)
             //车主认证
-            "car_auth"->carControl.setFooterCertification(dataBean,index)
+            "car_auth"->carControl.setFooterCertification(dataBean,sort,isUpdateSort)
             //售后
-            "after-sales"->carControl.setFooterOwner(dataBean,index)
+            "after-sales"->carControl.setFooterOwner(dataBean,sort,isUpdateSort)
             //经销商
-            "dealers"->carControl.setFooterDealers(dataBean,index)
+            "dealers"->carControl.setFooterDealers(dataBean,sort,isUpdateSort)
         }
-    }
-    private fun initLocation(){
-        carControl.locationType=if(!LocationServiceUtil.isLocServiceEnable(requireContext()))1 else if(!isGetLocation())2 else 0
-        carControl.startLocation()
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
@@ -178,7 +174,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onStart() {
         super.onStart()
-        if(carControl.locationType==1||carControl.locationType==3)initLocation()
+        val locationType=carControl.locationType.value
+        if(locationType==1||locationType==3)carControl.initLocation()
     }
     override fun onResume() {
         super.onResume()
@@ -206,17 +203,5 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         carControl.mMapView?.onDestroy()
         carControl.mLocationClient=null
         super.onDestroy()
-    }
-    @TargetApi(23)
-    private fun isGetLocation(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 定位精确位置
-            activity?.apply {
-                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return false
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)return false
-            }
-            return true
-        }
-        return false
     }
 }

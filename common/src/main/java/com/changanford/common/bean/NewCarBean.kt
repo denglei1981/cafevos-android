@@ -32,6 +32,7 @@ data class NewCarInfoBean(
     val jumpDataValue: String? = null,
     val lngX:String?=null,
     val latY:String?=null,
+    var modelSort:Int?=null,
 ){
     //该模块是否可见 查询存在即为不可见
     fun isVisible(carModelCode:String):Boolean{

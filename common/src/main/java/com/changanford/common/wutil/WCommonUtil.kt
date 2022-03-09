@@ -1,8 +1,11 @@
 package com.changanford.common.wutil
 
+import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
@@ -420,5 +423,17 @@ object WCommonUtil {
         req.message = msg
         req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
         api.sendReq(req)
+    }
+    @TargetApi(23)
+    fun isGetLocation(activity: Activity?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 定位精确位置
+            activity?.apply {
+                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return false
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)return false
+            }
+            return true
+        }
+        return false
     }
 }
