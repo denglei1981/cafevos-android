@@ -186,12 +186,12 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                         Text(stringResource(R.string.str_goToCertification),fontSize = 15.sp,color =  colorResource(if(isUse)R.color.color_00095B else R.color.color_DD))
                     }
                 }
-                Column(modifier = Modifier.padding(bottom = 24.dp, end = 20.dp)) {
+                Column(modifier = Modifier.padding(bottom = 24.dp, end = 20.dp, start = 140.dp)) {
                     img?.apply {
                         Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this) ?: R.mipmap.head_default,
                             builder = {placeholder(R.mipmap.head_default)}),
                             contentScale = ContentScale.Crop,
-                            contentDescription =null,modifier = Modifier.size(170.dp,72.dp).clip(RoundedCornerShape(5.dp)))
+                            contentDescription =null,modifier = Modifier.height(72.dp).clip(RoundedCornerShape(5.dp)))
                     }
                 }
             }
