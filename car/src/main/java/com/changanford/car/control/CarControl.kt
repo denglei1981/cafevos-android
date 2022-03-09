@@ -256,7 +256,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                 mAdapter.removeFooterView(view)
                 mAdapter.setFooterView(view, sort)
             },1000)
-//        doAsync { mAdapter.setFooterView(view, sort) }
+//            doAsync {
+//                mAdapter.removeFooterView(view)
+//                mAdapter.setFooterView(view, sort)
+//            }
         }
     }
     private fun getLocationPermissions(){
