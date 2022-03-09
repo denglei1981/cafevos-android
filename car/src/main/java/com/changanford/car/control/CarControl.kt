@@ -2,6 +2,8 @@ package com.changanford.car.control
 
 import android.Manifest
 import android.app.Activity
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -33,12 +36,12 @@ import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
 import com.changanford.common.wutil.WCommonUtil
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import org.jetbrains.anko.doAsync
 
 /**
  * @Author : wenke
@@ -51,7 +54,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var isFirstLoc=true
     private var latLng:LatLng?=null
     var mLocationClient:LocationClient?=null
-    var locationType=-1// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权  4附近没有经销商
+    val locationType= MutableLiveData<Int>()// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权  4附近没有经销商 5已定位成功
     private val carIconAdapter by lazy { CarIconAdapter(activity) }
     private val serviceAdapter by lazy { CarServiceAdapter() }
     //推荐
@@ -64,19 +67,26 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var hCertificationBinding:LayoutComposeviewBinding?=null
     //经销商
     var hDealersBinding:HeaderCarDealersBinding?=null
+
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
     init {
         viewModel.carMoreInfoBean.observe(fragment) {
             carIconAdapter.setList(it?.carModels)
         }
+        //经销商
+        viewModel.dealersBean.observe(fragment) {
+            bindDealersData(it)
+        }
+        locationType.observe(fragment){
+            updateLocationUi()
+        }
         viewModel.getMoreCar()
     }
-
     /**
      * 推荐
     * */
-    fun setFooterRecommended(dataBean:NewCarInfoBean?,sort:Int){
+    fun setFooterRecommended(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hRecommendBinding==null){
             hRecommendBinding=DataBindingUtil.inflate<HeaderCarRecommendedBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_recommended, null, false).apply {
                 rvCar.adapter = carIconAdapter
@@ -85,10 +95,11 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         JumpUtils.instans?.jump(this)
                     }
                 }
-                addFooterView(root,sort)
+//                addFooterView(root,sort)
             }
         }
         hRecommendBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -101,13 +112,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 车主服务
      * */
-    fun setFooterOwner(dataBean:NewCarInfoBean?,sort:Int){
+    fun setFooterOwner(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hOwnerBinding==null) {
             hOwnerBinding = DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.from(fragment.requireContext()),R.layout.layout_composeview,null,false).apply {
-                addFooterView(root,sort)
+//                addFooterView(root,sort)
             }
         }
         hOwnerBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -125,14 +137,15 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 认证
      * */
-    fun setFooterCertification(dataBean:NewCarInfoBean?,sort:Int){
+    fun setFooterCertification(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hCertificationBinding==null){
             hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
             from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
-                addFooterView(root,sort)
+//                addFooterView(root,sort)
             }
         }
         hCertificationBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -158,14 +171,15 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 购车
      * */
-    fun setFooterBuy(dataBean:NewCarInfoBean?,sort:Int){
+    fun setFooterBuy(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hBuyBinding==null){
             hBuyBinding=DataBindingUtil.inflate<HeaderCarBuyBinding?>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_buy, null, false).apply {
                 rvCarService.adapter=serviceAdapter
-                addFooterView(root,sort)
+//                addFooterView(root,sort)
             }
         }
         hBuyBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
             root.visibility=View.GONE
             dataBean?.apply {
                 if(isVisible(carModelCode)){
@@ -180,7 +194,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 经销商
      * */
-    fun setFooterDealers(dataBean:NewCarInfoBean?,sort:Int){
+    fun setFooterDealers(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hDealersBinding==null) {
             hDealersBinding=DataBindingUtil.inflate<HeaderCarDealersBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_dealers, null, false).apply {
                 mMapView=mapView
@@ -189,7 +203,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     JumpUtils.instans?.jump(1,MConstant.H5_CAR_DEALER)
                 }
                 tvLocation.setOnClickListener {
-                    when (locationType) {
+                    when (locationType.value) {
                         //未开启定位
                         1 -> WCommonUtil.showLocationServicePermission(activity)
                         //未授权-询问授权
@@ -198,13 +212,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         3 -> WCommonUtil.setSettingLocation(activity)
                     }
                 }
-                addFooterView(root,sort)
+//                addFooterView(root,sort)
             }
         }
         hDealersBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
             root.visibility=View.GONE
             dataBean?.apply {
-                if(isVisible(carModelCode)) {
+                if(isVisible(carModelCode)) {//经销商可见
                     root.visibility=View.VISIBLE
                     tvDealers.apply {
                         text=modelName
@@ -212,66 +227,76 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                             JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                         }
                     }
-                    locationType=4
-                    viewModel.dealersBean.value?.apply {
-                        locationType=0
-                        val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
-                        latLng?.apply { addPolyline(this,p1) }
-                        addMarker(p1,dealerName)
-                        composeViewDealers.setContent {
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                LookingDealers(this@apply)
-                            }
-                        }
-                    }
-                    updateLocationUi()
+                    initLocation()
                 }
             }
         }
-
     }
-    private fun addFooterView(view:View, sort:Int){
-//        Handler(Looper.myLooper()!!).postDelayed({
-//            mAdapter.setFooterView(view, sort)
-//        },1000)
-        doAsync { mAdapter.setFooterView(view, sort) }
+    fun initLocation(){
+        val locationTypeValue=if(!LocationServiceUtil.isLocServiceEnable(fragment.requireContext()))1 else if(!WCommonUtil.isGetLocation(fragment.requireActivity()))2 else 0
+        locationType.postValue(locationTypeValue)
+        startLocation(locationTypeValue)
+    }
+    private fun bindDealersData(dataBean: NewCarInfoBean?){
+        if(dataBean==null)locationType.postValue(4)
+        else{
+            hDealersBinding?.apply {
+                dataBean.apply {
+                    locationType.postValue(5)
+                    val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
+                    latLng?.apply { addPolyline(this,p1) }
+                    addMarker(p1,dealerName)
+                    composeViewDealers.setContent {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            LookingDealers(this@apply)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun addFooterView(view:View, sort:Int,isUpdateSort:Boolean){
+        if(isUpdateSort){
+            Handler(Looper.myLooper()!!).postDelayed({
+                mAdapter.setFooterView(view, sort)
+            },1000)
+//        doAsync { mAdapter.setFooterView(view, sort) }
+        }
     }
     private fun getLocationPermissions(){
         SoulPermission.getInstance().checkAndRequestPermission(
             Manifest.permission.ACCESS_FINE_LOCATION,
             object : CheckRequestPermissionListener {
                 override fun onPermissionOk(permission: Permission) {
-                    locationType=0
-                    updateLocationUi()
+                    locationType.postValue(0)
                 }
                 override fun onPermissionDenied(permission: Permission) {
-                    locationType=3
-                    updateLocationUi()
+                    locationType.postValue(3)
                     WCommonUtil.setSettingLocation(activity)
                 }
             })
     }
-    fun updateLocationUi(){
+    private fun updateLocationUi(locationTypeValue:Int?=locationType.value){
         hDealersBinding?.apply {
-            if(locationType==0){
+            if(0==locationTypeValue||5==locationTypeValue){
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
                 tvLocation.visibility= View.GONE
                 tvFromYouRecently.visibility= View.VISIBLE
-                mapView.showZoomControls(false)
             }else{
                 tvFromYouRecently.visibility= View.GONE
                 viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
                 tvLocation.apply {
                     visibility= View.VISIBLE
-                    setText(if(locationType!=4)R.string.str_pleaseOnYourMobilePhoneFirst else R.string.str_thereIsNoDealerNearby)
-                    val drawable=if(locationType!=4)ContextCompat.getDrawable(fragment.requireContext(),R.mipmap.ic_location) else null
+                    setText(if(locationTypeValue!=4)R.string.str_pleaseOnYourMobilePhoneFirst else R.string.str_thereIsNoDealerNearby)
+                    val drawable=if(locationType.value!=4)ContextCompat.getDrawable(fragment.requireContext(),R.mipmap.ic_location) else null
                     setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null)
                 }
             }
         }
     }
-    fun startLocation(){
-        if(locationType==0&&mLocationClient==null){
+    private fun startLocation(locationTypeValue:Int){
+        if(locationTypeValue==0&&mLocationClient==null){
+            hDealersBinding?.mapView?.showZoomControls(false)
             mLocationClient = LocationClient(activity).apply {
                 Log.e("wenke","开始定位")
                 //通过LocationClientOption设置LocationClient相关参数
