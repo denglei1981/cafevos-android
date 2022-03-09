@@ -23,6 +23,7 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiLoveCarInfoBinding
 import com.changanford.my.viewmodel.CarAuthViewModel
+import com.changanford.my.widget.DeleteCarPop
 
 /**
  *  文件名：LoveCarInfoUI
@@ -36,6 +37,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
 
     lateinit var auth: CarItemBean
 
+    var removeCarNotice: String? = ""
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
@@ -53,6 +55,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                         if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
                     binding.carContent.text = it.authDetailRightsContent
                     binding.deleteCar.text = it.removeCarNotice
+                    removeCarNotice = it.removeCarNotice
                 }
             }
         }
@@ -87,17 +90,42 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
             })
         binding.deleteCar.setOnClickListener {
             if (!TextUtils.isEmpty(auth.vin)) {
-                val bundle = Bundle()
-                bundle.putString("vin", auth.vin)
-                RouterManger.startARouter(ARouterMyPath.CarDeleteUI, bundle = bundle)
+                deleteCar()
             }
 
         }
     }
 
+    fun deleteCar() {
+        removeCarNotice?.let { tips ->
+
+            val deleteCarPop = DeleteCarPop(this, object : DeleteCarPop.deleteCar {
+                override fun cancle() {
+
+                }
+
+                override fun delete() {
+                    viewModel.deleteCar(auth.vin) {
+                        it.onSuccess {
+                            finish()
+
+                        }.onWithMsgFailure {
+                            it?.toast()
+                        }
+
+                    }
+
+                }
+            }, tips)
+            deleteCarPop.showPopupWindow()
+        }
+
+
+    }
+
     override fun initData() {
         super.initData()
-        auth?.let {
+        auth.let {
             viewModel.queryAuthCarDetail(auth.vin) {
                 it.onSuccess {
                     it?.let {
