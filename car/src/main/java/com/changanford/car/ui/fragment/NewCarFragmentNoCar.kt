@@ -118,11 +118,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun bindingCompose(){
         viewModel.carInfoBean.value?.apply {
             for ((sort,item) in withIndex()){
+                val modelCode=item.modelCode
                 var isUpdateSort=true
-                carInfoBean?.get(sort)?.modelSort?.let {
-                    isUpdateSort=it!=sort
+                carInfoBean?.find { it.modelCode==modelCode }?.let {
+                    isUpdateSort=it.modelSort!=sort
                 }
-                bindView(sort,isUpdateSort,item.modelCode,item)
+                bindView(sort,isUpdateSort,modelCode,item)
                 item.modelSort=sort
             }
             carInfoBean=this
