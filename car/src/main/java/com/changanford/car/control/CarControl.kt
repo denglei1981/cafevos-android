@@ -175,7 +175,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             }
         }
         hBuyBinding?.apply {
-
             dataBean?.apply {
                 if(isVisible(carModelCode)){
                     addFooterView(root,sort,isUpdateSort)

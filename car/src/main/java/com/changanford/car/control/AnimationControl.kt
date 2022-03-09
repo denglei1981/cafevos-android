@@ -34,11 +34,11 @@ class AnimationControl {
             }
             3->{
                 fromYDelta=0f
-                fromXDelta=-displacement
+                fromXDelta=displacement
             }
             4->{
                 fromYDelta=0f
-                fromXDelta=displacement
+                fromXDelta=-displacement
             }
         }
         //不使用动画

@@ -32,6 +32,7 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil
 
@@ -115,7 +116,9 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
             .background(color = Color.White,RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp))
             .padding(end = 15.dp, top = 10.dp, bottom = 15.dp)) {
             Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).clickable {
+                JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
+            }) {
                 //标题
                 Text(text = dealerName?:"",color = colorResource(R.color.color_33),fontSize = 14.sp)
                 Spacer(modifier = Modifier.height(10.dp))
