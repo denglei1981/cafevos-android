@@ -243,7 +243,6 @@ class CarAuthViewModel : ViewModel() {
                     body["vin"] = vin
                     val rKey = getRandomKey()
                     apiService.deleteCar(body.header(rKey), body.body(rKey))
-
                 }
             )
         }
