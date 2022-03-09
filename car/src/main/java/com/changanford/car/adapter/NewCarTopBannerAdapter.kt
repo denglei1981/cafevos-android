@@ -1,13 +1,13 @@
 package com.changanford.car.adapter
 
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.control.AnimationControl
 import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.dk.DKPlayerHelper
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
@@ -52,6 +52,9 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         }
                         videoHashMap[mainImg]= playerHelper
                     }
+                    view.setOnClickListener {
+                        JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
+                    }
                 }
             }
         }
@@ -59,7 +62,6 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     fun startPlayVideo(videoUrl:String?){
         videoHashMap[videoUrl]?.apply {
             videoUrl?.apply {
-                Log.e("wenke","startPlay")
                 startPlay(this)
             }
         }

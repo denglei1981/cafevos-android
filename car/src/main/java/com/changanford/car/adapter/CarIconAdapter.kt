@@ -23,6 +23,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
             val position=holder.absoluteAdapterPosition
 //            imgCover.load(item.carModelPic)
 //            WCommonUtil.setMargin(layoutRoot,if(0==position)dp20 else 0,0,dp20,0)
+            layoutRoot.setPadding(if(0==position)dp20 else 0,0,dp20,0)
             GlideUtils.glideLoadWidth(activity,item.carModelPic,imgCover,imgWidth)
             model=item
             executePendingBindings()

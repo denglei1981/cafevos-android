@@ -47,8 +47,8 @@ import com.changanford.common.wutil.WCommonUtil
  * */
 @Composable
 fun AfterSalesService(carInfoBean: NewCarInfoBean?){
-    if(carInfoBean?.icons == null)return
-    val dataList=carInfoBean.icons?: arrayListOf()
+    val dataList=carInfoBean?.icons
+    if(dataList == null|| dataList.isEmpty())return
     //一排几列
     val columnSize=3
     //总共几排

@@ -228,7 +228,7 @@ class NewCarFragmentNoCar_Copy : BaseFragment<FragmentCarBinding, CarViewModel>(
                         }
                     }
                     //售后服务
-                    find { it.modelCode=="after-sales" }?.apply {
+                    find { it.modelCode=="after_sales" }?.apply {
                         if(isVisible(carModelCode))AfterSalesService(this)
                     }
                 }

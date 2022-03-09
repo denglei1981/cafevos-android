@@ -66,12 +66,13 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     //认证
     private var hCertificationBinding:LayoutComposeviewBinding?=null
     //经销商
-    var hDealersBinding:HeaderCarDealersBinding?=null
+    private var hDealersBinding:HeaderCarDealersBinding?=null
 
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
     init {
         viewModel.carMoreInfoBean.observe(fragment) {
+//            carIconAdapter.setList(it?.carModels?.reversed())
             carIconAdapter.setList(it?.carModels)
         }
         //经销商

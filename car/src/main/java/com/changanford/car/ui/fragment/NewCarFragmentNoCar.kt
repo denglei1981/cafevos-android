@@ -141,7 +141,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             //车主认证
             "car_auth"->carControl.setFooterCertification(dataBean,sort,isUpdateSort)
             //售后
-            "after-sales"->carControl.setFooterOwner(dataBean,sort,isUpdateSort)
+            "after_sales"->carControl.setFooterOwner(dataBean,sort,isUpdateSort)
             //经销商
             "dealers"->carControl.setFooterDealers(dataBean,sort,isUpdateSort)
         }
