@@ -113,12 +113,17 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
     dataBean?.apply {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.White,RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp))
+            .background(
+                color = Color.White,
+                RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp)
+            )
             .padding(end = 15.dp, top = 10.dp, bottom = 15.dp)) {
             Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f).clickable {
-                JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
-            }) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .clickable {
+                    JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
+                }) {
                 //标题
                 Text(text = dealerName?:"",color = colorResource(R.color.color_33),fontSize = 14.sp)
                 Spacer(modifier = Modifier.height(10.dp))
@@ -181,9 +186,9 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                         JumpUtils.instans?.jump(17,dataBean?.modelCode)
                     },enabled = isUse,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
                         colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),contentPadding = PaddingValues(10.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = if(isUse)Color.White else colorResource(R.color.color_DD)),
                         modifier = Modifier.width(96.dp)) {
-                        Text(stringResource(R.string.str_goToCertification),fontSize = 15.sp,color =  colorResource(if(isUse)R.color.color_00095B else R.color.color_DD))
+                        Text(stringResource(R.string.str_goToCertification),fontSize = 15.sp,color =  colorResource(if(isUse)R.color.color_00095B else R.color.colorWhite))
                     }
                 }
                 Column(modifier = Modifier.padding(bottom = 24.dp, end = 20.dp, start = 140.dp)) {
@@ -191,7 +196,9 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                         Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this) ?: R.mipmap.head_default,
                             builder = {placeholder(R.mipmap.head_default)}),
                             contentScale = ContentScale.Crop,
-                            contentDescription =null,modifier = Modifier.height(72.dp).clip(RoundedCornerShape(5.dp)))
+                            contentDescription =null,modifier = Modifier
+                                .height(72.dp)
+                                .clip(RoundedCornerShape(5.dp)))
                     }
                 }
             }
