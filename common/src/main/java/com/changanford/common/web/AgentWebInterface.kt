@@ -758,4 +758,24 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         map["serverMode"] = serverMode?:"00"
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
     }
+    /**
+     * 打开相机
+    * */
+    @JavascriptInterface
+    fun openCamera(callback:String){
+        PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: List<LocalMedia>) {
+                if (result.isNotEmpty()) {
+                    for (media in result) {
+                        val path: String = PictureUtil.getFinallyPath(media)
+                        path.let {
+                            val base64Str = FileHelper.getImageStr(path)
+                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                        }
+                    }
+                }
+            }
+            override fun onCancel() {}
+        })
+    }
 }
