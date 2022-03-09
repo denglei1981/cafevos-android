@@ -237,13 +237,12 @@ class CarAuthViewModel : ViewModel() {
         viewModelScope.launch {
             result(
                 fetchRequest {
-                    var body = HashMap<String, Any>()
-                    body["phone"] = phone ?: ""
-                    body["smsCode"] = smsCode ?: ""
+                    val body = HashMap<String, Any>()
+//                    body["phone"] = phone ?: ""
+//                    body["smsCode"] = smsCode ?: ""
                     body["vin"] = vin
                     val rKey = getRandomKey()
                     apiService.deleteCar(body.header(rKey), body.body(rKey))
-
                 }
             )
         }
