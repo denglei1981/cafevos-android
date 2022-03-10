@@ -31,15 +31,29 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
             DataBindingUtil.bind<ItemCarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
                     if(mainIsVideo==0){
-                        GlideUtils.loadFullSize(mainImg, imageCarIntro, R.mipmap.ic_def_square_img)
-                        imgTop.load(topImg)
-                        imgBottom.load(bottomImg)
-                        animationControl.startAnimation(imgTop,topAni)
-                        animationControl.startAnimation(imgBottom,bottomAni)
+                        if(mainImg!=null){
+                            imageCarIntro.visibility=View.VISIBLE
+                            GlideUtils.loadFullSize(mainImg, imageCarIntro, R.mipmap.ic_def_square_img)
+                        }else{
+                            imageCarIntro.visibility=View.GONE
+                        }
+
+                        if(topImg!=null){
+                            imgTop.visibility=View.VISIBLE
+                            imgTop.load(topImg,0)
+                            animationControl.startAnimation(imgTop,topAni)
+                        }else{
+                            imgTop.visibility=View.GONE
+                        }
+
+                        if(bottomImg!=null){
+                            imgBottom.visibility=View.VISIBLE
+                            imgBottom.load(bottomImg,0)
+                            animationControl.startAnimation(imgBottom,bottomAni)
+                        }else{
+                            imgBottom.visibility=View.GONE
+                        }
                         videoView.visibility= View.GONE
-                        imageCarIntro.visibility=View.VISIBLE
-                        imgTop.visibility=View.VISIBLE
-                        imgBottom.visibility=View.VISIBLE
                     }else{//是视频
                         imageCarIntro.visibility=View.GONE
                         imgTop.visibility=View.GONE
@@ -50,7 +64,7 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                             fullScreenGone()
                             startPlay(mainImg)
                         }
-                        videoHashMap[mainImg]= playerHelper
+                        videoHashMap[mainImg?:""]= playerHelper
                     }
                     view.setOnClickListener {
                         JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
