@@ -1065,16 +1065,18 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
+        var tagNames=""
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
+                tagNames +=it.tagName+","
             }
         }
         params["tagIds"] = tagIds
         try{
             val  biaoti= params["title"]
             val content =params["content"]
-            BuriedUtil.instant?.post(biaoti.toString(),content.toString(),tagIds)
+            BuriedUtil.instant?.post(biaoti.toString(),content.toString(),tagNames)
         }catch (e:Exception){
             e.printStackTrace()
         }

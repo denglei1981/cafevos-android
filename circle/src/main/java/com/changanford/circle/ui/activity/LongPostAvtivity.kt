@@ -1169,11 +1169,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     fun addPost() {
         var tagIds = ""
+        var tagNames=""
         params["imgUrl"] = upedimgs
         params["isPublish"] = 2
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
+                tagNames +=it.tagName +","
             }
         }
         params["tagIds"] = tagIds
@@ -1182,7 +1184,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         try {
             val biaoti = params["title"]
             val content = params["content"]
-            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagIds)
+            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagNames)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }

@@ -51,6 +51,7 @@ class AskRecommendFragment :
     var circleAskScreenDialog: CircleAskScreenDialog? = null
 
     var questionTypes = mutableListOf<String>()
+    var questionTypeNames = mutableListOf<String>()
 
     companion object {
         fun newInstance(): AskRecommendFragment {
@@ -72,7 +73,7 @@ class AskRecommendFragment :
 //            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
             val recommendData = recommendAskAdapter.getItem(position = position)
             // 埋点
-            BuriedUtil.instant?.communityQuestion(recommendData.questionType, recommendData.title)
+            BuriedUtil.instant?.communityQuestion(recommendData.questionTypeName, recommendData.title)
             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
         }
         addHeadView()
@@ -235,10 +236,11 @@ class AskRecommendFragment :
                                 questionTypes.clear()
                                 questionData.forEach {
                                     questionTypes.add(it.dictValue)
+                                    questionTypeNames.add(it.dictLabel)
                                 }
                                 //埋点
                                 if(questionTypes.size>0){
-                                    BuriedUtil.instant?.communityScreen(questionTypes.toString())
+                                    BuriedUtil.instant?.communityScreen(questionTypeNames.toString())
                                 }
                                 viewModel.getQuestionList(false, questionTypes)
                             }

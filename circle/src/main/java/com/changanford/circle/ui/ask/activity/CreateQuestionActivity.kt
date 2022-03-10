@@ -390,7 +390,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 params["fbReward"] = labelsReaward[0].dictValue.toInt()
                 params["questionType"] = questionTypes[0].dictValue
                 //提问埋点
-                BuriedUtil.instant?.communityQuestionPost(biaoti,content,questionTypes[0].dictValue,labelsReaward[0].dictValue)
+                BuriedUtil.instant?.communityQuestionPost(biaoti,content,questionTypes[0].dictValue,labelsReaward[0].dictLabel)
                 if (selectList.size == 0) {
                     viewModel.createQuestion(params)
                 } else if (selectList.size > 0) {
