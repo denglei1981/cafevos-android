@@ -16,6 +16,7 @@ import com.changanford.common.basic.BaseApplication.Companion.currentViewModelSc
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
@@ -780,9 +781,11 @@ class JumpUtils {
     fun showMapDialog(value: String?) {
         if (!value.isNullOrEmpty()) {
             try {
-                var json = JSON.parseObject(value)
+                val json = JSON.parseObject(value)
+                val shareWithType=json.getString("shareWithType")
                 SelectMapDialog(BaseApplication.curActivity, object : SelectMapDialog.CheckedView {
                     override fun checkBaiDu() {
+                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("百度地图")
                         JumpMap.openBaiduMap(
                             BaseApplication.curActivity,
                             json.getDouble("latY"), json.getDouble("lngX"),
@@ -791,11 +794,16 @@ class JumpUtils {
                     }
 
                     override fun checkGaoDe() {
+                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("高德地图")
                         JumpMap.openGaoDeMap(
                             BaseApplication.curActivity,
                             json.getDouble("latY"), json.getDouble("lngX"),
                             json.getString("name")
                         )
+                    }
+
+                    override fun checkCancel() {
+                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("取消")
                     }
 
                 }).show()

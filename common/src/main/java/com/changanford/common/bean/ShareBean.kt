@@ -15,7 +15,8 @@ class ShareBean(
     val content: String,
     val type: String,//业务类型 1 资讯 2 帖子 3 活动 4 用户  5 专题 6 商品  7 圈子 8 话题
     val bizId: String,//业务ID
-    val isimg:String = "0"//是否为分享纯图片（1 是 0 否）
+    val isimg:String = "0",//是否为分享纯图片（1 是 0 否）
+    var shareWithType:String?=null,
 )
 
 data class TaskShareBean(

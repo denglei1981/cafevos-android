@@ -173,7 +173,9 @@ object WBuriedUtil {
      * [dealerName]经销商名称
      * */
     fun clickCarDealer(dealerName: String?){
-        buried("app爱车首页_经销商_点击","app_car_homepage_dealer", extend = "{\"dealer_name\": \"$dealerName\"}")
+        dealerName?.apply {
+            buried("app爱车首页_经销商_点击","app_car_homepage_dealer", extend = "{\"dealer_name\": \"$this\"}")
+        }
     }
     /**
      * 用户点击导航按钮时触发
@@ -192,6 +194,49 @@ object WBuriedUtil {
      * */
     fun clickCarExamined(){
         buried("app爱车首页_审核_查看","app_car_homepage_examined_view")
+    }
+    /**
+     * 用户点击地图选择时候触发
+     * [mapName]百度地图、高德地图、取消
+     * */
+    fun clickCarNavigateMap(mapName:String){
+        buried("app爱车_导航弹窗_地图选择","app_car_navigate_map")
+    }
+    /**
+     * 用户点击微信时触发
+     * */
+    fun clickCarShareWX(){
+        buried("app爱车_海报分享_微信","app_car_postersharing_wechat")
+    }
+    /**
+     * 用户点击朋友圈时触发
+     * */
+    fun clickCarShareWXMoments(){
+        buried("app爱车_海报分享_朋友圈","app_car_postersharing_Wechat_Moments")
+    }
+    /**
+     * 用户点击QQ时触发
+     * */
+    fun clickCarShareQQ(){
+        buried("app爱车_海报分享_QQ","app_car_postersharing_QQ")
+    }
+    /**
+     * 用户点击QQ空间时触发
+     * */
+    fun clickCarShareQQZone(){
+        buried("app爱车_海报分享_QQ空间","app_car_postersharing_Qqzone")
+    }
+    /**
+     * 用户点击微博时触发
+     * */
+    fun clickCarShareWB(){
+        buried("app爱车_海报分享_微博","app_car_postersharing_weibo")
+    }
+    /**
+     * app爱车_海报分享_社区
+     * */
+    fun clickCarShareCommunity(){
+        buried("app_car_postersharing_community","用户点击社区时触发")
     }
     //===========================================社区-问答
     /**

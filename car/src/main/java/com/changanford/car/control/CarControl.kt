@@ -38,6 +38,7 @@ import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.bean.NewCarInfoBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
@@ -204,6 +205,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                 mBaiduMap=mapView.map
                 initMap()
                 viewMapBg.setOnClickListener {
+                    WBuriedUtil.clickCarDealer(viewModel.dealersBean.value?.dealerName)
                     JumpUtils.instans?.jump(1,MConstant.H5_CAR_DEALER)
                 }
                 tvLocation.setOnClickListener {
@@ -214,6 +216,12 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         2 -> getLocationPermissions()
                         //拒绝授权
                         3 -> WCommonUtil.setSettingLocation(activity)
+                    }
+                }
+                tvDealers.setOnClickListener {
+                    WBuriedUtil.clickCarDealer(viewModel.dealersBean.value?.dealerName)
+                    dataBean?.apply {
+                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                     }
                 }
 //                addFooterView(root,sort)

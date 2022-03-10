@@ -627,6 +627,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             val isMiniProgram = sharejson["isMiniProgram"]
             val type = sharejson["type"].toString()
             val bizId = sharejson["bizId"].toString()
+            val shareWithType = sharejson["shareWithType"]?.toString()
             try {
                 val prompt = sharejson.getBoolean("prompt")
             } catch (e: Exception) {
@@ -650,6 +651,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     }
                 }
             }
+            shareBean?.shareWithType=shareWithType
             shareBean?.let { shareViewModule.share(this, shareBean = it) }
         } catch (e: Exception) {
 
