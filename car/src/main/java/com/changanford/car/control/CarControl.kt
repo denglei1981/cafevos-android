@@ -27,6 +27,7 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.changanford.car.BuildConfig
 import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
@@ -37,6 +38,7 @@ import com.changanford.car.databinding.*
 import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
+import com.changanford.common.bean.DistanceBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
@@ -73,6 +75,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     //经销商
     private var hDealersBinding:HeaderCarDealersBinding?=null
 
+    private var distanceBeanArr:ArrayList<DistanceBean>?=null
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
     init {
@@ -312,7 +315,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private fun startLocation(locationTypeValue:Int){
         if(locationTypeValue==0&&mLocationClient==null){
             mLocationClient = LocationClient(activity).apply {
-                Log.e("wenke","开始定位")
+                if(BuildConfig.DEBUG)Log.e("wenke","开始定位")
                 //通过LocationClientOption设置LocationClient相关参数
                 val option = LocationClientOption()
                 option.isOpenGps = true
@@ -331,9 +334,15 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
      * 将地图缩放到最大
     * */
     private fun initMap(){
+        distanceBeanArr=ArrayList()
+        val distanceArr= arrayListOf(200,500,1000,2000,5000,10000,20000,25000,50000,100000,200000)
+        for (i in 0 until distanceArr.size){
+            val itemBean= DistanceBean(zoom = (16f-i), distance =distanceArr[i] )
+            distanceBeanArr?.add(itemBean)
+        }
         mMapView?.apply {
-            showZoomControls(true)
-            showScaleControl(true)
+            showZoomControls(false)
+            showScaleControl(false)
             val child = getChildAt(1)
             if (child != null && (child is ImageView || child is ZoomControls)) {
                 child.visibility = View.INVISIBLE// 隐藏logo
@@ -343,14 +352,12 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     }
     private val myLocationListener =object : BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
-            Log.e("wenke","onReceiveLocation:${location?.latitude}")
+            if(BuildConfig.DEBUG)Log.e("wenke","onReceiveLocation:${location?.latitude}")
             location?.apply {
                 latLng= LatLng(latitude, longitude)
                 if (isFirstLoc) {
                     isFirstLoc = false
-                    val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(13f)
-                    mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
+                    setMapZoom(15f)//默认缩放15
                 }
                 addMarker(latLng!!,null)
                 viewModel.getRecentlyDealers(longitude,latitude)
@@ -385,14 +392,18 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             .points(points)
             .dottedLine(true) //设置折线显示为虚线
         mBaiduMap?.addOverlay(mOverlayOptions)
-        //计算p1、p2两点之间的直线距离，单位：米
-        val distance=DistanceUtil.getDistance(p1, p2)
-        Log.e("wenke","两点距离>>distance：$distance")
+        distanceBeanArr?.apply {
+            //计算p1、p2两点之间的直线距离，单位：米
+            val distance=DistanceUtil.getDistance(p1, p2)
+            val (match, rest) = this.partition {distance<it.distance }
+            val zoom=if(rest.isNotEmpty())rest[rest.size-1].zoom else match[0].zoom
+            setMapZoom(zoom)
+        }
     }
-    private fun setMapZoom(zoomValue:Float?){
+    private fun setMapZoom(zoomValue:Float?=15f){
         val builder = MapStatus.Builder()
-//        builder.target(latLng).zoom(zoomValue?:13.2f)
-        builder.zoom(zoomValue?:13.2f)
+        if(latLng!=null)builder.target(latLng).zoom(zoomValue?:13f)
+        else builder.zoom(zoomValue?:13f)
         mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
     }
 }

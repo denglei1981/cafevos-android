@@ -92,3 +92,5 @@ data class NewCarTagBean(
     var url: String?=null, override val itemType: Int=0,
 ):MultiItemEntity
 data class CarMoreInfoBean(var carModelMoreJump:JumpDataBean,var carModels: ArrayList<NewCarTagBean>, var carInfos: ArrayList<NewCarTagBean>)
+
+data class DistanceBean(var zoom:Float,var distance:Int,)

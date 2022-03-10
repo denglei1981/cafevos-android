@@ -39,7 +39,6 @@
                 android:layout_height="@dimen/dp_154"
                 android:id="@+id/mapView" />
             <View
-                android:visibility="invisible"
                 android:id="@+id/view_mapBg"
                 android:layout_marginTop="@dimen/dp_17"
                 android:background="@drawable/shape_40black_5dp"
