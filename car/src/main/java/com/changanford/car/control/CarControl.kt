@@ -7,6 +7,8 @@ import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.ZoomControls
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,6 +44,7 @@ import com.changanford.common.wutil.WCommonUtil
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+
 
 /**
  * @Author : wenke
@@ -150,7 +153,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     root.visibility=View.VISIBLE
                     val carAuthBean=viewModel.carAuthBean.value
                     val carList=carAuthBean?.carList
-                    val findModelCode=carList?.find { it.modelCode==carModelCode }//查指定车型是否有认证 null 则未认证
+//                    //优先查询指定车辆是否有认证没有则取第一辆认证的车辆信息 如果查询结果为 null 则表示该用户是非车主身份
+//                    val findModelCode=carList?.find { it.modelCode==carModelCode }?:carList?.get(0)
+                    //优先取默认的认证车辆
+                    val findModelCode=carList?.find { it.isDefault==1 }?:carList?.get(0)
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
                     composeView.setContent {
                         Column {
@@ -195,6 +201,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             hDealersBinding=DataBindingUtil.inflate<HeaderCarDealersBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_dealers, null, false).apply {
                 mMapView=mapView
                 mBaiduMap=mapView.map
+                initMap()
                 viewMapBg.setOnClickListener {
                     JumpUtils.instans?.jump(1,MConstant.H5_CAR_DEALER)
                 }
@@ -295,7 +302,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     }
     private fun startLocation(locationTypeValue:Int){
         if(locationTypeValue==0&&mLocationClient==null){
-            hDealersBinding?.mapView?.showZoomControls(false)
             mLocationClient = LocationClient(activity).apply {
                 Log.e("wenke","开始定位")
                 //通过LocationClientOption设置LocationClient相关参数
@@ -310,6 +316,22 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                 //开启地图定位图层
                 start()
             }
+        }
+    }
+    /**
+     * 将地图缩放到最大
+    * */
+    private fun initMap(){
+        mMapView?.apply {
+            showZoomControls(false)
+            showScaleControl(false)
+            val child = getChildAt(1)
+            if (child != null && (child is ImageView || child is ZoomControls)) {
+                child.visibility = View.INVISIBLE// 隐藏logo
+            }
+            val builder = MapStatus.Builder()
+            builder.zoom(1f)
+            mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
         }
     }
     private val myLocationListener =object : BDAbstractLocationListener(){

@@ -57,6 +57,7 @@
                 android:minHeight="@dimen/dp_28"
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_13"
+                android:textStyle="bold"
                 android:gravity="center"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingEnd="@dimen/dp_10"
