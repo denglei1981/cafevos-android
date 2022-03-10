@@ -2,6 +2,7 @@ package com.changanford.car.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.util.Log
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
@@ -15,7 +16,14 @@ import com.changanford.common.wutil.ScreenUtils
 
 
 class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon){
-    private val imgWidth by lazy { (ScreenUtils.getScreenWidth(context)*(MConstant.configBean?.recarDisScale?:0f)).toInt()}
+    private val imgWidth by lazy {
+        MConstant.configBean?.recarDisScale?.let {recarDisScale->
+            var multiple:Int= (1/ recarDisScale).toInt()
+            multiple+=1
+            Log.e("wenke","multiple:$multiple")
+            ((ScreenUtils.getScreenWidth(context)-(multiple*20))*(MConstant.configBean?.recarDisScale?:0f)).toInt()
+        }
+    }
     private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemCarIconBinding>, item: NewCarTagBean) {
@@ -24,7 +32,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
 //            imgCover.load(item.carModelPic)
 //            WCommonUtil.setMargin(layoutRoot,if(0==position)dp20 else 0,0,dp20,0)
             layoutRoot.setPadding(if(0==position)dp20 else 0,0,dp20,0)
-            GlideUtils.glideLoadWidth(activity,item.carModelPic,imgCover,imgWidth)
+            GlideUtils.glideLoadWidth(activity,item.carModelPic,imgCover,imgWidth?:ScreenUtils.getScreenWidth(context))
             model=item
             executePendingBindings()
             root.setOnClickListener {
