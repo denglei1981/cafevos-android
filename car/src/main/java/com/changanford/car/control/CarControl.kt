@@ -26,6 +26,7 @@ import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.utils.DistanceUtil
 import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
@@ -323,15 +324,13 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     * */
     private fun initMap(){
         mMapView?.apply {
-            showZoomControls(false)
-            showScaleControl(false)
+            showZoomControls(true)
+            showScaleControl(true)
             val child = getChildAt(1)
             if (child != null && (child is ImageView || child is ZoomControls)) {
                 child.visibility = View.INVISIBLE// 隐藏logo
             }
-            val builder = MapStatus.Builder()
-            builder.zoom(1f)
-            mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
+            setMapZoom(1f)
         }
     }
     private val myLocationListener =object : BDAbstractLocationListener(){
@@ -342,7 +341,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                 if (isFirstLoc) {
                     isFirstLoc = false
                     val builder = MapStatus.Builder()
-                    builder.target(latLng).zoom(13.2f)
+                    builder.target(latLng).zoom(13f)
                     mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
                 }
                 addMarker(latLng!!,null)
@@ -378,5 +377,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             .points(points)
             .dottedLine(true) //设置折线显示为虚线
         mBaiduMap?.addOverlay(mOverlayOptions)
+        //计算p1、p2两点之间的直线距离，单位：米
+        val distance=DistanceUtil.getDistance(p1, p2)
+        Log.e("wenke","两点距离>>distance：$distance")
+    }
+    private fun setMapZoom(zoomValue:Float?){
+        val builder = MapStatus.Builder()
+//        builder.target(latLng).zoom(zoomValue?:13.2f)
+        builder.zoom(zoomValue?:13.2f)
+        mBaiduMap?.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
     }
 }
