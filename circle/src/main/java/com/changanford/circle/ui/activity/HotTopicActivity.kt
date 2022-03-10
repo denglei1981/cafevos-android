@@ -10,6 +10,7 @@ import com.changanford.circle.databinding.ActivityHotTopicBinding
 import com.changanford.circle.viewmodel.HotTopicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -42,9 +43,12 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             viewModel.getData()
         }
         adapter.setOnItemClickListener { _, view, position ->
+            // 埋点
+            BuriedUtil.instant?.circleHotTopicClick(adapter.getItem(position).name)
             val bundle = Bundle()
             bundle.putString("topicId", adapter.getItem(position).topicId.toString())
             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+
         }
 
     }

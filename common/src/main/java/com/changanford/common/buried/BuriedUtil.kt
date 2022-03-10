@@ -274,5 +274,14 @@ class BuriedUtil {
 
     // 爱车埋点
 
+    // 圈子话题
+    fun  circleTopicSearch(keyword:String){
+        buried("app社区_热门话题_搜索","app_community_hot_topic_search",extend = "{\"keyword\": \"$keyword\"")
+    }
+    fun  circleHotTopicClick(topic_name:String){
+        buried("app社区_热门话题_点击","app_community_hot_topic_click",extend = "{\"topic_name\": \"$topic_name\"")
+    }
+    // 圈子话题
+
 
 }

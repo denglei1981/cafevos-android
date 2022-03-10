@@ -11,6 +11,7 @@ import com.changanford.circle.databinding.ActivitySearchTopicBinding
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.viewmodel.SearchTopicViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -52,6 +53,8 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
                     } else {
                         page = 1
                         viewModel.getData(content, page)
+                        // 埋点
+                        BuriedUtil.instant?.circleTopicSearch(content)
                     }
                     HideKeyboardUtil.hideKeyboard(tvSearch.windowToken)
                 }
