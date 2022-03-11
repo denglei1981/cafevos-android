@@ -192,6 +192,7 @@
                         android:textColor="@color/color_33"
                         android:textSize="@dimen/sp_13" />
                     <CheckBox
+                        android:checked="true"
                         android:layout_marginTop="@dimen/dp_10"
                         android:layout_marginEnd="@dimen/dp_20"
                         android:id="@+id/checkBox"
