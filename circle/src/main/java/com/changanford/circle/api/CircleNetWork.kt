@@ -222,7 +222,7 @@ interface CircleNetWork {
     suspend fun joinCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<ChoseCircleBean>
 
     /**
      * 参与的圈子

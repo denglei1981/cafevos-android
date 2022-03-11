@@ -60,10 +60,20 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
                         //申请加入圈子
                         viewModel.joinCircle(item.circleId,object :OnPerformListener{
                             override fun onFinish(code: Int) {
-                                //状态更新为审核中
-                                item.isJoin ="PENDING"
+                                when (code) {
+                                    1 -> {//状态更新为审核中
+                                        item.isJoin ="PENDING"
+                                        context.getString(R.string.str_appliedForMembership).toast()
+                                    }
+                                    2 -> {//已加入
+                                        item.isJoin ="JOINED"
+                                        context.getString(R.string.str_successfullyJoined).toast()
+                                    }
+                                    else -> {
+                                        item.isJoin ="TOJOIN"
+                                    }
+                                }
                                 isJoin(btnJoin,item)
-                                context.getString(R.string.str_appliedForMembership).toast()
                             }
                         })
                     }

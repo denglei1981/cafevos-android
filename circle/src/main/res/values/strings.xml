@@ -51,4 +51,5 @@
     <string name="str_cancel">取消</string>
     <string name="str_determine">确定</string>
     <string name="str_redskinsInformation">问答红人信息</string>
+    <string name="str_successfullyJoined">已成功加入</string>
 </resources>
