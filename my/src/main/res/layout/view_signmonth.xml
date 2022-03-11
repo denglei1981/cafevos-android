@@ -28,6 +28,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="left"
             android:text="当前奖励：1倍奖励"
+            android:visibility="gone"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/sign_total"
             app:layout_constraintStart_toStartOf="@+id/sign_total"

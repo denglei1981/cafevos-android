@@ -372,8 +372,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                             showPopupWindow()
                         }
                     }, 500)
-                } else {
-                    viewModel.isWaitBindingCar()
                 }
             }
         }
@@ -402,28 +400,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     override fun observe() {
         super.observe()
 
-        viewModel.waitCarLiveData.observe(this, Observer { data ->
-            if (data!=null&&data.isNotEmpty()) {
-                // 弹窗
-                android.os.Handler(Looper.myLooper()!!).postDelayed({
-                    data.forEach {
-                        WaitBindingCarPop(this@HomeV2Fragment, viewModel,it).apply {
-                            showPopupWindow()
 
-                        }
-                    }
-
-                }, 500)
-//                val waitBindingCarDialog =
-//                    WaitBindingCarDialog(requireActivity(), this@HomeV2Fragment,object :ICallback{
-//                        override fun onResult(result: ResultData) {
-//
-//                        }
-//
-//                    })
-//                waitBindingCarDialog.show()
-            }
-        })
 
 
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{

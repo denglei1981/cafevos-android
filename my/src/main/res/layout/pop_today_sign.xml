@@ -55,6 +55,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="@dimen/dp_20"
                 android:gravity="left"
+                android:visibility="gone"
                 android:text="当前奖励：1倍奖励"
                 android:textColor="#71747B"
                 android:textSize="@dimen/text_size_small"/>

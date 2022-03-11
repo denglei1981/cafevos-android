@@ -94,18 +94,7 @@ class HomeV2ViewModel : BaseViewModel() {
     }
 
 
-    val waitCarLiveData = MutableLiveData<List<BindCarBean>>()
-    fun isWaitBindingCar() {
-        if(MConstant.token.isEmpty())return
-        launch(false, {
-            val body = HashMap<String, Any>()
-            val randomKey = getRandomKey()
-            ApiClient.createApi<HomeNetWork>().waitBindCarList(body.header(randomKey), body.body(randomKey))
-                .onSuccess {
-                    waitCarLiveData.postValue(it)
-                }
-        })
-    }
+
 
     val  confirmCarLiveData = MutableLiveData<String>()
     var vinStr :String=""
