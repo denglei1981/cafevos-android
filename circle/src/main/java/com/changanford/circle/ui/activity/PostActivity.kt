@@ -1009,7 +1009,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         try {
             val biaoti = params["title"]
             val content = params["content"]
-            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagIds)
+            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagNames)
         } catch (e: Exception) {
             e.printStackTrace()
         }
