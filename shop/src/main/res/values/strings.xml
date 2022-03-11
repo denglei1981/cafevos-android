@@ -175,4 +175,5 @@
     <string name="str_bargainingFavorable">砍价优惠</string>
     <string name="str_models">车型</string>
     <string name="str_vinCode">VIN码</string>
+    <string name="str_shareFailure">分享失败</string>
 </resources>

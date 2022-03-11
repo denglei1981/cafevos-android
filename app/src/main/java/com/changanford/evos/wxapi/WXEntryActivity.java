@@ -16,7 +16,9 @@ import com.changanford.common.util.ConfigUtils;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.common.util.toast.ToastUtils;
+import com.changanford.evos.BuildConfig;
 import com.changanford.evos.MainActivity;
+import com.changanford.evos.R;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -94,6 +96,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp resp) {
         int errorCode = resp.errCode;
         int type = resp.getType();
+        if(BuildConfig.DEBUG)Log.e("wenke","errorCode:"+errorCode+">>>type:"+type);
         switch (type) {
             case RETURN_MSG_TYPE_LOGIN:
                 switch (errorCode) {
@@ -131,6 +134,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         result = ShareResultType.SHARE_SUCCESS;
                         break;
                     default:
+                        ToastUtils.INSTANCE.showLongToast(getString(R.string.str_shareFailure), this);
                         result = ShareResultType.SHARE_FAIL;
                         break;
                 }
