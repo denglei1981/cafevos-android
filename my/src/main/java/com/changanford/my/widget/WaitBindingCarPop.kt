@@ -5,7 +5,6 @@ import android.view.Gravity
 import android.view.animation.Animation
 import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.changanford.common.bean.BindCarBean
 import com.changanford.common.manger.RouterManger.startARouter
@@ -16,7 +15,6 @@ import com.changanford.common.utilext.toast
 import com.changanford.my.R
 import com.changanford.my.databinding.LayoutWaitBindingCarBinding
 import com.changanford.my.viewmodel.CarAuthViewModel
-
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import razerdp.basepopup.BasePopupWindow

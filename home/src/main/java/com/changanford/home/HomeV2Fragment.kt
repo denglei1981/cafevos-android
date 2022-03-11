@@ -2,24 +2,18 @@ package com.changanford.home
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
@@ -27,41 +21,30 @@ import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.toast
-import com.changanford.home.acts.dialog.WaitBindingCarDialog
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
-import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
-import com.changanford.home.data.TwoAdData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
-import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.widget.pop.GetFbPop
-import com.changanford.home.widget.pop.WaitBindingCarPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smart.refresh.header.listener.OnTwoLevelListener
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import java.lang.Exception
 import java.lang.reflect.Field
-import java.util.logging.Handler
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
