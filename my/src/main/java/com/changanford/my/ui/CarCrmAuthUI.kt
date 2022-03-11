@@ -75,8 +75,6 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 //        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
 //        })
 
-
-
     }
 
     override fun onPause() {
@@ -99,7 +97,8 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         viewModel.carAuthQY {
             it.onSuccess {
                 it?.let {
-                    headView.layout.visibility = if (it.carListRightsIsShow) View.VISIBLE else View.GONE
+                    headView.layout.visibility =
+                        if (it.carListRightsIsShow && isCarOwner == 1) View.VISIBLE else View.GONE
                     headView.content.text = when (isCarOwner) {
                         1 -> {
                             it.carListRightsContentY
@@ -120,11 +119,11 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun observe() {
         super.observe()
         viewModel.waitCarLiveData.observe(this, Observer { data ->
-            if (data!=null&&data.isNotEmpty()) {
+            if (data != null && data.isNotEmpty()) {
                 // 弹窗
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
                     data.forEach {
-                        WaitBindingCarPop(this, this,viewModel,it).apply {
+                        WaitBindingCarPop(this, this, viewModel, it).apply {
                             showPopupWindow()
                         }
                     }
