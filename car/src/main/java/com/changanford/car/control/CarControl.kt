@@ -37,7 +37,7 @@ import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.databinding.*
 import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.LookingDealers
-import com.changanford.car.ui.compose.OwnerCertification
+import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
 import com.changanford.common.bean.DistanceBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
@@ -160,15 +160,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     val carList=carAuthBean?.carList
 //                    //优先查询指定车辆是否有认证没有则取第一辆认证的车辆信息 如果查询结果为 null 则表示该用户是非车主身份
 //                    val findModelCode=carList?.find { it.modelCode==carModelCode }?:carList?.get(0)
-                    //优先取默认的认证车辆
-                    val findModelCode=carList?.find { it.isDefault==1 }?:carList?.get(0)
+                    //优先取待审核 然后取默认的认证车辆
+                    val findModelCode=carList?.find {it.authStatus<3}?:carList?.find { it.isDefault==1 }?:carList?.get(0)
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
                     composeView.setContent {
                         Column {
                             Spacer(modifier = Modifier.height(27.dp))
-                            if(findModelCode!=null&&findModelCode.authStatus==3){//已认证
-                                CarAuthLayout(findModelCode)
-                            }else OwnerCertification(this@apply,isUse(carModelCode),carAuthBean,findModelCode)
+                            if(findModelCode!=null&&findModelCode.authStatus==3)CarAuthLayout(findModelCode)//已认证
+                            else OwnerCertificationUnauthorized(this@apply,isUse(carModelCode),carAuthBean,findModelCode)//未认证或者审核中
                         }
                     }
                 }else mAdapter.removeFooterView(root)

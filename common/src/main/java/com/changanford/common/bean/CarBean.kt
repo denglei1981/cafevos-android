@@ -40,7 +40,7 @@ data class CarItemBean(
         value = "authStatus",
         alternate = ["status"]
     ) var authStatus: Int = 0,
-    val examineRemakeFront: String? = "", //审核备注
+    val examineRemakeFront: String? = null, //审核备注
     val dealerName: String = "",
     val dealerPhone: String = "",
     val saleDate: Long = 0L,//购车日期

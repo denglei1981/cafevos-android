@@ -16,15 +16,15 @@ import com.changanford.common.wutil.ScreenUtils
 
 
 class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon){
+    private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
     private val imgWidth by lazy {
         MConstant.configBean?.recarDisScale?.let {recarDisScale->
-            var multiple:Int= (1/ recarDisScale).toInt()
-            multiple+=1
-            Log.e("wenke","multiple:$multiple")
-            ((ScreenUtils.getScreenWidth(context)-(multiple*20))*(MConstant.configBean?.recarDisScale?:0f)).toInt()
+            val multiple:Float= 1/recarDisScale
+            val spacing=(multiple+1)*dp20
+            Log.e("wenke","multiple:$multiple>>>spacing:$spacing")
+            ((ScreenUtils.getScreenWidth(context)-spacing)/multiple).toInt()
         }
     }
-    private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemCarIconBinding>, item: NewCarTagBean) {
         holder.dataBinding?.apply {
