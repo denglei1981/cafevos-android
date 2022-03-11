@@ -111,11 +111,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
         hRecommendBinding?.apply {
             dataBean?.apply {
+                addFooterView(root,sort,isUpdateSort)
                 if(isVisible(carModelCode)){
-                    addFooterView(root,sort,isUpdateSort)
                     root.visibility=View.VISIBLE
                     tvCarMoreName.text=modelName
-                }else mAdapter.removeFooterView(root)
+                }else {
+                    root.visibility=View.GONE
+//                    mAdapter.removeFooterView(root)
+                }
             }
         }
     }
@@ -130,18 +133,20 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
         hOwnerBinding?.apply {
             dataBean?.apply {
+                addFooterView(root,sort,isUpdateSort)
                 if(isVisible(carModelCode)){
-                    addFooterView(root,sort,isUpdateSort)
                     root.visibility=View.VISIBLE
                     composeView.setContent {
                         Column {
                             AfterSalesService(this@apply)
                         }
                     }
-                }else mAdapter.removeFooterView(root)
+                }else {
+                    root.visibility=View.GONE
+//                    mAdapter.removeFooterView(root)
+                }
             }
         }
-
     }
     /**
      * 认证
@@ -155,8 +160,8 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
         hCertificationBinding?.apply {
             dataBean?.apply {
+                addFooterView(root,sort,isUpdateSort)
                 if(isVisible(carModelCode)){
-                    addFooterView(root,sort,if(isUpdateSort) true else root.visibility==View.GONE)
                     root.visibility=View.VISIBLE
                     val carAuthBean=viewModel.carAuthBean.value
                     val carList=carAuthBean?.carList
@@ -176,7 +181,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     }
                 }else {
                     root.visibility=View.GONE
-                    mAdapter.removeFooterView(root)
+//                    mAdapter.removeFooterView(root)
                 }
             }
         }
@@ -194,13 +199,16 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
         hBuyBinding?.apply {
             dataBean?.apply {
+                addFooterView(root,sort,isUpdateSort)
                 if(isVisible(carModelCode)){
-                    addFooterView(root,sort,isUpdateSort)
                     root.visibility=View.VISIBLE
                     if(icons!=null)rvCarService.layoutManager= GridLayoutManager(activity,if(icons!!.size>3)4 else 3)
                     serviceAdapter.setList(icons)
                     tvService.text=modelName
-                }else mAdapter.removeFooterView(root)
+                }else {
+                    root.visibility=View.GONE
+//                    mAdapter.removeFooterView(root)
+                }
             }
         }
     }
@@ -238,8 +246,8 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
         hDealersBinding?.apply {
             dataBean?.apply {
+                addFooterView(root,sort,isUpdateSort)
                 if(isVisible(carModelCode)) {//经销商可见
-                    addFooterView(root,sort,isUpdateSort)
                     root.visibility=View.VISIBLE
                     tvDealers.apply {
                         text=modelName
@@ -248,7 +256,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                         }
                     }
                     initLocation()
-                }else mAdapter.removeFooterView(root)
+                }else {
+                    root.visibility=View.GONE
+//                    mAdapter.removeFooterView(root)
+                }
             }
         }
     }
@@ -277,6 +288,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     }
     private fun addFooterView(view:View, sort:Int,isUpdateSort:Boolean){
         if(isUpdateSort){
+            view.visibility=View.VISIBLE
             if(delayMillis!=null){
                 Handler(Looper.myLooper()!!).postDelayed({
                     mAdapter.removeFooterView(view)
