@@ -157,6 +157,7 @@
                 android:id="@+id/my_score_acc"
                 style="@style/commonTextView.Small.LightBlue"
                 android:layout_marginLeft="@dimen/dp_20"
+                android:visibility="gone"
                 android:textColor="@color/text_01025C"
                 android:text="1.5倍加速" />
 

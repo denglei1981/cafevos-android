@@ -56,7 +56,8 @@
                 android:paddingBottom="@dimen/dp_2"
                 android:text="1倍加速"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone" />
 
         </LinearLayout>
 

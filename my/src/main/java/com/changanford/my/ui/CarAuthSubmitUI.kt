@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.graphics.Color
+import android.os.Looper
 import android.text.method.ReplacementTransformationMethod
 import android.view.View
 import androidx.compose.ui.text.toUpperCase
@@ -26,6 +27,7 @@ import com.changanford.my.databinding.UiCarAuthSubmitBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.viewmodel.SignViewModel
+import com.changanford.my.widget.WaitBindingCarPop
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
@@ -64,7 +66,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
     override fun initView() {
         signViewModel = createViewModel(SignViewModel::class.java)
-
+        viewModel.isWaitBindingCar()
         uploadDialog.setCancelable(false)
         uploadDialog.setCanceledOnTouchOutside(false)
         uploadDialog.setLoadingText("图片上传中..")
@@ -297,6 +299,23 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             }
         }
         initClick()
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.waitCarLiveData.observe(this, Observer { data ->
+            if (data!=null&&data.isNotEmpty()) {
+                // 弹窗
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    data.forEach {
+                        WaitBindingCarPop(this, this,viewModel,it).apply {
+                            showPopupWindow()
+                        }
+                    }
+
+                }, 500)
+            }
+        })
     }
 
     private fun initClick() {
