@@ -33,6 +33,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
+    private var carInfoBean:MutableList<NewCarInfoBean>?=null
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -132,14 +133,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             for ((sort,item) in withIndex()){
                 val modelCode=item.modelCode
                 var isUpdateSort=true
-                carControl.carInfoBean?.find { it.modelCode==modelCode }?.let {
+                carInfoBean?.find { it.modelCode==modelCode }?.let {
                     //模块的排序是否改变
                     isUpdateSort=it.modelSort!=sort
                 }
                 bindView(sort,isUpdateSort,modelCode,item)
                 item.modelSort=sort
             }
-            carControl.carInfoBean=this@apply
+            carInfoBean=this@apply
         }
     }
     /**

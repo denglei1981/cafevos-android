@@ -79,7 +79,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     var delayMillis:Long?=1000L//addFooterView延迟添加时间
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
-    var carInfoBean:MutableList<NewCarInfoBean>?=null
     init {
         viewModel.carMoreInfoBean.observe(fragment) {
 //            carIconAdapter.setList(it?.carModels?.reversed())
