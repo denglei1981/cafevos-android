@@ -253,7 +253,7 @@ object LiveDataBusKey {
     const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
 
     const val REMOVE_CAR="remove_car" // 移除爱车。
-
+    const val AGGREE_CAR="AGGREE_CAR" // 弹窗认车。
 
     //银联支付
     const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"

@@ -14,6 +14,8 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -95,7 +97,8 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         viewModel.carAuthQY {
             it.onSuccess {
                 it?.let {
-                    headView.layout.visibility = if (it.carListRightsIsShow) View.VISIBLE else View.GONE
+                    headView.layout.visibility =
+                        if (it.carListRightsIsShow && isCarOwner == 1) View.VISIBLE else View.GONE
                     headView.content.text = when (isCarOwner) {
                         1 -> {
                             it.carListRightsContentY
@@ -116,18 +119,21 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun observe() {
         super.observe()
         viewModel.waitCarLiveData.observe(this, Observer { data ->
-            if (data!=null&&data.isNotEmpty()) {
+            if (data != null && data.isNotEmpty()) {
                 // 弹窗
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
                     data.forEach {
-                        WaitBindingCarPop(this, this,viewModel,it).apply {
+                        WaitBindingCarPop(this, this, viewModel, it).apply {
                             showPopupWindow()
-
                         }
                     }
 
                 }, 500)
             }
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).observe(this, Observer {
+            viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
         })
     }
 
