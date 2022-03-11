@@ -273,7 +273,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
     }
     private fun addFooterView(view:View, sort:Int,isUpdateSort:Boolean){
-        Log.e("wenke","delayMillis:$delayMillis")
         if(isUpdateSort){
             if(delayMillis!=null){
                 Handler(Looper.myLooper()!!).postDelayed({
