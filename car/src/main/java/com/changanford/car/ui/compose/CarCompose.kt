@@ -228,7 +228,7 @@ private fun AuditPromptCompose(carItemBean: CarItemBean?=null){
                 .fillMaxWidth()
                 .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = carItemBean.examineRemakeFront?:stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
+            Text(text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
                 modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(5.dp))
             Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {
@@ -290,7 +290,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                 Divider(color = colorResource(id = R.color.color_ee),modifier = Modifier.height(0.5.dp))
                 Row(modifier = Modifier.padding(16.dp,21.dp,0.dp, 0.dp)) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = carItemBean.carName.ifEmpty { carItemBean.modelName }, color = colorResource(R.color.color_00142E), fontSize = 15.sp)
+                        Text(text = carItemBean.seriesName, color = colorResource(R.color.color_00142E), fontSize = 15.sp)
                         Box(
                             modifier = Modifier
                                 .offset(y = dimensionResource(id = R.dimen.dp_10))

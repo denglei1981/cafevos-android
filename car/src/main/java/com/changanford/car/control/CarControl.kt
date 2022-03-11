@@ -156,7 +156,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         hCertificationBinding?.apply {
             dataBean?.apply {
                 if(isVisible(carModelCode)){
-                    addFooterView(root,sort,isUpdateSort)
+                    addFooterView(root,sort,if(isUpdateSort) true else root.visibility==View.GONE)
                     root.visibility=View.VISIBLE
                     val carAuthBean=viewModel.carAuthBean.value
                     val carList=carAuthBean?.carList
@@ -174,7 +174,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                             else OwnerCertificationUnauthorized(this@apply,isUse(carModelCode),carAuthBean,auditItemData)//未认证或者审核中
                         }
                     }
-                }else mAdapter.removeFooterView(root)
+                }else {
+                    root.visibility=View.GONE
+                    mAdapter.removeFooterView(root)
+                }
             }
         }
 

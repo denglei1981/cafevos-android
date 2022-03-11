@@ -135,8 +135,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 carControl.carInfoBean?.find { it.modelCode==modelCode }?.let {
                     //模块的排序是否改变
                     isUpdateSort=it.modelSort!=sort
-                    //指定模块是否显示与上一次比较
-                    if(!isUpdateSort)isUpdateSort=it.isVisible(modelCode)==item.isVisible(modelCode)
                 }
                 bindView(sort,isUpdateSort,modelCode,item)
                 item.modelSort=sort
