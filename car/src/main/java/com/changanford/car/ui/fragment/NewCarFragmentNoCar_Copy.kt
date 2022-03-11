@@ -25,7 +25,6 @@ import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
-import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarIconAdapter
@@ -35,6 +34,7 @@ import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCar0Binding
 import com.changanford.car.ui.compose.AfterSalesService
+import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.basic.BaseFragment

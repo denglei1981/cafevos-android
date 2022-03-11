@@ -4,16 +4,19 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
@@ -31,6 +34,8 @@ import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
@@ -203,29 +208,142 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                         }
                     }
                 }
-                //待审核
-                if(carItemBean!=null&&carItemBean.authStatus<3){
-                    Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier
-                        .height(0.5.dp)
-                        .fillMaxWidth())
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = carItemBean.examineRemakeFront?:stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
-                            modifier = Modifier.weight(1f))
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {
-                            WBuriedUtil.clickCarExamined()
-                            //查看审核记录
-                            JumpUtils.instans?.jump(41,carItemBean.authId)
-                        }) {
-                            Text(text = stringResource(R.string.str_look),fontSize = 12.sp,color=colorResource(R.color.color_99))
-                            Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
-                        }
+                AuditPromptCompose(carItemBean)
+            }
+        }
+    }
+}
+
+/**
+ * 审核中
+* */
+@Composable
+private fun AuditPromptCompose(carItemBean: CarItemBean?=null){
+    if(carItemBean!=null&&carItemBean.authStatus<3){
+        Divider(color = colorResource(R.color.color_E8EBF3),modifier = Modifier
+            .height(0.5.dp)
+            .fillMaxWidth())
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 13.dp, bottom = 14.dp, start = 14.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = carItemBean.examineRemakeFront?:stringResource(R.string.str_yourCarBindingIsUnderReview_x),color = colorResource(R.color.color_00095B),fontSize = 12.sp,
+                modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(5.dp))
+            Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.clickable {
+                WBuriedUtil.clickCarExamined()
+                //查看审核记录
+                JumpUtils.instans?.jump(41,carItemBean.authId)
+            }) {
+                Text(text = stringResource(R.string.str_look),fontSize = 12.sp,color=colorResource(R.color.color_99))
+                Icon(painter = painterResource(R.mipmap.right_99) , contentDescription =null,tint = colorResource(R.color.color_99))
+            }
+        }
+    }
+}
+/**
+ * 已认证
+* */
+@Composable
+fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
+    MaterialTheme {
+        val interactionSource = remember {
+            MutableInteractionSource()
+        }
+        Card(
+            elevation = 0.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp, 0.dp)
+                .defaultMinSize(minHeight = dimensionResource(id = R.dimen.dp_170))
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .clickable(interactionSource = interactionSource, indication = null) {
+                    val jumpValue =
+                        "{\"vin\":\"${carItemBean.vin}\",\"status\":${carItemBean.authStatus}}"
+                    JumpUtils.instans?.jump(41, jumpValue)
+                }
+        ) {
+            Column {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = "VIN码：${carItemBean.vin}",
+                        fontSize = 13.sp,
+                        color = colorResource(id = R.color.text_colorv6),
+                        modifier = Modifier
+                            .weight(1.0f)
+                            .padding(start = 18.dp, top = 14.dp, bottom = 14.dp, end = 14.dp)
+                    )
+                    Box(modifier = Modifier
+                        .size(77.dp, 27.dp)
+                        .background(
+                            color = Color(0x6900095B),
+                            shape = RoundedCornerShape(0.dp, 5.dp, 0.dp, 5.dp)
+                        ),
+                    contentAlignment = Alignment.Center) {
+                        Text(text = "默认",fontSize = 13.sp,color = Color.White,)
                     }
                 }
+                Divider(color = colorResource(id = R.color.color_ee),modifier = Modifier.height(0.5.dp))
+                Row(modifier = Modifier.padding(16.dp,21.dp,0.dp, 0.dp)) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = carItemBean.carName.ifEmpty { carItemBean.modelName }, color = colorResource(R.color.color_00142E), fontSize = 15.sp)
+                        Box(
+                            modifier = Modifier
+                                .offset(y = dimensionResource(id = R.dimen.dp_10))
+                                .background(
+                                    color = if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) {
+                                        Color(0xff00095B)
+                                    } else {
+                                        Color(0x2000095B)
+                                    },
+                                    shape = RoundedCornerShape(17.dp)
+                                )
+                                .clickable(
+                                    interactionSource = interactionSource,
+                                    indication = null
+                                ) {
+                                    RouterManger
+                                        .param("value", carItemBean.vin)
+                                        .param("plateNum", carItemBean.plateNum)
+                                        .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                                }
+                                .padding(horizontal = dimensionResource(id = R.dimen.dp_5))
+
+                        ) {
+                            if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) Text(
+                                text = "添加车牌",
+                                fontSize = 14.sp,
+                                color = Color.White,
+                                modifier = Modifier.padding(5.dp)
+                            ) else Text(
+                                text = carItemBean.plateNum,
+                                fontSize = 15.sp,
+                                color = Color(0xff00095B),
+                                modifier = Modifier.padding(5.dp)
+                            )
+                        }
+                    }
+                    Image(
+                        modifier = Modifier
+                            .size(width = 182.dp, height = 106.dp)
+                            .offset(
+                                -dimensionResource(id = R.dimen.dp_4),
+                                -dimensionResource(id = R.dimen.dp_5)
+                            ),
+                        painter =
+                        rememberImagePainter(data = GlideUtils.handleNullableUrl(carItemBean.modelUrl) ?: R.mipmap.ic_car_auth_ex,
+                            builder = {
+                                crossfade(true)
+                                placeholder(R.mipmap.ic_car_auth_ex)
+                            }),
+                        contentDescription = ""
+                    )
+                }
+                AuditPromptCompose(auditBean)
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.changanford.car.ui.fragment
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -29,7 +31,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
-    private var carInfoBean:MutableList<NewCarInfoBean>?=null
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -98,6 +99,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)
+                        carControl.delayMillis=if(TextUtils.isEmpty(topImg)&&TextUtils.isEmpty(bottomImg))10 else 1000
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
                         }else carTopBanner.releaseVideo()
@@ -120,19 +122,21 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             for ((sort,item) in withIndex()){
                 val modelCode=item.modelCode
                 var isUpdateSort=true
-                carInfoBean?.find { it.modelCode==modelCode }?.let {
+                carControl.carInfoBean?.find { it.modelCode==modelCode }?.let {
                     isUpdateSort=it.modelSort!=sort
+                    if(!isUpdateSort)isUpdateSort=it.isVisible(modelCode)==item.isVisible(modelCode)
                 }
                 bindView(sort,isUpdateSort,modelCode,item)
                 item.modelSort=sort
             }
-            carInfoBean=this
+            carControl.carInfoBean=this
         }
     }
     /**
      * [isUpdateSort]是否更改排序
     * */
     private fun bindView(sort:Int,isUpdateSort:Boolean,modelCode:String,dataBean: NewCarInfoBean?){
+        Log.e("wenke","bindView>>>${headerBinding.carTopViewPager.currentItem}")
         when(modelCode){
             //推荐
             "cars"->carControl.setFooterRecommended(dataBean,sort,isUpdateSort)

@@ -28,7 +28,6 @@ import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
 import com.changanford.car.BuildConfig
-import com.changanford.car.CarAuthLayout
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarIconAdapter
@@ -36,6 +35,7 @@ import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.databinding.*
 import com.changanford.car.ui.compose.AfterSalesService
+import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
 import com.changanford.common.bean.DistanceBean
@@ -76,8 +76,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var hDealersBinding:HeaderCarDealersBinding?=null
 
     private var distanceBeanArr:ArrayList<DistanceBean>?=null
+    var delayMillis:Long=1000L//addFooterView延迟添加时间
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
+    var carInfoBean:MutableList<NewCarInfoBean>?=null
     init {
         viewModel.carMoreInfoBean.observe(fragment) {
 //            carIconAdapter.setList(it?.carModels?.reversed())
@@ -160,14 +162,16 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
                     val carList=carAuthBean?.carList
 //                    //优先查询指定车辆是否有认证没有则取第一辆认证的车辆信息 如果查询结果为 null 则表示该用户是非车主身份
 //                    val findModelCode=carList?.find { it.modelCode==carModelCode }?:carList?.get(0)
-                    //优先取待审核 然后取默认的认证车辆
-                    val findModelCode=carList?.find {it.authStatus<3}?:carList?.find { it.isDefault==1 }?:carList?.get(0)
+                    //优先获取默认车辆然后获取已认证的车辆
+                    val authItemData=carList?.find { it.isDefault==1 }?:carList?.find { it.authStatus==3}
+                    //获取第一辆在审核的车辆信息
+                    val auditItemData=carList?.find {it.authStatus<3}
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
                     composeView.setContent {
                         Column {
                             Spacer(modifier = Modifier.height(27.dp))
-                            if(findModelCode!=null&&findModelCode.authStatus==3)CarAuthLayout(findModelCode)//已认证
-                            else OwnerCertificationUnauthorized(this@apply,isUse(carModelCode),carAuthBean,findModelCode)//未认证或者审核中
+                            if(authItemData?.authStatus==3)CarAuthLayout(authItemData,auditItemData)//已认证
+                            else OwnerCertificationUnauthorized(this@apply,isUse(carModelCode),carAuthBean,auditItemData)//未认证或者审核中
                         }
                     }
                 }else mAdapter.removeFooterView(root)
@@ -273,7 +277,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             Handler(Looper.myLooper()!!).postDelayed({
                 mAdapter.removeFooterView(view)
                 mAdapter.setFooterView(view, sort)
-            },1000)
+            },delayMillis)
 //            doAsync {
 //                mAdapter.removeFooterView(view)
 //                mAdapter.setFooterView(view, sort)
