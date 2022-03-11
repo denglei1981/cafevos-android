@@ -10,6 +10,8 @@ import com.changanford.common.bean.BindCarBean
 import com.changanford.common.manger.RouterManger.startARouter
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.my.R
@@ -34,7 +36,8 @@ class WaitBindingCarPop(
     val isNotMyCarTips = "确认后车辆将不与您的账户绑定，如需绑定请进行车主认证"
     var isConfirm: Int = 1
 
-    var vin:String=""
+    var vin: String = ""
+
     init {
         contentView = viewDataBinding.root
         initView()
@@ -43,7 +46,7 @@ class WaitBindingCarPop(
     private fun initView() {
         viewDataBinding.apply {
             model = dataBean
-            vin=dataBean.vin
+            vin = dataBean.vin
             btnSubmit.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -61,12 +64,12 @@ class WaitBindingCarPop(
                         checkbox.id -> {
                             tvSureTips.text = isMyCarTips
                             isConfirm = 1
-                            tvSureTips.gravity=Gravity.CENTER
+                            tvSureTips.gravity = Gravity.CENTER
                         }
                         checkboxNot.id -> {
                             tvSureTips.text = isNotMyCarTips
                             isConfirm = 0
-                            tvSureTips.gravity=Gravity.START
+                            tvSureTips.gravity = Gravity.START
                         }
                     }
                 }
@@ -74,18 +77,18 @@ class WaitBindingCarPop(
             GlideUtils.loadBD(dataBean.modelUrl, ivCar)
         }
         viewModel.confirmCarLiveData.observe(lifecycleOwner) {
-            if(isConfirm==1){
+            if (isConfirm == 1) {
+                LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).postValue(1)
                 "车辆绑定成功".toast()
-            }else{
+            } else {
                 "已确认".toast()
             }
-            if(vin==viewModel.vinStr){
+            if (vin == viewModel.vinStr) {
                 this.dismiss()
             }
         }
 
     }
-
 
 
     //动画

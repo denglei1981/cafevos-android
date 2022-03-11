@@ -14,6 +14,8 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -73,6 +75,8 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 //        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
 //        })
 
+
+
     }
 
     override fun onPause() {
@@ -122,12 +126,15 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
                     data.forEach {
                         WaitBindingCarPop(this, this,viewModel,it).apply {
                             showPopupWindow()
-
                         }
                     }
 
                 }, 500)
             }
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).observe(this, Observer {
+            viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
         })
     }
 
