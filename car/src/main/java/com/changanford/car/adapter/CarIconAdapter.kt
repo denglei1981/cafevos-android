@@ -16,11 +16,20 @@ import com.changanford.common.wutil.ScreenUtils
 
 class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon){
     private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
+    //当recarDisScale设置的为屏幕的宽度比例时 即 控件宽度=屏幕有效宽度（总宽度-控件之间的间距）*recarDisScale
+//    private val imgWidth by lazy {
+//        MConstant.configBean?.recarDisScale?.let {widthMultiple ->
+//            val multiple:Float= 1/widthMultiple
+//            val spacing=(multiple+1)*dp20
+//            ((ScreenUtils.getScreenWidth(context)-spacing)/multiple).toInt()
+//        }
+//    }
     private val imgWidth by lazy {
-        MConstant.configBean?.recarDisScale?.let {widthMultiple ->
-            val multiple:Float= 1/widthMultiple
+        MConstant.configBean?.recarDisScale?.let {number ->
+            val widthMultiple=if(number!=0f)number else 2f
+            val multiple:Int= widthMultiple.toInt()
             val spacing=(multiple+1)*dp20
-            ((ScreenUtils.getScreenWidth(context)-spacing)/multiple).toInt()
+            ((ScreenUtils.getScreenWidth(context)-spacing)/widthMultiple).toInt()
         }
     }
     @SuppressLint("SetTextI18n")
