@@ -76,7 +76,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var hDealersBinding:HeaderCarDealersBinding?=null
 
     private var distanceBeanArr:ArrayList<DistanceBean>?=null
-    var delayMillis:Long=1000L//addFooterView延迟添加时间
+    var delayMillis:Long?=1000L//addFooterView延迟添加时间
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
     var carInfoBean:MutableList<NewCarInfoBean>?=null
@@ -273,11 +273,17 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
     }
     private fun addFooterView(view:View, sort:Int,isUpdateSort:Boolean){
+        Log.e("wenke","delayMillis:$delayMillis")
         if(isUpdateSort){
-            Handler(Looper.myLooper()!!).postDelayed({
+            if(delayMillis!=null){
+                Handler(Looper.myLooper()!!).postDelayed({
+                    mAdapter.removeFooterView(view)
+                    mAdapter.setFooterView(view, sort)
+                },delayMillis!!)
+            }else {
                 mAdapter.removeFooterView(view)
                 mAdapter.setFooterView(view, sort)
-            },delayMillis)
+            }
 //            doAsync {
 //                mAdapter.removeFooterView(view)
 //                mAdapter.setFooterView(view, sort)

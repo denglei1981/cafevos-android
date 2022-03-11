@@ -1,6 +1,8 @@
 package com.changanford.car.ui.fragment
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,6 +73,15 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         stopLoop()
                     }
                 }
+                get(0).apply {
+                    if(TextUtils.isEmpty(topImg)&& TextUtils.isEmpty(bottomImg)) carControl.delayMillis=null
+                    else{
+                        carControl.delayMillis=1000
+                        Handler(Looper.myLooper()!!).postDelayed({
+                            carControl.delayMillis=null
+                        },1000)
+                    }
+                }
             }
             viewModel.getAuthCarInfo()
         }
@@ -99,7 +110,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)
-                        carControl.delayMillis=if(TextUtils.isEmpty(topImg)&&TextUtils.isEmpty(bottomImg))10 else 1000
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
                         }else carTopBanner.releaseVideo()
@@ -129,7 +139,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 bindView(sort,isUpdateSort,modelCode,item)
                 item.modelSort=sort
             }
-            carControl.carInfoBean=this
+            carControl.carInfoBean=this@apply
         }
     }
     /**
