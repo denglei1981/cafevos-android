@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -22,5 +24,34 @@
             android:src="@mipmap/shop_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_buyCar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_car_number"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:src="@mipmap/ic_shop_buy_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_car_number"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_11"
+                android:minWidth="@dimen/dp_18"
+                android:gravity="center"
+                android:background="@drawable/shape_f21c44_6dp"
+                android:paddingStart="@dimen/dp_3"
+                android:paddingEnd="@dimen/dp_3"
+                tools:text="22"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_9"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>
