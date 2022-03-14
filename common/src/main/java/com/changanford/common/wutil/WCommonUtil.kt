@@ -31,11 +31,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.BuildConfig
+import com.changanford.common.R
 import com.changanford.common.bean.EditTextBean
 import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.utilext.toast
 import com.google.android.material.tabs.TabLayout
 import com.qw.soul.permission.SoulPermission
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
@@ -404,6 +407,10 @@ object WCommonUtil {
         if(BuildConfig.DEBUG){
             Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
             Log.e("wenke","小程序分享：title：$title>>>description:$description>>>thumbData:$thumbData")
+        }
+        if (!AppUtils.isWeixinAvilible(context)) {
+            context.getString(R.string.str_pleaseInstallWechatBeforeUsingIt).toast()
+            return
         }
         val api = WXAPIFactory.createWXAPI(context, ConfigUtils.WXAPPID)
         val miniProgramObj = WXMiniProgramObject().apply {

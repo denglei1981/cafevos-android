@@ -59,4 +59,5 @@
     <string name="str_questions">提问</string>
     <string name="str_parametersOfIllegal">参数非法！</string>
     <string name="str_currentPosition">当前位置</string>
+    <string name="str_pleaseInstallWechatBeforeUsingIt">请先安装微信后再使用</string>
 </resources>
