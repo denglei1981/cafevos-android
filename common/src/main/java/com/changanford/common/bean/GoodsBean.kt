@@ -352,7 +352,8 @@ data class CommentItem(
  * */
 data class ShopHomeBean(
     val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
-    val mallIndexDto: MallIndexDto = MallIndexDto()
+    val mallIndexDto: MallIndexDto = MallIndexDto(),
+    val mallTags: ArrayList<GoodsTypesItemBean>? = null,
 )
 
 class MallIndexDto
