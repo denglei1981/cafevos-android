@@ -57,6 +57,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun getData(){
         viewModel.getTopBanner()
 //        viewModel.getAuthCarInfo()
+        viewModel.getMyCarModelList()
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {
@@ -85,13 +86,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                 }
             }
-            viewModel.getAuthCarInfo()
-        }
-        viewModel.carAuthBean.observe(this) {
-            viewModel.getMyCarModelList()
         }
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
+            viewModel.getAuthCarInfo()
+        }
+        viewModel.carAuthBean.observe(this) {
+            carControl.bindCertification(it)
+//            viewModel.getMyCarModelList()
         }
     }
     private fun initBanner(){

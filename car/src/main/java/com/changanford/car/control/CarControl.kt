@@ -38,6 +38,7 @@ import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
+import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.DistanceBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
@@ -76,6 +77,8 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var hDealersBinding:HeaderCarDealersBinding?=null
 
     private var distanceBeanArr:ArrayList<DistanceBean>?=null
+
+    private var certificationInfoBean:NewCarInfoBean?=null
     var delayMillis:Long?=null//addFooterView延迟添加时间
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
@@ -151,6 +154,53 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
      * 认证
      * */
     fun setFooterCertification(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
+        certificationInfoBean=dataBean
+        if(hCertificationBinding==null){
+            hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
+            from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
+//                addFooterView(root,sort)
+            }
+        }
+        hCertificationBinding?.apply {
+            addFooterView(root,sort,isUpdateSort)
+            bindCertification(viewModel.carAuthBean.value)
+        }
+    }
+    /**
+     * 绑定认证数据
+     * */
+    fun bindCertification(dataBean: CarAuthBean?=null){
+        if(dataBean==null)return
+        hCertificationBinding?.apply {
+            certificationInfoBean?.apply {
+                val carList= dataBean.carList
+                //优先获取默认车辆然后获取已认证的车辆
+                val authItemData=carList?.find { it.isDefault==1 }?:carList?.find { it.authStatus==3}
+                if(authItemData!=null||isVisible(carModelCode)){
+                    root.visibility=View.VISIBLE
+//                    //优先查询指定车辆是否有认证没有则取第一辆认证的车辆信息 如果查询结果为 null 则表示该用户是非车主身份
+//                    val findModelCode=carList?.find { it.modelCode==carModelCode }?:carList?.get(0)
+                    //获取第一辆在审核的车辆信息
+                    val auditItemData=carList?.find {it.authStatus<3}
+                    //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
+                    composeView.setContent {
+                        Column {
+                            Spacer(modifier = Modifier.height(27.dp))
+                            if(authItemData?.authStatus==3)CarAuthLayout(authItemData,auditItemData)//已认证
+                            else OwnerCertificationUnauthorized(this@apply,isUse(carModelCode),dataBean,auditItemData)//未认证或者审核中
+                        }
+                    }
+                }else {
+                    root.visibility=View.GONE
+//                    mAdapter.removeFooterView(root)
+                }
+            }
+        }
+    }
+    /**
+     * 认证
+     * */
+    fun setFooterCertification0(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hCertificationBinding==null){
             hCertificationBinding=DataBindingUtil.inflate<LayoutComposeviewBinding>(LayoutInflater.
             from(fragment.requireContext()), R.layout.layout_composeview, null, false).apply {
