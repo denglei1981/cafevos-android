@@ -53,7 +53,12 @@ class WaitBindingCarPop(
                     if (MConstant.token.isEmpty()) {
                         startARouter(ARouterMyPath.SignUI)
                     } else {// 提交
-                        viewModel.confirmBindCar(isConfirm, vin = dataBean.vin)
+                        if (isConfirm < 0) {
+                            dismiss()
+                        } else {
+                            viewModel.confirmBindCar(isConfirm, vin = dataBean.vin)
+                        }
+
                     }
                 }, {})
             checkbox.isChecked = true
@@ -70,6 +75,11 @@ class WaitBindingCarPop(
                             tvSureTips.text = isNotMyCarTips
                             isConfirm = 0
                             tvSureTips.gravity = Gravity.START
+                        }
+                        checkboxAgain.id -> {
+                            isConfirm = -1
+                            tvSureTips.text = ""
+                            tvSureTips.gravity = Gravity.CENTER
                         }
                     }
                 }
