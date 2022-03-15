@@ -3,7 +3,6 @@ package com.changanford.car.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
@@ -56,8 +55,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun initData() {}
     private fun getData(){
         viewModel.getTopBanner()
-//        viewModel.getAuthCarInfo()
         viewModel.getMyCarModelList()
+        viewModel.getMoreCar()
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {
@@ -77,7 +76,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 }
                 get(0).apply {
                     carControl.carModelCode=carModelCode
-                    if(TextUtils.isEmpty(topImg)&& TextUtils.isEmpty(bottomImg)) carControl.delayMillis=null
+                    if(topAni==null&&bottomAni==null)carControl.delayMillis=null
                     else{
                         carControl.delayMillis=1000
                         Handler(Looper.myLooper()!!).postDelayed({
@@ -90,10 +89,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
             viewModel.getAuthCarInfo()
-        }
-        viewModel.carAuthBean.observe(this) {
-            carControl.bindCertification(it)
-//            viewModel.getMyCarModelList()
         }
     }
     private fun initBanner(){
@@ -111,6 +106,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)

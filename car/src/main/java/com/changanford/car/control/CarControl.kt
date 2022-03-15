@@ -94,7 +94,10 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         locationType.observe(fragment){
             updateLocationUi()
         }
-        viewModel.getMoreCar()
+        //认证信息
+        viewModel.carAuthBean.observe(fragment) {
+            bindCertification(it)
+        }
     }
     /**
      * 推荐
@@ -169,7 +172,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     /**
      * 绑定认证数据
      * */
-    fun bindCertification(dataBean: CarAuthBean?=null){
+   private fun bindCertification(dataBean: CarAuthBean?=null){
         if(dataBean==null)return
         hCertificationBinding?.apply {
             certificationInfoBean?.apply {
@@ -338,15 +341,15 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private fun addFooterView(view:View, sort:Int,isUpdateSort:Boolean){
         if(isUpdateSort){
             view.visibility=View.VISIBLE
-            if(delayMillis!=null){
-                Handler(Looper.myLooper()!!).postDelayed({
+                if(delayMillis!=null){
+                    Handler(Looper.myLooper()!!).postDelayed({
+                        mAdapter.removeFooterView(view)
+                        mAdapter.setFooterView(view, sort)
+                    },delayMillis!!)
+                }else {
                     mAdapter.removeFooterView(view)
                     mAdapter.setFooterView(view, sort)
-                },delayMillis!!)
-            }else {
-                mAdapter.removeFooterView(view)
-                mAdapter.setFooterView(view, sort)
-            }
+                }
 //            doAsync {
 //                mAdapter.removeFooterView(view)
 //                mAdapter.setFooterView(view, sort)
@@ -440,6 +443,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
      * 绘制点标记
      * */
     private fun addMarker(latLng:LatLng,dealersName:String?){
+        mLocationClient?.unRegisterLocationListener(myLocationListener)
 //        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
         headerBinding.apply {
             if(dealersName!=null)tvLocationTitle.setText(dealersName)
