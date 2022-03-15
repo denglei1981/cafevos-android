@@ -174,7 +174,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
     }
 
     private fun setCarNum() {
-        if (auth.plateNum?.isNullOrEmpty() == true) {
+        if (TextUtils.isEmpty(auth.plateNum)) {
             binding.btnAddCarNum.apply {
                 visibility = View.VISIBLE
                 setOnClickListener(editPlateNum)
