@@ -741,6 +741,10 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 
         }
     }
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
+        openUnionPay(payType,appPayRequest,callback,null)
+    }
     /**
      * 银联支付
      * [payType]支付类型 1支付宝、2 微信、3云闪付
