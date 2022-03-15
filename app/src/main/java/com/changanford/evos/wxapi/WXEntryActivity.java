@@ -4,12 +4,10 @@ package com.changanford.evos.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.changanford.common.sharelib.event.ShareResultType;
 import com.changanford.common.util.ConfigUtils;
@@ -19,6 +17,7 @@ import com.changanford.common.util.toast.ToastUtils;
 import com.changanford.evos.BuildConfig;
 import com.changanford.evos.MainActivity;
 import com.changanford.evos.R;
+import com.chinaums.pppay.unify.UnifyPayPlugin;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -146,20 +145,26 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
             case ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM://小程序
                 WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
-                String extraData = launchMiniProResp.extMsg; // 对应JsApi navigateBackApplication中的extraData字段数据
-                //这里返回标识可以自行和小程序商量统一
-//                eventScreen = new EventScreen(Constant.MINIPROGRAMBACK);
-//                EventUtils.getDefault().forward(eventScreen);
-                if (!TextUtils.isEmpty(extraData)) {
-                    try {
-                        JSONObject jumpjson = JSON.parseObject(extraData);
-//                        JumpUtils.getInstans().jump(WXEntryActivity.this, jumpjson.getIntValue("type"), jumpjson.getString("value"));
-                        finish();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        finish();
+                String extraData = launchMiniProResp.extMsg;
+                if(BuildConfig.DEBUG){
+                     //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+                    Log.d("WXEntryActivity","onResp   ---   " + extraData);
+                    String msg = "onResp   ---   errStr：" + resp.errStr + " --- errCode： " + resp.errCode + " --- transaction： "
+                            + resp.transaction + " --- openId：" + resp.openId + " --- extMsg：" + launchMiniProResp.extMsg;
+                    Log.d("WXEntryActivity",msg);
+                }
+                if(extraData.startsWith("{")){
+                    JSONObject json=JSONObject.parseObject(extraData);
+                    String errCode=json.getString("errCode");
+                    if("0000".equals(errCode)){
+                        LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(0);
+                    }else if("1000".equals(errCode)){
+                        LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(2);
+                    }else {
+                        LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(1);
                     }
                 }
+                UnifyPayPlugin.getInstance(this).getWXListener().onResponse(this, resp);
                 finish();
                 break;
         }
