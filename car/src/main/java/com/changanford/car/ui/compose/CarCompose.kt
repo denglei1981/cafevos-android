@@ -170,6 +170,9 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
  * */
 @Composable
 fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     carAuthBean?.carAuthConfVo?.apply {
         Column(
             Modifier
@@ -191,7 +194,7 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                             WBuriedUtil.clickCarCertification()
                             //去做认证
                             JumpUtils.instans?.jump(17,dataBean?.modelCode)
-                        },enabled = isUse,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
+                        },enabled = isUse, elevation = ButtonDefaults.elevation(0.dp),interactionSource = interactionSource,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
                             colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),contentPadding = PaddingValues(10.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = if(isUse)Color.White else colorResource(R.color.color_DD)),
                             modifier = Modifier.width(96.dp)) {

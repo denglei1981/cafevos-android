@@ -268,7 +268,7 @@ class ShareViewModule : ViewModel() {
     private fun buriedShare(shareBean: ShareBean,type:String){
         shareBean.shareWithType?.apply {
             //爱车海报分享
-            if("love_car_poste"==this){
+            if("love_car_poster"==this){
                 when(type){
                     "1"->WBuriedUtil.clickCarShareWX()
                     "2"->WBuriedUtil.clickCarShareWXMoments()
