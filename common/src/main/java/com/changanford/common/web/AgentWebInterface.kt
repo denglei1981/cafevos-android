@@ -741,10 +741,6 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 
         }
     }
-    @JavascriptInterface
-    fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
-        openUnionPay(payType,appPayRequest,callback,null)
-    }
     /**
      * 银联支付
      * [payType]支付类型 1支付宝、2 微信、3云闪付
@@ -753,7 +749,11 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * [serverMode] 云闪付使用 为后台环境标识，不传或者null默认使用“00”生产环境
      */
     @JavascriptInterface
-    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?="00") {
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
+        openUnionPay(payType,appPayRequest,callback,null)
+    }
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?) {
         if(BuildConfig.DEBUG)Log.d("wenke","H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback")
         val map = HashMap<String, Any>()
         map["payType"] = payType
