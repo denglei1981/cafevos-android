@@ -1,5 +1,6 @@
 package com.changanford.car.ui.compose
 
+import android.text.TextUtils
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -316,7 +317,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                                 .padding(horizontal = dimensionResource(id = R.dimen.dp_5))
 
                         ) {
-                            if (carItemBean.plateNum?.isEmpty()==true || "无牌照" == carItemBean.plateNum) Text(
+                            if (TextUtils.isEmpty(carItemBean.plateNum) || "无牌照" == carItemBean.plateNum) Text(
                                 text = "添加车牌",
                                 fontSize = 14.sp,
                                 color = Color.White,
