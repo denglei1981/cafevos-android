@@ -160,14 +160,14 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         hCertificationBinding?.apply {
             dataBean?.apply {
                 addFooterView(root,sort,isUpdateSort)
-                if(isVisible(carModelCode)){
+                val carAuthBean=viewModel.carAuthBean.value
+                val carList=carAuthBean?.carList
+                //优先获取默认车辆然后获取已认证的车辆
+                val authItemData=carList?.find { it.isDefault==1 }?:carList?.find { it.authStatus==3}
+                if(authItemData!=null||isVisible(carModelCode)){
                     root.visibility=View.VISIBLE
-                    val carAuthBean=viewModel.carAuthBean.value
-                    val carList=carAuthBean?.carList
 //                    //优先查询指定车辆是否有认证没有则取第一辆认证的车辆信息 如果查询结果为 null 则表示该用户是非车主身份
 //                    val findModelCode=carList?.find { it.modelCode==carModelCode }?:carList?.get(0)
-                    //优先获取默认车辆然后获取已认证的车辆
-                    val authItemData=carList?.find { it.isDefault==1 }?:carList?.find { it.authStatus==3}
                     //获取第一辆在审核的车辆信息
                     val auditItemData=carList?.find {it.authStatus<3}
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
