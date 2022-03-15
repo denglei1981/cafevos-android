@@ -200,7 +200,7 @@ object WBuriedUtil {
      * [mapName]百度地图、高德地图、取消
      * */
     fun clickCarNavigateMap(mapName:String){
-        buried("app爱车_导航弹窗_地图选择","app_car_navigate_map")
+        buried("app爱车_导航弹窗_地图选择","app_car_navigate_map", extend = "{\"map_name\": \"$mapName\"}")
     }
     /**
      * 用户点击微信时触发

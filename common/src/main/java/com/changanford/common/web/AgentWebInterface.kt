@@ -743,7 +743,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     /**
      * 银联支付
-     * [payType]支付类型 0云闪付、1支付宝、2 微信
+     * [payType]支付类型 1支付宝、2 微信、3云闪付
      * [appPayRequest]拉起支付的参数（具体参考对应文档）
      * [callback]支付回调
      * [serverMode] 云闪付使用 为后台环境标识，不传或者null默认使用“00”生产环境

@@ -182,7 +182,7 @@
                 <!--如果需要浏览器支持打开，则category.BROWSABLE-->
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!--schema的协议类型：可以自行设置，只要按照统一规则，前后端一致就行-->
-                <data android:scheme="qmfpppay"/>
+                <data android:scheme="hy_unionpay"/>
             </intent-filter>
         </activity>
     </application>

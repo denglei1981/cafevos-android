@@ -76,7 +76,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     private var hDealersBinding:HeaderCarDealersBinding?=null
 
     private var distanceBeanArr:ArrayList<DistanceBean>?=null
-    var delayMillis:Long?=1000L//addFooterView延迟添加时间
+    var delayMillis:Long?=null//addFooterView延迟添加时间
     var mMapView: MapView?=null
     var mBaiduMap: BaiduMap?=null
     init {

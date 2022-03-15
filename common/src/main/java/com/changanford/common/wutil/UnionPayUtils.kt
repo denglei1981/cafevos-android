@@ -28,20 +28,18 @@ object UnionPayUtils {
      * */
     fun goUnionPay(activity: Activity, type: Int, appPayRequest: String,serverMode:String?="00") {
         when(type){
-            //云闪付
-            0-> payCloudQuickPay(activity,appPayRequest,serverMode)
-
             //支付宝小程序支付
             1->{
                 if(AppUtils.checkAliPayInstalled(activity)) payAliPayMiniPro(activity,appPayRequest)
                 else toastShow("未安装支付宝")
             }
-
             //微信支付
             2->{
                 if(AppUtils.isWeixinAvilible(activity)) payWx(activity,appPayRequest)
                 else toastShow("未安装微信")
             }
+            //云闪付
+            3-> payCloudQuickPay(activity,appPayRequest,serverMode)
         }
     }
     /**
