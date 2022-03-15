@@ -238,13 +238,13 @@ class BuriedUtil {
       *  筛选
       * */
     fun communityScreen(type:String){
-        buried("app社区_问答_问答筛选_确定","app_community_QA_Filter_confirm", extend = "{\"QA_type\": \"$type\"")
+        buried("app社区_问答_问答筛选_确定","app_community_QA_Filter_confirm", extend = "{\"QA_type\": \"$type\"}")
     }
     /**
      * 问答搜索
      * */
     fun communityQuestionSerach(type:String){
-        buried("app社区_问答_搜索","app_community_search", extend = "{\"keyword\": \"$type\"")
+        buried("app社区_问答_搜索","app_community_search", extend = "{\"keyword\": \"$type\"}")
     }
 
 
@@ -266,20 +266,20 @@ class BuriedUtil {
     }
 
     fun carDelete(phone:String){
-        buried("app爱车_删除车辆_提交","app_car_delete_Submit",extend = "{\"phone\": \"$phone\"")
+        buried("app爱车_删除车辆_提交","app_car_delete_Submit",extend = "{\"phone\": \"$phone\"}")
     }
     fun carLicense(license_plate:String){
-        buried("app爱车_爱车列表_弹窗_确定","app_car_carlist_Popup_confirm",extend = "{\"license_plate\": \"$license_plate\"")
+        buried("app爱车_爱车列表_弹窗_确定","app_car_carlist_Popup_confirm",extend = "{\"license_plate\": \"$license_plate\"}")
     }
 
     // 爱车埋点
 
     // 圈子话题
     fun  circleTopicSearch(keyword:String){
-        buried("app社区_热门话题_搜索","app_community_hot_topic_search",extend = "{\"keyword\": \"$keyword\"")
+        buried("app社区_热门话题_搜索","app_community_hot_topic_search",extend = "{\"keyword\": \"$keyword\"}")
     }
     fun  circleHotTopicClick(topic_name:String){
-        buried("app社区_热门话题_点击","app_community_hot_topic_click",extend = "{\"topic_name\": \"$topic_name\"")
+        buried("app社区_热门话题_点击","app_community_hot_topic_click",extend = "{\"topic_name\": \"$topic_name\"}")
     }
     // 圈子话题
 
