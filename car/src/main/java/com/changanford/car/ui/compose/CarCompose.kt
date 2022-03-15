@@ -295,7 +295,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                             modifier = Modifier
                                 .offset(y = dimensionResource(id = R.dimen.dp_10))
                                 .background(
-                                    color = if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) {
+                                    color = if (carItemBean.plateNum?.isEmpty() == true || "无牌照" == carItemBean.plateNum) {
                                         Color(0xff00095B)
                                     } else {
                                         Color(0x2000095B)
@@ -306,25 +306,29 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                                     interactionSource = interactionSource,
                                     indication = null
                                 ) {
-                                    RouterManger
-                                        .param("value", carItemBean.vin)
-                                        .param("plateNum", carItemBean.plateNum)
-                                        .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                                    carItemBean.plateNum?.let {
+                                        RouterManger
+                                            .param("value", carItemBean.vin)
+                                            .param("plateNum", it)
+                                            .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                                    }
                                 }
                                 .padding(horizontal = dimensionResource(id = R.dimen.dp_5))
 
                         ) {
-                            if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) Text(
+                            if (carItemBean.plateNum?.isEmpty()==true || "无牌照" == carItemBean.plateNum) Text(
                                 text = "添加车牌",
                                 fontSize = 14.sp,
                                 color = Color.White,
                                 modifier = Modifier.padding(5.dp)
-                            ) else Text(
-                                text = carItemBean.plateNum,
-                                fontSize = 15.sp,
-                                color = Color(0xff00095B),
-                                modifier = Modifier.padding(5.dp)
-                            )
+                            ) else carItemBean.plateNum?.let {
+                                Text(
+                                    text = it,
+                                    fontSize = 15.sp,
+                                    color = Color(0xff00095B),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
                         }
                     }
                     Image(
