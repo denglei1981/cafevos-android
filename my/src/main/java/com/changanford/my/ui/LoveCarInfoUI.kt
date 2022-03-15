@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -90,15 +91,14 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
             })
         binding.deleteCar.setOnClickListener {
             if (!TextUtils.isEmpty(auth.vin)) {
+
                 deleteCar()
             }
-
         }
     }
 
     fun deleteCar() {
         removeCarNotice?.let { tips ->
-
             val deleteCarPop = DeleteCarPop(this, object : DeleteCarPop.deleteCar {
                 override fun cancle() {
 
@@ -107,6 +107,11 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                 override fun delete() {
                     viewModel.deleteCar(auth.vin) {
                         it.onSuccess {
+                            try {
+                                BuriedUtil.instant?.carDelete(auth.phone)
+                            }catch (e:Exception){
+                                e.printStackTrace()
+                            }
                             finish()
 
                         }.onWithMsgFailure {
