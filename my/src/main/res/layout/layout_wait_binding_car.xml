@@ -175,6 +175,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_submit"
-            tools:text="确认后将自动将爱车与您账户绑定" />
+            android:text="确认后将自动将爱车与您账户绑定" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
