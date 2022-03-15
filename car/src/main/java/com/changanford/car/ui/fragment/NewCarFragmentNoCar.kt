@@ -146,7 +146,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * [isUpdateSort]是否更改排序
     * */
     private fun bindView(sort:Int,isUpdateSort:Boolean,modelCode:String,dataBean: NewCarInfoBean?){
-        Log.e("wenke","bindView>>>${headerBinding.carTopViewPager.currentItem}")
         when(modelCode){
             //推荐
             "cars"->carControl.setFooterRecommended(dataBean,sort,isUpdateSort)
