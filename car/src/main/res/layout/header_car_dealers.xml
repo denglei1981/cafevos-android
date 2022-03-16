@@ -31,13 +31,14 @@
                 tools:text="附近经销商"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_17"/>
-            <com.baidu.mapapi.map.MapView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_margin="@dimen/dp_5"
                 app:layout_constraintTop_toTopOf="@id/view_mapBg"
                 app:layout_constraintBottom_toBottomOf="@id/view_mapBg"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_154"
-                android:id="@+id/mapView" />
+                android:id="@+id/mapView"
+                class="com.changanford.car.ui.fragment.NewCarFragmentNoCar"/>
             <View
                 android:id="@+id/view_mapBg"
                 android:layout_marginTop="@dimen/dp_17"
@@ -81,6 +82,7 @@
                 android:textSize="@dimen/sp_13" />
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeView_dealers"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginEnd="@dimen/dp_5"
                 app:layout_constraintTop_toBottomOf="@id/mapView"

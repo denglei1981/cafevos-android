@@ -8,9 +8,22 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/color_F4">
+        <com.baidu.mapapi.map.MapView
+            android:layout_margin="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_154"
+            android:id="@+id/mapView"
+            class="com.changanford.car.ui.fragment.NewCarFragmentNoCar"/>
+        <View
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_180"
+            android:background="@color/color_F4"/>
         <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/carTopViewPager"
             android:layout_width="match_parent"
