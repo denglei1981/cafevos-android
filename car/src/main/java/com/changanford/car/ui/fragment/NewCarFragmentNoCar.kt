@@ -3,13 +3,13 @@ package com.changanford.car.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.changanford.car.BuildConfig
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarNotAdapter
@@ -34,6 +34,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val maxSlideY=500//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
     private var carInfoBean:MutableList<NewCarInfoBean>?=null
+    private var hidden:Boolean=false
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -56,7 +57,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun initData() {}
     private fun getData(){
         viewModel.getTopBanner()
-//        viewModel.getAuthCarInfo()
+        viewModel.getMyCarModelList()
+        viewModel.getMoreCar()
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {
@@ -75,7 +77,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                 }
                 get(0).apply {
-                    if(TextUtils.isEmpty(topImg)&& TextUtils.isEmpty(bottomImg)) carControl.delayMillis=null
+                    carControl.carModelCode=carModelCode
+                    if(topAni==null&&bottomAni==null)carControl.delayMillis=null
                     else{
                         carControl.delayMillis=1000
                         Handler(Looper.myLooper()!!).postDelayed({
@@ -84,13 +87,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
                 }
             }
-            viewModel.getAuthCarInfo()
-        }
-        viewModel.carAuthBean.observe(this) {
-            viewModel.getMyCarModelList()
         }
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
+            viewModel.getAuthCarInfo()
         }
     }
     private fun initBanner(){
@@ -108,6 +108,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)
@@ -147,7 +148,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * [isUpdateSort]是否更改排序
     * */
     private fun bindView(sort:Int,isUpdateSort:Boolean,modelCode:String,dataBean: NewCarInfoBean?){
-        Log.e("wenke","bindView>>>${headerBinding.carTopViewPager.currentItem}")
         when(modelCode){
             //推荐
             "cars"->carControl.setFooterRecommended(dataBean,sort,isUpdateSort)
@@ -164,7 +164,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
     * */
-    private val onScrollListener=object : RecyclerView.OnScrollListener() {
+    private val onScrollListener=object:RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if(newState== RecyclerView.SCROLL_STATE_IDLE){
@@ -185,7 +185,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(!hidden)getData()
+        this.hidden=hidden
+        reset()
     }
     override fun onStart() {
         super.onStart()
@@ -194,22 +195,29 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onResume() {
         super.onResume()
-        getData()
-        carControl.mMapView?.onResume()
-        if(oldScrollY<maxSlideY&&topBannerList.size>0){
-            val position=headerBinding.carTopViewPager.currentItem
-            carTopBanner.resumeVideo(topBannerList[position].mainImg)
-            headerBinding.carTopViewPager.startLoop()
+        reset()
+    }
+    private fun reset(isHidden:Boolean=hidden){
+        if(!isHidden) {
+            carControl.mMapView?.onResume()
+            if(oldScrollY<maxSlideY&&topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.resumeVideo(topBannerList[position].mainImg)
+                headerBinding.carTopViewPager.startLoop()
+            }
+            getData()
+        }else{
+            if(topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.pauseVideo(topBannerList[position].mainImg)
+            }
+            carControl.mMapView?.onPause()
+            headerBinding.carTopViewPager.stopLoop()
         }
     }
     override fun onPause() {
         super.onPause()
-        if(topBannerList.size>0){
-            val position=headerBinding.carTopViewPager.currentItem
-            carTopBanner.pauseVideo(topBannerList[position].mainImg)
-        }
-        carControl.mMapView?.onPause()
-        headerBinding.carTopViewPager.stopLoop()
+        reset(true)
     }
 
     override fun onDestroy() {

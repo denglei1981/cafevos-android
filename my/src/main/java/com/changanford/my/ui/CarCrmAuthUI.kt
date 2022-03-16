@@ -74,7 +74,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 //            })
 //        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
 //        })
-
+        viewModel.isWaitBindingCar()
     }
 
     override fun onPause() {
@@ -93,7 +93,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
-        viewModel.isWaitBindingCar()
+
         viewModel.carAuthQY {
             it.onSuccess {
                 it?.let {

@@ -104,7 +104,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_marginBottom="14dp"
                 android:text="点击查看详情"
-                android:textColor="#FF7635"
+                android:textColor="@color/color_00095B"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

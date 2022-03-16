@@ -55,7 +55,7 @@ data class NewCarInfoBean(
 }
 
 data class NewCarBannerBean(
-    val bottomAni: Int? = 1,
+    val bottomAni: Int? = null,
     val bottomImg: String? = null,
     val bottomJumpType: Int? = null,
     val bottomJumpVal: String? = null,
@@ -70,7 +70,7 @@ data class NewCarBannerBean(
     val name: String = "",
     val sort: Int = 0,
     val status: Int = 0,
-    val topAni: Int = 1,
+    val topAni: Int? = null,
     val topImg: String? = null,
     val topJumpType: Int? = null,
     val topJumpVal: String? = null,

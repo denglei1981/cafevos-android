@@ -257,7 +257,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     @JavascriptInterface
     fun shareTo(jsonStr: String, shareCallBack: String) {
 //        toastShow("分享的内容".plus(jsonStr))
-        var map = HashMap<String, String>()
+        val map = HashMap<String, String>()
         map["jsonStr"] = jsonStr
         map["shareCallBack"] = shareCallBack
         LiveDataBus.get().with(LiveDataBusKey.WEB_SHARE).postValue(map)
@@ -743,13 +743,17 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     /**
      * 银联支付
-     * [payType]支付类型 0云闪付、1支付宝、2 微信
+     * [payType]支付类型 1支付宝、2 微信、3云闪付
      * [appPayRequest]拉起支付的参数（具体参考对应文档）
      * [callback]支付回调
      * [serverMode] 云闪付使用 为后台环境标识，不传或者null默认使用“00”生产环境
      */
     @JavascriptInterface
-    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?="00") {
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
+        openUnionPay(payType,appPayRequest,callback,null)
+    }
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?) {
         if(BuildConfig.DEBUG)Log.d("wenke","H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback")
         val map = HashMap<String, Any>()
         map["payType"] = payType

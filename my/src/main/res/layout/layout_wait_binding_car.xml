@@ -131,6 +131,20 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
                 app:layout_constraintTop_toBottomOf="@+id/checkbox" />
 
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="下次再提醒我"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
         </RadioGroup>
 
 
@@ -138,10 +152,10 @@
             android:id="@+id/btn_submit"
             android:layout_width="@dimen/dp_160"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginTop="@dimen/dp_32"
+            android:layout_marginTop="@dimen/dp_24"
             android:background="@drawable/shape_00095b_20dp"
             android:gravity="center"
-            android:text="@string/home_sure"
+            android:text="确定"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -161,6 +175,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_submit"
-            tools:text="确认后将自动将爱车与您账户绑定" />
+            android:text="确认后将自动将爱车与您账户绑定" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,6 @@
 package com.changanford.car.ui.compose
 
+import android.text.TextUtils
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -169,6 +170,9 @@ fun LookingDealers(dataBean: NewCarInfoBean?=null){
  * */
 @Composable
 fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=true,carAuthBean: CarAuthBean?=null,carItemBean: CarItemBean?=null){
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     carAuthBean?.carAuthConfVo?.apply {
         Column(
             Modifier
@@ -190,7 +194,7 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                             WBuriedUtil.clickCarCertification()
                             //去做认证
                             JumpUtils.instans?.jump(17,dataBean?.modelCode)
-                        },enabled = isUse,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
+                        },enabled = isUse, elevation = null,interactionSource = interactionSource,shape = RoundedCornerShape(24.dp), border = BorderStroke(width = 1.dp,
                             colorResource(if(isUse)R.color.color_00095B else R.color.color_DD)),contentPadding = PaddingValues(10.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = if(isUse)Color.White else colorResource(R.color.color_DD)),
                             modifier = Modifier.width(96.dp)) {
@@ -295,7 +299,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                             modifier = Modifier
                                 .offset(y = dimensionResource(id = R.dimen.dp_10))
                                 .background(
-                                    color = if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) {
+                                    color = if (carItemBean.plateNum?.isEmpty() == true || "无牌照" == carItemBean.plateNum) {
                                         Color(0xff00095B)
                                     } else {
                                         Color(0x2000095B)
@@ -306,25 +310,29 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                                     interactionSource = interactionSource,
                                     indication = null
                                 ) {
-                                    RouterManger
-                                        .param("value", carItemBean.vin)
-                                        .param("plateNum", carItemBean.plateNum)
-                                        .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                                    carItemBean.plateNum?.let {
+                                        RouterManger
+                                            .param("value", carItemBean.vin)
+                                            .param("plateNum", it)
+                                            .startARouter(ARouterMyPath.AddCardNumTransparentUI)
+                                    }
                                 }
                                 .padding(horizontal = dimensionResource(id = R.dimen.dp_5))
 
                         ) {
-                            if (carItemBean.plateNum.isEmpty() || "无牌照" == carItemBean.plateNum) Text(
+                            if (TextUtils.isEmpty(carItemBean.plateNum) || "无牌照" == carItemBean.plateNum) Text(
                                 text = "添加车牌",
                                 fontSize = 14.sp,
                                 color = Color.White,
                                 modifier = Modifier.padding(5.dp)
-                            ) else Text(
-                                text = carItemBean.plateNum,
-                                fontSize = 15.sp,
-                                color = Color(0xff00095B),
-                                modifier = Modifier.padding(5.dp)
-                            )
+                            ) else carItemBean.plateNum?.let {
+                                Text(
+                                    text = it,
+                                    fontSize = 15.sp,
+                                    color = Color(0xff00095B),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
                         }
                     }
                     Image(

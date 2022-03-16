@@ -35,7 +35,7 @@ data class CarItemBean(
     var vin: String = "",
     val modelName: String = "",//车型名称
     val modelUrl: String = "",//车型图
-    var plateNum: String = "",
+    var plateNum: String? = null,
     @SerializedName(
         value = "authStatus",
         alternate = ["status"]

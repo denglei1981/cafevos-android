@@ -28,20 +28,18 @@ object UnionPayUtils {
      * */
     fun goUnionPay(activity: Activity, type: Int, appPayRequest: String,serverMode:String?="00") {
         when(type){
-            //云闪付
-            0-> payCloudQuickPay(activity,appPayRequest,serverMode)
-
             //支付宝小程序支付
             1->{
                 if(AppUtils.checkAliPayInstalled(activity)) payAliPayMiniPro(activity,appPayRequest)
                 else toastShow("未安装支付宝")
             }
-
             //微信支付
             2->{
                 if(AppUtils.isWeixinAvilible(activity)) payWx(activity,appPayRequest)
                 else toastShow("未安装微信")
             }
+            //云闪付
+            3-> payCloudQuickPay(activity,appPayRequest,serverMode)
         }
     }
     /**
@@ -49,14 +47,19 @@ object UnionPayUtils {
     * */
     private fun payWx(context:Context,appPayRequest:String,listener: UnifyPayListener?=null){
         if(BuildConfig.DEBUG)Log.d(TAG, "微信支付 appPayRequest = $appPayRequest")
-        UnifyPayRequest().apply {
-            payChannel = UnifyPayRequest.CHANNEL_ALIPAY
-            payData = appPayRequest
-            UnifyPayPlugin.getInstance(context).let {
-                it.sendPayRequest(this)
-                listener?.apply {it.listener = this}
-            }
-        }
+//        UnifyPayRequest().apply {
+//            payChannel = UnifyPayRequest.CHANNEL_WEIXIN
+//            payData = appPayRequest
+//            UnifyPayPlugin.getInstance(context).let {
+//                it.sendPayRequest(this)
+//                listener?.apply {it.listener = this}
+//            }
+//        }
+        val msg = UnifyPayRequest()
+        msg.payChannel = UnifyPayRequest.CHANNEL_WEIXIN
+        msg.payData = appPayRequest
+        UnifyPayPlugin.getInstance(context).sendPayRequest(msg)
+        listener?.let { UnifyPayPlugin.getInstance(context).listener=it }
     }
     /**
      * 支付宝小程序支付方式
