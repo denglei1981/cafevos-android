@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.changanford.car.BuildConfig
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarNotAdapter
@@ -107,7 +108,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    Log.e("wenke","onPageSelected>>>$position")
+                    if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.pauseVideo(mainImg)
@@ -163,7 +164,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
     * */
-    private val onScrollListener=object : RecyclerView.OnScrollListener() {
+    private val onScrollListener=object:RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if(newState== RecyclerView.SCROLL_STATE_IDLE){
@@ -196,8 +197,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         super.onResume()
         reset()
     }
-    private fun reset(){
-        if(!hidden) {
+    private fun reset(isHidden:Boolean=hidden){
+        if(!isHidden) {
             carControl.mMapView?.onResume()
             if(oldScrollY<maxSlideY&&topBannerList.size>0){
                 val position=headerBinding.carTopViewPager.currentItem
@@ -216,8 +217,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onPause() {
         super.onPause()
-        hidden=true
-        reset()
+        reset(true)
     }
 
     override fun onDestroy() {
