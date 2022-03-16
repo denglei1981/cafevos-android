@@ -33,6 +33,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val maxSlideY=500//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
     private var carInfoBean:MutableList<NewCarInfoBean>?=null
+    private var hidden:Boolean=false
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
@@ -183,7 +184,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(!hidden)getData()
+        this.hidden=hidden
+        reset()
     }
     override fun onStart() {
         super.onStart()
@@ -192,22 +194,30 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     override fun onResume() {
         super.onResume()
-        getData()
-        carControl.mMapView?.onResume()
-        if(oldScrollY<maxSlideY&&topBannerList.size>0){
-            val position=headerBinding.carTopViewPager.currentItem
-            carTopBanner.resumeVideo(topBannerList[position].mainImg)
-            headerBinding.carTopViewPager.startLoop()
+        reset()
+    }
+    private fun reset(){
+        if(!hidden) {
+            carControl.mMapView?.onResume()
+            if(oldScrollY<maxSlideY&&topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.resumeVideo(topBannerList[position].mainImg)
+                headerBinding.carTopViewPager.startLoop()
+            }
+            getData()
+        }else{
+            if(topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.pauseVideo(topBannerList[position].mainImg)
+            }
+            carControl.mMapView?.onPause()
+            headerBinding.carTopViewPager.stopLoop()
         }
     }
     override fun onPause() {
         super.onPause()
-        if(topBannerList.size>0){
-            val position=headerBinding.carTopViewPager.currentItem
-            carTopBanner.pauseVideo(topBannerList[position].mainImg)
-        }
-        carControl.mMapView?.onPause()
-        headerBinding.carTopViewPager.stopLoop()
+        hidden=true
+        reset()
     }
 
     override fun onDestroy() {
