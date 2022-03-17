@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemHomeRecommendList1Binding
 import com.changanford.shop.databinding.ItemHomeRecommendList2Binding
@@ -14,7 +15,9 @@ class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBinding
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemHomeRecommendList2Binding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
-
+            imgCover.load(item.imgUrl)
+            model=item
+            executePendingBindings()
         }
     }
 }

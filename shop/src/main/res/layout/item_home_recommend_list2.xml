@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            type="com.changanford.common.bean.GoodsItemBean"
+            name="model" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_12">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_cover"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:scaleType="centerCrop"
+            tools:src="@color/color_00095B"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_name"
+            android:text="@{model.spuName}"
+            app:layout_constraintStart_toEndOf="@id/img_cover"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="FreePods真无线蓝…"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            style="@style/w_style_txt_ellipsize"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_sales"
+            android:text="@{model.exchageCount}"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            android:layout_marginTop="@dimen/dp_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:w_start_txt="@string/str_hasChange"
+            app:w_end_txt="@string/str_a"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_10"/>
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:w_start_txt="@string/str_rmb"
+            android:text="@{model.fbPrice}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
