@@ -179,4 +179,5 @@
     <string name="str_comprehensiveRanking">综合排序</string>
     <string name="str_sales">销量</string>
     <string name="str_price">价格</string>
+    <string name="str_clickingTooFast">点击频率过快!</string>
 </resources>
