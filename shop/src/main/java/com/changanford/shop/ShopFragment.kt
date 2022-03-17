@@ -3,12 +3,15 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
+import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.compose.HomeMyIntegralCompose
@@ -31,6 +34,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private  val fragments= arrayListOf<ExchangeListFragment>()
     private val mAdapter by lazy { GoodsKillAdapter() }
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
+    private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -42,10 +46,26 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.apply {
             inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
             smartRl.setOnRefreshListener(this@ShopFragment)
-            inTop.compose.setContent {
-                HomeMyIntegralCompose()
+            inTop.apply {
+                compose.setContent {
+                    HomeMyIntegralCompose()
+                }
+                recyclerViewRecommend.adapter=recommendAdapter
+                bindTestData()
             }
         }
+    }
+    private fun bindTestData(){
+        val dataBean= ArrayList<ShopRecommendBean>()
+        for (i in 0..1){
+            val listBean=ArrayList<GoodsItemBean>()
+            for(j in 0..2){
+                val itemBean=GoodsItemBean(spuName = "name$j")
+                listBean.add(itemBean)
+            }
+            dataBean.add(ShopRecommendBean(topId = i, topName = "topName$i",recommendList = listBean))
+        }
+        recommendAdapter.setList(dataBean)
     }
     private fun initTab(){
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_01025C)

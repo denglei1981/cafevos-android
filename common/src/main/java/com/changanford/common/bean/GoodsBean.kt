@@ -516,3 +516,4 @@ data class OrderTypeItemBean(
     val jumpDataValue: String? = "",
     val typeName: String? = "",
 )
+data class ShopRecommendBean(val topId:Int=0,val topName:String?=null,val recommendList:ArrayList<GoodsItemBean>?=null)
