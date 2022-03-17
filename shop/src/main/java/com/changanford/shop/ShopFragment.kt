@@ -1,5 +1,4 @@
 package com.changanford.shop
-import android.graphics.Typeface
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -15,11 +14,10 @@ import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.compose.HomeMyIntegralCompose
-import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.utils.ScreenUtils
-import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -85,7 +83,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             add(GoodsTypesItemBean("0","全部"))
         }
         for(it in tabs){
-            val fragment=ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
+            val fragment= ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }

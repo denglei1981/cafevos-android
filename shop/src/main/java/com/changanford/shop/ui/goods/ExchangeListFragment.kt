@@ -1,4 +1,4 @@
-package com.changanford.shop.ui.exchange
+package com.changanford.shop.ui.goods
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
@@ -7,7 +7,6 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.FragmentExchangeBinding
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 

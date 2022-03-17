@@ -10,15 +10,23 @@
         android:id="@+id/smartRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:paddingTop="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_6"
-            android:paddingStart="@dimen/dp_20"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            tools:listitem="@layout/item_goods" />
+            android:orientation="vertical">
+            <include
+                android:id="@+id/in_sort"
+                layout="@layout/in_sort_layout"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:paddingTop="@dimen/dp_20"
+                android:paddingEnd="@dimen/dp_6"
+                android:paddingStart="@dimen/dp_20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_goods" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>
