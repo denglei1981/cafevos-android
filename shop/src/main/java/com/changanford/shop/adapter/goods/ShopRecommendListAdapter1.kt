@@ -14,7 +14,7 @@ class ShopRecommendListAdapter1: BaseQuickAdapter<ShopRecommendBean, BaseDataBin
         holder.dataBinding?.apply {
             tvName.setText(item.topName)
             recyclerView.adapter=ShopRecommendListAdapter2().apply {
-
+                setList(item.recommendList)
             }
             wtvMore.setOnClickListener {
 

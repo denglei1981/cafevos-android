@@ -46,7 +46,7 @@
             <View
                 android:id="@+id/view_divider"
                 android:layout_marginTop="@dimen/dp_12"
-                app:layout_constraintTop_toBottomOf="@id/wtv_hotCarCircle"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
                 android:background="@color/color_ee"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_5"/>
