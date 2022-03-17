@@ -12,6 +12,7 @@ import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.compose.HomeMyIntegralCompose
+import com.changanford.shop.ui.compose.RecommendedListCompose
 import com.changanford.shop.ui.exchange.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
@@ -44,6 +45,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             smartRl.setOnRefreshListener(this@ShopFragment)
             inTop.compose.setContent {
                 HomeMyIntegralCompose()
+            }
+            inTop.composeRecommended.setContent {
+                RecommendedListCompose()
             }
         }
     }

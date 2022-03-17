@@ -4,16 +4,21 @@ import android.text.TextUtils
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,7 +48,8 @@ fun HomeMyIntegralCompose(fbNumber:String?=null){
             .background(
                 color = colorResource(R.color.color_F5F5F9),
                 shape = RoundedCornerShape(5.dp)
-            ).padding(top = 16.dp, bottom = 14.dp, start = 18.dp, end = 15.dp)) {
+            )
+            .padding(top = 16.dp, bottom = 14.dp, start = 18.dp, end = 15.dp)) {
             Image(painter = painterResource(R.mipmap.ic_shop_fb), contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = stringResource(R.string.str_myFbX,if(fbNumber!=null)":$fbNumber" else ""),color= colorResource(R.color.color_33), fontSize = 14.sp,

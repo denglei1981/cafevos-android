@@ -64,5 +64,46 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_kill_goods"/>
+            <com.changanford.common.ui.view.WTextView
+                android:visibility="visible"
+                tools:visibility="visible"
+                android:id="@+id/tv_recommendList"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginStart="@dimen/dp_20"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_recommendedList"
+                android:textColor="@color/color_34"
+                android:textSize="@dimen/sp_16" />
+            <com.changanford.common.ui.view.WTextView
+                android:visibility="visible"
+                tools:visibility="visible"
+                android:drawablePadding="@dimen/dp_5"
+                android:id="@+id/wtv_allList"
+                android:layout_marginEnd="@dimen/dp_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_recommendList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_all"
+                android:textColor="@color/color_74889D"
+                android:textSize="@dimen/sp_14"
+                android:drawableEnd="@mipmap/right_74889d"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="visible"
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/tv_recommendList"
+                android:id="@+id/recyclerView_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_home_recommend_list1"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_15"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
