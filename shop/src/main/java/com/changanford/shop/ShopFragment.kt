@@ -91,7 +91,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-//        viewModel.getClassification()
+        viewModel.getClassification()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this) {
@@ -105,8 +105,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
             }
-            bindingTab(it.mallTags)
-            binding.smartRl.finishRefresh()
+//            bindingTab(it.mallTags)
+//            binding.smartRl.finishRefresh()
         }
         viewModel.classificationLiveData.observe(this) {
             bindingTab(it)

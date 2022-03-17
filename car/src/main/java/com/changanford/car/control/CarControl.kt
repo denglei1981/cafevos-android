@@ -270,12 +270,15 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     fun setFooterDealers(dataBean:NewCarInfoBean?,sort:Int,isUpdateSort:Boolean){
         if(hDealersBinding==null) {
             hDealersBinding=DataBindingUtil.inflate<HeaderCarDealersBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_dealers, null, false).apply {
-                mMapView=mapView
-                mBaiduMap=mapView.map
+                mMapView= headerBinding.mapView
+                headerBinding.layoutRoot.removeView(headerBinding.mapView)
+                mMapView?.visibility=View.VISIBLE
+                mapView.addView(mMapView)
+                mBaiduMap=mMapView?.map
                 initMap()
                 viewMapBg.setOnClickListener {
                     WBuriedUtil.clickCarDealer(viewModel.dealersBean.value?.dealerName)
-                    JumpUtils.instans?.jump(1,MConstant.H5_CAR_DEALER)
+                    JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
                 }
                 tvLocation.setOnClickListener {
                     when (locationType.value) {
