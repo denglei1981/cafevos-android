@@ -42,14 +42,20 @@
                         <com.google.android.material.tabs.TabLayout
                             app:tabMode="scrollable"
                             android:id="@+id/tab_layout"
-                            style="@style/tabLayout_style"
+                            app:tabIndicator="@null"
+                            app:tabMinWidth="@dimen/dp_20"
+                            app:tabMaxWidth="@dimen/dp_200"
+                            app:tabTextAppearance="@style/style_indexTabItemStyle13"
+                            app:tabIndicatorColor="@null"
+                            app:tabBackground="@drawable/tab_bg_selector"
+                            app:tabSelectedTextColor="@color/white"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_30"
-                            android:paddingBottom="@dimen/dp_m_10"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/dp_7"
-                            app:tabTextColor="@color/color_9394A0"
-                            app:tabTextAppearance="@style/style_indexTabItemStyle0"/>
+                            android:layout_marginStart="@dimen/dp_16"
+                            android:layout_marginEnd="@dimen/dp_16"
+                            app:tabTextColor="@color/color_00095B"
+                            android:textSize="@dimen/sp_13"/>
                     </LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>
                 <androidx.viewpager2.widget.ViewPager2

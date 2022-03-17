@@ -68,7 +68,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         recommendAdapter.setList(dataBean)
     }
     private fun initTab(){
-        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
+//        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,13f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.classificationLiveData.value?.get(position)?.apply {
@@ -111,7 +111,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-//        viewModel.getClassification()
+        viewModel.getClassification()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this) {
@@ -125,8 +125,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
             }
-            bindingTab(it.mallTags)
-            binding.smartRl.finishRefresh()
+//            bindingTab(it.mallTags)
+//            binding.smartRl.finishRefresh()
         }
         viewModel.classificationLiveData.observe(this) {
             bindingTab(it)
