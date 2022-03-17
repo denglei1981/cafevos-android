@@ -61,15 +61,15 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             return
         }
         orderNo?.let { viewModel.getOrderDetail(it) }
-        viewModel.orderItemLiveData.observe(this,{orderItem->
-            dataBean= orderItem
+        viewModel.orderItemLiveData.observe(this) { orderItem ->
+            dataBean = orderItem
             bindingData()
-        })
-        viewModel.responseData.observe(this,{
-            ToastUtils.showLongToast(it.msg,this)
-            isClickSubmit=false
+        }
+        viewModel.responseData.observe(this) {
+            ToastUtils.showLongToast(it.msg, this)
+            isClickSubmit = false
             payResults(it.isSuccess)
-        })
+        }
     }
     private fun bindingData(){
         dataBean?.apply {
