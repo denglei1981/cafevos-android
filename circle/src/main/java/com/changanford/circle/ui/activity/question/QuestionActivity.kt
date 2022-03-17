@@ -26,6 +26,7 @@ import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.bean.QuestionTagBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
@@ -100,6 +101,7 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             imgBack.setOnClickListener { finish() }
             topBar.setPadding(0,ScreenUtils.getStatusBarHeight(this@QuestionActivity)+10,0,ScreenUtils.dip2px(this@QuestionActivity,10f))
             tvAskQuestions.setOnClickListener {
+                WBuriedUtil.clickQuestionAskTop()
                 JumpUtils.instans?.jump(116)
             }
         }

@@ -372,4 +372,17 @@ interface HomeNetWork {
      * */
     @POST("/userIntegralImport/doGetIntegral")
     suspend fun doGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<WResponseBean>
+
+
+
+
+
+
+
+
+    @POST("ser/carAuth/confirmBindCar")
+    suspend fun confirmBindCar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }

@@ -37,10 +37,12 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
 import com.changanford.common.util.SoftHideKeyBoardUtil
-import com.changanford.common.util.bus.*
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.UnionPayUtils
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
@@ -70,7 +72,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     var url: String = ""
     private var subcallback = "subcallback"//右上角图标文字点击时给h5的回调
     private var uploadImgCallback = ""//上传图片回调
-    private var payCallback = ""//上传图片回调
+    private var payCallback = ""//支付回调
     private var getLocationCallback = ""//获取经纬度回调
     private var shareCallBack = ""//分享回调
     private var shareBean: ShareBean? = null
@@ -149,10 +151,14 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WEB_SHARE).observe(this, Observer {
-            var map: HashMap<String, String> = it as HashMap<String, String>
-            var jsonStr = map["jsonStr"].toString()
+            val map: HashMap<String, String> = it as HashMap<String, String>
+            val jsonStr = map["jsonStr"].toString()
             shareCallBack = map["shareCallBack"].toString()
             handleShare(jsonStr)
+        })
+        //分享-小程序
+        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).observe(this, Observer {
+            shareCallBack = it as String
         })
         //设置头部，全部
 //        LiveDataBus.get().with(LiveDataBusKey.WEB_SET_NAV_TITLE).observe(this, Observer { it ->
@@ -160,17 +166,28 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //        })
         //设置头部，单独
         LiveDataBus.get().with(setNavTitleKey).observe(this, Observer { it ->
-            var map = it as HashMap<String, String>
+            val map = it as HashMap<String, String>
             setHeadTitle(map["title"])
             setStyle(map["style"])
             subcallback = map["subcallback"].toString()
         })
+        //银联支付
+        LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).observe(this, Observer {
+            if (totalWebNum == localWebNum) {
+                val map = it as HashMap<*, *>
+                val payType:Int = map["payType"] as Int
+                val appPayRequest = map["appPayRequest"].toString()
+                val serverMode = map["serverMode"].toString()
+                payCallback = map["callback"].toString()
+                UnionPayUtils.goUnionPay(this, payType, appPayRequest,serverMode)
+            }
+        })
         //支付
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_PAY).observe(this, Observer {
             if (totalWebNum == localWebNum) {
-                var map = it as HashMap<String, Any>
-                var payCode = map["payCode"]
-                var param = map["param"].toString()
+                val map = it as HashMap<String, Any>
+                val payCode = map["payCode"]
+                val param = map["param"].toString()
                 payCallback = map["callback"].toString()
                 payViewModule.goPay(this, payCode.toString(), param)
             }
@@ -191,6 +208,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     }
                 }
             })
+        //微信支付结果
         LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).observe(this,
             Observer {
                 if (totalWebNum == localWebNum) {
@@ -207,7 +225,19 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     }
                 }
             })
-
+        //银联-支付回调
+        LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY_BACK).observe(this) {
+            if (totalWebNum == localWebNum) {
+                when (it) {
+                    0 -> {//成功
+                        agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
+                    }
+                    else -> {//1 失败 2 取消
+                        agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
+                    }
+                }
+            }
+        }
 
         //显示隐藏导航栏
         LiveDataBus.get().with(LiveDataBusKey.WEB_NAV_HID).observe(this, Observer {
@@ -236,6 +266,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                             if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
                                 viewModel.initLocationOption()
                             } else {
+                                agentWeb.jsAccessEntrace.quickCallJs(getLocationCallback, "false")
                                 toastShow("手机没有打开定位权限,请手动去设置页打开权限")
                             }
                         }
@@ -250,11 +281,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-
                 agentWeb.jsAccessEntrace.quickCallJs(shareCallBack, it.toString())
                 shareViewModule.shareBack(shareBean)
             }
-
         })
         //登录
         LiveDataBus.get().with(LiveDataBusKey.WEB_LOGIN_APP).observe(this, Observer {
@@ -331,7 +360,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             Observer {
                 getMyInfoCallback = it
                 UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
-                    .observe(this, {
+                    .observe(this) {
                         it?.toString()?.logE()
                         var user =
                             if (MConstant.token.isNullOrEmpty() || it.userJson.isNullOrEmpty()) {
@@ -340,7 +369,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                                 it.userJson
                             }
                         agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, user)
-                    })
+                    }
 //                mineSignViewModel.getUserInfo()
             })
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_UNICARDS_LIST, String::class.java)
@@ -411,9 +440,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     }
 
     override fun initData() {
-        var data = intent.extras
+        val data = intent.extras
         data?.let {
-            var tempUrl = data.getString("value")
+            val tempUrl = data.getString("value")
             if (!tempUrl.isNullOrEmpty()) {
                 url = tempUrl
                 Log.e("WEBURL", url)
@@ -598,6 +627,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             val isMiniProgram = sharejson["isMiniProgram"]
             val type = sharejson["type"].toString()
             val bizId = sharejson["bizId"].toString()
+            val shareWithType = sharejson["shareWithType"]?.toString()
             try {
                 val prompt = sharejson.getBoolean("prompt")
             } catch (e: Exception) {
@@ -621,6 +651,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     }
                 }
             }
+            shareBean?.shareWithType=shareWithType
             shareBean?.let { shareViewModule.share(this, shareBean = it) }
         } catch (e: Exception) {
 
@@ -726,6 +757,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
             }
         }
+        data?.extras?.apply { UnionPayUtils.payOnActivityResult(this) }
     }
 
 

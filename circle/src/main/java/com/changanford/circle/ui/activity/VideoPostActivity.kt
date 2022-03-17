@@ -36,6 +36,7 @@ import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -596,6 +597,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
+
                 viewModel.getOSS()
             }
         }
@@ -1063,12 +1065,22 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
+        var tagNames=""
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
+                tagNames +=it.tagName+","
             }
         }
         params["tagIds"] = tagIds
+        try{
+            val  biaoti= params["title"]
+            val content =params["content"]
+            BuriedUtil.instant?.post(biaoti.toString(),content.toString(),tagNames)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
         viewModel.postEdit(params)
     }
 

@@ -1,29 +1,52 @@
 package com.changanford.common.wutil
 
+import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.graphics.Typeface
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.*
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.View.DRAWING_CACHE_QUALITY_HIGH
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.changanford.common.BuildConfig
+import com.changanford.common.R
 import com.changanford.common.bean.EditTextBean
+import com.changanford.common.listener.OnDownBitmapListener
+import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.utilext.toast
 import com.google.android.material.tabs.TabLayout
+import com.qw.soul.permission.SoulPermission
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.math.BigDecimal
@@ -294,5 +317,130 @@ object WCommonUtil {
             p.setMargins(l, t, r, b)
             v.requestLayout()
         }
+    }
+    /**
+    *新建Bitmap，将View中内容绘制到Bitmap上
+    * */
+    fun createBitmapFromView(view: View): Bitmap? {
+        //是ImageView直接获取
+        if (view is ImageView) {
+            val drawable: Drawable = view.drawable
+            if (drawable is BitmapDrawable) {
+                return drawable.bitmap
+            }
+        }
+        view.clearFocus()
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        if (bitmap != null) {
+            val canvas = Canvas(bitmap)
+            view.draw(canvas)
+            canvas.setBitmap(null)
+        }
+        return bitmap
+    }
+    /**
+     * 该方式原理主要是：View组件显示的内容可以通过cache机制保存为bitmap
+     */
+    fun createBitmapFromViewFromCache(view: View): Bitmap? {
+        var bitmap: Bitmap? = null
+        //开启view缓存bitmap
+        view.isDrawingCacheEnabled = true
+        //设置view缓存Bitmap质量
+        view.drawingCacheQuality = DRAWING_CACHE_QUALITY_HIGH
+        //获取缓存的bitmap
+        val cache = view.drawingCache
+        if (cache != null && !cache.isRecycled) {
+            bitmap = Bitmap.createBitmap(cache)
+        }
+        //销毁view缓存bitmap
+        view.destroyDrawingCache()
+        //关闭view缓存bitmap
+        view.isDrawingCacheEnabled = false
+        return bitmap
+    }
+    /**
+     * 打开定位
+    * */
+    fun showLocationServicePermission(activity: Activity) {
+        // 没有打开定位服务。
+        LocationServiceUtil.openCurrentAppSystemSettingUI(activity)
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        activity.startActivityForResult(intent, 0x436)
+    }
+    /**
+     * 创建定位获取权限对话框
+     * 去设置中心给应用设置定位权限
+     * */
+    fun setSettingLocation(context: Context) {
+        AlertDialog(context).builder()
+            .setTitle("提示")
+            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+            .setNegativeButton("取消") { }.setPositiveButton("确定"
+            ) { SoulPermission.getInstance().goApplicationSettings() }.show()
+    }
+    fun pathUrlToBitmap(context: Context,url:String,listener: OnDownBitmapListener){
+        Glide.with(context).asBitmap().load(url).into(object : SimpleTarget<Bitmap?>() {
+            override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap?>?) {
+                listener.onFinish(bitmap)
+            }
+        })
+    }
+    /**
+    * 把Bitmap转Byte
+    */
+    fun bitmap2Bytes(bm: Bitmap): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+    /**
+     * 小程序分享
+     * [webpageUrl]兼容低版本的网页链接 限制长度不超过 10KB
+     * [miniprogramType]正式版:0，测试版:1，体验版:2
+     * [userName]小程序原始id（gh_d43f693ca31f）
+     * [path]小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+     * [title] 小程序消息title
+     * [description]小程序消息desc
+     * [thumbData] 小程序消息封面图片，小于128k ByteArray(byte[])
+     */
+    fun shareSmallProgram(context:Context,webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,thumbData:ByteArray) {
+        if(BuildConfig.DEBUG){
+            Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>thumbData:$thumbData")
+        }
+        if (!AppUtils.isWeixinAvilible(context)) {
+            context.getString(R.string.str_pleaseInstallWechatBeforeUsingIt).toast()
+            return
+        }
+        val api = WXAPIFactory.createWXAPI(context, ConfigUtils.WXAPPID)
+        val miniProgramObj = WXMiniProgramObject().apply {
+            this.webpageUrl = webpageUrl // 兼容低版本的网页链接
+//                       this.miniprogramType =WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
+            this.miniprogramType =miniprogramType
+            this.userName = userName // 小程序原始id
+            this.path =path //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+        }
+        val msg = WXMediaMessage(miniProgramObj)
+        msg.title = title // 小程序消息title
+        msg.description = description // 小程序消息desc
+        msg.thumbData = thumbData // 小程序消息封面图片，小于128k
+        val req = SendMessageToWX.Req()
+//        req.transaction = buildTransaction("miniProgram")
+        req.transaction =System.currentTimeMillis().toString()
+        req.message = msg
+        req.scene = SendMessageToWX.Req.WXSceneSession // 目前只支持会话
+        api.sendReq(req)
+    }
+    @TargetApi(23)
+    fun isGetLocation(activity: Activity?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 定位精确位置
+            activity?.apply {
+                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return false
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)return false
+            }
+            return true
+        }
+        return false
     }
 }

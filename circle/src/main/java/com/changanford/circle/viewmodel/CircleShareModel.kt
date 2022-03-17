@@ -2,6 +2,8 @@ package com.changanford.circle.viewmodel
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import com.alibaba.fastjson.JSON
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.ReportDislikeBody
@@ -10,10 +12,7 @@ import com.changanford.circle.widget.dialog.CircleDislikeDialog
 import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.body
-import com.changanford.common.net.getRandomKey
-import com.changanford.common.net.header
+import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -27,6 +26,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 
 private var shareto: String? = null
 
@@ -215,28 +215,26 @@ private fun bus(activity: AppCompatActivity, shareBeanVO: CircleShareBean) {
     //分享
 //    LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(activity, {
 //        if (it == 0) {
-    activity.launchWithCatch {
-        val body = MyApp.mContext.createHashMap()
-        shareBeanVO.let { bean ->
-            body["type"] = bean.type
-            body["bizId"] = bean.bizId
-            body["content"] = bean.shareDesc
-            shareto?.let { shareto ->
-                body["shareTo"] = shareto
-            }
-            body["shareTime"] = System.currentTimeMillis().toString()
-            body["userId"] = MConstant.userId
-
-        }
-        val rKey = getRandomKey()
-        ApiClient.createApi<CircleNetWork>()
-            .shareCallBack(body.header(rKey), body.body(rKey))
-        LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
+//    activity.launchWithCatch {
+//        val body = MyApp.mContext.createHashMap()
+//        shareBeanVO.let { bean ->
+//            body["type"] = bean.type
+//            body["bizId"] = bean.bizId
+//            body["content"] = bean.shareDesc
+//            shareto?.let { shareto ->
+//                body["shareTo"] = shareto
 //            }
-    }
-
+//            body["shareTime"] = System.currentTimeMillis().toString()
+//            body["userId"] = MConstant.userId
+//
+//        }
+//        val rKey = getRandomKey()
+//        ApiClient.createApi<CircleNetWork>()
+//            .shareCallBack(body.header(rKey), body.body(rKey))
+//        LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
 //    }
-//)
+
+
 }
 
 /**
@@ -262,28 +260,37 @@ device	string
 非必须
 分享设备id
  */
-fun shareBackUpHttp(shareBean: CircleShareBean?, type: Int) {
+fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: CircleShareBean?, postType: Int,type: Int=0) {
     when (type) {
         0 -> {
-            "分享成功啦~".toast()
+            toastShow("分享成功")
             if (shareBean != null) {
-//                HomeApi.shareBackApi(
-//                    shareBean.type,
-//                    shareBean.bizId,
-//                    JSON.toJSONString(shareBean),
-//                    shareto ?: "1",
-//                    System.currentTimeMillis().toString(),
-//                    MConstant.userId,
-//                    ""
-//                )
+                lifecycleOwner.launchWithCatch {
+                    val body = HashMap<String, Any>()
+                    body["type"] = shareBean.type
+                    body["bizId"] = shareBean.bizId
+                    body["content"] = JSON.toJSONString(shareBean)
+                    body["shareTo"] = shareto ?: "1"
+                    body["shareTime"] = System.currentTimeMillis()
+                    body["userId"] = MConstant.userId
+                    body["device"] = ""
+                    val rkey = getRandomKey()
+                    ApiClient.createApi<CircleNetWork>()
+                        .ShareBack(body.header(rkey), body.body(rkey))
+                        .onSuccess {
+                            LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
+                        }.onWithMsgFailure {
+
+                        }
+                }
             }
 
         }
         1 -> {
-            "分享失败~".toast()
+            toastShow("分享失败")
         }
         2 -> {
-            "分享失败~".toast()
+            toastShow("分享失败")
         }
     }
 }

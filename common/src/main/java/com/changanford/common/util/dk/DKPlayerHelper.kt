@@ -55,15 +55,23 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
     /**
      * 开始播放
      */
-    fun startPlay(url: String) {
-        val cacheServer = ProxyVideoCacheManager.getProxy(context)
-        cacheServer.getProxyUrl(GlideUtils.handleImgUrl(url))?.let {
-            mVideoView.release()
-            mVideoView.setUrl(it)
-            mVideoView.start()
+    fun startPlay(url: String?) {
+        url?.apply {
+            val cacheServer = ProxyVideoCacheManager.getProxy(context)
+            cacheServer.getProxyUrl(GlideUtils.handleImgUrl(this))?.let {
+                mVideoView.release()
+                mVideoView.setUrl(it)
+                mVideoView.start()
+            }
         }
     }
 
+    /**
+     * 循环播放， 默认不循环播放
+     */
+    fun setLooping(looping: Boolean) {
+        mVideoView.setLooping(looping)
+    }
     fun resume() {
         mVideoView.resume()
     }
@@ -80,5 +88,8 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
         if (!mVideoView.onBackPressed()) {
             back()
         }
+    }
+    fun setVideoController(mediaController: StandardVideoController?){
+        mVideoView.setVideoController(mController)
     }
 }

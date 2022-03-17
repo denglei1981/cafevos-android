@@ -14,7 +14,7 @@ data class ChoseCircleBean(
     val createTime: Any,
     val description: String,
     val hotIcon: String,
-    var isApply: Int,
+    var isApply: Int?=0,
     val isHot: Int,
     val isRecommend: Int,
     val lastPostsTime: Any,

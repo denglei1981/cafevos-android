@@ -10,6 +10,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toastShow
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -213,6 +214,81 @@ class CarAuthViewModel : ViewModel() {
                     subscribe?.dispose()
                 }
             })
+    }
+
+
+    fun setDefalutCar(vin: String, result: (CommonResponse<String>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest(true) {
+                val body = HashMap<String, Any>()
+                body["vin"] = vin
+                val rKey = getRandomKey()
+                apiService.setDefaultCar(body.header(rKey), body.body(rKey))
+
+            })
+        }
+    }
+
+    fun deleteCar(
+        vin: String,
+        phone: String? = "",
+        smsCode: String? = "",
+        result: (CommonResponse<String>) -> Unit
+    ) {
+        viewModelScope.launch {
+            result(
+                fetchRequest {
+                    val body = HashMap<String, Any>()
+//                    body["phone"] = phone ?: ""
+//                    body["smsCode"] = smsCode ?: ""
+                    body["vin"] = vin
+                    val rKey = getRandomKey()
+                    apiService.deleteCar(body.header(rKey), body.body(rKey))
+                }
+            )
+        }
+    }
+
+    val waitCarLiveData = MutableLiveData<List<BindCarBean>>()
+    fun isWaitBindingCar() {
+        if (MConstant.token.isEmpty()) return
+
+        viewModelScope.launch {
+            fetchRequest {
+
+                val body = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                apiService.waitBindCarList(body.header(randomKey), body.body(randomKey))
+                    .onSuccess {
+                        waitCarLiveData.postValue(it)
+                    }
+            }
+
+
+        }
+
+
+    }
+
+
+    val confirmCarLiveData = MutableLiveData<String>()
+    var vinStr: String = ""
+    fun confirmBindCar(isConfirm: Int, vin: String) {
+        vinStr = vin
+        if (MConstant.token.isEmpty()) return
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                body["isConfirm"] = isConfirm
+                body["vin"] = vin
+                val randomKey = getRandomKey()
+                apiService.confirmBindCar(body.header(randomKey), body.body(randomKey))
+                    .onSuccess {
+                        confirmCarLiveData.postValue(it)
+                    }
+            }
+        }
+
     }
 
 }

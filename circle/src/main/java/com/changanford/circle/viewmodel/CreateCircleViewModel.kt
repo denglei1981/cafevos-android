@@ -8,7 +8,6 @@ import com.changanford.common.bean.TagInfoBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
-import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -22,14 +21,17 @@ class CreateCircleViewModel : BaseViewModel() {
     val tagInfoData=MutableLiveData<TagInfoBean?>()
     /**
      * 创建圈子
+     * [isAudit]是否审核
     * */
-    fun createCircle(name: String,description: String, pic: String,tagIds:List<Int>) {
+    fun createCircle(name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,typeId:String?) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["description"] = description
             body["name"] = name
             body["pic"] = pic
             body["tagIds"] = tagIds
+            body["needAudit"] = if(isAudit)"YES" else "NO"
+            body["type"] = typeId?:""
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().createCircle(body.header(rKey), body.body(rKey))
                 .also {
@@ -42,7 +44,7 @@ class CreateCircleViewModel : BaseViewModel() {
     /**
      * 编辑圈子
     * */
-    fun editCircle(circleId: String?,name: String,description: String, pic: String,tagIds:List<Int>) {
+    fun editCircle(circleId: String?,name: String,description: String, pic: String,tagIds:List<Int>,isAudit:Boolean,typeId:String?) {
         if(null==circleId)return
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -51,6 +53,8 @@ class CreateCircleViewModel : BaseViewModel() {
             body["circleId"] = circleId
             body["pic"] = pic
             body["tagIds"] = tagIds
+            body["needAudit"] = if(isAudit)"YES" else "NO"
+            body["type"] = typeId?:""
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().editCircle(body.header(rKey), body.body(rKey))
                 .also {

@@ -111,6 +111,7 @@ data class Ext(
     val memberName: String,
     val totalIntegral: String,
     val totalGrowth: Long,
+    val growSeriesMaxGrow: String
 )
 
 data class Imag(

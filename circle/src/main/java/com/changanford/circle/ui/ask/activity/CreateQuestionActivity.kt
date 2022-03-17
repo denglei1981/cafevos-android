@@ -35,6 +35,7 @@ import com.changanford.common.bean.CancelReasonBeanItem
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.STSBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
@@ -388,6 +389,8 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 params["title"] = biaoti
                 params["fbReward"] = labelsReaward[0].dictValue.toInt()
                 params["questionType"] = questionTypes[0].dictValue
+                //提问埋点
+                BuriedUtil.instant?.communityQuestionPost(biaoti,content,questionTypes[0].dictLabel,labelsReaward[0].dictLabel)
                 if (selectList.size == 0) {
                     viewModel.createQuestion(params)
                 } else if (selectList.size > 0) {

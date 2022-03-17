@@ -67,38 +67,42 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         viewModel.getSckills()
     }
     private fun addObserve(){
-        viewModel.seckillSessionsData.observe(this,{item->
-            item.now?.let {now-> nowTime= now }
-            item.seckillSessions?.apply {
-                dateAdapter.setList(this)
-                val nowTimeSf=sfDate.format(nowTime).toInt()
-                //将时间转换为 yyyyMMdd 格式便于筛选出当天
-                for((i,it)in this.withIndex()){
-                    it.apply {
-                        dateFormat=sfDate.format(date).toInt()
-                        index=i
+        viewModel.seckillSessionsData.observe(this) { item ->
+            if(item.seckillSessions!=null&&item.seckillSessions?.size?:0>0){
+                item.now?.let { now -> nowTime = now }
+                item.seckillSessions?.apply {
+                    dateAdapter.setList(this)
+                    val nowTimeSf = sfDate.format(nowTime).toInt()
+                    //将时间转换为 yyyyMMdd 格式便于筛选出当天
+                    for ((i, it) in this.withIndex()) {
+                        it.apply {
+                            dateFormat = sfDate.format(date).toInt()
+                            index = i
+                        }
                     }
+                    //根据条件将日期分成两份
+                    val (match, rest) = this.partition { it.dateFormat >= nowTimeSf }
+                    //优先选中当天,其次是当天后的最近一天,最后默认选第一天（今天21号 有[19,21,23]选取21、[18,23]选取23、[18,19]选取18）
+                    val dateI=if(match.isNotEmpty()) match[0].index else if (rest.isNotEmpty()) rest[0].index else 0
+                    onSelectBackListener(dateI, this[dateI].seckillTimeRanges)
+                    dateAdapter.selectPos = dateI
+                    binding.rvDate.scrollToPosition(dateI)
                 }
-                //根据条件将日期分成两份
-                val (match, rest)=this.partition {it.dateFormat>=nowTimeSf}
-                //优先选中当天,其次是当天后的最近一天,最后默认选第一天（今天21号 有[19,21,23]选取21、[18,23]选取23、[18,19]选取18）
-                val dateI=if(match.isNotEmpty())match[0].index else if(rest.isNotEmpty())rest[0].index else 0
-                onSelectBackListener(dateI,this[dateI].seckillTimeRanges)
-                dateAdapter.selectPos=dateI
-                binding.rvDate.scrollToPosition(dateI)
             }
-        })
-        viewModel.killGoodsListData.observe(this,{
-            val dataList=it?.dataList
+        }
+        viewModel.killGoodsListData.observe(this) {
+            val dataList = it?.dataList
             mAdapter.setEmptyView(R.layout.view_empty)
-            if(1==pageNo)mAdapter.setList(dataList)
-            else if(dataList!=null)mAdapter.addData(dataList)
+            if (1 == pageNo) mAdapter.setList(dataList)
+            else if (dataList != null) mAdapter.addData(dataList)
 
-            if(null==it||mAdapter.data.size>=it.total)binding.smartRl.setEnableLoadMore(false)
+            if (null == it || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
+                false
+            )
             else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.finishLoadMore()
             binding.smartRl.finishRefresh()
-        })
+        }
     }
     /**
      * 秒杀时间段数据格式化

@@ -1,5 +1,6 @@
 package com.changanford.my.compose
 
+import android.text.TextUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,8 @@ import com.changanford.my.viewmodel.CarAuthViewModel
 @Composable
 fun DeleteCarScreen(
     carAuthViewModel: CarAuthViewModel,
+    deleteTips:String?="",
+    serversTips:String?="",
     onGetSmsClick: (mobile: String) -> Unit,
     onSubmitClick: (mobile: String, sms: String) -> Unit
 ) {
@@ -36,13 +39,16 @@ fun DeleteCarScreen(
     var btn by remember { mutableStateOf(true) }
     var mobileHint by remember { mutableStateOf("请输入手机号") }
     var smsHint by remember { mutableStateOf("请输入短信验证码") }
+    val deleteTipStr = if(TextUtils.isEmpty(deleteTips))"车辆删除后，将无法使用被删除车辆的各种车主权益 请谨慎操作。" else deleteTips
+
+    val serversTipStr = if(TextUtils.isEmpty(serversTips))"客服电话：023-989898" else serversTips
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
         Text(
-            text = "车辆删除后，将无法使用被删除车辆的各种车主权益 请谨慎操作。",
+            text = deleteTipStr!!,
             color = Color_95B,
             fontSize = 14.sp,
             modifier = Modifier
@@ -125,10 +131,12 @@ fun DeleteCarScreen(
             modifier = Modifier.padding(top = 20.dp, start = 20.dp)
         )
 
-        Text(
-            text = "客服电话：023-989898", color = Color_333, fontSize = 13.sp,
-            modifier = Modifier.padding(top = 13.dp, start = 20.dp)
-        )
+        if (serversTipStr != null) {
+            Text(
+                text =serversTipStr, color = Color_333, fontSize = 13.sp,
+                modifier = Modifier.padding(top = 13.dp, start = 20.dp)
+            )
+        }
 
         Button(
             onClick = { onSubmitClick(mobileInput, smsInput) },

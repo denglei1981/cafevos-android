@@ -9,11 +9,12 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/layout_root"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginEnd="@dimen/dp_20">
+        android:paddingEnd="@dimen/dp_20">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_cover"
             tools:src="@mipmap/head_default"

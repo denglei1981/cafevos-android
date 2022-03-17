@@ -1,6 +1,7 @@
 package com.changanford.common.bean
 
 import android.text.TextUtils
+import com.chad.library.adapter.base.entity.MultiItemEntity
 
 /**
  * @Author : wenke
@@ -29,6 +30,9 @@ data class NewCarInfoBean(
     val distanct:String?=null,
     val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
+    val lngX:String?=null,
+    val latY:String?=null,
+    var modelSort:Int?=null,
 ){
     //该模块是否可见 查询存在即为不可见
     fun isVisible(carModelCode:String):Boolean{
@@ -51,23 +55,23 @@ data class NewCarInfoBean(
 }
 
 data class NewCarBannerBean(
-    val bottomAni: Int? = 1,
-    val bottomImg: String = "",
+    val bottomAni: Int? = null,
+    val bottomImg: String? = null,
     val bottomJumpType: Int? = null,
     val bottomJumpVal: String? = null,
     val carModelCode: String = "",
     val carModelId: Int = 0,
     val carModelName: String? = null,
     val id: Int = 0,
-    val mainImg: String = "",
+    val mainImg: String? = null,
     val mainIsVideo: Int = 0,
     val mainJumpType: Int? = null,
     val mainJumpVal: String? = null,
     val name: String = "",
     val sort: Int = 0,
     val status: Int = 0,
-    val topAni: Int = 1,
-    val topImg: String = "",
+    val topAni: Int? = null,
+    val topImg: String? = null,
     val topJumpType: Int? = null,
     val topJumpVal: String? = null,
 )
@@ -85,6 +89,8 @@ data class NewCarTagBean(
     var spuCode: String?=null,//车型编码
     var spuName: String?=null,//车型编码
     var carModelPic: String?=null,//车型名称
-    var url: String?=null,
-)
+    var url: String?=null, override val itemType: Int=0,
+):MultiItemEntity
 data class CarMoreInfoBean(var carModelMoreJump:JumpDataBean,var carModels: ArrayList<NewCarTagBean>, var carInfos: ArrayList<NewCarTagBean>)
+
+data class DistanceBean(var zoom:Float,var distance:Int,)

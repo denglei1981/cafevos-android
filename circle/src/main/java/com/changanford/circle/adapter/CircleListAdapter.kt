@@ -14,6 +14,7 @@ import com.changanford.circle.databinding.ItemCircleListBinding
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
@@ -55,13 +56,24 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
                     setBackgroundResource(R.drawable.shadow_00095b_12dp)
                     isEnabled=true
                     setOnClickListener {
+                        WBuriedUtil.clickCircleJoin(item.name)
                         //申请加入圈子
                         viewModel.joinCircle(item.circleId,object :OnPerformListener{
                             override fun onFinish(code: Int) {
-                                //状态更新为审核中
-                                item.isJoin ="PENDING"
+                                when (code) {
+                                    1 -> {//状态更新为审核中
+                                        item.isJoin ="PENDING"
+                                        context.getString(R.string.str_appliedForMembership).toast()
+                                    }
+                                    2 -> {//已加入
+                                        item.isJoin ="JOINED"
+                                        context.getString(R.string.str_successfullyJoined).toast()
+                                    }
+                                    else -> {
+                                        item.isJoin ="TOJOIN"
+                                    }
+                                }
                                 isJoin(btnJoin,item)
-                                context.getString(R.string.str_appliedForMembership).toast()
                             }
                         })
                     }

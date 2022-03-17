@@ -2,24 +2,18 @@ package com.changanford.home
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
@@ -27,45 +21,35 @@ import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.toast
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
-import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.AdBean
 import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
-import com.changanford.home.data.TwoAdData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
-import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smart.refresh.header.listener.OnTwoLevelListener
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import java.lang.Exception
 import java.lang.reflect.Field
-import java.util.logging.Handler
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>()
-     {
+class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>() {
 
     var pagerAdapter: HomeViewPagerAdapter? = null
 
@@ -315,7 +299,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         } catch (ignore: Exception) {
         }
     }
-    var publishPopup:PublishPopup?=null
+
+    var publishPopup: PublishPopup? = null
     private fun showPublish(publishLocationView: ImageView) {
         val location = IntArray(2)
         var height = DisplayUtil.getDpi(requireContext())
@@ -344,7 +329,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         )
-        publishPopup?.contentView?.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        publishPopup?.contentView?.measure(
+            View.MeasureSpec.UNSPECIFIED,
+            View.MeasureSpec.UNSPECIFIED
+        )
 
         publishPopup?.showAsDropDown(publishLocationView)
     }
@@ -360,26 +348,27 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         viewModel.fBBeanLiveData.observe(this) {
             it?.apply {
-                if(isPop==1){
+                if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        GetFbPop(this@HomeV2Fragment,viewModel,this).apply {
+                        GetFbPop(this@HomeV2Fragment, viewModel, this).apply {
                             setOutSideDismiss(false)
                             showPopupWindow()
                         }
-                    },500)
+                    }, 500)
                 }
             }
         }
         //是否领取福币
         viewModel.isGetIntegral()
     }
+
     @SuppressLint("ClickableViewAccessibility")
-    fun backImageViewTouch(adBean:AdBean) {
+    fun backImageViewTouch(adBean: AdBean) {
         binding.recommendContent.ivHome.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                 }
-                MotionEvent.ACTION_UP->{
+                MotionEvent.ACTION_UP -> {
                     JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -393,6 +382,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var appIndexBackground: MutableList<AdBean>? = null
     override fun observe() {
         super.observe()
+
+
+
+
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
 //            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
 //                if (t.isSuccess) {
@@ -508,13 +501,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         animator?.cancel()
     }
 
-     private fun addLiveDataBus(){
-         //登录回调
-         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-             .observe(this) {
-                 if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+    private fun addLiveDataBus() {
+        //登录回调
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
                     viewModel.isGetIntegral()
-                 }
-             }
-     }
+                }
+            }
+    }
 }

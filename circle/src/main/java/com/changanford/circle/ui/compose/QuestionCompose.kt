@@ -34,6 +34,7 @@ import com.changanford.circle.R
 import com.changanford.common.MyApp
 import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.bean.QuestionItemBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import java.text.SimpleDateFormat
@@ -81,6 +82,7 @@ fun EmptyQuestionCompose(height:Int=0){
         Text(text = stringResource(R.string.empty_question), fontSize = 11.sp,color= colorResource(R.color.color_99))
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = {
+            WBuriedUtil.clickQuestionAskCenter()
             //去提问
             JumpUtils.instans?.jump(116)
         },shape = RoundedCornerShape(15.dp),
@@ -103,6 +105,7 @@ fun BtnQuestionCompose(){
         .defaultMinSize(minWidth = 45.dp, minHeight = 45.dp)
         .padding(5.dp)
         .clickable {
+            WBuriedUtil.clickQuestionAskFloat()
             JumpUtils.instans?.jump(116)
         }, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(painter = painterResource(id = R.mipmap.circle_edit_pb), contentDescription = null,tint = Color.White)
@@ -420,6 +423,7 @@ private fun AnswerUI(itemData: QuestionItemBean,personalPageType:String?=null){
         if("TECHNICIAN"==personalPageType){
             Spacer(modifier = Modifier.height(20.dp))
             Button(onClick = {
+                WBuriedUtil.clickQuestionAnswer(itemData.questionTypeName,itemData.title)
                 //立即抢答
                 JumpUtils.instans?.jump(itemData.jumpType,itemData.jumpValue)
             },shape = RoundedCornerShape(15.dp),

@@ -17,7 +17,6 @@ object LiveDataBusKey {
     const val WXPAY_RESULT = "wxpay_result"
 
     const val WX_SHARE_BACK = "wx_share_back"
-
     const val RJP_TYPE = "RJPTYPE"
 
     const val BUS_HIDE_BOTTOM_TAB = "HIDE_BOTTOM_TAB"
@@ -27,7 +26,8 @@ object LiveDataBusKey {
      */
     //分享
     const val WEB_SHARE = "agentWeb_shareTo"
-
+    //分享-微信小程序
+    const val WEB_SMALL_PROGRAM_WX_SHARE = "agentWeb_shareToSmallProgram"
     //设置头部
     const val WEB_SET_NAV_TITLE = "agentWeb_setNavTitle"
 
@@ -251,5 +251,13 @@ object LiveDataBusKey {
 
 
     const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
+
+    const val REMOVE_CAR="remove_car" // 移除爱车。
+    const val AGGREE_CAR="AGGREE_CAR" // 弹窗认车。
+
+    //银联支付
+    const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"
+    //银联支付回调-暂只代表云闪付
+    const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
 }
 

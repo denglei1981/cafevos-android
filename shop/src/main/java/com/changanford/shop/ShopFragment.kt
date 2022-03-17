@@ -103,6 +103,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
             }
+//            bindingTab(it.mallTags)
+//            binding.smartRl.finishRefresh()
         }
         viewModel.classificationLiveData.observe(this) {
             bindingTab(it)

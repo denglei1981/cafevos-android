@@ -1,40 +1,28 @@
 package com.changanford.car.ui.fragment
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.content.pm.PackageManager
-import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.Modifier
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.BDLocation
-import com.changanford.car.CarAuthLayout
+import com.changanford.car.BuildConfig
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
-import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
-import com.changanford.car.adapter.CarServiceAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
+import com.changanford.car.control.CarControl
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
-import com.changanford.car.ui.compose.AfterSalesService
-import com.changanford.car.ui.compose.LookingDealers
-import com.changanford.car.ui.compose.OwnerCertification
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.LocationServiceUtil
-import com.changanford.common.util.location.LocationUtils
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -44,29 +32,20 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
-    private val serviceAdapter by lazy { CarServiceAdapter() }
-    private val carIconAdapter by lazy { CarIconAdapter(requireActivity()) }
-    private var carModelCode:String=""
-    private var longitude:Any?=null//经度
-    private var latitude:Any?=null//维度
+    private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
+    private var carInfoBean:MutableList<NewCarInfoBean>?=null
+    private var hidden:Boolean=false
     @SuppressLint("NewApi")
     override fun initView() {
         binding.apply {
             srl.setOnRefreshListener {
-                initData()
+                getData()
                 it.finishRefresh()
             }
             recyclerView.adapter=mAdapter
             recyclerView.addOnScrollListener(onScrollListener)
             mAdapter.addHeaderView(headerBinding.root)
             headerBinding.apply {
-                rvCarService.adapter=serviceAdapter
-                rvCar.adapter=carIconAdapter
-                tvCarMoreName.setOnClickListener {
-                    viewModel.carMoreInfoBean.value?.carModelMoreJump?.apply {
-                        JumpUtils.instans?.jump(this)
-                    }
-                }
                 btnSubmit.setOnClickListener { //立即订购
                     WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
                 }
@@ -74,11 +53,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         initObserve()
         initBanner()
-        initLocation()
     }
-    override fun initData() {
+    override fun initData() {}
+    private fun getData(){
         viewModel.getTopBanner()
-        viewModel.getAuthCarInfo()
+        viewModel.getMyCarModelList()
         viewModel.getMoreCar()
     }
     private fun initObserve(){
@@ -97,20 +76,21 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         stopLoop()
                     }
                 }
+                get(0).apply {
+                    carControl.carModelCode=carModelCode
+                    if(topAni==null&&bottomAni==null)carControl.delayMillis=null
+                    else{
+                        carControl.delayMillis=1000
+                        Handler(Looper.myLooper()!!).postDelayed({
+                            carControl.delayMillis=null
+                        },1000)
+                    }
+                }
             }
-        }
-        viewModel.carAuthBean.observe(this) {
-            viewModel.getMyCarModelList()
-        }
-        viewModel.carMoreInfoBean.observe(this) {
-            carIconAdapter.setList(it?.carModels)
         }
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
-        }
-        //经销商
-        viewModel.dealersBean.observe(this) {
-            bindingCompose()
+            viewModel.getAuthCarInfo()
         }
     }
     private fun initBanner(){
@@ -128,9 +108,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
-                        this@NewCarFragmentNoCar.carModelCode=carModelCode
-                        carTopBanner.pauseVideo()
+                        carControl.carModelCode=carModelCode
+                        carTopBanner.pauseVideo(mainImg)
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
                         }else carTopBanner.releaseVideo()
@@ -148,87 +129,42 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         headerBinding.drIndicator.setIndicatorGap(20).setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
         headerBinding.carTopViewPager.isSaveEnabled = false
     }
-
     private fun bindingCompose(){
         viewModel.carInfoBean.value?.apply {
-            //赏车之旅
-            find { it.modelCode=="cars" }?.apply {
-                if(isVisible(carModelCode)){
-//                    carIconAdapter.setList(icons)
-                    headerBinding.apply {
-                        tvCarMoreName.text=modelName
-                        tvCarMoreName.visibility= View.VISIBLE
-                        rvCar.visibility=View.VISIBLE
-                    }
-                }else{
-                    headerBinding.tvCarMoreName.visibility= View.GONE
-                    headerBinding.rvCar.visibility=View.GONE
+            for ((sort,item) in withIndex()){
+                val modelCode=item.modelCode
+                var isUpdateSort=true
+                carInfoBean?.find { it.modelCode==modelCode }?.let {
+                    //模块的排序是否改变
+                    isUpdateSort=it.modelSort!=sort
                 }
+                bindView(sort,isUpdateSort,modelCode,item)
+                item.modelSort=sort
             }
-            //购车服务
-            find { it.modelCode=="buy_service" }?.apply {
-                if(isVisible(carModelCode)){
-                    serviceAdapter.setList(icons)
-                    headerBinding.apply {
-                        tvService.text=modelName
-                        tvService.visibility=View.VISIBLE
-                        rvCarService.visibility=View.VISIBLE
-                    }
-                }else{
-                    headerBinding.apply {
-                        tvService.visibility=View.GONE
-                        rvCarService.visibility=View.GONE
-                    }
-                }
-
-            }
-            headerBinding.composeView.setContent {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    //售后服务
-                    find { it.modelCode=="after-sales" }?.apply {
-                        if(isVisible(carModelCode))AfterSalesService(this)
-                    }
-                    //寻找经销商
-                    find { it.modelCode=="dealers" }?.apply {
-                        if(isVisible(carModelCode))LookingDealers(modelName,viewModel.dealersBean.value)
-                    }
-                    //车主认证
-                    find { it.modelCode=="car_auth" }?.apply {
-                        if(isVisible(carModelCode)){
-                            val carAuthBean=viewModel.carAuthBean.value
-                            val carList=carAuthBean?.carList
-                            val findModelCode=carList?.find { it.modelCode==carModelCode }//查指定车型是否有认证 null 则未认证
-                            //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
-                            if(findModelCode!=null&&findModelCode.authStatus==3){//已认证
-                                CarAuthLayout(findModelCode)
-                            }else OwnerCertification(this,isUse(carModelCode),carAuthBean,findModelCode)
-//                            if(carList==null||carList.size<1||findModelCode==null){//未认证
-//                                OwnerCertification(this,isUse(carModelCode),carAuthBean)
-//                            }
-
-                        }
-                    }
-                }
-            }
+            carInfoBean=this@apply
         }
     }
-    private fun initLocation(){
-        if (LocationServiceUtil.isLocServiceEnable(requireContext())&&isGetLocation()) {
-                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                    override fun onReceiveLocation(location: BDLocation) {
-                        latitude = location.latitude //获取纬度信息
-                        longitude = location.longitude //获取经度信息
-                        viewModel.getRecentlyDealers(longitude,latitude)
-                    }
-                })
-        }else{//服务端自行ip定位
-            viewModel.getRecentlyDealers()
+    /**
+     * [isUpdateSort]是否更改排序
+    * */
+    private fun bindView(sort:Int,isUpdateSort:Boolean,modelCode:String,dataBean: NewCarInfoBean?){
+        when(modelCode){
+            //推荐
+            "cars"->carControl.setFooterRecommended(dataBean,sort,isUpdateSort)
+            //购车
+            "buy_service"->carControl.setFooterBuy(dataBean,sort,isUpdateSort)
+            //车主认证
+            "car_auth"->carControl.setFooterCertification(dataBean,sort,isUpdateSort)
+            //售后
+            "after_sales"->carControl.setFooterOwner(dataBean,sort,isUpdateSort)
+            //经销商
+            "dealers"->carControl.setFooterDealers(dataBean,sort,isUpdateSort)
         }
     }
     /**
      * RecyclerView 滚动监听 主要用于控制banner是否自动播放
     * */
-    private val onScrollListener=object : RecyclerView.OnScrollListener() {
+    private val onScrollListener=object:RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if(newState== RecyclerView.SCROLL_STATE_IDLE){
@@ -246,29 +182,49 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             oldScrollY+=dy
         }
     }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        this.hidden=hidden
+        reset()
+    }
+    override fun onStart() {
+        super.onStart()
+        val locationType=carControl.locationType.value
+        if(locationType==1||locationType==3)carControl.initLocation()
+    }
     override fun onResume() {
         super.onResume()
-        initData()
-        if(oldScrollY<maxSlideY){
-            carTopBanner.resumeVideo()
-            headerBinding.carTopViewPager.startLoop()
+        reset()
+    }
+    private fun reset(isHidden:Boolean=hidden){
+        if(!isHidden) {
+            carControl.mMapView?.onResume()
+            if(oldScrollY<maxSlideY&&topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.resumeVideo(topBannerList[position].mainImg)
+                headerBinding.carTopViewPager.startLoop()
+            }
+            getData()
+        }else{
+            if(topBannerList.size>0){
+                val position=headerBinding.carTopViewPager.currentItem
+                carTopBanner.pauseVideo(topBannerList[position].mainImg)
+            }
+            carControl.mMapView?.onPause()
+            headerBinding.carTopViewPager.stopLoop()
         }
     }
     override fun onPause() {
         super.onPause()
-        carTopBanner.pauseVideo()
-        headerBinding.carTopViewPager.stopLoop()
+        reset(true)
     }
-    @TargetApi(23)
-    private fun isGetLocation(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 定位精确位置
-            activity?.apply {
-                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return false
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)return false
-            }
-            return true
-        }
-        return false
+
+    override fun onDestroy() {
+        carControl.mLocationClient?.stop()
+        carControl.mBaiduMap?.isMyLocationEnabled = false
+        carControl.mMapView?.onDestroy()
+        carControl.mLocationClient=null
+        super.onDestroy()
     }
 }

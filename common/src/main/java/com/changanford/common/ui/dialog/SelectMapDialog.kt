@@ -19,6 +19,7 @@ class SelectMapDialog(context: Context, private val listener: CheckedView) : Bas
         window?.setGravity(Gravity.BOTTOM)
         setParamWidthMatch()
         findViewById<AppCompatTextView>(R.id.tv_cancel).setOnClickListener {
+            listener.checkCancel()
             dismiss()
         }
         findViewById<AppCompatTextView>(R.id.tv_gd_map).setOnClickListener {
@@ -34,5 +35,6 @@ class SelectMapDialog(context: Context, private val listener: CheckedView) : Bas
     interface CheckedView {
         fun checkBaiDu()
         fun checkGaoDe()
+        fun checkCancel()
     }
 }

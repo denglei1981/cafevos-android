@@ -13,6 +13,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.net.getRandomKey
@@ -141,7 +142,7 @@ class ShareViewModule : ViewModel() {
         }
     }
 
-    fun showShareDialog(activity: Activity,shareBean: ShareBean,data1: SharePlamFormData){
+    private fun showShareDialog(activity: Activity, shareBean: ShareBean, data1: SharePlamFormData){
         ShareManager<IMediaObject>(activity, 0, false)
             .withPlamFormData(data1.plamFormDatas as MutableList<IMediaObject>?)
             .withPlamformClickListener { view, plamForm ->
@@ -240,6 +241,7 @@ class ShareViewModule : ViewModel() {
                         MTextUtil.copystr(BaseApplication.INSTANT, shareBean.targetUrl)
                     }
                 }
+                buriedShare(shareBean,shareto)
             }
             .open()
     }
@@ -262,6 +264,19 @@ class ShareViewModule : ViewModel() {
                 super.onLoadCleared(placeholder)
             }
         })
-
+    }
+    private fun buriedShare(shareBean: ShareBean,type:String){
+        shareBean.shareWithType?.apply {
+            //爱车海报分享
+            if("love_car_poster"==this){
+                when(type){
+                    "1"->WBuriedUtil.clickCarShareWX()
+                    "2"->WBuriedUtil.clickCarShareWXMoments()
+                    "3"->WBuriedUtil.clickCarShareQQ()
+                    "4"->WBuriedUtil.clickCarShareWB()
+                    "6"->WBuriedUtil.clickCarShareQQZone()
+                }
+            }
+        }
     }
 }

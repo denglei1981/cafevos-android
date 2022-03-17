@@ -19,6 +19,7 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
@@ -162,6 +163,13 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
                 shareBackUpHttp(this, newsDetailData?.shares)
+            }
+        })
+
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
+            newsDetailData?.shareCount?.plus(1)?.let {
+                newsDetailData?.shareCount=it
+                binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
             }
         })
     }

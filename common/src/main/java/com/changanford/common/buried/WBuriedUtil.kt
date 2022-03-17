@@ -93,7 +93,7 @@ object WBuriedUtil {
     //商城==============订单-END
     //=======================================商城END
 
-    //=======================================社区
+    //=======================================社区圈子
     /**
      * 用户点击顶部圈子图标时触发
      * [circleName]圈子名称
@@ -120,6 +120,23 @@ object WBuriedUtil {
      * */
     fun clickCircleYouLike(circleName: String?){
         buried("app社区_猜你喜欢","app_community_guess", extend = "{\"Moments_type\": \"$circleName\"}")
+    }
+    /**
+     * 用户点击加入按钮时触发
+     * */
+    fun clickCircleJoin(momentsName: String?){
+        buried("app社区_圈子_加入","app_community_moments_join", extend = "{\"Moments_name\": \"$momentsName\"}")
+    }
+    /**
+     * 用户点击顶部创建按钮时候触发
+     * [title]圈子名称
+     * [des]填写描述
+     * [tag]圈子标签
+     * [isAudit]是否审核
+     * [type]圈子类型
+     * */
+    fun clickCircleCreate(title: String?,des:String?,tag:String?,isAudit:String,type:String?){
+        buried("app圈子_创建","app_moments_create", extend = "{\"moments_name\": \"$title\",\"moments_describe\": \"$des\",\"moments_lable\": \"$tag\",\"moments_review\": \"$isAudit\",\"moments_type\": \"$type\"}")
     }
 
     //===========================================爱车
@@ -156,7 +173,9 @@ object WBuriedUtil {
      * [dealerName]经销商名称
      * */
     fun clickCarDealer(dealerName: String?){
-        buried("app爱车首页_经销商_点击","app_car_homepage_dealer", extend = "{\"dealer_name\": \"$dealerName\"}")
+        dealerName?.apply {
+            buried("app爱车首页_经销商_点击","app_car_homepage_dealer", extend = "{\"dealer_name\": \"$this\"}")
+        }
     }
     /**
      * 用户点击导航按钮时触发
@@ -170,4 +189,81 @@ object WBuriedUtil {
     fun clickCarCertification(){
         buried("app爱车首页_去认证车主_点击","app_car_homepage_Certified_owner")
     }
+    /**
+     * 用户点击查看时触发
+     * */
+    fun clickCarExamined(){
+        buried("app爱车首页_审核_查看","app_car_homepage_examined_view")
+    }
+    /**
+     * 用户点击地图选择时候触发
+     * [mapName]百度地图、高德地图、取消
+     * */
+    fun clickCarNavigateMap(mapName:String){
+        buried("app爱车_导航弹窗_地图选择","app_car_navigate_map", extend = "{\"map_name\": \"$mapName\"}")
+    }
+    /**
+     * 用户点击微信时触发
+     * */
+    fun clickCarShareWX(){
+        buried("app爱车_海报分享_微信","app_car_postersharing_wechat")
+    }
+    /**
+     * 用户点击朋友圈时触发
+     * */
+    fun clickCarShareWXMoments(){
+        buried("app爱车_海报分享_朋友圈","app_car_postersharing_Wechat_Moments")
+    }
+    /**
+     * 用户点击QQ时触发
+     * */
+    fun clickCarShareQQ(){
+        buried("app爱车_海报分享_QQ","app_car_postersharing_QQ")
+    }
+    /**
+     * 用户点击QQ空间时触发
+     * */
+    fun clickCarShareQQZone(){
+        buried("app爱车_海报分享_QQ空间","app_car_postersharing_Qqzone")
+    }
+    /**
+     * 用户点击微博时触发
+     * */
+    fun clickCarShareWB(){
+        buried("app爱车_海报分享_微博","app_car_postersharing_weibo")
+    }
+    /**
+     * app爱车_海报分享_社区
+     * */
+    fun clickCarShareCommunity(){
+        buried("app_car_postersharing_community","用户点击社区时触发")
+    }
+    //===========================================社区-问答
+    /**
+     * 用户点击右上角提问时触发
+     * */
+    fun clickQuestionAskTop(){
+        buried("app社区_我的问答_顶部提问","app_community_QA_ask_top")
+    }
+    /**
+     * 用户点击悬浮窗提问时触发
+     * */
+    fun clickQuestionAskFloat(){
+        buried("app社区_我的问答_悬浮窗提问","app_community_QA_ask_Float")
+    }
+    /**
+     * 用户点击去提问时触发
+     * */
+    fun clickQuestionAskCenter(){
+        buried("app社区_我的问答_我的提问_去提问","app_community_QA_my_ask")
+    }
+    /**
+     * 用户点击立即抢答时触发
+     * [type]问题类型
+     * [title]问答标题
+     * */
+    fun clickQuestionAnswer(type: String?,title:String?){
+        buried("app社区_我的问答_邀请问答_立即抢答","app_community_QA_answer", extend = "{\"QA_type\": \"$type\",\"QA_title\": \"$title\"}")
+    }
+
 }

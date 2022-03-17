@@ -1,11 +1,13 @@
 package com.changanford.my.ui
 
+import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
@@ -14,7 +16,6 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -22,6 +23,7 @@ import com.changanford.my.databinding.ItemCarAuthBinding
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
 import com.changanford.my.viewmodel.CarAuthViewModel
+import com.changanford.my.widget.WaitBindingCarPop
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -48,6 +50,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
         headView.look.setOnClickListener {
+            BuriedUtil.instant?.carQy()
             JumpUtils.instans?.jump(1, MConstant.H5_CAR_QY)
         }
         carAdapter.addHeaderView(headView.root)
@@ -61,16 +64,17 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         })
 
         binding.btnAddCar.setOnClickListener {
+            BuriedUtil.instant?.carAdd()
             RouterManger.startARouter(ARouterMyPath.UniCarAuthUI)
         }
 
-        LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java)
-            .observe(this, Observer {
-                "输入车牌--$it".logE()
-            })
-        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
-        })
-
+//        LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java)
+//            .observe(this, Observer {
+//                "输入车牌--$it".logE()
+//            })
+//        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
+//        })
+        viewModel.isWaitBindingCar()
     }
 
     override fun onPause() {
@@ -94,7 +98,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             it.onSuccess {
                 it?.let {
                     headView.layout.visibility =
-                        if (it.carListRightsIsShow) View.VISIBLE else View.GONE
+                        if (it.carListRightsIsShow && isCarOwner == 1) View.VISIBLE else View.GONE
                     headView.content.text = when (isCarOwner) {
                         1 -> {
                             it.carListRightsContentY
@@ -110,6 +114,27 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyCarAuth.smartCommonLayout
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.waitCarLiveData.observe(this, Observer { data ->
+            if (data != null && data.isNotEmpty()) {
+                // 弹窗
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    data.forEach {
+                        WaitBindingCarPop(this, this, viewModel, it).apply {
+                            showPopupWindow()
+                        }
+                    }
+
+                }, 500)
+            }
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).observe(this, Observer {
+            viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
+        })
     }
 
     inner class AuthCarAdapter :

@@ -161,6 +161,10 @@ object MConstant {
      * 维保商品订单详情 /order/#/maintain/maintainDetail?orderNo=
     * */
     val H5_SHOP_MAINTENANCE ="${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
+    /**
+     * 经销商 order/#/fillInformation/selectDealer
+     * */
+    val H5_CAR_DEALER ="${H5_BASE_URL}/order/#/fillInformation/selectDealer"
 
     var isFirstOpenTwoLevel = true // 是首次打开二楼
     var bdLocation = "{}"

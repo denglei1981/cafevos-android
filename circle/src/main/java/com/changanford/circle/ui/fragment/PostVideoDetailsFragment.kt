@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
@@ -27,6 +28,7 @@ import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
+import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
@@ -42,6 +44,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.DKPlayerHelper
 import com.changanford.common.utilext.toast
 import com.qw.soul.permission.SoulPermission
@@ -387,6 +390,19 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             binding.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             viewModel.getCommendList(mData.postsId, page)
+        })
+
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
+            if (it == 0) {
+                shareBackUpHttp(
+                    this, mData.shares, when {
+                        MConstant.userId == mData.userId && mData.type == 1 -> 5//自己的帖子没有编辑按钮
+                        MConstant.userId == mData.userId -> 3//是自己的帖子
+                        mData.isManager == true -> 4//有管理权限
+                        else -> 1
+                    }
+                )
+            }
         })
     }
 

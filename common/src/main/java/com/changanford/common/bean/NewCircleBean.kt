@@ -12,8 +12,20 @@ data class CirceHomeBean(val circleTypes:ArrayList<NewCircleBean>?=null,
                          val dataList:ArrayList<NewCircleBean>?=null)
 data class CirCleHotList(val topId:Int=0,val topName:String?=null,val circleTops:ArrayList<NewCircleBean>?=null)
 
-data class TagInfoBean(val tagMaxCount:Int?=0,var tags:List<NewCirceTagBean>?=null)
-data class NewCirceTagBean(var id:String?=null,var isCheck:Boolean?=false,var tagName:String?=null,var tagId:Int?=null,val icon:String?=null)
+data class TagInfoBean(
+    val tagMaxCount:Int?=0,
+    var tags:List<NewCirceTagBean>?=null,
+    var circleTypes:List<NewCirceTagBean>?=null
+)
+data class NewCirceTagBean(
+    var id:String?=null,
+    var isCheck:Boolean?=false,
+    var tagName:String?=null,
+    var tagId:Int?=null,
+    val icon:String?=null,
+    val name:String?=null,
+    val operator:String?=null,
+)
 
 data class NewCircleDataBean(
     val dataList:ArrayList<NewCircleBean>?=null,

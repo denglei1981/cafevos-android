@@ -20,9 +20,11 @@ data class CarAuthBean(
 )
 
 data class CarAuthConfVo(
-    val img: String = "",
-    val title: String = "",
-    val des: String = ""
+    val removeCarNotice:String="",
+    val contactCustomerService:String="",
+    val img: String? = "",
+    val title: String? = "",
+    val des: String? = "",
 )
 
 /**
@@ -33,12 +35,12 @@ data class CarItemBean(
     var vin: String = "",
     val modelName: String = "",//车型名称
     val modelUrl: String = "",//车型图
-    var plateNum: String = "",
+    var plateNum: String? = null,
     @SerializedName(
         value = "authStatus",
         alternate = ["status"]
     ) var authStatus: Int = 0,
-    val examineRemakeFront: String? = "", //审核备注
+    val examineRemakeFront: String? = null, //审核备注
     val dealerName: String = "",
     val dealerPhone: String = "",
     val saleDate: Long = 0L,//购车日期
@@ -101,6 +103,8 @@ data class CarItemBean(
     var realnameAuthStatus: String = "",
     val incallAuthRemake: String = "",
     val carName: String = "",
+    val seriesName:String="",
+    var isDefault:Int=0 // 是否为默认车辆
 
     ) : Serializable
 

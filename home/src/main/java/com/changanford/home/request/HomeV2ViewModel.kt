@@ -10,6 +10,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.bean.BindCarBean
 import com.changanford.home.bean.FBBean
 import com.changanford.home.data.TwoAdData
 
@@ -91,4 +92,27 @@ class HomeV2ViewModel : BaseViewModel() {
                 }
         })
     }
+
+
+
+
+    val  confirmCarLiveData = MutableLiveData<String>()
+    var vinStr :String=""
+    fun confirmBindCar(isConfirm:Int,vin:String) {
+        vinStr=vin
+        if(MConstant.token.isEmpty())return
+        launch(false, {
+            val body = HashMap<String, Any>()
+            body["isConfirm"]=isConfirm
+            body["vin"]=vin
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>().confirmBindCar(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+
+                    confirmCarLiveData.postValue(it)
+                }
+        })
+    }
+
+
 }

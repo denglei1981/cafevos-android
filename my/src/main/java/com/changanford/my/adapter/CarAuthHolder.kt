@@ -28,7 +28,7 @@ fun CarAuthHolder(
     holder.dataBinding?.let {
         it.tvVin.text = "VIN码：${item.vin}"
         it.tvCarName.text =
-            if (item.carName.isNullOrEmpty()) item.modelName else item.carName
+            if (item.seriesName.isNullOrEmpty()) item.modelName else item.seriesName
         //设置后台配置的车系图片
         if (item.modelUrl.isNullOrEmpty()) {
             it.carPic.setImageResource(R.mipmap.ic_car_auth_ex)
@@ -48,7 +48,11 @@ fun CarAuthHolder(
                 crmHint(2, it, item)
             }
             isCrmSuccess(item) -> {
-                it.tvAuth.text = "已认证"
+                if (item.isDefault == 1) {
+                    it.tvAuth.text = "默认"
+                }else{
+                    it.tvAuth.text = "已认证"
+                }
                 d.setColor(Color.parseColor("#6900095B"))
                 crmHint(3, it, item)
             }

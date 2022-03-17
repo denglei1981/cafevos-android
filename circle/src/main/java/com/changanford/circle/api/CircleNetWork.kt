@@ -222,7 +222,7 @@ interface CircleNetWork {
     suspend fun joinCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<Any>
+    ): CommonResponse<ChoseCircleBean>
 
     /**
      * 参与的圈子
@@ -539,5 +539,12 @@ interface CircleNetWork {
 
    @POST("/qa/updateTechniciaPersonalInfo")
    suspend fun updateTechniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<String>
+
+    //分享成功回调
+    @POST("/con/share/callback")
+    suspend fun ShareBack(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
 }

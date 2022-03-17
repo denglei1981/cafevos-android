@@ -4,8 +4,10 @@ import android.Manifest
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Environment
+import android.text.TextUtils
+import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -15,18 +17,17 @@ import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.changanford.common.BuildConfig
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.H5PostTypeBean
 import com.changanford.common.bean.MediaListBean
+import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.ui.dialog.SelectPostDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
@@ -35,6 +36,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
+import com.changanford.common.wutil.WCommonUtil
 import com.just.agentweb.AgentWeb
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -45,7 +47,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.collections.set
 
 
@@ -121,7 +122,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      */
     @JavascriptInterface
     fun closePage() {
-        if (activity != null) activity!!.finish()
+        activity?.finish()
     }
 
     /**
@@ -256,7 +257,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     @JavascriptInterface
     fun shareTo(jsonStr: String, shareCallBack: String) {
 //        toastShow("分享的内容".plus(jsonStr))
-        var map = HashMap<String, String>()
+        val map = HashMap<String, String>()
         map["jsonStr"] = jsonStr
         map["shareCallBack"] = shareCallBack
         LiveDataBus.get().with(LiveDataBusKey.WEB_SHARE).postValue(map)
@@ -693,10 +694,92 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         activity?.lifecycleScope?.launch {
             StatusBarUtil.setStatusBarColor(
                 activity,
-                if (isTransparent) R.color.transparent else R.color.white
+                if (isTransparent) com.changanford.common.R.color.transparent else R.color.white
             )
         }
     }
+    /**
+     * 打开PDF文件
+     */
+    @JavascriptInterface
+    fun opePdf(pdfUrl:String) {
+        JumpUtils.instans?.jump(1,"http://mozilla.github.io/pdf.js/web/viewer.html?file=$pdfUrl")
+    }
+    /**
+     * 小程序分享
+     * [webpageUrl]兼容低版本的网页链接 限制长度不超过 10KB
+     * [miniprogramType]正式版:0，测试版:1，体验版:2
+     * [userName]小程序原始id（gh_d43f693ca31f）
+     * [path]小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+     * [title] 小程序消息title
+     * [description]小程序消息desc
+     * * thumbData 小程序消息封面图片，小于128k ByteArray(byte[])
+     * [imgPath]小程序消息封面图片，imgPath 图片路径 没有传 null
+     * [shareCallBack]回调
+     */
+    @JavascriptInterface
+    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?,shareCallBack:String) {
+        if(BuildConfig.DEBUG){
+            Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
+            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath》》》shareCallBack:$shareCallBack")
+        }
+        activity?.apply {
+            if(!TextUtils.isEmpty(imgPath)){
+                WCommonUtil.pathUrlToBitmap(this,imgPath!!,object :OnDownBitmapListener{
+                    override fun onFinish(bitmap: Bitmap) {
+                        val thumbData=WCommonUtil.bitmap2Bytes(bitmap)
+                        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
+                        WCommonUtil.shareSmallProgram(this@apply, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+                    }
+                })
+            }else{
+                val bmp = BitmapFactory.decodeResource(resources, R.mipmap.fordicon)
+                val thumbData=WCommonUtil.bitmap2Bytes(bmp)
+                LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
+                WCommonUtil.shareSmallProgram(this, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+            }
 
-
+        }
+    }
+    /**
+     * 银联支付
+     * [payType]支付类型 1支付宝、2 微信、3云闪付
+     * [appPayRequest]拉起支付的参数（具体参考对应文档）
+     * [callback]支付回调
+     * [serverMode] 云闪付使用 为后台环境标识，不传或者null默认使用“00”生产环境
+     */
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
+        openUnionPay(payType,appPayRequest,callback,null)
+    }
+    @JavascriptInterface
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?) {
+        if(BuildConfig.DEBUG)Log.d("wenke","H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback")
+        val map = HashMap<String, Any>()
+        map["payType"] = payType
+        map["appPayRequest"] = appPayRequest
+        map["callback"] = callback
+        map["serverMode"] = serverMode?:"00"
+        LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
+    }
+    /**
+     * 打开相机
+    * */
+    @JavascriptInterface
+    fun openCamera(callback:String){
+        PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: List<LocalMedia>) {
+                if (result.isNotEmpty()) {
+                    for (media in result) {
+                        val path: String = PictureUtil.getFinallyPath(media)
+                        path.let {
+                            val base64Str = FileHelper.getImageStr(path)
+                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                        }
+                    }
+                }
+            }
+            override fun onCancel() {}
+        })
+    }
 }
