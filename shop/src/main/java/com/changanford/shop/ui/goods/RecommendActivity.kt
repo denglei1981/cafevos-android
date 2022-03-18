@@ -1,10 +1,17 @@
 package com.changanford.shop.ui.goods
 
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.databinding.ActRecommendBinding
 import com.changanford.shop.viewmodel.GoodsViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * @Author : wenke
@@ -13,11 +20,35 @@ import com.changanford.shop.viewmodel.GoodsViewModel
  */
 @Route(path = ARouterShopPath.RecommendActivity)
 class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
-    override fun initView() {
-
+    companion object{
+        fun start(kindId:String?="0"){
+            val bundle= Bundle()
+            bundle.putString("kindId", kindId)
+            RouterManger.startARouter(ARouterShopPath.RecommendActivity,bundle)
+        }
     }
-
+    private val fragments=ArrayList<Fragment>()
+    override fun initView() {}
     override fun initData() {
-
+        val defaultKindId=intent.getStringExtra("kindId")
+        viewModel.typesBean.observe(this){
+            bindTab(it)
+            val index = it.indexOfFirst { item -> item.kindId == defaultKindId }
+            if (index>0) binding.viewPager2.currentItem =index
+        }
+        viewModel.getRecommendTypes()
+    }
+    private fun bindTab(tabs:MutableList<GoodsTypesItemBean>){
+        fragments.clear()
+        binding.tabLayout.removeAllTabs()
+        for(it in tabs){
+            fragments.add(RecommendFragment.newInstance(it.kindId))
+        }
+        val adapter= ViewPage2Adapter(this,fragments)
+        binding.viewPager2.adapter= adapter
+        binding.viewPager2.isSaveEnabled = false
+        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
+            tab.text = tabs[tabPosition].tagName
+        }.attach()
     }
 }

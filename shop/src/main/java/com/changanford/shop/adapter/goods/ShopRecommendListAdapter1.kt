@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemHomeRecommendList1Binding
+import com.changanford.shop.ui.goods.RecommendActivity
 
 class ShopRecommendListAdapter1: BaseQuickAdapter<ShopRecommendBean, BaseDataBindingHolder<ItemHomeRecommendList1Binding>>(
     R.layout.item_home_recommend_list1){
@@ -16,8 +17,8 @@ class ShopRecommendListAdapter1: BaseQuickAdapter<ShopRecommendBean, BaseDataBin
             recyclerView.adapter=ShopRecommendListAdapter2().apply {
                 setList(item.spuInfoList)
             }
-            wtvMore.setOnClickListener {
-
+            tvMore.setOnClickListener {
+                RecommendActivity.start(item.kindId)
             }
         }
     }

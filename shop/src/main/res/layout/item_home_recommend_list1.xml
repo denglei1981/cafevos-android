@@ -27,14 +27,14 @@
                 style="@style/w_style_txt_ellipsize"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/wtv_more"
+                app:layout_constraintEnd_toStartOf="@id/tv_more"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/str_listName"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_14" />
             <com.changanford.common.ui.view.WTextView
-                android:id="@+id/wtv_more"
+                android:id="@+id/tv_more"
                 android:paddingStart="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

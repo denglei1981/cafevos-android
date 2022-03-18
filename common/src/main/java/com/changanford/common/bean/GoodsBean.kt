@@ -16,6 +16,8 @@ data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
     val tagType:String?=null,
+    val kindId:String?=null,
+    val kindName:String?=null,
 )
 
 data class GoodsList(

@@ -83,7 +83,7 @@
                 android:visibility="visible"
                 tools:visibility="visible"
                 android:drawablePadding="@dimen/dp_5"
-                android:id="@+id/wtv_allList"
+                android:id="@+id/tv_allList"
                 android:layout_marginEnd="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_recommendList"

@@ -20,8 +20,10 @@
             app:tabMode="auto"
             android:id="@+id/tab_layout"
             style="@style/tabLayout_style"
+            app:tabIndicator="@drawable/shape_00095b_w25dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            app:tabTextAppearance="@style/style_indexTabItemStyle16"
             android:background="@color/white"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager2"

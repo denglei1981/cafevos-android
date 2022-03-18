@@ -17,6 +17,7 @@ import com.changanford.shop.ui.compose.HomeMyIntegralCompose
 import com.changanford.shop.ui.goods.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.goods.RecommendActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.appbar.AppBarLayout
@@ -44,7 +45,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.apply {
             inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
             smartRl.setOnRefreshListener(this@ShopFragment)
-            inTop.recyclerViewRecommend.adapter=recommendAdapter
+            inTop.apply {
+                recyclerViewRecommend.adapter=recommendAdapter
+                tvAllList.setOnClickListener {
+                    RecommendActivity.start()
+                }
+            }
         }
     }
     private fun initTab(){
