@@ -48,7 +48,7 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         binding.viewPager2.adapter= adapter
         binding.viewPager2.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
-            tab.text = tabs[tabPosition].tagName
+            tab.text = tabs[tabPosition].kindName
         }.attach()
     }
 }

@@ -85,11 +85,15 @@ fun HomeMyIntegralCompose(fbNumber:String?=null){
 @Composable
 fun RecommendListCompose(dataBean:MutableList<GoodsItemBean>?){
     if(dataBean==null)return
-    LazyColumn{
-       items(dataBean.size){position ->
-           RecommendItemCompose(position,dataBean[position])
-       }
+    Column {
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyColumn{
+            items(dataBean.size){position ->
+                RecommendItemCompose(position,dataBean[position])
+            }
+        }
     }
+
 }
 /**
  * 推荐列表item
@@ -99,10 +103,10 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
     itemData?.apply {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp).padding(top = 10.dp, bottom = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(15.dp))
+            .height(80.dp)
+            .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp), verticalAlignment = Alignment.CenterVertically) {
             //排名
-            Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center){
+            Box(modifier = Modifier.defaultMinSize(28.dp), contentAlignment = Alignment.Center){
                 if(position<3){
                     Image(painter = painterResource(
                         when (position) {
@@ -120,7 +124,9 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(getImgPath()) ?: R.mipmap.head_default,
                 builder = {placeholder(R.mipmap.head_default)}),
                 contentScale = ContentScale.Crop,
-                contentDescription =null,modifier = Modifier.size(60.dp).clip(RoundedCornerShape(5.dp)))
+                contentDescription =null,modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(5.dp)))
             Spacer(modifier = Modifier.width(11.dp))
             Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween){
                 //标题
@@ -131,7 +137,6 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
                     Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),color= colorResource(R.color.color_99), fontSize = 11.sp)
                 }
             }
-            Spacer(modifier = Modifier.width(20.dp))
         }
     }
 }
