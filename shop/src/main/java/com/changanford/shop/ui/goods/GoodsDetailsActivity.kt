@@ -39,8 +39,10 @@ import kotlin.math.roundToInt
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
-        fun start(spuId:String) {
-            JumpUtils.instans?.jump(3,spuId)
+        fun start(spuId:String?) {
+            if(null!=spuId){
+                JumpUtils.instans?.jump(3,spuId)
+            }
         }
         fun start(jumpDataType:Int,jumpDataValue:String?) {
             JumpUtils.instans?.jump(jumpDataType,jumpDataValue)

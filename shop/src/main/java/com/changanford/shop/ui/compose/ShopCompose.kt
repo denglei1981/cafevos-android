@@ -194,7 +194,7 @@ private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext
 private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
     itemData?.apply {
         Column(modifier = Modifier.fillMaxWidth().clickable {
-            GoodsDetailsActivity.start(spuId)
+            GoodsDetailsActivity.start(mallMallSpuId)
         }) {
             //封面
             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(getImgPath()) ?: R.mipmap.head_default,
