@@ -165,6 +165,15 @@ data class GoodsItemBean(
 //        spuId=mallWbGoodsId?:"0"
         spuPageType="MAINTENANCE"//标识为维保商品
     }
+    /**
+     * 获取图片单个路径
+    * */
+    fun getImgPath(imgUrls:String?=spuImgs):String?{
+        imgUrls?.apply {
+            if(this.contains(","))return split(",")[0]
+        }
+        return imgUrls
+    }
 }
 
 class Params

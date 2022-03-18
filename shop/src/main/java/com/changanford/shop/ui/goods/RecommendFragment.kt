@@ -3,6 +3,7 @@ package com.changanford.shop.ui.goods
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.databinding.FragmentRecommendBinding
+import com.changanford.shop.ui.compose.RecommendListCompose
 import com.changanford.shop.viewmodel.GoodsViewModel
 
 /**
@@ -27,7 +28,9 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
 
     override fun initData() {
         viewModel.GoodsListBean.observe(this){
-
+            binding.composeView.setContent {
+                RecommendListCompose(dataBean = it)
+            }
         }
         arguments?.getString("kindId","0")?.apply {
             kindId=this

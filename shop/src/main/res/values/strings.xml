@@ -181,4 +181,5 @@
     <string name="str_price">价格</string>
     <string name="str_clickingTooFast">点击频率过快!</string>
     <string name="str_recommendedList">商品推荐榜单</string>
+    <string name="str_hasChangeXa">已兑换%1$s件</string>
 </resources>
