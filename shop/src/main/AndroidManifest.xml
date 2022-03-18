@@ -34,6 +34,9 @@
         <!-- 所有订单-->
         <activity android:name=".ui.order.AllOrderActivity"
             android:screenOrientation="portrait"/>
+        <!-- 商品推荐-->
+        <activity android:name=".ui.goods.RecommendActivity"
+            android:screenOrientation="portrait"/>
         <!--================================= 商城 End-->
     </application>
 </manifest>

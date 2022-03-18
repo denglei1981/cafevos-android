@@ -18,7 +18,7 @@ object ARouterShopPath {
     const val OrderDetailActivity = "/shop/OrderDetailsActivity"//订单详情
     const val OrderEvaluationActivity = "/shop/OrderEvaluationActivity"//订单评价
     const val PayConfirmActivity = "/shop/PayConfirmActivity"//支付确认
-
+    const val RecommendActivity = "/shop/RecommendActivity"//商品推荐
     const val IntegralDetailsActivity = "/shop/IntegralDetailsActivity"//积分明细
     ////////////////////  Fragment路由  /////////////////
 
