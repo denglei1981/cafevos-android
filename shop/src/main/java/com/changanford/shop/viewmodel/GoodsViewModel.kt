@@ -331,9 +331,9 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 获取推荐榜单分类
      * */
-    fun getRecommendList(kindId:String){
+    fun getRecommendList(kindId:String,showLoading:Boolean=false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading){
                 body.clear()
                 body["mallMallRecommendKindId"]=kindId
                 val randomKey = getRandomKey()
