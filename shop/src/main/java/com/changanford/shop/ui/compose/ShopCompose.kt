@@ -35,10 +35,12 @@ import com.changanford.common.util.MConstant
  */
 /**
  * 首页我的积分
- * [fbNumber]我的福币 null表示未登录
+ * [fbNumber]我的福币
 * */
 @Composable
 fun HomeMyIntegralCompose(fbNumber:String?=null){
+    //是否登录
+    val isLogin=!TextUtils.isEmpty(MConstant.token)
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp)) {
@@ -52,18 +54,18 @@ fun HomeMyIntegralCompose(fbNumber:String?=null){
             .padding(top = 16.dp, bottom = 14.dp, start = 18.dp, end = 15.dp)) {
             Image(painter = painterResource(R.mipmap.ic_shop_fb), contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.str_myFbX,if(fbNumber!=null)":$fbNumber" else ""),color= colorResource(R.color.color_33), fontSize = 14.sp,
+            Text(text = stringResource(R.string.str_myFbX,if(isLogin)":$fbNumber" else ""),color= colorResource(R.color.color_33), fontSize = 14.sp,
             modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = {
-                if(fbNumber==null){
+                if(isLogin){
                     WBuriedUtil.clickShopIntegral()
                     JumpUtils.instans?.jump(16)
                 }else JumpUtils.instans?.jump(100)
             },shape = RoundedCornerShape(16.dp), contentPadding = PaddingValues(horizontal = 14.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_01025C)),
                 modifier = Modifier.height(32.dp)) {
-                Text(stringResource(if(fbNumber!=null)R.string.str_earnMoney else R.string.str_loginToView),fontSize = 12.sp,color = Color.White)
+                Text(stringResource(if(isLogin)R.string.str_earnMoney else R.string.str_loginToView),fontSize = 12.sp,color = Color.White)
             }
         }
     }

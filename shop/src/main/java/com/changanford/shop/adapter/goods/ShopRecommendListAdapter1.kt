@@ -12,9 +12,9 @@ class ShopRecommendListAdapter1: BaseQuickAdapter<ShopRecommendBean, BaseDataBin
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemHomeRecommendList1Binding>, item: ShopRecommendBean) {
         holder.dataBinding?.apply {
-            tvName.setText(item.topName)
+            tvName.setText(item.kindName)
             recyclerView.adapter=ShopRecommendListAdapter2().apply {
-                setList(item.recommendList)
+                setList(item.spuInfoList)
             }
             wtvMore.setOnClickListener {
 

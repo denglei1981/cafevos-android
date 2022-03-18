@@ -44,26 +44,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.apply {
             inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
             smartRl.setOnRefreshListener(this@ShopFragment)
-            inTop.apply {
-                compose.setContent {
-                    HomeMyIntegralCompose()
-                }
-                recyclerViewRecommend.adapter=recommendAdapter
-                bindTestData()
-            }
+            inTop.recyclerViewRecommend.adapter=recommendAdapter
         }
-    }
-    private fun bindTestData(){
-        val dataBean= ArrayList<ShopRecommendBean>()
-        for (i in 0..1){
-            val listBean=ArrayList<GoodsItemBean>()
-            for(j in 0..2){
-                val itemBean=GoodsItemBean(spuName = "name$j")
-                listBean.add(itemBean)
-            }
-            dataBean.add(ShopRecommendBean(topId = i, topName = "topName$i",recommendList = listBean))
-        }
-        recommendAdapter.setList(dataBean)
     }
     private fun initTab(){
 //        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,13f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
@@ -109,7 +91,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-        viewModel.getClassification()
+//        viewModel.getClassification()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this) {
@@ -122,9 +104,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
+                //我的福币
+                compose.setContent {
+                    HomeMyIntegralCompose(it.totalIntegral)
+                }
+                //推荐
+                recommendAdapter.setList(it.mallSpuKindDtos)
             }
-//            bindingTab(it.mallTags)
-//            binding.smartRl.finishRefresh()
+            bindingTab(it.mallTags)
+            binding.smartRl.finishRefresh()
         }
         viewModel.classificationLiveData.observe(this) {
             bindingTab(it)

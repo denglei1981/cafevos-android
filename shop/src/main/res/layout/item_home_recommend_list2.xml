@@ -36,7 +36,6 @@
             style="@style/w_style_txt_ellipsize"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_sales"
-            android:text="@{model.exchageCount}"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             app:layout_constraintStart_toStartOf="@id/tv_name"
             android:layout_marginTop="@dimen/dp_3"
@@ -51,8 +50,8 @@
             app:layout_constraintBottom_toBottomOf="@id/img_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:w_start_txt="@string/str_rmb"
-            android:text="@{model.fbPrice}"
+            android:text="@{model.priceFb}"
+            app:w_end_txt="@string/str_integral"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -126,6 +126,7 @@ data class GoodsItemBean(
     val goodsNameSecond:String="",
     val mallWbGoodsId:String?=null,
     val fbPrice:String?="0",
+    val priceFb:String?=null,
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
@@ -141,6 +142,15 @@ data class GoodsItemBean(
     }
     fun getJdValue():String{
         return jumpDataValue?:mallMallSpuId
+    }
+    /**
+     * 将福币转换为人民币 1元=100福币
+    * */
+    fun getRMB(fb:String?=priceFb):String{
+        if(fb!=null){
+           return "${fb.toInt()/100}"
+        }
+        return "0"
     }
     /**
      * 将维保商品数据转为普通商品
@@ -354,6 +364,8 @@ data class ShopHomeBean(
     val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
     val mallIndexDto: MallIndexDto = MallIndexDto(),
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
+    val mallSpuKindDtos:ArrayList<ShopRecommendBean>?= null,//推荐列表
+    var totalIntegral:String?=null,//我的福币
 )
 
 class MallIndexDto
@@ -516,4 +528,10 @@ data class OrderTypeItemBean(
     val jumpDataValue: String? = "",
     val typeName: String? = "",
 )
-data class ShopRecommendBean(val topId:Int=0,val topName:String?=null,val recommendList:ArrayList<GoodsItemBean>?=null)
+data class ShopRecommendBean(
+    val topId:Int=0,
+    val topName:String?=null,
+    val kindId: String? =null,
+    val kindName: String? =null,
+    val spuInfoList: ArrayList<GoodsItemBean>?=null,
+)
