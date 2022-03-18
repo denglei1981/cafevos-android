@@ -9,6 +9,7 @@ import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemHomeRecommendList1Binding
 import com.changanford.shop.databinding.ItemHomeRecommendList2Binding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 
 class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemHomeRecommendList2Binding>>(
     R.layout.item_home_recommend_list2){
@@ -21,6 +22,9 @@ class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBinding
             tvSales.setText("${item.salesCount}")
             model=item
             executePendingBindings()
+            root.setOnClickListener {
+                GoodsDetailsActivity.start(item.spuId)
+            }
         }
     }
 }
