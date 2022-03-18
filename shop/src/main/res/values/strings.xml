@@ -180,4 +180,5 @@
     <string name="str_sales">销量</string>
     <string name="str_price">价格</string>
     <string name="str_clickingTooFast">点击频率过快!</string>
+    <string name="str_recommendedList">商品推荐榜单</string>
 </resources>
