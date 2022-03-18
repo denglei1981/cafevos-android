@@ -269,6 +269,7 @@ data class GoodsDetailBean(
     var models:String?=null,//车型
     var busSourse:String?=null,
     var mallMallWbVinSpuId:String?=null,
+    var recommend:ArrayList<GoodsItemBean>?=null,//推荐
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0

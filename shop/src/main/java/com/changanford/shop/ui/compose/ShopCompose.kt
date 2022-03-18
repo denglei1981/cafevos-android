@@ -30,12 +30,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.WCommonUtil
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 
 /**
  * @Author : wenke
@@ -137,6 +141,77 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
                     Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),color= colorResource(R.color.color_99), fontSize = 11.sp)
                 }
             }
+        }
+    }
+}
+/**
+ * 商品详情-逛一逛
+* */
+@Composable
+fun DetailsWalkCompose(dataBean:MutableList<GoodsItemBean>?=null){
+    dataBean?.apply {
+        //一排几列
+        val columnSize=3
+        //总共几排
+        val rowTotal= WCommonUtil.getHeatNumUP("${dataBean.size/columnSize.toFloat()}",0).toInt()
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.White)) {
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(10.dp)
+                .background(color = colorResource(R.color.color_F4)))
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = stringResource(com.changanford.shop.R.string.str_walk), color = colorResource(R.color.color_33), fontSize = 15.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 20.dp))
+            Spacer(modifier = Modifier.height(14.dp))
+            for (row in 0 until rowTotal){
+                val startIndex=row*columnSize
+                val endIndex=if(row!=rowTotal-1)(row+1)*columnSize else dataBean.size
+                val itemList=dataBean.slice(startIndex until endIndex)
+                val itemListSize=itemList.size
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)) {
+                    for (i in 0 until columnSize){
+                        Box(modifier = Modifier
+                            .weight(1f)) {
+                            ItemDetailsWalkCompose(if(itemListSize>i)itemList[i] else null)
+                        }
+                        if(i<2) Spacer(modifier = Modifier.width(10.dp))
+                    }
+                }
+                Spacer(modifier = Modifier.height(25.dp))
+            }
+        }
+    }
+}
+private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext)-60)/3 }
+/**
+ * 逛一逛的item
+ */
+@Composable
+private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
+    itemData?.apply {
+        Column(modifier = Modifier.fillMaxWidth().clickable {
+            GoodsDetailsActivity.start(spuId)
+        }) {
+            //封面
+            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(getImgPath()) ?: R.mipmap.head_default,
+                builder = {placeholder(R.mipmap.head_default)}),
+                contentScale = ContentScale.Crop,
+                contentDescription =null,modifier = Modifier
+                    .size(walkItemWidth.dp)
+                    .clip(RoundedCornerShape(5.dp)))
+            Spacer(modifier = Modifier.height(14.dp))
+            //商品名称
+            Text(text = spuName, color = colorResource(R.color.color_33), fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Spacer(modifier = Modifier.height(5.dp))
+            //价格
+            Text(text = "$vipFb${stringResource(com.changanford.shop.R.string.str_integral)}", color = colorResource(R.color.color_33), fontSize = 12.sp)
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),
+                color = colorResource(R.color.color_33), fontSize = 10.sp)
         }
     }
 }
