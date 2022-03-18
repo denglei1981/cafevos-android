@@ -23,18 +23,26 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
     }
     private var kindId:String?=null
     override fun initView() {
-
+        binding.srl.apply {
+            setEnableLoadMore(false)
+            setOnRefreshListener {
+                viewModel.getRecommendList(kindId?:"0")
+            }
+        }
     }
 
     override fun initData() {
         viewModel.GoodsListBean.observe(this){
-            binding.composeView.setContent {
-                RecommendListCompose(dataBean = it)
+            binding.apply {
+                composeView.setContent {
+                    RecommendListCompose(dataBean = it)
+                }
+                srl.finishRefresh()
             }
         }
         arguments?.getString("kindId","0")?.apply {
             kindId=this
-            viewModel.getRecommendList(this)
+            binding.srl.autoRefresh()
         }
     }
 }

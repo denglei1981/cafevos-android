@@ -17,12 +17,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title_text="@string/str_recommendedList"/>
+        <View
+            android:background="@color/color_EF"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"/>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
             style="@style/tabLayout_style"
             app:tabIndicator="@drawable/shape_00095b_w25dp"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
+            android:layout_height="@dimen/dp_35"
             app:tabTextAppearance="@style/style_indexTabItemStyle16"
             android:background="@color/white"/>
         <androidx.viewpager2.widget.ViewPager2

@@ -106,7 +106,7 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
             .height(80.dp)
             .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp), verticalAlignment = Alignment.CenterVertically) {
             //排名
-            Box(modifier = Modifier.defaultMinSize(28.dp), contentAlignment = Alignment.Center){
+            Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center){
                 if(position<3){
                     Image(painter = painterResource(
                         when (position) {
