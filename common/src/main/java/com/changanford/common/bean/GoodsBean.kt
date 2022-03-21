@@ -174,6 +174,12 @@ data class GoodsItemBean(
         }
         return imgUrls
     }
+    /**
+     * 销量
+    * */
+    fun getSales():String{
+        return "$salesCount"
+    }
 }
 
 class Params
