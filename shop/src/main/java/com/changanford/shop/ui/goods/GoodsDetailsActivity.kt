@@ -2,6 +2,8 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -134,10 +136,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.apply {
-            val isRefresh=getBooleanExtra("isRefresh",false)
-            if("0"!=spuId&&isRefresh)viewModel.queryGoodsDetails(spuId,false)
+        intent?.getStringExtra("spuId")?.apply {
+            spuId=this
         }
+        if(!TextUtils.isEmpty(spuId)&&spuId!="0")viewModel.queryGoodsDetails(spuId,false)
     }
     fun onClick(v:View){
         val vid=v.id
