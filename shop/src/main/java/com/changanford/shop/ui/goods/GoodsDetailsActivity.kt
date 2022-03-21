@@ -165,6 +165,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             }
             //分享商品
             R.id.img_share->control.share()
+            //客服
+            R.id.tv_customerService->JumpUtils.instans?.jump(71)
             //返回
             R.id.img_back->this.finish()
         }
