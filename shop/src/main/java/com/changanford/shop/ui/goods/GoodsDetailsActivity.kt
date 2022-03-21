@@ -69,7 +69,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.viewComment.y-topBarH+60
         detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
-        walkH=headerBinding.composeView.y-topBarH
+        walkH=headerBinding.composeView.y-topBarH+60
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
