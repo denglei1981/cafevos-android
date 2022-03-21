@@ -32,7 +32,7 @@
             app:tabMode="auto"
             app:tabMaxWidth="@dimen/dp_200"
             app:tabMinWidth="@dimen/dp_20"
-            app:tabTextAppearance="@style/style_indexTabItemStyle0"
+            app:tabTextAppearance="@style/style_indexTabItemStyle14"
             android:background="@color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

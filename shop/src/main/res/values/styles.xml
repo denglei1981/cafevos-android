@@ -21,6 +21,10 @@
     <style name="style_indexTabItemStyle13" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_13</item>
     </style>
+    <style name="style_indexTabItemStyle14" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="style_indexTabItemStyle0" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_15</item>
         <item name="android:textStyle">bold</item>
