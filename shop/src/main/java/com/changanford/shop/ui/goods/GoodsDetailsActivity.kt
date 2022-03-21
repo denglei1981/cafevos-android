@@ -282,6 +282,5 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                     if ("0" != spuId) viewModel.queryGoodsDetails(spuId, false)
                 }
             }
-
     }
 }
