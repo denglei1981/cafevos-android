@@ -1,4 +1,5 @@
 package com.changanford.shop
+import android.graphics.Typeface
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -19,6 +20,7 @@ import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.goods.RecommendActivity
 import com.changanford.shop.utils.ScreenUtils
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -54,7 +56,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
     }
     private fun initTab(){
-//        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,13f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
+        WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,13f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.classificationLiveData.value?.get(position)?.apply {
