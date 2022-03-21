@@ -700,6 +700,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     /**
      * 打开PDF文件
+     * [pdfUrl]pdf文件地址
      */
     @JavascriptInterface
     fun opePdf(pdfUrl:String) {
