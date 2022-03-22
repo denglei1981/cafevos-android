@@ -59,27 +59,37 @@
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_12" />
             <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_integral"
+                android:id="@+id/tv_rmbPrice"
                 android:layout_marginBottom="@dimen/dp_7"
                 app:layout_constraintBottom_toTopOf="@id/tv_serialNumber"
                 app:layout_constraintStart_toStartOf="@id/tv_serialNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:end_txt="@string/str_integral"
-                android:textColor="@color/color_00095B"
+                app:start_txt="@string/str_rmb"
+                android:textColor="@color/color_33"
+                android:text="@{model.rmbPrice}"
                 android:textSize="@dimen/sp_18" />
+            <View
+                android:layout_marginStart="@dimen/dp_8"
+                app:layout_constraintStart_toEndOf="@id/tv_rmbPrice"
+                app:layout_constraintTop_toTopOf="@id/tv_rmbPrice"
+                app:layout_constraintBottom_toBottomOf="@id/tv_rmbPrice"
+                android:id="@+id/view_divider"
+                android:background="@color/color_D8DAE6"
+                android:layout_width="@dimen/dp_0_5"
+                android:layout_height="@dimen/dp_12"/>
             <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_fbLine"
-                app:layout_constraintStart_toEndOf="@id/tv_integral"
-                app:layout_constraintBottom_toBottomOf="@id/tv_integral"
-                android:layout_marginStart="@dimen/dp_3"
+                android:id="@+id/tv_fbPrice"
+                app:layout_constraintStart_toEndOf="@id/view_divider"
+                app:layout_constraintBottom_toBottomOf="@id/tv_rmbPrice"
+                android:layout_marginStart="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{model.fbLine}"
-                android:textColor="@color/color_cc"
-                android:textSize="@dimen/sp_12"
-                app:text_flags="0x10"
-                app:end_txt="@string/str_integral"/>
+                android:text="@{model.fbPrice}"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_18"
+                android:drawablePadding="@dimen/dp_3"
+                android:drawableStart="@mipmap/ic_shop_fb_42"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:scrollbars="vertical"

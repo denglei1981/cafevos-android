@@ -65,14 +65,17 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         dataBean.fbPrice = fbPrice
                         dataBean.orginPrice = orginPrice
                         viewDataBinding.addSubtractView.setIsAdd(true)
-                        viewDataBinding.tvIntegral.setText(fbPrice)
+                        viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(fbPrice))
+                        viewDataBinding.tvFbPrice.setText(fbPrice)
                     } else {
                         dataBean.skuImg = dataBean.imgs[0]
                         dataBean.stock = dataBean.allSkuStock
                         dataBean.fbPrice = dataBean.orFbPrice
                         dataBean.orginPrice = dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
-                        viewDataBinding.tvIntegral.setText(if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice)
+                        val price=if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice
+                        viewDataBinding.tvFbPrice.setText(price)
+                        viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(price))
                     }
                     dataBean.price = dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId = mallMallSkuSpuSeckillRangeId
@@ -111,7 +114,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             dataBean.buyNum = it
             control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
         }
-        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
+//        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {
