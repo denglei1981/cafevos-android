@@ -766,11 +766,12 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     /**
      * 打开相机
      * [callback]js回调方法
+     * [isEnableCrop]是否裁剪
      * 返回 base64Str
-    * */
+     * */
     @JavascriptInterface
-    fun openCamera(callback:String){
-        PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
+    fun openCamera(isEnableCrop:Boolean=true,callback:String){
+        PictureUtils.opencarcme(activity,isEnableCrop, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 if (result.isNotEmpty()) {
                     for (media in result) {
@@ -790,32 +791,32 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * [isEnableCrop]是否裁剪
      */
     @JavascriptInterface
-    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean,callback:String) {
+    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean=true,callback:String) {
         PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,isEnableCrop,object : OnResultCallbackListener<LocalMedia?> {
-                override fun onCancel() {}
-                override fun onResult(result: MutableList<LocalMedia?>?) {
-                    if (result != null) {
-                        val base64Arr= arrayListOf<String>()
-                        for (media in result) {
-                            var path = ""
-                            media?.let {
-                                path = if (media.isCut && !media.isCompressed) {
-                                    // 裁剪过
-                                    media.cutPath
-                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
-                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                                    media.compressPath
-                                } else {
-                                    // 原图
-                                    media.path
-                                }
+            override fun onCancel() {}
+            override fun onResult(result: MutableList<LocalMedia?>?) {
+                if (result != null) {
+                    val base64Arr= arrayListOf<String>()
+                    for (media in result) {
+                        var path = ""
+                        media?.let {
+                            path = if (media.isCut && !media.isCompressed) {
+                                // 裁剪过
+                                media.cutPath
+                            } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                media.compressPath
+                            } else {
+                                // 原图
+                                media.path
                             }
-                            val imgPath=FileHelper.getImageStr(path)
-                            base64Arr.add(imgPath)
                         }
-                        if(base64Arr.size>0)agentWeb.jsAccessEntrace.quickCallJs(callback,base64Arr.toString())
+                        val imgPath=FileHelper.getImageStr(path)
+                        base64Arr.add(imgPath)
                     }
+                    if(base64Arr.size>0)agentWeb.jsAccessEntrace.quickCallJs(callback,base64Arr.toString())
                 }
-            })
+            }
+        })
     }
 }
