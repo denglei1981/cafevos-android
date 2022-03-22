@@ -101,10 +101,10 @@ public class PictureUtils {
                 .loadImageEngine(GlideEngine.createGlideEngine())
                 .forResult(onResultCallbackListener);
     }
-        /**
-         * 单独打开自定义相机
-         */
-    public static void opencarcme(Activity activity, OnResultCallbackListener onResultCallbackListener) {
+    /**
+     * 单独打开自定义相机
+     */
+    public static void opencarcme(Activity activity,boolean isEnableCrop, OnResultCallbackListener onResultCallbackListener) {
         PictureSelector.create(activity)
                 .openCamera(PictureMimeType.ofImage())
                 .isUseCustomCamera(false)// 是否使用自定义相机
@@ -117,7 +117,7 @@ public class PictureUtils {
                 .isDragFrame(true)// 是否可拖动裁剪框(固定)
                 .videoMaxSecond(maxvideoTime)// 查询多少秒以内的视频
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
-                .isEnableCrop(true)// 是否裁剪
+                .isEnableCrop(isEnableCrop)// 是否裁剪
                 .setCropTitleBarBackgroundColor(BaseApplication.INSTANT.getResources().getColor(R.color.transparent))
                 .isCompress(false)// 是否压缩
                 .isCamera(true)
@@ -125,6 +125,9 @@ public class PictureUtils {
                 .minimumCompressSize(1024)// 小于100kb的图片不压缩
                 .loadImageEngine(GlideEngine.createGlideEngine())
                 .forResult(onResultCallbackListener);
+    }
+    public static void opencarcme(Activity activity, OnResultCallbackListener onResultCallbackListener) {
+        opencarcme(activity,true,onResultCallbackListener);
     }
 
 
@@ -619,11 +622,10 @@ public class PictureUtils {
                 //.forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 .forResult(onResultCallbackListener);
     }
-
     /**
      * 直接打开相册
      */
-    public static void openGarlly(int CompressSize, Activity activity, int maxNum, OnResultCallbackListener onResultCallbackListener) {
+    public static void openGarlly(int CompressSize, Activity activity, int maxNum,boolean isEnableCrop, OnResultCallbackListener onResultCallbackListener) {
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(activity)
                 .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
@@ -667,7 +669,7 @@ public class PictureUtils {
                 //.isMultipleRecyclerAnimation(false)// 多图裁剪底部列表显示动画效果
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
-                .isEnableCrop(true)// 是否裁剪
+                .isEnableCrop(isEnableCrop)// 是否裁剪
                 .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .isCompress(true)// 是否压缩
@@ -703,6 +705,12 @@ public class PictureUtils {
                 //.videoQuality()// 视频录制质量 0 or 1
                 //.forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 .forResult(onResultCallbackListener);
+    }
+    /**
+     * 直接打开相册
+     */
+    public static void openGarlly(int CompressSize, Activity activity, int maxNum, OnResultCallbackListener onResultCallbackListener) {
+        openGarlly(CompressSize,activity,maxNum,true,onResultCallbackListener);
     }
 
 

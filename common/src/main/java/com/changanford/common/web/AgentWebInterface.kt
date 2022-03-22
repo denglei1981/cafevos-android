@@ -766,11 +766,12 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     /**
      * 打开相机
      * [callback]js回调方法
+     * [isEnableCrop]是否裁剪
      * 返回 base64Str
      * */
     @JavascriptInterface
-    fun openCamera(callback:String){
-        PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
+    fun openCamera(isEnableCrop:Boolean=true,callback:String){
+        PictureUtils.opencarcme(activity,isEnableCrop, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 if (result.isNotEmpty()) {
                     for (media in result) {
@@ -787,10 +788,11 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * 打开相册
      * [maxNum]最大选择图片数量
      * [callback]返回选取图片的base64字符串数组
+     * [isEnableCrop]是否裁剪
      */
     @JavascriptInterface
-    fun openPhoto(maxNum:Int=1,callback:String) {
-        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,object : OnResultCallbackListener<LocalMedia?> {
+    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean=true,callback:String) {
+        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,isEnableCrop,object : OnResultCallbackListener<LocalMedia?> {
             override fun onCancel() {}
             override fun onResult(result: MutableList<LocalMedia?>?) {
                 if (result != null) {
