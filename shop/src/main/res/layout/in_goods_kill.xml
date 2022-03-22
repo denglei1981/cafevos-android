@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <View
+            android:layout_marginBottom="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date"
+            android:background="@drawable/line_white_0095b_white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/rv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/rv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_time"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

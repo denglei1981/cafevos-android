@@ -52,8 +52,8 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         override fun onFinish() {}
     }.start()
     override fun initView() {
-        binding.rvDate.adapter=dateAdapter
-        binding.rvTime.adapter=timeAdapter
+        binding.inKill.rvDate.adapter=dateAdapter
+        binding.inKill.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter
         binding.topBar.apply {
             setActivity(this@GoodsKillAreaActivity)
@@ -92,7 +92,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
                     val dateI=if(match.isNotEmpty()) match[0].index else if (rest.isNotEmpty()) rest[0].index else 0
                     onSelectBackListener(dateI, this[dateI].seckillTimeRanges)
                     dateAdapter.selectPos = dateI
-                    binding.rvDate.scrollToPosition(dateI)
+                    binding.inKill.rvDate.scrollToPosition(dateI)
                 }
             }
         }
@@ -140,7 +140,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         timeAdapter.setList(seckillTimeRange)
         onSelectTimeBackListener(timeI,seckillTimeRange[timeI])
         timeAdapter.selectPos=timeI
-        binding.rvTime.scrollToPosition(timeI)
+        binding.inKill.rvTime.scrollToPosition(timeI)
     }
     /**
      * 秒杀日期选择回调
