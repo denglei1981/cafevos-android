@@ -787,10 +787,11 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * 打开相册
      * [maxNum]最大选择图片数量
      * [callback]返回选取图片的base64字符串数组
+     * [isEnableCrop]是否裁剪
      */
     @JavascriptInterface
-    fun openPhoto(maxNum:Int=1,callback:String) {
-        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,object : OnResultCallbackListener<LocalMedia?> {
+    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean,callback:String) {
+        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,isEnableCrop,object : OnResultCallbackListener<LocalMedia?> {
                 override fun onCancel() {}
                 override fun onResult(result: MutableList<LocalMedia?>?) {
                     if (result != null) {
