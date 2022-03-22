@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title_text="@string/str_limitedTimeSecondsKill"
-            tools:minHeight="@dimen/dp_60"/>
+            tools:minHeight="@dimen/dp_60"
+            app:right_text="@string/str_ruleDescription"
+            app:right_text_color="@color/color_00095B"/>
         <View
             android:layout_marginBottom="@dimen/dp_2"
             app:layout_constraintBottom_toBottomOf="@id/rv_date"

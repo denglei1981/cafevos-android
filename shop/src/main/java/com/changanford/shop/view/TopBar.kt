@@ -43,7 +43,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         val titleText=typedArray.getString(R.styleable.TopBar_title_text)
         val titleColor=typedArray.getResourceId(R.styleable.TopBar_title_color,R.color.color_33)
         val rightTxt=typedArray.getString(R.styleable.TopBar_right_text)
-
+        val rightTextColor=typedArray.getResourceId(R.styleable.TopBar_right_text_color,R.color.color_33)
         layoutHeader=findViewById(R.id.layout_topbar)
         imgBack=findViewById(R.id.img_back)
         tvTitle=findViewById(R.id.tv_title)
@@ -64,6 +64,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         }
         rightTV.apply {
             text=rightTxt
+            setTextColor(ContextCompat.getColor(context,rightTextColor))
             visibility=if(TextUtils.isEmpty(rightTxt))View.GONE else View.VISIBLE
         }
     }
