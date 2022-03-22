@@ -26,18 +26,18 @@
         <include
             android:id="@+id/inKill"
             layout="@layout/in_goods_details_kill"/>
-        <!-- 会员专享       -->
+        <!-- 会员专享    会员折扣   -->
         <include
             android:id="@+id/in_vip"
             layout="@layout/in_goods_detsils_vip"/>
         <!-- 会员折扣    -->
-        <include
-            android:id="@+id/in_discount"
-            android:layout_marginTop="@dimen/dp_9"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            layout="@layout/in_goods_vip"/>
+<!--        <include-->
+<!--            android:id="@+id/in_discount"-->
+<!--            android:layout_marginTop="@dimen/dp_9"-->
+<!--            android:layout_marginStart="@dimen/dp_20"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            layout="@layout/in_goods_vip"/>-->
         <!-- 商品基本信息           -->
         <include
             android:id="@+id/in_goodsInfo"

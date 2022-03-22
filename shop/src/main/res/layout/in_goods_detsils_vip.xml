@@ -18,6 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
+        <ImageView
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:id="@+id/img_vip"
+            android:src="@mipmap/ic_shop_vip_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
             android:visibility="gone"
             tools:visibility="visible"
@@ -36,24 +44,29 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:end_txt="@string/str_integral"
-            tools:text="1300积分"
-            android:text="@{model.price}"
+            app:start_txt="@string/str_rmb"
+            android:text="@{model.getRMB()}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_20" />
+        <View
+            android:layout_marginStart="@dimen/dp_8"
+            android:background="@color/color_D8DAE6"
+            android:layout_width="@dimen/dp_0_5"
+            android:layout_height="@dimen/dp_12"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_fbPrice"
             android:layout_gravity="bottom"
-            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginStart="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:text_flags="0x10"
-            app:end_txt="@string/str_integral"
-            tools:text="1600"
+            android:drawableStart="@mipmap/ic_shop_fb_42"
+            android:drawablePadding="@dimen/dp_3"
             android:visibility="@{model.getLineFbEmpty?View.GONE:View.VISIBLE}"
-            android:text="@{model.fbLine}"
-            android:textColor="@color/color_cc"
-            android:textSize="@dimen/sp_12" />
+            tools:text="0"
+            android:text="@{model.price}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_20" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:gravity="end|center_vertical"

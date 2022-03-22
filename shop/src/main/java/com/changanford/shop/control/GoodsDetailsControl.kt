@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
@@ -80,17 +81,21 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
-        headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
+        headerBinding.inVip.imgVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
+            //会员专享
             "MEMBER_EXCLUSIVE"->{
                 memberExclusive(dataBean)
                 headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
             }
+            //会员折扣
             "MEMBER_DISCOUNT"-> {
-                headerBinding.inDiscount.apply {
-                    lLayoutVip.visibility=View.VISIBLE
-                    tvVipIntegral.setText(dataBean.fbPrice)
+                headerBinding.inVip.apply {
+                    imgVip.visibility=View.VISIBLE
+                    val textColor=ContextCompat.getColor(activity,R.color.color_F21C44)
+                    tvPrice.setTextColor(textColor)
+                    tvFbPrice.setTextColor(textColor)
                 }
             }
             "SECKILL"->{//秒杀信息
@@ -212,7 +217,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
         headerBinding.inKill.model=dataBean
-        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
+//        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
         memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
