@@ -293,8 +293,8 @@ data class GoodsDetailBean(
     fun getRMB(fb:String?=fbPrice):String{
         if(fb!=null){
             val fbToFloat=fb.toFloat()
-            val die=fbToFloat%100
-            rmbPrice = if(die>0) "${fbToFloat/100}"
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
             else "${fb.toInt()/100}"
         }
         return rmbPrice?:"0"
