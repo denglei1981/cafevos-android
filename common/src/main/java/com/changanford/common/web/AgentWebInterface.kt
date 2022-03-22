@@ -767,7 +767,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
      * 打开相机
      * [callback]js回调方法
      * 返回 base64Str
-    * */
+     * */
     @JavascriptInterface
     fun openCamera(callback:String){
         PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
@@ -775,14 +775,46 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                 if (result.isNotEmpty()) {
                     for (media in result) {
                         val path: String = PictureUtil.getFinallyPath(media)
-                        path.let {
-                            val base64Str = FileHelper.getImageStr(path)
-                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
-                        }
+                        val base64Str = FileHelper.getImageStr(path)
+                        agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
                     }
                 }
             }
             override fun onCancel() {}
+        })
+    }
+    /**
+     * 打开相册
+     * [maxNum]最大选择图片数量
+     * [callback]返回选取图片的base64字符串数组
+     */
+    @JavascriptInterface
+    fun openPhoto(maxNum:Int=1,callback:String) {
+        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,object : OnResultCallbackListener<LocalMedia?> {
+            override fun onCancel() {}
+            override fun onResult(result: MutableList<LocalMedia?>?) {
+                if (result != null) {
+                    val base64Arr= arrayListOf<String>()
+                    for (media in result) {
+                        var path = ""
+                        media?.let {
+                            path = if (media.isCut && !media.isCompressed) {
+                                // 裁剪过
+                                media.cutPath
+                            } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                media.compressPath
+                            } else {
+                                // 原图
+                                media.path
+                            }
+                        }
+                        val imgPath=FileHelper.getImageStr(path)
+                        base64Arr.add(imgPath)
+                    }
+                    if(base64Arr.size>0)agentWeb.jsAccessEntrace.quickCallJs(callback,base64Arr.toString())
+                }
+            }
         })
     }
 }
