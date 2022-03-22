@@ -763,6 +763,10 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         map["serverMode"] = serverMode?:"00"
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
     }
+    @JavascriptInterface
+    fun openCamera(callback:String){
+        openCamera(false, callback)
+    }
     /**
      * 打开相机
      * [callback]js回调方法
@@ -783,6 +787,10 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
             }
             override fun onCancel() {}
         })
+    }
+    @JavascriptInterface
+    fun openPhoto(maxNum:Int=1,callback:String) {
+        openPhoto(maxNum,false, callback)
     }
     /**
      * 打开相册
