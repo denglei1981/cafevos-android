@@ -41,11 +41,12 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_price"
+            android:id="@+id/tv_rmbPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_rmb"
-            android:text="@{model.getRMB()}"
+            tools:text="0"
+            android:text="@{model.rmbPrice}"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_20" />
         <View
@@ -62,9 +63,8 @@
             android:layout_height="wrap_content"
             android:drawableStart="@mipmap/ic_shop_fb_42"
             android:drawablePadding="@dimen/dp_3"
-            android:visibility="@{model.getLineFbEmpty?View.GONE:View.VISIBLE}"
             tools:text="0"
-            android:text="@{model.price}"
+            android:text="@{model.fbPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_20" />
 

@@ -26,22 +26,22 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_goods_integral"
+            android:id="@+id/tv_kill_rmbPrice"
             android:layout_marginStart="@dimen/dp_8"
             app:layout_constraintStart_toEndOf="@id/img_logoKill"
             app:layout_constraintTop_toTopOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.getRMB()}"
+            android:text="@{model.rmbPrice}"
             app:start_txt="@string/str_rmb"
             android:textStyle="bold"
             android:textColor="@color/color_withe"
             android:textSize="@dimen/sp_18" />
         <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_fbLine"
+            android:id="@+id/tv_kill_fbPrice"
             android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintBottom_toBottomOf="@id/tv_goods_integral"
-            app:layout_constraintStart_toEndOf="@id/tv_goods_integral"
+            app:layout_constraintBottom_toBottomOf="@id/tv_kill_rmbPrice"
+            app:layout_constraintStart_toEndOf="@id/tv_kill_rmbPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1600"
@@ -54,8 +54,8 @@
             android:textSize="@dimen/sp_18" />
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_limitBuyNum"
-            app:layout_constraintStart_toStartOf="@id/tv_goods_integral"
-            app:layout_constraintTop_toBottomOf="@+id/tv_fbLine"
+            app:layout_constraintStart_toStartOf="@id/tv_kill_rmbPrice"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kill_fbPrice"
             app:layout_constraintBottom_toBottomOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

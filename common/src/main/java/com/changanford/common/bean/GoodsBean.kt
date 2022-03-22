@@ -276,6 +276,7 @@ data class GoodsDetailBean(
     var busSourse:String?=null,
     var mallMallWbVinSpuId:String?=null,
     var recommend:ArrayList<GoodsItemBean>?=null,//推荐
+    var rmbPrice:String?=fbPrice,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -291,9 +292,12 @@ data class GoodsDetailBean(
      * */
     fun getRMB(fb:String?=fbPrice):String{
         if(fb!=null){
-            return "${fb.toInt()/100}"
+            val fbToFloat=fb.toFloat()
+            val die=fbToFloat%100
+            rmbPrice = if(die>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
         }
-        return "0"
+        return rmbPrice?:"0"
     }
 }
 

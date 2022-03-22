@@ -54,6 +54,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
         dataBean.allSkuStock=dataBean.stock
+        dataBean.getRMB()
         //初始化 skuCode
         var skuCodeInitValue: String
         if(dataBean.stock>0&&dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
@@ -94,7 +95,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 headerBinding.inVip.apply {
                     imgVip.visibility=View.VISIBLE
                     val textColor=ContextCompat.getColor(activity,R.color.color_F21C44)
-                    tvPrice.setTextColor(textColor)
+                    tvRmbPrice.setTextColor(textColor)
                     tvFbPrice.setTextColor(textColor)
                 }
             }
@@ -116,7 +117,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble(),0)
                         dataBean.totalStock=totalStock
                         dataBean.stockProportion=stockProportion
-                        if(null==fbLine)tvFbLine.visibility= View.GONE
+//                        if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         tvLimitBuyNum.setText("$totalStock")
                         model=dataBean
@@ -216,7 +217,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.price=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
-        headerBinding.inKill.model=dataBean
+        dataBean.getRMB()
 //        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
         memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
@@ -231,6 +232,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         dataBean.skuCodeTxts=skuCodeTxtArr
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"\t\t\t未选择属性" else "\t\t\t已选：${skuCodeTxt}","#333333")
+        headerBinding.inKill.model=dataBean
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
         bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
