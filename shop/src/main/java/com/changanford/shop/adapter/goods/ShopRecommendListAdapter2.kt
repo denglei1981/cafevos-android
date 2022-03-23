@@ -16,9 +16,7 @@ class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBinding
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemHomeRecommendList2Binding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
-            var imgUrl=item.spuImgs
-            if(imgUrl.contains(","))imgUrl=imgUrl.split(",")[0]
-            imgCover.load(imgUrl)
+            imgCover.load(item.getImgPath())
             tvSales.setText("${item.salesCount}")
             model=item
             executePendingBindings()
