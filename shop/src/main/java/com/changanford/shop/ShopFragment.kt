@@ -8,7 +8,10 @@ import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
@@ -41,6 +44,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
             binding.smartRl.isEnabled = i >= 0
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
+        addLiveDataBus()
         addObserve()
         initKill()
         initTab()
@@ -131,6 +135,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         initData()
 //        val currentItem=binding.viewpager.currentItem
 //        fragments[currentItem].startRefresh()
+    }
+    private fun addLiveDataBus(){
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                    initData()
+                }
+            }
     }
 }
 
