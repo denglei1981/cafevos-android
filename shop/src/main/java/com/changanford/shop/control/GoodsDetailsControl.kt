@@ -22,9 +22,11 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.ui.compose.DetailsWalkCompose
+import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
+import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -294,5 +296,23 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     fun onDestroy(){
         timeCount?.cancel()
+    }
+    /**
+     * 提交订单
+     * */
+    fun submitOrder(){
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else OrderConfirmActivity.start(Gson().toJson(dataBean))
+        }
+    }
+    /**
+     * 加入购物车
+    * */
+    fun addShoppingCart(){
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else viewModel.addShoppingCart(dataBean.spuId)
+        }
     }
 }

@@ -156,5 +156,5 @@ interface ShopNetWorkApi {
      * 加入购物车
      * */
     @POST("")
-    suspend fun addShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
+    suspend fun addShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

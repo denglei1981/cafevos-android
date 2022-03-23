@@ -165,11 +165,28 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.changanford.shop.view.btn.KillBtnView
-                style="@style/style_btn"
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_cart"
                 android:text="@string/str_immediatelyChange"
                 android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_buy"
+                app:layout_constraintTop_toBottomOf="@id/layout_account"
+                android:background="@drawable/border1dp_round_20dp_00095b"
+                android:textColor="@color/color_00095B"
+                android:gravity="center"/>
+            <com.changanford.shop.view.btn.KillBtnView
+                style="@style/style_btn"
+                android:layout_marginStart="@dimen/dp_10"
+                android:id="@+id/btn_buy"
+                android:text="@string/str_immediatelyChange"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="@dimen/dp_0"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/btn_cart"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_account" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

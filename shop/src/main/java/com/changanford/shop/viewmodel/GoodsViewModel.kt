@@ -349,6 +349,8 @@ class GoodsViewModel: BaseViewModel() {
      * 加入购物车
      * */
     fun addShoppingCart(spuId:String?,showLoading:Boolean=false){
+        "接口还未部署".toast()
+        return
         if(spuId==null)return
         viewModelScope.launch {
             fetchRequest(showLoading){
