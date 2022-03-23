@@ -155,6 +155,13 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                     else OrderConfirmActivity.start(Gson().toJson(viewModel.goodsDetailData.value))
                 }
             }
+            //加入购物车
+            R.id.btn_cart->{
+                control.skuCode.apply {
+                    if(control.isInvalidSelectAttrs(this))control.createAttribute()
+                    else viewModel.addShoppingCart(viewModel.goodsDetailData.value?.spuId)
+                }
+            }
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(spuId)
             //选择商品属性
@@ -168,6 +175,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             R.id.img_share->control.share()
             //客服
             R.id.tv_customerService->JumpUtils.instans?.jump(71)
+            //购物车
+            R.id.tv_cart->JumpUtils.instans?.jump(99)
             //返回
             R.id.img_back->this.finish()
         }

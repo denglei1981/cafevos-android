@@ -152,4 +152,9 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/recommend/spuGet")
     suspend fun getRecommendList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
+    /**
+     * 加入购物车
+     * */
+    @POST("")
+    suspend fun addShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
 }
