@@ -161,8 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_00095B"
-                    android:textSize="@dimen/sp_12"
-                    android:text="@{model.acountFb}"/>
+                    android:textSize="@dimen/sp_12"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.changanford.shop.view.btn.KillBtnView
