@@ -28,7 +28,11 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
 //        typeface= Typeface.createFromAsset(context.assets, "MHeiPRC-Medium.OTF")
         setStates(btnStates)
     }
-    fun setStates(states:Int,isDetailkill:Boolean=false){
+    /**
+     * 设置状态
+     * [btnSource]按钮来源 0商品详情底部、1商品详情选择属性弹窗
+    * */
+    fun setStates(states:Int,isDetailkill:Boolean=false,btnSource:Int=-1){
         if(states>statesTxt.size-1||states<0)return
         btnStates=states
         when(states){
@@ -38,17 +42,12 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true
             }
-            //已抢光
-            1->{
+            //已抢光、已结束
+            1,2->{
                 setBackgroundResource(if(!isDetailkill)R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=false
-            }
-            //已结束
-            2->{
-                setBackgroundResource(if(!isDetailkill)R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
-                setTextColor(ContextCompat.getColor(context,R.color.white))
-                isEnabled=false
+                if(0==btnSource)setBackgroundResource(R.drawable.shape_dd_r20dp)
             }
             //提醒我
             3->{
@@ -67,22 +66,32 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
                 setBackgroundResource(R.drawable.btn_selector)
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=true
+                if(0==btnSource&&states==5)setBackgroundResource(R.drawable.shape_00095b_r20dp)
             }
             //已售罄,未开始,余额不足
             6,7,8->{
                 setBackgroundResource(R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context,R.color.white))
                 isEnabled=false
+                if(0==btnSource)setBackgroundResource(R.drawable.shape_dd_r20dp)
             }
         }
         setText(statesTxt[states])
     }
-    fun updateEnabled(isEnabled:Boolean){
+    fun updateEnabled(isEnabled:Boolean,btnSource:Int=-1){
         this.isEnabled=isEnabled
         if(isEnabled){
             setBackgroundResource(R.drawable.btn_selector)
+            if(btnSource==0){
+                setBackgroundResource(R.drawable.border1dp_round_l20dp_00095b)
+                setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
+            }
         }else{
             setBackgroundResource(R.drawable.shadow_dd_20dp)
+            if(btnSource==0){
+                setBackgroundResource(R.drawable.border1dp_round_l20dp_dd)
+                setTextColor(ContextCompat.getColor(context,R.color.color_DD))
+            }
         }
     }
     fun getStates():Int{

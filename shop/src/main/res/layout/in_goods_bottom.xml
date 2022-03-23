@@ -78,6 +78,7 @@
         <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
             android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginEnd="@dimen/dp_m_1"
             android:id="@+id/btn_cart"
             android:background="@drawable/border1dp_round_l20dp_00095b"
             app:layout_constraintTop_toTopOf="parent"
@@ -93,7 +94,6 @@
         <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
             android:id="@+id/btn_buy"
-            android:layout_marginStart="@dimen/dp_m_1"
             android:background="@drawable/shape_00095b_r20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_cart"
@@ -105,22 +105,22 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_40"/>
-        <com.changanford.shop.view.btn.KillBtnView
-            android:visibility="invisible"
-            android:onClick="onClick"
-            android:layout_marginStart="@dimen/dp_30"
-            android:id="@+id/btn_submit"
-            android:background="@drawable/btn_selector"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_cart"
-            android:textSize="@dimen/sp_15"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="@string/str_immediatelyChange"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_40"/>
+<!--        <com.changanford.shop.view.btn.KillBtnView-->
+<!--            android:visibility="invisible"-->
+<!--            android:onClick="onClick"-->
+<!--            android:layout_marginStart="@dimen/dp_30"-->
+<!--            android:id="@+id/btn_submit"-->
+<!--            android:background="@drawable/btn_selector"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_cart"-->
+<!--            android:textSize="@dimen/sp_15"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/str_immediatelyChange"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/dp_40"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

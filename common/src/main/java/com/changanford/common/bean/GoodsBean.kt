@@ -96,7 +96,7 @@ data class GoodsItemBean(
     val skuCodeRule: Any? = null,
     val skuJson: String = "",
     val specJson: String = "",
-    var spuImgs: String = "",
+    var spuImgs: String? = null,
     val spuNew: Any? = null,
     var spuPageTagType: String = "",
     var spuPageType: String = "",

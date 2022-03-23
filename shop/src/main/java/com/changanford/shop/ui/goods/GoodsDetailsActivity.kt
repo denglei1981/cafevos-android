@@ -149,7 +149,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(R.id.img_back!=vid&&(!::control.isInitialized||viewModel.goodsDetailData.value==null))return
         when(vid){
             //确认订单
-            R.id.btn_submit->{
+            R.id.btn_buy->{
                 control.skuCode.apply {
                     if(control.isInvalidSelectAttrs(this))control.createAttribute()
                     else OrderConfirmActivity.start(Gson().toJson(viewModel.goodsDetailData.value))

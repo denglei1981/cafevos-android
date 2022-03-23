@@ -31,9 +31,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             val sekillCount=item.sekillCount
             val robbedPercentage= WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble(),0)
             item.robbedPercentage=robbedPercentage
-            val spuImg=item.spuImgs
-            val imgPath=if(spuImg.contains(","))spuImg.split(",")[0] else spuImg
-            dataBinding.imgCover.load(imgPath)
+            dataBinding.imgCover.load(item.getImgPath())
             dataBinding.tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
 //            val seckillNumLimit=item.seckillNumLimit?:"0"
 //            dataBinding.tvSeckillNumLimit.visibility=if("0"!=seckillNumLimit)View.VISIBLE else View.INVISIBLE

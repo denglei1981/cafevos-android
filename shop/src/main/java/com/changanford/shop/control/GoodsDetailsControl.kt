@@ -235,7 +235,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.inKill.model=dataBean
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
-        bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
+        bindingBtn(dataBean,null, binding.inBottom.btnBuy,0)
     }
     /**
      * 处理专享数据-并且是折扣数据
@@ -251,17 +251,17 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,source:Int=0){
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
-            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
+            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates,btnSource=source)//2/7 秒杀已结束或者未开始
             else if(stock<1){//库存不足,已售罄、已抢光
-                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true,btnSource=source)
             } else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
                     btnSubmit.setText(R.string.str_immediatelyChange)
                     btnSubmit.updateEnabled(false)
                 } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
-                    btnSubmit.setStates(8)
-                }else btnSubmit.setStates(5)
-            }else btnSubmit.setStates(5)
+                    btnSubmit.setStates(8,btnSource=source)
+                }else btnSubmit.setStates(5,btnSource=source)
+            }else btnSubmit.setStates(5,btnSource=source)
         }
     }
     /**
