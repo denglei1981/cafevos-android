@@ -89,7 +89,18 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
             back()
         }
     }
+    fun setLocked(isLocked:Boolean){
+        mController.isLocked=isLocked
+    }
     fun setVideoController(mediaController: StandardVideoController?){
-        mVideoView.setVideoController(mController)
+        mediaController?.setGestureEnabled(false)
+        mediaController?.isLocked=true
+        mVideoView.setVideoController(mediaController)
+    }
+    /**
+     * 是否开启手势空控制，默认开启，关闭之后，双击播放暂停以及手势调节进度，音量，亮度功能将关闭
+     * */
+    fun setGestureEnabled(gestureEnabled:Boolean){
+        mController.setGestureEnabled(gestureEnabled)
     }
 }

@@ -9,8 +9,10 @@ import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.dk.DKPlayerHelper
+import com.changanford.common.util.dk.StandardVideoController
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -60,7 +62,10 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
                         playerHelper = DKPlayerHelper(activity, videoView).apply {
+                            setVideoController(StandardVideoController(activity))
+                            setGestureEnabled(false)
                             setLooping(true)
+                            setLocked(true)
                             fullScreenGone()
                             startPlay(mainImg)
                         }
@@ -75,6 +80,7 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     }
     fun startPlayVideo(videoUrl:String?){
         videoHashMap[videoUrl]?.apply {
+            setLocked(true)
             videoUrl?.apply {
                 startPlay(this)
             }
@@ -91,6 +97,9 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
         }
     }
     fun releaseVideo(){
+        videoHashMap.values.forEach{
+            it?.release()
+        }
 //        playerHelper?.release()
 //        playerHelper=null
     }

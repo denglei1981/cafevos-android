@@ -111,10 +111,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
-                        carTopBanner.pauseVideo(mainImg)
+                        carTopBanner.releaseVideo()
                         if(mainIsVideo==1){//是视频
                             carTopBanner.startPlayVideo(mainImg)
-                        }else carTopBanner.releaseVideo()
+                        }
                         bindingCompose()
                     }
                     headerBinding.carTopViewPager.apply {
@@ -213,6 +213,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
             carControl.mMapView?.onPause()
             headerBinding.carTopViewPager.stopLoop()
+            carTopBanner.releaseVideo()
         }
     }
     override fun onPause() {
