@@ -78,6 +78,9 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
         }
         setText(statesTxt[states])
     }
+    /**
+     * [btnSource]按钮来源 0商品详情底部、1商品详情选择属性弹窗
+    * */
     fun updateEnabled(isEnabled:Boolean,btnSource:Int=-1){
         this.isEnabled=isEnabled
         if(isEnabled){
@@ -85,11 +88,17 @@ class KillBtnView(context:Context, attrs: AttributeSet? = null):AppCompatButton(
             if(btnSource==0){
                 setBackgroundResource(R.drawable.border1dp_round_l20dp_00095b)
                 setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
+            }else if(btnSource==1){
+                setBackgroundResource(R.drawable.border1dp_round_20dp_00095b)
+                setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
             }
         }else{
             setBackgroundResource(R.drawable.shadow_dd_20dp)
             if(btnSource==0){
                 setBackgroundResource(R.drawable.border1dp_round_l20dp_dd)
+                setTextColor(ContextCompat.getColor(context,R.color.color_DD))
+            }else if(btnSource==1){
+                setBackgroundResource(R.drawable.border1dp_round_20dp_dd)
                 setTextColor(ContextCompat.getColor(context,R.color.color_DD))
             }
         }

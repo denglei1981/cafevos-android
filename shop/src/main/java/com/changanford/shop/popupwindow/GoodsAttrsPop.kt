@@ -101,7 +101,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         limitBuyNum
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
-                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
+                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, null,1)
                 }
             }
         }
@@ -113,7 +113,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity) {
             dataBean.buyNum = it
-            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
+            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, null,1)
         }
 //        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
