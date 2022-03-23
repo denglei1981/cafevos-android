@@ -135,23 +135,43 @@
                 app:layout_constraintTop_toTopOf="@id/tv_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_accountPoints"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_account"
                 android:layout_marginTop="@dimen/dp_30"
                 app:layout_constraintTop_toBottomOf="@id/tv_number"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:start_txt="@string/str_yourAccount"
-                android:textColor="@color/text_colorv6"
-                android:textSize="@dimen/sp_12"/>
+                android:gravity="center">
+                <com.changanford.shop.view.TypefaceTextView
+                    android:id="@+id/tv_accountPointsTitle"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_yourAccount"
+                    android:textColor="@color/color_66"
+                    android:textSize="@dimen/sp_12"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_12"
+                    android:layout_height="@dimen/dp_12"
+                    android:src="@mipmap/ic_shop_fb_42"/>
+                <com.changanford.shop.view.TypefaceTextView
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:id="@+id/tv_accountPoints"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_00095B"
+                    android:textSize="@dimen/sp_12"
+                    android:text="@{model.acountFb}"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <com.changanford.shop.view.btn.KillBtnView
                 style="@style/style_btn"
                 android:id="@+id/btn_submit"
                 android:text="@string/str_immediatelyChange"
                 android:layout_marginTop="@dimen/dp_10"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_accountPoints" />
+                app:layout_constraintTop_toBottomOf="@id/layout_account" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

@@ -107,7 +107,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         }
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
+//            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
         }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity) {
