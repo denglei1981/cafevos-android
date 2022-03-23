@@ -1,209 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smart.refresh.layout.SmartRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    app:srlEnableLoadMore="false"
     android:id="@+id/refresh_layout"
-    android:layout_height="match_parent">
-<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/dp50"
-    android:background="@drawable/bg_start_end_my">
+    app:srlEnableLoadMore="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/toolbarheight">
+        android:layout_marginBottom="@dimen/dp50"
+        android:background="@drawable/bg_start_end_my">
 
-        <TextView
-            android:id="@+id/daySign"
-            style="@style/commonTextView.Small.Black"
-            android:textColor="#676978"
-            android:layout_height="@dimen/dp_30"
-            android:layout_marginHorizontal="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_15"
-            android:background="@drawable/bg_white_corner36_alpha60"
-            android:drawablePadding="@dimen/dp_4"
-            android:paddingHorizontal="@dimen/dp_20"
-            android:text="@string/my_daySign"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/toolbarheight">
 
-        </TextView>
+            <TextView
+                android:id="@+id/daySign"
+                style="@style/commonTextView.Small.Black"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginHorizontal="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_15"
+                android:background="@drawable/bg_white_corner36_alpha60"
+                android:drawablePadding="@dimen/dp_4"
+                android:paddingHorizontal="@dimen/dp_20"
+                android:text="@string/my_daySign"
+                android:textColor="#676978"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/memberEnter"
-            android:visibility="gone"
-            style="@style/commonTextView.Small.Black"
-            android:layout_height="@dimen/dp_30"
-            android:background="@drawable/bg_white_corner36_alpha60_l"
-            android:drawablePadding="@dimen/dp_4"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"
-            android:text="@string/my_member"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/daySign">
+            </TextView>
 
-        </TextView>
+            <TextView
+                android:id="@+id/memberEnter"
+                style="@style/commonTextView.Small.Black"
+                android:layout_height="@dimen/dp_30"
+                android:background="@drawable/bg_white_corner36_alpha60_l"
+                android:drawablePadding="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:text="@string/my_member"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/daySign">
 
-        <ImageView
-            android:id="@+id/my_msg"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            android:layout_marginEnd="10dp"
-            android:src="@mipmap/my_message"
-            app:layout_constraintBottom_toBottomOf="@+id/daySign"
-            app:layout_constraintRight_toLeftOf="@id/memberEnter"
-            app:layout_constraintTop_toTopOf="@+id/daySign" />
-        <ImageView
-            android:id="@+id/message_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/message_have_bg"
-            android:visibility="gone"
-            app:layout_constraintRight_toRightOf="@+id/my_msg"
-            app:layout_constraintTop_toTopOf="@+id/my_msg" />
-
-        <ImageView
-            android:id="@+id/my_set"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/my_msg"
-            app:layout_constraintEnd_toStartOf="@+id/my_msg"
-            app:layout_constraintTop_toTopOf="@+id/my_msg"
-            app:srcCompat="@mipmap/my_set" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/my_head"
-            android:layout_width="@dimen/dp_85"
-            android:layout_height="@dimen/dp_85"
-            android:layout_marginTop="@dimen/dp_20"
-            android:background="@drawable/bg_circle_eee"
-            android:src="@mipmap/head_default"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/daySign"
-            app:shapeAppearanceOverlay="@style/shapeableRound" />
-
-        <ImageView
-            android:id="@+id/my_headvipimg"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            app:layout_constraintBottom_toBottomOf="@+id/my_head"
-            app:layout_constraintEnd_toEndOf="@+id/my_head"
-            app:srcCompat="@mipmap/my_myvicon" />
-
-        <TextView
-            android:id="@+id/my_name"
-            style="@style/commonTextView.Medium"
-            android:layout_marginTop="20dp"
-            android:text="@string/my_loginTips"
-            app:layout_constraintEnd_toStartOf="@+id/my_icon_rv"
-            app:layout_constraintStart_toStartOf="@+id/my_head"
-            app:layout_constraintTop_toBottomOf="@+id/my_head" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_icon_rv"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/dp_0_5"
-            app:layout_constraintBottom_toBottomOf="@+id/my_name"
-            app:layout_constraintLeft_toRightOf="@+id/my_name"
-            app:layout_constraintRight_toRightOf="@id/my_head"
-            app:layout_constraintTop_toTopOf="@+id/my_name" />
-
-
-
-        <TextView
-            android:id="@+id/my_content"
-            style="@style/commonTextView.Small.Light"
-            android:layout_marginTop="@dimen/dp_10"
-            android:text="@string/my_loginSubTips"
-            app:layout_constraintEnd_toEndOf="@+id/my_name"
-            app:layout_constraintStart_toStartOf="@+id/my_name"
-            app:layout_constraintTop_toBottomOf="@+id/my_name" />
-
-        <LinearLayout
-            android:id="@+id/my_score_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_content">
+            </TextView>
 
             <ImageView
-                android:id="@+id/my_score_ic"
+                android:id="@+id/my_msg"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="10dp"
+                android:src="@mipmap/my_message"
+                app:layout_constraintBottom_toBottomOf="@+id/daySign"
+                app:layout_constraintRight_toLeftOf="@id/memberEnter"
+                app:layout_constraintTop_toTopOf="@+id/daySign" />
+
+            <ImageView
+                android:id="@+id/message_status"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_20"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/ic_task_jife" />
-
-            <TextView
-                android:id="@+id/my_score"
-                style="@style/commonTextView.Medium"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp_4"
-                android:text="0"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/my_score_acc"
-                style="@style/commonTextView.Small.LightBlue"
-                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_height="wrap_content"
+                android:background="@drawable/message_have_bg"
                 android:visibility="gone"
-                android:textColor="@color/text_01025C"
-                android:text="1.5倍加速" />
+                app:layout_constraintRight_toRightOf="@+id/my_msg"
+                app:layout_constraintTop_toTopOf="@+id/my_msg" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/my_set"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_msg"
+                app:layout_constraintEnd_toStartOf="@+id/my_msg"
+                app:layout_constraintTop_toTopOf="@+id/my_msg"
+                app:srcCompat="@mipmap/my_set" />
 
-        <include
-            android:id="@+id/my_stateLayout"
-            layout="@layout/my_stateview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/my_score_layout" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/my_head"
+                android:layout_width="@dimen/dp_85"
+                android:layout_height="@dimen/dp_85"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/bg_circle_eee"
+                android:src="@mipmap/head_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/daySign"
+                app:shapeAppearanceOverlay="@style/shapeableRound" />
 
-        <include
-            android:id="@+id/my_carAuthLayout"
-            layout="@layout/my_carauthview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/my_stateLayout" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/medalRec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"
-            tools:layout_editor_absoluteX="1dp"
-            tools:listitem="@layout/item_my_medal" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/menuRec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medalRec"
-            tools:listitem="@layout/item_mymenus" />
+            <ImageView
+                android:id="@+id/my_headvipimg"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                app:layout_constraintBottom_toBottomOf="@+id/my_head"
+                app:layout_constraintEnd_toEndOf="@+id/my_head"
+                app:srcCompat="@mipmap/my_myvicon" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/ll_user_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_head">
+
+                <TextView
+                    android:id="@+id/my_name"
+                    style="@style/commonTextView.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLength="10"
+                    android:text="@string/my_loginTips"
+                    app:layout_constraintEnd_toStartOf="@+id/my_icon_rv"
+                    app:layout_constraintTop_toBottomOf="@+id/my_head" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/my_icon_rv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="0.5dp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_car_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="9dp"
+                    android:background="@drawable/shape_my_evos_bg"
+                    android:gravity="center"
+                    android:textColor="@color/color_CC00095B"
+                    android:textSize="12sp"
+                    tools:text="@string/app_name"
+                    tools:visibility="gone" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/my_content"
+                style="@style/commonTextView.Small.Light"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/my_loginSubTips"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_user_info" />
+
+            <LinearLayout
+                android:id="@+id/my_score_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_content">
+
+                <ImageView
+                    android:id="@+id/my_score_ic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_20"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_task_jife" />
+
+                <TextView
+                    android:id="@+id/my_score"
+                    style="@style/commonTextView.Medium"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp_4"
+                    android:text="0"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/my_score_acc"
+                    style="@style/commonTextView.Small.LightBlue"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:text="1.5倍加速"
+                    android:textColor="@color/text_01025C"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/my_stateLayout"
+                layout="@layout/my_stateview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/my_score_layout" />
+
+            <include
+                android:id="@+id/my_carAuthLayout"
+                layout="@layout/my_carauthview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/my_stateLayout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/medalRec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_20"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"
+                tools:layout_editor_absoluteX="1dp"
+                tools:listitem="@layout/item_my_medal" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/menuRec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medalRec"
+                tools:listitem="@layout/item_mymenus" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
