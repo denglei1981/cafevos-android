@@ -166,7 +166,7 @@
 
             <com.changanford.shop.view.btn.KillBtnView
                 android:id="@+id/btn_cart"
-                android:text="@string/str_immediatelyChange"
+                android:text="@string/str_addShoppingCart"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_40"
