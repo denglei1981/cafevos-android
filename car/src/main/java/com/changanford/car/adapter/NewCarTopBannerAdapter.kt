@@ -5,14 +5,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.control.AnimationControl
+import com.changanford.car.control.PlayerHelper
+import com.changanford.car.control.VideoController
 import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.dk.DKPlayerHelper
-import com.changanford.common.util.dk.StandardVideoController
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
-import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -23,8 +22,8 @@ import com.zhpan.bannerview.BaseViewHolder
  */
 class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBannerBean?>() {
     private val animationControl by lazy { AnimationControl() }
-    private var playerHelper: DKPlayerHelper?=null //播放器帮助类
-    private var videoHashMap= HashMap<String,DKPlayerHelper?>()
+    private var playerHelper: PlayerHelper?=null //播放器帮助类
+    private var videoHashMap= HashMap<String,PlayerHelper?>()
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_car_banner
     }
@@ -61,8 +60,8 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         imgTop.visibility=View.GONE
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
-                        playerHelper = DKPlayerHelper(activity, videoView).apply {
-                            setVideoController(StandardVideoController(activity))
+                        playerHelper = PlayerHelper(activity, videoView).apply {
+                            setVideoController(VideoController(activity))
                             setGestureEnabled(false)
                             setLooping(true)
                             setLocked(true)

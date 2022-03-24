@@ -1,9 +1,11 @@
-package com.changanford.common.util.dk
+package com.changanford.car.control
 
 import android.app.Activity
 import android.widget.ImageView
+import com.changanford.common.util.dk.*
 import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
 import com.changanford.common.utilext.GlideUtils
+import com.dueeeke.videoplayer.controller.BaseVideoController
 import com.dueeeke.videoplayer.player.VideoView
 
 /**
@@ -11,14 +13,14 @@ import com.dueeeke.videoplayer.player.VideoView
  * @Date: 2020/5/15
  * @Des: DK播放器辅助类
  */
-class DKPlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>) {
+class PlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>) {
 
 
     /**
      * 控制器
      */
     private val mController by lazy {
-        StandardVideoController(context)
+        VideoController(context)
     }
 
     /**
@@ -89,7 +91,16 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
             back()
         }
     }
-    fun setVideoController(mediaController: StandardVideoController?){
+    fun setLocked(isLocked:Boolean){
+        mController.isLocked=isLocked
+    }
+    fun setVideoController(mediaController: BaseVideoController?){
         mVideoView.setVideoController(mediaController)
+    }
+    /**
+     * 是否开启手势空控制，默认开启，关闭之后，双击播放暂停以及手势调节进度，音量，亮度功能将关闭
+     * */
+    fun setGestureEnabled(gestureEnabled:Boolean){
+        mController.setGestureEnabled(gestureEnabled)
     }
 }
