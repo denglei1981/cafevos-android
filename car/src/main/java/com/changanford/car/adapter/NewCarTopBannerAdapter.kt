@@ -11,6 +11,7 @@ import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.dueeeke.videoplayer.player.VideoView
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -99,8 +100,14 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     fun releaseVideo(){
         videoHashMap.values.forEach{
             it?.release()
+            it?.clearOnStateChangeListeners()
         }
 //        playerHelper?.release()
 //        playerHelper=null
+    }
+    fun addVideoListener(videoUrl:String?,listener: VideoView.OnStateChangeListener){
+        videoHashMap[videoUrl]?.apply {
+            addOnStateChangeListener(listener)
+        }
     }
 }

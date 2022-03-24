@@ -49,13 +49,18 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     /**
      * 只播放
     * */
-    fun purePlayVideo(url: String?){
+    fun purePlayVideo(url: String?,listener: VideoView.OnStateChangeListener?=null){
         startPlay(url)
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
         mVideoView.setLooping(true)
-        mVideoView.isMute=true
+        mVideoView.isMute=false
+        listener?.apply {
+            clearOnStateChangeListeners()
+            mVideoView.addOnStateChangeListener(this)
+        }
+
     }
     fun fullScreenGone() {
         controlView.fullScreenGone()
@@ -114,5 +119,19 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     }
     private fun getCurrentPlayState():Int{
         return mVideoView.currentPlayState
+    }
+
+    /**
+     * 添加一个播放状态监听器，播放状态发生变化时将会调用。
+     */
+    fun addOnStateChangeListener(listener: VideoView.OnStateChangeListener) {
+        mVideoView.addOnStateChangeListener(listener)
+    }
+
+    /**
+     * 移除所有播放状态监听
+     */
+    fun clearOnStateChangeListeners(){
+        mVideoView.clearOnStateChangeListeners()
     }
 }
