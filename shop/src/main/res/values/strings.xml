@@ -187,4 +187,6 @@
     <string name="str_ruleDescription">规则说明</string>
     <string name="str_shoppingCart">购物车</string>
     <string name="str_addShoppingCart">加入购物车</string>
+    <string name="str_left_parentheses">（</string>
+    <string name="str_right_parentheses">）</string>
 </resources>

@@ -618,7 +618,7 @@ class JumpUtils {
                     }
                     else -> {
                         if (!TextUtils.isEmpty(value)) {
-                            bundle.putString("goodsInfo", value)
+                            bundle.putString("goodsInfo", value)//商品信息列表
                             startARouter(ARouterShopPath.OrderConfirmActivity, bundle, true)
                         }
                     }

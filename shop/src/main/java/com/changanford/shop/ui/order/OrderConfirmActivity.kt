@@ -26,14 +26,12 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.load
 import com.changanford.shop.R
-import com.changanford.shop.adapter.FlowLayoutManager
-import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -50,6 +48,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         fun start(goodsInfo:String) {
             JumpUtils.instans?.jump(109,goodsInfo)
         }
+        fun start(dataBean:GoodsDetailBean) {
+            val listBean= ArrayList<GoodsDetailBean>()
+            listBean.add(dataBean)
+            JumpUtils.instans?.jump(109,Gson().toJson(listBean))
+        }
+        fun start(listBean:ArrayList<GoodsDetailBean>) {
+            JumpUtils.instans?.jump(109,Gson().toJson(listBean))
+        }
     }
     private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit=false
@@ -63,30 +69,34 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             return
         }
         if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
-        dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
-//        dataBean.spuPageType="MAINTENANCE"
+        if(goodsInfo!!.startsWith("[")){
+            val dataList: List<GoodsDetailBean> = Gson().fromJson(goodsInfo, object : TypeToken<List<GoodsDetailBean?>?>() {}.type)
+            dataBean=dataList[0]
+        }else if(goodsInfo.startsWith("{")){
+            dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+        }
         spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
         initLiveDataBus()
     }
 
     override fun initData() {
-        binding.inGoodsInfo.addSubtractView.apply {
-            val stock=dataBean.stock
-            val limitBuyNum:Int=dataBean.getLimitBuyNum()
-            var isLimitBuyNum=false//是否限购
-            val max: Int =if(limitBuyNum in 1..stock) {
-                isLimitBuyNum=true
-                limitBuyNum
-            } else stock
-            setMax(max,isLimitBuyNum)
-            setNumber(dataBean.buyNum,false)
-            setIsUpdateBuyNum(dataBean.isUpdateBuyNum)
-            numberLiveData.observe(this@OrderConfirmActivity) {
-                dataBean.buyNum = it
-                bindingBaseData()
-            }
-        }
+//        binding.inGoodsInfo.addSubtractView.apply {
+//            val stock=dataBean.stock
+//            val limitBuyNum:Int=dataBean.getLimitBuyNum()
+//            var isLimitBuyNum=false//是否限购
+//            val max: Int =if(limitBuyNum in 1..stock) {
+//                isLimitBuyNum=true
+//                limitBuyNum
+//            } else stock
+//            setMax(max,isLimitBuyNum)
+//            setNumber(dataBean.buyNum,false)
+//            setIsUpdateBuyNum(dataBean.isUpdateBuyNum)
+//            numberLiveData.observe(this@OrderConfirmActivity) {
+//                dataBean.buyNum = it
+//                bindingBaseData()
+//            }
+//        }
         //非维保商品 需要选择地址
         if(WConstant.maintenanceType!=spuPageType){
             viewModel.addressList.observe(this) { addressList ->
@@ -153,12 +163,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             model=dataBean
         }
         binding.inGoodsInfo.apply {
-            OrderGoodsAttributeAdapter().apply {
-                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false,true)
-                rvGoodsProperty.adapter= this
-                setList(dataBean.skuCodeTxts?.filter { ""!=it })
-            }
-            imgGoodsCover.load(dataBean.skuImg)
+//            OrderGoodsAttributeAdapter().apply {
+//                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false,true)
+//                rvGoodsProperty.adapter= this
+//                setList(dataBean.skuCodeTxts?.filter { ""!=it })
+//            }
+//            imgGoodsCover.load(dataBean.skuImg)
 //            if(freightPrice!=0)tvDistributionType
             model=dataBean
         }
