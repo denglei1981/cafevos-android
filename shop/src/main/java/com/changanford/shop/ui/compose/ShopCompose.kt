@@ -123,7 +123,7 @@ private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
                         }
                     ), contentDescription = null)
                 }else{
-                    Text(text = "$position",color= colorResource(R.color.color_D1D2D7), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "${position+1}",color= colorResource(R.color.color_D1D2D7), fontSize = 17.sp, fontWeight = FontWeight.Bold)
                 }
             }
             Spacer(modifier = Modifier.width(11.dp))
