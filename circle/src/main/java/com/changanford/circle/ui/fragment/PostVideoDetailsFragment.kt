@@ -14,6 +14,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.changanford.circle.R
+import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.adapter.circle.CirclePostDetailsTagAdapter
 import com.changanford.circle.adapter.circle.CircleVideoPostTagAdapter
@@ -68,6 +69,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     private var isExpand = false
     private var isOpenComment = false //是否打开评论区
 
+    private val labelAdapter by lazy {
+        LabelAdapter(requireContext(), 18)
+    }
+
     private val commentAdapter by lazy {
         PostDetailsCommentAdapter(this)
     }
@@ -113,7 +118,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             } else {
                 "关注"
             }
-            tvTime.text = mData.timeStr
+            mData.authorBaseVo?.imags?.let {
+                if (it.isNotEmpty()) {
+                    labelAdapter.setItems(it)
+                }
+            }
+            rvUserTag.adapter = labelAdapter
+            tvSubTitle.visibility = if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
+            tvSubTitle.text = mData.authorBaseVo?.getMemberNames()
             tvTitle.text = mData.title
             if (mData.circleName.isNullOrEmpty()) {
                 tvFrom.visibility = View.GONE
@@ -144,11 +156,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         binding.tvContent.post {
             val textView = binding.tvContent
             binding.tvExpand.text = if (isExpand) "收起" else "展开"
-            var originText:String?=""
-            if(!TextUtils.isEmpty(mData.content)){
+            var originText: String? = ""
+            if (!TextUtils.isEmpty(mData.content)) {
                 originText = Html.fromHtml(mData.content).toString()
-            }else{
-                originText=mData.content
+            } else {
+                originText = mData.content
             }
             if (isExpand) {
                 textView.text = mData.content
@@ -446,31 +458,32 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         playerHelper.release()
     }
 
-    fun showTag(){
-        if(mData.tags==null||mData.tags.size==0){
-            binding.rvTags.visibility=View.GONE
+    fun showTag() {
+        if (mData.tags == null || mData.tags.size == 0) {
+            binding.rvTags.visibility = View.GONE
             return
         }
-        if(mData.tags.size>0){
+        if (mData.tags.size > 0) {
             val circlePostDetailsTagAdapter = CircleVideoPostTagAdapter()
-            binding.rvTags.adapter=circlePostDetailsTagAdapter
+            binding.rvTags.adapter = circlePostDetailsTagAdapter
             circlePostDetailsTagAdapter.setNewInstance(mData.tags)
-            binding.rvTags.visibility=View.VISIBLE
+            binding.rvTags.visibility = View.VISIBLE
             tagsClick(circlePostDetailsTagAdapter)
         }
     }
 
-    fun tagsClick(circlePostDetailsTagAdapter:CircleVideoPostTagAdapter){
+    fun tagsClick(circlePostDetailsTagAdapter: CircleVideoPostTagAdapter) {
         circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
             // 跳转到搜索
             val item = circlePostDetailsTagAdapter.getItem(position)
             val bundle = Bundle()
             bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
             bundle.putString(JumpConstant.SEARCH_CONTENT, item.tagName)
-            bundle.putString(JumpConstant.SEARCH_TAG_ID,item.id)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID, item.id)
             startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
         }
     }
+
     private fun StartBaduMap() {
         SoulPermission.getInstance()
             .checkAndRequestPermission(
@@ -479,10 +492,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     override fun onPermissionOk(permission: Permission) {
                         val intent = Intent()
                         intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
-                        intent.putExtra("lat",mData.lat)
-                        intent.putExtra("lon",mData.lon)
-                        intent.putExtra("address",mData.address)
-                        intent.putExtra("addrName",mData.showCity())
+                        intent.putExtra("lat", mData.lat)
+                        intent.putExtra("lon", mData.lon)
+                        intent.putExtra("address", mData.address)
+                        intent.putExtra("addrName", mData.showCity())
                         startActivity(intent)
                     }
 

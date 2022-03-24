@@ -182,35 +182,50 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_follow"
-            app:layout_constraintLeft_toRightOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/tv_follow"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
             tools:text="萨瓦迪LALA" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_time"
+            android:id="@+id/tv_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="5分钟前" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head"
+            tools:text="5分钟前"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_user_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:maxHeight="@dimen/dp_32"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_follow"
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="2dp"
             android:background="@drawable/shap_e5_12"
             android:gravity="center"
             android:textColor="@color/circle_app_color"
             android:textSize="11sp"
             android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/tv_name"
-            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintStart_toEndOf="@+id/rv_user_tag"
+            app:layout_constraintTop_toTopOf="@+id/tv_name"
             tools:text="关注" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

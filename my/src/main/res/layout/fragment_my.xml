@@ -142,7 +142,8 @@
                     android:textColor="@color/color_CC00095B"
                     android:textSize="12sp"
                     tools:text="@string/app_name"
-                    tools:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
 
             </LinearLayout>

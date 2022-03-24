@@ -251,14 +251,19 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 include.apply {
                     textView9.text = growSeriesName
                     try {
-                        textView11.text ="${totalGrowth}/${growSeriesMaxGrow}"
-                        myScorelevel.progress = if(nextSeriesMinGrow!=0L)(totalGrowth * 100 / (growSeriesMaxGrow.toInt())).toInt() else 0
-                    }catch (e:Exception){
+                        textView11.text = "${totalGrowth}/${growSeriesMaxGrow}"
+                        myScorelevel.progress =
+                            if (nextSeriesMinGrow != 0L) (totalGrowth * 100 / (growSeriesMaxGrow.toInt())).toInt() else 0
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
 
                 }
             }
+            binding.tvCarName.visibility = if (getCarOwnerEmpty()) View.GONE else View.VISIBLE
+            binding.tvCarName.text = carOwner
+
+
         }
         binding.myIconRv.isVisible = false
         userInfoBean?.ext?.let {

@@ -57,7 +57,12 @@ class NewsListAdapter(
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         GlideUtils.loadBD(item.pics, ivPicBig)
         tvAuthorName.text = item.authors?.nickname
-        tvSubtitle.text = item.authors?.getMemberNames()
+        if(TextUtils.isEmpty(item.authors?.getMemberNames())){
+            tvSubtitle.visibility=View.GONE
+        }else{
+            tvSubtitle.visibility=View.VISIBLE
+        }
+//        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
         btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE

@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import android.text.TextUtils
 import java.io.Serializable
 
 /**
@@ -111,8 +112,13 @@ data class Ext(
     val memberName: String,
     val totalIntegral: String,
     val totalGrowth: Long,
-    val growSeriesMaxGrow: String
-)
+    val growSeriesMaxGrow: String,
+    val carOwner: String = ""
+) {
+    fun getCarOwnerEmpty(): Boolean {
+        return TextUtils.isEmpty(carOwner)
+    }
+}
 
 data class Imag(
     val img: String,
@@ -163,7 +169,7 @@ data class QuestionData(
     var isCheck: Boolean = false,
     var reasonId: Int = 0,
     var dictCode: Int = 0,
-    var dictValue: String =""
+    var dictValue: String = ""
 )
 
 data class AddressBeanItem(
