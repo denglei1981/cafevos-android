@@ -61,7 +61,6 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
                         playerHelper = PlayerHelper(activity, videoView).apply {
-                            setVideoController(VideoController(activity))
                             setGestureEnabled(false)
                             setLooping(true)
                             setLocked(true)
