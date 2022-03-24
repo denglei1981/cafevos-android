@@ -90,6 +90,6 @@ class DKPlayerHelper(private val context: Activity, private val mVideoView: Vide
         }
     }
     fun setVideoController(mediaController: StandardVideoController?){
-        mVideoView.setVideoController(mController)
+        mVideoView.setVideoController(mediaController)
     }
 }
