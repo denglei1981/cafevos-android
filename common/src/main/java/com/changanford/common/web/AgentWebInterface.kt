@@ -795,7 +795,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     /**
      * 打开相册
      * [maxNum]最大选择图片数量
-     * [callback]返回选取图片的base64字符串数组
+     * [callback]返回选取图片的base64字符串用英文逗号分割（,）
      * [isEnableCrop]是否裁剪
      */
     @JavascriptInterface
@@ -804,7 +804,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
             override fun onCancel() {}
             override fun onResult(result: MutableList<LocalMedia?>?) {
                 if (result != null) {
-                    val base64Arr= arrayListOf<String>()
+                    var base64Str= ""
                     for (media in result) {
                         var path = ""
                         media?.let {
@@ -820,9 +820,9 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                             }
                         }
                         val imgPath=FileHelper.getImageStr(path)
-                        base64Arr.add(imgPath)
+                        base64Str+="$imgPath,"
                     }
-                    if(base64Arr.size>0)agentWeb.jsAccessEntrace.quickCallJs(callback,base64Arr.toString())
+                    if(base64Str.isNotEmpty())agentWeb.jsAccessEntrace.quickCallJs(callback,base64Str.substring(0,base64Str.length-1))
                 }
             }
         })
