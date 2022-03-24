@@ -105,16 +105,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     JumpUtils.instans?.jump(topBannerList[position].mainJumpType, topBannerList[position].mainJumpVal)
                 }
             }
+            carTopBanner.videoHashMap.clear()
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
-                        carTopBanner.pauseVideo(mainImg)
+                        carTopBanner.releaseVideo()
                         if(mainIsVideo==1){//是视频
-                            carTopBanner.startPlayVideo(mainImg)
-                        }else carTopBanner.releaseVideo()
+                            carTopBanner.resumeVideo(mainImg)
+                        }
                         bindingCompose()
                     }
                     headerBinding.carTopViewPager.apply {
@@ -201,17 +202,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         if(!isHidden) {
             carControl.mMapView?.onResume()
             if(oldScrollY<maxSlideY&&topBannerList.size>0){
-                val position=headerBinding.carTopViewPager.currentItem
-                carTopBanner.resumeVideo(topBannerList[position].mainImg)
+//                val position=headerBinding.carTopViewPager.currentItem
+//                carTopBanner.resumeVideo(topBannerList[position].mainImg)
                 headerBinding.carTopViewPager.startLoop()
             }
             getData()
         }else{
-            if(topBannerList.size>0){
-                val position=headerBinding.carTopViewPager.currentItem
-                carTopBanner.pauseVideo(topBannerList[position].mainImg)
-            }
             carControl.mMapView?.onPause()
+            carTopBanner.releaseVideo()
             headerBinding.carTopViewPager.stopLoop()
         }
     }

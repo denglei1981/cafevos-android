@@ -66,7 +66,7 @@
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_kill_goods"/>
             <com.changanford.common.ui.view.WTextView
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:visibility="visible"
                 android:id="@+id/tv_recommendList"
                 android:textStyle="bold"
@@ -80,7 +80,7 @@
                 android:textColor="@color/color_34"
                 android:textSize="@dimen/sp_16" />
             <com.changanford.common.ui.view.WTextView
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:visibility="visible"
                 android:drawablePadding="@dimen/dp_5"
                 android:id="@+id/tv_allList"
