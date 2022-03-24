@@ -140,6 +140,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         Log.e("wenke","视频播放完成")
                         carTopBanner.clearOnStateChangeListeners()
                         startLoopNow()
+                        if(currentItem<topBannerList.size-2)currentItem += 1
+                        else currentItem=0
                     }else{
                         Log.e("wenke","是视频需要立即stopLoop")
                         stopLoop()
