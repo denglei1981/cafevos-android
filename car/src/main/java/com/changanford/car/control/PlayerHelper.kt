@@ -2,10 +2,12 @@ package com.changanford.car.control
 
 import android.app.Activity
 import android.widget.ImageView
-import com.changanford.common.util.dk.*
+import com.changanford.common.util.dk.CompleteView
+import com.changanford.common.util.dk.ErrorView
+import com.changanford.common.util.dk.PrepareView
+import com.changanford.common.util.dk.VodControlView
 import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
 import com.changanford.common.utilext.GlideUtils
-import com.dueeeke.videoplayer.controller.BaseVideoController
 import com.dueeeke.videoplayer.player.VideoView
 
 /**
@@ -14,8 +16,6 @@ import com.dueeeke.videoplayer.player.VideoView
  * @Des: DK播放器辅助类
  */
 class PlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>) {
-
-
     /**
      * 控制器
      */
@@ -39,9 +39,24 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mController.addControlComponent(mPrepareView)
         mController.addControlComponent(CompleteView(context))
         mController.addControlComponent(controlView)
+        mController.setGestureEnabled(false)
+        controlView.fullScreenGone()
+        mController.isLocked=true
+        mVideoView.setLooping(true)
         mVideoView.setVideoController(mController)
-    }
 
+    }
+    /**
+     * 只播放
+    * */
+    fun purePlayVideo(url: String?){
+        startPlay(url)
+        mController.setGestureEnabled(false)
+        controlView.fullScreenGone()
+        mController.isLocked=true
+        mVideoView.setLooping(true)
+        mVideoView.isMute=true
+    }
     fun fullScreenGone() {
         controlView.fullScreenGone()
     }
@@ -57,7 +72,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     /**
      * 开始播放
      */
-    fun startPlay(url: String?) {
+    private fun startPlay(url: String?) {
         url?.apply {
             val cacheServer = ProxyVideoCacheManager.getProxy(context)
             cacheServer.getProxyUrl(GlideUtils.handleImgUrl(this))?.let {
@@ -74,8 +89,12 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     fun setLooping(looping: Boolean) {
         mVideoView.setLooping(looping)
     }
-    fun resume() {
-        mVideoView.resume()
+    fun resume(videoUrl:String?) {
+        if(getCurrentPlayState()==VideoView.STATE_PAUSED){
+            mVideoView.resume()
+        }else{
+            purePlayVideo(videoUrl)
+        }
     }
 
     fun pause() {
@@ -85,22 +104,15 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     fun release() {
         mVideoView.release()
     }
-
+    fun setMute(isMute:Boolean) {
+        mVideoView.isMute=isMute
+    }
     fun backPressed(back: (() -> Unit)) {
         if (!mVideoView.onBackPressed()) {
             back()
         }
     }
-    fun setLocked(isLocked:Boolean){
-        mController.isLocked=isLocked
-    }
-    fun setVideoController(mediaController: BaseVideoController?){
-        mVideoView.setVideoController(mediaController)
-    }
-    /**
-     * 是否开启手势空控制，默认开启，关闭之后，双击播放暂停以及手势调节进度，音量，亮度功能将关闭
-     * */
-    fun setGestureEnabled(gestureEnabled:Boolean){
-        mController.setGestureEnabled(gestureEnabled)
+    private fun getCurrentPlayState():Int{
+        return mVideoView.currentPlayState
     }
 }

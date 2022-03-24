@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.control.AnimationControl
 import com.changanford.car.control.PlayerHelper
-import com.changanford.car.control.VideoController
 import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
@@ -23,7 +22,7 @@ import com.zhpan.bannerview.BaseViewHolder
 class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBannerBean?>() {
     private val animationControl by lazy { AnimationControl() }
     private var playerHelper: PlayerHelper?=null //播放器帮助类
-    private var videoHashMap= HashMap<String,PlayerHelper?>()
+    var videoHashMap= HashMap<String,PlayerHelper?>()
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_car_banner
     }
@@ -60,12 +59,11 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         imgTop.visibility=View.GONE
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
+                        videoView.isMute=true
                         playerHelper = PlayerHelper(activity, videoView).apply {
-                            setGestureEnabled(false)
-                            setLooping(true)
-                            setLocked(true)
-                            fullScreenGone()
-                            startPlay(mainImg)
+                           if(videoHashMap.size<1) {
+                               purePlayVideo(mainImg)
+                           }
                         }
                         videoHashMap[mainImg?:""]= playerHelper
                     }
@@ -78,10 +76,14 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     }
     fun startPlayVideo(videoUrl:String?){
         videoHashMap[videoUrl]?.apply {
-            setLocked(true)
             videoUrl?.apply {
-                startPlay(this)
+                purePlayVideo(this)
             }
+        }
+    }
+    fun pauseVideoAll(){
+        videoHashMap.values.forEach{
+            it?.pause()
         }
     }
     fun pauseVideo(videoUrl:String?){
@@ -91,7 +93,7 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     }
     fun resumeVideo(videoUrl:String?){
         videoHashMap[videoUrl]?.apply {
-            resume()
+            resume(videoUrl)
         }
     }
     fun releaseVideo(){

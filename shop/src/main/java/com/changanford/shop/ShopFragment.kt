@@ -121,7 +121,16 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     HomeMyIntegralCompose(it.totalIntegral)
                 }
                 //推荐
-                recommendAdapter.setList(it.mallSpuKindDtos)
+                if(it.mallSpuKindDtos!=null&&it.mallSpuKindDtos?.size!!>0){
+                    tvAllList.visibility=View.VISIBLE
+                    tvRecommendList.visibility=View.VISIBLE
+                    recyclerViewRecommend.visibility=View.VISIBLE
+                    recommendAdapter.setList(it.mallSpuKindDtos)
+                }else{
+                    tvAllList.visibility=View.GONE
+                    tvRecommendList.visibility=View.GONE
+                    recyclerViewRecommend.visibility=View.GONE
+                }
             }
             bindingTab(it.mallTags)
             binding.smartRl.finishRefresh()
