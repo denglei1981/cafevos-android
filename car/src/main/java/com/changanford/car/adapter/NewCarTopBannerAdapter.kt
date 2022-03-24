@@ -20,7 +20,7 @@ import com.zhpan.bannerview.BaseViewHolder
  * @Time : 2022/1/18 0018
  * @Description : NewCarTopBannerAdapter
  */
-class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBannerBean?>() {
+class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnStateChangeListener) : BaseBannerAdapter<NewCarBannerBean?>() {
     private val animationControl by lazy { AnimationControl() }
     private var playerHelper: PlayerHelper?=null //播放器帮助类
     var videoHashMap= HashMap<String,PlayerHelper?>()
@@ -64,6 +64,7 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
                         playerHelper = PlayerHelper(activity, videoView).apply {
                            if(videoHashMap.size<1) {
                                purePlayVideo(mainImg)
+                               addOnStateChangeListener(listener)
                            }
                         }
                         videoHashMap[mainImg?:""]= playerHelper
@@ -95,6 +96,11 @@ class NewCarTopBannerAdapter(val activity:Activity) : BaseBannerAdapter<NewCarBa
     fun resumeVideo(videoUrl:String?){
         videoHashMap[videoUrl]?.apply {
             resume(videoUrl)
+        }
+    }
+    fun clearOnStateChangeListeners(){
+        videoHashMap.values.forEach{
+            it?.clearOnStateChangeListeners()
         }
     }
     fun releaseVideo(){

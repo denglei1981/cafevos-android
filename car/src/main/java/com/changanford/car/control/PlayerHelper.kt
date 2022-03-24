@@ -42,7 +42,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
-        mVideoView.setLooping(true)
+        mVideoView.setLooping(false)
         mVideoView.setVideoController(mController)
 
     }
@@ -54,7 +54,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
-        mVideoView.setLooping(true)
+        mVideoView.setLooping(false)
         mVideoView.isMute=false
         listener?.apply {
             clearOnStateChangeListeners()
