@@ -187,6 +187,9 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                                 addData(imgs)
                             }
                         }
+                        binding.tvSubTitle.visibility = if (it.getCarOwnerEmpty()) View.GONE else View.VISIBLE
+                        binding.tvSubTitle.text = it.carOwner
+
                     }
                 }
             }

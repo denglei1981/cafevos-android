@@ -43,9 +43,9 @@
             android:ellipsize="end"
             android:maxLength="12"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
             app:layout_constraintStart_toEndOf="@+id/iv_header"
             app:layout_constraintTop_toTopOf="@+id/iv_header"
             tools:text="这里是兔子说" />
@@ -68,12 +68,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ff00095b"
-            android:visibility="gone"
             android:textSize="@dimen/sp_10"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintStart_toStartOf="@+id/tv_author_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
-            tools:text="车迷级公民" />
+            tools:text="车迷级公民"
+            tools:visibility="visible" />
 
 
         <com.google.android.material.button.MaterialButton
