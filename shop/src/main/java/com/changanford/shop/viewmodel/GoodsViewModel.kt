@@ -10,10 +10,12 @@ import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 /**
@@ -41,6 +43,10 @@ class GoodsViewModel: BaseViewModel() {
     var commentLiveData =MutableLiveData<CommentBean?>()
     //商品收藏状态
     var collectionGoodsStates = MutableLiveData<Boolean>()
+    //分类列表
+    var typesBean = MutableLiveData<MutableList<GoodsTypesItemBean>>()
+    //商品列表
+    var GoodsListBean = MutableLiveData<MutableList<GoodsItemBean>?>()
     /**
      * 获取banner
      * */
@@ -302,6 +308,41 @@ class GoodsViewModel: BaseViewModel() {
                 ToastUtils.showLongToast(it,MyApp.mContext)
             }.onSuccess {
 
+            }
+        }
+    }
+
+    /**
+     * 获取推荐榜单分类
+     * */
+    fun getRecommendTypes(){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.getRecommendTypes(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                it?.toast()
+            }.onSuccess {
+                typesBean.postValue(it)
+            }
+        }
+    }
+    /**
+     * 获取推荐榜单分类
+     * */
+    fun getRecommendList(kindId:String,showLoading:Boolean=false){
+        viewModelScope.launch {
+            fetchRequest(showLoading){
+                body.clear()
+                body["mallMallRecommendKindId"]=kindId
+                val randomKey = getRandomKey()
+                shopApiService.getRecommendList(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                it?.toast()
+                GoodsListBean.postValue(null)
+            }.onSuccess {
+                GoodsListBean.postValue(it)
             }
         }
     }

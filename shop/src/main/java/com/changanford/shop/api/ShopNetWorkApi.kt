@@ -142,4 +142,14 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/wb/list")
     suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    /**
+     * 推荐商品分类
+     * */
+    @POST("/mall/recommend/kindsGet")
+    suspend fun getRecommendTypes(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsTypesItemBean>>
+    /**
+     * 推荐商品列表
+     * */
+    @POST("/mall/recommend/spuGet")
+    suspend fun getRecommendList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
 }

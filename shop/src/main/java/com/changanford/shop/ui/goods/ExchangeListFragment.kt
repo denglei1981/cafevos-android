@@ -1,4 +1,4 @@
-package com.changanford.shop.ui.exchange
+package com.changanford.shop.ui.goods
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
@@ -6,8 +6,8 @@ import com.changanford.common.bean.GoodsList
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
+import com.changanford.shop.control.SortControl
 import com.changanford.shop.databinding.FragmentExchangeBinding
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
@@ -33,6 +33,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var tagId="-1"
     private var tagType:String?=null
     private var isRequest=false
+    private var sortControl:SortControl?=null
     override fun initView() {
         arguments?.apply{
             tagId=getString("tagId","0")
@@ -40,6 +41,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
             isRequest=true
         }
+        sortControl=SortControl(requireContext(),binding)
         viewModel.goodsListData.observe(this) {
             isRequest = false
             bindingData(it)
@@ -83,4 +85,5 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
         }
     }
+
 }

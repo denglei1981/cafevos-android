@@ -20,6 +20,7 @@ import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
+import com.changanford.shop.ui.compose.DetailsWalkCompose
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -39,6 +40,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     //商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     private var timeCount: CountDownTimer?=null
     lateinit var dataBean: GoodsDetailBean
+    @SuppressLint("SimpleDateFormat")
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     private var popupWindow:GoodsAttrsPop?=null//规格属性弹窗
     fun bindingData(dataBean:GoodsDetailBean){
@@ -74,7 +76,6 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         //详情
         val detailsHtml=dataBean.detailsHtml
-//        WCommonUtil.htmlToImgStr(activity,headerBinding.tvDetails,detailsHtml)
         CustomWebHelper(activity, headerBinding.webview,false).loadDataWithBaseURL(detailsHtml)
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
@@ -120,6 +121,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
+        //推荐-逛一逛
+        headerBinding.composeView.setContent {
+            DetailsWalkCompose(dataBean.recommend)
+        }
     }
     /**
      * 评价信息

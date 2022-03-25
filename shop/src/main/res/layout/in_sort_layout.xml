@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20">
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_0"
+            tools:checked="true"
+            tools:textStyle="bold"
+            android:text="@string/str_comprehensiveRanking"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@drawable/cb_text_sort"
+            android:button="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"/>
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_1"
+            android:text="@string/str_sales"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_9394A0"
+            android:button="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:drawableEnd="@drawable/cb_selector_sort"
+            android:drawableEnd="@mipmap/ic_sort_0"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center_vertical"/>
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"/>
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_2"
+            android:text="@string/str_price"
+            android:textSize="@dimen/sp_16"
+            tools:checked="true"
+            android:textColor="@color/color_9394A0"
+            android:button="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:drawableEnd="@drawable/cb_selector_sort"
+            android:drawableEnd="@mipmap/ic_sort_0"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+</layout>

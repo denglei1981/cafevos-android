@@ -4,7 +4,7 @@
     <data>
     </data>
     <LinearLayout
-        android:background="@color/color_F4F5F9"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -23,7 +23,7 @@
                 android:layout_height="match_parent">
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appbarLayout"
-                    android:background="@color/color_F4F5F9"
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:elevation="0dp"

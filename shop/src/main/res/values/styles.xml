@@ -12,8 +12,18 @@
         <item name="tabSelectedTextColor">@color/color_00095B</item>
         <item name="tabTextColor">@color/color_33</item>
     </style>
+    <style name="style_indexTabItemStyle16" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
     <style name="style_indexTabItemStyle" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_15</item>
+    </style>
+    <style name="style_indexTabItemStyle13" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_13</item>
+    </style>
+    <style name="style_indexTabItemStyle14" parent="TextAppearance.AppCompat.Title.Inverse">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="style_indexTabItemStyle0" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_15</item>

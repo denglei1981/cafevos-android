@@ -6,6 +6,7 @@
         android:paddingEnd="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_33"
         android:paddingTop="@dimen/dp_7"
+        android:paddingStart="@dimen/dp_10"
         android:background="@color/color_withe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,8 +15,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/style_cb_collection"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
             android:id="@+id/cb_collect"
             android:text="@string/str_collection" />
         <View
@@ -27,13 +28,28 @@
             app:layout_constraintStart_toStartOf="@id/cb_collect"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
+        <com.changanford.common.ui.view.WTextView
+            android:onClick="onClick"
+            app:layout_constraintStart_toEndOf="@id/cb_collect"
+            app:layout_constraintTop_toTopOf="@id/cb_collect"
+            android:id="@+id/tv_customerService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_customerService"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_10"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:gravity="center"
+            android:drawableTop="@mipmap/ic_shop_customer_service"/>
         <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
+            android:layout_marginStart="@dimen/dp_10"
             android:id="@+id/btn_submit"
             android:background="@drawable/btn_selector"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cb_collect"
+            app:layout_constraintStart_toEndOf="@id/tv_customerService"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/white"
             android:textStyle="bold"

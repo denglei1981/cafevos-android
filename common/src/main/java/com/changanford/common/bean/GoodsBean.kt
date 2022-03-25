@@ -16,6 +16,8 @@ data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
     val tagType:String?=null,
+    val kindId:String?=null,
+    val kindName:String?=null,
 )
 
 data class GoodsList(
@@ -126,6 +128,7 @@ data class GoodsItemBean(
     val goodsNameSecond:String="",
     val mallWbGoodsId:String?=null,
     val fbPrice:String?="0",
+    val priceFb:String?=null,
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
@@ -143,6 +146,15 @@ data class GoodsItemBean(
         return jumpDataValue?:mallMallSpuId
     }
     /**
+     * 将福币转换为人民币 1元=100福币
+    * */
+    fun getRMB(fb:String?=priceFb):String{
+        if(fb!=null){
+           return "${fb.toInt()/100}"
+        }
+        return "0"
+    }
+    /**
      * 将维保商品数据转为普通商品
     * */
     fun maintenanceToGoods(){
@@ -152,6 +164,21 @@ data class GoodsItemBean(
         normalFb=fbPrice?:"0"
 //        spuId=mallWbGoodsId?:"0"
         spuPageType="MAINTENANCE"//标识为维保商品
+    }
+    /**
+     * 获取图片单个路径
+    * */
+    fun getImgPath(imgUrls:String?=spuImgs):String?{
+        imgUrls?.apply {
+            if(this.contains(","))return split(",")[0]
+        }
+        return imgUrls
+    }
+    /**
+     * 销量
+    * */
+    fun getSales():String{
+        return "$salesCount"
     }
 }
 
@@ -248,6 +275,7 @@ data class GoodsDetailBean(
     var models:String?=null,//车型
     var busSourse:String?=null,
     var mallMallWbVinSpuId:String?=null,
+    var recommend:ArrayList<GoodsItemBean>?=null,//推荐
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -354,6 +382,8 @@ data class ShopHomeBean(
     val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
     val mallIndexDto: MallIndexDto = MallIndexDto(),
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
+    val mallSpuKindDtos:ArrayList<ShopRecommendBean>?= null,//推荐列表
+    var totalIntegral:String?=null,//我的福币
 )
 
 class MallIndexDto
@@ -515,4 +545,11 @@ data class OrderTypeItemBean(
     val jumpDataType: Int = 0,
     val jumpDataValue: String? = "",
     val typeName: String? = "",
+)
+data class ShopRecommendBean(
+    val topId:Int=0,
+    val topName:String?=null,
+    val kindId: String? =null,
+    val kindName: String? =null,
+    val spuInfoList: ArrayList<GoodsItemBean>?=null,
 )

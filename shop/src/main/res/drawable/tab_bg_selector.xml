@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_selected="true">
+        <!--为了让TabLayout内部的Tab有间隔，暂时找不到其他设置方法，只能在背景图形里面设置间隔-->
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@android:color/transparent"/>
+                </shape>
+            </item>
+            <item android:left="@dimen/dp_4" android:right="@dimen/dp_4">
+                <shape>
+                    <corners android:radius="@dimen/dp_16"/>
+                    <solid android:color="@color/color_00095B"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_selected="false">
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@android:color/transparent"/>
+                </shape>
+            </item>
+            <item android:left="@dimen/dp_4" android:right="@dimen/dp_4">
+                <shape>
+                    <corners android:radius="@dimen/dp_16"/>
+                    <solid android:color="@color/color_F2F4F9"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>

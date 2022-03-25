@@ -2,6 +2,8 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -39,8 +41,10 @@ import kotlin.math.roundToInt
 class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewModel>(){
     //spuPageType 商品类型,可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT
     companion object{
-        fun start(spuId:String) {
-            JumpUtils.instans?.jump(3,spuId)
+        fun start(spuId:String?) {
+            if(null!=spuId){
+                JumpUtils.instans?.jump(3,spuId)
+            }
         }
         fun start(jumpDataType:Int,jumpDataValue:String?) {
             JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
@@ -54,10 +58,11 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderGoodsDetailsBinding>(LayoutInflater.from(this), R.layout.header_goods_details, null, false) }
     private val mAdapter by lazy { GoodsImgsAdapter() }
     private val tabLayout by lazy { binding.inHeader.tabLayout }
-    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details))}
+    private val tabTitles by lazy {arrayOf(getString(R.string.str_goods), getString(R.string.str_eval),getString(R.string.str_details),getString(R.string.str_walk))}
     private var topBarH =0
     private var commentH=300f
     private var detailsH =0f
+    private var walkH=500f
     private var oldScrollY=0
     private val topBarBg by lazy { binding.inHeader.layoutHeader.background }
     private var isClickSelect=false//是否点击选中tab
@@ -66,6 +71,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         topBarH= binding.inHeader.layoutHeader.height+ScreenUtils.dp2px(this,30f)
         commentH=headerBinding.viewComment.y-topBarH+60
         detailsH=headerBinding.tvGoodsDetailsTitle.y-topBarH
+        walkH=headerBinding.composeView.y-topBarH+60
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -130,10 +136,10 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.apply {
-            val isRefresh=getBooleanExtra("isRefresh",false)
-            if("0"!=spuId&&isRefresh)viewModel.queryGoodsDetails(spuId,false)
+        intent?.getStringExtra("spuId")?.apply {
+            spuId=this
         }
+        if(!TextUtils.isEmpty(spuId)&&spuId!="0")viewModel.queryGoodsDetails(spuId,false)
     }
     fun onClick(v:View){
         val vid=v.id
@@ -161,6 +167,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             }
             //分享商品
             R.id.img_share->control.share()
+            //客服
+            R.id.tv_customerService->JumpUtils.instans?.jump(71)
             //返回
             R.id.img_back->this.finish()
         }
@@ -182,6 +190,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                     val scrollY=when(i){
                         1->(commentH-oldScrollY).toInt()
                         2->(detailsH-oldScrollY).toInt()
+                        3->(walkH-oldScrollY).toInt()
                         else ->0-oldScrollY
                     }
                     isClickSelect=true
@@ -231,7 +240,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                 topBarBg.alpha=255
                 tabLayout.alpha=1f
                 if(tabLayout.tabCount>2){
-                    if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
+                    if(!isClickSelect&&oldScrollY>=walkH&&selectedTabPosition!=3){
+                        tabLayout.getTabAt(3)?.select()
+                    }else if(!isClickSelect&&oldScrollY>=detailsH&&selectedTabPosition!=2){
                         tabLayout.getTabAt(2)?.select()
                     }else if(!isClickSelect&&oldScrollY<detailsH&&selectedTabPosition!=1){
                         tabLayout.getTabAt(1)?.select()
@@ -271,6 +282,5 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
                     if ("0" != spuId) viewModel.queryGoodsDetails(spuId, false)
                 }
             }
-
     }
 }

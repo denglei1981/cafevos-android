@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseAdapter
 import com.changanford.shop.databinding.ItemShopExchangeFooterBinding
-import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.goods.ExchangeListFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -27,7 +27,10 @@ class ExchangeAdapter(val context: Context, private val fragmentActivity: Fragme
 
     private fun initFooterView(binding:ItemShopExchangeFooterBinding){
         val tabTitles = arrayOf("Tab0", "Tab1", "Tab2")
-        val fragments= arrayListOf<Fragment>(ExchangeListFragment.newInstance(""),ExchangeListFragment.newInstance(""),ExchangeListFragment.newInstance(""))
+        val fragments= arrayListOf<Fragment>(
+            ExchangeListFragment.newInstance(""),
+            ExchangeListFragment.newInstance(""),
+            ExchangeListFragment.newInstance(""))
         binding.viewpager.adapter= ViewPage2Adapter(fragmentActivity,fragments)
 //        binding.viewpager.isSaveEnabled=false
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->

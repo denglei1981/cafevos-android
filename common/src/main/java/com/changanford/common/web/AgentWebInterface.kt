@@ -700,6 +700,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     /**
      * 打开PDF文件
+     * [pdfUrl]pdf文件地址
      */
     @JavascriptInterface
     fun opePdf(pdfUrl:String) {
@@ -764,6 +765,8 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     /**
      * 打开相机
+     * [callback]js回调方法
+     * 返回 base64Str
     * */
     @JavascriptInterface
     fun openCamera(callback:String){

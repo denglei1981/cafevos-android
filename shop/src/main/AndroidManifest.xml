@@ -5,10 +5,9 @@
         <!--================================ 商城 Start-->
         <!--积分明细-->
         <activity android:name=".ui.IntegralDetailsActivity"/>
-        <!-- 商品详情-->
+        <!-- 商品详情   android:launchMode="singleTask"-->
         <activity android:name=".ui.goods.GoodsDetailsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask" />
+            android:screenOrientation="portrait"/>
         <!-- 订单确认-->
         <activity android:name=".ui.order.OrderConfirmActivity"
             android:screenOrientation="portrait"/>
@@ -33,6 +32,9 @@
             android:launchMode="singleTask" />
         <!-- 所有订单-->
         <activity android:name=".ui.order.AllOrderActivity"
+            android:screenOrientation="portrait"/>
+        <!-- 商品推荐-->
+        <activity android:name=".ui.goods.RecommendActivity"
             android:screenOrientation="portrait"/>
         <!--================================= 商城 End-->
     </application>

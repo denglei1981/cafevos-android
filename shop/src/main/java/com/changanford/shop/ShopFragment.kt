@@ -3,17 +3,22 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
+import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
-import com.changanford.shop.ui.exchange.ExchangeListFragment
+import com.changanford.shop.ui.compose.HomeMyIntegralCompose
+import com.changanford.shop.ui.goods.ExchangeListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.goods.RecommendActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -30,6 +35,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private  val fragments= arrayListOf<ExchangeListFragment>()
     private val mAdapter by lazy { GoodsKillAdapter() }
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
+    private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -38,12 +44,16 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         addObserve()
         initKill()
         initTab()
-        binding.inTop.btnToTask.setOnClickListener {
-            WBuriedUtil.clickShopIntegral()
-            JumpUtils.instans?.jump(16)
+        binding.apply {
+            inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
+            smartRl.setOnRefreshListener(this@ShopFragment)
+            inTop.apply {
+                recyclerViewRecommend.adapter=recommendAdapter
+                tvAllList.setOnClickListener {
+                    RecommendActivity.start()
+                }
+            }
         }
-        binding.inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
-        binding.smartRl.setOnRefreshListener(this)
     }
     private fun initTab(){
         WCommonUtil.setTabSelectStyle(requireContext(),binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_01025C)
@@ -63,7 +73,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             add(GoodsTypesItemBean("0","全部"))
         }
         for(it in tabs){
-            val fragment=ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
+            val fragment= ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
@@ -89,7 +99,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initData() {
         viewModel.getBannerData()
         viewModel.getShopHomeData()
-        viewModel.getClassification()
+//        viewModel.getClassification()
     }
     private fun addObserve(){
         viewModel.advertisingList.observe(this) {
@@ -102,9 +112,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
+                //我的福币
+                compose.setContent {
+                    HomeMyIntegralCompose(it.totalIntegral)
+                }
+                //推荐
+                recommendAdapter.setList(it.mallSpuKindDtos)
             }
-//            bindingTab(it.mallTags)
-//            binding.smartRl.finishRefresh()
+            bindingTab(it.mallTags)
+            binding.smartRl.finishRefresh()
         }
         viewModel.classificationLiveData.observe(this) {
             bindingTab(it)
