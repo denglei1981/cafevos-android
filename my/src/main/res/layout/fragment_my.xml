@@ -134,7 +134,7 @@
                   <androidx.appcompat.widget.AppCompatTextView
                       android:id="@+id/tv_car_name"
                       android:layout_width="wrap_content"
-                      android:layout_height="17dp"
+                      android:layout_height="16dp"
                       android:layout_gravity="center_vertical"
                       android:layout_marginStart="9dp"
                       android:background="@drawable/shape_my_evos_bg"
@@ -142,6 +142,8 @@
                       android:textColor="@color/color_CC00095B"
                       android:textSize="@dimen/sp_12"
                       android:includeFontPadding="false"
+                      android:paddingStart="8dp"
+                      android:paddingEnd="8dp"
                       tools:text="@string/app_name"
                       android:visibility="gone"
                       tools:visibility="visible" />

@@ -96,6 +96,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 mData.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             tvName.text = mData.authorBaseVo?.nickname
+            tvSubTitle.visibility =
+                if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
+            tvSubTitle.text = mData.authorBaseVo?.getMemberNames()
 
 
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
