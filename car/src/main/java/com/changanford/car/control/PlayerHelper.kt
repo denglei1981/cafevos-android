@@ -97,7 +97,8 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     }
     fun resume(videoUrl:String?) {
         Log.e("wenke","重新播放>>>>${getCurrentPlayState()}")
-        if(getCurrentPlayState()==VideoView.STATE_PAUSED){
+        val playState=getCurrentPlayState()
+        if(playState==VideoView.STATE_PAUSED){
             mVideoView.resume()
         }else{
             purePlayVideo(videoUrl)

@@ -31,10 +31,10 @@ import com.dueeeke.videoplayer.player.VideoView
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val mAdapter by lazy { CarNotAdapter() }
     private var topBannerList = ArrayList<NewCarBannerBean>()
-    private val carTopBanner by lazy {NewCarTopBannerAdapter(requireActivity(),videoListener)}
+    private val carTopBanner by lazy {NewCarTopBannerAdapter(requireActivity(),getVideoListener())}
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
-    private val maxSlideY=500//最大滚动距离
+    private var maxSlideY=800//最大滚动距离
     private val carControl by lazy { CarControl(requireActivity(),this,viewModel,mAdapter,headerBinding) }
     private var carInfoBean:MutableList<NewCarInfoBean>?=null
     private var hidden:Boolean=false
@@ -78,6 +78,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     carTopBanner.videoHashMap.clear()
                     create(topBannerList)
                     updateControl()
+                    Handler(Looper.myLooper()!!).postDelayed({
+                        "banner>>>>高度：${headerBinding.carTopViewPager.height}".wLogE()
+                        val bannerHeight=headerBinding.carTopViewPager.height
+                        maxSlideY=bannerHeight/2
+                    },500)
                 }
                 get(0).apply {
                     carControl.carModelCode=carModelCode
@@ -113,11 +118,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
+                    "banner高度：${headerBinding.carTopViewPager.height}".wLogE()
+                    "onPageSelected>>>$position".wLogE()
                     carTopBanner.currentPosition=position
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
-                        carTopBanner.releaseVideo()
+                        carTopBanner.releaseVideoAll()
                         bindingCompose()
                     }
                     videoPlayState=-1
@@ -142,26 +148,31 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if(videoPlayState==VideoView.STATE_PLAYBACK_COMPLETED){//视频播放完成
                         "视频播放完成".wLogE()
                         carTopBanner.clearOnStateChangeListeners()
+//                        setAutoPlay(true)
 //                        startLoopNow()
                         if(currentItem<topBannerList.size-1)currentItem += 1
                         else currentItem=0
-                    }else{
+                    }else if(videoPlayState!=VideoView.STATE_PLAYING&&videoPlayState!=VideoView.STATE_PREPARING){
                         "是视频需要立即stopLoop".wLogE()
+                        setAutoPlay(false)
                         stopLoop()
                         carTopBanner.resumeVideo(item.mainImg)
-                        carTopBanner.addVideoListener(item.mainImg,videoListener)
+                        carTopBanner.addVideoListener(item.mainImg,getVideoListener())
                         stopLoop()
                     }
 
                 }else {//不是视频
                     "不是视频则startLoop".wLogE()
+                    setAutoPlay(true)
                     startLoop()
+
                 }
             }else{
-                "不可见或者滑到控制距离》》pauseVideo>>>stopLoop".wLogE()
+                "pauseVideo>>>stopLoop".wLogE()
+                setAutoPlay(false)
                 stopLoop()
-                carTopBanner.pauseVideo(item?.mainImg)
-                stopLoop()
+//                carTopBanner.pauseVideo(item?.mainImg)
+                carTopBanner.pauseVideoAll()
             }
         }
     }
@@ -237,13 +248,15 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             updateControl(isHidden)
         }
     }
-    private val videoListener=object :VideoView.OnStateChangeListener{
-        override fun onPlayerStateChanged(playerState: Int) {}
-        override fun onPlayStateChanged(playState: Int) {
-            videoPlayState=playState
-            "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
-            if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
-                updateControl()
+    private fun getVideoListener():VideoView.OnStateChangeListener{
+        return object :VideoView.OnStateChangeListener{
+            override fun onPlayerStateChanged(playerState: Int) {}
+            override fun onPlayStateChanged(playState: Int) {
+                videoPlayState=playState
+                "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
+                if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
+                    updateControl()
+                }
             }
         }
     }
