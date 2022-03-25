@@ -2,6 +2,7 @@ package com.changanford.shop.ui.goods
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
+import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ShopRecommendListAdapter
 import com.changanford.shop.databinding.FragmentRecommendBinding
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -31,6 +32,7 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
             }
         }
         binding.recyclerView.adapter=mAdapter
+        mAdapter.setEmptyView(R.layout.view_empty)
     }
 
     override fun initData() {
@@ -40,7 +42,7 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
         }
         arguments?.getString("kindId","0")?.apply {
             kindId=this
-            viewModel.getRecommendList(this,true)
+            viewModel.getRecommendList(this)
         }
     }
 }

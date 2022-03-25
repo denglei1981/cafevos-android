@@ -2,16 +2,14 @@ package com.changanford.shop.ui.goods
 
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.wutil.ViewPage2AdapterAct
 import com.changanford.shop.R
-import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.databinding.ActRecommendBinding
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -51,11 +49,13 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         for(it in tabs){
             fragments.add(RecommendFragment.newInstance(it.kindId))
         }
-        val adapter= ViewPage2Adapter(this,fragments)
-        binding.viewPager2.adapter= adapter
-        binding.viewPager2.isSaveEnabled = false
-        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
-            tab.text = tabs[tabPosition].kindName
-        }.attach()
+        val vAdapter= ViewPage2AdapterAct(this,fragments)
+        binding.viewPager2.apply {
+            adapter= vAdapter
+            isSaveEnabled = false
+            TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
+                tab.text = tabs[tabPosition].kindName
+            }.attach()
+        }
     }
 }

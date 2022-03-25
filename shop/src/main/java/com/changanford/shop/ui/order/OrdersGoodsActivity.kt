@@ -5,8 +5,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.wutil.ViewPage2AdapterAct
 import com.changanford.shop.R
-import com.changanford.shop.adapter.ViewPage2Adapter
 import com.changanford.shop.databinding.ActGoodsOrderBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,7 +38,7 @@ class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
         for(i in 0 until tabTitles.size){
             fragments.add(OrdersGoodsFragment.newInstance(i-1))
         }
-        binding.viewPager2.adapter= ViewPage2Adapter(this,fragments)
+        binding.viewPager2.adapter= ViewPage2AdapterAct(this,fragments)
         binding.viewPager2.isSaveEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
             tab.text = tabTitles[tabPosition]

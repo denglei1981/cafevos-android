@@ -26,16 +26,16 @@ class ExchangeAdapter(val context: Context, private val fragmentActivity: Fragme
     override fun getItemViewType(position: Int): Int { return position }
 
     private fun initFooterView(binding:ItemShopExchangeFooterBinding){
-        val tabTitles = arrayOf("Tab0", "Tab1", "Tab2")
-        val fragments= arrayListOf<Fragment>(
-            ExchangeListFragment.newInstance(""),
-            ExchangeListFragment.newInstance(""),
-            ExchangeListFragment.newInstance(""))
-        binding.viewpager.adapter= ViewPage2Adapter(fragmentActivity,fragments)
-//        binding.viewpager.isSaveEnabled=false
-        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-            tab.text = tabTitles[tabPosition]
-        }.attach()
+//        val tabTitles = arrayOf("Tab0", "Tab1", "Tab2")
+//        val fragments= arrayListOf<Fragment>(
+//            ExchangeListFragment.newInstance(""),
+//            ExchangeListFragment.newInstance(""),
+//            ExchangeListFragment.newInstance(""))
+//        binding.viewpager.adapter= ViewPage2Adapter(fragmentActivity,fragments)
+////        binding.viewpager.isSaveEnabled=false
+//        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
+//            tab.text = tabTitles[tabPosition]
+//        }.attach()
     }
 
 }
