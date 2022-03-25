@@ -94,6 +94,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutHeader.ivHeader,
                 R.mipmap.head_default
             )
+            binding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
+            binding.layoutHeader.tvSubTitle.visibility =
+                if (item.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
             val labelAdapter = LabelAdapter(context, 15)
             labelAdapter.setItems(item.authorBaseVo?.imags)
             binding.layoutHeader.rvUserTag.adapter = labelAdapter

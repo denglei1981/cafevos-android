@@ -65,6 +65,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     binding.myScoreLayout.isVisible = false
                     binding.myCarAuthLayout.include.root.isVisible = false
                     binding.myHeadvipimg.isVisible = false
+                    binding.tvCarName.visibility = View.GONE
                 }
                 true -> {//已登录
                     binding.myScoreLayout.isVisible = true
