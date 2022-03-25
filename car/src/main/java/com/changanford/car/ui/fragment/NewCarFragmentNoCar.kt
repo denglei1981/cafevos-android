@@ -23,13 +23,15 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private val mAdapter by lazy { CarNotAdapter() }
     private var topBannerList = ArrayList<NewCarBannerBean>()
-    private val carTopBanner by lazy {NewCarTopBannerAdapter(requireActivity(),getVideoListener())}
+    private val carTopBanner by lazy {NewCarTopBannerAdapter(requireActivity(),videoListener)}
     private val headerBinding by lazy { DataBindingUtil.inflate<HeaderCarBinding>(LayoutInflater.from(requireContext()), R.layout.header_car, null, false) }
     private var oldScrollY=0
     private val maxSlideY=500//最大滚动距离
@@ -131,32 +133,32 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * 更新控制-主要控制banner是否滚动-视频播放暂停等
      * */
     private fun updateControl(isHidden:Boolean=hidden){
-        Log.e("wenke","更新控制>>>$videoPlayState")
+        "更新控制>>>".wLogE()
         headerBinding.carTopViewPager.apply {
             val item=if(topBannerList.size>0)topBannerList[currentItem] else null
             //可见 并且 滚动距离小于最大控制距离
             if(!isHidden&&oldScrollY<maxSlideY){
                 if(item?.mainIsVideo==1){//是视频
                     if(videoPlayState==VideoView.STATE_PLAYBACK_COMPLETED){//视频播放完成
-                        Log.e("wenke","视频播放完成")
+                        "视频播放完成".wLogE()
                         carTopBanner.clearOnStateChangeListeners()
 //                        startLoopNow()
                         if(currentItem<topBannerList.size-1)currentItem += 1
                         else currentItem=0
                     }else{
-                        Log.e("wenke","是视频需要立即stopLoop")
+                        "是视频需要立即stopLoop".wLogE()
                         stopLoop()
                         carTopBanner.resumeVideo(item.mainImg)
-                        carTopBanner.addVideoListener(item.mainImg,getVideoListener())
+                        carTopBanner.addVideoListener(item.mainImg,videoListener)
                         stopLoop()
                     }
 
                 }else {//不是视频
-                    Log.e("wenke","不是视频")
+                    "不是视频则startLoop".wLogE()
                     startLoop()
                 }
             }else{
-                Log.e("wenke","pauseVideo>>>stopLoop")
+                "不可见或者滑到控制距离》》pauseVideo>>>stopLoop".wLogE()
                 stopLoop()
                 carTopBanner.pauseVideo(item?.mainImg)
                 stopLoop()
@@ -235,42 +237,16 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             updateControl(isHidden)
         }
     }
-    private fun getVideoListener():VideoView.OnStateChangeListener{
-        return object :VideoView.OnStateChangeListener{
-            override fun onPlayerStateChanged(playerState: Int) {
-//            videoPlayState=playerState
-                Log.e("wenke","onPlayerStateChanged:>>>$playerState")
-//            if(VideoView.STATE_PLAYBACK_COMPLETED==playerState&&oldScrollY<maxSlideY){
-//                updateControl()
-//            }
+    private val videoListener=object :VideoView.OnStateChangeListener{
+        override fun onPlayerStateChanged(playerState: Int) {}
+        override fun onPlayStateChanged(playState: Int) {
+            videoPlayState=playState
+            "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
+            if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
+                updateControl()
             }
-            override fun onPlayStateChanged(playState: Int) {
-                videoPlayState=playState
-                Log.e("wenke","视频播放》》onPlayStateChanged:>>>$playState")
-                if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
-                    updateControl()
-                }
-            }
-
         }
     }
-//    private val videoListener=object :VideoView.OnStateChangeListener{
-//        override fun onPlayerStateChanged(playerState: Int) {
-////            videoPlayState=playerState
-//            Log.e("wenke","onPlayerStateChanged:>>>$playerState")
-////            if(VideoView.STATE_PLAYBACK_COMPLETED==playerState&&oldScrollY<maxSlideY){
-////                updateControl()
-////            }
-//        }
-//        override fun onPlayStateChanged(playState: Int) {
-//            videoPlayState=playState
-//            Log.e("wenke","视频播放》》onPlayStateChanged:>>>$playState")
-//            if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
-//                updateControl()
-//            }
-//        }
-//
-//    }
     override fun onPause() {
         super.onPause()
         reset(true)

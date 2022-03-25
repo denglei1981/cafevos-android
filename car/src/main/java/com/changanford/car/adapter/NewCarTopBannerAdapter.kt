@@ -12,6 +12,7 @@ import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -66,7 +67,7 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                         videoView.isMute=true
                         playerHelper = PlayerHelper(activity, videoView).apply {
                             val findItem=videoHashMap.keys.find {url-> url==videoUrl }
-                            Log.e("wenke","position:$position<<<currentPosition:$currentPosition>>>渲染item>>>${findItem}")
+                            "position:$position<<<currentPosition:$currentPosition>>>渲染item>>>${findItem}".wLogE()
                             if(findItem==null&&currentPosition==position) {
                                 resume(videoUrl)
                                 addOnStateChangeListener(listener)
@@ -113,8 +114,6 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
             it?.release()
             it?.clearOnStateChangeListeners()
         }
-//        playerHelper?.release()
-//        playerHelper=null
     }
     fun addVideoListener(videoUrl:String?,listener: VideoView.OnStateChangeListener){
         videoHashMap[videoUrl]?.apply {
