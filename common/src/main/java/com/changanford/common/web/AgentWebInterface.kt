@@ -763,26 +763,68 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
         map["serverMode"] = serverMode?:"00"
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
     }
+    @JavascriptInterface
+    fun openCamera(callback:String){
+        openCamera(false, callback)
+    }
     /**
      * 打开相机
      * [callback]js回调方法
+     * [isEnableCrop]是否裁剪
      * 返回 base64Str
-    * */
+     * */
     @JavascriptInterface
-    fun openCamera(callback:String){
-        PictureUtils.opencarcme(activity, object : OnResultCallbackListener<LocalMedia> {
+    fun openCamera(isEnableCrop:Boolean=true,callback:String){
+        PictureUtils.opencarcme(activity,isEnableCrop, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 if (result.isNotEmpty()) {
                     for (media in result) {
                         val path: String = PictureUtil.getFinallyPath(media)
-                        path.let {
-                            val base64Str = FileHelper.getImageStr(path)
-                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
-                        }
+                        val base64Str = FileHelper.getImageStr(path)
+                        agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
                     }
                 }
             }
             override fun onCancel() {}
+        })
+    }
+    @JavascriptInterface
+    fun openPhoto(maxNum:Int=1,callback:String) {
+        openPhoto(maxNum,false, callback)
+    }
+    /**
+     * 打开相册
+     * [maxNum]最大选择图片数量
+     * [callback]返回选取图片的base64字符串用英文逗号分割（,）
+     * [isEnableCrop]是否裁剪
+     */
+    @JavascriptInterface
+    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean=true,callback:String) {
+        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,isEnableCrop,object : OnResultCallbackListener<LocalMedia?> {
+            override fun onCancel() {}
+            override fun onResult(result: MutableList<LocalMedia?>?) {
+                if (result != null) {
+                    var base64Str= ""
+                    for (media in result) {
+                        var path = ""
+                        media?.let {
+                            path = if (media.isCut && !media.isCompressed) {
+                                // 裁剪过
+                                media.cutPath
+                            } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                media.compressPath
+                            } else {
+                                // 原图
+                                media.path
+                            }
+                        }
+                        val imgPath=FileHelper.getImageStr(path)
+                        base64Str+="$imgPath,"
+                    }
+                    if(base64Str.isNotEmpty())agentWeb.jsAccessEntrace.quickCallJs(callback,base64Str.substring(0,base64Str.length-1))
+                }
+            }
         })
     }
 }

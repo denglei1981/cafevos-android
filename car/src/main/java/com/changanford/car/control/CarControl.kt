@@ -430,7 +430,6 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
     }
     private val myLocationListener =object : BDAbstractLocationListener(){
         override fun onReceiveLocation(location: BDLocation?) {
-            if(BuildConfig.DEBUG)Log.e("wenke","onReceiveLocation:${location?.latitude}")
             location?.apply {
                 latLng= LatLng(latitude, longitude)
                 if (isFirstLoc) {
