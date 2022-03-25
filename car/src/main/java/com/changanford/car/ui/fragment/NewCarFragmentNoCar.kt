@@ -112,6 +112,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     if(BuildConfig.DEBUG)Log.e("wenke","onPageSelected>>>$position")
+                    carTopBanner.currentPosition=position
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
                         carTopBanner.releaseVideo()
@@ -139,8 +140,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if(videoPlayState==VideoView.STATE_PLAYBACK_COMPLETED){//视频播放完成
                         Log.e("wenke","视频播放完成")
                         carTopBanner.clearOnStateChangeListeners()
-                        startLoopNow()
-                        if(currentItem<topBannerList.size-2)currentItem += 1
+//                        startLoopNow()
+                        if(currentItem<topBannerList.size-1)currentItem += 1
                         else currentItem=0
                     }else{
                         Log.e("wenke","是视频需要立即stopLoop")

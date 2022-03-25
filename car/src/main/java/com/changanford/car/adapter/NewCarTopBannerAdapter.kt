@@ -1,6 +1,7 @@
 package com.changanford.car.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
@@ -24,6 +25,7 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
     private val animationControl by lazy { AnimationControl() }
     private var playerHelper: PlayerHelper?=null //播放器帮助类
     var videoHashMap= HashMap<String,PlayerHelper?>()
+    var currentPosition=0//当前位置
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_car_banner
     }
@@ -56,18 +58,21 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                         }
                         videoView.visibility= View.GONE
                     }else{//是视频
+                        val videoUrl=mainImg
                         imageCarIntro.visibility=View.GONE
                         imgTop.visibility=View.GONE
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
                         videoView.isMute=true
                         playerHelper = PlayerHelper(activity, videoView).apply {
-                           if(videoHashMap.size<1) {
-                               purePlayVideo(mainImg)
-                               addOnStateChangeListener(listener)
-                           }
+                            val findItem=videoHashMap.keys.find {url-> url==videoUrl }
+                            Log.e("wenke","position:$position<<<currentPosition:$currentPosition>>>渲染item>>>${findItem}")
+                            if(findItem==null&&currentPosition==position) {
+                                resume(videoUrl)
+                                addOnStateChangeListener(listener)
+                            }
                         }
-                        videoHashMap[mainImg?:""]= playerHelper
+                        videoHashMap[videoUrl?:""]= playerHelper
                     }
                     view.setOnClickListener {
                         JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
