@@ -298,8 +298,26 @@ data class HomeAuthorsBean(
     val nickname: String,
     val imags: ArrayList<Imag>,
     val userId: String,
-    val headFrameImage: String
-)
+    val headFrameImage: String,
+    var carOwner: String = ""
+) {
+    fun getMemberNames(): String {
+        return if (TextUtils.isEmpty(carOwner)) {
+            ""
+        } else {
+            carOwner
+        }
+    }
+
+    fun showSubtitle(): Boolean {
+        if (TextUtils.isEmpty(carOwner)) {
+            return false
+        }
+        return true
+    }
+
+
+}
 
 /**
  * @Author: hpSpecialListBeanb

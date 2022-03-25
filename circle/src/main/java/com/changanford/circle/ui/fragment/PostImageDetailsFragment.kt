@@ -96,6 +96,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 mData.authorBaseVo?.avatar,
                 ImageOptions().apply { circleCrop = true })
             tvName.text = mData.authorBaseVo?.nickname
+
+
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"
             } else {

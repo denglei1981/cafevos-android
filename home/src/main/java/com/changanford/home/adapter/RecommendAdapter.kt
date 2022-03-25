@@ -159,6 +159,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         tvAuthorName.text = item.authors?.nickname
+        if(TextUtils.isEmpty(item.authors?.getMemberNames())){
+            tvSubtitle.visibility=View.GONE
+        }else{
+            tvSubtitle.visibility=View.VISIBLE
+        }
         tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)

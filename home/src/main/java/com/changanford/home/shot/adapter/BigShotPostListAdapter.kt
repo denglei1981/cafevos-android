@@ -47,7 +47,13 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
                     it.layoutHeader.ivVip.visibility = View.GONE
                 }
                 it.layoutHeader.tvAuthorName.text = item.authorBaseVo?.nickname
-                it.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
+                if(TextUtils.isEmpty(item.authorBaseVo?.getMemberNames())){
+                    it.layoutHeader.tvSubTitle.visibility=View.GONE
+                }else{
+                    it.layoutHeader.tvSubTitle.visibility=View.VISIBLE
+                    it.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
+                }
+
                 setFollowState(it.layoutHeader.btnFollow, item.authorBaseVo!!)
                 it.layoutHeader.btnFollow.setOnClickListener {
                     item.authorBaseVo?.let { it1 ->

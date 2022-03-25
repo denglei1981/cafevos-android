@@ -173,7 +173,22 @@ public class VideoController extends GestureVideoController implements View.OnCl
     }
 
     @Override
+    public boolean onDown(MotionEvent e) {
+        return true;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        return true;
+    }
+
+    @Override
     public boolean onDoubleTap(MotionEvent e) {
-        return super.onDoubleTap(e);
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return true;
     }
 }

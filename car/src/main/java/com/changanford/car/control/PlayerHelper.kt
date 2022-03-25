@@ -8,6 +8,7 @@ import com.changanford.common.util.dk.PrepareView
 import com.changanford.common.util.dk.VodControlView
 import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 
 /**
@@ -42,7 +43,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
-        mVideoView.setLooping(true)
+        mVideoView.setLooping(false)
         mVideoView.setVideoController(mController)
 
     }
@@ -54,8 +55,13 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
-        mVideoView.setLooping(true)
-        mVideoView.isMute=true
+        mVideoView.setLooping(false)
+        mVideoView.isMute=false
+//        listener?.apply {
+//            clearOnStateChangeListeners()
+//            mVideoView.addOnStateChangeListener(this)
+//        }
+
     }
     fun fullScreenGone() {
         controlView.fullScreenGone()
@@ -68,7 +74,6 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     fun getThumbImgView(): ImageView {
         return mPrepareView.thumbImgView
     }
-
     /**
      * 开始播放
      */
@@ -90,7 +95,9 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mVideoView.setLooping(looping)
     }
     fun resume(videoUrl:String?) {
-        if(getCurrentPlayState()==VideoView.STATE_PAUSED){
+        "重新播放>>>>${getCurrentPlayState()}".wLogE()
+        val playState=getCurrentPlayState()
+        if(playState==VideoView.STATE_PAUSED){
             mVideoView.resume()
         }else{
             purePlayVideo(videoUrl)
@@ -114,5 +121,19 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     }
     private fun getCurrentPlayState():Int{
         return mVideoView.currentPlayState
+    }
+
+    /**
+     * 添加一个播放状态监听器，播放状态发生变化时将会调用。
+     */
+    fun addOnStateChangeListener(listener: VideoView.OnStateChangeListener) {
+        mVideoView.addOnStateChangeListener(listener)
+    }
+
+    /**
+     * 移除所有播放状态监听
+     */
+    fun clearOnStateChangeListeners(){
+        mVideoView.clearOnStateChangeListeners()
     }
 }

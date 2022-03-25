@@ -127,18 +127,19 @@ data class AuthorBaseVo(
     // 一下三个参数是用户搜索的。
     val headFrameName: String = "",
     val headFrameImage: String = "",
-    val userId: String = ""
+    val userId: String = "",
+    var carOwner: String = ""
 ) {
     fun getMemberNames(): String {
-        return if (TextUtils.isEmpty(memberName)) {
-            "车迷级公民"
+        return if (TextUtils.isEmpty(carOwner)) {
+            ""
         } else {
-            memberName
+            carOwner
         }
     }
 
     fun showSubtitle(): Boolean {
-        if (TextUtils.isEmpty(memberName)) {
+        if (TextUtils.isEmpty(carOwner)) {
             return false
         }
         return true
@@ -207,10 +208,10 @@ data class PostDataBean(
     val picList: List<String>? = null,
     val lat: Double = 0.0,
     val lon: Double = 0.0,
-    val address:String="",
-    var tags:MutableList<PostKeywordBean>?=null,
-    var addrName: String?=""
-    ) {
+    val address: String = "",
+    var tags: MutableList<PostKeywordBean>? = null,
+    var addrName: String? = ""
+) {
     fun getCommentCountAnViewCount(): String {
         val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
         val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
@@ -233,7 +234,7 @@ data class PostDataBean(
         return ""
     }
 
-    fun getShowTitle():String{
+    fun getShowTitle(): String {
         if (!TextUtils.isEmpty(title)) {
             return title!!
         }
@@ -255,12 +256,12 @@ data class PostDataBean(
         return mutableListOf()
     }
 
-    fun showCity():String{
-        if(addrName?.isNotEmpty() == true){
+    fun showCity(): String {
+        if (addrName?.isNotEmpty() == true) {
             return city.plus("·").plus(addrName)
         }
-        if(!TextUtils.isEmpty(city)){
-            return  city!!
+        if (!TextUtils.isEmpty(city)) {
+            return city!!
         }
         return ""
     }
@@ -305,16 +306,16 @@ data class ActDataBean(
     val browseCount: Long = 0L
 )
 
-data class LocationLotLon(val lat: Double, val lon: Double,val realCity:String)
+data class LocationLotLon(val lat: Double, val lon: Double, val realCity: String)
 
 
 data class CreateLocation(
     val address: String,
     val province: String,
-    val addrName:String,
+    val addrName: String,
     val lat: Double,
     val lon: Double,
-    val city:String,
+    val city: String,
 )
 
 data class PostKeywordBean(
@@ -324,5 +325,5 @@ data class PostKeywordBean(
     val tagName: String,
     val tagNameLike: Any,
     val type: Int,
-    var isselect:Boolean = false
+    var isselect: Boolean = false
 )

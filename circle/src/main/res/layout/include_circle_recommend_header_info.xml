@@ -64,6 +64,7 @@
             android:textSize="@dimen/sp_10"
             android:visibility="@{author.showSubtitle()?View.VISIBLE:View.GONE}"
             tools:visibility="gone"
+
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintStart_toStartOf="@+id/tv_author_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
