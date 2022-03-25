@@ -3,13 +3,11 @@ package com.changanford.car.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.changanford.car.BuildConfig
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarNotAdapter
@@ -23,7 +21,6 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 

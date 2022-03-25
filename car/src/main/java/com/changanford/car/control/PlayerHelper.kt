@@ -1,7 +1,6 @@
 package com.changanford.car.control
 
 import android.app.Activity
-import android.util.Log
 import android.widget.ImageView
 import com.changanford.common.util.dk.CompleteView
 import com.changanford.common.util.dk.ErrorView
@@ -96,7 +95,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mVideoView.setLooping(looping)
     }
     fun resume(videoUrl:String?) {
-        Log.e("wenke","重新播放>>>>${getCurrentPlayState()}")
+        "重新播放>>>>${getCurrentPlayState()}".wLogE()
         val playState=getCurrentPlayState()
         if(playState==VideoView.STATE_PAUSED){
             mVideoView.resume()

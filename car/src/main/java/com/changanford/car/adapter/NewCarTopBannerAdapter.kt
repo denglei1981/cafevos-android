@@ -1,7 +1,6 @@
 package com.changanford.car.adapter
 
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
@@ -14,7 +13,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
-import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
