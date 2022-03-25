@@ -118,7 +118,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    "banner高度：${headerBinding.carTopViewPager.height}".wLogE()
                     "onPageSelected>>>$position".wLogE()
                     carTopBanner.currentPosition=position
                     topBannerList[position].apply {
