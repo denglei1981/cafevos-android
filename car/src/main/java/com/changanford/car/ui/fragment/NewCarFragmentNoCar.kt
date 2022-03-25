@@ -66,6 +66,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {
+            binding.recyclerView.scrollToPosition(0)
+            oldScrollY=0
             it?.apply {
                 if (size == 0) {
                     headerBinding.carTopViewPager.isVisible = false
@@ -76,6 +78,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 topBannerList.addAll(this)
                 headerBinding.carTopViewPager.apply {
                     carTopBanner.videoHashMap.clear()
+                    carTopBanner.currentPosition=0
                     create(topBannerList)
                     updateControl()
                     Handler(Looper.myLooper()!!).postDelayed({
@@ -118,7 +121,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    "onPageSelected>>>$position".wLogE()
+                    "页面切换onPageSelected>>>$position".wLogE()
                     carTopBanner.currentPosition=position
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
@@ -138,7 +141,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * 更新控制-主要控制banner是否滚动-视频播放暂停等
      * */
     private fun updateControl(isHidden:Boolean=hidden){
-        "更新控制>>>".wLogE()
+        "更新控制>>>isHidden:$isHidden>>>oldScrollY:$oldScrollY>>>maxSlideY:$maxSlideY".wLogE()
         headerBinding.carTopViewPager.apply {
             val item=if(topBannerList.size>0)topBannerList[currentItem] else null
             //可见 并且 滚动距离小于最大控制距离
@@ -151,26 +154,24 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //                        startLoopNow()
                         if(currentItem<topBannerList.size-1)currentItem += 1
                         else currentItem=0
-                    }else if(videoPlayState!=VideoView.STATE_PLAYING&&videoPlayState!=VideoView.STATE_PREPARING){
+                    }else if(videoPlayState!=VideoView.STATE_PLAYING&&videoPlayState!=VideoView.STATE_PREPARING&&videoPlayState!=VideoView.STATE_PREPARED){
                         "是视频需要立即stopLoop".wLogE()
                         setAutoPlay(false)
                         stopLoop()
                         carTopBanner.resumeVideo(item.mainImg)
                         carTopBanner.addVideoListener(item.mainImg,getVideoListener())
-                        stopLoop()
                     }
 
                 }else {//不是视频
                     "不是视频则startLoop".wLogE()
                     setAutoPlay(true)
                     startLoop()
-
                 }
             }else{
-                "pauseVideo>>>stopLoop".wLogE()
+                "停止切换和播放pauseVideo>>>stopLoop".wLogE()
                 setAutoPlay(false)
                 stopLoop()
-//                carTopBanner.pauseVideo(item?.mainImg)
+                carTopBanner.pauseVideo(item?.mainImg)
                 carTopBanner.pauseVideoAll()
             }
         }
@@ -253,7 +254,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             override fun onPlayStateChanged(playState: Int) {
                 videoPlayState=playState
                 "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
-                if(VideoView.STATE_PLAYBACK_COMPLETED==playState){
+                if(VideoView.STATE_PLAYBACK_COMPLETED==playState||VideoView.STATE_PLAYING==playState){
                     updateControl()
                 }
             }

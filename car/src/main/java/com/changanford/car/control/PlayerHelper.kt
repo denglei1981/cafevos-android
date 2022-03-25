@@ -9,6 +9,7 @@ import com.changanford.common.util.dk.PrepareView
 import com.changanford.common.util.dk.VodControlView
 import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 
 /**
@@ -50,17 +51,17 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     /**
      * 只播放
     * */
-    fun purePlayVideo(url: String?,listener: VideoView.OnStateChangeListener?=null){
+    fun purePlayVideo(url: String?){
         startPlay(url)
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
         mController.isLocked=true
         mVideoView.setLooping(false)
         mVideoView.isMute=false
-        listener?.apply {
-            clearOnStateChangeListeners()
-            mVideoView.addOnStateChangeListener(this)
-        }
+//        listener?.apply {
+//            clearOnStateChangeListeners()
+//            mVideoView.addOnStateChangeListener(this)
+//        }
 
     }
     fun fullScreenGone() {
@@ -74,7 +75,6 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     fun getThumbImgView(): ImageView {
         return mPrepareView.thumbImgView
     }
-
     /**
      * 开始播放
      */
