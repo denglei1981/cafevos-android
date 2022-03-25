@@ -79,12 +79,14 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
-        val adapter= ViewPage2AdapterFragment(this,fragments)
-        binding.viewpager.adapter= adapter
-        binding.viewpager.isSaveEnabled = false
-        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-            tab.text = tabs[tabPosition].tagName
-        }.attach()
+        binding.viewpager.apply {
+            adapter= ViewPage2AdapterFragment(this@ShopFragment,fragments)
+            offscreenPageLimit=10
+            isSaveEnabled = false
+            TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
+                tab.text = tabs[tabPosition].tagName
+            }.attach()
+        }
     }
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter

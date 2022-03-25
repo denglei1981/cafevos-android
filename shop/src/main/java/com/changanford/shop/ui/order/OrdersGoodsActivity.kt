@@ -38,11 +38,15 @@ class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
         for(i in 0 until tabTitles.size){
             fragments.add(OrdersGoodsFragment.newInstance(i-1))
         }
-        binding.viewPager2.adapter= ViewPage2AdapterAct(this,fragments)
-        binding.viewPager2.isSaveEnabled = false
-        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
-            tab.text = tabTitles[tabPosition]
-        }.attach()
+        binding.viewPager2.apply {
+            adapter= ViewPage2AdapterAct(this@OrdersGoodsActivity,fragments)
+            offscreenPageLimit=5
+            isSaveEnabled = false
+            TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, tabPosition ->
+                tab.text = tabTitles[tabPosition]
+            }.attach()
+        }
+
         if(states<tabTitles.size)binding.tabLayout.getTabAt(states)?.select()
     }
 }

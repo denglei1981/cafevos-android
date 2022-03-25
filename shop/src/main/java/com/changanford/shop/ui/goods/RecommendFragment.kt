@@ -42,7 +42,7 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
         }
         arguments?.getString("kindId","0")?.apply {
             kindId=this
-            viewModel.getRecommendList(this)
+            viewModel.getRecommendList(this,true)
         }
     }
 }

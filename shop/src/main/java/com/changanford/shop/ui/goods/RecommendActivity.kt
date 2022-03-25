@@ -49,9 +49,9 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         for(it in tabs){
             fragments.add(RecommendFragment.newInstance(it.kindId))
         }
-        val vAdapter= ViewPage2AdapterAct(this,fragments)
         binding.viewPager2.apply {
-            adapter= vAdapter
+            offscreenPageLimit=4
+            adapter= ViewPage2AdapterAct(this@RecommendActivity,fragments)
             isSaveEnabled = false
             TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
                 tab.text = tabs[tabPosition].kindName
