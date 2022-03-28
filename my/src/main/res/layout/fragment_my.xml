@@ -213,17 +213,32 @@
                 android:layout_marginTop="@dimen/dp_10"
                 app:layout_constraintTop_toBottomOf="@id/my_stateLayout" />
 
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/medalRec"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/dp_15"-->
+<!--                android:layout_marginTop="@dimen/dp_20"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"-->
+<!--                tools:layout_editor_absoluteX="1dp"-->
+<!--                tools:listitem="@layout/item_my_medal" />-->
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/medalRec"
+                android:id="@+id/fast_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_20"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/my_carAuthLayout"
-                tools:layout_editor_absoluteX="1dp"
-                tools:listitem="@layout/item_my_medal" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/my_carAuthLayout"
+                tools:listitem="@layout/item_my_fast_in" />
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/menuRec"
@@ -233,7 +248,8 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medalRec"
+                app:layout_constraintTop_toBottomOf="@+id/fast_in"
+                android:layout_marginTop="@dimen/dp_20"
                 tools:listitem="@layout/item_mymenus" />
 
 
