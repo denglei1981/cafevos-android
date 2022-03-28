@@ -29,6 +29,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
+import com.changanford.shop.ui.compose.PayWayCompose
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -130,6 +131,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inGoodsInfo.apply {
             recyclerView.adapter=goodsInfoAdapter
             goodsInfoAdapter.setList(dataListBean)
+        }
+        binding.composeViewPayWay.setContent {
+            PayWayCompose()
         }
     }
     @SuppressLint("StringFormatMatches")

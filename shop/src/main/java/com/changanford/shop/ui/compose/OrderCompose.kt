@@ -47,7 +47,7 @@ fun PayWayCompose(){
                 Spacer(modifier = Modifier.width(5.dp))
                 Image(painter = painterResource(R.mipmap.ic_shop_fb_42), contentDescription = null)
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                Text(text = "）",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
             }
 
         }
