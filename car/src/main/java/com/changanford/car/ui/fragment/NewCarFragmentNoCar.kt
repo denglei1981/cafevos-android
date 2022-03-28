@@ -118,11 +118,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    carTopBanner.notifyDataSetChanged()
                     "页面切换onPageSelected>>>$position".wLogE()
                     carTopBanner.currentPosition=position
+                    carTopBanner.releaseVideoAll()
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
-                        carTopBanner.releaseVideoAll()
                         bindingCompose()
                     }
                     videoPlayState=-1
@@ -146,7 +147,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 if(item?.mainIsVideo==1){//是视频
                     if(videoPlayState==VideoView.STATE_PLAYBACK_COMPLETED){//视频播放完成
                         "视频播放完成".wLogE()
-                        carTopBanner.clearOnStateChangeListeners()
+                        carTopBanner.releaseVideo(item.mainImg)
 //                        setAutoPlay(true)
 //                        startLoopNow()
                         if(currentItem<topBannerList.size-1)currentItem += 1
@@ -160,6 +161,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     }
 
                 }else {//不是视频
+                    carTopBanner.releaseVideoAll()
                     "不是视频则startLoop".wLogE()
                     setAutoPlay(true)
                     startLoop()
@@ -250,7 +252,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             override fun onPlayerStateChanged(playerState: Int) {}
             override fun onPlayStateChanged(playState: Int) {
                 videoPlayState=playState
-                "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
+                "播放监听》》onPlayStateChanged:>>>$playState".wLogE()
                 if(VideoView.STATE_PLAYBACK_COMPLETED==playState||VideoView.STATE_PLAYING==playState){
                     updateControl()
                 }

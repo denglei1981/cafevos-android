@@ -13,6 +13,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
+import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -65,18 +66,17 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                         videoView.isMute=true
                         val findItem=videoHashMap.keys.find {url-> url==videoUrl }
                         "position:$position》》》渲染item>>>${findItem}".wLogE()
-                        if(findItem==null){
-                           val playerHelper = PlayerHelper(activity, videoView).apply {
+                        val playerHelper = PlayerHelper(activity, videoView)
+//                        if(findItem==null){
+                            playerHelper.apply {
                                 "position:$position<<<currentPosition:$currentPosition>>>渲染item".wLogE()
                                 if(currentPosition==position) {
-                                    resume(videoUrl)
+                                    dealWithPlay(videoUrl)
                                     addOnStateChangeListener(listener)
                                 }
                             }
-                            videoHashMap[videoUrl?:""]= playerHelper
-//                            videoViewHashMap[videoUrl?:""]= videoView
-//                            initPlayerHelper(videoView,videoUrl)
-                        }
+//                        }else releaseVideo(videoUrl)
+                        videoHashMap[videoUrl?:""]= playerHelper
                     }
                     view.setOnClickListener {
                         JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
@@ -103,14 +103,27 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
         }
     }
     fun resumeVideo(videoUrl:String?){
+        "继续播放url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
+        videoHashMap[videoUrl]?.apply {
+            dealWithPlay(videoUrl)
+        }
+    }
+    fun replayVideo(videoUrl:String?){
         "重新播放url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
         videoHashMap[videoUrl]?.apply {
-            resume(videoUrl)
+            replay(videoUrl)
         }
     }
     fun clearOnStateChangeListeners(){
         videoHashMap.values.forEach{
             it?.clearOnStateChangeListeners()
+        }
+    }
+    fun releaseVideo(videoUrl:String?){
+        "销毁url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
+        videoHashMap[videoUrl]?.apply {
+            release()
+            clearOnStateChangeListeners()
         }
     }
     fun releaseVideoAll(){
