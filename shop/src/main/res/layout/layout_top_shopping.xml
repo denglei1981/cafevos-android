@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_topbar">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_back"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_20"
+            android:src="@mipmap/back_xhdpi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_title"
+            android:textSize="@dimen/sp_18"
+            android:textColor="@color/color_33"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <com.changanford.shop.view.TypefaceTextView
+
+            android:id="@+id/tv_right"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/color_33"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            android:paddingEnd="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            tools:visibility="visible"
+            android:visibility="gone"
+            tools:text="@string/str_screening" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
