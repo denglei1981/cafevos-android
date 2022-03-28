@@ -115,7 +115,7 @@ class CarViewModel : ViewModel() {
         }
     }
     /**
-     * 开启赏车之旅
+     * 开启赏车之旅-推荐车型
     * */
     fun getMoreCar(){
         viewModelScope.launch {

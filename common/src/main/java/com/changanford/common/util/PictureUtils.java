@@ -104,7 +104,7 @@ public class PictureUtils {
     /**
      * 单独打开自定义相机
      */
-    public static void opencarcme(Activity activity,boolean isEnableCrop, OnResultCallbackListener onResultCallbackListener) {
+    public static void opencarcme(Activity activity,boolean isEnableCrop,boolean isCompress, OnResultCallbackListener onResultCallbackListener) {
         PictureSelector.create(activity)
                 .openCamera(PictureMimeType.ofImage())
                 .isUseCustomCamera(false)// 是否使用自定义相机
@@ -119,15 +119,15 @@ public class PictureUtils {
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
                 .isEnableCrop(isEnableCrop)// 是否裁剪
                 .setCropTitleBarBackgroundColor(BaseApplication.INSTANT.getResources().getColor(R.color.transparent))
-                .isCompress(false)// 是否压缩
+                .isCompress(isCompress)// 是否压缩
                 .isCamera(true)
                 .compressQuality(90)// 图片压缩后输出质量 0~ 100
-                .minimumCompressSize(1024)// 小于100kb的图片不压缩
+                .minimumCompressSize(500)// 小于100kb的图片不压缩
                 .loadImageEngine(GlideEngine.createGlideEngine())
                 .forResult(onResultCallbackListener);
     }
     public static void opencarcme(Activity activity, OnResultCallbackListener onResultCallbackListener) {
-        opencarcme(activity,true,onResultCallbackListener);
+        opencarcme(activity,true,false,onResultCallbackListener);
     }
 
 

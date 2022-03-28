@@ -3,7 +3,6 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -168,7 +167,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //分享商品
             R.id.img_share->control.share()
             //客服
-            R.id.tv_customerService->JumpUtils.instans?.jump(11,"{\"tagId\": \"28\",\"content\": \"\"}")
+            R.id.tv_customerService->JumpUtils.instans?.jump(11)
             //返回
             R.id.img_back->this.finish()
         }

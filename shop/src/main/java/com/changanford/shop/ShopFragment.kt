@@ -3,16 +3,14 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.GoodsTypesItemBean
-import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.shop.adapter.ViewPage2Adapter
+import com.changanford.common.wutil.ViewPage2AdapterFragment
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
@@ -81,12 +79,14 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
-        val adapter=ViewPage2Adapter(requireActivity(),fragments)
-        binding.viewpager.adapter= adapter
-        binding.viewpager.isSaveEnabled = false
-        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-            tab.text = tabs[tabPosition].tagName
-        }.attach()
+        binding.viewpager.apply {
+            adapter= ViewPage2AdapterFragment(this@ShopFragment,fragments)
+            offscreenPageLimit=10
+            isSaveEnabled = false
+            TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
+                tab.text = tabs[tabPosition].tagName
+            }.attach()
+        }
     }
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter
