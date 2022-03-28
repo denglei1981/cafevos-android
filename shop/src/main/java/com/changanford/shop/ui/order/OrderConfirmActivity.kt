@@ -26,6 +26,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
@@ -65,6 +66,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private lateinit var dataListBean:ArrayList<GoodsDetailBean>
     private val goodsInfoAdapter by lazy { ConfirmOrderGoodsInfoAdapter() }
     override fun initView() {
+        AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
         if(TextUtils.isEmpty(goodsInfo)){
