@@ -21,11 +21,9 @@ import com.changanford.shop.adapter.goods.GoodsImgsAdapter
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
-import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -149,12 +147,9 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(R.id.img_back!=vid&&(!::control.isInitialized||viewModel.goodsDetailData.value==null))return
         when(vid){
             //确认订单
-            R.id.btn_submit->{
-                control.skuCode.apply {
-                    if(control.isInvalidSelectAttrs(this))control.createAttribute()
-                    else OrderConfirmActivity.start(Gson().toJson(viewModel.goodsDetailData.value))
-                }
-            }
+            R.id.btn_buy->control.submitOrder()
+            //加入购物车
+            R.id.btn_cart->control.addShoppingCart()
             //查看评价
             R.id.tv_goodsCommentLookAll->GoodsEvaluateActivity.start(spuId)
             //选择商品属性
@@ -168,6 +163,8 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             R.id.img_share->control.share()
             //客服
             R.id.tv_customerService->JumpUtils.instans?.jump(11)
+            //购物车
+            R.id.tv_cart->JumpUtils.instans?.jump(99)
             //返回
             R.id.img_back->this.finish()
         }

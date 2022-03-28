@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
@@ -21,9 +22,11 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.ui.compose.DetailsWalkCompose
+import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
+import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -53,6 +56,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.source="1"//标记为原生
         dataBean.buyNum=1
         dataBean.allSkuStock=dataBean.stock
+        dataBean.getRMB()
         //初始化 skuCode
         var skuCodeInitValue: String
         if(dataBean.stock>0&&dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
@@ -80,17 +84,21 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         //运费 0为包邮
         val freightPrice=dataBean.freightPrice
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
-        headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
+        headerBinding.inVip.imgVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
         when(dataBean.spuPageType){
+            //会员专享
             "MEMBER_EXCLUSIVE"->{
                 memberExclusive(dataBean)
                 headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
             }
+            //会员折扣
             "MEMBER_DISCOUNT"-> {
-                headerBinding.inDiscount.apply {
-                    lLayoutVip.visibility=View.VISIBLE
-                    tvVipIntegral.setText(dataBean.fbPrice)
+                headerBinding.inVip.apply {
+                    imgVip.visibility=View.VISIBLE
+                    val textColor=ContextCompat.getColor(activity,R.color.color_F21C44)
+                    tvRmbPrice.setTextColor(textColor)
+                    tvFbPrice.setTextColor(textColor)
                 }
             }
             "SECKILL"->{//秒杀信息
@@ -111,7 +119,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                         val stockProportion=WCommonUtil.getPercentage(dataBean.salesCount.toDouble(),totalStock.toDouble(),0)
                         dataBean.totalStock=totalStock
                         dataBean.stockProportion=stockProportion
-                        if(null==fbLine)tvFbLine.visibility= View.GONE
+//                        if(null==fbLine)tvFbLine.visibility= View.GONE
                         //限量=库存+销量
                         tvLimitBuyNum.setText("$totalStock")
                         model=dataBean
@@ -211,8 +219,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             dataBean.price=orginPrice
             dataBean.mallMallSkuSpuSeckillRangeId=mallMallSkuSpuSeckillRangeId
         }
-        headerBinding.inKill.model=dataBean
-        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
+        dataBean.getRMB()
+//        headerBinding.inDiscount.tvVipIntegral.setText(dataBean.fbPrice)
         memberExclusive(dataBean)
         val skuCodes=skuCode.split("-")
         var skuCodeTxt=""
@@ -226,9 +234,10 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         }
         dataBean.skuCodeTxts=skuCodeTxtArr
         headerBinding.inGoodsInfo.tvGoodsAttrs.setHtmlTxt(if(TextUtils.isEmpty(skuCodeTxt))"\t\t\t未选择属性" else "\t\t\t已选：${skuCodeTxt}","#333333")
+        headerBinding.inKill.model=dataBean
         headerBinding.inVip.model=dataBean
         headerBinding.inGoodsInfo.model=dataBean
-        bindingBtn(dataBean,null, binding.inBottom.btnSubmit)
+        bindingBtn(dataBean,null, binding.inBottom.btnBuy, binding.inBottom.btnCart,0)
     }
     /**
      * 处理专享数据-并且是折扣数据
@@ -241,20 +250,25 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     /**
      * [source]来源 0详情 1属性弹窗
     * */
-    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,source:Int=0){
+    fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,btnCart:KillBtnView?=null,source:Int=0){
         _dataBean.apply {
             val totalPayFb=fbPrice.toInt()*buyNum
-            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates)//2/7 秒杀已结束或者未开始
+            if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates,btnSource=source)//2/7 秒杀已结束或者未开始
             else if(stock<1){//库存不足,已售罄、已抢光
-                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true)
+                btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true,btnSource=source)
             } else if(1==source||(0==source&&!isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))){
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
                     btnSubmit.setText(R.string.str_immediatelyChange)
                     btnSubmit.updateEnabled(false)
                 } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
-                    btnSubmit.setStates(8)
-                }else btnSubmit.setStates(5)
-            }else btnSubmit.setStates(5)
+                    btnSubmit.setStates(8,btnSource=source)
+                }else btnSubmit.setStates(5,btnSource=source)
+            }else btnSubmit.setStates(5,btnSource=source)
+            //处理购物车按钮
+            if("SECKILL"==spuPageType){//秒杀商品不具备加入购物车功能
+                btnCart?.updateEnabled(false,source)
+            }else btnCart?.updateEnabled(btnSubmit.isEnabled,source)
+
         }
     }
     /**
@@ -282,5 +296,23 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     fun onDestroy(){
         timeCount?.cancel()
+    }
+    /**
+     * 提交订单
+     * */
+    fun submitOrder(){
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else OrderConfirmActivity.start(dataBean)
+        }
+    }
+    /**
+     * 加入购物车
+    * */
+    fun addShoppingCart(){
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else viewModel.addShoppingCart(dataBean.spuId)
+        }
     }
 }

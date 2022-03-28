@@ -276,6 +276,7 @@ data class GoodsDetailBean(
     var busSourse:String?=null,
     var mallMallWbVinSpuId:String?=null,
     var recommend:ArrayList<GoodsItemBean>?=null,//推荐
+    var rmbPrice:String?=fbPrice,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -285,6 +286,18 @@ data class GoodsDetailBean(
             return true
         }
         return false
+    }
+    /**
+     * 将福币转换为人民币 1元=100福币
+     * */
+    fun getRMB(fb:String?=fbPrice):String{
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
+        }
+        return rmbPrice?:"0"
     }
 }
 

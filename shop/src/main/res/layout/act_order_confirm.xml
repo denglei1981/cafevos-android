@@ -32,7 +32,7 @@
 <!--                商品基本信息-->
                 <include
                     android:id="@+id/in_goodsInfo"
-                    layout="@layout/in_order_confirm_goodsinfo"/>
+                    layout="@layout/in_order_confirm_goods_list"/>
 <!--                维保订单 VIN码-->
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/composeView"

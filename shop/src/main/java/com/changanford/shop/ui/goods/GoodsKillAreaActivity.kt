@@ -8,11 +8,13 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
 import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
+import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -26,7 +28,8 @@ import java.text.SimpleDateFormat
 @SuppressLint("SimpleDateFormat")
 @Route(path = ARouterShopPath.GoodsKillAreaActivity)
 class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewModel>(),
-    GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener, OnRefreshLoadMoreListener{
+    GoodsKillDateAdapter.SelectBackListener, GoodsKillAreaTimeAdapter.SelectTimeBackListener, OnRefreshLoadMoreListener,
+    TopBar.OnRightTvClickListener {
     companion object{
         fun start(context: Context) {
             context.startActivity(Intent(context, GoodsKillAreaActivity::class.java))
@@ -49,10 +52,13 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         override fun onFinish() {}
     }.start()
     override fun initView() {
-        binding.rvDate.adapter=dateAdapter
-        binding.rvTime.adapter=timeAdapter
+        binding.inKill.rvDate.adapter=dateAdapter
+        binding.inKill.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter
-        binding.topBar.setActivity(this)
+        binding.topBar.apply {
+            setActivity(this@GoodsKillAreaActivity)
+            setOnRightTvClickListener(this@GoodsKillAreaActivity)
+        }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         addObserve()
         mAdapter.setOnItemClickListener { _, _, position ->
@@ -86,7 +92,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
                     val dateI=if(match.isNotEmpty()) match[0].index else if (rest.isNotEmpty()) rest[0].index else 0
                     onSelectBackListener(dateI, this[dateI].seckillTimeRanges)
                     dateAdapter.selectPos = dateI
-                    binding.rvDate.scrollToPosition(dateI)
+                    binding.inKill.rvDate.scrollToPosition(dateI)
                 }
             }
         }
@@ -134,7 +140,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         timeAdapter.setList(seckillTimeRange)
         onSelectTimeBackListener(timeI,seckillTimeRange[timeI])
         timeAdapter.selectPos=timeI
-        binding.rvTime.scrollToPosition(timeI)
+        binding.inKill.rvTime.scrollToPosition(timeI)
     }
     /**
      * 秒杀日期选择回调
@@ -166,5 +172,9 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     override fun onDestroy() {
         super.onDestroy()
         timeCountDownTimer.cancel()
+    }
+    //规则说明
+    override fun onRightTvClick() {
+        "请先配置跳转路由".toast()
     }
 }

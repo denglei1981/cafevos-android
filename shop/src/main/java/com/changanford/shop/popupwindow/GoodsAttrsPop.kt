@@ -37,12 +37,19 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
     private fun initView(){
         setKeyboardAdaptive(true)
         setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
-        viewDataBinding.recyclerView.adapter=mAdapter
-        viewDataBinding.imgClose.setOnClickListener { this.dismiss() }
-        viewDataBinding.btnSubmit.setOnClickListener {
-            dismiss()
-            OrderConfirmActivity.start(Gson().toJson(dataBean))
+        viewDataBinding.apply {
+            recyclerView.adapter=mAdapter
+            imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
+            btnBuy.setOnClickListener {
+                dismiss()
+                OrderConfirmActivity.start(dataBean)
+            }
+            btnCart.setOnClickListener {
+                dismiss()
+                control.addShoppingCart()
+            }
         }
+
     }
     @SuppressLint("StringFormatMatches")
     private fun initData(){
@@ -65,14 +72,17 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         dataBean.fbPrice = fbPrice
                         dataBean.orginPrice = orginPrice
                         viewDataBinding.addSubtractView.setIsAdd(true)
-                        viewDataBinding.tvIntegral.setText(fbPrice)
+                        viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(fbPrice))
+                        viewDataBinding.tvFbPrice.setText(fbPrice)
                     } else {
                         dataBean.skuImg = dataBean.imgs[0]
                         dataBean.stock = dataBean.allSkuStock
                         dataBean.fbPrice = dataBean.orFbPrice
                         dataBean.orginPrice = dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
-                        viewDataBinding.tvIntegral.setText(if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice)
+                        val price=if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice
+                        viewDataBinding.tvFbPrice.setText(price)
+                        viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(price))
                     }
                     dataBean.price = dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId = mallMallSkuSpuSeckillRangeId
@@ -98,20 +108,21 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         limitBuyNum
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
-                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
+                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnBuy, viewDataBinding.btnCart,1)
                 }
             }
         }
         viewDataBinding.tvAccountPoints.apply {
             visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
+            text="${dataBean.acountFb}"
+//            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
         }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity) {
             dataBean.buyNum = it
-            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnSubmit, 1)
+            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnBuy, null,1)
         }
-        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
+//        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
     //动画
     override fun onCreateShowAnimation(): Animation? {

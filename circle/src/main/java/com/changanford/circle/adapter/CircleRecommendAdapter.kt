@@ -16,10 +16,7 @@ import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.ui.release.MMapActivity
-import com.changanford.circle.ui.release.ReleaseActivity
 import com.changanford.circle.utils.launchWithCatch
-import com.changanford.circle.widget.assninegridview.AssNineGridViewAdapter
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.common.MyApp
@@ -31,7 +28,6 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus

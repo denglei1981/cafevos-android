@@ -15,7 +15,6 @@ import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
-import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 /**
@@ -343,6 +342,26 @@ class GoodsViewModel: BaseViewModel() {
                 GoodsListBean.postValue(null)
             }.onSuccess {
                 GoodsListBean.postValue(it)
+            }
+        }
+    }
+    /**
+     * 加入购物车
+     * */
+    fun addShoppingCart(spuId:String?,showLoading:Boolean=false){
+        "接口还未部署".toast()
+        return
+        if(spuId==null)return
+        viewModelScope.launch {
+            fetchRequest(showLoading){
+                body.clear()
+                body["spuId"]=spuId
+                val randomKey = getRandomKey()
+                shopApiService.addShoppingCart(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                it?.toast()
+            }.onSuccess {
+
             }
         }
     }

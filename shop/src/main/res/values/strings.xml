@@ -183,4 +183,9 @@
     <string name="str_hasChangeXa">已兑换%1$s件</string>
     <string name="str_walk">逛一逛</string>
     <string name="str_customerService">客服</string>
+    <string name="str_ruleDescription">规则说明</string>
+    <string name="str_shoppingCart">购物车</string>
+    <string name="str_addShoppingCart">加入购物车</string>
+    <string name="str_left_parentheses">（</string>
+    <string name="str_right_parentheses">）</string>
 </resources>
