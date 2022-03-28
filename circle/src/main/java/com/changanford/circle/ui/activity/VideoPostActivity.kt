@@ -83,6 +83,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var circlename: String = ""
     private var address: String = ""
     private var selectList = ArrayList<LocalMedia>()
+    private var tempList = ArrayList<LocalMedia>() //临时的
     private var nomalwith = 500;
     private var nomalhight = 500;
     private lateinit var plateBean: PlateBean
@@ -96,6 +97,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private lateinit var jsonStr: String
     private lateinit var SelectlocalMedia: LocalMedia
     private var isunSave: Boolean = false  // 不自动保存 默认FALSE
+
+    private var isHasVideoPath = false;//  有网络的图片url 路径
+
     private val insertPostId by lazy {
         System.currentTimeMillis()
     }
@@ -347,8 +351,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params["plate"] = locaPostEntity!!.plate
                     params["topicId"] = locaPostEntity!!.topicId
                     params["postsId"] = locaPostEntity!!.postsId
-                    params["type"] = locaPostEntity!!.type
-                    params["keywords"] = locaPostEntity!!.keywords
+                    params["type"] = locaPostEntity.type
+                    params["keywords"] = locaPostEntity.keywords
                     params["circleId"] = locaPostEntity!!.circleId
                     params["content"] = locaPostEntity!!.content ?: ""
                     params["actionCode"] = locaPostEntity!!.actionCode
@@ -359,6 +363,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params["province"] = locaPostEntity!!.province
                     params["cityCode"] = locaPostEntity!!.cityCode
                     params["city"] = locaPostEntity!!.city
+                    isHasVideoPath = true
+                    params["videoUrl"] = locaPostEntity!!.videoUrl
 
                     if (params["plate"] != 0) {
                         buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
@@ -391,7 +397,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     }
 
-    fun showErrorWarn(){
+    fun showErrorWarn() {
         QuickPopupBuilder.with(this)
             .contentView(R.layout.dialog_post_error)
             .config(
@@ -653,7 +659,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
-
+                            isHasVideoPath = false
                             if (result != null) {
                                 SelectlocalMedia = result[0]
                                 startARouterForResult(
@@ -828,10 +834,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
-                2->{ // 话题
+                2 -> { // 话题
                     toHuati()
                 }
-                3->{// 圈子
+                3 -> {// 圈子
                     toQuanzi()
                 }
                 4 -> { // 选择地址。
@@ -892,29 +898,38 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
         binding.bottom.tvPic.text = "视频"
         binding.bottom.ivPic.setOnClickListener {
-            PictureUtil.ChoseVideo(
-                this,
-                selectList,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        if (result != null) {
-                            SelectlocalMedia = result[0]
-                            startARouterForResult(
-                                this@VideoPostActivity,
-                                ARouterCirclePath.PictureEditAudioActivity,
-                                Bundle().apply {
-                                    putString("path", result[0].realPath)
-                                },
-                                PictureEditAudioActivity.EDIT_VIDEOPATH
-                            )
+
+
+            if (isHasVideoPath) {
+                cxsp()
+            } else {
+                PictureUtil.ChoseVideo(
+                    this,
+                    selectList,
+                    object : OnResultCallbackListener<LocalMedia> {
+                        override fun onResult(result: MutableList<LocalMedia>?) {
+                            if (result != null) {
+                                SelectlocalMedia = result[0]
+                                isHasVideoPath = false
+                                startARouterForResult(
+                                    this@VideoPostActivity,
+                                    ARouterCirclePath.PictureEditAudioActivity,
+                                    Bundle().apply {
+                                        putString("path", result[0].realPath)
+                                    },
+                                    PictureEditAudioActivity.EDIT_VIDEOPATH
+                                )
+                            }
                         }
-                    }
 
-                    override fun onCancel() {
+                        override fun onCancel() {
 
-                    }
+                        }
 
-                })
+                    })
+            }
+
+
         }
     }
 
@@ -1019,9 +1034,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }." + type
 
         params["type"] = 3
-        params["videoUrl"] = path
-
-
+        if (!isHasVideoPath) {
+            // TODO 重选视频后， 把isHasVideoPath  置于 FALSE
+            params["videoUrl"] = path
+        }
         AliYunOssUploadOrDownFileConfig.getInstance(this)
             .uploadFile(stsBean.bucketName, path, ytPath, "", 0)
         AliYunOssUploadOrDownFileConfig.getInstance(this).setOnUploadFile(object :
@@ -1065,19 +1081,19 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
-        var tagNames=""
+        var tagNames = ""
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
-                tagNames +=it.tagName+","
+                tagNames += it.tagName + ","
             }
         }
         params["tagIds"] = tagIds
-        try{
-            val  biaoti= params["title"]
-            val content =params["content"]
-            BuriedUtil.instant?.post(biaoti.toString(),content.toString(),tagNames)
-        }catch (e:Exception){
+        try {
+            val biaoti = params["title"]
+            val content = params["content"]
+            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagNames)
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -1130,18 +1146,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     }
                 }
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {
-                    canEditVideo = true
-                    val videoeditpath = data?.getStringExtra("finalPath")
-                    val time = data!!.getLongExtra("time", 0)
-                    SelectlocalMedia.apply {
-                        isCut = true
-                        cutPath = videoeditpath
-                        duration = time
-                    }
-                    selectList.clear()
-                    selectList.add(SelectlocalMedia)
-                    postVideoAdapter.setList(selectList)
-                    postVideoAdapter.notifyDataSetChanged()
+
+                        canEditVideo = true
+                        val videoeditpath = data?.getStringExtra("finalPath")
+                        val time = data!!.getLongExtra("time", 0)
+                        SelectlocalMedia.apply {
+                            isCut = true
+                            cutPath = videoeditpath
+                            duration = time
+                        }
+                        selectList.clear()
+                        selectList.add(SelectlocalMedia)
+                        postVideoAdapter.setList(selectList)
+                        postVideoAdapter.notifyDataSetChanged()
+
                 }
                 VideoChoseFMActivity.FM_CALLBACK -> {
 
@@ -1178,6 +1196,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun cxsp() {
         isunSave = true
+        tempList.clear()
+        tempList.addAll(selectList)
         PictureUtil.ChoseVideo(
             this,
             selectList.apply { clear() },
@@ -1187,6 +1207,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     if (result != null) {
                         selectList.clear()
                         selectList.addAll(result)
+                        SelectlocalMedia = result[0]
+                        isHasVideoPath = false
                     }
                     postVideoAdapter.setList(selectList)
                     startARouterForResult(
@@ -1200,9 +1222,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
 
                 override fun onCancel() {
-
+                    // selecltList  还原
+                    selectList.clear()
+                    selectList.addAll(tempList)
                 }
-
             })
     }
 
