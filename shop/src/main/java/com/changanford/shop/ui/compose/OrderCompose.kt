@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.changanford.common.bean.PayWayBean
@@ -133,9 +135,9 @@ fun PayWayCompose(){
                     Spacer(modifier = Modifier.width(3.dp))
                     TextField(value = inputFb.value, onValueChange = {
                         inputFb.value= it
-                    }, placeholder = {
+                    }, colors =  TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent), textStyle = TextStyle(color = colorResource(R.color.color_00095B), fontSize = 14.sp), placeholder = {
                         Text(text = stringResource(R.string.str_pleaseEnterUseLuckyCurrency), color = colorResource(R.color.color_99), fontSize = 14.sp)
-                    })
+                    }, modifier = Modifier.background(Color.Transparent).padding(0.dp))
                 }
             }
         }
