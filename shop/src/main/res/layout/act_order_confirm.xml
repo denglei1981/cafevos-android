@@ -47,11 +47,9 @@
                     android:id="@+id/in_payInfo"
                     layout="@layout/in_oreder_confirm_pay"/>
 <!--                支付方式选择-->
-                <androidx.compose.ui.platform.ComposeView
-                    android:id="@+id/composeView_payWay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_20"/>
+                <include
+                    android:id="@+id/in_payWay"
+                    layout="@layout/in_order_pay_way"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
         <androidx.appcompat.widget.LinearLayoutCompat

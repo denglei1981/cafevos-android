@@ -30,7 +30,6 @@ import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
-import com.changanford.shop.ui.compose.PayWayCompose
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -134,9 +133,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             recyclerView.adapter=goodsInfoAdapter
             goodsInfoAdapter.setList(dataListBean)
         }
-        binding.composeViewPayWay.setContent {
-            PayWayCompose()
-        }
+
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
@@ -292,5 +289,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 }
             }
         }
+    }
+    /**
+     * 支付方式选择点击
+     * [type]0 福币+人民币、1人民币、2自定义福币
+    * */
+    private fun clickPayWay(type:Int){
+
     }
 }

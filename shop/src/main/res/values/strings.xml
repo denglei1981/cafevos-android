@@ -193,4 +193,5 @@
     <string name="str_payWay">支付方式</string>
     <string name="str_currencyAvailableFb">(本次可用福币</string>
     <string name="str_pleaseEnterUseLuckyCurrency">请输入使用福币</string>
+    <string name="str_customLuckyCoinPayment">自定义福币支付</string>
 </resources>
