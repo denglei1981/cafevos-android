@@ -78,10 +78,31 @@
             android:text="@{model.freightPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginTop="@dimen/dp_27"
+            android:id="@+id/tv_coupons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_coupons"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_coupons_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_coupons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:start_txt="@string/str_subtractRmb"
+            android:drawablePadding="@dimen/dp_5"
+            android:drawableEnd="@mipmap/right_99"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
         <View
             android:id="@+id/view_divider"
             android:layout_marginTop="@dimen/dp_17"
-            app:layout_constraintTop_toBottomOf="@id/tv_freight_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_coupons"
             android:background="@color/color_ED"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"/>
