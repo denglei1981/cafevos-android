@@ -765,17 +765,18 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
     }
     @JavascriptInterface
     fun openCamera(callback:String){
-        openCamera(false, callback)
+        openCamera(isEnableCrop=false,isCompress=true, callback=callback)
     }
     /**
      * 打开相机
      * [callback]js回调方法
      * [isEnableCrop]是否裁剪
+     * [isCompress]是否压缩 开启后默认小于500不压缩
      * 返回 base64Str
      * */
     @JavascriptInterface
-    fun openCamera(isEnableCrop:Boolean=true,callback:String){
-        PictureUtils.opencarcme(activity,isEnableCrop, object : OnResultCallbackListener<LocalMedia> {
+    fun openCamera(isEnableCrop:Boolean=true,isCompress:Boolean=true,callback:String){
+        PictureUtils.opencarcme(activity,isEnableCrop,isCompress, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 if (result.isNotEmpty()) {
                     for (media in result) {

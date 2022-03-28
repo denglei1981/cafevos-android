@@ -103,7 +103,7 @@ fun RecommendListCompose(dataBean:MutableList<GoodsItemBean>?){
  * 推荐列表item
 * */
 @Composable
-private fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
+fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
     itemData?.apply {
         Row(modifier = Modifier
             .fillMaxWidth()

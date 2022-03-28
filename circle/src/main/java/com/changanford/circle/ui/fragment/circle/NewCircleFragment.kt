@@ -40,7 +40,6 @@ import com.changanford.circle.databinding.FragmentCircleNewBinding
 import com.changanford.circle.ui.activity.CircleListActivity
 import com.changanford.circle.ui.activity.circle.HotListActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
-import com.changanford.common.adapter.ViewPage2Adapter
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.buried.WBuriedUtil
@@ -52,6 +51,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.ViewPage2AdapterFragment
 import com.changanford.common.wutil.WCommonUtil
 import com.google.gson.Gson
 
@@ -340,7 +340,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 recyclerViewDot.adapter=myAdapter
                 recyclerViewDot.visibility=View.VISIBLE
             }else recyclerViewDot.visibility=View.GONE
-            viewPager2.adapter= ViewPage2Adapter(requireActivity(),fragments)
+            viewPager2.adapter= ViewPage2AdapterFragment(this@NewCircleFragment,fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
