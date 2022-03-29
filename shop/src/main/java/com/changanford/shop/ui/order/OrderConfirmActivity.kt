@@ -28,6 +28,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
@@ -69,6 +70,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private val rbPayWayArr by lazy { arrayListOf(binding.inPayWay.rbFbAndRmb,binding.inPayWay.rbRmb,binding.inPayWay.rbCustom) }
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
+    private var minRmbProportion:Float=0.1f//最低使用人民币比例
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -160,6 +162,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         val totalFb=fbPrice*buyNum
         //总共支付 (商品金额+运费)
         totalPayFb=totalFb+freightPrice
+        //最少使用多少人民币（fb）=总金额*最低现金比
+        var minRmb:Float=totalPayFb*minRmbProportion
+        val maxFb=WCommonUtil.getHeatNumUP("${totalFb-minRmb}",0).toInt()
+        //最大可使用福币
+        maxUseFb=if(maxUseFb>maxFb)maxFb else {
+            minRmb= (totalPayFb-maxUseFb).toFloat()
+            maxUseFb
+        }
         dataBean.totalPayFb="$totalPayFb"
         binding.inOrderInfo.apply {
             if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
@@ -169,7 +179,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val totalOriginalFb=originalPrice*buyNum
             tvAmountValue.setText("$totalOriginalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
-            binding.inPayWay.rbRmb.text = "￥$totalPayFb"
+            binding.inPayWay.apply {
+                rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
+                rbRmb.text = "￥${getRMB("$totalPayFb")}"
+            }
 //            val spuPageType=dataBean.spuPageType
             //会员折扣、砍价
             if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
@@ -291,16 +304,20 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
    private fun MaintenanceCompose(){
         Column(modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White).padding(bottom = 17.dp)) {
-            Spacer(modifier = Modifier.fillMaxWidth()
+            .background(Color.White)
+            .padding(bottom = 17.dp)) {
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
                 .height(10.dp)
                 .background(colorResource(R.color.color_F4)))
             for (i in 0..1){//0 vin码 1车型
                 Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp,top = if(0==i)19.dp else 29.dp)) {
+                    .padding(start = 20.dp, end = 20.dp, top = if (0 == i) 19.dp else 29.dp)) {
                     Text(text = stringResource(if(0==i)R.string.str_vinCode else R.string.str_models),color= colorResource(R.color.color_33),fontSize = 14.sp,
-                    modifier = Modifier.weight(1f).padding(end = 10.dp))
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 10.dp))
                     Text(text = if(0==i)dataBean.vinCode?:"" else dataBean.models?:"",color= colorResource(R.color.color_33),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
                 }
             }
@@ -348,19 +365,19 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inPayWay.apply {
             val inputFb= edtCustom.text.toString()
             tvCustomFb.text=inputFb
-            tvCustomRmb.text="+￥${getRMB(totalPayFb-inputFb.toInt())}"
+            tvCustomRmb.text="+￥${getRMB("${totalPayFb-inputFb.toInt()}")}"
         }
     }
     /**
      * 将福币转换为人民币 1元=100福币
      * */
-    private fun getRMB(fb:Int?=totalPayFb):String{
+    private fun getRMB(fb:String?="$totalPayFb"):String{
         var rmbPrice="0"
         if(fb!=null){
             val fbToFloat=fb.toFloat()
             val remainder=fbToFloat%100
             rmbPrice = if(remainder>0) "${fbToFloat/100}"
-            else "${fb/100}"
+            else "${fbToFloat.toInt()/100}"
         }
         return rmbPrice
     }
