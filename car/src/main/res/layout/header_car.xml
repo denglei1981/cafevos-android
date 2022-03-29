@@ -39,6 +39,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
+        <View
+            android:id="@+id/view_banner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/carTopViewPager"
+            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_10"/>
         <androidx.appcompat.widget.AppCompatButton
             android:visibility="gone"
             android:id="@+id/btn_submit"
