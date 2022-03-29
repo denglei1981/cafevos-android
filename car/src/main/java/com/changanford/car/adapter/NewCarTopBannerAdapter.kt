@@ -19,13 +19,14 @@ import com.zhpan.bannerview.BaseViewHolder
 
 /**
  * @Author : wenke
- * @Time : 2022/1/18 0018
+ * @Time : 2022/1/18
  * @Description : NewCarTopBannerAdapter
  */
 class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnStateChangeListener) : BaseBannerAdapter<NewCarBannerBean?>() {
     private val animationControl by lazy { AnimationControl() }
-    var videoHashMap= HashMap<String,PlayerHelper?>()
+//    var videoHashMap= HashMap<String,PlayerHelper?>()
     var currentPosition=0//当前位置
+    var playerHelper:PlayerHelper?=null
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_car_banner
     }
@@ -57,26 +58,18 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                             imgBottom.visibility=View.GONE
                         }
                         videoView.visibility= View.GONE
-                    }else{//是视频
+                    }else if(currentPosition==position){//是视频
+                        "position:$position》》》渲染item>>>".wLogE()
+                        releaseVideo()
                         val videoUrl=mainImg
                         imageCarIntro.visibility=View.GONE
                         imgTop.visibility=View.GONE
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
-                        videoView.isMute=true
-                        val findItem=videoHashMap.keys.find {url-> url==videoUrl }
-                        "position:$position》》》渲染item>>>${findItem}".wLogE()
-                        val playerHelper = PlayerHelper(activity, videoView)
-//                        if(findItem==null){
-                            playerHelper.apply {
-                                "position:$position<<<currentPosition:$currentPosition>>>渲染item".wLogE()
-                                if(currentPosition==position) {
-                                    dealWithPlay(videoUrl)
-                                    addOnStateChangeListener(listener)
-                                }
-                            }
-//                        }else releaseVideo(videoUrl)
-                        videoHashMap[videoUrl?:""]= playerHelper
+                        playerHelper = PlayerHelper(activity, videoView).apply {
+                            dealWithPlay(videoUrl)
+                            addOnStateChangeListener(listener)
+                        }
                     }
                     view.setOnClickListener {
                         JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
@@ -85,55 +78,25 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
             }
         }
     }
-    fun startPlayVideo(videoUrl:String?){
-        videoHashMap[videoUrl]?.apply {
-            videoUrl?.apply {
-                purePlayVideo(this)
-            }
-        }
+    fun pauseVideo(){
+        playerHelper?.pause()
     }
-    fun pauseVideoAll(){
-        videoHashMap.values.forEach{
-            it?.pause()
-        }
-    }
-    fun pauseVideo(videoUrl:String?){
-        videoHashMap[videoUrl]?.apply {
-            pause()
-        }
+    fun replay() {
+        playerHelper?.replay()
     }
     fun resumeVideo(videoUrl:String?){
-        "继续播放url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
-        videoHashMap[videoUrl]?.apply {
-            dealWithPlay(videoUrl)
-        }
+        "继续播放url:$videoUrl>>>>>find:${playerHelper}".wLogE()
+        playerHelper?.dealWithPlay(videoUrl)
     }
-    fun replayVideo(videoUrl:String?){
-        "重新播放url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
-        videoHashMap[videoUrl]?.apply {
-            replay(videoUrl)
-        }
-    }
-    fun clearOnStateChangeListeners(){
-        videoHashMap.values.forEach{
-            it?.clearOnStateChangeListeners()
-        }
-    }
-    fun releaseVideo(videoUrl:String?){
-        "销毁url:$videoUrl>>>>>find:${videoHashMap[videoUrl]}".wLogE()
-        videoHashMap[videoUrl]?.apply {
+    fun releaseVideo(){
+        playerHelper?.apply {
             release()
             clearOnStateChangeListeners()
+            playerHelper=null
         }
     }
-    fun releaseVideoAll(){
-        videoHashMap.values.forEach{
-            it?.release()
-            it?.clearOnStateChangeListeners()
-        }
-    }
-    fun addVideoListener(videoUrl:String?,listener: VideoView.OnStateChangeListener){
-        videoHashMap[videoUrl]?.apply {
+    fun addVideoListener(listener: VideoView.OnStateChangeListener){
+        playerHelper?.apply {
             addOnStateChangeListener(listener)
         }
     }

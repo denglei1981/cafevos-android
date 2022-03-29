@@ -50,7 +50,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     /**
      * 只播放
     * */
-    fun purePlayVideo(url: String?){
+    private fun purePlayVideo(url: String?){
         "只播放>>>>${getCurrentPlayState()}".wLogE()
         startPlay(url)
         mController.setGestureEnabled(false)
@@ -105,9 +105,8 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
             purePlayVideo(videoUrl)
         }
     }
-    fun replay(videoUrl:String?) {
+    fun replay() {
         "重新播放>>>>${getCurrentPlayState()}".wLogE()
-        val playState=getCurrentPlayState()
         mVideoView.replay(true)
     }
     fun pause() {
