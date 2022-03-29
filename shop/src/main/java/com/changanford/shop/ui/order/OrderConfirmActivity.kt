@@ -26,10 +26,12 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
+import com.changanford.shop.utils.WCommonUtil.onTextChanged
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -64,6 +66,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var spuPageType=""//商品类型
     private lateinit var dataListBean:ArrayList<GoodsDetailBean>
     private val goodsInfoAdapter by lazy { ConfirmOrderGoodsInfoAdapter() }
+    private val rbPayWayArr by lazy { arrayListOf(binding.inPayWay.rbFbAndRmb,binding.inPayWay.rbRmb,binding.inPayWay.rbCustom) }
+    private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
+    private var totalPayFb:Int=0//支付总额 福币
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -86,9 +91,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
         initLiveDataBus()
+        edtCustomOnTextChanged()
     }
 
     override fun initData() {
+        maxUseFb=dataBean.acountFb
 //        binding.inGoodsInfo.addSubtractView.apply {
 //            val stock=dataBean.stock
 //            val limitBuyNum:Int=dataBean.getLimitBuyNum()
@@ -135,7 +142,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
 
     }
-    @SuppressLint("StringFormatMatches")
+    @SuppressLint("StringFormatMatches", "SetTextI18n")
     private fun bindingBaseData(){
         //秒杀情况下 原价=现价
         if("SECKILL"==spuPageType){
@@ -152,7 +159,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //总商品价 单价*购买数量
         val totalFb=fbPrice*buyNum
         //总共支付 (商品金额+运费)
-        val totalPayFb:Int=totalFb+freightPrice
+        totalPayFb=totalFb+freightPrice
         dataBean.totalPayFb="$totalPayFb"
         binding.inOrderInfo.apply {
             if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
@@ -162,6 +169,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val totalOriginalFb=originalPrice*buyNum
             tvAmountValue.setText("$totalOriginalFb")
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
+            binding.inPayWay.rbRmb.text = "￥$totalPayFb"
 //            val spuPageType=dataBean.spuPageType
             //会员折扣、砍价
             if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
@@ -188,6 +196,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
 //            if(freightPrice!=0)tvDistributionType
             model=dataBean
         }
+        //支付方式
+        initPayWay()
         binding.inBottom.apply {
             model=dataBean
             tvAcountFb.setText("${dataBean.acountFb}")
@@ -218,6 +228,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 dataBean.isAgree=binding.checkBox.isChecked
                 updateBtnUi()
             }
+            //福币+人民币支付
+            R.id.rb_fbAndRmb->clickPayWay(0)
+            //人民币支付
+            R.id.rb_rmb->clickPayWay(1)
+            //自定义支付
+            R.id.rb_custom->clickPayWay(2)
         }
     }
     @DelicateCoroutinesApi
@@ -290,11 +306,76 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             }
         }
     }
+    private fun initPayWay(){
+        binding.inPayWay.apply {
+            tvFbBalance.setText("$maxUseFb")
+            if(maxUseFb>0){
+                rbFbAndRmb.visibility=View.VISIBLE
+                rbCustom.visibility=View.VISIBLE
+                clickPayWay(0)
+            }else clickPayWay(1)
+        }
+    }
     /**
      * 支付方式选择点击
      * [type]0 福币+人民币、1人民币、2自定义福币
     * */
     private fun clickPayWay(type:Int){
-
+        for((index,it) in rbPayWayArr.withIndex()){
+            it.isChecked= type==index
+        }
+        updatePayCustom()
+    }
+    private fun edtCustomOnTextChanged(){
+        binding.inPayWay.apply {
+            edtCustom.onTextChanged {
+                val inputFb=it.s
+                if(!TextUtils.isEmpty(inputFb)){
+                    //输入的福币超出可使用的范围
+                    if(inputFb.toString().toInt()>maxUseFb){
+                        edtCustom.setText("$maxUseFb")
+                        getString(R.string.str_hasMaxUseFb).toast()
+                    }
+                    calculateFbAndRbm()
+                }else{
+                    tvCustomRmb.text=""
+                }
+            }
+        }
+    }
+    @SuppressLint("SetTextI18n")
+    private fun calculateFbAndRbm(){
+        binding.inPayWay.apply {
+            val inputFb= edtCustom.text.toString()
+            tvCustomFb.text=inputFb
+            tvCustomRmb.text="+￥${getRMB(totalPayFb-inputFb.toInt())}"
+        }
+    }
+    /**
+     * 将福币转换为人民币 1元=100福币
+     * */
+    private fun getRMB(fb:Int?=totalPayFb):String{
+        var rmbPrice="0"
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb/100}"
+        }
+        return rmbPrice
+    }
+    private fun updatePayCustom(){
+        if(maxUseFb>0){
+            binding.inPayWay.apply {
+                val isCheck=rbCustom.isChecked
+                if(isCheck){
+                    rbCustom.visibility=View.INVISIBLE
+                    layoutCustom.visibility=View.VISIBLE
+                }else{
+                    layoutCustom.visibility=View.GONE
+                    rbCustom.visibility=View.VISIBLE
+                }
+            }
+        }
     }
 }

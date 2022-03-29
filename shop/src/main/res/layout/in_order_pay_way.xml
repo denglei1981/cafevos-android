@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dp_27"
         android:paddingEnd="@dimen/dp_20"
-        android:paddingStart="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_16"
         android:background="@drawable/bord_f4_t_10dp">
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_title"
+            android:layout_marginStart="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
@@ -47,15 +49,19 @@
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12"/>
         <androidx.appcompat.widget.AppCompatRadioButton
+            android:onClick="onClick"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/rb_fbAndRmb"
-            android:layout_marginTop="@dimen/dp_18"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@id/rb_rmb"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_36"
             android:background="@drawable/rb_selector_pay_way"
             android:button="@null"
-            tools:text="13999+¥130"
+            android:text="13999+¥130"
             android:textColor="@drawable/rb_text_pay_way"
             android:drawablePadding="@dimen/dp_3"
             android:gravity="center"
@@ -63,8 +69,10 @@
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"/>
         <androidx.appcompat.widget.AppCompatRadioButton
+            android:onClick="onClick"
             android:id="@+id/rb_rmb"
-            app:layout_constraintTop_toTopOf="@id/rb_fbAndRmb"
+            android:layout_marginTop="@dimen/dp_18"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toEndOf="@id/rb_fbAndRmb"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_width="wrap_content"
@@ -77,10 +85,14 @@
             android:paddingStart="@dimen/dp_20"
             android:paddingEnd="@dimen/dp_20"/>
         <androidx.appcompat.widget.AppCompatRadioButton
+            android:onClick="onClick"
             android:id="@+id/rb_custom"
-            app:layout_constraintTop_toBottomOf="@id/rb_fbAndRmb"
+            tools:visibility="visible"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/rb_rmb"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
             android:layout_width="wrap_content"
             android:minWidth="@dimen/dp_140"
             android:layout_height="@dimen/dp_36"
@@ -92,6 +104,9 @@
             android:paddingStart="@dimen/dp_24"
             android:paddingEnd="@dimen/dp_24"/>
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/layout_custom"
             app:layout_constraintStart_toStartOf="@id/rb_custom"
             app:layout_constraintTop_toTopOf="@id/rb_custom"
             android:layout_width="wrap_content"
@@ -108,14 +123,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_shop_fb_42"/>
-            <com.changanford.common.ui.view.WTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_custom_fb"
                 app:layout_constraintTop_toTopOf="@id/edt_custom"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/edt_custom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/transparent"
                 android:textSize="@dimen/sp_14"/>
-            <com.changanford.common.ui.view.WTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_custom_rmb"
                 app:layout_constraintTop_toTopOf="@id/edt_custom"
                 app:layout_constraintBottom_toBottomOf="@id/edt_custom"
@@ -126,6 +143,10 @@
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A9DB5"/>
             <EditText
+                android:inputType="number"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:digits="0123456789"
                 android:id="@+id/edt_custom"
                 android:layout_marginStart="@dimen/dp_2"
                 app:layout_constraintStart_toEndOf="@id/img_fb"
@@ -135,7 +156,7 @@
                 android:textColorHint="@color/color_99"
                 android:textColor="@color/color_00095B"
                 android:hint="@string/str_pleaseEnterUseLuckyCurrency"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:textSize="@dimen/sp_14" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
