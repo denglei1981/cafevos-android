@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AddressBeanItem
@@ -71,6 +72,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
     private var minRmbProportion:Float=0.1f//最低使用人民币比例
+    private var payFb:String?="0"//福币支付额度
+    private var payRmb:String?="0"//人民币支付额度
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -181,7 +184,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
             binding.inPayWay.apply {
                 rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
-                rbRmb.text = "￥${getRMB("$totalPayFb")}"
+                rbRmb.text = "¥${getRMB("$totalPayFb")}"
             }
 //            val spuPageType=dataBean.spuPageType
             //会员折扣、砍价
@@ -217,17 +220,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             updateBtnUi()
         }
     }
-    /**
-     * 更新底部提交按钮状态
-    * */
-    private fun updateBtnUi(){
-        dataBean.apply {
-            if(WConstant.maintenanceType==spuPageType){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&&totalPayFb.toInt()<=acountFb)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb)
 
-        }
-    }
     fun onClick(v:View){
         when(v.id){
             //提交订单
@@ -365,8 +358,48 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inPayWay.apply {
             val inputFb= edtCustom.text.toString()
             tvCustomFb.text=inputFb
-            tvCustomRmb.text="+￥${getRMB("${totalPayFb-inputFb.toInt()}")}"
+            tvCustomRmb.text="+¥${getRMB("${totalPayFb-inputFb.toInt()}")}"
         }
+    }
+    /**
+     * 获取支付组合额度
+    * */
+    @SuppressLint("SetTextI18n")
+    private fun getPayLines():Boolean{
+        binding.inPayWay.apply {
+            when{
+                //选中了混合支付
+                rbFbAndRmb.isChecked->{
+                    val str=rbFbAndRmb.text.toString()
+                    val splitArr=str.split("+¥")
+                    payFb=splitArr[0]
+                    payRmb=splitArr[1]
+                }
+                //选中了人民币支付
+                rbRmb.isChecked->{
+                    payFb="0"
+                    payRmb=getRMB("$totalPayFb")
+                }
+                //选中了自定义混合支付
+                rbCustom.isChecked->{
+                    payFb=edtCustom.text.toString()
+                    payRmb = if(!TextUtils.isEmpty(payFb)){
+                        getRMB("${totalPayFb-(payFb?:"0").toInt()}")
+                    }else null
+                }
+            }
+        }
+        val isPrice=!TextUtils.isEmpty(payFb)&&!TextUtils.isEmpty(payRmb)
+        binding.inBottom.tvPayPrice.apply {
+            setCompoundDrawablesRelativeWithIntrinsicBounds(if(TextUtils.isEmpty(payFb)||payFb=="0")null
+            else ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42),null,null,null)
+            if(isPrice&&payFb!="0"&&payRmb!="0"){
+                text="$payFb+¥$payRmb"
+            }
+            val startStr=if(!TextUtils.isEmpty(payFb)&&payFb!="0")"$payFb+" else ""
+            val endStr=if(!TextUtils.isEmpty(payRmb)&&payRmb!="0")"¥$payRmb" else ""
+        }
+        return isPrice
     }
     /**
      * 将福币转换为人民币 1元=100福币
@@ -393,6 +426,18 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     rbCustom.visibility=View.VISIBLE
                 }
             }
+        }
+    }
+    /**
+     * 更新底部提交按钮状态
+     * */
+    private fun updateBtnUi(){
+        dataBean.apply {
+            val isPrice=getPayLines()
+            if(WConstant.maintenanceType==spuPageType){//维保商品
+                binding.inBottom.btnSubmit.updateEnabled(isAgree&&totalPayFb.toInt()<=acountFb&&isPrice)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb&&isPrice)
+
         }
     }
 }

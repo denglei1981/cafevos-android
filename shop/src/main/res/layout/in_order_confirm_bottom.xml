@@ -18,6 +18,7 @@
         android:background="@color/white">
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integral"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:end_txt="@string/str_integral"
@@ -28,6 +29,7 @@
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
             android:layout_marginTop="@dimen/dp_5"
+            android:visibility="gone"
             android:id="@+id/tv_acountFb"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_integral"
@@ -38,6 +40,18 @@
             tools:text="您的账户：1600积分"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_10" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_payPrice"
+            app:layout_constraintTop_toTopOf="@id/btn_submit"
+            app:layout_constraintBottom_toBottomOf="@id/btn_submit"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            tools:text="13999+¥182"
+            android:drawableStart="@mipmap/ic_shop_fb_42"
+            android:drawablePadding="@dimen/dp_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <com.changanford.shop.view.btn.KillBtnView
             android:onClick="onClick"
             android:id="@+id/btn_submit"
