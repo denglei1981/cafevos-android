@@ -22,6 +22,8 @@ import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
+import com.changanford.my.adapter.MyFastInAdapter
+import com.changanford.my.bean.MyFastInData
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import kotlinx.coroutines.launch
@@ -31,7 +33,12 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     var menuBean: ArrayList<MenuBeanItem> = ArrayList<MenuBeanItem>()
     var notSign = true
     private var menuAdapter = MenuAdapter()
-    private var medalAdapter = MedalAdapter()
+
+    //    private var medalAdapter = MedalAdapter()
+    private val myFastInAdapter: MyFastInAdapter by lazy {
+        MyFastInAdapter()
+
+    }
     val labelAdapter: LabelAdapter by lazy {
         LabelAdapter(22)
     }
@@ -43,10 +50,15 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun initView() {
         binding.daySign.setDrawableLeft(R.mipmap.my_daysign, R.dimen.dp_20)
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
-        binding.medalRec.isSaveEnabled = false
+//        binding.medalRec.isSaveEnabled = false
+//        binding.medalRec.adapter = medalAdapter
+        myFastInAdapter.addData(MyFastInData(1))
+        myFastInAdapter.addData(MyFastInData(2))
+        myFastInAdapter.addData(MyFastInData(3))
+        binding.fastIn.adapter = myFastInAdapter
         binding.menuRec.isSaveEnabled = false
         binding.menuRec.adapter = menuAdapter
-        binding.medalRec.adapter = medalAdapter
+
         observeLoginAndAuthState()
         initClick()
         binding.refreshLayout.setOnRefreshListener {
@@ -122,15 +134,15 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 viewModel.mineMedal()
             }
         }
-        viewModel.allMedal.observe(this) {
-            if (it == null) {
-                medalAdapter.data?.clear()
-                medalAdapter.notifyDataSetChanged()
-            } else {
-                medalAdapter.data = it
-                medalAdapter.notifyDataSetChanged()
-            }
-        }
+//        viewModel.allMedal.observe(this) {
+//            if (it == null) {
+//                medalAdapter.data?.clear()
+//                medalAdapter.notifyDataSetChanged()
+//            } else {
+//                medalAdapter.data = it
+//                medalAdapter.notifyDataSetChanged()
+//            }
+//        }
     }
 
     /**
@@ -178,6 +190,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     }
 
     /**
+     *
+     *
      * 设置值
      */
     @SuppressLint("SetTextI18n")
@@ -313,8 +327,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         if (MConstant.token.isNotEmpty()) {
             viewModel.mineMedal()
         } else {
-            medalAdapter.data.clear()
-            medalAdapter.notifyDataSetChanged()
+//            medalAdapter.data.clear()
+//            medalAdapter.notifyDataSetChanged()
         }
         viewModel.getMenuList()
     }

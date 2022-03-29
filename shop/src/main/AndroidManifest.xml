@@ -36,6 +36,9 @@
         <!-- 商品推荐-->
         <activity android:name=".ui.goods.RecommendActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.shoppingcart.ShoppingCartActivity"
+            android:screenOrientation="portrait"
+            />
         <!--================================= 商城 End-->
     </application>
 </manifest>
