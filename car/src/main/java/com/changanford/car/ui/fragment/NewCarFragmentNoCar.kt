@@ -76,7 +76,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 topBannerList.clear()
                 topBannerList.addAll(this)
                 headerBinding.carTopViewPager.apply {
-//                    carTopBanner.videoHashMap.clear()
                     carTopBanner.playerHelper=null
                     carTopBanner.currentPosition=0
                     create(topBannerList)
@@ -117,7 +116,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     JumpUtils.instans?.jump(topBannerList[position].mainJumpType, topBannerList[position].mainJumpVal)
                 }
             }
-//            carTopBanner.videoHashMap.clear()
             carTopBanner.playerHelper=null
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 @SuppressLint("NotifyDataSetChanged")
@@ -168,10 +166,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         }else carTopBanner.resumeVideo(item.mainImg)
 //                        carTopBanner.addVideoListener(getVideoListener())
                     }
-
                 }else {//不是视频
-                    carTopBanner.releaseVideo()
                     "不是视频则startLoop".wLogE()
+                    carTopBanner.releaseVideo()
                     setAutoPlay(true)
                     startLoop()
                 }
@@ -236,19 +233,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * 记录RecyclerView当前位置
      */
     private fun getPositionAndOffset() {
-//        val location = IntArray(2)
-//        val location1 = IntArray(2)
-//        headerBinding.viewBanner.getLocationOnScreen(location)
-//        headerBinding.viewBanner.getLocationInWindow(location1)
-//        "是否滚到顶部${binding.recyclerView.canScrollVertically(-1)}>>Y=${location[1]}>>>YYY:${location1[1]}".wLogE()
         val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
         //获取可视的第一个view
-        val topView = layoutManager.getChildAt(0)
-        if (topView != null) {
+//        val topView = layoutManager.getChildAt(0)
+        layoutManager.getChildAt(0)?.apply{
             //获取与该view的顶部的偏移量
-            val lastOffset = topView.top
+            val lastOffset = top
             //得到该View的数组位置
-           val lastPosition = layoutManager.getPosition(topView)
+           val lastPosition = layoutManager.getPosition(this)
             "记录RecyclerView当前位置>>lastOffset:$lastOffset>>>oldScrollY:$oldScrollY>>>lastPosition:$lastPosition".wLogE()
             if(lastOffset==0)oldScrollY=0
             else if(lastPosition==0&&abs(lastOffset)!=oldScrollY)oldScrollY=lastOffset

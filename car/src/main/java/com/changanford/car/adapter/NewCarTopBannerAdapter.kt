@@ -81,9 +81,6 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
     fun pauseVideo(){
         playerHelper?.pause()
     }
-    fun replay() {
-        playerHelper?.replay()
-    }
     fun resumeVideo(videoUrl:String?){
         "继续播放url:$videoUrl>>>>>find:${playerHelper}".wLogE()
         playerHelper?.dealWithPlay(videoUrl)
