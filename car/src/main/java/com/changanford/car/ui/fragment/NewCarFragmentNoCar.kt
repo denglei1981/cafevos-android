@@ -113,7 +113,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             setIndicatorView(headerBinding.drIndicator)
             setOnPageClickListener { _, position ->
             if (!FastClickUtils.isFastClick()) {
-                    JumpUtils.instans?.jump(topBannerList[position].mainJumpType, topBannerList[position].mainJumpVal)
+                    topBannerList[position].apply {
+                        JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
+                    }
                 }
             }
             carTopBanner.playerHelper=null

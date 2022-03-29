@@ -67,12 +67,10 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
                         playerHelper = PlayerHelper(activity, videoView).apply {
+                            setJump(mainJumpType,mainJumpVal)
                             dealWithPlay(videoUrl)
                             addOnStateChangeListener(listener)
                         }
-                    }
-                    view.setOnClickListener {
-                        JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
                     }
                 }
             }

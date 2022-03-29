@@ -47,6 +47,10 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mVideoView.setVideoController(mController)
 
     }
+
+    fun setJump(jumpType: Int?, jumpVal: String?) {
+        mController.setJump(jumpType?:99,jumpVal)
+    }
     /**
      * 只播放
     * */
