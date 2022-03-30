@@ -2,7 +2,6 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +26,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
@@ -62,10 +62,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
             return
         }
-        if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
+        "goodsInfo:$goodsInfo".wLogE("okhttp")
         dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
 //        dataBean.spuPageType="MAINTENANCE"
-        spuPageType=dataBean.spuPageType
+        spuPageType=dataBean.spuPageType?:""
         dataBean.isAgree=false
         initLiveDataBus()
     }
@@ -82,30 +82,31 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             setMax(max,isLimitBuyNum)
             setNumber(dataBean.buyNum,false)
             setIsUpdateBuyNum(dataBean.isUpdateBuyNum)
-            numberLiveData.observe(this@OrderConfirmActivity,{
-                dataBean.buyNum= it
+            numberLiveData.observe(this@OrderConfirmActivity) {
+                dataBean.buyNum = it
                 bindingBaseData()
-            })
+            }
         }
         //非维保商品 需要选择地址
         if(WConstant.maintenanceType!=spuPageType){
-            viewModel.addressList.observe(this,{ addressList ->
+            viewModel.addressList.observe(this) { addressList ->
                 //默认获取地址列表的默认收货地址
-                val item:AddressBeanItem?=addressList?.find { it.isDefault==1 }
+                val item: AddressBeanItem? = addressList?.find { it.isDefault == 1 }
                 bindingAddress(item)
-            })
+            }
             val addressInfo=dataBean.addressInfo
             if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
             else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
         }
-        viewModel.orderInfoLiveData.observe(this,{
-            isClickSubmit=false
-            val source=it.source
-            if(source!="0")it.source=if(dataBean.spuPageType=="2") "2" else dataBean.source
+        viewModel.orderInfoLiveData.observe(this) {
+            isClickSubmit = false
+            val source = it.source
+            if (source != "0") it.source = if (dataBean.spuPageType == "2") "2" else dataBean.source
             PayConfirmActivity.start(it.orderNo)
-            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java).postValue(it.source)
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
+                .postValue(it.source)
             this.finish()
-        })
+        }
         bindingBaseData()
     }
     @SuppressLint("StringFormatMatches")
@@ -224,11 +225,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private fun initLiveDataBus(){
         //地址下列表点击后回调
-        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this, {
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this) {
             it?.let {
-                bindingAddress(Gson().fromJson(it,AddressBeanItem::class.java))
+                bindingAddress(Gson().fromJson(it, AddressBeanItem::class.java))
             }
-        })
+        }
     }
     /**
      * 处理维保商品

@@ -82,7 +82,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
         headerBinding.inDiscount.lLayoutVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
-        when(dataBean.spuPageType){
+        when(dataBean.spuPageType?:""){
             "MEMBER_EXCLUSIVE"->{
                 memberExclusive(dataBean)
                 headerBinding.inVip.tvVipExclusive.visibility=View.VISIBLE
