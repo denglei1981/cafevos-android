@@ -47,6 +47,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
+            android:gravity="center_vertical"
             tools:text="13999+¥182"
             android:drawableStart="@mipmap/ic_shop_fb_42"
             android:drawablePadding="@dimen/dp_3"
