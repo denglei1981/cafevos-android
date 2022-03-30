@@ -26,7 +26,6 @@ import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
-import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -86,7 +85,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         if(freightPrice!="0.00"&&"0"!=freightPrice)headerBinding.inGoodsInfo.tvFreight.setHtmlTxt("\t\t\t$freightPrice","#333333")
         headerBinding.inVip.imgVip.visibility=View.GONE
         headerBinding.inVip.layoutVip.visibility=View.VISIBLE
-        when(dataBean.spuPageType){
+        when(dataBean.spuPageType?:""){
             //会员专享
             "MEMBER_EXCLUSIVE"->{
                 memberExclusive(dataBean)
@@ -194,7 +193,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun createAttribute(){
         if(::dataBean.isInitialized){
-            val spuPageType=dataBean.spuPageType
+            val spuPageType=dataBean.spuPageType?:""
             if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
                 if(null==popupWindow){
                     popupWindow=GoodsAttrsPop(activity,this.dataBean,skuCode,this).apply {

@@ -94,7 +94,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             dataListBean= ArrayList()
             dataListBean.add(dataBean)
         }
-        spuPageType=dataBean.spuPageType
+        spuPageType=dataBean.spuPageType?:""
         dataBean.isAgree=false
         initLiveDataBus()
         edtCustomOnTextChanged()
