@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
+
+        <variable
+            name="addressInfo"
+            type="com.changanford.common.bean.ShopAddressInfoBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_white_t_5dp"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_18"
+        android:paddingBottom="@dimen/dp_16">
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_userInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/shop_location"
+            android:drawablePadding="@dimen/dp_5"
+            android:onClick="onClick"
+            android:text="@{addressInfo.userInfo}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="白女士   159****7880" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_locationInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_23"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:onClick="onClick"
+            android:text="@{addressInfo.addressInfo}"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toStartOf="@id/img_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_userInfo"
+            tools:text="重庆市渝中区李子坝正街156号长帆江岸公馆2号楼" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:onClick="onClick"
+            android:src="@mipmap/shop_right"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_locationInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_userInfo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -19,6 +19,7 @@ import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActOrderDetailsBinding
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.utils.WCommonUtil
@@ -32,11 +33,10 @@ import kotlin.math.abs
 /**
  * @Author : wenke
  * @Time : 2021/9/26 0026
- * @Description : 商品订单详情
+ * @Description : 商品订单详情2
  */
-@Deprecated("过期了")
-//@Route(path = ARouterShopPath.OrderDetailActivity)
-class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>() {
+@Route(path = ARouterShopPath.OrderDetailActivity)
+class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderViewModel>() {
     companion object{
         fun start(orderNo:String?) {
             orderNo?.let {JumpUtils.instans?.jump(5,orderNo) }
@@ -357,7 +357,7 @@ class OrderDetailsActivity:BaseActivity<ActOrderDetailsBinding, OrderViewModel>(
      * 点击地址列表的回调监听
     * */
     private fun addLiveDataBus(){
-        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsActivity, {
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this@OrderDetailsV2Activity, {
             it?.let {
                 bindingAddressInfo(it,true)
             }
