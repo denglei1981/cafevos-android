@@ -277,4 +277,17 @@ object WCommonUtil {
         }
         return mobile?:""
     }
+    /**
+     * 将福币转换为人民币 1元=100福币
+     * */
+    fun getRMB(fb:String?=null,unit:String?="¥"):String{
+        var rmbPrice="0"
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
+        }
+        return "${unit?:""}$rmbPrice"
+    }
 }

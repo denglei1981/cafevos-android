@@ -130,6 +130,7 @@ data class GoodsItemBean(
     val mallWbGoodsId:String?=null,
     val fbPrice:String?="0",
     val priceFb:String?=null,
+    var rmbPrice:String?=null,
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
@@ -148,12 +149,15 @@ data class GoodsItemBean(
     }
     /**
      * 将福币转换为人民币 1元=100福币
-    * */
+     * */
     fun getRMB(fb:String?=priceFb):String{
         if(fb!=null){
-           return "${fb.toInt()/100}"
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
         }
-        return "0"
+        return rmbPrice?:"0"
     }
     /**
      * 将维保商品数据转为普通商品
@@ -496,7 +500,21 @@ data class OrderItemBean(
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
-)
+    var rmbPrice:String?=null,
+){
+    /**
+     * 将福币转换为人民币 1元=100福币
+     * */
+    fun getRMB(fb:String?=fbCost,unit:String?="¥"):String{
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
+        }
+        return "${unit?:""}${rmbPrice?:"0"}"
+    }
+}
 
 data class OrderInfoBean(
     val orderNo: String,//订单号

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayWayBean
 import com.changanford.shop.R
 
@@ -137,10 +138,35 @@ fun PayWayCompose(){
                         inputFb.value= it
                     }, colors =  TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent), textStyle = TextStyle(color = colorResource(R.color.color_00095B), fontSize = 14.sp), placeholder = {
                         Text(text = stringResource(R.string.str_pleaseEnterUseLuckyCurrency), color = colorResource(R.color.color_99), fontSize = 14.sp)
-                    }, modifier = Modifier.background(Color.Transparent).padding(0.dp))
+                    }, modifier = Modifier
+                        .background(Color.Transparent)
+                        .padding(0.dp))
                 }
             }
         }
 
+    }
+}
+
+/**
+ * 确认支付-银联支付
+ * */
+@Composable
+fun UnionPayCompose(dataBean: OrderItemBean?=null){
+    dataBean?.apply {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = colorResource(R.color.color_F4))) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(modifier = Modifier.height(26.dp))
+                Text(text = getRMB(), fontSize = 28.sp, color = colorResource(R.color.color_33))
+                Spacer(modifier = Modifier.height(14.dp))
+
+            }
+        }
     }
 }
