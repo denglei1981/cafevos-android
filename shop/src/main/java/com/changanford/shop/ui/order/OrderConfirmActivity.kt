@@ -395,9 +395,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             else ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42),null,null,null)
             if(isPrice&&payFb!="0"&&payRmb!="0"){
                 text="$payFb+¥$payRmb"
+            }else if((TextUtils.isEmpty(payFb)||payFb=="0")&&payRmb!="0"&&!TextUtils.isEmpty(payRmb)){
+                text="¥$payRmb"
+            }else if((TextUtils.isEmpty(payRmb)||payRmb=="0")&&payFb!="0"&&!TextUtils.isEmpty(payFb)){
+                text="$payFb"
             }
-            val startStr=if(!TextUtils.isEmpty(payFb)&&payFb!="0")"$payFb+" else ""
-            val endStr=if(!TextUtils.isEmpty(payRmb)&&payRmb!="0")"¥$payRmb" else ""
         }
         return isPrice
     }
