@@ -59,20 +59,22 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     }
     override fun initData() {
         viewModel.getGoodsEvalList(spuId,pageNo,spuPageType=spuPageType)
-        viewModel.commentLiveData.observe(this,{
+        viewModel.commentLiveData.observe(this) {
             it?.apply {
-                val dataList=pageList?.dataList
-                if(1==pageNo)mAdapter.setList(dataList)
+                val dataList = pageList?.dataList
+                if (1 == pageNo) mAdapter.setList(dataList)
                 else dataList?.let { it1 -> mAdapter.addData(it1) }
-                binding.model=this
+                binding.model = this
             }
-            if(it?.pageList == null ||mAdapter.data.size>=it.pageList?.total!!)binding.smartRl.setEnableLoadMore(false)
+            if (it?.pageList == null || mAdapter.data.size >= it.pageList?.total!!) binding.smartRl.setEnableLoadMore(
+                false
+            )
             else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.apply {
                 finishLoadMore()
                 finishRefresh()
             }
-        })
+        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

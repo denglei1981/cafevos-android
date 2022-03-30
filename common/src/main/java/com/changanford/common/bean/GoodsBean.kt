@@ -99,7 +99,7 @@ data class GoodsItemBean(
     val specJson: String = "",
     var spuImgs: String? = null,
     val spuNew: Any? = null,
-    var spuPageTagType: String = "",
+    var spuPageTagType: String? = null,
     var spuPageType: String = "",
     val spuStatus: String = "",
     val stock: Int = 0,
@@ -247,7 +247,7 @@ data class GoodsDetailBean(
     val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",
     var skuVos: ArrayList<SkuVo> = ArrayList(),
-    var spuPageType: String = "",
+    var spuPageType: String? = null,
     var stock: Int = 0,
     var allSkuStock: Int = 0,//sku库存之和
     val mallOrderEval: CommentItem? = null,
