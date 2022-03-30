@@ -30,6 +30,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.common.wutil.WCommonUtil
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
@@ -337,14 +338,19 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         updatePayCustom()
         updateBtnUi()
     }
+    /**
+     * 自定义混合支付 福币输入监听
+    * */
     private fun edtCustomOnTextChanged(){
         binding.inPayWay.apply {
             edtCustom.onTextChanged {
                 val inputFb=it.s
+                "输入结果：${it.before}>>>>${it.start}>>>>$inputFb".wLogE()
                 if(!TextUtils.isEmpty(inputFb)){
                     //输入的福币超出可使用的范围
                     if(inputFb.toString().toInt()>maxUseFb){
                         edtCustom.setText("$maxUseFb")
+                        edtCustom.setSelection(edtCustom.text.length)//光标移动到末尾
                         getString(R.string.str_hasMaxUseFb).toast()
                     }
                     calculateFbAndRbm()
