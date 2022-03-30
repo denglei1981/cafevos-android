@@ -3,6 +3,7 @@ package com.changanford.car.control;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.changanford.common.R;
+import com.changanford.common.util.JumpUtils;
 import com.dueeeke.videoplayer.controller.GestureVideoController;
 import com.dueeeke.videoplayer.player.VideoView;
 import com.dueeeke.videoplayer.util.PlayerUtils;
@@ -32,7 +34,8 @@ public class VideoController extends GestureVideoController implements View.OnCl
     protected ImageView mLockButton;
 
     protected ProgressBar mLoadingProgress;
-
+    private int jumpType;
+    private String jumpVal;
     public VideoController(@NonNull Context context) {
         this(context, null);
     }
@@ -171,14 +174,17 @@ public class VideoController extends GestureVideoController implements View.OnCl
         }
         return super.onBackPressed();
     }
-
     @Override
     public boolean onDown(MotionEvent e) {
         return true;
     }
-
+    public void setJump(int jumpType,String jumpVal){
+        this.jumpType=jumpType;
+        this.jumpVal=jumpVal;
+    }
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+        JumpUtils.getInstans().jump(jumpType,jumpVal);
         return true;
     }
 

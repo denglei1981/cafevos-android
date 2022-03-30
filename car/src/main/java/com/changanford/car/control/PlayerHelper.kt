@@ -47,10 +47,15 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         mVideoView.setVideoController(mController)
 
     }
+
+    fun setJump(jumpType: Int?, jumpVal: String?) {
+        mController.setJump(jumpType?:99,jumpVal)
+    }
     /**
      * 只播放
     * */
-    fun purePlayVideo(url: String?){
+    private fun purePlayVideo(url: String?){
+        "只播放>>>>${getCurrentPlayState()}".wLogE()
         startPlay(url)
         mController.setGestureEnabled(false)
         controlView.fullScreenGone()
@@ -81,6 +86,7 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
         url?.apply {
             val cacheServer = ProxyVideoCacheManager.getProxy(context)
             cacheServer.getProxyUrl(GlideUtils.handleImgUrl(this))?.let {
+                "开始播放>>>>${getCurrentPlayState()}".wLogE()
                 mVideoView.release()
                 mVideoView.setUrl(it)
                 mVideoView.start()
@@ -94,16 +100,19 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     fun setLooping(looping: Boolean) {
         mVideoView.setLooping(looping)
     }
-    fun resume(videoUrl:String?) {
-        "重新播放>>>>${getCurrentPlayState()}".wLogE()
+    fun dealWithPlay(videoUrl:String?) {
+        "处理播放》》当前播放状态>>>>${getCurrentPlayState()}".wLogE()
         val playState=getCurrentPlayState()
-        if(playState==VideoView.STATE_PAUSED){
+        if(playState==VideoView.STATE_PAUSED){//处于暂停则需要继续播放
             mVideoView.resume()
         }else{
             purePlayVideo(videoUrl)
         }
     }
-
+    fun replay() {
+        "重新播放>>>>${getCurrentPlayState()}".wLogE()
+        mVideoView.replay(true)
+    }
     fun pause() {
         mVideoView.pause()
     }

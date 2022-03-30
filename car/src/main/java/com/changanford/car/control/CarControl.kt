@@ -107,8 +107,8 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             hRecommendBinding=DataBindingUtil.inflate<HeaderCarRecommendedBinding>(LayoutInflater.from(fragment.requireContext()), R.layout.header_car_recommended, null, false).apply {
                 rvCar.adapter = carIconAdapter
                 tvCarMoreName.setOnClickListener {
-                    viewModel.carMoreInfoBean.value?.carModelMoreJump?.apply {
-                        JumpUtils.instans?.jump(this)
+                    dataBean?.apply {
+                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                     }
                 }
 //                addFooterView(root,sort)

@@ -105,11 +105,9 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
 //                        }
 //                        return true
 //                    }
-                    if (url.startsWith(DefaultWebClient.HTTP_SCHEME) || url.startsWith(
-                            DefaultWebClient.HTTPS_SCHEME
-                        )
-                    ) {
-                        return false
+                    if (url.startsWith(DefaultWebClient.HTTP_SCHEME) || url.startsWith(DefaultWebClient.HTTPS_SCHEME)) {
+                        JumpUtils.instans?.jump(1,url)
+                        return true
                     }
                     return super.shouldOverrideUrlLoading(view, request)
                 }

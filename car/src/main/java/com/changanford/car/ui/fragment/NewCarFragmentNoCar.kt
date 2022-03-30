@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.car.CarViewModel
@@ -23,6 +24,7 @@ import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
+import kotlin.math.abs
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -74,7 +76,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 topBannerList.clear()
                 topBannerList.addAll(this)
                 headerBinding.carTopViewPager.apply {
-                    carTopBanner.videoHashMap.clear()
+                    carTopBanner.playerHelper=null
                     carTopBanner.currentPosition=0
                     create(topBannerList)
                     updateControl()
@@ -111,18 +113,22 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             setIndicatorView(headerBinding.drIndicator)
             setOnPageClickListener { _, position ->
             if (!FastClickUtils.isFastClick()) {
-                    JumpUtils.instans?.jump(topBannerList[position].mainJumpType, topBannerList[position].mainJumpVal)
+                    topBannerList[position].apply {
+                        JumpUtils.instans?.jump(mainJumpType,mainJumpVal)
+                    }
                 }
             }
-            carTopBanner.videoHashMap.clear()
+            carTopBanner.playerHelper=null
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     "页面切换onPageSelected>>>$position".wLogE()
+                    carTopBanner.releaseVideo()
                     carTopBanner.currentPosition=position
+                    carTopBanner.notifyDataSetChanged()
                     topBannerList[position].apply {
                         carControl.carModelCode=carModelCode
-                        carTopBanner.releaseVideoAll()
                         bindingCompose()
                     }
                     videoPlayState=-1
@@ -137,8 +143,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     /**
      * 更新控制-主要控制banner是否滚动-视频播放暂停等
      * */
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateControl(isHidden:Boolean=hidden){
-        "更新控制>>>isHidden:$isHidden>>>oldScrollY:$oldScrollY>>>maxSlideY:$maxSlideY".wLogE()
+        "更新控制>>>isHidden:$isHidden>>>oldScrollY:$oldScrollY>>>maxSlideY:$maxSlideY>>>videoPlayState:$videoPlayState".wLogE()
         headerBinding.carTopViewPager.apply {
             val item=if(topBannerList.size>0)topBannerList[currentItem] else null
             //可见 并且 滚动距离小于最大控制距离
@@ -146,21 +153,24 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 if(item?.mainIsVideo==1){//是视频
                     if(videoPlayState==VideoView.STATE_PLAYBACK_COMPLETED){//视频播放完成
                         "视频播放完成".wLogE()
-                        carTopBanner.clearOnStateChangeListeners()
+                        carTopBanner.releaseVideo()
 //                        setAutoPlay(true)
 //                        startLoopNow()
                         if(currentItem<topBannerList.size-1)currentItem += 1
                         else currentItem=0
-                    }else if(videoPlayState!=VideoView.STATE_PLAYING&&videoPlayState!=VideoView.STATE_PREPARING&&videoPlayState!=VideoView.STATE_PREPARED){
+                    }else if(videoPlayState!=VideoView.STATE_PLAYING&&videoPlayState!=VideoView.STATE_PREPARING){
                         "是视频需要立即stopLoop".wLogE()
                         setAutoPlay(false)
                         stopLoop()
-                        carTopBanner.resumeVideo(item.mainImg)
-                        carTopBanner.addVideoListener(item.mainImg,getVideoListener())
+                        if(videoPlayState<=VideoView.STATE_PREPARED){
+                            carTopBanner.notifyDataSetChanged()
+//                            carTopBanner.replay()
+                        }else carTopBanner.resumeVideo(item.mainImg)
+//                        carTopBanner.addVideoListener(getVideoListener())
                     }
-
                 }else {//不是视频
                     "不是视频则startLoop".wLogE()
+                    carTopBanner.releaseVideo()
                     setAutoPlay(true)
                     startLoop()
                 }
@@ -168,8 +178,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 "停止切换和播放pauseVideo>>>stopLoop".wLogE()
                 setAutoPlay(false)
                 stopLoop()
-                carTopBanner.pauseVideo(item?.mainImg)
-                carTopBanner.pauseVideoAll()
+                carTopBanner.pauseVideo()
             }
         }
     }
@@ -213,6 +222,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if(newState== RecyclerView.SCROLL_STATE_IDLE){
+                getPositionAndOffset()
                 updateControl()
             }
         }
@@ -221,7 +231,23 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             oldScrollY+=dy
         }
     }
-
+    /**
+     * 记录RecyclerView当前位置
+     */
+    private fun getPositionAndOffset() {
+        val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
+        //获取可视的第一个view
+//        val topView = layoutManager.getChildAt(0)
+        layoutManager.getChildAt(0)?.apply{
+            //获取与该view的顶部的偏移量
+            val lastOffset = top
+            //得到该View的数组位置
+           val lastPosition = layoutManager.getPosition(this)
+            "记录RecyclerView当前位置>>lastOffset:$lastOffset>>>oldScrollY:$oldScrollY>>>lastPosition:$lastPosition".wLogE()
+            if(lastOffset==0)oldScrollY=0
+            else if(lastPosition==0&&abs(lastOffset)!=oldScrollY)oldScrollY=lastOffset
+        }
+    }
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         this.hidden=hidden
@@ -250,7 +276,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             override fun onPlayerStateChanged(playerState: Int) {}
             override fun onPlayStateChanged(playState: Int) {
                 videoPlayState=playState
-                "视频播放》》onPlayStateChanged:>>>$playState".wLogE()
+                "播放监听》》onPlayStateChanged:>>>$playState".wLogE()
                 if(VideoView.STATE_PLAYBACK_COMPLETED==playState||VideoView.STATE_PLAYING==playState){
                     updateControl()
                 }
