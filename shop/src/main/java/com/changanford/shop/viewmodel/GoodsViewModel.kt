@@ -156,7 +156,10 @@ class GoodsViewModel: BaseViewModel() {
                 responseData.postValue(ResponseBean(false,msg = it))
             }.onSuccess {
 //                addFootprint(spuId)
-                goodsDetailData.postValue(it)
+                it?.apply {
+                   val goodsDetailsBean=normalSpuDetail?:seckillSpuDetail?:haggleSpuDetailDto
+                    goodsDetailData.postValue(goodsDetailsBean)
+                }
             }
         }
     }

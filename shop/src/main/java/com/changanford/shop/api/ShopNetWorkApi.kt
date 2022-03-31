@@ -18,7 +18,7 @@ interface ShopNetWorkApi {
      * 商品详情
      * */
     @POST("/mall/spus/{spuId}/get")
-    suspend fun queryGoodsDetails(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsDetailBean>
+    suspend fun queryGoodsDetails(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewGoodsDetailBean>
     /**
      * 首页点击更多秒杀接口
      * */

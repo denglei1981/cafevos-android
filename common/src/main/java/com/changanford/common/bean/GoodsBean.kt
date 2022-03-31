@@ -223,7 +223,11 @@ data class GoodsHomeBean(
     val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
     val responsePageBean: GoodsListBean? = null,
 )
-
+data class NewGoodsDetailBean(
+    var normalSpuDetail:GoodsDetailBean?=null,
+    var seckillSpuDetail:GoodsDetailBean?=null,
+    var haggleSpuDetailDto:GoodsDetailBean?=null,
+)
 /**
  * 商品详情
  * */
