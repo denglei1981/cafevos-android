@@ -57,9 +57,9 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
             this.finish()
             return
         }
-        binding.inGoodsInfo.inGoodsInfo.layoutGoodsInfo.setOnClickListener {
-            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
-        }
+//        binding.inGoodsInfo.inGoodsInfo.layoutGoodsInfo.setOnClickListener {
+//            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
+//        }
     }
     override fun initData() {
         viewModel.orderItemLiveData.observe(this,{
@@ -86,10 +86,10 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
         //应付总额
         var totalPayName=R.string.str_copeWithTotalAmount
         binding.inOrderInfo.layoutOrderClose.visibility=View.VISIBLE
-        binding.inAddress.apply {
-            layoutLogistics.visibility=View.GONE
-            imgRight.visibility=View.GONE
-        }
+//        binding.inAddress.apply {
+//            layoutLogistics.visibility=View.GONE
+//            imgRight.visibility=View.GONE
+//        }
         binding.inBottom.apply {
             btnOrderConfirm.visibility=View.VISIBLE
             btnOrderCancle.visibility=View.GONE
@@ -141,8 +141,8 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
-                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
-                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+//                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+//                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_confirmGoods)
                 }
@@ -151,10 +151,10 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
-                    binding.inAddress.apply {
-                        layoutLogistics.visibility=View.VISIBLE
-                        tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
-                    }
+//                    binding.inAddress.apply {
+//                        layoutLogistics.visibility=View.VISIBLE
+//                        tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+//                    }
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                 }
@@ -163,9 +163,10 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
                     //发货时间
                     dataBean.otherName=getString(R.string.str_deliveryTime)
                     dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
-                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+//                    binding.inAddress.layoutLogistics.visibility=View.VISIBLE
+//                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenCompleted)
-                    binding.inAddress.tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                     if("2"==dataBean.busSourse)binding.inBottom.btnOrderConfirm.visibility=View.INVISIBLE
                 }
@@ -176,8 +177,8 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
                             //发货时间
                             dataBean.otherName=getString(R.string.str_deliveryTime)
                             dataBean.otherValue=simpleDateFormat.format(dataBean.sendTime?:0)
-                            layoutLogistics.visibility=View.VISIBLE
-                            tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
+//                            layoutLogistics.visibility=View.VISIBLE
+//                            tvLogisticsNo.text="${dataBean.courierCompany}  ${dataBean.courierNo}"
                         }else{//未发货
                             //支付时间
                             dataBean.otherName=getString(R.string.str_payTime)
@@ -223,10 +224,10 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
             }
             model=dataBean
         }
-        binding.inGoodsInfo.apply {
-            model=dataBean
-            control.bindingGoodsInfo(inGoodsInfo,dataBean)
-        }
+//        binding.inGoodsInfo.apply {
+//            model=dataBean
+//            control.bindingGoodsInfo(inGoodsInfo,dataBean)
+//        }
         binding.inBottom.apply {
             model=dataBean
             tvTotalPayFb.setText(totalPayName)

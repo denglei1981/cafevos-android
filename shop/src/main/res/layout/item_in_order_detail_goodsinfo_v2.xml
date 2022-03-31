@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_16">
+        <include
+            android:id="@+id/in_goodsInfo"
+            layout="@layout/in_item_order_goods_v2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

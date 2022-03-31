@@ -75,9 +75,15 @@
                 <include
                     android:id="@+id/in_address"
                     layout="@layout/item_in_order_only_detail_address"/>
-                <include
-                    android:id="@+id/in_goodsInfo"
-                    layout="@layout/in_order_detail_goodsinfo"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_shopping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/in_item_order_goods_v2"
+                    />
                 <include
                     android:id="@+id/in_goodsInfo1"
                     layout="@layout/in_order_detail_info"/>
