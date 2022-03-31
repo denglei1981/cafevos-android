@@ -50,7 +50,7 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",
                     mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,
-                    vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:Int=0,couponId:String?="0"){
+                    vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:Int=0,couponId:String?=null){
         body.clear()
         var buySource=0
         var skuId=_skuId
