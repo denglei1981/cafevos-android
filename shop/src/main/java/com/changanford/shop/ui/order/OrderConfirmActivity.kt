@@ -193,7 +193,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             }else{
                 couponsAmount=itemCoupon.couponMoney?:"0"
                 isEnabled=true
-                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
+                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
                 setText("${itemCoupon.couponMoney}")
             }
         }
