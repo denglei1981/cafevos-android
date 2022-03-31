@@ -3,6 +3,7 @@ package com.changanford.common.bean
 import android.text.TextUtils
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
+import com.changanford.common.wutil.WConstant
 
 /**
  * @Author : wenke
@@ -228,6 +229,46 @@ data class NewGoodsDetailBean(
     var seckillSpuDetail:GoodsDetailBean?=null,
     var haggleSpuDetailDto:GoodsDetailBean?=null,
 )
+data class ConfirmOrderBean(
+    var orderConfirmType:Int?=0,//来源 0商品详情 1购物车
+    var fbBalance :Int?=null,//用户福币余额
+    var totalBuyNum:Int=0,//总购买数量
+    var addressInfo:String?=null,
+    var addressId:Int?=null,
+    var totalOriginalFb:Int?=null,//总价
+    var freightPrice:String?="0.00",//运费
+    var vinCode:String?=null,//维保商品 VIN码
+    var models:String?=null,//车型
+    var dataList:ArrayList<GoodsDetailBean>?=null,
+)
+data class ConfirmOrderInfoBean(
+    var busSourse:Int=0,
+    var carModel:String?=null,
+    var mallMallHaggleUserGoodsId:String?=null,
+    var num:Int=0,
+    var skuId:String?=null,
+    var vin:String?=null,
+){
+    fun initBean(spuPageType:String?){
+        busSourse=0
+        when(spuPageType?:""){
+            //秒杀
+            "SECKILL"->{
+                busSourse=1
+//                skuId=mallMallSkuSpuSeckillRangeId?:skuId
+            }
+            //砍价
+            "2"->{
+                busSourse=2
+            }
+            WConstant.maintenanceType->{//维保商品
+                busSourse=3
+//                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
+//                vin= vinCode?:""
+            }
+        }
+    }
+}
 /**
  * 商品详情
  * */
@@ -274,7 +315,7 @@ data class GoodsDetailBean(
     var addressInfo: String? = null,
     var skuImg: String? = null,
     var mallMallSkuSpuSeckillRangeId: String? = null,
-    val mallMallHaggleUserGoodsId: String? = null,
+    val mallMallHaggleUserGoodsId: String? = null,//发起砍价id
     var source: String? = "0",
     var evalCount: String? = "0",
     var isAgree: Boolean = false,//是否同意协议
@@ -287,6 +328,8 @@ data class GoodsDetailBean(
     var mallMallWbVinSpuId:String?=null,
     var recommend:ArrayList<GoodsItemBean>?=null,//推荐
     var rmbPrice:String?=fbPrice,
+    var orderConfirmType:Int?=0,//确认订单来源
+    var carModel:String?=null,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -598,4 +641,53 @@ data class PayWayBean(
     var isCheck: MutableState<Boolean>? =null,
     var payWayName:String?=null,
     var icon: Painter?=null,
+)
+data class CreateOrderBean(
+    var freight:String?=null,
+    var orderConfirmType:Int=0,
+    var payBfb:String?=null,
+    var coupons:ArrayList<CouponsItemBean>?=null,
+    var skuItems:ArrayList<OrderSkuItem>?=null,
+)
+data class OrderSkuItem(
+    val busSourse: Int = 0,
+    val carModel: String? = null,
+    val mallMallHaggleUserGoodsId: Int? = 0,
+    val num: Int = 0,
+    val skuId: String = "0",
+    val skuImg: String? = null,
+    val specifications: String? = null,
+    val spuId: String = "0",
+    val spuName: String? = null,
+    val stock: Int = 0,
+    val unitPrice: String? = "0",
+    val unitPriceFb: String? = "0",
+    val unitPriceFbOld: String? = "0",
+    val unitPriceOld: String? = "0",
+    val vin: String? = null,
+)
+/**
+ * 优惠券
+* */
+data class CouponsItemBean(
+    val conditionMoney: Int = 0,
+    val couponId: Int = 0,
+    val couponMarkId: Int = 0,
+    val couponMoney: Int = 0,
+    val couponName: String = "",
+    val couponRatio: Int = 0,
+    val couponRecordId: Int = 0,
+    val desc: String = "",
+    val discountType: String = "",
+    val img: String = "",
+    val mallMallSkuIds: List<Any> = listOf(),
+    val markImg: String = "",
+    val markName: String = "",
+    val state: String = "",
+    val type: String = "",
+    val useLimit: String = "",
+    val useLimitValue: String = "",
+    val userId: Int = 0,
+    val validityBeginTime: String = "",
+    val validityEndTime: String = ""
 )

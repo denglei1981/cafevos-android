@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.*
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -29,7 +28,6 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
-import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
@@ -55,19 +53,23 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         fun start(goodsInfo:String) {
             JumpUtils.instans?.jump(109,goodsInfo)
         }
-        fun start(dataBean:GoodsDetailBean) {
-            val listBean= ArrayList<GoodsDetailBean>()
-            listBean.add(dataBean)
-            JumpUtils.instans?.jump(109,Gson().toJson(listBean))
+        fun start(orderConfirmType:Int=0,dataBean:GoodsDetailBean) {
+            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
+            JumpUtils.instans?.jump(109,Gson().toJson(bean))
         }
-        fun start(listBean:ArrayList<GoodsDetailBean>) {
-            JumpUtils.instans?.jump(109,Gson().toJson(listBean))
+        /**
+         * [orderConfirmType]确认订单来源 0详情 1购物车
+        * */
+        fun start(orderConfirmType:Int=0,listBean:ArrayList<GoodsDetailBean>) {
+            val bean= ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = listBean)
+            JumpUtils.instans?.jump(109,Gson().toJson(bean))
         }
     }
-    private lateinit var dataBean:GoodsDetailBean
+    private lateinit var infoBean: ConfirmOrderBean
+//    private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit=false
-    private var spuPageType=""//商品类型
-    private lateinit var dataListBean:ArrayList<GoodsDetailBean>
+//    private var spuPageType=""//商品类型
+    private var dataListBean:ArrayList<GoodsDetailBean>?=null
     private val goodsInfoAdapter by lazy { ConfirmOrderGoodsInfoAdapter() }
     private val rbPayWayArr by lazy { arrayListOf(binding.inPayWay.rbFbAndRmb,binding.inPayWay.rbRmb,binding.inPayWay.rbCustom) }
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
@@ -75,6 +77,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var minRmbProportion:Float=0.1f//最低使用人民币比例
     private var payFb:String?="0"//福币支付额度
     private var payRmb:String?="0"//人民币支付额度
+    private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
+    private var isAgree:Boolean=false//是否同意协议
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -88,122 +92,185 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(goodsInfo!!.startsWith("[")){
             val dataList: ArrayList<GoodsDetailBean> = Gson().fromJson(goodsInfo, object : TypeToken<ArrayList<GoodsDetailBean?>?>() {}.type)
             dataListBean=dataList
-            dataBean=dataList[0]
+            orderConfirmType=dataList[0].orderConfirmType?:0
         }else if(goodsInfo.startsWith("{")){
-            dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
-            dataListBean= ArrayList()
-            dataListBean.add(dataBean)
-        }
-        spuPageType=dataBean.spuPageType?:""
-        dataBean.isAgree=false
-        initLiveDataBus()
-        edtCustomOnTextChanged()
-    }
-
-    override fun initData() {
-        maxUseFb=dataBean.acountFb
-//        binding.inGoodsInfo.addSubtractView.apply {
-//            val stock=dataBean.stock
-//            val limitBuyNum:Int=dataBean.getLimitBuyNum()
-//            var isLimitBuyNum=false//是否限购
-//            val max: Int =if(limitBuyNum in 1..stock) {
-//                isLimitBuyNum=true
-//                limitBuyNum
-//            } else stock
-//            setMax(max,isLimitBuyNum)
-//            setNumber(dataBean.buyNum,false)
-//            setIsUpdateBuyNum(dataBean.isUpdateBuyNum)
-//            numberLiveData.observe(this@OrderConfirmActivity) {
-//                dataBean.buyNum = it
-//                bindingBaseData()
-//            }
-//        }
-        bindInfo()
-        //非维保商品 需要选择地址
-        if(WConstant.maintenanceType!=spuPageType){
-            viewModel.addressList.observe(this) { addressList ->
-                //默认获取地址列表的默认收货地址
-                val item: AddressBeanItem? = addressList?.find { it.isDefault == 1 }
-                bindingAddress(item)
+            infoBean=Gson().fromJson(goodsInfo,ConfirmOrderBean::class.java).apply {
+                this@OrderConfirmActivity.orderConfirmType=orderConfirmType?:0
+                dataListBean= dataList
             }
-            val addressInfo=dataBean.addressInfo
-            if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
-            else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
         }
-        viewModel.orderInfoLiveData.observe(this) {
-            isClickSubmit = false
-            val source = it.source
-            if (source != "0") it.source = if (dataBean.spuPageType == "2") "2" else dataBean.source
-            PayConfirmActivity.start(it.orderNo)
-            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
-                .postValue(it.source)
-            this.finish()
+        initObserve()
+        edtCustomOnTextChanged()
+        formattingData()
+    }
+    /**
+     * 格式化数据
+    * */
+    private fun formattingData(){
+        val skuItems= arrayListOf<ConfirmOrderInfoBean>()
+        var totalBuyNum=0
+        var totalOriginalFb=0
+        dataListBean?.forEach {
+            val spuPageType=it.spuPageType
+            val skuItem=ConfirmOrderInfoBean(skuId = it.skuId, num = it.buyNum, vin = it.vinCode,
+                mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.carModel)
+            skuItem.initBean(spuPageType)
+            skuItems.add(skuItem)
+            totalBuyNum+=it.buyNum
+            //单价（原价）
+            val originalPrice=(it.orginPrice?:it.fbPrice).toInt()
+            //原总商品价 单价*购买数量
+            totalOriginalFb+=originalPrice*it.buyNum
+            //本条数据为维保商品
+            if(WConstant.maintenanceType==spuPageType&&TextUtils.isEmpty(infoBean.vinCode)){
+                infoBean.vinCode=it.vinCode
+                infoBean.models=it.models
+            }
         }
-        bindingBaseData()
+        infoBean.totalBuyNum=totalBuyNum
+        infoBean.totalOriginalFb=totalOriginalFb
+        viewModel.confirmOrder(orderConfirmType,skuItems)
+        bindInfo()
+    }
+    override fun initData() {
+//        maxUseFb=infoBean.fbBalance?:0
+//        //非维保商品 需要选择地址
+//        if(WConstant.maintenanceType!=spuPageType){
+//            viewModel.addressList.observe(this) { addressList ->
+//                //默认获取地址列表的默认收货地址
+//                val item: AddressBeanItem? = addressList?.find { it.isDefault == 1 }
+//                bindingAddress(item)
+//            }
+//            val addressInfo=dataBean.addressInfo
+//            if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
+//            else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+//        }
+//        viewModel.orderInfoLiveData.observe(this) {
+//            isClickSubmit = false
+//            val source = it.source
+//            if (source != "0") it.source = if (dataBean.spuPageType == "2") "2" else dataBean.source
+//            PayConfirmActivity.start(it.orderNo)
+//            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
+//                .postValue(it.source)
+//            this.finish()
+//        }
+//        bindingBaseData()
+    }
+    private fun initObserve(){
+        //地址下列表点击后回调
+        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this) {
+            it?.let {
+                bindingAddress(Gson().fromJson(it, AddressBeanItem::class.java))
+            }
+        }
+        //优惠券、skuItems
+        viewModel.createOrderBean.observe(this){
+            infoBean.freightPrice=it?.freight?:"0.00"
+            binding.inOrderInfo.apply {
+                tvFreightValue.setText(infoBean.freightPrice)
+                val coupons=it?.coupons
+                bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
+            }
+        }
+    }
+    /**
+     * 绑定优惠券
+    * */
+    private fun bindCoupon(itemCoupon:CouponsItemBean?=null){
+        binding.inOrderInfo.tvCouponsValue.apply {
+            if(itemCoupon==null){
+                isEnabled=false
+                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
+                setText(R.string.str_temporarilyNoUse)
+            }else{
+                isEnabled=true
+                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
+                setText("${itemCoupon.conditionMoney}")
+            }
+        }
     }
     private fun bindInfo(){
+        maxUseFb=infoBean.fbBalance?:0
+        //地址信息
+        viewModel.addressList.observe(this) { addressList ->
+            //默认获取地址列表的默认收货地址
+            val item: AddressBeanItem? = addressList?.find { it.isDefault == 1 }
+            bindingAddress(item)
+        }
+        val addressInfo=infoBean.addressInfo
+        if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
+        else if(addressInfo!!.startsWith("{"))viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
+
+        //商品列表
         binding.inGoodsInfo.apply {
             recyclerView.adapter=goodsInfoAdapter
             goodsInfoAdapter.setList(dataListBean)
+        }
+        //维保商品
+        manageMaintenance()
+
+        //订单信息 商品金额运费
+        binding.inOrderInfo.apply {
+            tvAmountValue.setText("${infoBean.totalOriginalFb}")
         }
 
     }
     @SuppressLint("StringFormatMatches", "SetTextI18n")
     private fun bindingBaseData(){
         //秒杀情况下 原价=现价
-        if("SECKILL"==spuPageType){
-            dataBean.orginPrice=dataBean.fbPrice
-        }else if(WConstant.maintenanceType==spuPageType){//维保商品
-            manageMaintenance()
-        }
-        //购买数量
-        val buyNum=dataBean.buyNum
-        //运费 1元=100积分
-        val freightPrice=((dataBean.freightPrice?:"0.00").toFloat()*100).toInt()
-        //单价（现价）
-        val fbPrice=dataBean.fbPrice.toInt()
-        //总商品价 单价*购买数量
-        val totalFb=fbPrice*buyNum
-        //总共支付 (商品金额+运费)
-        totalPayFb=totalFb+freightPrice
-        //最少使用多少人民币（fb）=总金额*最低现金比
-        var minRmb:Float=totalPayFb*minRmbProportion
-        val maxFb=WCommonUtil.getHeatNumUP("${totalFb-minRmb}",0).toInt()
-        //最大可使用福币
-        maxUseFb=if(maxUseFb>maxFb)maxFb else {
-            minRmb= (totalPayFb-maxUseFb).toFloat()
-            maxUseFb
-        }
-        dataBean.totalPayFb="$totalPayFb"
-        binding.inOrderInfo.apply {
-            if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
-            //单价（原价）
-            val originalPrice=(dataBean.orginPrice?:dataBean.fbPrice).toInt()
-            //原总商品价 单价*购买数量
-            val totalOriginalFb=originalPrice*buyNum
-            tvAmountValue.setText("$totalOriginalFb")
-            tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
-            binding.inPayWay.apply {
-                rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
-                rbRmb.text = "¥${getRMB("$totalPayFb")}"
-            }
+//        if("SECKILL"==spuPageType){
+//            dataBean.orginPrice=dataBean.fbPrice
+//        }else if(WConstant.maintenanceType==spuPageType){//维保商品
+//            manageMaintenance()
+//        }
+//        //购买数量
+//        val buyNum=dataBean.buyNum
+//        //运费 1元=100积分
+//        val freightPrice=((dataBean.freightPrice?:"0.00").toFloat()*100).toInt()
+//        //单价（现价）
+//        val fbPrice=dataBean.fbPrice.toInt()
+//        //总商品价 单价*购买数量
+//        val totalFb=fbPrice*buyNum
+//        //总共支付 (商品金额+运费)
+//        totalPayFb=totalFb+freightPrice
+//        //最少使用多少人民币（fb）=总金额*最低现金比
+//        var minRmb:Float=totalPayFb*minRmbProportion
+//        val maxFb=WCommonUtil.getHeatNumUP("${totalFb-minRmb}",0).toInt()
+//        //最大可使用福币
+//        maxUseFb=if(maxUseFb>maxFb)maxFb else {
+//            minRmb= (totalPayFb-maxUseFb).toFloat()
+//            maxUseFb
+//        }
+//        dataBean.totalPayFb="$totalPayFb"
+//        binding.inOrderInfo.apply {
+//            if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
+//            //单价（原价）
+//            val originalPrice=(dataBean.orginPrice?:dataBean.fbPrice).toInt()
+//            //原总商品价 单价*购买数量
+//            val totalOriginalFb=originalPrice*buyNum
+//            tvAmountValue.setText("$totalOriginalFb")
+//            tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
+//            binding.inPayWay.apply {
+//                rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
+//                rbRmb.text = "¥${getRMB("$totalPayFb")}"
+//            }
 //            val spuPageType=dataBean.spuPageType
-            //会员折扣、砍价
-            if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
-                //会员优惠/砍价优惠=原总价-现总价
-                (totalOriginalFb-totalFb).apply {
-                    if(this>0){
-                        dataBean.preferentialFb="$this"
-                        //砍价优惠
-                        if("2"==spuPageType)tvMemberDiscount.setText(R.string.str_bargainingFavorable)
-                        tvMemberDiscount.visibility=View.VISIBLE
-                        tvMemberDiscountValue.visibility=View.VISIBLE
-                    }
-                }
-            }
-            model=dataBean
-        }
-        binding.inGoodsInfo.apply {
+//            //会员折扣、砍价
+//            if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
+//                //会员优惠/砍价优惠=原总价-现总价
+//                (totalOriginalFb-totalFb).apply {
+//                    if(this>0){
+//                        dataBean.preferentialFb="$this"
+//                        //砍价优惠
+//                        if("2"==spuPageType)tvMemberDiscount.setText(R.string.str_bargainingFavorable)
+//                        tvMemberDiscount.visibility=View.VISIBLE
+//                        tvMemberDiscountValue.visibility=View.VISIBLE
+//                    }
+//                }
+//            }
+//            model=dataBean
+//        }
+//        binding.inGoodsInfo.apply {
 //            OrderGoodsAttributeAdapter().apply {
 //                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false,true)
 //                rvGoodsProperty.adapter= this
@@ -211,15 +278,15 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
 //            }
 //            imgGoodsCover.load(dataBean.skuImg)
 //            if(freightPrice!=0)tvDistributionType
-            model=dataBean
-        }
+//            model=dataBean
+//        }
         //支付方式
-        initPayWay()
-        binding.inBottom.apply {
-            model=dataBean
-            tvAcountFb.setText("${dataBean.acountFb}")
-            updateBtnUi()
-        }
+//        initPayWay()
+//        binding.inBottom.apply {
+//            model=dataBean
+//            tvAcountFb.setText("${dataBean.acountFb}")
+//            updateBtnUi()
+//        }
     }
 
     fun onClick(v:View){
@@ -232,7 +299,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.tv_agreement->JumpUtils.instans?.jump(1,MConstant.H5_SHOP_AGREEMENT)
             //协议勾选
             R.id.checkBox->{
-                dataBean.isAgree=binding.checkBox.isChecked
+                isAgree=binding.checkBox.isChecked
                 updateBtnUi()
             }
             //福币+人民币支付
@@ -241,6 +308,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.rb_rmb->clickPayWay(1)
             //自定义支付
             R.id.rb_custom->clickPayWay(2)
+            //选择优惠券
+            R.id.tv_coupons_value->{
+                //到选择优惠券列表
+                "暂未开放".toast()
+            }
         }
     }
     @DelicateCoroutinesApi
@@ -248,9 +320,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(!isClickSubmit){
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-            dataBean.apply {
-                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
-            }
+//            dataBean.apply {
+//                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
+//            }
         }
         GlobalScope.launch {
             delay(3000L)
@@ -260,30 +332,23 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     @SuppressLint("SetTextI18n")
     private fun bindingAddress(item:AddressBeanItem?){
         if(null==item){//未绑定地址
-            dataBean.addressId=null
+            infoBean.addressId=null
             binding.inAddress.tvAddress.setText(R.string.str_pleaseAddShippingAddress)
             binding.inAddress.tvAddressRemark.visibility=View.GONE
             binding.inBottom.btnSubmit.updateEnabled(false)
         }else{
-            dataBean.addressId=item.addressId
+            infoBean.addressId=item.addressId
             updateBtnUi()
             binding.inAddress.tvAddressRemark.visibility=View.VISIBLE
             binding.inAddress.tvAddress.text="${item.provinceName}${item.cityName}${item.districtName}${item.addressName}"
             binding.inAddress.tvAddressRemark.text="${item.consignee}   ${item.phone}"
         }
     }
-    private fun initLiveDataBus(){
-        //地址下列表点击后回调
-        LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this) {
-            it?.let {
-                bindingAddress(Gson().fromJson(it, AddressBeanItem::class.java))
-            }
-        }
-    }
     /**
      * 处理维保商品
     * */
     private fun manageMaintenance(){
+        if(TextUtils.isEmpty(infoBean.vinCode))return
         binding.apply {
             //维保商品不需要收货地址
             inAddress.layoutAddress.visibility=View.GONE
@@ -312,7 +377,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 10.dp))
-                    Text(text = if(0==i)dataBean.vinCode?:"" else dataBean.models?:"",color= colorResource(R.color.color_33),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
+                    Text(text = if(0==i)infoBean.vinCode?:"" else infoBean.models?:"",color= colorResource(R.color.color_33),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
                 }
             }
         }
@@ -344,7 +409,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private fun edtCustomOnTextChanged(){
         binding.inPayWay.apply {
             edtCustom.onTextChanged {
-                val inputFb=it.s
+                val inputFb= it.s
                 "输入结果：${it.before}>>>>${it.start}>>>>$inputFb".wLogE()
                 if(!TextUtils.isEmpty(inputFb)){
                     //输入的福币超出可使用的范围
@@ -445,12 +510,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
      * 更新底部提交按钮状态
      * */
     private fun updateBtnUi(){
-        dataBean.apply {
+        infoBean.apply {
             val isPrice=getPayLines()
-            if(WConstant.maintenanceType==spuPageType){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&&totalPayFb.toInt()<=acountFb&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=acountFb&&isPrice)
-
+            if(!TextUtils.isEmpty(vinCode)){//维保商品
+                binding.inBottom.btnSubmit.updateEnabled(isAgree&& totalPayFb <=fbBalance?:0&&isPrice)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=fbBalance?:0&&isPrice)
         }
     }
 }

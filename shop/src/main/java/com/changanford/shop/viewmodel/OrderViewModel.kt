@@ -7,6 +7,7 @@ import com.changanford.common.bean.*
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
@@ -35,6 +36,8 @@ class OrderViewModel: BaseViewModel() {
     var myFbLiveData: MutableLiveData<Int> = MutableLiveData()
     //订单类型
     var orderTypesLiveData: MutableLiveData<OrderTypesBean?> = MutableLiveData()
+    //确认订单
+    var createOrderBean = MutableLiveData<CreateOrderBean?>()
     /**
      * 下单
      * [addressId]收货地址id
@@ -91,6 +94,26 @@ class OrderViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
           }
+        }
+    }
+
+    /**
+     * 确认订单
+     * [orderConfirmType]确认订单来源 0商品详情 1购物车
+     * */
+    fun confirmOrder(orderConfirmType:Int,skuItems:ArrayList<ConfirmOrderInfoBean>) {
+        viewModelScope.launch {
+            fetchRequest(true){
+                body.clear()
+                body["orderConfirmType"]=orderConfirmType
+                body["skuItems"]=skuItems
+                val randomKey = getRandomKey()
+                shopApiService.confirmOrder(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                it?.toast()
+            }.onSuccess {
+                createOrderBean.postValue(it)
+            }
         }
     }
     private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
@@ -304,6 +327,7 @@ class OrderViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 订单状态(WAIT_PAY 待付款,WAIT_SEND 待发货,WAIT_RECEIVE 待收货,FINISH 已完成,CLOSED 已关闭)
      * */

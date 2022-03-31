@@ -302,7 +302,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun submitOrder(){
         skuCode.apply {
             if(isInvalidSelectAttrs(this))createAttribute()
-            else OrderConfirmActivity.start(dataBean)
+            else OrderConfirmActivity.start(0,dataBean)
         }
     }
     /**
@@ -310,8 +310,8 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun addShoppingCart(){
         skuCode.apply {
-            if(isInvalidSelectAttrs(this))createAttribute()
-            else viewModel.addShoppingCart(dataBean.spuId)
+//            if(isInvalidSelectAttrs(this))createAttribute()
+//            else viewModel.addShoppingCart(dataBean.spuId)
         }
     }
 }

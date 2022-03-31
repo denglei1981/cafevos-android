@@ -155,6 +155,11 @@ interface ShopNetWorkApi {
     /**
      * 加入购物车
      * */
-    @POST("")
+    @POST("/mall/userSkuAdd")
     suspend fun addShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    /**
+     * 确认订单接口
+     * */
+    @POST("/mall/mallOrderConfirm")
+    suspend fun confirmOrder(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CreateOrderBean>
 }

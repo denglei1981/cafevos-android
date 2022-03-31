@@ -16,7 +16,6 @@ import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
-import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -42,7 +41,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
                 dismiss()
-                OrderConfirmActivity.start(dataBean)
+                OrderConfirmActivity.start(0,dataBean)
             }
             btnCart.setOnClickListener {
                 dismiss()

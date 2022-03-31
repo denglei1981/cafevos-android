@@ -354,15 +354,19 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 加入购物车
+     * [mallMallSpuId]商品表id
+     * [skuId]sku表id
+     * [fbPer]单位原价(不计算折扣)(积分)
+     * [num]购买数量
      * */
-    fun addShoppingCart(spuId:String?,showLoading:Boolean=false){
-        "接口还未部署".toast()
-        return
-        if(spuId==null)return
+    fun addShoppingCart(mallMallSpuId:String,skuId:String,fbPer:String,num:Int,showLoading:Boolean=false){
         viewModelScope.launch {
             fetchRequest(showLoading){
                 body.clear()
-                body["spuId"]=spuId
+                body["mallMallSpuId"]=mallMallSpuId
+                body["skuId"]=skuId
+                body["fbPer"]=fbPer
+                body["num"]=num
                 val randomKey = getRandomKey()
                 shopApiService.addShoppingCart(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {

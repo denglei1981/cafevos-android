@@ -198,5 +198,6 @@
     <string name="str_wxPay">微信支付</string>
     <string name="str_zfbPay">支付宝支付</string>
     <string name="str_unionPayCloudFlashPayment">银联云闪付</string>
+    <string name="str_temporarilyNoUse">暂无可用</string>
 
 </resources>
