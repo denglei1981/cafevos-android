@@ -194,7 +194,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 couponsAmount=itemCoupon.couponMoney?:"0"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
-                setText("${itemCoupon.conditionMoney}")
+                setText("${itemCoupon.couponMoney}")
             }
         }
         //总共支付 (商品金额+运费)
