@@ -27,12 +27,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ConcatAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.BuildConfig
-import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.bean.EditTextBean
 import com.changanford.common.listener.OnDownBitmapListener
@@ -40,7 +38,6 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.LocationServiceUtil
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.google.android.material.tabs.TabLayout
 import com.qw.soul.permission.SoulPermission
@@ -445,6 +442,19 @@ object WCommonUtil {
             return true
         }
         return false
+    }
+    /**
+     * 将福币转换为人民币 1元=100福币
+     * */
+    fun getRMB(fb:String?,unit:String?="¥"):String{
+        var rmbPrice="0"
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
+        }
+        return "${unit?:""}$rmbPrice"
     }
 }
 @Synchronized

@@ -28,6 +28,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
@@ -74,7 +75,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private val rbPayWayArr by lazy { arrayListOf(binding.inPayWay.rbFbAndRmb,binding.inPayWay.rbRmb,binding.inPayWay.rbCustom) }
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
-    private var minRmbProportion:Float=0.1f//最低使用人民币比例
+    private var minRmbProportion:Float=0f//最低使用人民币比例
     private var payFb:String?="0"//福币支付额度
     private var payRmb:String?="0"//人民币支付额度
     private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
@@ -129,8 +130,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         infoBean.totalBuyNum=totalBuyNum
         infoBean.totalOriginalFb=totalOriginalFb
-        viewModel.confirmOrder(orderConfirmType,skuItems)
         bindInfo()
+        //获取优惠券信息
+        viewModel.confirmOrder(orderConfirmType,skuItems)
     }
     override fun initData() {
 //        maxUseFb=infoBean.fbBalance?:0
@@ -167,27 +169,50 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         viewModel.createOrderBean.observe(this){
             infoBean.freightPrice=it?.freight?:"0.00"
             binding.inOrderInfo.apply {
-                tvFreightValue.setText(infoBean.freightPrice)
-                val coupons=it?.coupons
-                bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
+                if(it!=null){
+                    infoBean.fbBalance=it.totalIntegral
+                    minRmbProportion=it.getRmbBfb()
+//                    tvFreightValue.setText(infoBean.freightPrice)
+                    val coupons=it.coupons
+                    bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
+                }
             }
         }
     }
     /**
-     * 绑定优惠券
+     * 绑定优惠券和支付信息
     * */
+    @SuppressLint("SetTextI18n")
     private fun bindCoupon(itemCoupon:CouponsItemBean?=null){
+        var couponsAmount="0"
         binding.inOrderInfo.tvCouponsValue.apply {
             if(itemCoupon==null){
                 isEnabled=false
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText(R.string.str_temporarilyNoUse)
             }else{
+                couponsAmount=itemCoupon.couponMoney?:"0"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText("${itemCoupon.conditionMoney}")
             }
         }
+        //总共支付 (商品金额+运费)
+        totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
+        binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
+        //最少使用多少人民币（fb）=总金额*最低现金比
+        var minRmb:Float=totalPayFb*minRmbProportion
+        val maxFb= WCommonUtil.getHeatNumUP("${(infoBean.totalOriginalFb?:0)-minRmb}",0).toInt()
+        //最大可使用福币
+        maxUseFb=if(maxUseFb>maxFb)maxFb else {
+            minRmb= (totalPayFb-maxUseFb).toFloat()
+            maxUseFb
+        }
+        binding.inPayWay.apply {
+            rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
+            rbRmb.text = "¥${getRMB("$totalPayFb")}"
+        }
+        initPayWay()
     }
     private fun bindInfo(){
         maxUseFb=infoBean.fbBalance?:0
@@ -211,9 +236,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
 
         //订单信息 商品金额运费
         binding.inOrderInfo.apply {
-            tvAmountValue.setText("${infoBean.totalOriginalFb}")
+            tvAmountValue.text=WCommonUtil.getRMB("${infoBean.totalOriginalFb}")
         }
-
     }
     @SuppressLint("StringFormatMatches", "SetTextI18n")
     private fun bindingBaseData(){
@@ -514,7 +538,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             val isPrice=getPayLines()
             if(!TextUtils.isEmpty(vinCode)){//维保商品
                 binding.inBottom.btnSubmit.updateEnabled(isAgree&& totalPayFb <=fbBalance?:0&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&&totalPayFb.toInt()<=fbBalance?:0&&isPrice)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& totalPayFb <=fbBalance?:0&&isPrice)
         }
     }
 }

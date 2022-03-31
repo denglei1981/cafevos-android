@@ -108,7 +108,7 @@
     <string name="str_orderParticulars">订单明细</string>
     <string name="str_common">共</string>
     <string name="str_jsp">件商品</string>
-    <string name="str_rmb">￥</string>
+    <string name="str_rmb">¥</string>
     <string name="str_orderNo0">订单编号</string>
     <string name="str_orderTime">下单时间</string>
     <string name="str_allOrders">所有订单</string>

@@ -3,6 +3,7 @@ package com.changanford.common.bean
 import android.text.TextUtils
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 
 /**
@@ -240,7 +241,17 @@ data class ConfirmOrderBean(
     var vinCode:String?=null,//维保商品 VIN码
     var models:String?=null,//车型
     var dataList:ArrayList<GoodsDetailBean>?=null,
-)
+    var totalPayFbPrice:Int=0//单位福币
+){
+    /**
+     * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
+     * [couponsFb]优惠福币 单位福币
+    * */
+    fun getTotalPayFbPrice(couponsFb:String):Int{
+        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-couponsFb.toFloat()}",0).toInt()
+        return totalPayFbPrice
+    }
+}
 data class ConfirmOrderInfoBean(
     var busSourse:Int=0,
     var carModel:String?=null,
@@ -646,9 +657,17 @@ data class CreateOrderBean(
     var freight:String?=null,
     var orderConfirmType:Int=0,
     var payBfb:String?=null,
+    var totalIntegral:Int?=0,
     var coupons:ArrayList<CouponsItemBean>?=null,
     var skuItems:ArrayList<OrderSkuItem>?=null,
-)
+){
+    fun getRmbBfb(payBfb:String?=null):Float{
+        return if(TextUtils.isEmpty(payBfb))0f
+        else{
+            payBfb!!.toFloat()/100
+        }
+    }
+}
 data class OrderSkuItem(
     val busSourse: Int = 0,
     val carModel: String? = null,
@@ -673,14 +692,14 @@ data class CouponsItemBean(
     val conditionMoney: Int = 0,
     val couponId: Int = 0,
     val couponMarkId: Int = 0,
-    val couponMoney: Int = 0,
+    val couponMoney: String? = "0",
     val couponName: String = "",
     val couponRatio: Int = 0,
     val couponRecordId: Int = 0,
     val desc: String = "",
     val discountType: String = "",
     val img: String = "",
-    val mallMallSkuIds: List<Any> = listOf(),
+    val mallMallSkuIds: List<String>? =null,
     val markImg: String = "",
     val markName: String = "",
     val state: String = "",
