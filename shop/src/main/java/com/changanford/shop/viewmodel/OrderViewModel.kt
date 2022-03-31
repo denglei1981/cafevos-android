@@ -40,15 +40,17 @@ class OrderViewModel: BaseViewModel() {
      * [addressId]收货地址id
      * [buyNum]数量
      * [consumerMsg]买家留言
-     * [payType]支付方式(积分),可用值:FB_PAY
+     * [payType]支付方式(0纯积分/1纯现金/2混合支付)
      * [spuPageType]可用值:NOMROL,SECKILL,MEMBER_EXCLUSIVE,MEMBER_DISCOUNT,HAGGLE
      * [mallMallSkuSpuSeckillRangeId]秒杀的skuId
      * [mallMallHaggleUserGoodsId]发起砍价id
      * [vinCode]维保商品 vin码
+     * [couponId]优惠卷id
      * buySource 业务来源 0普通商品 1秒杀商品 2砍价商品 3维保商品
      * */
     fun orderCreate(_skuId:String,addressId:Int?,spuPageType:String?,buyNum:Int,consumerMsg:String?="",
-                    mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:String="FB_PAY"){
+                    mallMallSkuSpuSeckillRangeId:String?=null,mallMallHaggleUserGoodsId:String?=null,
+                    vinCode:String?=null,mallMallWbVinSpuId:String?=null,payType:Int=0,couponId:String?="0"){
         body.clear()
         var buySource=0
         var skuId=_skuId
@@ -79,6 +81,9 @@ class OrderViewModel: BaseViewModel() {
                 body["consumerMsg"]=consumerMsg?:""
                 body["payType"]=payType
                 body["addressId"]=addressId?:"0"
+                couponId?.let {
+                    body["couponId"]=it
+                }
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
