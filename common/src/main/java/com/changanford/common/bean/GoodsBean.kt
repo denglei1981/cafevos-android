@@ -248,7 +248,7 @@ data class ConfirmOrderBean(
      * [couponsFb]优惠福币 单位福币
     * */
     fun getTotalPayFbPrice(couponsFb:String):Int{
-        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-couponsFb.toFloat()}",0).toInt()
+        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-(couponsFb.toFloat()*100)}",0).toInt()
         return totalPayFbPrice
     }
 }
