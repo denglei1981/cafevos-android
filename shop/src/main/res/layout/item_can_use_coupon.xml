@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.GoodsDetailBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@color/color_F4">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_coupon_contain"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_whit5_bg"
+            app:layout_constraintDimensionRatio="335:110"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_vip_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="13dp"
+                android:visibility="gone"
+                android:scaleType="fitStart"
+                app:layout_constraintBottom_toTopOf="@+id/tv_goodsTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/head_default"
+                tools:visibility="visible" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_goodsCover"
+                android:layout_width="@dimen/dp_77"
+                android:layout_height="@dimen/dp_77"
+                android:layout_marginStart="12dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/image_h_one_default"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_goodsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{model.spuName}"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/con_use"
+                app:layout_constraintStart_toEndOf="@id/img_goodsCover"
+                app:layout_constraintTop_toTopOf="@+id/img_goodsCover"
+                tools:text="无线蓝牙耳机 降噪耳机全新苹果二代机" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintEnd_toStartOf="@+id/con_use"
+                app:layout_constraintStart_toStartOf="@+id/tv_goodsTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_goodsTitle"
+                tools:text="2022-01-02" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintEnd_toStartOf="@+id/con_use"
+                app:layout_constraintStart_toStartOf="@+id/tv_goodsTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_time_start"
+                tools:text="2022-01-02" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_extends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:src="@mipmap/icon_coupon_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/con_use"
+                app:layout_constraintStart_toStartOf="@+id/tv_goodsTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_time_end"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_use"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/shape_8195c8_end_top_end_bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="117:110"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_money"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:gravity="center"
+                    android:textColor="#fff6f6f6"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_tips"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="10000" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:gravity="center"
+                    android:textColor="#fff6f6f6"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_use_now"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="满10000元可用" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_use_now"
+                    android:layout_width="82dp"
+                    android:layout_height="27dp"
+                    android:layout_marginBottom="@dimen/dp_12"
+                    android:background="@drawable/shape_coupon_use_now"
+                    android:gravity="center"
+                    android:minWidth="@dimen/dp_72"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="立即使用" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/g_extends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="fl_arrow,ll_tips"
+            tools:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/fl_arrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/con_coupon_contain">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:background="@color/color_F4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/con_coupon_contain" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:src="@mipmap/icon_coupon_up_arrow" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_corner_4_bord_f4_t_10dp"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_arrow">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_extends_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/color_99"
+                tools:text="券类型：商城券\n领取条件：仅限满5年认证车主领取\n使用限制：不限品类\n券编号 999999999" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

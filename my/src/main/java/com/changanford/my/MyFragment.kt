@@ -6,6 +6,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
@@ -65,6 +67,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             initData()
             it.finishRefresh()
         }
+        myFastInAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                // 跳转到优惠券
+                JumpUtils.instans?.jump(118)
+            }
+
+        })
     }
 
     /**

@@ -419,20 +419,22 @@ class JumpUtils {
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
                             CarItemBean(vin = vin)
-                        ).startARouter(when{
-                            CommonUtils.isCrmSuccess(status) ->{
-                                ARouterMyPath.MineLoveCarInfoUI
+                        ).startARouter(
+                            when {
+                                CommonUtils.isCrmSuccess(status) -> {
+                                    ARouterMyPath.MineLoveCarInfoUI
+                                }
+                                CommonUtils.isCrmStatusIng(status)
+                                        || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
+                                    isNeedChangeBind
+                                )) -> {
+                                    ARouterMyPath.CarAuthIngUI
+                                }
+                                else -> {
+                                    ARouterMyPath.UniCarAuthUI
+                                }
                             }
-                            CommonUtils.isCrmStatusIng(status)
-                                    || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
-                                isNeedChangeBind
-                            )) -> {
-                                ARouterMyPath.CarAuthIngUI
-                            }
-                            else->{
-                                ARouterMyPath.UniCarAuthUI
-                            }
-                        })
+                        )
                     }
                 } catch (e: Exception) {
                     RouterManger.param(
@@ -630,43 +632,43 @@ class JumpUtils {
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
-            111->{//商品评价列表
+            111 -> {//商品评价列表
                 if (!TextUtils.isEmpty(value)) {
-                  /*"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"
-                  * 或者直接传商品id
-                  * */
+                    /*"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"
+                    * 或者直接传商品id
+                    * */
                     bundle.putString("goodsInfo", value)
                     startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
                 }
             }
-            112->{//商品订单评价
+            112 -> {//商品订单评价
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("orderNo", value)
                     startARouter(ARouterShopPath.OrderEvaluationActivity, bundle, true)
                 }
             }
-            113->{//话题列表
+            113 -> {//话题列表
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
-            114->{//我的问答它的问答
+            114 -> {//我的问答它的问答
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("value", value)
                     startARouter(ARouterCirclePath.QuestionActivity, bundle, true)
                 }
             }
-            115->{ // 自己可以编辑技术详情的主页
+            115 -> { // 自己可以编辑技术详情的主页
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("value", value)
                     startARouter(ARouterCirclePath.MechanicMainActivity, bundle, true)
                 }
             }
-            116->{ //提问
+            116 -> { //提问
                 startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
             }
-            117->{ //圈子成员列表
-                if(!TextUtils.isEmpty(value)){
+            117 -> { //圈子成员列表
+                if (!TextUtils.isEmpty(value)) {
                     JSON.parseObject(value)?.apply {
-                        val circleId =getString("circleId")
+                        val circleId = getString("circleId")
                         val isApply = getString("isApply")
                         bundle.putString("circleId", circleId)
                         bundle.putString("isApply", isApply)
@@ -674,6 +676,13 @@ class JumpUtils {
                     }
                 }
             }
+            118 -> { // 优惠券列表
+                startARouter(ARouterShopPath.CouponActivity, bundle, true)
+            }
+            119 -> { // 购物车
+                startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
+            }
+
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {
@@ -782,10 +791,12 @@ class JumpUtils {
         if (!value.isNullOrEmpty()) {
             try {
                 val json = JSON.parseObject(value)
-                val shareWithType=json.getString("shareWithType")
+                val shareWithType = json.getString("shareWithType")
                 SelectMapDialog(BaseApplication.curActivity, object : SelectMapDialog.CheckedView {
                     override fun checkBaiDu() {
-                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("百度地图")
+                        if ("test_drive_navigation" == shareWithType) WBuriedUtil.clickCarNavigateMap(
+                            "百度地图"
+                        )
                         JumpMap.openBaiduMap(
                             BaseApplication.curActivity,
                             json.getDouble("latY"), json.getDouble("lngX"),
@@ -794,7 +805,9 @@ class JumpUtils {
                     }
 
                     override fun checkGaoDe() {
-                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("高德地图")
+                        if ("test_drive_navigation" == shareWithType) WBuriedUtil.clickCarNavigateMap(
+                            "高德地图"
+                        )
                         JumpMap.openGaoDeMap(
                             BaseApplication.curActivity,
                             json.getDouble("latY"), json.getDouble("lngX"),
@@ -803,7 +816,9 @@ class JumpUtils {
                     }
 
                     override fun checkCancel() {
-                        if("test_drive_navigation"==shareWithType)WBuriedUtil.clickCarNavigateMap("取消")
+                        if ("test_drive_navigation" == shareWithType) WBuriedUtil.clickCarNavigateMap(
+                            "取消"
+                        )
                     }
 
                 }).show()

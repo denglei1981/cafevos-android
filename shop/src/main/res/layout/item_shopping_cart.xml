@@ -2,72 +2,91 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/dp_138"
         android:background="@drawable/bord_f4_t_10dp"
+        android:minHeight="@dimen/dp_138"
         android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_36"
+        android:paddingEnd="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_20">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/check_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/shopping_cart_check_box"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dp_6"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goodsCover"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/image_h_one_default"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+            android:scaleType="centerCrop"
+            android:src="@mipmap/image_h_one_default"
+            app:layout_constraintStart_toEndOf="@+id/check_status"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsTitle"
             style="@style/style_txt_ellipsize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_11"
+            android:text="@{model.spuName}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/dp_11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.spuName}"
-            tools:text="无线蓝牙耳机 降噪耳机全新苹…"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
+            tools:text="无线蓝牙耳机 降噪耳机全新苹…" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_goods_property"
-            android:layout_marginTop="@dimen/dp_9"
-            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
-            app:layout_constraintStart_toStartOf="@id/tv_goodsTitle"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/dp_9"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_attribute" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginBottom="@dimen/dp_3"
-            android:id="@+id/tv_integral"
-            app:end_txt="@string/str_integral"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_goodsTitle"
-            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
+            tools:listitem="@layout/item_attribute" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_3"
             android:text="@{model.orginPrice}"
             android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            app:end_txt="@string/str_integral"
+            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+            app:layout_constraintStart_toStartOf="@id/tv_goodsTitle" />
+
         <com.changanford.shop.view.AddSubtractView
             android:id="@+id/addSubtractView"
-            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
