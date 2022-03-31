@@ -29,7 +29,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
         }
     }
     private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){
-        val tagType=item.spuPageTagType
+        val tagType=item.spuPageTagType?:""
         dataBinding.inVip.lLayoutVip.visibility=View.GONE
         dataBinding.tvTagType.apply {
             visibility=View.VISIBLE
