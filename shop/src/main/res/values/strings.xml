@@ -195,4 +195,8 @@
     <string name="str_pleaseEnterUseLuckyCurrency">请输入使用福币</string>
     <string name="str_customLuckyCoinPayment">自定义福币支付</string>
     <string name="str_hasMaxUseFb">已超出最大可使用福币</string>
+    <string name="str_wxPay">微信支付</string>
+    <string name="str_zfbPay">支付宝支付</string>
+    <string name="str_unionPayCloudFlashPayment">银联云闪付</string>
+
 </resources>

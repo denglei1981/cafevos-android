@@ -16,6 +16,7 @@ import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
 import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.ui.compose.UnionPayCompose
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -87,6 +88,13 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                     }
                 })
                 timeCountControl?.start()
+            }
+            //使用银联支付
+            binding.composeView.apply {
+                visibility=View.VISIBLE
+                setContent {
+                    UnionPayCompose()
+                }
             }
         }
 

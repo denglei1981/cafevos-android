@@ -33,11 +33,11 @@ class GoodsViewModel: BaseViewModel() {
 
     var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
     //商品列表
-    var goodsListData =MutableLiveData<GoodsList?>()
+    var goodsListData =MutableLiveData<GoodsListBean?>()
     //秒杀时段
     var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
     //秒杀列表
-    var killGoodsListData =MutableLiveData<GoodsList?>()
+    var killGoodsListData =MutableLiveData<GoodsListBean?>()
     //评价列表
     var commentLiveData =MutableLiveData<CommentBean?>()
     //商品收藏状态
@@ -88,8 +88,10 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 获取商品列表
      * [tagId]分类id
+     * [ascOrDesc]正序(从小到大)/倒序(从大到小)(综合排序情况下，传倒序),可用值:AscOrDescEnum.ASC(code=ASC, dbCode=0, message=正序),AscOrDescEnum.DESC(code=DESC, dbCode=1, message=倒序)
+     * [mallSortType]	排序规则,可用值:MallSortTypeEnum.COMPREHENSIVE(code=COMPREHENSIVE, message=综合排序),MallSortTypeEnum.SALES(code=SALES, message=销量排序),MallSortTypeEnum.PRICE(code=PRICE, message=价格排序)
      * */
-    fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize){
+    fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE"){
         if("WB"==tagType){//获取维保商品数据
             getMaintenanceGoodsList(tagId,pageNo,pageSize)
             return
@@ -101,11 +103,13 @@ class GoodsViewModel: BaseViewModel() {
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
                     it["tagId"]=tagId
+                    it["ascOrDesc"]=ascOrDesc
+                    it["mallSortType"]=mallSortType
                 }
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                goodsListData.postValue(it?.responsePageBean)
+                goodsListData.postValue(it)
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {

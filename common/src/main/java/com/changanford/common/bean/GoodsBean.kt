@@ -2,6 +2,7 @@ package com.changanford.common.bean
 
 import android.text.TextUtils
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.graphics.painter.Painter
 
 /**
  * @Author : wenke
@@ -21,7 +22,7 @@ data class GoodsTypesItemBean(
     val kindName:String?=null,
 )
 
-data class GoodsList(
+data class GoodsListBean(
     val dataList: List<GoodsItemBean> = listOf(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,
@@ -220,7 +221,7 @@ data class SeckillTimeRange(
  * */
 data class GoodsHomeBean(
     val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
-    val responsePageBean: GoodsList? = null,
+    val responsePageBean: GoodsListBean? = null,
 )
 
 /**
@@ -591,4 +592,6 @@ data class PayWayBean(
     var rmbPrice: String?=null,
     var fbPrice: String?=null,
     var isCheck: MutableState<Boolean>? =null,
+    var payWayName:String?=null,
+    var icon: Painter?=null,
 )

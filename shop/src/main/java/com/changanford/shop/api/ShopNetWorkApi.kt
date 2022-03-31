@@ -33,7 +33,7 @@ interface ShopNetWorkApi {
      * 商城列表
      * */
     @POST("/mall/spus/get")
-    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsHomeBean>
+    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
     /**
      * 首页
      * */
@@ -43,7 +43,7 @@ interface ShopNetWorkApi {
      * 秒杀列表
      * */
     @POST("/mall/seckills/{seckillRangeId}/spus/get")
-    suspend fun getGoodsKillList(@Path("seckillRangeId")seckillRangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    suspend fun getGoodsKillList(@Path("seckillRangeId")seckillRangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
     /**
      *秒杀提醒设置/取消
     * */
@@ -141,7 +141,7 @@ interface ShopNetWorkApi {
      * 维保商品列表
      * */
     @POST("/mall/wb/list")
-    suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsList>
+    suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
     /**
      * 推荐商品分类
      * */

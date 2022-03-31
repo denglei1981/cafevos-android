@@ -2,7 +2,7 @@ package com.changanford.shop.ui.goods
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.GoodsList
+import com.changanford.common.bean.GoodsListBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
@@ -62,7 +62,7 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
             }
         }
     }
-    private fun bindingData(it:GoodsList?){
+    private fun bindingData(it: GoodsListBean?){
         if(1==pageNo){
             mAdapter.setList(it?.dataList)
             parentSmartRefreshLayout?.finishRefresh()
