@@ -180,6 +180,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 }
             }
         }
+        viewModel.orderInfoLiveData.observe(this) {
+            isClickSubmit = false
+            PayConfirmActivity.start(it.orderNo)
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
+                .postValue("$orderConfirmType")
+            this.finish()
+        }
     }
     /**
      * 绑定优惠券和支付信息
@@ -202,10 +209,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         //总共支付 (商品金额+运费)
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
+        infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
         //最少使用多少人民币（fb）=总金额*最低现金比
         var minFb:Float=totalPayFb*minRmbProportion
-        val maxFb:Int= WCommonUtil.getHeatNumUP("${(infoBean.totalOriginalFb?:0)-minFb}",0).toInt()
+        val maxFb:Int= WCommonUtil.getHeatNumUP("${totalPayFb -minFb}",0).toInt()
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
             minFb= (totalPayFb-maxUseFb).toFloat()
@@ -338,8 +346,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.rb_custom->clickPayWay(2)
             //选择优惠券
             R.id.tv_coupons_value->{
-                //到选择优惠券列表
-                "暂未开放".toast()
+                viewModel.createOrderBean.value?.apply {
+                    ChooseCouponsActivity.start(null,coupons)
+                }
             }
         }
     }
