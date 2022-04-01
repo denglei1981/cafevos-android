@@ -6,6 +6,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.MenuBeanItem
 import com.changanford.common.bean.UserInfoBean
@@ -52,9 +54,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
 //        binding.medalRec.isSaveEnabled = false
 //        binding.medalRec.adapter = medalAdapter
-        myFastInAdapter.addData(MyFastInData(1))
-        myFastInAdapter.addData(MyFastInData(2))
-        myFastInAdapter.addData(MyFastInData(3))
+        myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
+        myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
+        myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
         binding.fastIn.adapter = myFastInAdapter
         binding.menuRec.isSaveEnabled = false
         binding.menuRec.adapter = menuAdapter
@@ -65,6 +67,26 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
             initData()
             it.finishRefresh()
         }
+        myFastInAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                // 跳转到优惠券
+                var item = myFastInAdapter.getItem(position)
+                when(item.id){
+                    1->{
+                        JumpUtils.instans?.jump(118)
+                    }
+                    2->{
+                        JumpUtils.instans?.jump(36)
+                    }
+                    3->{
+                        JumpUtils.instans?.jump(29)
+                    }
+
+                }
+
+            }
+
+        })
     }
 
     /**

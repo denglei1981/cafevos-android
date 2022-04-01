@@ -1,0 +1,47 @@
+package com.changanford.shop.ui.coupon.request
+
+import androidx.lifecycle.MutableLiveData
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.bean.ListMainBean
+import com.changanford.common.net.*
+import com.changanford.common.net.response.UpdateUiState
+import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
+import com.changanford.shop.api.ShopNetWorkApi
+import com.changanford.shop.bean.CouponData
+
+
+class CouponViewModel : BaseViewModel() {
+
+    var  couponListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponData>>> = MutableLiveData()
+    var page =1
+    fun getCouponList(isLoadMore:Boolean,type:Int){
+
+        launch (block = {
+            val body = MyApp.mContext.createHashMap()
+            if(isLoadMore){
+                page+=1
+            }else{
+                page=1
+            }
+            body["pageNo"] = page
+            body["pageSize"] = 20
+            body["queryParams"] = HashMap<String, Any>().also {
+                    it["states"] =type
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<ShopNetWorkApi>().getCouponList(body.header(rKey),body.body(rKey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<ListMainBean<CouponData>>(it, true, isLoadMore, "")
+                    couponListLiveData.postValue(updateUiState)
+                }
+                .onWithMsgFailure {
+                    val updateUiState = UpdateUiState<ListMainBean<CouponData>>(false, it, isLoadMore)
+                    couponListLiveData.postValue(updateUiState)
+                    it?.toast()
+                }
+        })
+    }
+}

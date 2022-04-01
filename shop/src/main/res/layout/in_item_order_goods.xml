@@ -79,7 +79,7 @@
             android:orientation="horizontal"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_carInfo"
-            tools:visibility="visible"
+            tools:visibility="gone"
             android:visibility="gone"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"

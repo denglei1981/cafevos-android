@@ -2,6 +2,7 @@ package com.changanford.shop.api
 
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
+import com.changanford.shop.bean.CouponData
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -162,4 +163,26 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/mallOrderConfirm")
     suspend fun confirmOrder(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CreateOrderBean>
+
+    /**
+     *  购物车详情
+     * */
+    @POST("/mall/userSkuIndex")
+    suspend fun getShoppingCartList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<GoodsItemBean>>
+
+    /**
+     *  删除购物车商品
+     * */
+    @POST("/mall/delUserSkuByIds")
+    suspend fun deleteShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+
+
+    /**
+     *  我的优惠券
+     *          // {"pageNo":1,"pageSize":20,"queryParams":{"states":1}}  1.未使用 2.已使用 3.已失效
+     * */
+    @POST("/mall/coupon/get")
+    suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponData>>
+
+
 }
