@@ -54,7 +54,7 @@ class ChooseCouponsActivity:BaseActivity<ActChooseCouponsBinding,OrderViewModel>
             }
         }
         binding.composeView.setContent {
-            ChooseCouponsCompose(dataListBean)
+            ChooseCouponsCompose(this,dataListBean)
         }
     }
 }

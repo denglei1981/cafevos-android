@@ -188,6 +188,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 .postValue("$orderConfirmType")
             this.finish()
         }
+        //选择优惠券回调
+        LiveDataBus.get().with(LiveDataBusKey.COUPONS_CHOOSE_BACK, CouponsItemBean::class.java).observe(this) {
+            bindCoupon(it)
+        }
     }
     /**
      * 绑定优惠券和支付信息

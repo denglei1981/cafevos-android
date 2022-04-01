@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.compose
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +44,7 @@ private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
  * 选择优惠券
 * */
 @Composable
-fun ChooseCouponsCompose(dataList:MutableList<CouponsItemBean>?=null) {
+fun ChooseCouponsCompose(act:Activity,dataList:MutableList<CouponsItemBean>?=null) {
     val findItem=dataList?.find { it.isAvailable }
     val selectedTag = remember { mutableStateOf(dataList?.get(0)) }
     Column(modifier = Modifier
@@ -63,7 +64,8 @@ fun ChooseCouponsCompose(dataList:MutableList<CouponsItemBean>?=null) {
         }
         Button(onClick = {
             LiveDataBus.get().with(LiveDataBusKey.COUPONS_CHOOSE_BACK, CouponsItemBean::class.java)
-                .postValue(null)
+                .postValue(selectedTag.value)
+            act.finish()
         },shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
             modifier = Modifier
