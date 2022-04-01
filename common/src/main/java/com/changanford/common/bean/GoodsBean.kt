@@ -692,12 +692,12 @@ data class OrderSkuItem(
 * */
 data class CouponsItemBean(
     val conditionMoney: Int = 0,
-    val couponId: Int = 0,
-    val couponMarkId: Int = 0,
+    val couponId: String? = null,
+    val couponMarkId: String? = null,
     val couponMoney: String? = "0",
     val couponName: String = "",
     val couponRatio: Int = 0,
-    val couponRecordId: Int = 0,
+    val couponRecordId: String?= null,
     val desc: String = "",
     val discountType: String = "",
     val img: String = "",

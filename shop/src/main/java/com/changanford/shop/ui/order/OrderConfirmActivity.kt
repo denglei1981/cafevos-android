@@ -80,6 +80,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var payRmb:String?="0"//人民币支付额度
     private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
     private var isAgree:Boolean=false//是否同意协议
+    private var couponsItem:CouponsItemBean?=null
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -158,6 +159,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
 //        }
 //        bindingBaseData()
     }
+
     private fun initObserve(){
         //地址下列表点击后回调
         LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS, String::class.java).observe(this) {
@@ -184,6 +186,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     * */
     @SuppressLint("SetTextI18n")
     private fun bindCoupon(itemCoupon:CouponsItemBean?=null){
+        couponsItem=itemCoupon
         var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
             if(itemCoupon==null){
@@ -345,6 +348,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(!isClickSubmit){
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
+            val createOrderBean=viewModel.createOrderBean.value
+            viewModel.createOrder(orderConfirmType = orderConfirmType, payFb = payFb, payRmb = payRmb, addressId = infoBean.addressId,
+                consumerMsg =consumerMsg, skuItems =createOrderBean?.skuItems, couponId =couponsItem?.couponId, couponRecordId = couponsItem?.couponRecordId,
+            freight =infoBean.freightPrice, payBfb =createOrderBean?.payBfb)
 //            dataBean.apply {
 //                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
 //            }

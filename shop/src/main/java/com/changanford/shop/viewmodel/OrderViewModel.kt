@@ -1,5 +1,6 @@
 package com.changanford.shop.viewmodel
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
@@ -96,7 +97,59 @@ class OrderViewModel: BaseViewModel() {
           }
         }
     }
-
+    /**
+     * 下单
+     * [orderConfirmType]确认订单来源 0 商品详情  1购物车
+     * [payFb]支付总福币
+     * [payRmb]支付总金额(人民币)
+     * [addressId]收货地址id
+     * [consumerMsg]买家留言
+     * [skuItems]sku项
+     * [couponId]优惠卷id
+     * [couponRecordId]优惠卷领取id
+     * [freight]运费
+     * [payBfb]支付现金百分比
+     * payType:支付方式(0纯积分/1纯现金/2混合支付)
+     *
+     * */
+    fun createOrder(orderConfirmType:Int=0,payFb:String?=null,payRmb:String?=null,addressId:Int?=0,consumerMsg:String?=null,skuItems:ArrayList<OrderSkuItem>?,
+                    couponId:String?=null,couponRecordId:String?="0",freight:String?="0",payBfb:String?=null) {
+        body.clear()
+        if(skuItems==null||skuItems.size<1)return
+        val fbPrice=if(TextUtils.isEmpty(payFb))"0" else payFb
+        val rmbPrice=if(TextUtils.isEmpty(payRmb))"0" else payRmb
+        var payType=0
+        if(fbPrice!!.toFloat()>0&&rmbPrice!!.toFloat()>0){
+            payType=2
+        }else if(fbPrice.toFloat()>0&&rmbPrice!!.toFloat()==0f){
+            payType=0
+        }else if(fbPrice.toFloat()==0f&&rmbPrice!!.toFloat()>0f){
+            payType=1
+        }
+        viewModelScope.launch {
+            fetchRequest (true){
+                body["orderConfirmType"]=orderConfirmType
+                body["zfb"]= fbPrice
+                body["zje"]=rmbPrice?:"0"
+                body["freight"]=freight?:"0"
+                body["consumerMsg"]=consumerMsg?:""
+                body["payBfb"]=payBfb?:"0"
+                body["payType"]=payType
+                body["addressId"]=addressId?:0
+                body["skuItems"]=skuItems
+                couponId?.let {
+                    body["couponId"]= it
+                    body["couponRecordId"]= couponRecordId?:"0"
+                }
+                val randomKey = getRandomKey()
+                shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                orderInfoLiveData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
     /**
      * 确认订单
      * [orderConfirmType]确认订单来源 0商品详情 1购物车
