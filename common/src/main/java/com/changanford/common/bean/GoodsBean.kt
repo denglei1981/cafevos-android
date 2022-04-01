@@ -679,7 +679,7 @@ data class OrderSkuItem(
     val carModel: String? = null,
     val mallMallHaggleUserGoodsId: Int? = 0,
     val num: Int = 0,
-    val skuId: String = "0",
+    val skuId: String? = null,
     val skuImg: String? = null,
     val specifications: String? = null,
     val spuId: String = "0",
@@ -698,9 +698,9 @@ data class CouponsItemBean(
     val conditionMoney: String = "0",
     val couponId: String? = null,
     val couponMarkId: String? = null,
-    val couponMoney: String? = "0",
+    val couponMoney: String? = null,
     val couponName: String? = null,
-    val couponRatio: Int = 0,
+    val couponRatio: String? = null,
     val couponRecordId: String?= null,
     val desc: String? = null,
     val discountType: String = "",
@@ -715,4 +715,6 @@ data class CouponsItemBean(
     val userId: Int = 0,
     val validityBeginTime: Long? = 0,
     val validityEndTime: Long? = 0,
+    var isAvailable:Boolean=false,//是否可用
+    var discountsFb:Int?=null,//优惠福币
 )

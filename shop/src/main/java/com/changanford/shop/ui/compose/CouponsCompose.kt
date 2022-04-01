@@ -44,14 +44,15 @@ private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
 * */
 @Composable
 fun ChooseCouponsCompose(dataList:MutableList<CouponsItemBean>?=null) {
-    val selectedTag = remember { mutableStateOf("") }
+    val findItem=dataList?.find { it.isAvailable }
+    val selectedTag = remember { mutableStateOf(dataList?.get(0)) }
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "当前可选1张", color = colorResource(R.color.color_33), fontSize = 13.sp, modifier = Modifier.padding(start = 20.dp))
+        .fillMaxHeight()
+        .padding(20.dp)) {
+        Text(text = stringResource(if(findItem!=null) R.string.str_currentlySelect1Card else R.string.str_noCouponsAvailableMoment), color = colorResource(R.color.color_33), fontSize = 13.sp)
         Spacer(modifier = Modifier.height(12.dp))
-        LazyColumn(modifier = Modifier
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp),modifier = Modifier
             .fillMaxWidth()
             .weight(1f)){
             if(dataList!=null&&dataList.size>0){
@@ -65,13 +66,15 @@ fun ChooseCouponsCompose(dataList:MutableList<CouponsItemBean>?=null) {
                 .postValue(null)
         },shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
-            modifier = Modifier.height(40.dp)) {
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)) {
             Text(stringResource(R.string.str_determine),fontSize = 15.sp,color = Color.White)
         }
     }
 }
 @Composable
-private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableState<String>){
+private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableState<CouponsItemBean?>){
     itemBean?.apply {
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -80,29 +83,50 @@ private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableSta
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }) {
-                selectedTag.value = couponId ?: "0"
+                if (isAvailable) selectedTag.value = itemBean
             }, verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier
                 .width(110.dp)
                 .fillMaxHeight()
-                .background(color = colorResource(R.color.color_8195C8), shape = RoundedCornerShape(topStart = 5.dp, bottomStart = 5.dp)), horizontalAlignment = Alignment.CenterHorizontally,verticalArrangement=Arrangement.Center) {
+                .background(
+                    color = colorResource(if (isAvailable) R.color.color_8195C8 else R.color.color_C6CEE4),
+                    shape = RoundedCornerShape(topStart = 5.dp, bottomStart = 5.dp)
+                ), horizontalAlignment = Alignment.CenterHorizontally,verticalArrangement=Arrangement.Center) {
                 Text(buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)) {
-                        append(stringResource(id = R.string.str_rmb))
+                    //非折扣券
+                    if(discountType!="DISCOUNT"){
+                        withStyle(style = SpanStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)) {
+                            append(stringResource(id = R.string.str_rmb))
+                        }
                     }
                     withStyle(style = SpanStyle(color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)) {
-                        append(conditionMoney)
+                        append(if(discountType=="DISCOUNT") couponRatio?:"" else couponMoney?:"")
                     }
-                    withStyle(style = SpanStyle(color = colorResource(R.color.color_f6), fontSize = 11.sp)) {
-                        append("\n${desc?:""}")
+                    //折扣券
+                    if(discountType=="DISCOUNT"){
+                        withStyle(style = SpanStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)) {
+                            append(stringResource(R.string.str_fold))
+                        }
                     }
+//                    withStyle(style = SpanStyle(color = colorResource(R.color.color_f6), fontSize = 11.sp)) {
+//                        append("\n${desc?:""}")
+//                    }
                 })
+                Text(text =when(discountType){
+                    //立减-无门槛
+                    "LEGISLATIVE_REDUCTION"-> stringResource(id = R.string.str_noThreshold)
+                    else ->"满${conditionMoney}元可用"
+                },color = colorResource(R.color.color_f6), fontSize = 11.sp, modifier = Modifier.padding(horizontal = 16.dp))
+
             }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceAround) {
-                Text(text = couponName?:"", fontSize = 14.sp,color= colorResource(R.color.color_33))
+            Spacer(modifier = Modifier.width(18.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(text = couponName?:"", fontSize = 14.sp,color= colorResource(R.color.color_33), modifier = Modifier.weight(1f))
                 Text(text = "${simpleDateFormat.format(validityBeginTime)}-${simpleDateFormat.format(validityEndTime)}", fontSize = 11.sp,color= colorResource(R.color.color_99))
+                Spacer(modifier = Modifier.height(15.dp))
             }
-            Image(painter = painterResource(if(selectedTag.value==couponId) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
+            Image(painter = painterResource(if(!isAvailable) R.mipmap.ic_cb_disable else if(selectedTag.value==itemBean) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
             Spacer(modifier = Modifier.width(16.dp))
         }
     }
