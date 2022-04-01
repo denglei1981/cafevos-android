@@ -348,8 +348,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             //选择优惠券
             R.id.tv_coupons_value->{
                 viewModel.createOrderBean.value?.apply {
-                    skuItems
-                    ChooseCouponsActivity.start(null,coupons)
+                    ChooseCouponsActivity.start(skuItems,coupons)
                 }
             }
         }
