@@ -1,6 +1,7 @@
 package com.changanford.common.bean
 
 import android.text.TextUtils
+import androidx.compose.runtime.MutableState
 
 /**
  * @Author : wenke
@@ -565,4 +566,11 @@ data class ShopRecommendBean(
     val kindId: String? =null,
     val kindName: String? =null,
     val spuInfoList: ArrayList<GoodsItemBean>?=null,
+)
+//支付方式
+data class PayWayBean(
+    var id:Int=0,
+    var rmbPrice: String?=null,
+    var fbPrice: String?=null,
+    var isCheck: MutableState<Boolean>? =null,
 )

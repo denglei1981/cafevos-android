@@ -26,7 +26,9 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
+import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -60,7 +62,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit=false
     private var spuPageType=""//商品类型
+    private lateinit var dataListBean:ArrayList<GoodsDetailBean>
+    private val goodsInfoAdapter by lazy { ConfirmOrderGoodsInfoAdapter() }
     override fun initView() {
+        AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
         if(TextUtils.isEmpty(goodsInfo)){
@@ -70,10 +75,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         if(goodsInfo!!.startsWith("[")){
-            val dataList: List<GoodsDetailBean> = Gson().fromJson(goodsInfo, object : TypeToken<List<GoodsDetailBean?>?>() {}.type)
+            val dataList: ArrayList<GoodsDetailBean> = Gson().fromJson(goodsInfo, object : TypeToken<ArrayList<GoodsDetailBean?>?>() {}.type)
+            dataListBean=dataList
             dataBean=dataList[0]
         }else if(goodsInfo.startsWith("{")){
             dataBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+            dataListBean= ArrayList()
+            dataListBean.add(dataBean)
         }
         spuPageType=dataBean.spuPageType
         dataBean.isAgree=false
@@ -97,6 +105,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
 //                bindingBaseData()
 //            }
 //        }
+        bindInfo()
         //非维保商品 需要选择地址
         if(WConstant.maintenanceType!=spuPageType){
             viewModel.addressList.observe(this) { addressList ->
@@ -118,6 +127,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             this.finish()
         }
         bindingBaseData()
+    }
+    private fun bindInfo(){
+        binding.inGoodsInfo.apply {
+            recyclerView.adapter=goodsInfoAdapter
+            goodsInfoAdapter.setList(dataListBean)
+        }
+
     }
     @SuppressLint("StringFormatMatches")
     private fun bindingBaseData(){
@@ -273,5 +289,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 }
             }
         }
+    }
+    /**
+     * 支付方式选择点击
+     * [type]0 福币+人民币、1人民币、2自定义福币
+    * */
+    private fun clickPayWay(type:Int){
+
     }
 }
