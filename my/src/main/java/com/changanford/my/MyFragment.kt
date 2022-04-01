@@ -54,9 +54,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
 //        binding.medalRec.isSaveEnabled = false
 //        binding.medalRec.adapter = medalAdapter
-        myFastInAdapter.addData(MyFastInData(1))
-        myFastInAdapter.addData(MyFastInData(2))
-        myFastInAdapter.addData(MyFastInData(3))
+        myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
+        myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
+        myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
         binding.fastIn.adapter = myFastInAdapter
         binding.menuRec.isSaveEnabled = false
         binding.menuRec.adapter = menuAdapter
@@ -70,7 +70,20 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         myFastInAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 // 跳转到优惠券
-                JumpUtils.instans?.jump(118)
+                var item = myFastInAdapter.getItem(position)
+                when(item.id){
+                    1->{
+                        JumpUtils.instans?.jump(118)
+                    }
+                    2->{
+                        JumpUtils.instans?.jump(36)
+                    }
+                    3->{
+                        JumpUtils.instans?.jump(29)
+                    }
+
+                }
+
             }
 
         })
