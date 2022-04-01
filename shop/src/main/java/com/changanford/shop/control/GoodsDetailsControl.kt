@@ -309,9 +309,9 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 加入购物车
     * */
     fun addShoppingCart(){
-        skuCode.apply {
-//            if(isInvalidSelectAttrs(this))createAttribute()
-//            else viewModel.addShoppingCart(dataBean.spuId)
+        dataBean.apply {
+            if(isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))createAttribute()
+            else viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum)
         }
     }
 }

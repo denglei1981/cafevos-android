@@ -131,7 +131,7 @@ class OrderViewModel: BaseViewModel() {
                 body["orderConfirmType"]=orderConfirmType
                 body["zfb"]= fbPrice
                 body["zje"]=rmbPrice?:"0"
-                body["freight"]=freight?:"0"
+                body["freight"]=(freight?:"0").toFloat()
                 body["consumerMsg"]=consumerMsg?:""
                 body["payBfb"]=payBfb?:"0"
                 body["payType"]=payType
