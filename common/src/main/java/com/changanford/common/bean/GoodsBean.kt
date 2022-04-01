@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
+import com.changanford.common.wutil.wLogE
 
 /**
  * @Author : wenke
@@ -246,9 +247,11 @@ data class ConfirmOrderBean(
     /**
      * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
      * [couponsFb]优惠福币 单位福币
+     * [isFb]是否为福币
     * */
-    fun getTotalPayFbPrice(couponsFb:String):Int{
-        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-(couponsFb.toFloat()*100)}",0).toInt()
+    fun getTotalPayFbPrice(couponsFb:String,isFb:Boolean=false):Int{
+        val multiple=if(isFb)1 else 100
+        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-(couponsFb.toFloat()*multiple)}",0).toInt()
         return totalPayFbPrice
     }
 }
@@ -661,11 +664,10 @@ data class CreateOrderBean(
     var coupons:ArrayList<CouponsItemBean>?=null,
     var skuItems:ArrayList<OrderSkuItem>?=null,
 ){
-    fun getRmbBfb(payBfb:String?=null):Float{
+    fun getRmbBfb(payBfb:String?=this.payBfb):Float{
+        "payBfb:$payBfb".wLogE("okhttp")
         return if(TextUtils.isEmpty(payBfb))0f
-        else{
-            payBfb!!.toFloat()/100
-        }
+        else payBfb!!.toFloat()/100f
     }
 }
 data class OrderSkuItem(

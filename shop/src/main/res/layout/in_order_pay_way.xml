@@ -37,7 +37,7 @@
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12"/>
         <com.changanford.common.ui.view.WTextView
-            android:id="@+id/tv_fbBalance"
+            android:id="@+id/tv_maxUseFb"
             android:drawableStart="@mipmap/ic_shop_fb_42"
             android:drawablePadding="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_7"

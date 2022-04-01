@@ -171,7 +171,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             binding.inOrderInfo.apply {
                 if(it!=null){
                     infoBean.fbBalance=it.totalIntegral
-                    minRmbProportion=it.getRmbBfb()
+                    minRmbProportion=it.getRmbBfb()//得到人民币最低使用百分比
 //                    tvFreightValue.setText(infoBean.freightPrice)
                     val coupons=it.coupons
                     bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
@@ -184,7 +184,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     * */
     @SuppressLint("SetTextI18n")
     private fun bindCoupon(itemCoupon:CouponsItemBean?=null){
-        var couponsAmount="0"
+        var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
             if(itemCoupon==null){
                 isEnabled=false
@@ -201,21 +201,22 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
         //最少使用多少人民币（fb）=总金额*最低现金比
-        var minRmb:Float=totalPayFb*minRmbProportion
-        val maxFb= WCommonUtil.getHeatNumUP("${(infoBean.totalOriginalFb?:0)-minRmb}",0).toInt()
+        var minFb:Float=totalPayFb*minRmbProportion
+        val maxFb:Int= WCommonUtil.getHeatNumUP("${(infoBean.totalOriginalFb?:0)-minFb}",0).toInt()
         //最大可使用福币
-        maxUseFb=if(maxUseFb>maxFb)maxFb else {
-            minRmb= (totalPayFb-maxUseFb).toFloat()
-            maxUseFb
+        maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
+            minFb= (totalPayFb-maxUseFb).toFloat()
+            infoBean.fbBalance?:0
         }
         binding.inPayWay.apply {
-            rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
+            rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minFb")}"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
+        "minRmbProportion:$minRmbProportion>>>>minRmb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
         initPayWay()
     }
     private fun bindInfo(){
-        maxUseFb=infoBean.fbBalance?:0
+//        maxUseFb=infoBean.fbBalance?:0
         //地址信息
         viewModel.addressList.observe(this) { addressList ->
             //默认获取地址列表的默认收货地址
@@ -408,7 +409,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private fun initPayWay(){
         binding.inPayWay.apply {
-            tvFbBalance.setText("$maxUseFb")
+            tvMaxUseFb.setText("$maxUseFb")
             if(maxUseFb>0){
                 rbFbAndRmb.visibility=View.VISIBLE
                 rbCustom.visibility=View.VISIBLE
