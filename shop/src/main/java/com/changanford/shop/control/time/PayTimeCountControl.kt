@@ -13,7 +13,7 @@ import com.changanford.shop.view.TypefaceTextView
  * Update Time:
  * Note:倒计时
  */
-class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextView?=null, val countdownCompose:MutableState<String>?=null, val listener: OnTimeCountListener) : CountDownTimer(millisInFuture, 1000) {
+class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextView?=null, private val countdownCompose:MutableState<String>?=null, val listener: OnTimeCountListener) : CountDownTimer(millisInFuture, 1000) {
     @SuppressLint("SetTextI18n")
     override fun onTick(millisUntilFinished: Long) {
         val hour=millisUntilFinished/1000/60/60

@@ -107,7 +107,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             it?.apply {
                 when{
                     aliPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,1,aliPay)
-                    wxPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,2,wxPay)
+                    wxPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,2,Gson().toJson(wxPay))
                     uacPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,3,uacPay)
                 }
             }
@@ -305,13 +305,14 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         dataBean?.apply {
             val payCountDown=waitPayCountDown?:0
             if(payCountDown>0){
-                val timeCountControl= PayTimeCountControl(payCountDown*1000,tv=null, countdownCompose = countdown,object :OnTimeCountListener{
+                timeCountControl?.cancel()
+                timeCountControl= PayTimeCountControl(payCountDown*1000,tv=null, countdownCompose = countdown,object :OnTimeCountListener{
                     override fun onFinish() {
                         countdown.value=timeStr
                         listener.onFinish()
                     }
                 })
-                timeCountControl.start()
+                timeCountControl?.start()
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -345,9 +346,6 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Text(text = payWayName?:"", color = colorResource(R.color.color_33), fontSize = 14.sp, modifier = Modifier.weight(1f))
                                 Image(painter = painterResource(if(selectedTag.value==payType) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
-//                            RadioButton(selected = selectedTag.value==payWayName, onClick = {
-//                                selectedTag.value=payWayName
-//                            })
                             }
                         }
                     }

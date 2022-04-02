@@ -666,7 +666,7 @@ data class PayWayBean(
 data class PayBackBean(
     var aliPay:String?=null,
     var uacPay:String?=null,
-    var wxPay:String?=null,
+    var wxPay:WxPayBean?=null,
 )
 data class CreateOrderBean(
     var freight:String?=null,
@@ -725,4 +725,15 @@ data class CouponsItemBean(
     val validityEndTime: Long? = 0,
     var isAvailable:Boolean=false,//是否可用
     var discountsFb:Int?=null,//优惠福币
+)
+data class WxPayBean(
+    val appid: String? = null,
+    val minipath: String? = null,
+    val miniuser: String? = null,
+    val noncestr:String? = null,
+    val `package`: String? = null,
+    val partnerid: String? = null,
+    val prepayid: String? = null,
+    val sign: String? = null,
+    val timestamp: String? = null,
 )
