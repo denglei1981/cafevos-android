@@ -44,19 +44,30 @@ object WCommonUtil {
      * [typeface]字体样式 Typeface.DEFAULT_BOLD
      * [colorID]被选择的字体的颜色值
      * */
-    fun setTabSelectStyle(context: Context, tabLayout: TabLayout, size: Float, typeface: Typeface, colorID: Int) {
+    fun setTabSelectStyle(
+        context: Context,
+        tabLayout: TabLayout,
+        size: Float,
+        typeface: Typeface,
+        colorID: Int
+    ) {
         val textView = TextView(context)
-        val selectedSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,size,context.resources.displayMetrics)
+        val selectedSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_PX,
+            size,
+            context.resources.displayMetrics
+        )
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
         textView.setTextColor(ContextCompat.getColor(context, colorID))
-        textView.typeface =typeface
-        textView.gravity= Gravity.CENTER
+        textView.typeface = typeface
+        textView.gravity = Gravity.CENTER
         tabLayout.getTabAt(0)?.apply {
-            customView=null
+            customView = null
             textView.text = text
             customView = textView
         }
-        tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+        tabLayout.addOnTabSelectedListener(object :
+            TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.customView = null
@@ -64,16 +75,17 @@ object WCommonUtil {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.apply {
-                    customView=null
+                    customView = null
                     textView.text = text
                     customView = textView
                 }
             }
         })
     }
+
     /**
      * 是否开启通知
-    * */
+     * */
     fun isNotificationEnabled(context: Context): Boolean {
         return try {
             NotificationManagerCompat.from(context).areNotificationsEnabled()
@@ -82,10 +94,11 @@ object WCommonUtil {
             false
         }
     }
+
     /**
      * 去系统开启通知
-    * */
-    fun toSetNotice(context:Context) {
+     * */
+    fun toSetNotice(context: Context) {
         val intent = Intent()
         when {
             Build.VERSION.SDK_INT >= 26 -> {
@@ -108,6 +121,7 @@ object WCommonUtil {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
+
     /**
      * 扩展函数简化了将afterTextChanged操作设置为EditText组件。
      */
@@ -116,26 +130,36 @@ object WCommonUtil {
             override fun afterTextChanged(editable: Editable?) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                onTextChanged.invoke(EditTextBean(s,start,before,count))
+                onTextChanged.invoke(EditTextBean(s, start, before, count))
             }
         })
     }
+
     /**
      * 设置textview 的颜色渐变
      * @param text
      */
-    fun setTextViewStyles(text: TextView,startColor:String,endColor:String){
-        val mLinearGradient = LinearGradient(0f, 0f, 0f, text.paint.textSize, Color.parseColor(startColor), Color.parseColor(endColor),
-            Shader.TileMode.CLAMP)
+    fun setTextViewStyles(text: TextView, startColor: String, endColor: String) {
+        val mLinearGradient = LinearGradient(
+            0f,
+            0f,
+            0f,
+            text.paint.textSize,
+            Color.parseColor(startColor),
+            Color.parseColor(endColor),
+            Shader.TileMode.CLAMP
+        )
         text.paint.shader = mLinearGradient
         text.invalidate()
     }
+
     /**
      * html空格字符处理
      * */
-    fun htmlToStr(str:String):String{
-        return "${htmlToString(str).trimEnd()}".replace("\n\n","\n")
+    fun htmlToStr(str: String): String {
+        return "${htmlToString(str).trimEnd()}".replace("\n\n", "\n")
     }
+
     /**
      * 将html转为str
      * */
@@ -146,27 +170,35 @@ object WCommonUtil {
             Html.fromHtml(str)
         }
     }
+
     /**
      * 将html转为str
      * */
-    fun htmlToString(textView: TextView,str: String) {
-        textView.text= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    fun htmlToString(textView: TextView, str: String) {
+        textView.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY)
         } else {
             Html.fromHtml(str)
         }
     }
+
     /**
      * 将图文混合html转为str
      * */
-    fun htmlToImgStr(mActivity: Activity, textView: TextView, str: String?){
+    fun htmlToImgStr(mActivity: Activity, textView: TextView, str: String?) {
         textView.movementMethod = LinkMovementMethod.getInstance()//可点击
-        textView.text= when {
+        textView.text = when {
             TextUtils.isEmpty(str) -> ""
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> Html.fromHtml(
+                str,
+                Html.FROM_HTML_MODE_LEGACY,
+                MImageGetter(textView, mActivity),
+                MyTagHandler(mActivity)
+            )
             else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
         }
     }
+
     /**
      * 读取 assets json文件
      * */
@@ -191,6 +223,7 @@ object WCommonUtil {
         }
         return stringBuilder.toString()
     }
+
     /**
      * 隐藏软键盘
      * @param context :上下文
@@ -201,6 +234,7 @@ object WCommonUtil {
             .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         manager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     /**
      * 显示软键盘
      * @param context :上下文
@@ -214,6 +248,7 @@ object WCommonUtil {
             v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(v, InputMethodManager.SHOW_FORCED)
     }
+
     /**
      * 格式化数字（.00表示保留两位小数 不四舍五入）
      * */
@@ -223,42 +258,50 @@ object WCommonUtil {
 
         return df.format(heat)
     }
+
     /**
      * [newScale]几位小数
      * */
-    fun getHeatNum(number:String,newScale:Int): BigDecimal {
+    fun getHeatNum(number: String, newScale: Int): BigDecimal {
         return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_DOWN)
     }
+
     /**
      *以百分比方式计数 并保留两位小数
      * */
-    fun getPercentage(number:Double):String {
-       return DecimalFormat("0.00%").format(number)
+    fun getPercentage(number: Double): String {
+        return DecimalFormat("0.00%").format(number)
     }
+
     /**
      *以百分比方式计数
      * s1分子
      * s2分母
      * */
-    fun getPercentage(s1:Double,s2:Double):String {
-        return if(s2>0) DecimalFormat("0%").format(s1/s2)
+    fun getPercentage(s1: Double, s2: Double): String {
+        return if (s2 > 0) DecimalFormat("0%").format(s1 / s2)
         else "0%"
     }
+
     /**
      *以百分比方式计数
      * s1分子
      * s2分母
      * 向下取整
      * */
-    fun getPercentage(s1:Double,s2:Double,newScale:Int):String {
-        return if(s2>0) "${getHeatNum("${s1/s2*100}",newScale)}%"
+    fun getPercentage(s1: Double, s2: Double, newScale: Int): String {
+        return if (s2 > 0) "${getHeatNum("${s1 / s2 * 100}", newScale)}%"
         else "0%"
     }
+
     /**
      * 禁止EditText输入特殊字符([`~!@#$%^&*()+=|{}':;',\[\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？])
      * @param editText
      */
-    fun setEditTextInhibitInputSpeChat(editText: EditText,speChat:String?="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]") {
+    fun setEditTextInhibitInputSpeChat(
+        editText: EditText,
+        speChat: String? = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]"
+    ) {
         val filter = InputFilter { source, _, _, _, _, _ ->
             val pattern: Pattern = Pattern.compile(speChat)
             val matcher: Matcher = pattern.matcher(source.toString())
@@ -266,28 +309,40 @@ object WCommonUtil {
         }
         editText.filters = arrayOf(filter)
     }
+
     /**
      * 格式化手机号 中间四位加*
-    * */
-    fun formatMobilePhone(mobile:String?):String{
+     * */
+    fun formatMobilePhone(mobile: String?): String {
         mobile?.apply {
-          if(length>=7){
-              return "${substring(0,3)}****${substring(length-4,length)}"
-          }
+            if (length >= 7) {
+                return "${substring(0, 3)}****${substring(length - 4, length)}"
+            }
         }
-        return mobile?:""
+        return mobile ?: ""
     }
+
     /**
      * 将福币转换为人民币 1元=100福币
      * */
-    fun getRMB(fb:String?=null,unit:String?="¥"):String{
-        var rmbPrice="0"
-        if(fb!=null){
-            val fbToFloat=fb.toFloat()
-            val remainder=fbToFloat%100
-            rmbPrice = if(remainder>0) "${fbToFloat/100}"
-            else "${fb.toInt()/100}"
+    fun getRMB(fb: String? = null, unit: String? = "¥"): String {
+        var rmbPrice = "0"
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
         }
-        return "${unit?:""}$rmbPrice"
+        return "${unit ?: ""}$rmbPrice"
+    }
+
+    fun getRMBBigDecimal(fb: String? = null, unit: String? = "¥"): String {
+        var rmbPrice = "0"
+        if (fb != null) {
+            val fbToFloat = BigDecimal(fb)
+            val remainder = fbToFloat.divide(BigDecimal(100))
+            rmbPrice = remainder.toString()
+        }
+        return "${unit ?: ""}$rmbPrice"
     }
 }

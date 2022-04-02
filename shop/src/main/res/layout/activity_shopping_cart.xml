@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_over"
                 tools:text="合计: ￥1200" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/check_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

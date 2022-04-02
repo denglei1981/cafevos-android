@@ -20,9 +20,9 @@ class GoodsClassification : ArrayList<GoodsTypesItemBean>()
 data class GoodsTypesItemBean(
     val mallMallTagId: String = "0",
     val tagName: String = "全部",
-    val tagType:String?=null,
-    val kindId:String?=null,
-    val kindName:String?=null,
+    val tagType: String? = null,
+    val kindId: String? = null,
+    val kindName: String? = null,
 )
 
 data class GoodsListBean(
@@ -127,66 +127,72 @@ data class GoodsItemBean(
     var secondarySpuPageTagType: String? = "",
     val jumpDataType: Int? = 3,
     val jumpDataValue: String? = null,
-    val exchageCount:String?=null,
-    val goodsImg:String="",
-    val goodsName:String="",
-    val goodsNameSecond:String="",
-    val mallWbGoodsId:String?=null,
-    val fbPrice:String?="0",
-    val priceFb:String?=null,
-    var rmbPrice:String?=null,
+    val exchageCount: String? = null,
+    val goodsImg: String = "",
+    val goodsName: String = "",
+    val goodsNameSecond: String = "",
+    val mallWbGoodsId: String? = null,
+    val fbPrice: String? = "0",
+    val priceFb: String? = null,
+    var rmbPrice: String? = null,
 ) {
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
         if (TextUtils.isEmpty(lineFb)) {
             return true
         }
-        if (lineFb=="0") {
+        if (lineFb == "0") {
             return true
         }
         return false
     }
-    fun getJdType():Int{
-        return jumpDataType?:3
+
+    fun getJdType(): Int {
+        return jumpDataType ?: 3
     }
-    fun getJdValue():String{
-        return jumpDataValue?:mallMallSpuId
+
+    fun getJdValue(): String {
+        return jumpDataValue ?: mallMallSpuId
     }
+
     /**
      * 将福币转换为人民币 1元=100福币
      * */
-    fun getRMB(fb:String?=priceFb):String{
-        if(fb!=null){
-            val fbToFloat=fb.toFloat()
-            val remainder=fbToFloat%100
-            rmbPrice = if(remainder>0) "${fbToFloat/100}"
-            else "${fb.toInt()/100}"
+    fun getRMB(fb: String? = priceFb): String {
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
         }
-        return rmbPrice?:"0"
+        return rmbPrice ?: "0"
     }
+
     /**
      * 将维保商品数据转为普通商品
-    * */
-    fun maintenanceToGoods(){
-        spuImgs= goodsImg
-        spuName=goodsName
-        secondName=goodsNameSecond
-        normalFb=fbPrice?:"0"
+     * */
+    fun maintenanceToGoods() {
+        spuImgs = goodsImg
+        spuName = goodsName
+        secondName = goodsNameSecond
+        normalFb = fbPrice ?: "0"
 //        spuId=mallWbGoodsId?:"0"
-        spuPageType="MAINTENANCE"//标识为维保商品
+        spuPageType = "MAINTENANCE"//标识为维保商品
     }
+
     /**
      * 获取图片单个路径
-    * */
-    fun getImgPath(imgUrls:String?=spuImgs):String?{
+     * */
+    fun getImgPath(imgUrls: String? = spuImgs): String? {
         imgUrls?.apply {
-            if(this.contains(","))return split(",")[0]
+            if (this.contains(",")) return split(",")[0]
         }
         return imgUrls
     }
+
     /**
      * 销量
-    * */
-    fun getSales():String{
+     * */
+    fun getSales(): String {
         return "$salesCount"
     }
 }
@@ -226,64 +232,71 @@ data class GoodsHomeBean(
     val list: ArrayList<GoodsTypesItemBean> = arrayListOf(),
     val responsePageBean: GoodsListBean? = null,
 )
+
 data class NewGoodsDetailBean(
-    var normalSpuDetail:GoodsDetailBean?=null,
-    var seckillSpuDetail:GoodsDetailBean?=null,
-    var haggleSpuDetailDto:GoodsDetailBean?=null,
+    var normalSpuDetail: GoodsDetailBean? = null,
+    var seckillSpuDetail: GoodsDetailBean? = null,
+    var haggleSpuDetailDto: GoodsDetailBean? = null,
 )
+
 data class ConfirmOrderBean(
-    var orderConfirmType:Int?=0,//来源 0商品详情 1购物车
-    var fbBalance :Int?=null,//用户福币余额
-    var totalBuyNum:Int=0,//总购买数量
-    var addressInfo:String?=null,
-    var addressId:Int?=null,
-    var totalOriginalFb:Int?=null,//总价
-    var freightPrice:String?="0.00",//运费
-    var vinCode:String?=null,//维保商品 VIN码
-    var models:String?=null,//车型
-    var dataList:ArrayList<GoodsDetailBean>?=null,
-    var totalPayFbPrice:Int=0,//单位福币
-    var totalPayFb:Int=0,
-){
+    var orderConfirmType: Int? = 0,//来源 0商品详情 1购物车
+    var fbBalance: Int? = null,//用户福币余额
+    var totalBuyNum: Int = 0,//总购买数量
+    var addressInfo: String? = null,
+    var addressId: Int? = null,
+    var totalOriginalFb: Int? = null,//总价
+    var freightPrice: String? = "0.00",//运费
+    var vinCode: String? = null,//维保商品 VIN码
+    var models: String? = null,//车型
+    var dataList: ArrayList<GoodsDetailBean>? = null,
+    var totalPayFbPrice: Int = 0,//单位福币
+    var totalPayFb: Int = 0,
+) {
     /**
      * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
      * [couponsFb]优惠福币 单位福币
      * [isFb]是否为福币
-    * */
-    fun getTotalPayFbPrice(couponsFb:String,isFb:Boolean=false):Int{
-        val multiple=if(isFb)1 else 100
-        totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-(couponsFb.toFloat()*multiple)}",0).toInt()
+     * */
+    fun getTotalPayFbPrice(couponsFb: String, isFb: Boolean = false): Int {
+        val multiple = if (isFb) 1 else 100
+        totalPayFbPrice = WCommonUtil.getHeatNumUP(
+            "${(totalOriginalFb ?: 0) + ((freightPrice ?: "0").toFloat() * 100) - (couponsFb.toFloat() * multiple)}",
+            0
+        ).toInt()
         return totalPayFbPrice
     }
 }
+
 data class ConfirmOrderInfoBean(
-    var busSourse:Int=0,
-    var carModel:String?=null,
-    var mallMallHaggleUserGoodsId:String?=null,
-    var num:Int=0,
-    var skuId:String?=null,
-    var vin:String?=null,
-){
-    fun initBean(spuPageType:String?){
-        busSourse=0
-        when(spuPageType?:""){
+    var busSourse: Int = 0,
+    var carModel: String? = null,
+    var mallMallHaggleUserGoodsId: String? = null,
+    var num: Int = 0,
+    var skuId: String? = null,
+    var vin: String? = null,
+) {
+    fun initBean(spuPageType: String?) {
+        busSourse = 0
+        when (spuPageType ?: "") {
             //秒杀
-            "SECKILL"->{
-                busSourse=1
+            "SECKILL" -> {
+                busSourse = 1
 //                skuId=mallMallSkuSpuSeckillRangeId?:skuId
             }
             //砍价
-            "2"->{
-                busSourse=2
+            "2" -> {
+                busSourse = 2
             }
-            WConstant.maintenanceType->{//维保商品
-                busSourse=3
+            WConstant.maintenanceType -> {//维保商品
+                busSourse = 3
 //                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
 //                vin= vinCode?:""
             }
         }
     }
 }
+
 /**
  * 商品详情
  * */
@@ -336,36 +349,54 @@ data class GoodsDetailBean(
     var isAgree: Boolean = false,//是否同意协议
     var killStates: Int = 0,//秒杀状态
     var secondarySpuPageTagType: String? = "",
-    var isUpdateBuyNum:Boolean=true,//是否可以更改购买数量
-    var vinCode:String?=null,//维保商品 VIN码
-    var models:String?=null,//车型
-    var busSourse:String?=null,
-    var mallMallWbVinSpuId:String?=null,
-    var recommend:ArrayList<GoodsItemBean>?=null,//推荐
-    var rmbPrice:String?=fbPrice,
-    var orderConfirmType:Int?=0,//确认订单来源
-    var carModel:String?=null,
-){
-    fun getLimitBuyNum():Int{
-       return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
+    var isUpdateBuyNum: Boolean = true,//是否可以更改购买数量
+    var vinCode: String? = null,//维保商品 VIN码
+    var models: String? = null,//车型
+    var busSourse: String? = null,
+    var mallMallWbVinSpuId: String? = null,
+    var recommend: ArrayList<GoodsItemBean>? = null,//推荐
+    var rmbPrice: String? = fbPrice,
+    var orderConfirmType: Int? = 0,//确认订单来源
+    var carModel: String? = null,
+    // 一下为购物车新增的数据
+    var mallMallUserSkuId: Long,
+    var mallMallSkuId: Long? = null,
+    var mallMallSpuId: Long? = null,
+    var fbPer: String? = null,
+    var num: Int? = null,
+    var mallSkuState: Int
+
+
+) {
+    fun getLimitBuyNum(): Int {
+        return if ("YES" == limitBuy) (limitBuyNum ?: "0").toInt() else 0
     }
+
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
-        if (TextUtils.isEmpty(fbLine)||"0"==fbLine) {
+        if (TextUtils.isEmpty(fbLine) || "0" == fbLine) {
             return true
         }
         return false
     }
+
+    fun getTagList(): List<String> {
+        if (!TextUtils.isEmpty(specifications)) {
+            return specifications!!.split(",").filter { "" != it }
+        }
+        return arrayListOf()
+    }
+
     /**
      * 将福币转换为人民币 1元=100福币
      * */
-    fun getRMB(fb:String?=fbPrice):String{
-        if(fb!=null){
-            val fbToFloat=fb.toFloat()
-            val remainder=fbToFloat%100
-            rmbPrice = if(remainder>0) "${fbToFloat/100}"
-            else "${fb.toInt()/100}"
+    fun getRMB(fb: String? = fbPrice): String {
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
         }
-        return rmbPrice?:"0"
+        return rmbPrice ?: "0"
     }
 }
 
@@ -463,8 +494,8 @@ data class ShopHomeBean(
     val indexSeckillDtoList: List<GoodsItemBean> = listOf(),
     val mallIndexDto: MallIndexDto = MallIndexDto(),
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
-    val mallSpuKindDtos:ArrayList<ShopRecommendBean>?= null,//推荐列表
-    var totalIntegral:String?=null,//我的福币
+    val mallSpuKindDtos: ArrayList<ShopRecommendBean>? = null,//推荐列表
+    var totalIntegral: String? = null,//我的福币
 )
 
 class MallIndexDto
@@ -562,20 +593,20 @@ data class OrderItemBean(
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
-    var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
-    var rmbPrice:String?=null,
-){
+    var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
+    var rmbPrice: String? = null,
+) {
     /**
      * 将福币转换为人民币 1元=100福币
      * */
-    fun getRMB(fb:String?=fbCost,unit:String?="¥"):String{
-        if(fb!=null){
-            val fbToFloat=fb.toFloat()
-            val remainder=fbToFloat%100
-            rmbPrice = if(remainder>0) "${fbToFloat/100}"
-            else "${fb.toInt()/100}"
+    fun getRMB(fb: String? = fbCost, unit: String? = "¥"): String {
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
         }
-        return "${unit?:""}${rmbPrice?:"0"}"
+        return "${unit ?: ""}${rmbPrice ?: "0"}"
     }
 }
 
@@ -584,9 +615,9 @@ data class OrderInfoBean(
     val cost: String? = "0",
     var accountFb: String? = "",//账号余额
     var source: String? = "0",//1商品详情（原生）2 H5
-    var payRmb:String?=null,
-    var payType:Int?=null,
-    var payFb:String?=null,
+    var payRmb: String? = null,
+    var payType: Int? = null,
+    var payFb: String? = null,
 )
 
 data class ShopAddressInfoBean(
@@ -627,9 +658,9 @@ data class OrderBriefBean(
     var fbOfUnitPrice: String? = "0",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
-    var totalPrice:String="0",
-    var price:String="0",
-    var num:String="1",
+    var totalPrice: String = "0",
+    var price: String = "0",
+    var num: String = "1",
 )
 
 data class SnapshotOfAttrOption(
@@ -644,36 +675,40 @@ data class OrderTypeItemBean(
     val jumpDataValue: String? = "",
     val typeName: String? = "",
 )
+
 data class ShopRecommendBean(
-    val topId:Int=0,
-    val topName:String?=null,
-    val kindId: String? =null,
-    val kindName: String? =null,
-    val spuInfoList: ArrayList<GoodsItemBean>?=null,
+    val topId: Int = 0,
+    val topName: String? = null,
+    val kindId: String? = null,
+    val kindName: String? = null,
+    val spuInfoList: ArrayList<GoodsItemBean>? = null,
 )
+
 //支付方式
 data class PayWayBean(
-    var id:Int=0,
-    var rmbPrice: String?=null,
-    var fbPrice: String?=null,
-    var isCheck: MutableState<Boolean>? =null,
-    var payWayName:String?=null,
-    var icon: Painter?=null,
+    var id: Int = 0,
+    var rmbPrice: String? = null,
+    var fbPrice: String? = null,
+    var isCheck: MutableState<Boolean>? = null,
+    var payWayName: String? = null,
+    var icon: Painter? = null,
 )
+
 data class CreateOrderBean(
-    var freight:String?=null,
-    var orderConfirmType:Int=0,
-    var payBfb:String?=null,
-    var totalIntegral:Int?=0,
-    var coupons:ArrayList<CouponsItemBean>?=null,
-    var skuItems:ArrayList<OrderSkuItem>?=null,
-){
-    fun getRmbBfb(payBfb:String?=this.payBfb):Float{
+    var freight: String? = null,
+    var orderConfirmType: Int = 0,
+    var payBfb: String? = null,
+    var totalIntegral: Int? = 0,
+    var coupons: ArrayList<CouponsItemBean>? = null,
+    var skuItems: ArrayList<OrderSkuItem>? = null,
+) {
+    fun getRmbBfb(payBfb: String? = this.payBfb): Float {
         "payBfb:$payBfb".wLogE("okhttp")
-        return if(TextUtils.isEmpty(payBfb))0f
-        else payBfb!!.toFloat()/100f
+        return if (TextUtils.isEmpty(payBfb)) 0f
+        else payBfb!!.toFloat() / 100f
     }
 }
+
 data class OrderSkuItem(
     val busSourse: Int = 0,
     val carModel: String? = null,
@@ -691,9 +726,10 @@ data class OrderSkuItem(
     val unitPriceOld: String? = "0",
     val vin: String? = null,
 )
+
 /**
  * 优惠券
-* */
+ * */
 data class CouponsItemBean(
     val conditionMoney: String = "0",
     val couponId: String? = null,
@@ -701,11 +737,11 @@ data class CouponsItemBean(
     val couponMoney: String? = null,
     val couponName: String? = null,
     val couponRatio: String? = null,
-    val couponRecordId: String?= null,
+    val couponRecordId: String? = null,
     val desc: String? = null,
     val discountType: String = "",
     val img: String = "",
-    val mallMallSkuIds: List<String>? =null,
+    val mallMallSkuIds: List<String>? = null,
     val markImg: String = "",
     val markName: String = "",
     val state: String = "",
@@ -715,6 +751,6 @@ data class CouponsItemBean(
     val userId: Int = 0,
     val validityBeginTime: Long? = 0,
     val validityEndTime: Long? = 0,
-    var isAvailable:Boolean=false,//是否可用
-    var discountsFb:Int?=null,//优惠福币
+    var isAvailable: Boolean = false,//是否可用
+    var discountsFb: Int? = null,//优惠福币
 )

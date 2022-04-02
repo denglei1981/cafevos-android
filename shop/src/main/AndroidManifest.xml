@@ -66,6 +66,9 @@
         <activity
             android:name=".ui.sale.RefundStatesActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.order.OrderDetailsV2Activity"
+            android:screenOrientation="portrait" />
         <!--================================= 商城 End-->
     </application>
 </manifest>
