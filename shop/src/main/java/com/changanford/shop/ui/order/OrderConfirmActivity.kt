@@ -117,6 +117,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         var totalBuyNum=0
         var totalOriginalFb=0
         dataListBean?.forEach {
+            it.getRMB()
             val spuPageType=it.spuPageType
             val skuItem=ConfirmOrderInfoBean(skuId = it.skuId, num = it.buyNum, vin = it.vinCode,
                 mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.carModel)
