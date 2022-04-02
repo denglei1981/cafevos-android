@@ -595,6 +595,12 @@ data class OrderItemBean(
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
     var rmbPrice: String? = null,
+    var orderReceiveAddress: OrderReceiveAddress,
+    var skuList: MutableList<OrderItemBean> = mutableListOf(),
+    var payFb:Long,
+    var payRmb:String,
+    var freightFb:String
+    /**地址信息*/
 ) {
     /**
      * 将福币转换为人民币 1元=100福币
@@ -607,6 +613,18 @@ data class OrderItemBean(
             else "${fb.toInt() / 100}"
         }
         return "${unit ?: ""}${rmbPrice ?: "0"}"
+    }
+}
+
+data class OrderReceiveAddress(
+    var addressId: String,
+    var addressName: String,
+    var phone: String,
+    var consignee: String
+    /**名字*/
+) {
+    fun getUserInfo(): String {
+        return consignee.plus("\t").plus(phone)
     }
 }
 
@@ -725,6 +743,10 @@ data class OrderSkuItem(
     val unitPriceFbOld: String? = "0",
     val unitPriceOld: String? = "0",
     val vin: String? = null,
+    val buyNum: Int = 0,
+    val price: String? = null,
+    val sharedRmb: String? = null
+
 )
 
 /**

@@ -682,6 +682,12 @@ class JumpUtils {
             119 -> { // 购物车
                 startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
             }
+            120->{ // 申请发票
+
+            }
+            121->{// 申请退库
+
+            }
 
             10000 -> {
                 //外部H5
