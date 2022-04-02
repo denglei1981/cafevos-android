@@ -2,7 +2,6 @@ package com.changanford.shop.ui.shoppingcart
 
 import android.annotation.SuppressLint
 import android.view.View
-import android.widget.CompoundButton
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -14,7 +13,6 @@ import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
 import com.changanford.shop.ui.shoppingcart.request.ShoppingCartViewModel
 import com.changanford.shop.utils.WCommonUtil
-import java.math.BigDecimal
 
 @Route(path = ARouterShopPath.ShoppingCartActivity)
 @SuppressLint("SetTextI18n")
@@ -50,6 +48,9 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
         binding.tvOver.setOnClickListener {
              // 跳转到结算
             if(shoppingCartAdapter.shopList.size>0){
+                shoppingCartAdapter.shopList.forEach {
+                    it.carBeanToOrderBean()
+                }
                 OrderConfirmActivity.start(1,shoppingCartAdapter.shopList as ArrayList<GoodsDetailBean>)
             }
         }

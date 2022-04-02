@@ -294,7 +294,7 @@ data class GoodsDetailBean(
     val detailsHtml: String = "",
     var price: String? = "0",
     var orginPrice0: String? = "0",//原价
-    var orginPrice: String? = "0",//原价
+    var orginPrice: String? = null,//原价
     var fbLine: String? = "0",
     var fbPrice: String = "0",
     var orFbPrice: String = "0",
@@ -316,10 +316,10 @@ data class GoodsDetailBean(
     val mallOrderEval: CommentItem? = null,
     var stockProportion: String = "0",//库存百分比 0-100
     val spuName: String? = "",
-    val spuId: String = "",
+    var spuId: String = "0",
     var skuId: String = "",
     var buyNum: Int = 1,//购买数量
-    var skuCodeTxts: List<String>? = listOf(),
+    var skuCodeTxts: List<String>? = null,
     var acountFb: Int = 0,//账号积分
     val param: String? = "",
     var totalPayFb: String = "",//总支付积分
@@ -328,7 +328,7 @@ data class GoodsDetailBean(
     var addressId: Int? = 0,
     var preferentialFb: String? = "",//会员优惠
     var skuCode: String? = "",
-    var specifications: String? = "",
+    var specifications: String? = null,
     var addressInfo: String? = null,
     var skuImg: String? = null,
     var mallMallSkuSpuSeckillRangeId: String? = null,
@@ -349,6 +349,10 @@ data class GoodsDetailBean(
     var carModel:String?=null,
     var mallMallUserSkuId:Long=0,
     var fbPer:String?=null,
+    var mallMallSkuId:String?=null,
+    var mallMallSpuId:String?=null,
+    var num:Int?=0,
+    var vipFb:String?=null,
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
@@ -378,6 +382,17 @@ data class GoodsDetailBean(
             else "${fb.toInt()/100}"
         }
         return rmbPrice?:"0"
+    }
+    /**
+     * 将购物车数据转为确认订单列表数据
+    * */
+    fun carBeanToOrderBean(){
+        skuId=mallMallSkuId?:"0"
+        spuId=mallMallSpuId?:"0"
+        buyNum=num?:0
+        skuCodeTxts=getTagList()
+        fbPrice=fbPer?:"0"
+        rmbPrice=getRMB()
     }
 }
 
