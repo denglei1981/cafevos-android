@@ -47,6 +47,10 @@
         <activity
             android:name=".ui.goods.RecommendActivity"
             android:screenOrientation="portrait" />
+        <!-- 选择优惠券-->
+        <activity
+            android:name=".ui.order.ChooseCouponsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.shoppingcart.ShoppingCartActivity"
             android:screenOrientation="portrait" />

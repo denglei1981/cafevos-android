@@ -259,5 +259,7 @@ object LiveDataBusKey {
     const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"
     //银联支付回调-暂只代表云闪付
     const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
+    //选择优惠券回调
+    const val COUPONS_CHOOSE_BACK = "coupons_choose_back"
 }
 

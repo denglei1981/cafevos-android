@@ -242,7 +242,8 @@ data class ConfirmOrderBean(
     var vinCode:String?=null,//维保商品 VIN码
     var models:String?=null,//车型
     var dataList:ArrayList<GoodsDetailBean>?=null,
-    var totalPayFbPrice:Int=0//单位福币
+    var totalPayFbPrice:Int=0,//单位福币
+    var totalPayFb:Int=0,
 ){
     /**
      * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
@@ -583,6 +584,9 @@ data class OrderInfoBean(
     val cost: String? = "0",
     var accountFb: String? = "",//账号余额
     var source: String? = "0",//1商品详情（原生）2 H5
+    var payRmb:String?=null,
+    var payType:Int?=null,
+    var payFb:String?=null,
 )
 
 data class ShopAddressInfoBean(
@@ -675,7 +679,7 @@ data class OrderSkuItem(
     val carModel: String? = null,
     val mallMallHaggleUserGoodsId: Int? = 0,
     val num: Int = 0,
-    val skuId: String = "0",
+    val skuId: String? = null,
     val skuImg: String? = null,
     val specifications: String? = null,
     val spuId: String = "0",
@@ -691,14 +695,14 @@ data class OrderSkuItem(
  * 优惠券
 * */
 data class CouponsItemBean(
-    val conditionMoney: Int = 0,
+    val conditionMoney: String = "0",
     val couponId: String? = null,
     val couponMarkId: String? = null,
-    val couponMoney: String? = "0",
-    val couponName: String = "",
-    val couponRatio: Int = 0,
+    val couponMoney: String? = null,
+    val couponName: String? = null,
+    val couponRatio: String? = null,
     val couponRecordId: String?= null,
-    val desc: String = "",
+    val desc: String? = null,
     val discountType: String = "",
     val img: String = "",
     val mallMallSkuIds: List<String>? =null,
@@ -709,6 +713,8 @@ data class CouponsItemBean(
     val useLimit: String = "",
     val useLimitValue: String = "",
     val userId: Int = 0,
-    val validityBeginTime: String = "",
-    val validityEndTime: String = ""
+    val validityBeginTime: Long? = 0,
+    val validityEndTime: Long? = 0,
+    var isAvailable:Boolean=false,//是否可用
+    var discountsFb:Int?=null,//优惠福币
 )
