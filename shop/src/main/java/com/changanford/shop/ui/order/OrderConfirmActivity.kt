@@ -560,8 +560,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         infoBean.apply {
             val isPrice=getPayLines()
             if(!TextUtils.isEmpty(vinCode)){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&& totalPayFb <=fbBalance?:0&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& totalPayFb <=fbBalance?:0&&isPrice)
+                binding.inBottom.btnSubmit.updateEnabled(isAgree&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
         }
     }
 }
