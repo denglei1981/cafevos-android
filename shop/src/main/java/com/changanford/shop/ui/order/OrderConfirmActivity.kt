@@ -55,8 +55,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             JumpUtils.instans?.jump(109,goodsInfo)
         }
         fun start(orderConfirmType:Int=0,dataBean:GoodsDetailBean) {
-            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
-            JumpUtils.instans?.jump(109,Gson().toJson(bean))
+            PayConfirmActivity.start("M0562656018932555776")
+//            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
+//            JumpUtils.instans?.jump(109,Gson().toJson(bean))
         }
         /**
          * [orderConfirmType]确认订单来源 0详情 1购物车
@@ -352,7 +353,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             //选择优惠券
             R.id.tv_coupons_value->{
                 viewModel.createOrderBean.value?.apply {
-                    ChooseCouponsActivity.start(skuItems,coupons)
+                    ChooseCouponsActivity.start("${couponsItem?.couponId}_${couponsItem?.couponRecordId}",this)
                 }
             }
         }

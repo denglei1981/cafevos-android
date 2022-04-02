@@ -39,6 +39,8 @@ class OrderViewModel: BaseViewModel() {
     var orderTypesLiveData: MutableLiveData<OrderTypesBean?> = MutableLiveData()
     //确认订单
     var createOrderBean = MutableLiveData<CreateOrderBean?>()
+    //下单支付返回
+    var payBackBeanLiveData = MutableLiveData<PayBackBean?>()
     /**
      * 下单
      * [addressId]收货地址id
@@ -165,9 +167,28 @@ class OrderViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 it?.toast()
             }.onSuccess {
-                createOrderBean.postValue(it)
+                formattingCouponsData(it)
+//                createOrderBean.postValue(it)
             }
         }
+    }
+    private fun formattingCouponsData(bean:CreateOrderBean?){
+        bean?.apply {
+            if(coupons!=null&&coupons!!.size>0){
+                //判断每个优惠券是否可用
+                for ((i,item)in coupons!!.withIndex()){
+                    item.isAvailable=false
+                    item.mallMallSkuIds?.forEach{skuId->
+                        //首先查询skuId是否在订单中
+                        skuItems?.find { skuId== it.skuId }?.apply {
+                            item.isAvailable=true
+                        }
+                    }
+                    bean.coupons?.set(i,item)
+                }
+            }
+        }
+        createOrderBean.postValue(bean)
     }
     private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
     /**
@@ -291,7 +312,27 @@ class OrderViewModel: BaseViewModel() {
             }
         }
     }
-
+    /**
+     * 人民币支付
+     * [orderNo]订单号
+     * [payType] 支付方式 1支付宝 2微信  3银联
+     * */
+    fun rmbPay(orderNo:String,payType:String="1") {
+        viewModelScope.launch {
+            fetchRequest(true){
+                body.clear()
+                body["orderNo"]=orderNo
+                body["payType"]=payType
+                val randomKey = getRandomKey()
+                shopApiService.rmbPay(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                payBackBeanLiveData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+                payBackBeanLiveData.postValue(null)
+            }
+        }
+    }
     /**
      * 获取我的积分
      * */

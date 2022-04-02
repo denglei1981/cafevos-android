@@ -359,7 +359,7 @@ class GoodsViewModel: BaseViewModel() {
      * [fbPer]单位原价(不计算折扣)(积分)
      * [num]购买数量
      * */
-    fun addShoppingCart(mallMallSpuId:String,skuId:String,fbPer:String,num:Int,showLoading:Boolean=false){
+    fun addShoppingCart(mallMallSpuId:String,skuId:String,fbPer:String,num:Int,listener: OnPerformListener?=null,showLoading:Boolean=false){
         viewModelScope.launch {
             fetchRequest(showLoading){
                 body.clear()
@@ -372,7 +372,7 @@ class GoodsViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 it?.toast()
             }.onSuccess {
-
+                listener?.onFinish(0)
             }
         }
     }
