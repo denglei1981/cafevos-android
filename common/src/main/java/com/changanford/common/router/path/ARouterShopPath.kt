@@ -25,6 +25,8 @@ object ARouterShopPath {
 
     const val ChooseCouponsActivity = "/shop/ChooseCouponsActivity"  // 选择优惠券
     const val CouponActivity = "/shop/CouponActivity"  // 优惠券跳转
+
+    const val AfterSaleActivity = "/shop/AfterSaleActivity" // 商品售后
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

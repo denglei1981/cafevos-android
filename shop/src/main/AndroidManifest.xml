@@ -57,6 +57,18 @@
         <activity
             android:name=".ui.coupon.CouponActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.sale.AfterSaleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.sale.OnlyRefundActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.sale.RefundStatesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.order.OrderDetailsV2Activity"
+            android:screenOrientation="portrait" />
         <!--================================= 商城 End-->
     </application>
 </manifest>

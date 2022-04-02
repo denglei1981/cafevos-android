@@ -148,9 +148,11 @@ data class GoodsItemBean(
     fun getJdType():Int{
         return jumpDataType?:3
     }
-    fun getJdValue():String{
-        return jumpDataValue?:mallMallSpuId
+
+    fun getJdValue(): String {
+        return jumpDataValue ?: mallMallSpuId
     }
+
     /**
      * 将福币转换为人民币 1元=100福币
      * */
@@ -355,6 +357,14 @@ data class GoodsDetailBean(
         }
         return false
     }
+
+    fun getTagList(): List<String> {
+        if (!TextUtils.isEmpty(specifications)) {
+            return specifications!!.split(",").filter { "" != it }
+        }
+        return arrayListOf()
+    }
+
     /**
      * 将福币转换为人民币 1元=100福币
      * */
@@ -561,6 +571,15 @@ data class OrderItemBean(
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
+    var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
+    var rmbPrice: String? = null,
+    var orderReceiveAddress: OrderReceiveAddress,
+    var skuList: MutableList<OrderItemBean> = mutableListOf(),
+    var payFb:Long,
+    var payRmb:String,
+    var freightFb:String
+    /**地址信息*/
+) {
     var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
     var rmbPrice:String?=null,
     var payType:String?=null,//支付方式(纯积分/纯现金/混合支付),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付),MallPayTypeEnum.RMB_PAY(code=RMB_PAY, dbCode=1, message=现金支付),MallPayTypeEnum.MIX_PAY(code=MIX_PAY, dbCode=2, message=混合支付)
@@ -578,6 +597,18 @@ data class OrderItemBean(
             else "${fb.toInt()/100}"
         }
         return "${unit?:""}${rmbPrice?:"0"}"
+    }
+}
+
+data class OrderReceiveAddress(
+    var addressId: String,
+    var addressName: String,
+    var phone: String,
+    var consignee: String
+    /**名字*/
+) {
+    fun getUserInfo(): String {
+        return consignee.plus("\t").plus(phone)
     }
 }
 
@@ -698,6 +729,10 @@ data class OrderSkuItem(
     val unitPriceFbOld: String? = "0",
     val unitPriceOld: String? = "0",
     val vin: String? = null,
+    val buyNum: Int = 0,
+    val price: String? = null,
+    val sharedRmb: String? = null
+
 )
 /**
  * 优惠券

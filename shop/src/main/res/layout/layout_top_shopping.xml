@@ -8,48 +8,47 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingTop="@dimen/dp_30"
-        android:paddingBottom="@dimen/dp_10"
+        android:id="@+id/layout_topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_topbar">
+        android:background="@color/white"
+        android:paddingTop="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_10">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_20"
             android:src="@mipmap/back_xhdpi"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_title"
-            android:textSize="@dimen/sp_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.changanford.shop.view.TypefaceTextView
 
             android:id="@+id/tv_right"
-            android:textSize="@dimen/sp_15"
-            android:textColor="@color/color_33"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            android:paddingEnd="@dimen/dp_20"
-            android:paddingStart="@dimen/dp_10"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            tools:visibility="visible"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_20"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_15"
             android:visibility="gone"
-            tools:text="@string/str_screening" />
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:text="@string/str_screening"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

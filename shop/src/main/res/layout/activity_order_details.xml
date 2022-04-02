@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.OrderItemBean" />
@@ -14,86 +17,99 @@
         android:layout_height="match_parent"
         android:background="@drawable/line_00095b_222b80"
         android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:back_icon="@mipmap/whit_left"
-            app:title_text="@string/str_orderDetails"
-            app:title_color="@color/white"/>
+            app:title_color="@color/white"
+            app:title_text="@string/str_orderDetails" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginTop="@dimen/dp_15"
-            android:layout_marginStart="@dimen/dp_20"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_15">
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_order_states"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="待支付"
                 android:text="@{model.orderStatusName}"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_15" />
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topBar"
+                tools:text="待支付" />
+
             <com.changanford.shop.view.TypefaceTextView
-                tools:visibility="visible"
-                android:visibility="gone"
                 android:id="@+id/tv_order_prompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/prompt_orderUpdateAddress"
                 android:textColor="@color/color_99white"
-                android:textSize="@dimen/sp_10" />
+                android:textSize="@dimen/sp_10"
+                android:visibility="gone"
+                tools:text="@string/prompt_orderUpdateAddress"
+                tools:visibility="visible" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_order_remainingTime"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:start_txt="@string/str_remainingTimePayment0"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:text=" "
             android:textColor="@color/color_99white"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_12"
+            app:start_txt="@string/str_remainingTimePayment0" />
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
-            android:layout_marginTop="@dimen/dp_25"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_remainingTime"
-            app:layout_constraintBottom_toTopOf="@id/in_bottom"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_25"
             android:layout_weight="1"
             android:background="@drawable/shadow_f4_t_5dp"
-            android:paddingBottom="@dimen/dp_20">
+            android:paddingBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toTopOf="@id/in_bottom"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_remainingTime">
+
             <LinearLayout
-                android:background="@drawable/shadow_f4_t_5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shadow_f4_t_5dp"
                 android:orientation="vertical">
+
                 <include
                     android:id="@+id/in_address"
-                    layout="@layout/item_in_order_only_detail_address"/>
+                    layout="@layout/item_in_order_only_detail_address" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_shopping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
-                    tools:listitem="@layout/in_item_order_goods_v2"
-                    />
+                    tools:listitem="@layout/in_item_order_goods_v2" />
+
                 <include
                     android:id="@+id/in_goodsInfo1"
-                    layout="@layout/in_order_detail_info"/>
+                    layout="@layout/in_order_detail_info_v2"
+                    binding:model="@{model}"
+                    />
+
                 <include
                     android:id="@+id/in_orderInfo"
-                    layout="@layout/in_order_detail_orderinfo"/>
+                    binding:model="@{model}"
+                    layout="@layout/in_order_detail_orderinfo" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
         <include
             android:id="@+id/in_bottom"
-            layout="@layout/in_order_detail_bottom"/>
+            layout="@layout/in_order_detail_bottom" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

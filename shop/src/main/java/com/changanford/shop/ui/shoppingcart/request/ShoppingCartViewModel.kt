@@ -3,6 +3,7 @@ package com.changanford.shop.ui.shoppingcart.request
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
@@ -12,7 +13,7 @@ import com.changanford.shop.api.ShopNetWorkApi
 
 class ShoppingCartViewModel : BaseViewModel() {
 
-    var  goodsList: MutableLiveData<MutableList<GoodsItemBean>> = MutableLiveData()
+    var  goodsList: MutableLiveData<MutableList<GoodsDetailBean>> = MutableLiveData()
 
     fun getShoppingCartList(){
         launch (block = {
@@ -24,7 +25,6 @@ class ShoppingCartViewModel : BaseViewModel() {
                 }
                 .onWithMsgFailure {
                     it?.toast()
-
                 }
         })
     }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_16">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_amountGoods"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_amountGoods"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integralGoods"
+            app:layout_constraintTop_toTopOf="@id/tv_amountGoods"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1300积分"
+            app:end_txt="@string/str_integral"
+            android:text="@{model.payRmb}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/tv_memberDiscount"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/tv_amountGoods"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_memberDiscount"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_integralVip"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:end_txt="@string/str_integral"
+            app:start_txt="@string/str_reduction"
+            android:text="@{model.preferentialFb}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freight"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/tv_memberDiscount"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_freight"
+            android:textColor="@color/text_colorv6"
+            android:textSize="@dimen/sp_13" />
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freightValue"
+            app:layout_constraintTop_toTopOf="@id/tv_freight"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:start_txt="@string/str_rmb"
+            android:text="@{model.freightFb}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -173,7 +173,7 @@ interface ShopNetWorkApi {
      *  购物车详情
      * */
     @POST("/mall/userSkuIndex")
-    suspend fun getShoppingCartList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<GoodsItemBean>>
+    suspend fun getShoppingCartList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<GoodsDetailBean>>
 
     /**
      *  删除购物车商品

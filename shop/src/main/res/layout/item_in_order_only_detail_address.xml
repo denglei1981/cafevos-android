@@ -11,7 +11,7 @@
 
         <variable
             name="addressInfo"
-            type="com.changanford.common.bean.ShopAddressInfoBean" />
+            type="com.changanford.common.bean.OrderReceiveAddress" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +44,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_20"
             android:onClick="onClick"
-            android:text="@{addressInfo.addressInfo}"
+            android:text="@{addressInfo.addressName}"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toStartOf="@id/img_right"

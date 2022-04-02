@@ -97,6 +97,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //            if("ON_GOING"==mAdapter.data[position].seckillStatus)GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
+        binding.inHeader.imgBuyCar.setOnClickListener {
+            JumpUtils.instans?.jump(119)
+
+        }
     }
     override fun initData() {
         viewModel.getBannerData()
