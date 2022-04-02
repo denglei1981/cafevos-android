@@ -55,9 +55,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             JumpUtils.instans?.jump(109,goodsInfo)
         }
         fun start(orderConfirmType:Int=0,dataBean:GoodsDetailBean) {
-            PayConfirmActivity.start("M0562591583492657152")
-//            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
-//            JumpUtils.instans?.jump(109,Gson().toJson(bean))
+//            PayConfirmActivity.start("M0562591583492657152")
+            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
+            JumpUtils.instans?.jump(109,Gson().toJson(bean))
         }
         /**
          * [orderConfirmType]确认订单来源 0详情 1购物车

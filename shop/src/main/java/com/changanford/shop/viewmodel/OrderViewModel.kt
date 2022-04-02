@@ -11,6 +11,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
+import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
@@ -305,11 +306,9 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.fbPay(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                payBackBeanLiveData.postValue(it)
+                responseData.postValue(ResponseBean(true))
             }.onWithMsgFailure {
-                it?.toast()
-//                responseData.postValue(ResponseBean(false,msg = it))
-                payBackBeanLiveData.postValue(null)
+                responseData.postValue(ResponseBean(false,msg = it))
             }
         }
     }
@@ -330,7 +329,6 @@ class OrderViewModel: BaseViewModel() {
                 payBackBeanLiveData.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
-//                responseData.postValue(ResponseBean(false,msg = it))
                 payBackBeanLiveData.postValue(null)
             }
         }

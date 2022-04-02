@@ -26,7 +26,8 @@ object UnionPayUtils {
     /**
      * 银联支付
      * */
-    fun goUnionPay(activity: Activity, type: Int, appPayRequest: String,serverMode:String?="00") {
+    fun goUnionPay(activity: Activity, type: Int, appPayRequest: String?,serverMode:String?="00") {
+        if(appPayRequest==null)return
         when(type){
             //支付宝小程序支付
             1->{

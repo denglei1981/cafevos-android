@@ -122,7 +122,7 @@ interface ShopNetWorkApi {
      *虚拟币支付
      * */
     @POST("/app/pay/virtualCoinPay")
-    suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<PayBackBean>
+    suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
      *现金支付
      * */

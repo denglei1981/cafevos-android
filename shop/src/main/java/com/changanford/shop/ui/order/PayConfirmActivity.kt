@@ -1,24 +1,48 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
-import com.changanford.common.bean.PayBackBean
+import com.changanford.common.bean.PayWayBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.wutil.UnionPayUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ShopActPayconfirmBinding
 import com.changanford.shop.listener.OnTimeCountListener
-import com.changanford.shop.ui.compose.UnionPayCompose
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -45,11 +69,12 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     private var waitPayCountDown:Long=1800//支付剩余时间 默认半小时
     private var isPaySuccessful=false//是否支付成功
     private var isClickSubmit=false
+    private var orderNo:String?=null
     override fun initView() {
         binding.topBar.setOnBackClickListener(this)
     }
     override fun initData() {
-        var orderNo=intent.getStringExtra("orderNo")
+        orderNo=intent.getStringExtra("orderNo")
         if(TextUtils.isEmpty(orderNo)){
             //兼容以前版本
             intent.getStringExtra("orderInfo")?.apply {
@@ -63,21 +88,71 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             ToastUtils.reToast(R.string.str_parameterIllegal)
             return
         }
-        orderNo?.let { viewModel.getOrderDetail(it) }
+        initObserver()
+    }
+    private fun initObserver(){
         viewModel.orderItemLiveData.observe(this) { orderItem ->
             dataBean = orderItem
             bindingData()
         }
-        //支付回调
-        viewModel.payBackBeanLiveData.observe(this) {
+        orderNo?.let { viewModel.getOrderDetail(it) }
+        //福币支付回调
+        viewModel.responseData.observe(this) {
+            ToastUtils.showLongToast(it.msg, this)
             isClickSubmit = false
-            payResults(it)
+            payResults(it.isSuccess)
+        }
+        //现金支付下单回调
+        viewModel.payBackBeanLiveData.observe(this) {
+            it?.apply {
+                when{
+                    aliPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,1,aliPay)
+                    wxPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,2,wxPay)
+                    uacPay!=null-> UnionPayUtils.goUnionPay(this@PayConfirmActivity,3,uacPay)
+                }
+            }
+        }
+        //银联-支付回调
+        LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY_BACK).observe(this) {
+            when (it) {
+                0 -> {//成功
+                    payResults(true)
+                }
+                else -> {//1 失败 2 取消
+                    payResults(false)
+                }
+            }
+        }
+        //微信支付结果
+        LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).observe(this) {
+            when (it) {
+                0 -> {//成功
+                    payResults(true)
+                }
+                1 -> {//失败
+                    payResults(false)
+                }
+                2 -> {//取消
+                    payResults(false)
+                }
+            }
+        }
+        //支付宝支付结果
+        LiveDataBus.get().with(LiveDataBusKey.ALIPAY_RESULT).observe(this) {
+            when (it) {
+                true -> {
+                    payResults(true)
+                }
+                false -> {
+                    payResults(false)
+                }
+            }
         }
     }
     private fun bindingData(){
         dataBean?.apply {
             if(waitPayCountDown==null||waitPayCountDown==0L){
-                payResults(null)
+                payResults(false)
                 return
             }
             when(payType){
@@ -106,7 +181,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                         btnSubmit.visibility=View.INVISIBLE
                         composeView.visibility=View.VISIBLE
                         composeView.setContent {
-                            UnionPayCompose(dataBean,viewModel,this@PayConfirmActivity)
+                            UnionPayCompose(dataBean,this@PayConfirmActivity)
                         }
                     }
                 }
@@ -118,8 +193,8 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
      * isSuccessful支付成功、支付失败
     * */
     @SuppressLint("SetTextI18n")
-    private fun payResults(payBackBean:PayBackBean?){
-        this.isPaySuccessful=payBackBean!=null
+    private fun payResults(isSuccessful:Boolean){
+        this.isPaySuccessful=isSuccessful
         binding.layoutPay.visibility=View.INVISIBLE
         binding.composeView.visibility=View.GONE
         binding.inPayResults.apply {
@@ -196,6 +271,101 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
      * 倒计时 结束回调
     * */
     override fun onFinish() {
-        payResults(null)
+        payResults(false)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.extras?.apply { UnionPayUtils.payOnActivityResult(this) }
+    }
+    /**
+     * 确认支付-银联支付
+     * */
+    @Composable
+    private fun UnionPayCompose(dataBean: OrderItemBean?=null,listener: OnTimeCountListener){
+        val timeStr="00:00:00"
+        //剩余支付时间
+        val countdown= remember { mutableStateOf(timeStr) }
+        val payWayArr=ArrayList<PayWayBean>()
+        val nameArr= arrayOf(
+            stringResource(R.string.str_wxPay),
+            stringResource(R.string.str_zfbPay),
+            stringResource(R.string.str_unionPayCloudFlashPayment)
+        )
+        val payTypeArr= arrayOf("2","1","3")
+        val iconArr= arrayOf(
+            painterResource(R.mipmap.ic_shop_wx),
+            painterResource(R.mipmap.ic_shop_zfb),
+            painterResource(R.mipmap.ic_shop_ysf)
+        )
+        for ((i,it) in nameArr.withIndex()){
+            payWayArr.add(PayWayBean(payType = payTypeArr[i], isCheck = remember { mutableStateOf(0==i) }, payWayName = it, icon = iconArr[i]))
+        }
+        val selectedTag = remember { mutableStateOf("0") }
+        dataBean?.apply {
+            val payCountDown=waitPayCountDown?:0
+            if(payCountDown>0){
+                val timeCountControl= PayTimeCountControl(payCountDown*1000,tv=null, countdownCompose = countdown,object :OnTimeCountListener{
+                    override fun onFinish() {
+                        countdown.value=timeStr
+                        listener.onFinish()
+                    }
+                })
+                timeCountControl.start()
+            }
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(color = colorResource(R.color.color_F4))) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.height(26.dp))
+                    //支付金额
+                    Text(text = "￥$payRmb", fontSize = 28.sp, color = colorResource(R.color.color_33))
+                    Spacer(modifier = Modifier.height(14.dp))
+                    //剩余支付时间
+                    Text(text = "${stringResource(R.string.str_remainingTimePayment)}${countdown.value}", fontSize = 13.sp, color = colorResource(R.color.color_33))
+                    Spacer(modifier = Modifier.height(26.dp))
+                    Divider(color = colorResource(R.color.color_F5), thickness = 0.5.dp)
+                    Spacer(modifier = Modifier.height(5.dp))
+                    for ((i,item) in payWayArr.withIndex()){
+                        item.apply {
+                            Row(verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp, vertical = 15.dp)
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() }) {
+                                        selectedTag.value = payType
+                                    }) {
+                                Image(painter = icon?: painterResource(R.mipmap.ic_shop_wx), contentDescription =null )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(text = payWayName?:"", color = colorResource(R.color.color_33), fontSize = 14.sp, modifier = Modifier.weight(1f))
+                                Image(painter = painterResource(if(selectedTag.value==payType) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
+//                            RadioButton(selected = selectedTag.value==payWayName, onClick = {
+//                                selectedTag.value=payWayName
+//                            })
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                }
+                Box(modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 20.dp), contentAlignment = Alignment.BottomCenter){
+                    Button(onClick = {
+                        viewModel.rmbPay(orderNo,selectedTag.value)
+                    }, enabled = selectedTag.value!="0"&&countdown.value!=timeStr,shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value!="0"&&countdown.value!=timeStr)R.color.color_00095B else R.color.color_DD)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)) {
+                        Text(stringResource(R.string.str_payConfirm),fontSize = 15.sp,color = Color.White)
+                    }
+                }
+                Spacer(modifier = Modifier.height(40.dp))
+            }
+        }
     }
 }
