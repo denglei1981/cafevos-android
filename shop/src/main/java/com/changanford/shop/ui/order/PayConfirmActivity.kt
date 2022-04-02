@@ -164,7 +164,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                         model=dataBean
                         tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
                         //账户余额小于所支付额度 则余额不足
-                        if(totalIntegral!!.toFloat()<fbCost!!.toFloat())btnSubmit.setStates(8)
+                        if(totalIntegral!!.toFloat()<(payFb?:"0").toFloat())btnSubmit.setStates(8)
                         else btnSubmit.setStates(12)
                         val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
                         if(payCountDown>0){
