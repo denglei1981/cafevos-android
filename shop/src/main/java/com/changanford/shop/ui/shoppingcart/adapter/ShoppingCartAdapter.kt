@@ -43,6 +43,8 @@ class ShoppingCartAdapter(val shopBackListener: ShopBackListener) :
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
+
+
         }
     }
 

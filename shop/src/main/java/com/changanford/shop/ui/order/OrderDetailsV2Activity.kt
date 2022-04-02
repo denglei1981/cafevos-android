@@ -2,14 +2,24 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextUtils
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.CustomImageSpan
+import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -63,7 +73,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //        binding.inGoodsInfo.inGoodsInfo.layoutGoodsInfo.setOnClickListener {
 //            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
 //        }
-        binding.rvShopping.adapter=orderDetailsItemV2Adapter
+        binding.rvShopping.adapter = orderDetailsItemV2Adapter
     }
 
     override fun initData() {
@@ -104,6 +114,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inOrderInfo.tvOther.visibility = View.VISIBLE
         binding.inOrderInfo.tvOtherValue.visibility = View.VISIBLE
         showShoppingInfo(dataBean.skuList)
+        showTotalTag(binding.inGoodsInfo1.tvTotalPrice, dataBean)
         viewModel.getOrderStatus(orderStatus, evalStatus).apply {
             dataBean.orderStatusName = this
 
@@ -115,7 +126,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     if (payCountDown > 0) {
                         timeCountControl = PayTimeCountControl(
                             payCountDown * 1000,
-                            binding.tvOrderRemainingTime,null,
+                            binding.tvOrderRemainingTime, null,
                             object : OnTimeCountListener {
                                 override fun onFinish() {
                                     createCloseOrderPop()
@@ -388,6 +399,57 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //                    bindingAddressInfo(it, true)
                 }
             })
+    }
+
+    fun showTotalTag(text: AppCompatTextView?, item: OrderItemBean) {
+        if (TextUtils.isEmpty(item.payFb)) {
+            showZero(text, item)
+            return
+        }
+        val fbNumber = item.payFb
+
+        val starStr = "合计: "
+        val str = "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+        //先设置原始文本
+        text?.text = str
+        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
+        text?.post { //获取第一行的宽度
+            val stringBuilder: StringBuilder = StringBuilder(str)
+            //SpannableString的构建
+            val spannableString = SpannableString("$stringBuilder ")
+            val drawable = ContextCompat.getDrawable(this, R.mipmap.question_fb)
+            drawable?.apply {
+                val imageSpan = CustomImageSpanV2(this)
+                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+                val strLength = spannableString.length
+                val numberLength = fbNumber?.length
+                val startIndex = strLength - numberLength!! - 1
+//                spannableString.setSpan(
+//                    AbsoluteSizeSpan(30),
+//                    startIndex,
+//                    strLength,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+//                )
+//                spannableString.setSpan(
+//                    ForegroundColorSpan(Color.parseColor("#E1A743")), startIndex, strLength,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+//                )
+                spannableString.setSpan(
+                    imageSpan, str.lastIndexOf("["), str.lastIndexOf("]") + 1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                text.text = spannableString
+            }
+        }
+    }
+
+    fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
+        val tagName = item.payRmb
+
+        //先设置原始文本
+        text?.text = "合计".plus("  ￥${tagName}")
+
+
     }
 
     override fun onDestroy() {
