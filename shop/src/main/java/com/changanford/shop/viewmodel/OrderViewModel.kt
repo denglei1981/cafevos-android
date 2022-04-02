@@ -11,7 +11,6 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
-import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
@@ -39,6 +38,8 @@ class OrderViewModel: BaseViewModel() {
     var orderTypesLiveData: MutableLiveData<OrderTypesBean?> = MutableLiveData()
     //确认订单
     var createOrderBean = MutableLiveData<CreateOrderBean?>()
+    //下单支付返回
+    var payBackBeanLiveData = MutableLiveData<PayBackBean?>()
     /**
      * 下单
      * [addressId]收货地址id
@@ -304,13 +305,36 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.fbPay(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
-                responseData.postValue(ResponseBean(true))
+                payBackBeanLiveData.postValue(it)
             }.onWithMsgFailure {
-                responseData.postValue(ResponseBean(false,msg = it))
+                it?.toast()
+//                responseData.postValue(ResponseBean(false,msg = it))
+                payBackBeanLiveData.postValue(null)
             }
         }
     }
-
+    /**
+     * 人民币支付
+     * [orderNo]订单号
+     * [payType] 支付方式 1支付宝 2微信  3银联
+     * */
+    fun rmbPay(orderNo:String,payType:String="1") {
+        viewModelScope.launch {
+            fetchRequest(true){
+                body.clear()
+                body["orderNo"]=orderNo
+                body["payType"]=payType
+                val randomKey = getRandomKey()
+                shopApiService.rmbPay(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                payBackBeanLiveData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+//                responseData.postValue(ResponseBean(false,msg = it))
+                payBackBeanLiveData.postValue(null)
+            }
+        }
+    }
     /**
      * 获取我的积分
      * */

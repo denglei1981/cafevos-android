@@ -564,6 +564,8 @@ data class OrderItemBean(
     var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
     var rmbPrice:String?=null,
     var payType:String?=null,//支付方式(纯积分/纯现金/混合支付),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付),MallPayTypeEnum.RMB_PAY(code=RMB_PAY, dbCode=1, message=现金支付),MallPayTypeEnum.MIX_PAY(code=MIX_PAY, dbCode=2, message=混合支付)
+    var payFb:String?=null,
+    var payRmb:String?=null,
 ){
     /**
      * 将福币转换为人民币 1元=100福币
@@ -659,6 +661,12 @@ data class PayWayBean(
     var isCheck: MutableState<Boolean>? =null,
     var payWayName:String?=null,
     var icon: Painter?=null,
+    var payType:String="0",
+)
+data class PayBackBean(
+    var aliPay:String?=null,
+    var uacPay:String?=null,
+    var wxPay:String?=null,
 )
 data class CreateOrderBean(
     var freight:String?=null,

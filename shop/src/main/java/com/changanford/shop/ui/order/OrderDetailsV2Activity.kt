@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.ShopAddressInfoBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MTextUtil
@@ -17,8 +18,6 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
-import com.changanford.shop.databinding.ActOrderDetailsBinding
-import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
@@ -27,7 +26,6 @@ import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.math.abs
 
 /**
@@ -104,7 +102,7 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
                     binding.inOrderInfo.tvOtherValue.visibility=View.GONE
                     val payCountDown= dataBean.waitPayCountDown?:waitPayCountDown
                     if(payCountDown>0){
-                        timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,object : OnTimeCountListener {
+                        timeCountControl= PayTimeCountControl(payCountDown*1000, binding.tvOrderRemainingTime,null,object : OnTimeCountListener {
                             override fun onFinish() {
                                 createCloseOrderPop()
 //                                //支付倒计时结束 刷新

@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.order
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
@@ -8,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.PayBackBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -31,7 +33,7 @@ import kotlinx.coroutines.launch
  */
 @Route(path = ARouterShopPath.PayConfirmActivity)
 class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(),
-    TopBar.OnBackClickListener {
+    TopBar.OnBackClickListener, OnTimeCountListener {
     companion object{
         fun start(orderNo:String) {
             JumpUtils.instans?.jump(110,orderNo)
@@ -66,41 +68,45 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             dataBean = orderItem
             bindingData()
         }
-        viewModel.responseData.observe(this) {
-            ToastUtils.showLongToast(it.msg, this)
+        //支付回调
+        viewModel.payBackBeanLiveData.observe(this) {
             isClickSubmit = false
-            payResults(it.isSuccess)
+            payResults(it)
         }
     }
     private fun bindingData(){
         dataBean?.apply {
+            if(waitPayCountDown==null||waitPayCountDown==0L){
+                payResults(null)
+                return
+            }
             when(payType){
                 "FB_PAY"->{
-                    binding.layoutPay.visibility=View.VISIBLE
-                    binding.composeView.visibility=View.GONE
-                    binding.model=this
-                    binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
-                    //账户余额小于所支付额度 则余额不足
-                    if(totalIntegral!!.toFloat()<fbCost!!.toFloat())binding.btnSubmit.setStates(8)
-                    else binding.btnSubmit.setStates(12)
-                    val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
-                    if(payCountDown>0){
-                        timeCountControl?.cancel()
-                        timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
-                            override fun onFinish() {
-                                payResults(false)
-                            }
-                        })
-                        timeCountControl?.start()
+                    binding.apply {
+                        layoutPay.visibility=View.VISIBLE
+                        btnSubmit.visibility=View.VISIBLE
+                        composeView.visibility=View.GONE
+                        model=dataBean
+                        tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
+                        //账户余额小于所支付额度 则余额不足
+                        if(totalIntegral!!.toFloat()<fbCost!!.toFloat())btnSubmit.setStates(8)
+                        else btnSubmit.setStates(12)
+                        val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
+                        if(payCountDown>0){
+                            timeCountControl?.cancel()
+                            timeCountControl=PayTimeCountControl(payCountDown*1000,tv=binding.tvPayTime,null,this@PayConfirmActivity)
+                            timeCountControl?.start()
+                        }
                     }
                 }
                 //现金支付和混合支付 使用银联支付
                 else ->{
-                    binding.composeView.apply {
-                        binding.layoutPay.visibility=View.INVISIBLE
-                        visibility=View.VISIBLE
-                        setContent {
-                            UnionPayCompose()
+                    binding.apply {
+                        layoutPay.visibility=View.INVISIBLE
+                        btnSubmit.visibility=View.INVISIBLE
+                        composeView.visibility=View.VISIBLE
+                        composeView.setContent {
+                            UnionPayCompose(dataBean,viewModel,this@PayConfirmActivity)
                         }
                     }
                 }
@@ -109,18 +115,23 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
 
     }
     /**
-     * [isSuccessful]支付成功、支付失败
+     * isSuccessful支付成功、支付失败
     * */
-    private fun payResults(isSuccessful:Boolean){
-        this.isPaySuccessful=isSuccessful
+    @SuppressLint("SetTextI18n")
+    private fun payResults(payBackBean:PayBackBean?){
+        this.isPaySuccessful=payBackBean!=null
         binding.layoutPay.visibility=View.INVISIBLE
+        binding.composeView.visibility=View.GONE
         binding.inPayResults.apply {
             model=dataBean
             layoutPayResults.visibility=View.VISIBLE
-            tvPayResultsState.setText(if(isSuccessful)R.string.str_paySucces else R.string.str_payFailure)
-            val dTop=ContextCompat.getDrawable(this@PayConfirmActivity,if(isSuccessful)R.mipmap.shop_pay_succes else R.mipmap.shop_pay_failure)
+            if(dataBean?.payType!="FB_PAY")tvPayResultsPrice.text="共计￥${dataBean?.payRmb}"
+            else tvPayResultsPrice.text="共计${dataBean?.payFb}福币"
+            tvPayResultsState.setText(if(isPaySuccessful)R.string.str_paySucces else R.string.str_payFailure)
+            val dTop=ContextCompat.getDrawable(this@PayConfirmActivity,if(isPaySuccessful)R.mipmap.shop_pay_succes else R.mipmap.shop_pay_failure)
             tvPayResultsState.setCompoundDrawablesRelativeWithIntrinsicBounds(null,dTop,null,null)
         }
+        binding.btnSubmit.visibility=View.VISIBLE
         binding.btnSubmit.setStates(11)
     }
     fun btnSubmit(v:View){
@@ -180,5 +191,11 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
             onBackClick()
         }
         return false
+    }
+    /**
+     * 倒计时 结束回调
+    * */
+    override fun onFinish() {
+        payResults(null)
     }
 }

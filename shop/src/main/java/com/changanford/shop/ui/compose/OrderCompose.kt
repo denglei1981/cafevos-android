@@ -7,10 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayWayBean
 import com.changanford.shop.R
+import com.changanford.shop.control.time.PayTimeCountControl
+import com.changanford.shop.listener.OnTimeCountListener
+import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
@@ -153,17 +153,29 @@ fun PayWayCompose(){
  * 确认支付-银联支付
  * */
 @Composable
-fun UnionPayCompose(dataBean: OrderItemBean?=null){
+fun UnionPayCompose(dataBean: OrderItemBean?=null,viewModel: OrderViewModel,listener: OnTimeCountListener){
+    val timeStr="00:00:00"
     //剩余支付时间
-    val countdown= remember {mutableStateOf("00:00:00")}
+    val countdown= remember {mutableStateOf(timeStr)}
     val payWayArr=ArrayList<PayWayBean>()
     val nameArr= arrayOf(stringResource(R.string.str_wxPay),stringResource(R.string.str_zfbPay),stringResource(R.string.str_unionPayCloudFlashPayment))
+    val payTypeArr= arrayOf("2","1","3")
     val iconArr= arrayOf(painterResource(R.mipmap.ic_shop_wx),painterResource(R.mipmap.ic_shop_zfb),painterResource(R.mipmap.ic_shop_ysf))
     for ((i,it) in nameArr.withIndex()){
-        payWayArr.add(PayWayBean(id = i, isCheck = remember {mutableStateOf(0==i)}, payWayName = it, icon = iconArr[i]))
+        payWayArr.add(PayWayBean(payType = payTypeArr[i], isCheck = remember {mutableStateOf(0==i)}, payWayName = it, icon = iconArr[i]))
     }
-    val selectedTag = remember { mutableStateOf(payWayArr[0].payWayName) }
+    val selectedTag = remember { mutableStateOf("0") }
     dataBean?.apply {
+        val payCountDown=waitPayCountDown?:0
+        if(payCountDown>0){
+           val timeCountControl= PayTimeCountControl(payCountDown*1000,tv=null, countdownCompose = countdown,object :OnTimeCountListener{
+               override fun onFinish() {
+                   countdown.value=timeStr
+                   listener.onFinish()
+               }
+           })
+            timeCountControl.start()
+        }
         Column(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
@@ -174,7 +186,7 @@ fun UnionPayCompose(dataBean: OrderItemBean?=null){
                 .background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
                 Spacer(modifier = Modifier.height(26.dp))
                 //支付金额
-                Text(text = getRMB(), fontSize = 28.sp, color = colorResource(R.color.color_33))
+                Text(text = "￥$payRmb", fontSize = 28.sp, color = colorResource(R.color.color_33))
                 Spacer(modifier = Modifier.height(14.dp))
                 //剩余支付时间
                 Text(text = "${stringResource(R.string.str_remainingTimePayment)}${countdown.value}", fontSize = 13.sp, color = colorResource(R.color.color_33))
@@ -185,23 +197,37 @@ fun UnionPayCompose(dataBean: OrderItemBean?=null){
                     item.apply {
                         Row(verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 15.dp).clickable(indication = null,interactionSource = remember { MutableInteractionSource() }) {
-                                    selectedTag.value=payWayName
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp, vertical = 15.dp)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }) {
+                                    selectedTag.value = payType
                                 }) {
                             Image(painter = icon?:painterResource(R.mipmap.ic_shop_wx), contentDescription =null )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(text = payWayName?:"", color = colorResource(R.color.color_33), fontSize = 14.sp, modifier = Modifier.weight(1f))
-                            Image(painter = painterResource(if(selectedTag.value==payWayName) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
+                            Image(painter = painterResource(if(selectedTag.value==payType) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
 //                            RadioButton(selected = selectedTag.value==payWayName, onClick = {
 //                                selectedTag.value=payWayName
 //                            })
                         }
                     }
-
                 }
                 Spacer(modifier = Modifier.height(5.dp))
             }
+            Box(modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 20.dp), contentAlignment = Alignment.BottomCenter){
+                Button(onClick = {
+                    viewModel.rmbPay(orderNo,selectedTag.value)
+                }, enabled = selectedTag.value!="0"&&countdown.value!=timeStr,shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value!="0"&&countdown.value!=timeStr)R.color.color_00095B else R.color.color_DD)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)) {
+                    Text(stringResource(R.string.str_payConfirm),fontSize = 15.sp,color = Color.White)
+                }
+            }
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }

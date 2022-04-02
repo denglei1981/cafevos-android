@@ -2,6 +2,7 @@ package com.changanford.shop.control.time
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import androidx.compose.runtime.MutableState
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.view.TypefaceTextView
 
@@ -12,7 +13,7 @@ import com.changanford.shop.view.TypefaceTextView
  * Update Time:
  * Note:倒计时
  */
-class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextView, val listener: OnTimeCountListener) : CountDownTimer(millisInFuture, 1000) {
+class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextView?=null, val countdownCompose:MutableState<String>?=null, val listener: OnTimeCountListener) : CountDownTimer(millisInFuture, 1000) {
     @SuppressLint("SetTextI18n")
     override fun onTick(millisUntilFinished: Long) {
         val hour=millisUntilFinished/1000/60/60
@@ -21,7 +22,8 @@ class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextVie
         val h=if(hour>9)"$hour" else "0$hour"
         val m=if(minute>9)"$minute" else "0$minute"
         val s=if(second>9)"$second" else "0$second"
-        tv.setText("$h:$m:$s")
+        tv?.setText("$h:$m:$s")
+        countdownCompose?.value="$h:$m:$s"
     }
     override fun onFinish() {
         listener.onFinish()
