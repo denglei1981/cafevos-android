@@ -345,7 +345,7 @@ data class GoodsDetailBean(
     var mallMallWbVinSpuId:String?=null,
     var recommend:ArrayList<GoodsItemBean>?=null,//推荐
     var rmbPrice:String?=fbPrice,
-    var orderConfirmType:Int?=0,//确认订单来源
+//    var orderConfirmType:Int?=0,//确认订单来源
     var carModel:String?=null,
     var mallMallUserSkuId:Long=0,
     var fbPer:String?=null,

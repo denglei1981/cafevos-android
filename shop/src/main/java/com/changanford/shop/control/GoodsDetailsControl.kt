@@ -304,7 +304,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun submitOrder(){
         skuCode.apply {
             if(isInvalidSelectAttrs(this))createAttribute()
-            else OrderConfirmActivity.start(0,dataBean)
+            else OrderConfirmActivity.start(dataBean)
         }
     }
     /**

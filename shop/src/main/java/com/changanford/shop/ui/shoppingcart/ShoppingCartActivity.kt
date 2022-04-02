@@ -51,7 +51,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 shoppingCartAdapter.shopList.forEach {
                     it.carBeanToOrderBean()
                 }
-                OrderConfirmActivity.start(1,shoppingCartAdapter.shopList as ArrayList<GoodsDetailBean>)
+                OrderConfirmActivity.start(shoppingCartAdapter.shopList as ArrayList<GoodsDetailBean>)
             }
         }
 
