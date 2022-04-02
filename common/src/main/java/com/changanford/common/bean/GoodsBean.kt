@@ -614,6 +614,9 @@ data class OrderItemBean(
         }
         return "${unit ?: ""}${rmbPrice ?: "0"}"
     }
+    fun getPayRmbStr():String{
+        return  "￥".plus(payRmb)
+    }
 }
 
 data class OrderReceiveAddress(

@@ -33,8 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1300积分"
-            app:end_txt="@string/str_integral"
-            android:text="@{model.payRmb}"
+            android:text="@{model.payRmbStr}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
