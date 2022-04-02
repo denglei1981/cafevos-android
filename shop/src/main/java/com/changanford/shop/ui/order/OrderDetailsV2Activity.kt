@@ -272,19 +272,19 @@ class OrderDetailsV2Activity:BaseActivity<ActivityOrderDetailsBinding, OrderView
         }
     }
     private fun bindingAddressInfo(addressInfo:String,isUpdate:Boolean=false){
-        Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
-            //更新收货地址
-            if(isUpdate){
-                viewModel.updateAddressByOrderNo(dataBean.orderNo,addressId,object :
-                    OnPerformListener {
-                    override fun onFinish(code: Int) {
-                        dataBean.addressInfo= addressInfo
-                        dataBean.addressId=addressId
-                        updateAddressInfo(this@apply)
-                    }
-                })
-            }else updateAddressInfo(this)
-        }
+//        Gson().fromJson(addressInfo,ShopAddressInfoBean::class.java).apply {
+//            //更新收货地址
+//            if(isUpdate){
+//                viewModel.updateAddressByOrderNo(dataBean.orderNo,addressId,object :
+//                    OnPerformListener {
+//                    override fun onFinish(code: Int) {
+//                        dataBean.addressInfo= addressInfo
+//                        dataBean.addressId=addressId
+//                        updateAddressInfo(this@apply)
+//                    }
+//                })
+//            }else updateAddressInfo(this)
+//        }
     }
     private fun updateAddressInfo(item:ShopAddressInfoBean){
         item.apply {
