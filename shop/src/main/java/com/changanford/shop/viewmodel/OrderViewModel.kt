@@ -165,9 +165,28 @@ class OrderViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 it?.toast()
             }.onSuccess {
-                createOrderBean.postValue(it)
+                formattingCouponsData(it)
+//                createOrderBean.postValue(it)
             }
         }
+    }
+    private fun formattingCouponsData(bean:CreateOrderBean?){
+        bean?.apply {
+            if(coupons!=null&&coupons!!.size>0){
+                //判断每个优惠券是否可用
+                for ((i,item)in coupons!!.withIndex()){
+                    item.isAvailable=false
+                    item.mallMallSkuIds?.forEach{skuId->
+                        //首先查询skuId是否在订单中
+                        skuItems?.find { skuId== it.skuId }?.apply {
+                            item.isAvailable=true
+                        }
+                    }
+                    bean.coupons?.set(i,item)
+                }
+            }
+        }
+
     }
     private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
     /**
