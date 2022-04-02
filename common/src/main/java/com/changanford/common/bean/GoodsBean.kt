@@ -392,7 +392,8 @@ data class GoodsDetailBean(
         buyNum=num?:0
         skuCodeTxts=getTagList()
         fbPrice=fbPer?:"0"
-        rmbPrice=getRMB()
+        orginPrice=fbPer
+        rmbPrice=getRMB(fbPer)
     }
 }
 
