@@ -104,6 +104,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 dataListBean= dataList
             }
         }
+        orderConfirmType=infoBean.orderConfirmType?:0
         initObserve()
         edtCustomOnTextChanged()
         formattingData()
