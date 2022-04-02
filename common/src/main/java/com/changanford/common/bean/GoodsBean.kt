@@ -520,7 +520,6 @@ data class OrderItemBean(
     var orderTime: Long? = 0,
     var orderTimeTxt: String? = "",
     val params: Params = Params(),
-    var payType: String = "",
     val phone: String = "",
     var preferentialFb: String? = "0",
     val remark: String = "",
@@ -564,6 +563,7 @@ data class OrderItemBean(
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales:String?=null,//是否可以退货 YES  NO
     var rmbPrice:String?=null,
+    var payType:String?=null,//支付方式(纯积分/纯现金/混合支付),可用值:MallPayTypeEnum.FB_PAY(code=FB_PAY, dbCode=0, message=积分支付),MallPayTypeEnum.RMB_PAY(code=RMB_PAY, dbCode=1, message=现金支付),MallPayTypeEnum.MIX_PAY(code=MIX_PAY, dbCode=2, message=混合支付)
 ){
     /**
      * 将福币转换为人民币 1元=100福币

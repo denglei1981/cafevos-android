@@ -9,10 +9,12 @@ import androidx.core.content.ContextCompat
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.shop.R
@@ -311,7 +313,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     fun addShoppingCart(){
         dataBean.apply {
             if(isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))createAttribute()
-            else viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum)
+            else viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
+                override fun onFinish(code: Int) {
+                    "加入成功！".toast()
+                }
+            })
         }
     }
 }

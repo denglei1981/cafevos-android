@@ -186,7 +186,7 @@ class OrderViewModel: BaseViewModel() {
                 }
             }
         }
-
+        createOrderBean.postValue(bean)
     }
     private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
     /**

@@ -7,7 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -190,9 +193,9 @@ fun UnionPayCompose(dataBean: OrderItemBean?=null){
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(text = payWayName?:"", color = colorResource(R.color.color_33), fontSize = 14.sp, modifier = Modifier.weight(1f))
                             Image(painter = painterResource(if(selectedTag.value==payWayName) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0), contentDescription =null )
-                            RadioButton(selected = selectedTag.value==payWayName, onClick = {
-                                selectedTag.value=payWayName
-                            })
+//                            RadioButton(selected = selectedTag.value==payWayName, onClick = {
+//                                selectedTag.value=payWayName
+//                            })
                         }
                     }
 

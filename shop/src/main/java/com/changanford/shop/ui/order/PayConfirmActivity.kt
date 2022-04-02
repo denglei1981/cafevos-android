@@ -74,26 +74,35 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
     }
     private fun bindingData(){
         dataBean?.apply {
-            binding.model=this
-            binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
-            //账户余额小于所支付额度 则余额不足
-            if(totalIntegral!!.toFloat()<fbCost!!.toFloat())binding.btnSubmit.setStates(8)
-            else binding.btnSubmit.setStates(12)
-            val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
-            if(payCountDown>0){
-                timeCountControl?.cancel()
-                timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
-                    override fun onFinish() {
-                        payResults(false)
+            when(payType){
+                "FB_PAY"->{
+                    binding.layoutPay.visibility=View.VISIBLE
+                    binding.composeView.visibility=View.GONE
+                    binding.model=this
+                    binding.tvAccountPoints.setHtmlTxt(getString(R.string.str_Xfb,totalIntegral),"#00095B")
+                    //账户余额小于所支付额度 则余额不足
+                    if(totalIntegral!!.toFloat()<fbCost!!.toFloat())binding.btnSubmit.setStates(8)
+                    else binding.btnSubmit.setStates(12)
+                    val payCountDown=waitPayCountDown?:this@PayConfirmActivity.waitPayCountDown
+                    if(payCountDown>0){
+                        timeCountControl?.cancel()
+                        timeCountControl=PayTimeCountControl(payCountDown*1000,binding.tvPayTime,object : OnTimeCountListener {
+                            override fun onFinish() {
+                                payResults(false)
+                            }
+                        })
+                        timeCountControl?.start()
                     }
-                })
-                timeCountControl?.start()
-            }
-            //使用银联支付
-            binding.composeView.apply {
-                visibility=View.VISIBLE
-                setContent {
-                    UnionPayCompose()
+                }
+                //现金支付和混合支付 使用银联支付
+                else ->{
+                    binding.composeView.apply {
+                        binding.layoutPay.visibility=View.INVISIBLE
+                        visibility=View.VISIBLE
+                        setContent {
+                            UnionPayCompose()
+                        }
+                    }
                 }
             }
         }
@@ -149,20 +158,20 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
 
     override fun onBackClick() {
         //确认支付 返回到订单详情
-        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){
-            dataBean?.apply {
-                val jumpDataType=dataBean?.jumpDataType
-                when {
-                    null!=jumpDataType -> {
-                        JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
-                    }
-                    "3"==busSourse -> {//维保商品订单详情
-                        JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
-                    }
-                    else -> OrderDetailsActivity.start(orderNo)
-                }
-            }
-        }
+//        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){
+//            dataBean?.apply {
+//                val jumpDataType=dataBean?.jumpDataType
+//                when {
+//                    null!=jumpDataType -> {
+//                        JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
+//                    }
+//                    "3"==busSourse -> {//维保商品订单详情
+//                        JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+//                    }
+//                    else -> OrderDetailsActivity.start(orderNo)
+//                }
+//            }
+//        }
         this.finish()
     }
 
