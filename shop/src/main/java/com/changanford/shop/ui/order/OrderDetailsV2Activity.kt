@@ -308,19 +308,20 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         Gson().fromJson(addressInfoJson, ShopAddressInfoBean::class.java).apply {
             //更新收货地址
             val addressInfo =getAddress()
-            viewModel.updateAddressByOrderNoV2(dataBean.mallMallOrderId, addressId, object :
-                OnPerformListener {
-                override fun onFinish(code: Int) {
+            dataBean.mallMallOrderId?.let {
+                viewModel.updateAddressByOrderNoV2(it, addressId, object :
+                    OnPerformListener {
+                    override fun onFinish(code: Int) {
 //                    dataBean.addressInfo = addressInfo
 //                    dataBean.addressId = addressId
-                    addressInfo.let {
-                        val orderReceiveAddress = OrderReceiveAddress(addressId.toString(), addressInfo, phone, consignee)
-                        resetAddress(orderReceiveAddress)
+                        addressInfo.let {
+                            val orderReceiveAddress = OrderReceiveAddress(addressId.toString(), addressInfo, phone, consignee)
+                            resetAddress(orderReceiveAddress)
+                        }
+
                     }
-
-                }
-            })
-
+                })
+            }
         }
     }
     fun resetAddress(orderReceiveAddress:OrderReceiveAddress){

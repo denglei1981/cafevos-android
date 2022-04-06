@@ -94,7 +94,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 //砍价
                 JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))
             }else {
-//                GoodsDetailsActivity.start(mallMallSpuId)
+                  // TODO 再次购买的逻辑。
                 GoodsDetailsActivity.start(jumpDataType?:3,jumpDataValue?:mallMallSpuId)
             }
         }

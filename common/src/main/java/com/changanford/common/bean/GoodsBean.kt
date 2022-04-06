@@ -353,6 +353,8 @@ data class GoodsDetailBean(
     var mallMallSpuId:String?=null,
     var num:Int?=0,
     var vipFb:String?=null,
+    var mallSkuState:String,
+
 ){
     fun getLimitBuyNum():Int{
        return if("YES"==limitBuy)(limitBuyNum?:"0").toInt() else 0
