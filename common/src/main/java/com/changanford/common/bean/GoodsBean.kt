@@ -602,6 +602,7 @@ data class OrderItemBean(
     var fb:String?=null,
     var rmb:String?=null,
     var busSource:String?=null,
+    var isNewOrder:String?=null,
 ) {
     /**
      * 将福币转换为人民币 1元=100福币

@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.wutil.ScreenUtils
@@ -15,9 +16,11 @@ import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.ui.order.OrderEvaluationActivity
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 
 
@@ -101,16 +104,43 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
 //                    dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
                 3->{//商品
-                    val orderBriefBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
-                    item.apply {
-                        this.busSourse= orderBriefBean.busSourse
-                        this.hagglePrice=orderBriefBean.hagglePrice
-                        this.skuOrderVOList=orderBriefBean.skuOrderVOList
-                        this.mallMallOrderId=orderBriefBean.mallMallOrderId
-                        this.rmb=orderBriefBean.rmb
-                        this.fb=orderBriefBean.fb
-                        this.fb=orderBriefBean.fb
-                        this.totalNum=orderBriefBean.totalNum
+                    val newBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
+                    if(newBean.isNewOrder=="YES"){//113以后的订单
+                        item.apply {
+                            this.busSourse = newBean.busSourse
+                            this.hagglePrice = newBean.hagglePrice
+                            this.skuOrderVOList = newBean.skuOrderVOList
+                            this.mallMallOrderId = newBean.mallMallOrderId
+                            this.rmb = newBean.rmb
+                            this.fb = newBean.fb
+                            this.totalNum = newBean.totalNum
+                        }
+                    }else{
+                        val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
+                        var specifications=""
+                        val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
+                        if(!TextUtils.isEmpty(snapshotOfAttrOption)){
+                            val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(snapshotOfAttrOption, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
+                            for(item in attrOption){
+                                specifications+="${item.optionName},"
+                            }
+                        }
+                        //单价
+                        val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
+                        item.apply {
+                            this.buyNum=orderBriefBean.buyNum
+                            payType=orderBriefBean.payType
+                            this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
+                            this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
+                            this.specifications=specifications
+                            this.orginPrice=orderBriefBean.orginPrice
+                            this.busSourse= orderBriefBean.busSourse
+                            this.hagglePrice=orderBriefBean.hagglePrice
+                            this.skuOrderVOList= arrayListOf()
+                            this.rmb=getRMB(this.fbCost)
+                            this.fb= this.fbCost
+                            this.totalNum=orderBriefBean.buyNum
+                        }
                     }
                 }
                 4->{//活动订单-众筹
@@ -174,7 +204,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             setText(R.string.str_immediatePayment)
                             setOnClickListener {
                                 item.apply {
-                                    WBuriedUtil.clickShopOrderPay(orderNo,spuName,fbOfUnitPrice)
+                                    WBuriedUtil.clickShopOrderPay(orderNo,spuName,rmb?:fb)
                                 }
                                 control.toPay(item)
                             }
@@ -347,7 +377,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * */
     private fun confirmGoods(position:Int,item: OrderItemBean){
         item.apply {
-            WBuriedUtil.clickShopOrderTakeDelivery(orderNo,spuName,fbOfUnitPrice)
+            WBuriedUtil.clickShopOrderTakeDelivery(orderNo,spuName,rmb?:fb)
         }
         control.confirmGoods(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")
@@ -368,7 +398,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     * */
     private fun cancelOrder(position:Int,item: OrderItemBean){
         item.apply {
-            WBuriedUtil.clickShopOrderCancel(orderNo,spuName,fbOfUnitPrice)
+            WBuriedUtil.clickShopOrderCancel(orderNo,spuName,rmb?:fb)
         }
         control.cancelOrder(item,object : OnPerformListener {
             @SuppressLint("NotifyDataSetChanged")

@@ -63,7 +63,7 @@ object WBuriedUtil {
     /**
      *用户点击确认收货按钮时触发
      * */
-    fun clickShopOrderTakeDelivery(orderNo:String,goodsName:String?,price:String){
+    fun clickShopOrderTakeDelivery(orderNo:String,goodsName:String?,price:String?){
         buried("app商城_商品订单_确认收货","app_mall_order_Confirm",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
     }
     /**
@@ -75,13 +75,13 @@ object WBuriedUtil {
     /**
      *用户点击取消订单按钮时触发
      * */
-    fun clickShopOrderCancel(orderNo:String,goodsName:String?,price:String){
+    fun clickShopOrderCancel(orderNo:String,goodsName:String?,price:String?){
         buried("app商城_商品订单_取消订单","app_mall_order_cancel",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
     }
     /**
      *用户点击立即支付按钮时触发
      * */
-    fun clickShopOrderPay(orderNo:String,goodsName:String?,price:String){
+    fun clickShopOrderPay(orderNo:String,goodsName:String?,price:String?){
         buried("app商城_商品订单_立即支付","app_mall_order_pay",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
     }
     /**
