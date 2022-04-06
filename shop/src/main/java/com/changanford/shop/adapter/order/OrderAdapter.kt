@@ -76,27 +76,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 }
                 3->{//商品
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
-//                    var specifications=""
-//                    val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
-//                    if(!TextUtils.isEmpty(snapshotOfAttrOption)){
-//                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(snapshotOfAttrOption, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
-//                        for(item in attrOption){
-//                            specifications+="${item.optionName},"
-//                        }
-//                    }
-                    //单价
-//                    val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                     item.apply {
-//                        this.buyNum=orderBriefBean.buyNum
-//                        payType=orderBriefBean.payType
-//                        this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
-//                        this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
-//                        this.specifications=orderBriefBean.specifications
-//                        this.orginPrice=orderBriefBean.orginPrice
                         this.busSourse= orderBriefBean.busSourse
                         this.hagglePrice=orderBriefBean.hagglePrice
                         this.skuOrderVOList=orderBriefBean.skuOrderVOList
                         this.mallMallOrderId=orderBriefBean.mallMallOrderId
+                        this.rmb=orderBriefBean.rmb
+                        this.fb=orderBriefBean.fb
+                        this.fb=orderBriefBean.fb
+                        this.totalNum=orderBriefBean.totalNum
                     }
                 }
                 4->{//活动订单-众筹

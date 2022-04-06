@@ -90,6 +90,7 @@
     <string name="str_toSendGoods">待发货</string>
     <string name="str_forGoods">待收货</string>
     <string name="str_toEvaluate">待评价</string>
+    <string name="str_refundOrAfterSale">退款/售后</string>
     <string name="str_orderNo">订单编号：</string>
     <string name="font_aCombined">合计:<font color="#00095B">1300福币</font></string>
     <string name="str_confirm">确认</string>

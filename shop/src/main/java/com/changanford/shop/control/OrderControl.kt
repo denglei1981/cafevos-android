@@ -54,16 +54,16 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
                 imgGoodsCover.load(item.skuImg)
                 tvOrderType.apply {
-                    visibility = when(item.busSourse) {
-                        "1" -> {//秒杀
+                    visibility = when(itemBean.busSourse) {
+                        "1","SECKILL" -> {//秒杀
                             setText(R.string.str_seckill)
                             View.VISIBLE
                         }
-                        "2" -> {//砍价
+                        "2","HAGGLE" -> {//砍价
                             setText(R.string.str_bargaining)
                             View.VISIBLE
                         }
-                        "3"->{//维保
+                        "3","WB"->{//维保
                             setText(R.string.str_maintenance)
                             View.VISIBLE
                         }

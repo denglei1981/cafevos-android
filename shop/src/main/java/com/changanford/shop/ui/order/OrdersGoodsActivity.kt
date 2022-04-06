@@ -33,7 +33,7 @@ class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
     }
     private fun initTab(){
         val states=intent.getIntExtra("states",0)
-        val tabTitles= arrayListOf(getString(R.string.str_all),getString(R.string.str_toBePaid),getString(R.string.str_toSendGoods),getString(R.string.str_forGoods),getString(R.string.str_toEvaluate))
+        val tabTitles= arrayListOf(getString(R.string.str_all),getString(R.string.str_toBePaid),getString(R.string.str_toSendGoods),getString(R.string.str_forGoods),getString(R.string.str_toEvaluate),getString(R.string.str_refundOrAfterSale))
         val fragments= arrayListOf<Fragment>()
         for(i in 0 until tabTitles.size){
             fragments.add(OrdersGoodsFragment.newInstance(i-1))

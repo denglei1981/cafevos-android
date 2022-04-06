@@ -758,9 +758,9 @@ data class OrderSkuItem(
     * */
     fun getTag(source:String?=busSourse):String{
         return when (source) {
-            "1" -> "秒杀"
-            "2" -> "砍价"
-            "3" -> "维保"
+            "1","SECKILL" -> "秒杀"
+            "2","HAGGLE" -> "砍价"
+            "3","WB" -> "维保"
             else ->""
         }
     }

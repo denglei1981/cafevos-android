@@ -20,7 +20,7 @@ class OrderGoodsImgAdapter: BaseQuickAdapter<OrderSkuItem, BaseDataBindingHolder
         holder.dataBinding?.apply {
             val position=holder.absoluteAdapterPosition
 //            ScreenUtils.setMargin(layoutRoot,l=if(0==position)20 else 0)
-            layoutRoot.setPadding(if(0==position)dp20 else 0,0,0,0)
+            layoutRoot.setPadding(if(0==position)dp20 else 0,0,if(data.size>3&&position==data.size-1)0 else 0,0)
             val orderType=item.orderType
             val params = imgGoodsCover.layoutParams
             params.width=imgWidth
