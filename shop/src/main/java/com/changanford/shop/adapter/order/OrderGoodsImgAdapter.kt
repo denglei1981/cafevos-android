@@ -30,15 +30,15 @@ class OrderGoodsImgAdapter: BaseQuickAdapter<OrderSkuItem, BaseDataBindingHolder
             imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
                 visibility = when(item.busSourse) {
-                    "1" -> {//秒杀
+                    "1","SECKILL" -> {//秒杀
                         setText(R.string.str_seckill)
                         View.VISIBLE
                     }
-                    "2" -> {//砍价
+                    "2","HAGGLE" -> {//砍价
                         setText(R.string.str_bargaining)
                         View.VISIBLE
                     }
-                    "3"->{//维保
+                    "3","WB"->{//维保
                         setText(R.string.str_maintenance)
                         View.VISIBLE
                     }

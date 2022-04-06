@@ -22,7 +22,8 @@ import java.text.SimpleDateFormat
 
 
 class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
-    private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context)-105)/3 }
+    private val btnWidth by lazy { (ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,55f))/4 }
+    private val dp30 by lazy { ScreenUtils.dp2px(context,30f) }
     //orderSource -2所有订单
     private val control by lazy { OrderControl(context,viewModel) }
     private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","众筹订单","未知5","未知6","未知7","未知8")
@@ -34,6 +35,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
             dataFormat(dataBinding,item)
+            initBtn(dataBinding)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
@@ -41,6 +43,17 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
 //            dataBinding.tvTotleIntegral.setHtmlTxt(if(4!=item.orderType)context.getString(R.string.str_Xfb,item.fbCost) else item.fbCost,"#00095B")
             control.bindingGoodsInfo(dataBinding.inGoodsInfo,item)
             setOrderType(dataBinding.tvOrderType,item)
+        }
+    }
+    private fun initBtn(dataBinding:ItemOrdersGoodsBinding){
+        dataBinding.apply {
+            val params = btnConfirm.layoutParams
+            params.width=btnWidth
+            params.height=dp30
+            btnConfirm.layoutParams=params
+            btnCancel.layoutParams=params
+            btnLogistics.layoutParams=params
+            btnInvoice.layoutParams=params
         }
     }
     /**
@@ -105,20 +118,44 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             val evalStatus=item.evalStatus
             val orderStatus=item.orderStatus
             if("FINISH"==orderStatus&&null!=evalStatus&&"WAIT_EVAL"==evalStatus){//待评价
-                dataBinding.btnConfirm.apply {
-                    visibility=View.VISIBLE
-                    setText(R.string.str_eval)
-                    setOnClickListener {
-                        item.apply {
-                            WBuriedUtil.clickShopOrderComment(orderNo,spuName,fbOfUnitPrice)
+                dataBinding.apply {
+                    btnCancel.apply {//申请售后
+                        visibility=View.VISIBLE
+                        setText(R.string.str_applyRefund)
+                        setOnClickListener {
+
                         }
-                        OrderEvaluationActivity.start(item.orderNo)
+                    }
+                    btnLogistics.apply {//查看物流
+                        visibility=View.VISIBLE
+                        setOnClickListener {
+
+                        }
+                    }
+                    btnInvoice.apply {//申请发票
+                        visibility=View.VISIBLE
+                        setOnClickListener {
+
+                        }
+                    }
+                    btnConfirm.apply {//确认收货
+                        visibility=View.VISIBLE
+                        setText(R.string.str_eval)
+                        setOnClickListener {
+                            item.apply {
+                                WBuriedUtil.clickShopOrderComment(orderNo,spuName,fbOfUnitPrice)
+                            }
+                            OrderEvaluationActivity.start(item.orderNo)
+                        }
+                        setBackgroundResource(R.drawable.bord_00095b_15dp)
                     }
                 }
             }else{
                 when(orderStatus){
                     //待付款->可立即支付、取消支付
                     "WAIT_PAY"-> {
+                        dataBinding.btnLogistics.visibility=View.GONE
+                        dataBinding.btnInvoice.visibility=View.GONE
                         dataBinding.btnConfirm.apply {
                             visibility=View.VISIBLE
                             setText(R.string.str_immediatePayment)
@@ -137,18 +174,62 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     //待发货
                     "WAIT_SEND"-> {
-                        dataBinding.btnConfirm.visibility=View.INVISIBLE
+                        dataBinding.apply {
+                            btnCancel.visibility=View.GONE
+                            btnLogistics.visibility=View.GONE
+                            btnInvoice.apply {//申请发票
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnConfirm.apply {//申请退款
+                                visibility=View.VISIBLE
+                                setText(R.string.str_applyARefund)
+                                setBackgroundResource(R.drawable.bord_99_15dp)
+                                setOnClickListener {
+
+                                }
+                            }
+                        }
                     }
                     //待收货->可确认收货
                     "WAIT_RECEIVE"-> {
-                        dataBinding.btnConfirm.apply {
-                            visibility=View.VISIBLE
-                            setText(R.string.str_confirmGoods)
-                            setOnClickListener {confirmGoods(position,item)}
+                        dataBinding.apply {
+                            btnCancel.apply {//申请售后
+                                visibility=View.VISIBLE
+                                setText(R.string.str_applyRefund)
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnLogistics.apply {//查看物流
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnInvoice.apply {//申请发票
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnConfirm.apply {//确认收货
+                                visibility=View.VISIBLE
+                                setText(R.string.str_confirmGoods)
+                                setOnClickListener {
+                                    confirmGoods(position,item)
+                                }
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
+                            }
                         }
                     }
                     //已完成,已关闭->可再次购买
                     "FINISH","CLOSED"->{
+                        dataBinding.btnLogistics.visibility=View.GONE
+                        dataBinding.btnInvoice.visibility=View.GONE
+                        dataBinding.btnCancel.visibility=View.GONE
                         if("2"!=item.busSourse){
                             dataBinding.btnConfirm.apply {
                                 visibility=View.VISIBLE
@@ -164,6 +245,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                     //未知
                     else ->{
+                        dataBinding.btnLogistics.visibility=View.GONE
+                        dataBinding.btnInvoice.visibility=View.GONE
                         dataBinding.btnCancel.visibility=View.GONE
                         dataBinding.btnConfirm.visibility=View.INVISIBLE
                     }
@@ -171,6 +254,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             }
         }
     }
+
     /**
      * 评价状态
      * [evalStatus]WAIT_EVAL 待评价 、WAIT_CHECK 待审核 、ON_SHELVE 已上架 、UNDER_SHELVE 已下架 、CHECK_FAILURE 审核不通过
