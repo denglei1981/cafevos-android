@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.imageview.ShapeableImageView
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/img_goods_cover"
@@ -104,15 +105,9 @@
             android:text="@{model.rmbPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
-        <androidx.compose.ui.platform.ComposeView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/composeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_price"
-            android:paddingEnd="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
             app:layout_constraintTop_toTopOf="@id/img_goods_cover"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,5 +133,11 @@
                 android:textColor="@color/color_74889D"
                 android:textSize="@dimen/sp_12"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.compose.ui.platform.ComposeView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/composeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,6 +11,7 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat
 
 
 class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
+    private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context)-105)/3 }
     //orderSource -2所有订单
     private val control by lazy { OrderControl(context,viewModel) }
     private val orderTypes= arrayOf("未知0","试驾订单","购车订单","商品订单","众筹订单","未知5","未知6","未知7","未知8")
@@ -39,7 +41,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             dataBinding.model=item
             dataBinding.executePendingBindings()
             updateBtnUI(position,dataBinding,item)
-            dataBinding.tvTotleIntegral.setHtmlTxt(if(4!=item.orderType)context.getString(R.string.str_Xfb,item.fbCost) else item.fbCost,"#00095B")
+//            dataBinding.tvTotleIntegral.setHtmlTxt(if(4!=item.orderType)context.getString(R.string.str_Xfb,item.fbCost) else item.fbCost,"#00095B")
             control.bindingGoodsInfo(dataBinding.inGoodsInfo,item)
             setOrderType(dataBinding.tvOrderType,item)
         }
@@ -48,7 +50,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
     * */
     private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
-        dataBinding.tvTotleIntegral.visibility=View.VISIBLE
+//        dataBinding.tvTotleIntegral.visibility=View.VISIBLE
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
 //            tvGoodsNumber.visibility=View.VISIBLE
@@ -68,7 +70,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
-                    dataBinding.tvTotleIntegral.visibility=View.GONE
+//                    dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
                 2->{//购车 - orderBrief数据结构待定
                     dataBinding.inGoodsInfo.apply {
@@ -78,7 +80,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
-                    dataBinding.tvTotleIntegral.visibility=View.GONE
+//                    dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
                 3->{//商品
                     val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)

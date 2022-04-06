@@ -12,14 +12,17 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
+import com.changanford.shop.ui.compose.OrderGoodsItem
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
+
 
 /**
  * @Author : wenke
@@ -27,6 +30,8 @@ import com.changanford.shop.viewmodel.OrderViewModel
  * @Description : OrderControl
  */
 class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
+    private val imgWidthDp by lazy { (ScreenUtils.getScreenWidthDp(context)-105)/3 }
+    private val imgWidthPx by lazy { ScreenUtils.dp2px(context,imgWidthDp.toFloat()) }
     /**
      * 绑定订单商品基础信息
      * */
@@ -41,6 +46,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 item.fbPrice=itemBean.fb
                 item.rmbPrice=itemBean.rmb
                 val orderType=item.orderType
+                val params = imgGoodsCover.layoutParams
+                params.width=imgWidthPx
+                params.height=imgWidthPx
+                imgGoodsCover.layoutParams=params
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
                 imgGoodsCover.load(item.skuImg)
                 tvOrderType.apply {
@@ -75,6 +84,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                     }
                 }
                 model=item
+            }else {
+                composeView.setContent {
+                    OrderGoodsItem(imgWidthDp,itemBean)
+                }
             }
         }
     }

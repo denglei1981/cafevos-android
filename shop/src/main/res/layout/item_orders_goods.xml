@@ -14,12 +14,11 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="@dimen/dp_10"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_16"
         android:paddingBottom="@dimen/dp_10">
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_orderNo"
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
@@ -30,6 +29,7 @@
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/tv_order_states"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             layout="@layout/in_item_order_goods"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginEnd="@dimen/dp_20"
             android:visibility="gone"
             android:id="@+id/tv_totleIntegral"
             android:layout_marginTop="@dimen/dp_20"
@@ -67,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginEnd="@dimen/dp_20"
             style="?android:attr/borderlessButtonStyle"
             tools:visibility="visible"
             android:visibility="invisible"
@@ -102,6 +104,7 @@
             android:textSize="@dimen/sp_12" />
 
         <com.changanford.shop.view.TypefaceTextView
+            android:layout_marginStart="@dimen/dp_20"
             android:id="@+id/tv_orderType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

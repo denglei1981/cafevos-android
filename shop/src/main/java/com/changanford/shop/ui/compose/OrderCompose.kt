@@ -157,24 +157,41 @@ fun PayWayCompose(){
 @Composable
 fun OrderGoodsItem(imgWidth:Int=90,itemBean: OrderItemBean? =null){
     if(itemBean?.skuOrderVOList==null)return
-    for ((i,item)in itemBean.skuOrderVOList!!.withIndex()){
-        item.apply {
-            Box(modifier = Modifier.padding(end = 6.dp))  {
-                Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(skuImg) ?: com.changanford.common.R.mipmap.head_default,
-                    builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
-                    contentScale = ContentScale.Crop,
-                    contentDescription =null,modifier = Modifier
-                        .size(imgWidth.dp)
-                        .clip(RoundedCornerShape(5.dp)))
-                Box(modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 2.dp)
-                    .background(
-                        color = colorResource(R.color.color_B300095B),
-                        shape = RoundedCornerShape(5.dp)
-                    ), contentAlignment = Alignment.Center){
-                    Text(text = getTag(), color = Color.White, fontSize = 11.sp)
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(imgWidth.dp)
+        .background(Color.White), contentAlignment = Alignment.CenterEnd){
+        Row(modifier = Modifier.fillMaxWidth()) {
+            for ((i,item)in itemBean.skuOrderVOList!!.withIndex()){
+                item.apply {
+                    if(0==i) Spacer(modifier = Modifier.width(20.dp))
+                    Box(modifier = Modifier.padding(end = 6.dp))  {
+                        Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(skuImg) ?: com.changanford.common.R.mipmap.head_default,
+                            builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
+                            contentScale = ContentScale.Crop,
+                            contentDescription =null,modifier = Modifier
+                                .size(imgWidth.dp)
+                                .clip(RoundedCornerShape(5.dp)))
+                        Box(modifier = Modifier
+                            .padding(horizontal = 5.dp, vertical = 2.dp)
+                            .background(
+                                color = colorResource(R.color.color_B300095B),
+                                shape = RoundedCornerShape(5.dp)
+                            ), contentAlignment = Alignment.Center){
+                            Text(text = getTag(), color = Color.White, fontSize = 11.sp)
+                        }
+                    }
                 }
             }
+        }
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .defaultMinSize(minWidth = 67.dp)
+            .padding(start = 8.dp, end = 20.dp)
+            .background(colorResource(id = R.color.color_DBWhite)), horizontalAlignment = Alignment.End,verticalArrangement = Arrangement.Center) {
+            Text(text = "￥${itemBean.rmb}", fontSize = 14.sp, color = colorResource(R.color.color_33))
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(text = "共${itemBean.totalNum}件", fontSize = 11.sp, color = colorResource(R.color.color_74889D))
         }
     }
 }
