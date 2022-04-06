@@ -34,8 +34,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
         val dataBinding=holder.dataBinding
         if(dataBinding!=null){
             val position=holder.absoluteAdapterPosition
-            dataFormat(dataBinding,item)
             initBtn(dataBinding)
+            dataFormat(dataBinding,item)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             dataBinding.model=item
             dataBinding.executePendingBindings()
@@ -47,13 +47,26 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     }
     private fun initBtn(dataBinding:ItemOrdersGoodsBinding){
         dataBinding.apply {
-            val params = btnConfirm.layoutParams
-            params.width=btnWidth
-            params.height=dp30
-            btnConfirm.layoutParams=params
-            btnCancel.layoutParams=params
-            btnLogistics.layoutParams=params
-            btnInvoice.layoutParams=params
+          btnConfirm.layoutParams.apply {
+                width=btnWidth
+                height=dp30
+                btnConfirm.layoutParams=this
+            }
+            btnCancel.layoutParams.apply {
+                width=btnWidth
+                height=dp30
+                btnCancel.layoutParams=this
+            }
+            btnLogistics.layoutParams.apply {
+                width=btnWidth
+                height=dp30
+                btnLogistics.layoutParams=this
+            }
+            btnInvoice.layoutParams.apply {
+                width=btnWidth
+                height=dp30
+                btnInvoice.layoutParams=this
+            }
         }
     }
     /**
@@ -143,7 +156,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         setText(R.string.str_eval)
                         setOnClickListener {
                             item.apply {
-                                WBuriedUtil.clickShopOrderComment(orderNo,spuName,fbOfUnitPrice)
+                                WBuriedUtil.clickShopOrderComment(orderNo,spuName,rmb?:fb)
                             }
                             OrderEvaluationActivity.start(item.orderNo)
                         }
@@ -193,6 +206,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             }
                         }
                     }
+                    //退款中
+                    "WAIT_SYS_REGIST"-> {
+                        dataBinding.apply {
+                            btnCancel.visibility=View.GONE
+                            btnLogistics.visibility=View.GONE
+                            btnInvoice.visibility=View.GONE
+                            btnConfirm.visibility=View.INVISIBLE
+                        }
+                    }
                     //待收货->可确认收货
                     "WAIT_RECEIVE"-> {
                         dataBinding.apply {
@@ -225,8 +247,45 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             }
                         }
                     }
-                    //已完成,已关闭->可再次购买
-                    "FINISH","CLOSED"->{
+                    //已完成->可再次购买
+                    "FINISH"->{
+                        dataBinding.apply {
+                            btnCancel.apply {//申请售后
+                                visibility=View.VISIBLE
+                                setText(R.string.str_applyRefund)
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnLogistics.apply {//查看物流
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnInvoice.apply {//申请发票
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                        }
+                        if("2"!=item.busSourse){
+                            dataBinding.btnConfirm.apply {
+                                visibility=View.VISIBLE
+                                setText(R.string.str_onceAgainToBuy)
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
+                                setOnClickListener {
+                                    item.apply {
+                                        WBuriedUtil.clickShopOrderBuy(orderNo,spuName,rmb?:fb)
+                                    }
+                                    control.onceAgainToBuy(item)
+                                }
+                            }
+                        }else dataBinding.btnConfirm.visibility=View.INVISIBLE
+                    }
+                    //已关闭->可再次购买
+                    "CLOSED"->{
                         dataBinding.btnLogistics.visibility=View.GONE
                         dataBinding.btnInvoice.visibility=View.GONE
                         dataBinding.btnCancel.visibility=View.GONE
@@ -236,7 +295,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 setText(R.string.str_onceAgainToBuy)
                                 setOnClickListener {
                                     item.apply {
-                                        WBuriedUtil.clickShopOrderBuy(orderNo,spuName,fbOfUnitPrice)
+                                        WBuriedUtil.clickShopOrderBuy(orderNo,spuName,rmb)
                                     }
                                     control.onceAgainToBuy(item)
                                 }

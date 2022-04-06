@@ -8,8 +8,6 @@ import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.ScreenUtils
@@ -19,7 +17,6 @@ import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 
@@ -105,15 +102,15 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
      * 再次购买->商品详情
      * */
     fun onceAgainToBuy(item: OrderItemBean?){
-        item?.apply {
-            if("2"==busSourse){
-                //砍价
-                JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))
-            }else {
-//                GoodsDetailsActivity.start(mallMallSpuId)
-                GoodsDetailsActivity.start(jumpDataType?:3,jumpDataValue?:mallMallSpuId)
-            }
-        }
+//        item?.apply {
+//            if("2"==busSourse){
+//                //砍价
+//                JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,mallMallHaggleSpuId,mallMallHaggleActivityId))
+//            }else {
+////                GoodsDetailsActivity.start(mallMallSpuId)
+//                GoodsDetailsActivity.start(jumpDataType?:3,jumpDataValue?:mallMallSpuId)
+//            }
+//        }
 
 //        val skuCodeTxt= item.specifications.split(",").filter { ""!=it }
 //        val busSourse=item.busSourse

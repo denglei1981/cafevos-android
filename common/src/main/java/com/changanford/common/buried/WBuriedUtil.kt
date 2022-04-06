@@ -69,7 +69,7 @@ object WBuriedUtil {
     /**
      *用户点击评价按钮时触发
      * */
-    fun clickShopOrderComment(orderNo:String,goodsName:String?,price:String){
+    fun clickShopOrderComment(orderNo:String,goodsName:String?,price:String?){
         buried("app商城_商品订单_评价","app_mall_order_comment",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
     }
     /**
@@ -87,7 +87,7 @@ object WBuriedUtil {
     /**
      *用户点击再次购买按钮时触发
      * */
-    fun clickShopOrderBuy(orderNo:String,goodsName:String?,price:String){
+    fun clickShopOrderBuy(orderNo:String,goodsName:String?,price:String?){
         buried("app商城_商品订单_再次购买","app_mall_order_buyagain",extend = "{\"goods_name\": \"$goodsName\",\"price\": \"$price\",\"order_id\": \"$orderNo\"}")
     }
     //商城==============订单-END
