@@ -598,7 +598,7 @@ data class OrderItemBean(
     var payType:String?=null,
     var mallMallOrderId:String?=null,
     var skuOrderVOList:ArrayList<OrderSkuItem>?=null,
-    var totalNum:Int=0,
+    var totalNum:String?="0",
     var fb:String?=null,
     var rmb:String?=null,
     var busSource:String?=null,

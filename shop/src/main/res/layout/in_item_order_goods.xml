@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="item"
+            type="com.changanford.common.bean.OrderItemBean" />
+        <variable
             name="model"
             type="com.changanford.common.bean.OrderSkuItem" />
     </data>
@@ -71,6 +74,7 @@
             android:textSize="@dimen/sp_12" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:background="@color/colorWhite"
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_5"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -105,15 +109,27 @@
             android:text="@{model.rmbPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_imgArr"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_order_goods_imgs"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_price"
-            android:layout_marginEnd="@dimen/dp_20"
+            android:background="@color/color_DBWhite"
+            android:paddingEnd="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_8"
             app:layout_constraintTop_toTopOf="@id/img_goods_cover"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="@dimen/dp_70"
+            android:layout_height="0dp"
+            android:minWidth="@dimen/dp_67"
             android:orientation="vertical"
             android:gravity="center|end">
             <com.changanford.common.ui.view.WTextView
@@ -123,11 +139,11 @@
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_14"
                 app:w_start_txt="@string/str_rmb"
-                android:text="@{model.rmbPrice}" />
+                android:text="@{item.rmb}" />
             <com.changanford.common.ui.view.WTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{model.buyNum}"
+                android:text="@{item.totalNum}"
                 app:w_start_txt="@string/str_common"
                 app:w_end_txt="@string/str_a"
                 android:textColor="@color/color_74889D"

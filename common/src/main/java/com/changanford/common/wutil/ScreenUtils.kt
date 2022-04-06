@@ -51,7 +51,7 @@ object ScreenUtils {
         return getScreenWidth(context) * h / w
     }
 
-    fun setMargin(v: View, l: Int, t: Int, r: Int, b: Int) {
+    fun setMargin(v: View, l: Int=0, t: Int=0, r: Int=0, b: Int=0) {
         if (v.layoutParams is MarginLayoutParams) {
             val p = v.layoutParams as MarginLayoutParams
             p.setMargins(l, t, r, b)

@@ -16,9 +16,9 @@ import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
+import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.compose.OrderGoodsItem
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -26,7 +26,7 @@ import com.changanford.shop.viewmodel.OrderViewModel
 
 /**
  * @Author : wenke
- * @Time : 2021/10/15 0015
+ * @Time : 2021/10/15
  * @Description : OrderControl
  */
 class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
@@ -37,7 +37,12 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
      * */
     fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderItemBean){
         dataBinding.apply {
+            val params = imgGoodsCover.layoutParams
+            params.width=imgWidthPx
+            params.height=imgWidthPx
+            imgGoodsCover.layoutParams=params
             if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1){
+                recyclerViewImgArr.visibility=View.GONE
                 val item= itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
                 //砍价订单
 //            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
@@ -46,10 +51,6 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 item.fbPrice=itemBean.fb
                 item.rmbPrice=itemBean.rmb
                 val orderType=item.orderType
-                val params = imgGoodsCover.layoutParams
-                params.width=imgWidthPx
-                params.height=imgWidthPx
-                imgGoodsCover.layoutParams=params
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
                 imgGoodsCover.load(item.skuImg)
                 tvOrderType.apply {
@@ -85,10 +86,12 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 }
                 model=item
             }else {
-                composeView.setContent {
-                    OrderGoodsItem(imgWidthDp,itemBean)
-                }
+                recyclerViewImgArr.visibility=View.VISIBLE
+                val mAdapter=OrderGoodsImgAdapter()
+                recyclerViewImgArr.adapter= mAdapter
+                mAdapter.setList(itemBean.skuOrderVOList)
             }
+            item=itemBean
         }
     }
     /**
