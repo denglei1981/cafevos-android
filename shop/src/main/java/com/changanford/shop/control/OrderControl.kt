@@ -8,6 +8,8 @@ import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.ScreenUtils
@@ -17,6 +19,7 @@ import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 
