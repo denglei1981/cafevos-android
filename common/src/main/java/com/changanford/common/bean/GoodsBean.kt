@@ -604,6 +604,9 @@ data class OrderItemBean(
     var busSource:String?=null,
     var isNewOrder:String?=null,
 ) {
+    fun getRMBPrice(){
+        rmbPrice=if(rmb!="0")rmb else getRMB(fb)
+    }
     /**
      * 将福币转换为人民币 1元=100福币
      * */

@@ -88,6 +88,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 recyclerViewImgArr.adapter= mAdapter
                 mAdapter.setList(itemBean.skuOrderVOList)
             }
+            itemBean.getRMBPrice()
             item=itemBean
         }
     }
