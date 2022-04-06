@@ -43,9 +43,9 @@
                     android:id="@+id/in_orderInfo"
                     layout="@layout/in_oreder_confirm_orderinfo"/>
 <!--                支付信息-->
-                <include
-                    android:id="@+id/in_payInfo"
-                    layout="@layout/in_oreder_confirm_pay"/>
+<!--                <include-->
+<!--                    android:id="@+id/in_payInfo"-->
+<!--                    layout="@layout/in_oreder_confirm_pay"/>-->
 <!--                支付方式选择-->
                 <include
                     android:id="@+id/in_payWay"

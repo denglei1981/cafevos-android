@@ -2,7 +2,6 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -54,17 +53,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         fun start(goodsInfo:String) {
             JumpUtils.instans?.jump(109,goodsInfo)
         }
-        fun start(orderConfirmType:Int=0,dataBean:GoodsDetailBean) {
-//            PayConfirmActivity.start("M0562656018932555776")
-            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
-            JumpUtils.instans?.jump(109,Gson().toJson(bean))
+        fun start(dataBean:GoodsDetailBean) {
+//            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
+            JumpUtils.instans?.jump(109,Gson().toJson(dataBean))
         }
         /**
          * [orderConfirmType]确认订单来源 0详情 1购物车
         * */
-        fun start(orderConfirmType:Int=0,listBean:ArrayList<GoodsDetailBean>) {
-            val bean= ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = listBean)
-            JumpUtils.instans?.jump(109,Gson().toJson(bean))
+        fun start(listBean:ArrayList<GoodsDetailBean>) {
+//            val bean= ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = listBean)
+            JumpUtils.instans?.jump(109,Gson().toJson(listBean))
         }
     }
     private lateinit var infoBean: ConfirmOrderBean
@@ -86,22 +84,27 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
         val goodsInfo=intent.getStringExtra("goodsInfo")
+        "goodsInfo:$goodsInfo".wLogE("okhttp")
         if(TextUtils.isEmpty(goodsInfo)){
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
             this.finish()
             return
         }
-        if(MConstant.isShowLog)Log.e("okhttp","goodsInfo:$goodsInfo")
         if(goodsInfo!!.startsWith("[")){
-            val dataList: ArrayList<GoodsDetailBean> = Gson().fromJson(goodsInfo, object : TypeToken<ArrayList<GoodsDetailBean?>?>() {}.type)
-            dataListBean=dataList
-            orderConfirmType=dataList[0].orderConfirmType?:0
+            infoBean=ConfirmOrderBean().apply {
+                dataList = Gson().fromJson(goodsInfo, object : TypeToken<ArrayList<GoodsDetailBean?>?>() {}.type)
+                dataListBean=dataList
+                orderConfirmType=1//传来的是集合则表示从购物车过来
+            }
         }else if(goodsInfo.startsWith("{")){
-            infoBean=Gson().fromJson(goodsInfo,ConfirmOrderBean::class.java).apply {
-                this@OrderConfirmActivity.orderConfirmType=orderConfirmType?:0
+            infoBean=ConfirmOrderBean().apply {
+                orderConfirmType=0
+                val itemBean=Gson().fromJson(goodsInfo,GoodsDetailBean::class.java)
+                dataList= arrayListOf(itemBean)
                 dataListBean= dataList
             }
         }
+        orderConfirmType=infoBean.orderConfirmType?:0
         initObserve()
         edtCustomOnTextChanged()
         formattingData()
@@ -114,6 +117,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         var totalBuyNum=0
         var totalOriginalFb=0
         dataListBean?.forEach {
+            it.getRMB()
             val spuPageType=it.spuPageType
             val skuItem=ConfirmOrderInfoBean(skuId = it.skuId, num = it.buyNum, vin = it.vinCode,
                 mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.carModel)
@@ -560,8 +564,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         infoBean.apply {
             val isPrice=getPayLines()
             if(!TextUtils.isEmpty(vinCode)){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&& totalPayFb <=fbBalance?:0&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& totalPayFb <=fbBalance?:0&&isPrice)
+                binding.inBottom.btnSubmit.updateEnabled(isAgree&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
+            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
         }
     }
 }

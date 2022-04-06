@@ -41,7 +41,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
                 dismiss()
-                OrderConfirmActivity.start(0,dataBean)
+                OrderConfirmActivity.start(dataBean)
             }
             btnCart.setOnClickListener {
                 dismiss()
