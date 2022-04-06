@@ -54,7 +54,6 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
 //            tvGoodsNumber.visibility=View.VISIBLE
-            tvIntegral.visibility=View.VISIBLE
         }
         if(-2==orderSource){
             item.apply {
@@ -64,9 +63,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             when(item.orderType){
                 1->{//试驾
                     dataBinding.inGoodsInfo.apply {
-                        tvGoodsNumber.visibility=View.GONE
                         recyclerView.visibility=View.GONE
-                        tvIntegral.visibility=View.GONE
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
@@ -74,9 +71,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 }
                 2->{//购车 - orderBrief数据结构待定
                     dataBinding.inGoodsInfo.apply {
-                        tvGoodsNumber.visibility=View.GONE
                         recyclerView.visibility=View.GONE
-                        tvIntegral.visibility=View.GONE
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
