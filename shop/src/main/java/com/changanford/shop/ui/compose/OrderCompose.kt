@@ -187,8 +187,9 @@ fun OrderGoodsItem(imgWidth:Int=90,itemBean: OrderItemBean? =null){
         Column(modifier = Modifier
             .fillMaxHeight()
             .defaultMinSize(minWidth = 67.dp)
+            .background(colorResource(id = R.color.color_DBWhite))
             .padding(start = 8.dp, end = 20.dp)
-            .background(colorResource(id = R.color.color_DBWhite)), horizontalAlignment = Alignment.End,verticalArrangement = Arrangement.Center) {
+            , horizontalAlignment = Alignment.End,verticalArrangement = Arrangement.Center) {
             Text(text = "￥${itemBean.rmb}", fontSize = 14.sp, color = colorResource(R.color.color_33))
             Spacer(modifier = Modifier.height(2.dp))
             Text(text = "共${itemBean.totalNum}件", fontSize = 11.sp, color = colorResource(R.color.color_74889D))
