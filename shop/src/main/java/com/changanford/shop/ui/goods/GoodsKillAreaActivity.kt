@@ -13,7 +13,9 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
 import com.changanford.shop.adapter.goods.GoodsKillDateAdapter
+import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.ActGoodsKillAreaBinding
+import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -70,9 +72,13 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         }
     }
     override fun initData() {
+        viewModel.getKillBannerData()
         viewModel.getSckills()
     }
     private fun addObserve(){
+        viewModel.advertisingList.observe(this) {
+            BannerControl.bindingBanner(binding.banner,it,ScreenUtils.dp2px(this, 2.5f))
+        }
         viewModel.seckillSessionsData.observe(this) { item ->
             if(item.seckillSessions!=null&&item.seckillSessions?.size?:0>0){
                 item.now?.let { now -> nowTime = now }
