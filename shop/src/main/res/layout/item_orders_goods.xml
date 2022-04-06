@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             layout="@layout/in_item_order_goods"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
             android:id="@+id/tv_totleIntegral"
             android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/in_goodsInfo"

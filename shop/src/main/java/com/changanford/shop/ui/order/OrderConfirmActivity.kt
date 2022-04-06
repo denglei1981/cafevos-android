@@ -509,7 +509,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     payFb=edtCustom.text.toString()
                     payRmb = if(!TextUtils.isEmpty(payFb)){
                         getRMB("${totalPayFb-(payFb?:"0").toInt()}")
-                    }else null
+                    }else {
+                        payFb=null
+                        null
+                    }
                 }
             }
         }

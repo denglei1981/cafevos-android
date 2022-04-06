@@ -533,7 +533,6 @@ data class OrderItemBean(
     val mallMallHaggleSkuId: String = "0",
     val mallMallHaggleSpuId: String = "0",
     val mallMallHaggleUserGoodsId: String = "0",
-    val mallMallOrderId: String = "0",
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
@@ -597,6 +596,12 @@ data class OrderItemBean(
     var payRmb:String?=null,
     var freightFb:String?=null,
     var payType:String?=null,
+    var mallMallOrderId:String?=null,
+    var skuOrderVOList:ArrayList<OrderSkuItem>?=null,
+    var totalNum:Int=0,
+    var fb:String?=null,
+    var rmb:String?=null,
+    var busSource:String?=null,
     var price: String?=null
 ) {
     /**
@@ -720,7 +725,7 @@ data class PayWayBean(
 data class PayBackBean(
     var aliPay:String?=null,
     var uacPay:String?=null,
-    var wxPay:WxPayBean?=null,
+    var wxPay: WxPayBean?=null,
 )
 data class CreateOrderBean(
     var freight:String?=null,
@@ -737,7 +742,7 @@ data class CreateOrderBean(
     }
 }
 data class OrderSkuItem(
-    val busSourse: Int = 0,
+    val busSourse: String? = "0",
     val carModel: String? = null,
     val mallMallHaggleUserGoodsId: Int? = 0,
     val num: Int = 0,
@@ -752,11 +757,25 @@ data class OrderSkuItem(
     val unitPriceFbOld: String? = "0",
     val unitPriceOld: String? = "0",
     val vin: String? = null,
-    val buyNum: Int = 0,
+    val buyNum: String = "0",
     val price: String? = null,
-    val sharedRmb: String? = null
-
-)
+    val sharedRmb: String? = null,
+    var orderType:Int=0,
+    var fbPrice:String?=null,
+    var rmbPrice: String?=null,
+){
+    /**
+     * 获取标签
+    * */
+    fun getTag(source:String?=busSourse):String{
+        return when (source) {
+            "1" -> "秒杀"
+            "2" -> "砍价"
+            "3" -> "维保"
+            else ->""
+        }
+    }
+}
 /**
  * 优惠券
 * */
