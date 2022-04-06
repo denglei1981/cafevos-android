@@ -6,6 +6,8 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.OrderSkuItem
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
@@ -14,7 +16,6 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
-import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
@@ -29,49 +30,52 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
     /**
      * 绑定订单商品基础信息
      * */
-    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,item: OrderItemBean){
+    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderItemBean){
         dataBinding.apply {
-//            val preferentialFbOfUnitPrice=item.preferentialFbOfUnitPrice
-//            if(null==preferentialFbOfUnitPrice)item.preferentialFbOfUnitPrice=item.fbOfUnitPrice
-            //砍价订单
-            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
-                item.fbOfUnitPrice=item.hagglePrice!!
-            }
-            val orderType=item.orderType
-            imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
-            imgGoodsCover.load(item.skuImg)
-            tvOrderType.apply {
-                visibility = when(item.busSourse) {
-                    "1" -> {//秒杀
-                        setText(R.string.str_seckill)
-                        View.VISIBLE
+            if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1){
+                val item= itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
+                //砍价订单
+//            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
+//                item.fbOfUnitPrice=item.hagglePrice!!
+//            }
+                item.fbPrice=itemBean.fb
+                item.rmbPrice=itemBean.rmb
+                val orderType=item.orderType
+                imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
+                imgGoodsCover.load(item.skuImg)
+                tvOrderType.apply {
+                    visibility = when(item.busSourse) {
+                        "1" -> {//秒杀
+                            setText(R.string.str_seckill)
+                            View.VISIBLE
+                        }
+                        "2" -> {//砍价
+                            setText(R.string.str_bargaining)
+                            View.VISIBLE
+                        }
+                        "3"->{//维保
+                            setText(R.string.str_maintenance)
+                            View.VISIBLE
+                        }
+                        else -> View.GONE
                     }
-                    "2" -> {//砍价
-                        setText(R.string.str_bargaining)
-                        View.VISIBLE
-                    }
-                    "3"->{//维保
-                        setText(R.string.str_maintenance)
-                        View.VISIBLE
-                    }
-                    else -> View.GONE
                 }
-            }
-            //众筹订单自带单位
-            tvIntegral.setEndTxt(if(4==item.orderType)null else context.getString(R.string.str_integral))
-            recyclerView.apply {
-                if(!TextUtils.isEmpty(item.specifications)){
-                    visibility= View.VISIBLE
-                    layoutManager= FlowLayoutManager(context,false,true)
-                    adapter= OrderGoodsAttributeAdapter().apply {
-                        val specifications=item.specifications.split(",").filter { ""!=it }
-                        setList(specifications)
+                //众筹订单自带单位
+//                tvIntegral.setEndTxt(if(4==item.orderType)null else context.getString(R.string.str_integral))
+                recyclerView.apply {
+                    if(!TextUtils.isEmpty(item.specifications)){
+                        visibility= View.VISIBLE
+                        layoutManager= FlowLayoutManager(context,false,true)
+                        adapter= OrderGoodsAttributeAdapter().apply {
+                            val specifications=item.specifications?.split(",")?.filter { ""!= it }
+                            setList(specifications)
+                        }
+                    }else{
+                        visibility= View.INVISIBLE
                     }
-                }else{
-                    visibility= View.INVISIBLE
                 }
+                model=item
             }
-            model=item
         }
     }
     /**

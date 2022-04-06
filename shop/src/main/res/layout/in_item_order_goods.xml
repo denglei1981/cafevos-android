@@ -6,13 +6,13 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.common.bean.OrderItemBean" />
+            type="com.changanford.common.bean.OrderSkuItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_goodsInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <com.google.android.material.imageview.ShapeableImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +39,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_11" />
         <com.changanford.shop.view.TypefaceTextView
+            app:layout_constraintEnd_toStartOf="@id/layout_price"
             android:textStyle="bold"
             android:id="@+id/tv_goods_title"
             android:layout_marginTop="@dimen/dp_5"
@@ -52,9 +53,11 @@
             android:text="@{model.spuName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
-            style="@style/style_txt_ellipsize"/>
+            android:maxLines="2"
+            android:ellipsize="end"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_number"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +74,7 @@
             android:layout_marginEnd="@dimen/dp_5"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
-            app:layout_constraintEnd_toStartOf="@id/tv_goods_number"
+            app:layout_constraintEnd_toEndOf="@id/tv_goods_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -90,15 +93,44 @@
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
+            android:visibility="gone"
             android:id="@+id/tv_integral"
             android:layout_marginBottom="@dimen/dp_5"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:end_txt="@string/str_integral"
-            android:text="@{model.fbOfUnitPrice}"
+            app:start_txt="@string/str_rmb"
+            android:text="@{model.rmbPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_price"
+            android:paddingEnd="@dimen/dp_20"
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
+            app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp_70"
+            android:orientation="vertical"
+            android:gravity="center|end">
+            <com.changanford.common.ui.view.WTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="¥1300"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_14"
+                app:w_start_txt="@string/str_rmb"
+                android:text="@{model.rmbPrice}" />
+            <com.changanford.common.ui.view.WTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.buyNum}"
+                app:w_start_txt="@string/str_common"
+                app:w_end_txt="@string/str_a"
+                android:textColor="@color/color_74889D"
+                android:textSize="@dimen/sp_12"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -533,7 +533,6 @@ data class OrderItemBean(
     val mallMallHaggleSkuId: String = "0",
     val mallMallHaggleSpuId: String = "0",
     val mallMallHaggleUserGoodsId: String = "0",
-    val mallMallOrderId: String = "0",
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
@@ -597,6 +596,12 @@ data class OrderItemBean(
     var payRmb:String?=null,
     var freightFb:String?=null,
     var payType:String?=null,
+    var mallMallOrderId:String?=null,
+    var skuOrderVOList:ArrayList<OrderSkuItem>?=null,
+    var totalNum:Int=0,
+    var fb:String?=null,
+    var rmb:String?=null,
+    var busSource:String?=null,
 ) {
     /**
      * 将福币转换为人民币 1元=100福币
@@ -726,7 +731,7 @@ data class CreateOrderBean(
     }
 }
 data class OrderSkuItem(
-    val busSourse: Int = 0,
+    val busSourse: String? = "0",
     val carModel: String? = null,
     val mallMallHaggleUserGoodsId: Int? = 0,
     val num: Int = 0,
@@ -741,10 +746,12 @@ data class OrderSkuItem(
     val unitPriceFbOld: String? = "0",
     val unitPriceOld: String? = "0",
     val vin: String? = null,
-    val buyNum: Int = 0,
+    val buyNum: String = "0",
     val price: String? = null,
-    val sharedRmb: String? = null
-
+    val sharedRmb: String? = null,
+    var orderType:Int=0,
+    var fbPrice:String?=null,
+    var rmbPrice: String?=null,
 )
 /**
  * 优惠券

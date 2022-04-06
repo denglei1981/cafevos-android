@@ -56,7 +56,7 @@ class GoodsViewModel: BaseViewModel() {
      * 获取秒杀banner
      * */
     fun getKillBannerData(){
-        adsRepository.getAds("mall_top_ad_v2")
+        adsRepository.getAds("recommend_seckill")
     }
     /**
      * 获取 商城首页
