@@ -160,4 +160,23 @@
         <attr name="locationTexts" format="string" />
         <attr name="hintText" format="string" />
     </declare-styleable>
+    <style name="s_gray_9">
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColor">@color/gray_999999</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <declare-styleable name="LayoutNameMoneyLayout">
+        <attr name="nameTextSize" format="dimension" />
+        <attr name="nameTextColor" format="color" />
+        <attr name="nameStr" format="string"/>
+
+        <attr name="oneTextSize" format="dimension" />
+        <attr name="oneTextColor" format="color" />
+        <attr name="oneStr" format="string"/>
+
+        <attr name="secondTextSize" format="dimension" />
+        <attr name="secondTextColor" format="color" />
+        <attr name="secondStr" format="string"/>
+    </declare-styleable>
 </resources>

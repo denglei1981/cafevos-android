@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F4">
+
+        <com.changanford.shop.view.TopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toTopOf="@+id/tv_get_invoice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topbar">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:id="@+id/tv_amountGoods"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="发票类型"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:background="@drawable/shape_search_bg_gray_f4"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:text="增值税普通发票"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="发票内容"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:background="@drawable/shape_bg_gray_e5"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:text="商品明细"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="发票抬头"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:background="@drawable/shape_bg_gray_e5"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:text="个人"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_person"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="个人姓名"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:hint="请填写个人或您的姓名"
+                        android:maxLength="16"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="收货地址"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:hint="请填写个人或您的姓名"
+                        android:maxLength="16"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:minHeight="@dimen/dp_72">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:layout_marginEnd="8dp"
+                        android:text="收货地址"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_address"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:id="@+id/tv_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="8dp"
+                        android:text="收货地址"
+                        android:textColor="@color/color_66"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_address"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/picture_icon_more"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:text="1.开票金额为用户实际支付的金额（不含优惠券、福币抵扣）
+2.暂时只支持纸质发票邮寄，不支持电子发票
+3.纸质发票在订单确认收货的15个工作日内开具并邮寄，收到后请妥善保管，如退换请将发票单独邮寄
+"
+                    android:textColor="#ff999999"
+                    android:textSize="11sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_not_invoice"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/shape_00095b_20dp_trans"
+            android:gravity="center"
+            android:text="不开发票"
+            android:textColor="@color/color_00095B"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_get_invoice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintWidth_percent="0.4" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_get_invoice"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/shape_00095b_20dp"
+            android:gravity="center"
+            android:text="申请开票"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_not_invoice"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintWidth_percent="0.4" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
