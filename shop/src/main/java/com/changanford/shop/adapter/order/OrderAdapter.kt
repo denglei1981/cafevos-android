@@ -51,7 +51,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
         dataBinding.tvTotleIntegral.visibility=View.VISIBLE
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
-            tvGoodsNumber.visibility=View.VISIBLE
+//            tvGoodsNumber.visibility=View.VISIBLE
             tvIntegral.visibility=View.VISIBLE
         }
         if(-2==orderSource){
