@@ -8,31 +8,38 @@ import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
+import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 
+
 /**
  * @Author : wenke
- * @Time : 2021/10/15 0015
+ * @Time : 2021/10/15
  * @Description : OrderControl
  */
 class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
+    private val imgWidthDp by lazy { (ScreenUtils.getScreenWidthDp(context)-105)/3 }
+    private val imgWidthPx by lazy { ScreenUtils.dp2px(context,imgWidthDp.toFloat()) }
     /**
      * 绑定订单商品基础信息
      * */
     fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderItemBean){
         dataBinding.apply {
+            val params = imgGoodsCover.layoutParams
+            params.width=imgWidthPx
+            params.height=imgWidthPx
+            imgGoodsCover.layoutParams=params
             if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1){
+                recyclerViewImgArr.visibility=View.GONE
                 val item= itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
                 //砍价订单
 //            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
@@ -44,16 +51,16 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
                 imgGoodsCover.load(item.skuImg)
                 tvOrderType.apply {
-                    visibility = when(item.busSourse) {
-                        "1" -> {//秒杀
+                    visibility = when(itemBean.busSourse) {
+                        "1","SECKILL" -> {//秒杀
                             setText(R.string.str_seckill)
                             View.VISIBLE
                         }
-                        "2" -> {//砍价
+                        "2","HAGGLE" -> {//砍价
                             setText(R.string.str_bargaining)
                             View.VISIBLE
                         }
-                        "3"->{//维保
+                        "3","WB"->{//维保
                             setText(R.string.str_maintenance)
                             View.VISIBLE
                         }
@@ -75,7 +82,14 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                     }
                 }
                 model=item
+            }else {
+                recyclerViewImgArr.visibility=View.VISIBLE
+                val mAdapter=OrderGoodsImgAdapter()
+                recyclerViewImgArr.adapter= mAdapter
+                mAdapter.setList(itemBean.skuOrderVOList)
             }
+            itemBean.getRMBPrice()
+            item=itemBean
         }
     }
     /**

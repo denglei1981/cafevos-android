@@ -515,7 +515,7 @@ data class OrderItemBean(
     var addressId: Int = 0,
     var addressInfo: String = "",
     val addressName: String = "",
-    var buyNum: String = "0",
+    var buyNum: String? = "0",
     val consignee: String = "",
     val consumerMsg: String? = "",
     val courierCompany: String? = "",
@@ -558,7 +558,7 @@ data class OrderItemBean(
     val skuCode: String = "",
     var skuImg: String? = "",
     val snapshotOfAttrOption: String = "",
-    var specifications: String = "",
+    var specifications: String? = null,
     var spuName: String? = "",
     val spuSecondName: String = "",
     val updateBy: String = "",
@@ -567,7 +567,7 @@ data class OrderItemBean(
     val cost: String? = "0",
     var waitPayCountDown: Long? = 0,
     var acountFb: String = "0",
-    var busSourse: String = "0",
+    var busSourse: String? = "0",
     val closeTime: Long? = 0,
     val evalStatusDetail: String = "",
     val payTime: Long? = 0,
@@ -600,12 +600,16 @@ data class OrderItemBean(
     var payType:String?=null,
     var mallMallOrderId:String?=null,
     var skuOrderVOList:ArrayList<OrderSkuItem>?=null,
-    var totalNum:Int=0,
+    var totalNum:String?="0",
     var fb:String?=null,
     var rmb:String?=null,
     var busSource:String?=null,
+    var isNewOrder:String?=null,
     var price: String?=null
 ) {
+    fun getRMBPrice(){
+        rmbPrice=if(rmb!="0")rmb else getRMB(fb,"")
+    }
     /**
      * 将福币转换为人民币 1元=100福币
      * */
@@ -771,9 +775,9 @@ data class OrderSkuItem(
     * */
     fun getTag(source:String?=busSourse):String{
         return when (source) {
-            "1" -> "秒杀"
-            "2" -> "砍价"
-            "3" -> "维保"
+            "1","SECKILL" -> "秒杀"
+            "2","HAGGLE" -> "砍价"
+            "3","WB" -> "维保"
             else ->""
         }
     }

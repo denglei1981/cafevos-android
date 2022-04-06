@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_root"
+        android:layout_marginEnd="@dimen/dp_6">
+        <com.google.android.material.imageview.ShapeableImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/img_goods_cover"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:src="@mipmap/image_h_one_default"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+        <com.changanford.shop.view.TypefaceTextView
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:id="@+id/tv_orderType"
+            android:background="@drawable/shadow_b300095b_2dp"
+            android:layout_margin="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
+            app:layout_constraintStart_toStartOf="@id/img_goods_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="秒杀"
+            android:minHeight="@dimen/dp_16"
+            android:minWidth="@dimen/dp_32"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_11" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

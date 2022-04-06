@@ -18,7 +18,7 @@
             app:bg_color="@color/white"
             app:title_text="@string/str_ordersGoods"/>
         <com.google.android.material.tabs.TabLayout
-            app:tabMode="fixed"
+            app:tabMode="auto"
             android:id="@+id/tab_layout"
             style="@style/tabLayout_style"
             android:layout_width="match_parent"
