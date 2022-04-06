@@ -12,6 +12,8 @@ import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.InItemOrderGoodsV2Binding
+import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
+import com.changanford.shop.utils.WCommonUtil
 
 /**
  *
@@ -27,6 +29,9 @@ class OrderDetailsItemV2Adapter() :
             model = item
             GlideUtils.loadBD(item.skuImg,imgGoodsCover)
             showTotalTag(tvIntegral,item)
+            val goodsAttributeAdapter = GoodsAttributeAdapter()
+            goodsAttributeAdapter.setList(item.getTagList())
+            recyclerView.adapter = goodsAttributeAdapter
         }
     }
 
@@ -34,15 +39,13 @@ class OrderDetailsItemV2Adapter() :
 
     }
     fun showTotalTag(text: AppCompatTextView?, item: OrderItemBean) {
-        if (TextUtils.isEmpty(item.payFb)) {
+        if (TextUtils.isEmpty(item.price)) {
             showZero(text, item)
             return
         }
-        val fbNumber = item.payFb
+        val fbNumber = item.price
 
-
-//        val str = "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
-        val str = "￥+${item.payRmb}+([icon]${item.payFb})"
+        val str = "${WCommonUtil.getRMBBigDecimal(item.price)}([icon] ${item.price})"
         //先设置原始文本
         text?.text = str
         //使用post方法，在TextView完成绘制流程后在消息队列中被调用
@@ -77,7 +80,7 @@ class OrderDetailsItemV2Adapter() :
     }
 
     fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
-        val tagName = item.payRmb
+        val tagName = item.price
 
         //先设置原始文本
         text?.text = "合计".plus("  ￥${tagName}")

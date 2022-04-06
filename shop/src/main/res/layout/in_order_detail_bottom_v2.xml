@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.OrderItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_7"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_20"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_order_cancle"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bord_00095b_1dp"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_98"
+            android:onClick="onClick"
+            android:text="@string/str_cancelOrder"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_order_confirm"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_order_confirm"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_5"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_98"
+            android:onClick="onClick"
+            android:text="@string/str_immediatePayment"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

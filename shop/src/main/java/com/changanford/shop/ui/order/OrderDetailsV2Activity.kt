@@ -16,6 +16,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
+import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.CustomImageSpan
@@ -32,7 +33,9 @@ import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
+import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 import kotlin.math.abs
@@ -115,6 +118,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inOrderInfo.tvOtherValue.visibility = View.VISIBLE
         showShoppingInfo(dataBean.skuList)
         showTotalTag(binding.inGoodsInfo1.tvTotalPrice, dataBean)
+        binding.inGoodsInfo1.tvIntegralGoods.text = WCommonUtil.getRMBBigDecimal(dataBean.price)
         viewModel.getOrderStatus(orderStatus, evalStatus).apply {
             dataBean.orderStatusName = this
 
@@ -255,7 +259,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //        }
         binding.inBottom.apply {
             model = dataBean
-            tvTotalPayFb.setText(totalPayName)
+//            tvTotalPayFb.setText(totalPayName)
         }
         this.dataBean = dataBean
     }
@@ -300,15 +304,39 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
     }
 
-    private fun bindingAddressInfo(addressInfo: OrderReceiveAddress, isUpdate: Boolean = false) {
+    private fun localAddressObserve(addressInfoJson: String) {
+        Gson().fromJson(addressInfoJson, ShopAddressInfoBean::class.java).apply {
+            //更新收货地址
+            val addressInfo =getAddress()
+            viewModel.updateAddressByOrderNoV2(dataBean.mallMallOrderId, addressId, object :
+                OnPerformListener {
+                override fun onFinish(code: Int) {
+//                    dataBean.addressInfo = addressInfo
+//                    dataBean.addressId = addressId
+                    addressInfo.let {
+                        val orderReceiveAddress = OrderReceiveAddress(addressId.toString(), addressInfo, phone, consignee)
+                        resetAddress(orderReceiveAddress)
+                    }
 
+                }
+            })
+
+        }
+    }
+    fun resetAddress(orderReceiveAddress:OrderReceiveAddress){
+        binding.inAddress.tvUserInfo.text= orderReceiveAddress.getUserInfo()
+        binding.inAddress.tvLocationInfo.text=orderReceiveAddress.addressName
+
+    }
+
+    private fun bindingAddressInfo(addressInfo: OrderReceiveAddress, isUpdate: Boolean = false) {
         updateAddressInfo(addressInfo)
     }
 
     private fun updateAddressInfo(item: OrderReceiveAddress) {
         item.apply {
-
-            binding.inAddress.addressInfo = this
+//            binding.inAddress.addressInfo = this
+            resetAddress(item)
         }
     }
 
@@ -396,7 +424,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             .observe(this@OrderDetailsV2Activity, {
                 it?.let {
                     // TODO 更换地址。
-//                    bindingAddressInfo(it, true)
+                    localAddressObserve(it)
                 }
             })
     }
@@ -405,6 +433,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         if (TextUtils.isEmpty(item.payFb)) {
             showZero(text, item)
             return
+        }
+        item.payFb?.let { // 福币为0
+            if (it.toInt() <= 0) {
+                showZero(text, item)
+                return
+            }
         }
         val fbNumber = item.payFb
 

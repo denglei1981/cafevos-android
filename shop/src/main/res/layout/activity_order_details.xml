@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:binding="http://schemas.android.com/apk/res-auto">
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -97,18 +97,17 @@
                 <include
                     android:id="@+id/in_goodsInfo1"
                     layout="@layout/in_order_detail_info_v2"
-                    binding:model="@{model}"
-                    />
+                    binding:model="@{model}" />
 
                 <include
                     android:id="@+id/in_orderInfo"
-                    binding:model="@{model}"
-                    layout="@layout/in_order_detail_orderinfo" />
+                    layout="@layout/in_order_detail_orderinfo"
+                    binding:model="@{model}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <include
             android:id="@+id/in_bottom"
-            layout="@layout/in_order_detail_bottom" />
+            layout="@layout/in_order_detail_bottom_v2" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

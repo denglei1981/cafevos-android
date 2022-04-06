@@ -5,13 +5,8 @@
 
     <data>
 
-        <variable
-            name="model"
-            type="com.changanford.common.bean.OrderItemBean" />
 
-        <variable
-            name="addressInfo"
-            type="com.changanford.common.bean.OrderReceiveAddress" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +24,7 @@
             android:drawableStart="@mipmap/shop_location"
             android:drawablePadding="@dimen/dp_5"
             android:onClick="onClick"
-            android:text="@{addressInfo.userInfo}"
+
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
@@ -44,7 +39,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_20"
             android:onClick="onClick"
-            android:text="@{addressInfo.addressName}"
+
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toStartOf="@id/img_right"

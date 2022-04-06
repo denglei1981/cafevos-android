@@ -149,7 +149,7 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
                 holder.itemView.setOnClickListener {
                     LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS)
                         .postValue(JSON.toJSON(item).toString())//H5回调数据
-                    var intent = Intent()
+                    val intent = Intent()
                     intent.putExtra("addressBeanItem", item)
                     setResult(Activity.RESULT_OK, intent)
                     finish()

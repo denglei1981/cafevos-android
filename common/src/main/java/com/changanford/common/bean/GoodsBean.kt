@@ -581,6 +581,7 @@ data class OrderItemBean(
     var payRmb:String?=null,
     var freightFb:String?=null,
     var payType:String?=null,
+    var price: String?=null
 ) {
     /**
      * 将福币转换为人民币 1元=100福币
@@ -594,6 +595,12 @@ data class OrderItemBean(
         }
         return "${unit?:""}${rmbPrice?:"0"}"
     }
+    fun getTagList(): List<String> {
+        if (!TextUtils.isEmpty(specifications)) {
+            return specifications!!.split(",").filter { "" != it }
+        }
+        return arrayListOf()
+    }
 }
 
 data class OrderReceiveAddress(
@@ -601,7 +608,7 @@ data class OrderReceiveAddress(
     var addressName: String,
     var phone: String,
     var consignee: String
-    /**名字*/
+    /**用户名字*/
 ) {
     fun getUserInfo(): String {
         return consignee.plus("\t").plus(phone)
@@ -635,7 +642,11 @@ data class ShopAddressInfoBean(
     val userId: Int = 0,
     var userInfo: String? = "$consignee   $phone",
     var addressInfo: String? = "$provinceName$cityName$districtName$addressName"
-)
+){
+    fun getAddress():String{
+      return   "$provinceName$cityName$districtName$addressName"
+    }
+}
 
 data class AddressValueObj(
     val addressName: String = "",

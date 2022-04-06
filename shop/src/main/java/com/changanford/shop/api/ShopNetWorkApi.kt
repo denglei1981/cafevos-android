@@ -189,5 +189,11 @@ interface ShopNetWorkApi {
     @POST("/mall/coupon/get")
     suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponData>>
 
+    /**
+     *
+     * 下单后，修改地址
+     */
+    @POST("/mall/updateAdrr")
+    suspend fun  updateAddress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
 }

@@ -404,6 +404,22 @@ class OrderViewModel: BaseViewModel() {
             }
         }
     }
+    fun updateAddressByOrderNoV2(orderNo:String,addressId:Int,listener: OnPerformListener?){
+        viewModelScope.launch {
+            fetchRequest (true){
+                body.clear()
+                body["mallMallOrderId"]=orderNo
+                body["addrId"]=addressId
+                val randomKey = getRandomKey()
+                shopApiService.updateAddress(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                ToastUtils.reToast(R.string.str_addressChangedSuccessfully)
+                listener?.onFinish(0)
+            }
+        }
+    }
     /**
      * 申请退货
      * [orderNo]订单号
