@@ -714,7 +714,7 @@ data class PayWayBean(
 data class PayBackBean(
     var aliPay:String?=null,
     var uacPay:String?=null,
-    var wxPay:WxPayBean?=null,
+    var wxPay: WxPayBean?=null,
 )
 data class CreateOrderBean(
     var freight:String?=null,
@@ -752,7 +752,19 @@ data class OrderSkuItem(
     var orderType:Int=0,
     var fbPrice:String?=null,
     var rmbPrice: String?=null,
-)
+){
+    /**
+     * 获取标签
+    * */
+    fun getTag(source:String?=busSourse):String{
+        return when (source) {
+            "1" -> "秒杀"
+            "2" -> "砍价"
+            "3" -> "维保"
+            else ->""
+        }
+    }
+}
 /**
  * 优惠券
 * */

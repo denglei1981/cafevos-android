@@ -104,6 +104,12 @@
             android:text="@{model.rmbPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
+        <androidx.compose.ui.platform.ComposeView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/composeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_price"
             android:paddingEnd="@dimen/dp_20"

@@ -15,14 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayWayBean
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 
 /**
@@ -144,5 +149,32 @@ fun PayWayCompose(){
             }
         }
 
+    }
+}
+/**
+ * 订单item
+* */
+@Composable
+fun OrderGoodsItem(imgWidth:Int=90,itemBean: OrderItemBean? =null){
+    if(itemBean?.skuOrderVOList==null)return
+    for ((i,item)in itemBean.skuOrderVOList!!.withIndex()){
+        item.apply {
+            Box(modifier = Modifier.padding(end = 6.dp))  {
+                Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(skuImg) ?: com.changanford.common.R.mipmap.head_default,
+                    builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
+                    contentScale = ContentScale.Crop,
+                    contentDescription =null,modifier = Modifier
+                        .size(imgWidth.dp)
+                        .clip(RoundedCornerShape(5.dp)))
+                Box(modifier = Modifier
+                    .padding(horizontal = 5.dp, vertical = 2.dp)
+                    .background(
+                        color = colorResource(R.color.color_B300095B),
+                        shape = RoundedCornerShape(5.dp)
+                    ), contentAlignment = Alignment.Center){
+                    Text(text = getTag(), color = Color.White, fontSize = 11.sp)
+                }
+            }
+        }
     }
 }
