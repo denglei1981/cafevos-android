@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
-import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.wutil.ScreenUtils
@@ -16,11 +15,9 @@ import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
 import com.changanford.shop.ui.order.OrderEvaluationActivity
-import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 
 
@@ -78,26 +75,28 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
 //                    dataBinding.tvTotleIntegral.visibility=View.GONE
                 }
                 3->{//商品
-                    val orderBriefBean= Gson().fromJson(item.orderBrief, OrderBriefBean::class.java)
-                    var specifications=""
-                    val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
-                    if(!TextUtils.isEmpty(snapshotOfAttrOption)){
-                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(snapshotOfAttrOption, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
-                        for(item in attrOption){
-                            specifications+="${item.optionName},"
-                        }
-                    }
+                    val orderBriefBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
+//                    var specifications=""
+//                    val snapshotOfAttrOption=orderBriefBean.snapshotOfAttrOption
+//                    if(!TextUtils.isEmpty(snapshotOfAttrOption)){
+//                        val attrOption: List<SnapshotOfAttrOption> = Gson().fromJson(snapshotOfAttrOption, object : TypeToken<List<SnapshotOfAttrOption?>?>() {}.type)
+//                        for(item in attrOption){
+//                            specifications+="${item.optionName},"
+//                        }
+//                    }
                     //单价
-                    val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
+//                    val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                     item.apply {
-                        this.buyNum=orderBriefBean.buyNum
-                        payType=orderBriefBean.payType
-                        this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
-                        this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
-                        this.specifications=specifications
-                        this.orginPrice=orderBriefBean.orginPrice
+//                        this.buyNum=orderBriefBean.buyNum
+//                        payType=orderBriefBean.payType
+//                        this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
+//                        this.fbOfUnitPrice="${WCommonUtil.getHeatNum("$fbOfUnitPrice",0)}"
+//                        this.specifications=orderBriefBean.specifications
+//                        this.orginPrice=orderBriefBean.orginPrice
                         this.busSourse= orderBriefBean.busSourse
                         this.hagglePrice=orderBriefBean.hagglePrice
+                        this.skuOrderVOList=orderBriefBean.skuOrderVOList
+                        this.mallMallOrderId=orderBriefBean.mallMallOrderId
                     }
                 }
                 4->{//活动订单-众筹
