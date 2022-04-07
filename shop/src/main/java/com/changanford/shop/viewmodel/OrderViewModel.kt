@@ -271,7 +271,7 @@ class OrderViewModel: BaseViewModel() {
             }.onSuccess {
                 orderItemLiveData.postValue(it)
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it)
+                it?.toast()
             }
         }
     }

@@ -22,8 +22,9 @@ class PayTimeCountControl (millisInFuture: Long, private val tv: TypefaceTextVie
         val h=if(hour>9)"$hour" else "0$hour"
         val m=if(minute>9)"$minute" else "0$minute"
         val s=if(second>9)"$second" else "0$second"
-        tv?.setText("$h:$m:$s")
-        countdownCompose?.value="$h:$m:$s"
+        val str="$h:$m:$s"
+        tv?.setText(str)
+        countdownCompose?.value=str
     }
     override fun onFinish() {
         listener.onFinish()

@@ -304,8 +304,7 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
         val selectedTag = remember { mutableStateOf("0") }
         dataBean?.apply {
             val payCountDown=waitPayCountDown?:0
-            if(payCountDown>0){
-                timeCountControl?.cancel()
+            if(payCountDown>0&&timeCountControl==null){
                 timeCountControl= PayTimeCountControl(payCountDown*1000,tv=null, countdownCompose = countdown,object :OnTimeCountListener{
                     override fun onFinish() {
                         countdown.value=timeStr
@@ -351,7 +350,10 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                 }
-                Box(modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 20.dp), contentAlignment = Alignment.BottomCenter){
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 20.dp), contentAlignment = Alignment.BottomCenter){
                     Button(onClick = {
                         viewModel.rmbPay(orderNo,selectedTag.value)
                     }, enabled = selectedTag.value!="0"&&countdown.value!=timeStr,shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
