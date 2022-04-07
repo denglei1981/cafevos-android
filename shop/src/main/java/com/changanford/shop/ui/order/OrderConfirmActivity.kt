@@ -37,7 +37,6 @@ import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -185,7 +184,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
             if(itemCoupon==null){
-                isEnabled=false
+//                isEnabled=false
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText(R.string.str_temporarilyNoUse)
             }else{
@@ -199,8 +198,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
         infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
-        //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
-        var minFb:Int=WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt()
+        //最少使用多少人民币（fb）=总金额*最低现金比 向下取整
+        var minFb:Int=WCommonUtil.getHeatNum("${totalPayFb*minRmbProportion}",0).toInt()
         val maxFb:Int=totalPayFb -minFb
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
@@ -266,7 +265,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             }
         }
     }
-    @DelicateCoroutinesApi
     private fun submitOrder(){
         if(!isClickSubmit){
             isClickSubmit=true

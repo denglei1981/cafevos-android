@@ -256,6 +256,7 @@ object WCommonUtil {
         return BigDecimal(str?:"0").setScale(newScale,BigDecimal.ROUND_HALF_UP)
     }
     /**
+     * 向下
      * [newScale]几位小数
      * */
     fun getHeatNum(number:String,newScale:Int): BigDecimal {

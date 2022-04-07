@@ -123,16 +123,16 @@ class OrderViewModel: BaseViewModel() {
         var payType=0
         if(fbPrice!!.toFloat()>0&&rmbPrice!!.toFloat()>0){
             payType=2
-        }else if(fbPrice.toFloat()>0&&rmbPrice!!.toFloat()==0f){
-            payType=0
-        }else if(fbPrice.toFloat()==0f&&rmbPrice!!.toFloat()>0f){
+        } else if(rmbPrice!!.toFloat()>0f){
             payType=1
+        }else if(rmbPrice.toFloat()==0f){
+            payType=0
         }
         viewModelScope.launch {
             fetchRequest (true){
                 body["orderConfirmType"]=orderConfirmType
                 body["zfb"]= fbPrice
-                body["zje"]=rmbPrice?:"0"
+                body["zje"]= rmbPrice
                 body["freight"]=(freight?:"0").toFloat()
                 body["consumerMsg"]=consumerMsg?:""
                 body["payBfb"]=payBfb?:"0"

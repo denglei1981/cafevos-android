@@ -50,9 +50,11 @@ class ChooseCouponsActivity:BaseActivity<ActChooseCouponsBinding,OrderViewModel>
         //判断每个优惠券是否可用
         for ((i,item)in couponListBean.withIndex()){
             item.isAvailable=false
+            val discountsFb=0//优惠FB
             item.mallMallSkuIds?.forEach{skuId->
                 //查询skuId是否在订单中
                 skuItems.find { skuId== it.skuId }?.apply {
+                    unitPriceFb
                     couponListBean[i].isAvailable=true
                 }
             }
