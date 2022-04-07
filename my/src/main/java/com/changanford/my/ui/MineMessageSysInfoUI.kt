@@ -194,6 +194,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                         }.show()
                 }
                 it.item.setOnClickListener {
+
                     JumpUtils.instans?.jump(
                         item.jumpDataType,
                         item.jumpDataValue

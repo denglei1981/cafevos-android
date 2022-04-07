@@ -25,6 +25,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -682,11 +683,15 @@ class JumpUtils {
             119 -> { // 购物车
                 startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
             }
-            120->{ // 申请发票
+            120 -> { // 申请发票
                 startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
-            121->{// 申请退库tv_userInfo
+            121 -> {// 申请退库tv_userInfo
 
+            }
+            122 -> { // 跳优惠券弹窗
+                val getCoupopPop = GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
+                getCoupopPop.showPopupWindow()
             }
 
             10000 -> {

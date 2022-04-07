@@ -787,7 +787,9 @@ data class OrderSkuItem(
 }
 /**
  * 优惠券
+ *
 * */
+
 data class CouponsItemBean(
     //满减条件(满多少钱可满减)
     val conditionMoney: Long =0L,
@@ -813,6 +815,7 @@ data class CouponsItemBean(
     val validityEndTime: Long? = 0,
     var isAvailable:Boolean=false,//是否可用
     var discountsFb:Long=0,//实际优惠福币
+    var couponSendId:String // 发放id
 ){
     /**
      * 计算折扣金额

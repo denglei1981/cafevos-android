@@ -392,12 +392,20 @@ interface HomeNetWork {
     ): CommonResponse<String>
 
 
-    // 领取优惠券
+    // 优惠券列表
     @POST("/mall/coupon/receiveList")
     suspend fun receiveList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<MutableList<CouponsItemBean>>
+
+
+    // 领取优惠券
+    @POST("/mall/coupon/receive")
+    suspend fun  receiveCoupons(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
 
 }

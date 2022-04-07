@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.MyApp
@@ -35,6 +36,7 @@ import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
+import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -217,6 +219,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             true
         }
         binding.homeViewpager.offscreenPageLimit = 1
+
     }
 
     fun toSearch() {
@@ -355,6 +358,8 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                             showPopupWindow()
                         }
                     }, 500)
+                }else{
+                    viewModel.receiveList()
                 }
             }
         }
@@ -380,12 +385,20 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     var appIndexBackground: MutableList<AdBean>? = null
+
+
     override fun observe() {
         super.observe()
-
-
-
-
+        viewModel.receiveListLiveData.observe(this, Observer { data ->
+            if (data != null && data.isNotEmpty()) {
+                // 弹窗
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    GetCoupopBindingPop(requireActivity(), this, data).apply {
+                        showPopupWindow()
+                    }
+                }, 500)
+            }
+        })
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
 //            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
 //                if (t.isSuccess) {

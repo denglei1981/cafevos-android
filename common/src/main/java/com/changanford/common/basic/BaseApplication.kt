@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -168,7 +169,7 @@ abstract class BaseApplication : MultiDexApplication() {
 
     companion object {
         lateinit var INSTANT: Application
-        lateinit var curActivity: Activity
+        lateinit var curActivity: AppCompatActivity
         lateinit var currentViewModelScope  :CoroutineScope
     }
     /**
