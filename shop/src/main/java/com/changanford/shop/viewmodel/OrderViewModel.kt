@@ -451,6 +451,7 @@ class OrderViewModel: BaseViewModel() {
                 else "已完成"
             }
             "CLOSED"->"已关闭"
+            "REFUNDING"->"退款中"
             "AFERT_SALE_FINISH"->"售后已处理"
             else ->"未知"
         }

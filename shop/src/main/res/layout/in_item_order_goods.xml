@@ -84,17 +84,6 @@
             tools:text="预约时间：2021-09-08  24:12:09"
             android:textColor="@color/color_74889D"
             android:textSize="@dimen/sp_12" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_imgArr"
-            tools:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorWhite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_order_goods_imgs"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_price"
             android:background="@color/color_DBWhite"
@@ -105,10 +94,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:minWidth="@dimen/dp_67"
+            android:minWidth="@dimen/dp_68"
             android:orientation="vertical"
             android:gravity="center|end">
             <com.changanford.common.ui.view.WTextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="¥1300"
@@ -125,5 +115,17 @@
                 android:textColor="@color/color_74889D"
                 android:textSize="@dimen/sp_12"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_imgArr"
+            tools:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/layout_price"
+            android:background="@color/colorWhite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_order_goods_imgs"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
