@@ -249,6 +249,13 @@ object WCommonUtil {
         return df.format(heat)
     }
     /**
+     * 四舍五入
+     * [newScale]几位小数
+    * */
+    fun getRoundedNum(str: String?,newScale:Int=0):BigDecimal {
+        return BigDecimal(str?:"0").setScale(newScale,BigDecimal.ROUND_HALF_UP)
+    }
+    /**
      * [newScale]几位小数
      * */
     fun getHeatNum(number:String,newScale:Int): BigDecimal {

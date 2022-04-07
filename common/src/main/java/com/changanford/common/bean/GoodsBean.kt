@@ -255,7 +255,7 @@ data class ConfirmOrderBean(
     fun getTotalPayFbPrice(couponsFb:String,isFb:Boolean=false):Int{
         val multiple=if(isFb)1 else 100
         totalPayFbPrice=WCommonUtil.getHeatNumUP("${(totalOriginalFb?:0)+((freightPrice?:"0").toFloat()*100)-(couponsFb.toFloat()*multiple)}",0).toInt()
-        return totalPayFbPrice
+        return if(totalPayFbPrice>0)totalPayFbPrice else 0
     }
 }
 data class ConfirmOrderInfoBean(

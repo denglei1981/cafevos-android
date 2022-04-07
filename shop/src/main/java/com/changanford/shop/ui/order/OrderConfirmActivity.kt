@@ -120,7 +120,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             it.getRMB()
             val spuPageType=it.spuPageType
             val skuItem=ConfirmOrderInfoBean(skuId = it.skuId, num = it.buyNum, vin = it.vinCode,
-                mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.carModel)
+                mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.models)
             skuItem.initBean(spuPageType)
             skuItems.add(skuItem)
             totalBuyNum+=it.buyNum
@@ -140,30 +140,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //获取优惠券信息
         viewModel.confirmOrder(orderConfirmType,skuItems)
     }
-    override fun initData() {
-//        maxUseFb=infoBean.fbBalance?:0
-//        //非维保商品 需要选择地址
-//        if(WConstant.maintenanceType!=spuPageType){
-//            viewModel.addressList.observe(this) { addressList ->
-//                //默认获取地址列表的默认收货地址
-//                val item: AddressBeanItem? = addressList?.find { it.isDefault == 1 }
-//                bindingAddress(item)
-//            }
-//            val addressInfo=dataBean.addressInfo
-//            if(TextUtils.isEmpty(addressInfo))viewModel.getAddressList()
-//            else viewModel.addressList.postValue(arrayListOf(Gson().fromJson(addressInfo,AddressBeanItem::class.java)))
-//        }
-//        viewModel.orderInfoLiveData.observe(this) {
-//            isClickSubmit = false
-//            val source = it.source
-//            if (source != "0") it.source = if (dataBean.spuPageType == "2") "2" else dataBean.source
-//            PayConfirmActivity.start(it.orderNo)
-//            LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
-//                .postValue(it.source)
-//            this.finish()
-//        }
-//        bindingBaseData()
-    }
+    override fun initData() {}
 
     private fun initObserve(){
         //地址下列表点击后回调
@@ -179,9 +156,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 if(it!=null){
                     infoBean.fbBalance=it.totalIntegral
                     minRmbProportion=it.getRmbBfb()//得到人民币最低使用百分比
+                    "minRmbProportion:$minRmbProportion".wLogE("okhttp")
 //                    tvFreightValue.setText(infoBean.freightPrice)
                     val coupons=it.coupons
-                    bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
+//                    bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
+                    bindCoupon(null)
                 }
             }
         }
@@ -221,19 +200,19 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
         infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
-        //最少使用多少人民币（fb）=总金额*最低现金比
-        var minFb:Float=totalPayFb*minRmbProportion
-        val maxFb:Int= WCommonUtil.getHeatNumUP("${totalPayFb -minFb}",0).toInt()
+        //最少使用多少人民币（fb）=总金额*最低现金比 四舍五入取整
+        var minFb:Int=WCommonUtil.getRoundedNum("${totalPayFb*minRmbProportion}",0).toInt()
+        val maxFb:Int=totalPayFb -minFb
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
-            minFb= (totalPayFb-maxUseFb).toFloat()
+            minFb= totalPayFb-maxUseFb
             infoBean.fbBalance?:0
         }
         binding.inPayWay.apply {
             rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minFb")}"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
-        "minRmbProportion:$minRmbProportion>>>>minRmb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
+        "totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
         initPayWay()
     }
     private fun bindInfo(){
@@ -261,80 +240,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             tvAmountValue.text=WCommonUtil.getRMB("${infoBean.totalOriginalFb}")
         }
     }
-    @SuppressLint("StringFormatMatches", "SetTextI18n")
-    private fun bindingBaseData(){
-        //秒杀情况下 原价=现价
-//        if("SECKILL"==spuPageType){
-//            dataBean.orginPrice=dataBean.fbPrice
-//        }else if(WConstant.maintenanceType==spuPageType){//维保商品
-//            manageMaintenance()
-//        }
-//        //购买数量
-//        val buyNum=dataBean.buyNum
-//        //运费 1元=100积分
-//        val freightPrice=((dataBean.freightPrice?:"0.00").toFloat()*100).toInt()
-//        //单价（现价）
-//        val fbPrice=dataBean.fbPrice.toInt()
-//        //总商品价 单价*购买数量
-//        val totalFb=fbPrice*buyNum
-//        //总共支付 (商品金额+运费)
-//        totalPayFb=totalFb+freightPrice
-//        //最少使用多少人民币（fb）=总金额*最低现金比
-//        var minRmb:Float=totalPayFb*minRmbProportion
-//        val maxFb=WCommonUtil.getHeatNumUP("${totalFb-minRmb}",0).toInt()
-//        //最大可使用福币
-//        maxUseFb=if(maxUseFb>maxFb)maxFb else {
-//            minRmb= (totalPayFb-maxUseFb).toFloat()
-//            maxUseFb
-//        }
-//        dataBean.totalPayFb="$totalPayFb"
-//        binding.inOrderInfo.apply {
-//            if(dataBean.freightPrice=="0")dataBean.freightPrice="0.00"
-//            //单价（原价）
-//            val originalPrice=(dataBean.orginPrice?:dataBean.fbPrice).toInt()
-//            //原总商品价 单价*购买数量
-//            val totalOriginalFb=originalPrice*buyNum
-//            tvAmountValue.setText("$totalOriginalFb")
-//            tvTotal.setHtmlTxt(getString(R.string.str_Xfb,"$totalPayFb"),"#00095B")
-//            binding.inPayWay.apply {
-//                rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minRmb")}"
-//                rbRmb.text = "¥${getRMB("$totalPayFb")}"
-//            }
-//            val spuPageType=dataBean.spuPageType
-//            //会员折扣、砍价
-//            if("MEMBER_DISCOUNT"==spuPageType||"MEMBER_DISCOUNT"==dataBean.secondarySpuPageTagType||"2"==spuPageType){
-//                //会员优惠/砍价优惠=原总价-现总价
-//                (totalOriginalFb-totalFb).apply {
-//                    if(this>0){
-//                        dataBean.preferentialFb="$this"
-//                        //砍价优惠
-//                        if("2"==spuPageType)tvMemberDiscount.setText(R.string.str_bargainingFavorable)
-//                        tvMemberDiscount.visibility=View.VISIBLE
-//                        tvMemberDiscountValue.visibility=View.VISIBLE
-//                    }
-//                }
-//            }
-//            model=dataBean
-//        }
-//        binding.inGoodsInfo.apply {
-//            OrderGoodsAttributeAdapter().apply {
-//                rvGoodsProperty.layoutManager= FlowLayoutManager(this@OrderConfirmActivity,false,true)
-//                rvGoodsProperty.adapter= this
-//                setList(dataBean.skuCodeTxts?.filter { ""!=it })
-//            }
-//            imgGoodsCover.load(dataBean.skuImg)
-//            if(freightPrice!=0)tvDistributionType
-//            model=dataBean
-//        }
-        //支付方式
-//        initPayWay()
-//        binding.inBottom.apply {
-//            model=dataBean
-//            tvAcountFb.setText("${dataBean.acountFb}")
-//            updateBtnUi()
-//        }
-    }
-
     fun onClick(v:View){
         when(v.id){
             //提交订单
@@ -544,6 +449,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             rmbPrice = if(remainder>0) "${fbToFloat/100}"
             else "${fbToFloat.toInt()/100}"
         }
+        "getRMB>fb:$fb>>rmbPrice:$rmbPrice".wLogE("okhttp")
         return rmbPrice
     }
     private fun updatePayCustom(){
