@@ -63,6 +63,7 @@ fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,data
                 }
             }
         }
+        Spacer(modifier = Modifier.height(12.dp))
         Button(onClick = {
             LiveDataBus.get().with(LiveDataBusKey.COUPONS_CHOOSE_BACK, CouponsItemBean::class.java)
                 .postValue(selectedTag.value)
