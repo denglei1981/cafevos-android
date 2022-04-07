@@ -397,6 +397,9 @@ data class GoodsDetailBean(
         orginPrice=fbPer
         rmbPrice=getRMB(fbPer)
     }
+
+
+
 }
 
 data class Attribute(

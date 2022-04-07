@@ -107,6 +107,7 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
     /**
      *  获取评论
      *
@@ -196,6 +197,7 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<AskListMainData>>
+
     /**
      * 搜索搜索资讯
      */
@@ -363,22 +365,24 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<String>>
+
     /**
      *判断用户是否有可领取的微客服小程序积分
-    * */
+     * */
     @POST("/userIntegralImport/isGetIntegral")
-    suspend fun isGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<FBBean>
+    suspend fun isGetIntegral(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FBBean>
+
     /**
      *领取微客服小程序积分
      * */
     @POST("/userIntegralImport/doGetIntegral")
-    suspend fun doGetIntegral( @HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<WResponseBean>
-
-
-
-
-
-
+    suspend fun doGetIntegral(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<WResponseBean>
 
 
     @POST("ser/carAuth/confirmBindCar")
@@ -386,4 +390,14 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
+
+    // 领取优惠券
+    @POST("/mall/coupon/receiveList")
+    suspend fun receiveList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+
 }

@@ -16,13 +16,14 @@ import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartInvaildAdapter
 import com.changanford.shop.ui.shoppingcart.request.ShoppingCartViewModel
 import com.changanford.shop.utils.WCommonUtil
+import java.math.BigDecimal
 
 @Route(path = ARouterShopPath.ShoppingCartActivity)
 @SuppressLint("SetTextI18n")
 class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingCartViewModel>() {
 
     val shoppingCartAdapter: ShoppingCartAdapter by lazy {
-        ShoppingCartAdapter(object : ShoppingCartAdapter.ShopBackListener {
+        ShoppingCartAdapter(this,object : ShoppingCartAdapter.ShopBackListener {
             override fun check() {
                 setTitle()
             }
@@ -170,6 +171,8 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
         binding.layoutTop.tvTitle.text = "购物车(${count})"
     }
 
+
+
     fun setTitle() {
         if (shoppingCartAdapter.shopList.size > 0) {
             if (shoppingEdit) {
@@ -180,9 +183,15 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 // 加入所有的商品
                 binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
                 binding.tvOver.isSelected = true
-                var totalFbPrice: Long = 0
+                var totalFbPrice: BigDecimal= BigDecimal(0)
                 shoppingCartAdapter.shopList.forEach {
-                    totalFbPrice += it.fbPer?.toLong() ?: 0
+                    val bb=BigDecimal(it.fbPer)
+                    val buyNum=it.num
+                    buyNum?.let {
+                        val thisPrice =bb.multiply(BigDecimal(it))
+                        totalFbPrice= totalFbPrice.add(thisPrice)
+                    }
+
 
                 }
                 binding.tvBalance.visibility = View.VISIBLE

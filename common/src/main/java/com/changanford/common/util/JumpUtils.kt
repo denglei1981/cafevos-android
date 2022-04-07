@@ -683,7 +683,7 @@ class JumpUtils {
                 startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
             }
             120->{ // 申请发票
-
+                startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
             121->{// 申请退库tv_userInfo
 

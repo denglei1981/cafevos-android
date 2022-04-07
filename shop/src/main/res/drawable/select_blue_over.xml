@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/shape_00095b_20dp" android:state_selected="true" />
-    <item android:drawable="@drawable/shape_dd_20dp" android:state_selected="false" />
-    <item android:drawable="@drawable/shape_dd_20dp"/>
+    <item android:drawable="@drawable/bord_00095b_1dp" android:state_selected="true" />
+    <item android:drawable="@drawable/shadow_00095b_20dp" android:state_selected="false" />
+    <item android:drawable="@drawable/shadow_00095b_20dp"/>
 </selector>

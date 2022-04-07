@@ -109,5 +109,9 @@
         <include
             android:id="@+id/in_bottom"
             layout="@layout/in_order_detail_bottom_v2" />
+
+        <include
+            android:id="@+id/in_sale_bottom"
+            layout="@layout/in_order_detail_sale_after" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

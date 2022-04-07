@@ -20,11 +20,11 @@
         android:paddingEnd="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_20">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/shopping_cart_check_box"
+            android:src="@mipmap/icon_shopping_car_cant_choice"
             android:gravity="center_vertical"
             android:padding="@dimen/dp_6"
             android:textColor="@color/color_66"

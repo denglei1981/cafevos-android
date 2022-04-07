@@ -27,6 +27,9 @@ object ARouterShopPath {
     const val CouponActivity = "/shop/CouponActivity"  // 优惠券跳转
 
     const val AfterSaleActivity = "/shop/AfterSaleActivity" // 商品售后
+
+    const val InvoiceActivity="/shop/InvoiceActivity" // 申请发票
+
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

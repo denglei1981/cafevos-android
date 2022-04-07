@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,7 +19,8 @@
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="发票" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -121,21 +123,42 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.changanford.shop.view.TypefaceTextView
+                    <RadioGroup
+                        android:id="@+id/radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/dp_12"
-                        android:background="@drawable/shape_bg_gray_e5"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingTop="@dimen/dp_4"
-                        android:paddingEnd="@dimen/dp_8"
-                        android:paddingBottom="@dimen/dp_4"
-                        android:text="个人"
-                        android:textColor="@color/color_00095B"
-                        android:textSize="@dimen/sp_12"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_person"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_bg_gray_e5"
+                            android:button="@null"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingTop="@dimen/dp_2"
+                            android:paddingEnd="@dimen/dp_8"
+                            android:paddingBottom="2dp"
+                            android:text="个人"
+                            android:textColor="@color/color_00095B" />
+
+                        <RadioButton
+                            android:id="@+id/rb_company"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_8"
+                            android:background="@drawable/shape_bg_gray_e5"
+                            android:button="@null"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingTop="@dimen/dp_2"
+                            android:paddingEnd="@dimen/dp_8"
+                            android:paddingBottom="2dp"
+                            android:text="单位"
+                            android:textColor="@color/color_00095B" />
+
+                    </RadioGroup>
                 </LinearLayout>
 
                 <LinearLayout
@@ -157,6 +180,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_person_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -177,6 +201,88 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="单位名称"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_compony_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:hint="请填写单位名称"
+                        android:maxLength="16"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_taxpayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <com.changanford.shop.view.TypefaceTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="纳税人识别号"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_compony_taxpayer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:gravity="end|center_vertical"
+                        android:hint="请填写"
+                        android:inputType="text"
+                        android:maxLength="16"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_4"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_address"
@@ -249,12 +355,12 @@
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_10"
                         android:layout_marginEnd="8dp"
-                        android:text="收货地址"
                         android:textColor="@color/color_66"
                         android:textSize="@dimen/sp_12"
                         app:layout_constraintEnd_toStartOf="@+id/iv_address"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_address"
+                        tools:text="莉莉:18723498864" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_address"

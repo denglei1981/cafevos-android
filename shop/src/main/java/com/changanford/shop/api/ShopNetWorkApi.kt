@@ -196,4 +196,16 @@ interface ShopNetWorkApi {
     @POST("/mall/updateAdrr")
     suspend fun  updateAddress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
+
+    /**
+     * 开发票
+     * */
+    @POST("/mall/userInvoiceAdd")
+    suspend fun  userInvoiceAdd(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+
+    /**
+     *  购物车数量加减
+     * */
+    @POST("/mall/userSkuNumChange")
+    suspend fun  userSkuNumChange(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 }

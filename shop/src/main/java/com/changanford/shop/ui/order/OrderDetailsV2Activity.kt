@@ -2,24 +2,19 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.CustomImageSpan
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MTextUtil
@@ -27,12 +22,15 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
+import com.changanford.shop.bean.InvoiceInfo
+import com.changanford.shop.bean.SaleAfterBean
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
+import com.changanford.shop.ui.sale.adapter.OrderSaleStateAdapter
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -63,6 +61,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         OrderDetailsItemV2Adapter()
     }
 
+    val orderSaleStateAdapter: OrderSaleStateAdapter by lazy {
+        OrderSaleStateAdapter()
+    }
+
+
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     override fun initView() {
@@ -77,6 +80,35 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
 //        }
         binding.rvShopping.adapter = orderDetailsItemV2Adapter
+        binding.inSaleBottom.rvSaleAfter.adapter = orderSaleStateAdapter
+        showSaleAfter()
+        orderSaleStateAdapter.setOnItemClickListener { adapter, view, position ->
+            var item = orderSaleStateAdapter.getItem(position)
+            when (item.id) {
+                1 -> { // 申请开发票
+                    dataBean.mallMallOrderId?.let {
+                        var invoiceInfo = InvoiceInfo(
+                            dataBean.addressInfo, dataBean.addressId.toString(),
+                            it, dataBean.orderNo, dataBean.getRMB(dataBean.payFb),
+                            dataBean.orderReceiveAddress.consignee,
+                            dataBean.orderReceiveAddress.phone
+                        )
+                        val gson = Gson()
+                        val invoiceStr = gson.toJson(invoiceInfo)
+                        JumpUtils.instans?.jump(120, invoiceStr)
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    // 底部的售后 操作按钮
+    fun showSaleAfter() {
+        val saleList: ArrayList<SaleAfterBean> = arrayListOf()
+        saleList.add(SaleAfterBean(1, "申请发票", false))
+        orderSaleStateAdapter.setList(saleList)
     }
 
     override fun initData() {
@@ -307,15 +339,20 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private fun localAddressObserve(addressInfoJson: String) {
         Gson().fromJson(addressInfoJson, ShopAddressInfoBean::class.java).apply {
             //更新收货地址
-            val addressInfo =getAddress()
+            val addressInfo = getAddress()
             dataBean.mallMallOrderId?.let {
                 viewModel.updateAddressByOrderNoV2(it, addressId, object :
                     OnPerformListener {
                     override fun onFinish(code: Int) {
-//                    dataBean.addressInfo = addressInfo
-//                    dataBean.addressId = addressId
+                        dataBean.addressInfo = addressInfo
+                        dataBean.addressId = addressId
                         addressInfo.let {
-                            val orderReceiveAddress = OrderReceiveAddress(addressId.toString(), addressInfo, phone, consignee)
+                            val orderReceiveAddress = OrderReceiveAddress(
+                                addressId.toString(),
+                                addressInfo,
+                                phone,
+                                consignee
+                            )
                             resetAddress(orderReceiveAddress)
                         }
 
@@ -324,9 +361,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             }
         }
     }
-    fun resetAddress(orderReceiveAddress:OrderReceiveAddress){
-        binding.inAddress.tvUserInfo.text= orderReceiveAddress.getUserInfo()
-        binding.inAddress.tvLocationInfo.text=orderReceiveAddress.addressName
+
+    fun resetAddress(orderReceiveAddress: OrderReceiveAddress) {
+        binding.inAddress.tvUserInfo.text = orderReceiveAddress.getUserInfo()
+        binding.inAddress.tvLocationInfo.text = orderReceiveAddress.addressName
 
     }
 
@@ -337,6 +375,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private fun updateAddressInfo(item: OrderReceiveAddress) {
         item.apply {
 //            binding.inAddress.addressInfo = this
+            dataBean.addressId = addressId.toInt()
+            dataBean.addressInfo = addressName
             resetAddress(item)
         }
     }
