@@ -122,6 +122,7 @@ class HomeV2ViewModel : BaseViewModel() {
         launch(false, {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
+            body["popup"]="YES"
             ApiClient.createApi<HomeNetWork>()
                 .receiveList(body.header(randomKey), body.body(randomKey))
                 .onSuccess {

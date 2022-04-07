@@ -113,6 +113,7 @@ class GetCoupopBindingPop(
         lifecycleOwner.launchWithCatch {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
+            body["popup"]="NO"
             ApiClient.createApi<NetWorkApi>()
                 .receiveList(body.header(randomKey), body.body(randomKey))
                 .onSuccess {
