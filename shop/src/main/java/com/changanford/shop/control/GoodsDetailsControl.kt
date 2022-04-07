@@ -134,6 +134,13 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.composeView.setContent {
             DetailsWalkCompose(dataBean.recommend)
         }
+        //购物车数量
+        binding.inBottom.tvCartNumber.apply {
+            if(dataBean.shoppingCartCount>0){
+                visibility=View.VISIBLE
+                text="${dataBean.shoppingCartCount}"
+            }
+        }
     }
     /**
      * 评价信息
@@ -320,6 +327,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             else dataBean.apply {
                 viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
                     override fun onFinish(code: Int) {
+                        dataBean.shoppingCartCount+=buyNum
+                        binding.inBottom.tvCartNumber.apply{
+                            visibility=View.VISIBLE
+                            text="${dataBean.shoppingCartCount}"
+                        }
                         "加入成功！".toast()
                     }
                 })
