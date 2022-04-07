@@ -16,6 +16,7 @@ import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
@@ -193,6 +194,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
+        "创建选择商品属性弹窗".wLogE("okhttp")
         if(::dataBean.isInitialized){
             val spuPageType=dataBean.spuPageType?:""
             if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
@@ -312,13 +314,16 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 加入购物车
     * */
     fun addShoppingCart(){
-        dataBean.apply {
-            if(isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))createAttribute()
-            else viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
-                override fun onFinish(code: Int) {
-                    "加入成功！".toast()
-                }
-            })
+        getSkuTxt(popupWindow?._skuCode?:skuCode)
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else dataBean.apply {
+                viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
+                    override fun onFinish(code: Int) {
+                        "加入成功！".toast()
+                    }
+                })
+            }
         }
     }
 }
