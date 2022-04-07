@@ -34,18 +34,28 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     private val simpleDateFormat = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
+        holder.dataBinding?.apply{
             val position=holder.absoluteAdapterPosition
-            initBtn(dataBinding)
-            dataFormat(dataBinding,item)
+            initBtn(this)
+            dataFormat(this,item)
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
-            dataBinding.model=item
-            dataBinding.executePendingBindings()
-            updateBtnUI(position,dataBinding,item)
-//            dataBinding.tvTotleIntegral.setHtmlTxt(if(4!=item.orderType)context.getString(R.string.str_Xfb,item.fbCost) else item.fbCost,"#00095B")
-            control.bindingGoodsInfo(dataBinding.inGoodsInfo,item)
-            setOrderType(dataBinding.tvOrderType,item)
+            this.model=item
+            this.executePendingBindings()
+            updateBtnUI(position,this,item)
+            control.bindingGoodsInfo(this.inGoodsInfo,item)
+            setOrderType(this.tvOrderType,item)
+            bindTotalPrice(tvTotalPrice,item)
+        }
+    }
+    private fun bindTotalPrice(tv: TypefaceTextView,item: OrderItemBean){
+        if(tv.visibility==View.VISIBLE){
+            item.apply {
+                var drawableStart=if(!TextUtils.isEmpty(fb)&&fb!!.toFloat()>0f)ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42) else null
+                val endStr=if(!TextUtils.isEmpty(rmb)&&rmb!!.toFloat()>0)"￥$rmb" else ""
+                tv.text=if(drawableStart!=null&&!TextUtils.isEmpty(endStr))"$fb+$endStr" else if(TextUtils.isEmpty(endStr))"$fb" else endStr
+                if(TextUtils.isEmpty(endStr))drawableStart=ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42)
+                tv.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart,null,null,null)
+            }
         }
     }
     private fun initBtn(dataBinding:ItemOrdersGoodsBinding){
@@ -76,7 +86,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
      * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
     * */
     private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
-//        dataBinding.tvTotleIntegral.visibility=View.VISIBLE
+        dataBinding.tvTotalPrice.visibility=View.VISIBLE
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
 //            tvGoodsNumber.visibility=View.VISIBLE
@@ -93,7 +103,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
-//                    dataBinding.tvTotleIntegral.visibility=View.GONE
+                    dataBinding.tvTotalPrice.visibility=View.GONE
                 }
                 2->{//购车 - orderBrief数据结构待定
                     dataBinding.inGoodsInfo.apply {
@@ -101,7 +111,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         tvCarInfo.visibility = View.VISIBLE
                         tvCarInfo.text=item.orderBrief
                     }
-//                    dataBinding.tvTotleIntegral.visibility=View.GONE
+                    dataBinding.tvTotalPrice.visibility=View.GONE
                 }
                 3->{//商品
                     val newBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
