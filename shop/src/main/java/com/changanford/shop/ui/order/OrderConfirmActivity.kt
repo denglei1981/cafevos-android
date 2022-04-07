@@ -156,7 +156,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 if(it!=null){
                     infoBean.fbBalance=it.totalIntegral
                     minRmbProportion=it.getRmbBfb()//得到人民币最低使用百分比
-                    "minRmbProportion:$minRmbProportion".wLogE("okhttp")
 //                    tvFreightValue.setText(infoBean.freightPrice)
                     val coupons=it.coupons
 //                    bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
@@ -200,8 +199,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
         infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
-        //最少使用多少人民币（fb）=总金额*最低现金比 四舍五入取整
-        var minFb:Int=WCommonUtil.getRoundedNum("${totalPayFb*minRmbProportion}",0).toInt()
+        //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
+        var minFb:Int=WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt()
         val maxFb:Int=totalPayFb -minFb
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
