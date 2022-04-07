@@ -164,7 +164,7 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
             //客服
             R.id.tv_customerService->JumpUtils.instans?.jump(11)
             //购物车
-            R.id.tv_cart->JumpUtils.instans?.jump(99)
+            R.id.tv_cart->JumpUtils.instans?.jump(119)
             //返回
             R.id.img_back->this.finish()
         }

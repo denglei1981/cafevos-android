@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:end_txt="@string/str_integral"
-                android:text="@{model.fbCost}"
+                android:text="@{model.payFb}"
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_28" />
             <com.changanford.shop.view.TypefaceTextView

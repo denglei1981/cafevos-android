@@ -10,13 +10,13 @@ import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.control.time.KllTimeCountControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
@@ -134,6 +134,13 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         headerBinding.composeView.setContent {
             DetailsWalkCompose(dataBean.recommend)
         }
+        //购物车数量
+        binding.inBottom.tvCartNumber.apply {
+            if(dataBean.shoppingCartCount>0){
+                visibility=View.VISIBLE
+                text="${dataBean.shoppingCartCount}"
+            }
+        }
     }
     /**
      * 评价信息
@@ -194,6 +201,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 创建选择商品属性弹窗
     * */
     fun createAttribute(){
+        "创建选择商品属性弹窗".wLogE("okhttp")
         if(::dataBean.isInitialized){
             val spuPageType=dataBean.spuPageType?:""
             if("SECKILL"!=spuPageType||("SECKILL"==spuPageType&&2!=dataBean.killStates)){
@@ -253,7 +261,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,btnCart:KillBtnView?=null,source:Int=0){
         _dataBean.apply {
-            val totalPayFb=fbPrice.toInt()*buyNum
+//            val totalPayFb=fbPrice.toInt()*buyNum
             if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates,btnSource=source)//2/7 秒杀已结束或者未开始
             else if(stock<1){//库存不足,已售罄、已抢光
                 btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true,btnSource=source)
@@ -261,9 +269,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
                     btnSubmit.setText(R.string.str_immediatelyChange)
                     btnSubmit.updateEnabled(false)
-                } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
-                    btnSubmit.setStates(8,btnSource=source)
-                }else btnSubmit.setStates(5,btnSource=source)
+                }
+//                else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
+//                    btnSubmit.setStates(8,btnSource=source)
+//                }
+                else btnSubmit.setStates(5,btnSource=source)
             }else btnSubmit.setStates(5,btnSource=source)
             //处理购物车按钮
             if("SECKILL"==spuPageType){//秒杀商品不具备加入购物车功能
@@ -311,13 +321,21 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
      * 加入购物车
     * */
     fun addShoppingCart(){
-        dataBean.apply {
-            if(isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))createAttribute()
-            else viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
-                override fun onFinish(code: Int) {
-                    "加入成功！".toast()
-                }
-            })
+        getSkuTxt(popupWindow?._skuCode?:skuCode)
+        skuCode.apply {
+            if(isInvalidSelectAttrs(this))createAttribute()
+            else dataBean.apply {
+                viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
+                    override fun onFinish(code: Int) {
+                        dataBean.shoppingCartCount+=buyNum
+                        binding.inBottom.tvCartNumber.apply{
+                            visibility=View.VISIBLE
+                            text="${dataBean.shoppingCartCount}"
+                        }
+                        "加入成功！".toast()
+                    }
+                })
+            }
         }
     }
 }

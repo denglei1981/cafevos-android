@@ -74,6 +74,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
     private var minRmbProportion:Float=0f//最低使用人民币比例
+    private var minRmb="0"
     private var payFb:String?="0"//福币支付额度
     private var payRmb:String?="0"//人民币支付额度
     private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
@@ -234,12 +235,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         couponsItem=itemCoupon
         var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
-            if(itemCoupon==null){
+            val item0=createOrderBean?.coupons?.get(0)
+            if(item0==null || !item0.isAvailable){
 //                isEnabled=false
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText(R.string.str_temporarilyNoUse)
-            }else{
-                couponsAmount="${itemCoupon.couponMoney?:0}"
+            }else if(itemCoupon==null){
+                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
+                setText(R.string.str_pleaseSelectCoupons)
+            } else{
+                couponsAmount="${itemCoupon.couponMoney}"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
                 setText("${itemCoupon.couponMoney}")
@@ -258,7 +263,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             infoBean.fbBalance?:0
         }
         binding.inPayWay.apply {
-            rbFbAndRmb.text="$maxUseFb+¥${getRMB("$minFb")}"
+            minRmb=getRMB("$minFb")
+            minRmb=if(minRmb.toFloat()>0f)"+¥$minRmb" else ""
+            rbFbAndRmb.text="$maxUseFb$minRmb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
         "totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
@@ -388,11 +395,22 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private fun initPayWay(){
         binding.inPayWay.apply {
             tvMaxUseFb.setText("$maxUseFb")
-            if(maxUseFb>0){
-                rbFbAndRmb.visibility=View.VISIBLE
-                rbCustom.visibility=View.VISIBLE
-                clickPayWay(0)
-            }else clickPayWay(1)
+            when {
+                maxUseFb>0 -> {
+                    rbFbAndRmb.visibility=View.VISIBLE
+                    rbCustom.visibility=View.VISIBLE
+                    clickPayWay(0)
+                }
+                totalPayFb==0 -> {
+                    rbFbAndRmb.visibility=View.VISIBLE
+                    clickPayWay(0)
+                }
+                else -> {
+                    if(maxUseFb==0)rbFbAndRmb.visibility=View.GONE
+                    rbRmb.visibility=View.VISIBLE
+                    clickPayWay(1)
+                }
+            }
         }
     }
     /**
@@ -447,9 +465,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 //选中了混合支付
                 rbFbAndRmb.isChecked->{
                     val str=rbFbAndRmb.text.toString()
-                    val splitArr=str.split("+¥")
-                    payFb=splitArr[0]
-                    payRmb=splitArr[1]
+                    if(str.contains("+¥")){
+                        val splitArr=str.split("+¥")
+                        payFb=splitArr[0]
+                        payRmb=splitArr[1]
+                    }else{
+                        payFb=str
+                        payRmb="0"
+                    }
                 }
                 //选中了人民币支付
                 rbRmb.isChecked->{
@@ -469,20 +492,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             }
         }
         val isPrice=!TextUtils.isEmpty(payFb)&&!TextUtils.isEmpty(payRmb)
-        bindBottomPrice(isPrice)
+        bindBottomPrice()
         return isPrice
     }
-    private fun bindBottomPrice(isPrice:Boolean=true){
+    private fun bindBottomPrice(){
         binding.inBottom.tvPayPrice.apply {
-            setCompoundDrawablesRelativeWithIntrinsicBounds(if(TextUtils.isEmpty(payFb)||payFb=="0")null
-            else ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42),null,null,null)
-            text = if(isPrice&&payFb!="0"&&payRmb!="0"){
-                "$payFb+¥$payRmb"
-            }else if((TextUtils.isEmpty(payFb)||payFb=="0")&&payRmb!="0"&&!TextUtils.isEmpty(payRmb)){
-                "¥$payRmb"
-            }else if((TextUtils.isEmpty(payRmb)||payRmb=="0")&&payFb!="0"&&!TextUtils.isEmpty(payFb)){
-                "$payFb"
-            }else ""
+            var drawableStart=if(!TextUtils.isEmpty(payFb)&&payFb!!.toFloat()>0f)ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42) else null
+            val endStr=if(!TextUtils.isEmpty(payRmb)&&payRmb!!.toFloat()>0)"￥$payRmb" else ""
+            text=if(drawableStart!=null&&!TextUtils.isEmpty(endStr))"$payFb+$endStr" else if(TextUtils.isEmpty(endStr)) payFb?:"" else endStr
+            if(TextUtils.isEmpty(endStr))drawableStart=ContextCompat.getDrawable(context,R.mipmap.ic_shop_fb_42)
+            setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart,null,null,null)
         }
     }
     /**
@@ -500,8 +519,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         return rmbPrice
     }
     private fun updatePayCustom(){
-        if(maxUseFb>0){
-            binding.inPayWay.apply {
+        binding.inPayWay.apply {
+            rbRmb.visibility=View.VISIBLE
+            if(maxUseFb>0){
                 val isCheck=rbCustom.isChecked
                 if(isCheck){
                     rbCustom.visibility=View.INVISIBLE
@@ -510,6 +530,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     layoutCustom.visibility=View.GONE
                     rbCustom.visibility=View.VISIBLE
                 }
+            }else if(totalPayFb==0){//总价为0
+                rbRmb.visibility=View.GONE
+                payFb="0"
+                rbFbAndRmb.visibility=View.VISIBLE
+            }else{
+                rbFbAndRmb.visibility=View.GONE
             }
         }
     }

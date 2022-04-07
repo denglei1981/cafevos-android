@@ -58,6 +58,8 @@
             android:gravity="center"
             android:drawableTop="@mipmap/ic_shop_shop_cart"/>
         <com.changanford.common.ui.view.WTextView
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintTop_toTopOf="@id/tv_cart"
             app:layout_constraintStart_toStartOf="@id/tv_cart"
             app:layout_constraintEnd_toEndOf="@id/tv_cart"
@@ -70,8 +72,8 @@
             android:gravity="center"
             android:background="@drawable/shape_f21c44_50dp"
             android:textStyle="bold"
-            android:paddingStart="@dimen/dp_2"
-            android:paddingEnd="@dimen/dp_2"
+            android:paddingStart="@dimen/dp_3"
+            android:paddingEnd="@dimen/dp_3"
             tools:text="0"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/sp_9"/>

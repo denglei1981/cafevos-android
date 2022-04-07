@@ -353,7 +353,8 @@ data class GoodsDetailBean(
     var mallMallSpuId:String?=null,
     var num:Int?=0,
     var vipFb:String?=null,
-    var mallSkuState:String,
+    var mallSkuState:String?=null,
+    var shoppingCartCount:Int=0,//购物车数量
 
 ){
     fun getLimitBuyNum():Int{

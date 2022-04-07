@@ -63,6 +63,7 @@ fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,data
                 }
             }
         }
+        Spacer(modifier = Modifier.height(12.dp))
         Button(onClick = {
             LiveDataBus.get().with(LiveDataBusKey.COUPONS_CHOOSE_BACK, CouponsItemBean::class.java)
                 .postValue(selectedTag.value)
@@ -86,7 +87,10 @@ private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableSta
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }) {
-                if (isAvailable) selectedTag.value = itemBean
+                if (isAvailable){
+                    val tag= selectedTag.value
+                    selectedTag.value =if(tag!=itemBean) itemBean else null
+                }
             }, verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier
                 .width(110.dp)
