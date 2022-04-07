@@ -259,13 +259,13 @@ object WCommonUtil {
      * 向下
      * [newScale]几位小数
      * */
-    fun getHeatNum(number:String,newScale:Int): BigDecimal {
+    fun getHeatNum(number:String,newScale:Int=0): BigDecimal {
         return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_DOWN)
     }
     /**
      * [newScale]几位小数 向上取
      * */
-    fun getHeatNumUP(number:String,newScale:Int): BigDecimal {
+    fun getHeatNumUP(number:String,newScale:Int=0): BigDecimal {
         return BigDecimal(number).setScale(newScale, BigDecimal.ROUND_UP)
     }
     /**

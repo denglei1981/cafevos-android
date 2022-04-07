@@ -44,9 +44,9 @@ private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
  * 选择优惠券
 * */
 @Composable
-fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,dataList:MutableList<CouponsItemBean>?=null) {
+fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,dataList:List<CouponsItemBean>?=null) {
     val findItem=dataList?.find { it.isAvailable }
-    val default= defaultItemBean ?: if(dataList!=null&&dataList.size>0)dataList[0] else null
+    val default= defaultItemBean ?: if(dataList!=null&& dataList.isNotEmpty())dataList[0] else null
     val selectedTag = remember { mutableStateOf(default) }
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -57,7 +57,7 @@ fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,data
         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp),modifier = Modifier
             .fillMaxWidth()
             .weight(1f)){
-            if(dataList!=null&&dataList.size>0){
+            if(dataList!=null&& dataList.isNotEmpty()){
                 items(dataList){item->
                     ItemCouponsCompose(item,selectedTag)
                 }
@@ -103,7 +103,7 @@ private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableSta
                         }
                     }
                     withStyle(style = SpanStyle(color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)) {
-                        append(if(discountType=="DISCOUNT") couponRatio?:"" else couponMoney?:"")
+                        append(if(discountType=="DISCOUNT") couponRatio?:"" else "$couponMoney")
                     }
                     //折扣券
                     if(discountType=="DISCOUNT"){

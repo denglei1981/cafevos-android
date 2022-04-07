@@ -79,6 +79,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
     private var isAgree:Boolean=false//是否同意协议
     private var couponsItem:CouponsItemBean?=null
+    private var createOrderBean:CreateOrderBean?=null
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -150,17 +151,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         //优惠券、skuItems
         viewModel.createOrderBean.observe(this){
+            createOrderBean=it
             infoBean.freightPrice=it?.freight?:"0.00"
             binding.inOrderInfo.apply {
                 if(it!=null){
                     infoBean.fbBalance=it.totalIntegral
                     minRmbProportion=it.getRmbBfb()//得到人民币最低使用百分比
 //                    tvFreightValue.setText(infoBean.freightPrice)
-                    val coupons=it.coupons
-//                    bindCoupon(if(coupons!=null&&coupons.size>0)coupons[0]else null)
-                    bindCoupon(null)
                 }
             }
+            formattingCouponsData()
         }
         //下单回调
         viewModel.orderInfoLiveData.observe(this) {
@@ -176,6 +176,57 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
     }
     /**
+     * 格式优惠券信息-筛选有用 和找出最大优惠
+    * */
+    private fun formattingCouponsData(){
+        val couponListBean=createOrderBean?.coupons
+        val skuItems=createOrderBean?.skuItems
+        if(couponListBean!=null&&couponListBean.size>0){
+            //判断每个优惠券是否可用
+            for ((i,item)in couponListBean.withIndex()){
+                item.isAvailable=false
+                var totalPrice:Long=0//满足优惠券的总价
+                item.mallMallSkuIds?.forEach{skuId->
+                    //查询skuId是否在订单中
+                    skuItems!!.find { skuId== it.skuId }?.apply {
+                        //计算总价=单价福币*数量
+                        totalPrice+=((unitPriceFb?:"0").toLong()*num)
+                    }
+                }
+                //该券满足优惠条件
+                if(totalPrice>=item.conditionMoney){
+                    //标注该券可用
+                    item.isAvailable=true
+                    //计算实际优惠
+                    val discountsFb:Long=when(item.discountType){
+                        //折扣
+                        "DISCOUNT"->{
+                            //折扣金额
+                            val discountAmount=item.discountAmount(totalPrice)
+                            //最大折扣
+                            if(discountAmount<=item.couponMoney)discountAmount else item.couponMoney
+                        }
+                        //满减和立减
+                        else -> item.couponMoney
+                    }
+                    item.discountsFb=discountsFb
+                }
+                couponListBean[i]=item
+            }
+            //优惠金额排序（从小到大） 然后倒叙（则结果是从大到小）
+            val sortList=couponListBean.sortedWith(compareBy { it.discountsFb}).reversed()
+                //.sortedWith(compareBy { it.validityEndTime})
+            //根据条件将优惠分成两份
+            val (match, rest) = sortList.partition { it.isAvailable }
+            val newList= arrayListOf<CouponsItemBean>()
+            newList.addAll(match)
+            newList.addAll(rest)
+            createOrderBean?.coupons=newList
+            bindCoupon(newList[0])
+        }else bindCoupon(null)
+
+    }
+    /**
      * 绑定优惠券和支付信息
     * */
     @SuppressLint("SetTextI18n")
@@ -188,7 +239,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText(R.string.str_temporarilyNoUse)
             }else{
-                couponsAmount=itemCoupon.couponMoney?:"0"
+                couponsAmount="${itemCoupon.couponMoney?:0}"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
                 setText("${itemCoupon.couponMoney}")
@@ -198,8 +249,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         totalPayFb=infoBean.getTotalPayFbPrice(couponsAmount)
         infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
-        //最少使用多少人民币（fb）=总金额*最低现金比 向下取整
-        var minFb:Int=WCommonUtil.getHeatNum("${totalPayFb*minRmbProportion}",0).toInt()
+        //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
+        var minFb:Int=WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt()
         val maxFb:Int=totalPayFb -minFb
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
@@ -259,7 +310,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             R.id.rb_custom->clickPayWay(2)
             //选择优惠券
             R.id.tv_coupons_value->{
-                viewModel.createOrderBean.value?.apply {
+                createOrderBean?.apply {
                     ChooseCouponsActivity.start("${couponsItem?.couponId}_${couponsItem?.couponRecordId}",this)
                 }
             }
@@ -269,7 +320,6 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         if(!isClickSubmit){
             isClickSubmit=true
             val consumerMsg=binding.inGoodsInfo.edtLeaveMsg.text.toString()
-            val createOrderBean=viewModel.createOrderBean.value
             viewModel.createOrder(orderConfirmType = orderConfirmType, payFb = payFb, payRmb = payRmb, addressId = infoBean.addressId,
                 consumerMsg =consumerMsg, skuItems =createOrderBean?.skuItems, couponId =couponsItem?.couponId, couponRecordId = couponsItem?.couponRecordId,
             freight =infoBean.freightPrice, payBfb =createOrderBean?.payBfb)
