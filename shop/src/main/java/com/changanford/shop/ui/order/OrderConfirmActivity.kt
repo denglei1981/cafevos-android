@@ -234,12 +234,16 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         couponsItem=itemCoupon
         var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
-            if(itemCoupon==null){
+            val item0=createOrderBean?.coupons?.get(0)
+            if(item0==null || !item0.isAvailable){
 //                isEnabled=false
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))
                 setText(R.string.str_temporarilyNoUse)
-            }else{
-                couponsAmount="${itemCoupon.couponMoney?:0}"
+            }else if(itemCoupon==null){
+                setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
+                setText(R.string.str_pleaseSelectCoupons)
+            } else{
+                couponsAmount="${itemCoupon.couponMoney}"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
                 setText("${itemCoupon.couponMoney}")

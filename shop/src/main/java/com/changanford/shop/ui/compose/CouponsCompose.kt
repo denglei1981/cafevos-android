@@ -87,7 +87,10 @@ private fun ItemCouponsCompose(itemBean: CouponsItemBean?,selectedTag:MutableSta
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }) {
-                if (isAvailable) selectedTag.value = itemBean
+                if (isAvailable){
+                    val tag= selectedTag.value
+                    selectedTag.value =if(tag!=itemBean) itemBean else null
+                }
             }, verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier
                 .width(110.dp)
