@@ -10,7 +10,6 @@ import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
@@ -253,7 +252,7 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     * */
     fun bindingBtn(_dataBean:GoodsDetailBean,_skuCode: String?,btnSubmit: KillBtnView,btnCart:KillBtnView?=null,source:Int=0){
         _dataBean.apply {
-            val totalPayFb=fbPrice.toInt()*buyNum
+//            val totalPayFb=fbPrice.toInt()*buyNum
             if("SECKILL"==spuPageType&&5!=killStates)btnSubmit.setStates(killStates,btnSource=source)//2/7 秒杀已结束或者未开始
             else if(stock<1){//库存不足,已售罄、已抢光
                 btnSubmit.setStates(if("SECKILL"==spuPageType)1 else 6,true,btnSource=source)
@@ -261,9 +260,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
                 if(null!=_skuCode&&isInvalidSelectAttrs(_skuCode)){
                     btnSubmit.setText(R.string.str_immediatelyChange)
                     btnSubmit.updateEnabled(false)
-                } else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
-                    btnSubmit.setStates(8,btnSource=source)
-                }else btnSubmit.setStates(5,btnSource=source)
+                }
+//                else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
+//                    btnSubmit.setStates(8,btnSource=source)
+//                }
+                else btnSubmit.setStates(5,btnSource=source)
             }else btnSubmit.setStates(5,btnSource=source)
             //处理购物车按钮
             if("SECKILL"==spuPageType){//秒杀商品不具备加入购物车功能
