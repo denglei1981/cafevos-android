@@ -16,7 +16,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @Time : 2021/9/9
  * @Description : ExchangeListFragment
  */
-class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>() {
+class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>(),
+    SortControl.OnSelectSortListener {
     companion object{
         fun newInstance(itemId:String,tagType:String?=null): ExchangeListFragment {
             val bundle = Bundle()
@@ -34,21 +35,23 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     private var tagType:String?=null
     private var isRequest=false
     private var sortControl:SortControl?=null
+    private var mallSortType="COMPREHENSIVE"
+    private var ascOrDesc="DESC"
     override fun initView() {
         arguments?.apply{
             tagId=getString("tagId","0")
             tagType=getString("tagType",null)
-            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType,mallSortType=mallSortType, ascOrDesc = ascOrDesc)
             isRequest=true
         }
-        sortControl=SortControl(requireContext(),binding)
+        sortControl=SortControl(requireContext(),binding,this)
         viewModel.goodsListData.observe(this) {
             isRequest = false
             bindingData(it)
         }
         binding.smartRl.setOnLoadMoreListener {
             pageNo++
-            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType,mallSortType=mallSortType, ascOrDesc = ascOrDesc)
         }
     }
     override fun initData() {
@@ -82,8 +85,17 @@ class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel
     fun startRefresh(){
         if(isAdded&&"-1"!=tagId&&mAdapter.data.size<1&&!isRequest){
             pageNo=1
-            viewModel.getGoodsList(tagId,pageNo,tagType=tagType)
+            viewModel.getGoodsList(tagId,pageNo,tagType=tagType,mallSortType=mallSortType, ascOrDesc = ascOrDesc)
         }
+    }
+    /**
+     * 排序选中的回调
+    * */
+    override fun onSelectSortListener(mallSortType: String, ascOrDesc: String) {
+        this.mallSortType=mallSortType
+        this.ascOrDesc=ascOrDesc
+        pageNo=1
+        viewModel.getGoodsList(tagId,pageNo,tagType=tagType,mallSortType=mallSortType, ascOrDesc = ascOrDesc)
     }
 
 }

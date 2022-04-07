@@ -5,11 +5,9 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.databinding.FragmentExchangeBinding
 import com.jakewharton.rxbinding4.view.clicks
-import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
@@ -18,13 +16,15 @@ import java.util.concurrent.TimeUnit
  * @Time : 2022/3/17 0017
  * @Description : SortControl
  */
-class SortControl(val context: Context, binding: FragmentExchangeBinding){
+class SortControl(val context: Context, binding: FragmentExchangeBinding,val listener:OnSelectSortListener){
     private val viewArr by lazy { arrayOf(binding.inSort.rb0,binding.inSort.rb1,binding.inSort.rb2) }
     private val drawableEnd1 by lazy { ContextCompat.getDrawable(context,R.mipmap.ic_sort_1) }
     private val drawableEnd2 by lazy { ContextCompat.getDrawable(context,R.mipmap.ic_sort_2) }
     private var drawableEnd: Drawable?=null
     private val drawableNormal by lazy { ContextCompat.getDrawable(context,R.mipmap.ic_sort_0) }
-    private  var lastIndex:Int=-1
+    private var lastIndex:Int=-1
+    private val mallSortTypeArr= arrayOf("COMPREHENSIVE","SALES","PRICE")
+    private var ascOrDesc="DESC"//ASC:正序、DESC:倒叙
     init {
         initSort()
     }
@@ -48,11 +48,14 @@ class SortControl(val context: Context, binding: FragmentExchangeBinding){
             drawableEnd=drawableEnd1
             updateUi(lastIndex,false)
             updateUi(index,true)
+            ascOrDesc="DESC"
         }else if(index>0){//连续点击
             drawableEnd=if(drawableEnd==drawableEnd1)drawableEnd2 else drawableEnd1
+            ascOrDesc=if(drawableEnd==drawableEnd2)"DESC" else "ASC"
             updateUi(index,true)
         }
         lastIndex=index
+        listener.onSelectSortListener(mallSortTypeArr[index],ascOrDesc)
     }
     private fun updateUi(index: Int,isSelected:Boolean){
         if(index<0||index>=viewArr.size)return
@@ -81,5 +84,8 @@ class SortControl(val context: Context, binding: FragmentExchangeBinding){
             R.id.rb_1->updateSort(1)
             R.id.rb_2->updateSort(2)
         }
+    }
+    interface OnSelectSortListener {
+        fun onSelectSortListener(mallSortType:String,ascOrDesc:String)
     }
 }
