@@ -74,6 +74,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
     private var minRmbProportion:Float=0f//最低使用人民币比例
+    private var minRmb="0"
     private var payFb:String?="0"//福币支付额度
     private var payRmb:String?="0"//人民币支付额度
     private var orderConfirmType=0//确认订单来源 0商品详情 1购物车
@@ -262,7 +263,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             infoBean.fbBalance?:0
         }
         binding.inPayWay.apply {
-            var minRmb=getRMB("$minFb")
+            minRmb=getRMB("$minFb")
             minRmb=if(minRmb.toFloat()>0f)"+¥$minRmb" else ""
             rbFbAndRmb.text="$maxUseFb$minRmb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
@@ -404,7 +405,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     rbFbAndRmb.visibility=View.VISIBLE
                     clickPayWay(0)
                 }
-                else -> clickPayWay(1)
+                else -> {
+                    if(maxUseFb==0)rbFbAndRmb.visibility=View.GONE
+                    rbRmb.visibility=View.VISIBLE
+                    clickPayWay(1)
+                }
             }
         }
     }
@@ -525,10 +530,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     layoutCustom.visibility=View.GONE
                     rbCustom.visibility=View.VISIBLE
                 }
-            }else if((payRmb?:"0").toFloat()==0f){
+            }else if(totalPayFb==0){//总价为0
                 rbRmb.visibility=View.GONE
                 payFb="0"
                 rbFbAndRmb.visibility=View.VISIBLE
+            }else{
+                rbFbAndRmb.visibility=View.GONE
             }
         }
     }
