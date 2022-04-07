@@ -48,7 +48,7 @@ class SortControl(val context: Context, binding: FragmentExchangeBinding,val lis
             drawableEnd=drawableEnd1
             updateUi(lastIndex,false)
             updateUi(index,true)
-            ascOrDesc="DESC"
+            ascOrDesc="ASC"
         }else if(index>0){//连续点击
             drawableEnd=if(drawableEnd==drawableEnd1)drawableEnd2 else drawableEnd1
             ascOrDesc=if(drawableEnd==drawableEnd2)"DESC" else "ASC"
