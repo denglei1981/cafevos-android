@@ -10,8 +10,10 @@ import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.ActUseCouponsBinding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -43,6 +45,12 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             topBar.setActivity(this@UseCouponsActivity)
             sml.setOnRefreshLoadMoreListener(this@UseCouponsActivity)
             recyclerView.adapter=mAdapter
+            mAdapter.setEmptyView(R.layout.view_empty)
+            mAdapter.setOnItemClickListener { _, _, position ->
+                mAdapter.data[position].apply {
+                    GoodsDetailsActivity.start(getJdType(),getJdValue())
+                }
+            }
             edtSearch.setOnEditorActionListener(this@UseCouponsActivity)
         }
         intent.getStringExtra("itemBean")?.apply {
