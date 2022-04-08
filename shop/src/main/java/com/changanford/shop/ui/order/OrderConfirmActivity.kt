@@ -54,6 +54,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         fun start(dataBean:GoodsDetailBean) {
 //            val bean=ConfirmOrderBean(orderConfirmType=orderConfirmType, dataList = arrayListOf(dataBean))
+            dataBean.recommend=null
             JumpUtils.instans?.jump(109,Gson().toJson(dataBean))
         }
         /**
@@ -126,7 +127,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             skuItems.add(skuItem)
             totalBuyNum+=it.buyNum
             //单价（原价）
-            val originalPrice=(it.orginPrice?:it.fbPrice).toInt()
+//            val originalPrice=(it.orginPrice?:it.fbPrice).toInt()
+            val originalPrice=it.fbPrice.toInt()
             //原总商品价 单价*购买数量
             totalOriginalFb+=originalPrice*it.buyNum
             //本条数据为维保商品
