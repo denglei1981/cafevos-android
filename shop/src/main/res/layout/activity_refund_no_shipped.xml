@@ -54,7 +54,10 @@
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="11dp"
                 android:paddingBottom="@dimen/dp_10"
-                android:text="当前订单已拆分成多个包裹发货"
+                android:text="1. 订单一旦取消，无法恢复;\n
+2. 退款金额不包含优惠及折扣;\n
+3. 退款后预计3个工作日内退回到支付账户
+"
                 android:textColor="@color/gray_999999"
                 android:textSize="12sp" />
 

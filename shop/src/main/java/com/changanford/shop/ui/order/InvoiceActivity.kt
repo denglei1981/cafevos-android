@@ -8,7 +8,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.OrderReceiveAddress
+import com.changanford.common.bean.ShopAddressInfoBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.bus.LiveDataBusKey.INVOICE_ADDRESS_SUCCESS
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
@@ -32,26 +40,48 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
 
     }
 
-    var personName:String =""
-    var companyName:String ="" // 单位名称
-    var taxpayerName:String ="" // 纳税人识别号
+    var personName: String = ""
+    var companyName: String = "" // 单位名称
+    var taxpayerName: String = "" // 纳税人识别号
+    var addressBeanItem: AddressBeanItem? = null
+    lateinit var invoiceInfo: InvoiceInfo
     override fun initData() {
         val invoiceInfoStr = intent.getStringExtra("value")
         val gson = Gson()
-        val invoiceInfo = gson.fromJson<InvoiceInfo>(invoiceInfoStr, InvoiceInfo::class.java)
+        invoiceInfo = gson.fromJson<InvoiceInfo>(invoiceInfoStr, InvoiceInfo::class.java)
 
-        binding.tvAddress.text = invoiceInfo.addressInfo
-        binding.tvUserInfo.text = invoiceInfo.userName.plus(":").plus(invoiceInfo.phone)
+
+
+
         showPerson()
         binding.tvGetInvoice.setOnClickListener { // 申请开票
-            if(canGetInvoice()){
-                if(binding.rbPerson.isChecked){ // 选择的开个人票
-                    viewModel.getUserInvoiceAdd(invoiceInfo.addressId,"个人",personName,invoiceInfo.invoiceRmb,invoiceInfo.mallMallOrderId,invoiceInfo.mallMallOrderNo)
+            if (canGetInvoice()) {
+                if (binding.rbPerson.isChecked) { // 选择的开个人票
+                    viewModel.getUserInvoiceAdd(
+                        invoiceInfo.addressId,
+                        "个人",
+                        personName,
+                        invoiceInfo.invoiceRmb,
+                        invoiceInfo.mallMallOrderId,
+                        invoiceInfo.mallMallOrderNo
+                    )
                 }
-                if(binding.rbCompany.isChecked){ // 选择的开单位票
-                    viewModel.getUserInvoiceAdd(invoiceInfo.addressId,"单位",companyName,invoiceInfo.invoiceRmb,invoiceInfo.mallMallOrderId,invoiceInfo.mallMallOrderNo,taxpayerName)
+                if (binding.rbCompany.isChecked) { // 选择的开单位票
+                    viewModel.getUserInvoiceAdd(
+                        invoiceInfo.addressId,
+                        "单位",
+                        companyName,
+                        invoiceInfo.invoiceRmb,
+                        invoiceInfo.mallMallOrderId,
+                        invoiceInfo.mallMallOrderNo,
+                        taxpayerName
+                    )
                 }
             }
+
+        }
+        binding.conAddress.setOnClickListener {
+            JumpUtils.instans?.jump(20, "2")
 
         }
         binding.rbPerson.isChecked = true
@@ -66,6 +96,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
 
             }
         }
+        viewModel.getAddressList()
     }
 
     private fun showCompany() {
@@ -92,20 +123,20 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
 
     fun canGetInvoice(): Boolean {
         if (binding.rbPerson.isChecked) { // 选择的是个人开票
-            personName=  binding.etPersonName.text.toString()
-            if(TextUtils.isEmpty(personName)){
+            personName = binding.etPersonName.text.toString()
+            if (TextUtils.isEmpty(personName)) {
                 "请输入个人姓名".toast()
                 return false
             }
         }
-        if(binding.rbCompany.isChecked){ // 选择的是单位开票
-            companyName =binding.etComponyName.text.toString()
-            if(TextUtils.isEmpty(companyName)){
+        if (binding.rbCompany.isChecked) { // 选择的是单位开票
+            companyName = binding.etComponyName.text.toString()
+            if (TextUtils.isEmpty(companyName)) {
                 "请输入个公司名称".toast()
                 return false
             }
-            taxpayerName =binding.etComponyTaxpayer.text.toString()
-            if(TextUtils.isEmpty(taxpayerName)){
+            taxpayerName = binding.etComponyTaxpayer.text.toString()
+            if (TextUtils.isEmpty(taxpayerName)) {
                 "请输入纳税人识别号".toast()
                 return false
             }
@@ -118,5 +149,50 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         viewModel.invoiceLiveData.observe(this, Observer {
             this.finish()
         })
+        viewModel.addressList.observe(this, Observer {
+            // 获取默认地址
+            it?.let { list ->
+                list.forEach { cu ->
+                    if (cu.isDefault == 1) {
+                        addressBeanItem = cu
+                    }
+                }
+            }
+            if (addressBeanItem == null) {
+                try {
+                    if (it?.size!! > 0) {
+                        it.apply {
+                            addressBeanItem = get(0)
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            invoiceInfo.addressId = addressBeanItem?.addressId.toString()
+            invoiceInfo.addressInfo = addressBeanItem?.getAddress().toString()
+            invoiceInfo.userInfo = addressBeanItem?.getUserInfo().toString()
+            binding.tvAddress.text = invoiceInfo.addressInfo
+            binding.tvUserInfo.text = invoiceInfo.userInfo
+
+
+        })
+        LiveDataBus.get().with(LiveDataBusKey.INVOICE_ADDRESS_SUCCESS, String::class.java)
+            .observe(this, Observer {
+                it?.let {
+                    // TODO 更换地址。
+                    localAddressObserve(it)
+                }
+
+            })
+    }
+
+    private fun localAddressObserve(addressInfoJson: String) {
+        val address = Gson().fromJson(addressInfoJson, ShopAddressInfoBean::class.java)
+        invoiceInfo.addressId = address?.addressId.toString()
+        invoiceInfo.addressInfo = address?.getAddress().toString()
+        invoiceInfo.userInfo = address?.getUserInfos().toString()
+        binding.tvAddress.text = invoiceInfo.addressInfo
+        binding.tvUserInfo.text = invoiceInfo.userInfo
     }
 }

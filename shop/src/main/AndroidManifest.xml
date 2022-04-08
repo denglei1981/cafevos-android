@@ -79,6 +79,9 @@
         <activity
             android:name=".ui.order.InvoiceLookActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.sale.RefundNotShippedActivity"
+            android:screenOrientation="portrait" />
         <!--================================= 商城 End-->
     </application>
 </manifest>

@@ -148,11 +148,20 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
             viewModel.saveAddress(body) {
                 it.onSuccess {
                     showToast("地址保存成功")
-                    if (isChooseAdd != 0) {
+                    if (isChooseAdd == 2) {// 发票
+                        it?.let { item ->
+                            LiveDataBus.get().with(LiveDataBusKey.INVOICE_ADDRESS_SUCCESS)
+                                .postValue(JSON.toJSON(item).toString())//H5回调数据
+                            val intent = Intent()
+                            intent.putExtra("addressBeanItem", item)
+                            setResult(Activity.RESULT_OK, intent)
+                        }
+                    }
+                    if(isChooseAdd!=0&&isChooseAdd!=2){
                         it?.let { item ->
                             LiveDataBus.get().with(LiveDataBusKey.MINE_CHOOSE_ADDRESS_SUCCESS)
                                 .postValue(JSON.toJSON(item).toString())//H5回调数据
-                            var intent = Intent()
+                            val intent = Intent()
                             intent.putExtra("addressBeanItem", item)
                             setResult(Activity.RESULT_OK, intent)
                         }

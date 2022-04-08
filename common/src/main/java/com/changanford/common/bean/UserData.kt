@@ -186,7 +186,14 @@ data class AddressBeanItem(
     val provinceName: String,
     val status: Int,
     val userId: Int
-) : Serializable
+) : Serializable{
+    fun getAddress(): String {
+        return "$provinceName$cityName$districtName$addressName"
+    }
+    fun getUserInfo():String{
+        return consignee.plus("\t"+phone)
+    }
+}
 
 data class AuthBean(
     val conditionList: List<Condition>? = arrayListOf(),

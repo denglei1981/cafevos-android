@@ -327,3 +327,7 @@ data class PostKeywordBean(
     val type: Int,
     var isselect: Boolean = false
 )
+
+data class BackEnumBean(var code:String,var message:String){
+
+}

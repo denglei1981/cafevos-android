@@ -3,6 +3,8 @@ package com.changanford.shop.api
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import com.changanford.shop.bean.CouponData
+import com.changanford.shop.bean.InvoiceDetails
+import com.changanford.shop.bean.InvoiceInfo
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -212,4 +214,26 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/coupon/spus/get")
     suspend fun useCoupons(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
+
+
+    /**
+     * 查看发票
+     * */
+    @POST("/mall/userInvoiceDetail")
+    suspend fun  userInvoiceDetail(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
+
+
+    /**
+     * 申请退款
+     * */
+    ///mall/refund
+    @POST("/mall/refund")
+    suspend fun  applyRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
+
+    /**
+     *  退款进度
+
+     * */
+    @POST("/mall/refund/progress")
+    suspend fun  refundProgress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
 }

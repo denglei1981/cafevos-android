@@ -693,6 +693,9 @@ class JumpUtils {
                 val getCoupopPop = GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
                 getCoupopPop.showPopupWindow()
             }
+            123->{ // 查看发票详情
+                startARouter(ARouterShopPath.InvoiceLookActivity, bundle, true)
+            }
 
             10000 -> {
                 //外部H5

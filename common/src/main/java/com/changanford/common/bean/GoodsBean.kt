@@ -624,7 +624,8 @@ data class OrderItemBean(
     var busSource: String? = null,
     var isNewOrder: String? = null,
     var price: String? = null,
-    var invoiced: String? = null // 发票状态
+    var invoiced: String? = null, // 发票状态
+    var statusDesc:String?=null
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
@@ -703,6 +704,9 @@ data class ShopAddressInfoBean(
 ) {
     fun getAddress(): String {
         return "$provinceName$cityName$districtName$addressName"
+    }
+    fun getUserInfos():String{
+        return consignee.plus("\t"+phone)
     }
 }
 
@@ -876,7 +880,7 @@ data class CouponsItemBean(
                 return str
             }
             "DISCOUNT" -> { // 折扣
-                val moneyStr = couponMoney.toString().plus("折")
+                val moneyStr = couponRatio.toString().plus("折")
                 val str = SpannableStringUtils.textSizeSpan(
                     moneyStr,
                     moneyStr.length - 1,
