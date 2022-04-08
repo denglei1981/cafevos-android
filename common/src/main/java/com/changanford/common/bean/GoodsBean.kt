@@ -473,7 +473,9 @@ data class PageList(
     val total: Int = 0,
     val totalPage: Int = 0
 )
-
+/**
+ * 评价
+* */
 data class CommentItem(
     val anonymous: String = "",
     val avater: String = "",
@@ -501,8 +503,16 @@ data class CommentItem(
     val spuName: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    val userId: Int = 0
-)
+    val userId: Int = 0,
+    var imgs: String?=null,
+){
+    fun getImgArr(imgs:String?=this.imgs):List<String>{
+        return if(!TextUtils.isEmpty(imgs)&&imgs!!.contains(",")){
+            imgs.split(",").filter { ""!=it }
+        }else arrayListOf(imgs?:"")
+    }
+}
+
 
 /**
  * 商品首页
