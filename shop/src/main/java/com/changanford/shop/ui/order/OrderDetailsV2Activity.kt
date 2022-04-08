@@ -217,6 +217,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 "退款中" -> {
                     BottomGon()
                     binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+                    binding.inRefund.conRefundProgress.setOnClickListener {
+                        JumpUtils.instans?.jump(124,dataBean.mallMallOrderId)
+
+                    }
                     binding.inAddress.conAddress.visibility=View.GONE
                     binding.tvOrderRemainingTime.text = dataBean.statusDesc
                 }
