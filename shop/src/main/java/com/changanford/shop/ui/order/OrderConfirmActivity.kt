@@ -247,7 +247,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 couponsAmount="${itemCoupon.discountsFb}"
                 isEnabled=true
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_33))
-                setText(WCommonUtil.getRMB(couponsAmount))
+                setText(WCommonUtil.getRMB(couponsAmount,""))
             }
         }
         //总共支付 (商品金额+运费)
@@ -412,6 +412,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 }
             }
         }
+        calculateFbAndRbm()
     }
     /**
      * 支付方式选择点击
@@ -431,7 +432,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inPayWay.apply {
             edtCustom.onTextChanged {
                 val inputFb= it.s
-                "输入结果：${it.before}>>>>${it.start}>>>>$inputFb".wLogE()
+                "输入结果：${it.before}>>>>${it.start}>>>>$inputFb".wLogE("okhttp")
                 if(!TextUtils.isEmpty(inputFb)){
                     //输入的福币超出可使用的范围
                     if(inputFb.toString().toInt()>maxUseFb){
@@ -451,8 +452,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private fun calculateFbAndRbm(){
         binding.inPayWay.apply {
             val inputFb= edtCustom.text.toString()
-            tvCustomFb.text=inputFb
-            tvCustomRmb.text="+¥${getRMB("${totalPayFb-inputFb.toInt()}")}"
+            if(!TextUtils.isEmpty(inputFb)){
+                tvCustomFb.text=inputFb
+                tvCustomRmb.text="+¥${getRMB("${totalPayFb-inputFb.toInt()}")}"
+            }else{
+                tvCustomFb.text=""
+                tvCustomRmb.text=""
+            }
         }
     }
     /**
