@@ -221,10 +221,10 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
                             null!=jumpDataType -> {
                                 JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
                             }
-                            "3"==busSourse -> {//维保商品订单详情
+                            "3"==busSourse||"WB"==busSource -> {//维保商品订单详情
                                 JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
                             }
-                            else -> OrderDetailsActivity.start(orderNo)
+                            else -> OrderDetailsV2Activity.start(orderNo)
                         }
                         isClickSubmit=false
                         if(isPaySuccessful)this@PayConfirmActivity.finish()
@@ -244,20 +244,20 @@ class PayConfirmActivity:BaseActivity<ShopActPayconfirmBinding, OrderViewModel>(
 
     override fun onBackClick() {
         //确认支付 返回到订单详情
-//        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){
-//            dataBean?.apply {
-//                val jumpDataType=dataBean?.jumpDataType
-//                when {
-//                    null!=jumpDataType -> {
-//                        JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
-//                    }
-//                    "3"==busSourse -> {//维保商品订单详情
-//                        JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
-//                    }
-//                    else -> OrderDetailsActivity.start(orderNo)
-//                }
-//            }
-//        }
+        if(binding.btnSubmit.text==getString(R.string.str_payConfirm)){
+            dataBean?.apply {
+                val jumpDataType=dataBean?.jumpDataType
+                when {
+                    null!=jumpDataType -> {
+                        JumpUtils.instans?.jump(jumpDataType,dataBean?.jumpDataValue)
+                    }
+                    "3"==busSourse||"WB"==busSource -> {//维保商品订单详情
+                        JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+                    }
+                    else -> OrderDetailsV2Activity.start(orderNo)
+                }
+            }
+        }
         this.finish()
     }
 
