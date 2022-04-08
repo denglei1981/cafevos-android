@@ -806,7 +806,7 @@ data class CouponsItemBean(
     val conditionMoney: Long =0L,
     val couponId: String? = null,
     val couponMarkId: String? = null,
-    //抵扣金额(优惠类型为满减/立减时,这是抵扣金额;优惠类型折扣时,这是最多扣减金额)
+    //抵扣金额(优惠类型为满减/立减时,这是抵扣金额;优惠类型折扣时,这是最多扣减金额) 单位人民币
     val couponMoney: Long = 0,
     val couponName: String? = null,
     val couponRatio: String? = null,
@@ -828,8 +828,11 @@ data class CouponsItemBean(
     var discountsFb:Long=0,//实际优惠福币
     var couponSendId:String="0", // 发放id
 ){
+    fun getRmbToFb(conditionMoney:Long=this.conditionMoney):Long{
+        return conditionMoney*100
+    }
     /**
-     * 计算折扣金额
+     * 计算折扣金额 返回福币
      * [couponRatio]折扣比例 0.1-9.9折 -5折
     * */
     fun discountAmount(totalPrice:Long,couponRatio:Float?=(this.couponRatio?:"0").toFloat()):Long{
