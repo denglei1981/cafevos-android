@@ -852,10 +852,6 @@ data class CouponsItemBean(
     var couponSendId: String, // 发放id
     var conditionName: String
 ) {
-    var isAvailable:Boolean=false,//是否可用
-    var discountsFb:Long=0,//实际优惠福币
-    var couponSendId:String="0", // 发放id
-){
     fun getRmbToFb(conditionMoney:Long=this.conditionMoney):Long{
         return conditionMoney*100
     }

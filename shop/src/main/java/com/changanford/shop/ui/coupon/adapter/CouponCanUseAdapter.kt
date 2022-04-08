@@ -10,6 +10,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemCanUseCouponBinding
+import com.changanford.shop.ui.coupon.UseCouponsActivity
 import com.changanford.shop.utils.DateTimeUtil
 
 class CouponCanUseAdapter() :
@@ -39,7 +40,9 @@ class CouponCanUseAdapter() :
                 } else {
                     gExtends.visibility = View.GONE
                 }
-
+            }
+            tvUseNow.setOnClickListener {
+                UseCouponsActivity.start(item)
             }
         }
     }
