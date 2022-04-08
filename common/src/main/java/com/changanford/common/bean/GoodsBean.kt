@@ -111,7 +111,7 @@ data class GoodsItemBean(
     val stock: Int = 0,
     val updateBy: Any? = null,
     val updateTime: Long = 0,
-    val vipFb: String = "0",
+    var vipFb: String = "0",
     var stockProportion: String = "0",//库存百分比 0-100
     var killStates: Int = 0,//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
     val beginTime: Long = 0,
@@ -298,7 +298,6 @@ data class ConfirmOrderInfoBean(
         }
     }
 }
-
 /**
  * 商品详情
  * */
@@ -413,6 +412,7 @@ data class GoodsDetailBean(
         orginPrice = fbPer
         rmbPrice = getRMB(fbPer)
     }
+
 
 
 }
@@ -829,7 +829,7 @@ data class CouponsItemBean(
     val conditionMoney: Long = 0L,
     val couponId: String? = null,
     val couponMarkId: String? = null,
-    //抵扣金额(优惠类型为满减/立减时,这是抵扣金额;优惠类型折扣时,这是最多扣减金额)
+    //抵扣金额(优惠类型为满减/立减时,这是抵扣金额;优惠类型折扣时,这是最多扣减金额) 单位人民币
     val couponMoney: Long = 0,
     val couponName: String? = null,
     val couponRatio: String? = null,
@@ -852,6 +852,13 @@ data class CouponsItemBean(
     var couponSendId: String, // 发放id
     var conditionName: String
 ) {
+    var isAvailable:Boolean=false,//是否可用
+    var discountsFb:Long=0,//实际优惠福币
+    var couponSendId:String="0", // 发放id
+){
+    fun getRmbToFb(conditionMoney:Long=this.conditionMoney):Long{
+        return conditionMoney*100
+    }
     /**
      * 计算折扣金额
      * [couponRatio]折扣比例 0.1-9.9折 -5折

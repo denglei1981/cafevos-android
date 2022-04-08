@@ -45,7 +45,7 @@ class GoodsViewModel: BaseViewModel() {
     //分类列表
     var typesBean = MutableLiveData<MutableList<GoodsTypesItemBean>>()
     //商品列表
-    var GoodsListBean = MutableLiveData<MutableList<GoodsItemBean>?>()
+    var goodsListLiveData = MutableLiveData<MutableList<GoodsItemBean>?>()
     /**
      * 获取banner
      * */
@@ -352,9 +352,9 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.getRecommendList(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 it?.toast()
-                GoodsListBean.postValue(null)
+                goodsListLiveData.postValue(null)
             }.onSuccess {
-                GoodsListBean.postValue(it)
+                goodsListLiveData.postValue(it)
             }
         }
     }
@@ -379,6 +379,31 @@ class GoodsViewModel: BaseViewModel() {
                 it?.toast()
             }.onSuccess {
                 listener?.onFinish(0)
+            }
+        }
+    }
+    /**
+     * 使用优惠券-商品列表
+     * [couponRecordId]优惠券领取id
+     * */
+    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    it["couponRecordId"]=couponRecordId
+                    it["searchKey"]=searchKey?:""
+                }
+                val randomKey = getRandomKey()
+                shopApiService.useCoupons(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                goodsListData.postValue(it)
+            }.onFailure {
+                goodsListData.postValue(null)
+            }.onWithMsgFailure {
+                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
             }
         }
     }

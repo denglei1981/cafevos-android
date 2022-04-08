@@ -2,13 +2,10 @@ package com.changanford.shop.adapter
 
 import android.content.Context
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseAdapter
 import com.changanford.shop.databinding.ItemShopExchangeFooterBinding
-import com.changanford.shop.ui.goods.ExchangeListFragment
-import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * @Author : wenke

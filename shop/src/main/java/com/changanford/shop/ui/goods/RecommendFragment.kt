@@ -36,7 +36,7 @@ class RecommendFragment:BaseFragment<FragmentRecommendBinding,GoodsViewModel>() 
     }
 
     override fun initData() {
-        viewModel.GoodsListBean.observe(this){
+        viewModel.goodsListLiveData.observe(this){
             mAdapter.setList(it)
             binding.srl.finishRefresh()
         }

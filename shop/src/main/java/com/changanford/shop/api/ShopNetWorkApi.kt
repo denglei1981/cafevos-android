@@ -190,12 +190,10 @@ interface ShopNetWorkApi {
     suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponsItemBean>>
 
     /**
-     *
      * 下单后，修改地址
      */
     @POST("/mall/updateAdrr")
     suspend fun  updateAddress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
-
 
     /**
      * 开发票
@@ -208,4 +206,10 @@ interface ShopNetWorkApi {
      * */
     @POST("/mall/userSkuNumChange")
     suspend fun  userSkuNumChange(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+
+    /**
+     * 优惠券-使用-搜索列表
+     * */
+    @POST("/mall/coupon/spus/get")
+    suspend fun useCoupons(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
 }
