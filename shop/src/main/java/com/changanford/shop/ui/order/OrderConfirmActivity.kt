@@ -235,7 +235,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         couponsItem=itemCoupon
         var couponsAmount="0"//人民币
         binding.inOrderInfo.tvCouponsValue.apply {
-            val item0=createOrderBean?.coupons?.get(0)
+            val item0=if(createOrderBean?.coupons!=null&&createOrderBean?.coupons?.size!! >0)createOrderBean?.coupons?.get(0) else null
             if(item0==null || !item0.isAvailable){
 //                isEnabled=false
                 setTextColor(ContextCompat.getColor(this@OrderConfirmActivity,R.color.color_99))

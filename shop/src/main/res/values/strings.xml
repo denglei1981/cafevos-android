@@ -209,4 +209,6 @@
     <string name="str_lookLogistics">查看物流</string>
     <string name="str_applyInvoice">申请发票</string>
     <string name="str_applyARefund">申请退款</string>
+    <string name="str_goodsList">商品列表</string>
+    <string name="str_goodsNameSearch">商品名称搜索</string>
 </resources>

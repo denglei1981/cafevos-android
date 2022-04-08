@@ -51,6 +51,10 @@
         <activity
             android:name=".ui.order.ChooseCouponsActivity"
             android:screenOrientation="portrait" />
+        <!-- 使用优惠券-->
+        <activity
+            android:name=".ui.coupon.UseCouponsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.shoppingcart.ShoppingCartActivity"
             android:screenOrientation="portrait" />

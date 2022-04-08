@@ -23,6 +23,7 @@ object ARouterShopPath {
 
     const val ShoppingCartActivity = "/shop/ShoppingCartActivity" // 购物车
 
+    const val UseCouponsActivity = "/shop/UseCouponsActivity"  // 使用优惠券
     const val ChooseCouponsActivity = "/shop/ChooseCouponsActivity"  // 选择优惠券
     const val CouponActivity = "/shop/CouponActivity"  // 优惠券跳转
 
