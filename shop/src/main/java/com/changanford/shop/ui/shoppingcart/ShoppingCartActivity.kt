@@ -72,7 +72,6 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                     } else {
                         binding.tvOver.text = "结算"
                     }
-
                     binding.tvOver.isSelected = true
                     binding.tvBalance.visibility = View.VISIBLE
                 }
@@ -182,7 +181,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             } else {
                 // 加入所有的商品
                 binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
-                binding.tvOver.isSelected = true
+                binding.tvOver.isSelected = false
                 var totalFbPrice: BigDecimal= BigDecimal(0)
                 shoppingCartAdapter.shopList.forEach {
                     val bb=BigDecimal(it.fbPer)

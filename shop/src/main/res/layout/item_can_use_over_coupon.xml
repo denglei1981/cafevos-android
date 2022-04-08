@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_20"
         android:background="@color/color_F4">
 
@@ -36,9 +37,9 @@
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginTop="14dp"
                 android:background="@drawable/shape_8195c8_1_corners"
-                android:textColor="@color/white"
                 android:paddingStart="1dp"
                 android:paddingEnd="2dp"
+                android:textColor="@color/white"
                 android:textSize="11sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/tv_goodsTitle"
@@ -108,7 +109,7 @@
                 android:id="@+id/con_use"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/shape_8195c8_end_top_end_bottom"
+                android:background="@drawable/shape_c6c_end_top_end_bottom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="117:110"
                 app:layout_constraintEnd_toEndOf="parent"

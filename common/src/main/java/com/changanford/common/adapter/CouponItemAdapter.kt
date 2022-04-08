@@ -25,13 +25,10 @@ class CouponItemAdapter :
 
             it.tvShopName.text = item.couponName
             when (item.discountType) {
-                "FULL_MINUS" -> { // 满减
+                "FULL_MINUS","LEGISLATIVE_REDUCTION" -> { // 满减,立减
                     val moneyStr = "￥".plus(item.couponMoney)
                     val str = SpannableStringUtils.textSizeSpan(moneyStr, 0, 1, 12)
                     it.tvMoney.text = str
-                }
-                "LEGISLATIVE_REDUCTION" -> {//立减
-                    it.tvMoney.text = item.couponMoney.toString()
                 }
                 "DISCOUNT" -> { // 折扣
                     val moneyStr = item.couponMoney.toString().plus("折")

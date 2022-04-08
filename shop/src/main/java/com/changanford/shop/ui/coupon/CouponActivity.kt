@@ -16,6 +16,7 @@ import com.changanford.shop.databinding.ActivityMyCouponBinding
 import com.changanford.shop.ui.coupon.fragment.CouponCanUseFragment
 import com.changanford.shop.ui.coupon.fragment.CouponUseInvalidFragment
 import com.changanford.shop.ui.coupon.fragment.CouponUseOverFragment
+import com.changanford.shop.view.TopBar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -35,12 +36,11 @@ class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
         CouponUseInvalidFragment.newInstance("3")
     }
     override fun initView() {
-        binding.layoutTop.tvTitle.text = "优惠券"
-        binding.layoutTop.imgBack.setOnClickListener {
-            onBackPressed()
-        }
-        binding.layoutTop.tvRight.text = "说明"
-        binding.layoutTop.tvRight.visibility = View.VISIBLE
+        binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
+            override fun onBackClick() {
+                onBackPressed()
+            }
+        })
         binding.searchTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab, true)

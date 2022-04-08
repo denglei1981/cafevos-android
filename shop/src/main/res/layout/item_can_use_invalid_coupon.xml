@@ -22,6 +22,7 @@
             android:id="@+id/con_coupon_contain"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/shape_whit5_bg"
             app:layout_constraintDimensionRatio="335:110"
             app:layout_constraintEnd_toEndOf="parent"

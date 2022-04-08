@@ -187,7 +187,7 @@ interface ShopNetWorkApi {
      *          // {"pageNo":1,"pageSize":20,"queryParams":{"states":1}}  1.未使用 2.已使用 3.已失效
      * */
     @POST("/mall/coupon/get")
-    suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponData>>
+    suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponsItemBean>>
 
     /**
      *

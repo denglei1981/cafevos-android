@@ -200,6 +200,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
                     BottomBShow()
                     showInvoiceState(dataBean)
+                    showRefund(dataBean) // 待发货 申请退款
 
                 }
                 "待收货" -> {
@@ -289,10 +290,6 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             }
             model = dataBean
         }
-//        binding.inGoodsInfo.apply {
-//            model=dataBean
-//            control.bindingGoodsInfo(inGoodsInfo,dataBean)
-//        }
         binding.inBottom.apply {
             model = dataBean
 //            tvTotalPayFb.setText(totalPayName)
@@ -534,6 +531,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
     }
 
+    // 开票状态
     fun showInvoiceState(localDataBean: OrderItemBean) { // 开票状态
         localDataBean.invoiced?.let { invoice ->
             when (invoice) {
@@ -547,6 +545,15 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                 }
             }
+        }
+        binding.inSaleBottom.btnOrderInvoice.visibility = View.VISIBLE
+    }
+
+    fun showRefund(localDataBean: OrderItemBean) {
+        binding.inSaleBottom.btnOrderRefund.visibility = View.VISIBLE
+        binding.inSaleBottom.btnOrderRefund.setOnClickListener {
+             // 申请退款
+
 
         }
     }

@@ -12,10 +12,12 @@
         android:background="@color/color_F4">
 
 
-        <include
+        <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
-            layout="@layout/layout_top_shopping"
             android:layout_width="0dp"
+            android:background="@color/color_F4"
+            app:right_text="说明"
+            app:title_text="优惠券"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +28,7 @@
             android:id="@+id/search_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44"
-            android:background="@color/transparent"
+            android:background="@color/color_F4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top"
             app:tabBackground="@color/transparent"

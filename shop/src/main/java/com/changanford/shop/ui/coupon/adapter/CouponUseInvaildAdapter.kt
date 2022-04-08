@@ -10,28 +10,30 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemCanUseCouponBinding
+import com.changanford.shop.databinding.ItemCanUseInvalidCouponBinding
+import com.changanford.shop.databinding.ItemCanUseOverCouponBinding
 import com.changanford.shop.utils.DateTimeUtil
 
-class CouponCanUseAdapter() :
-    BaseQuickAdapter<CouponsItemBean, BaseDataBindingHolder<ItemCanUseCouponBinding>>(R.layout.item_can_use_coupon),
+class CouponUseInvaildAdapter() :
+    BaseQuickAdapter<CouponsItemBean, BaseDataBindingHolder<ItemCanUseInvalidCouponBinding>>(R.layout.item_can_use_invalid_coupon),
     LoadMoreModule {
     init {
         addChildClickViewIds(R.id.iv_extends, R.id.tv_use_now)
     }
 
     override fun convert(
-        holder: BaseDataBindingHolder<ItemCanUseCouponBinding>,
+        holder: BaseDataBindingHolder<ItemCanUseInvalidCouponBinding>,
         item: CouponsItemBean
     ) {
         holder.dataBinding?.apply {
-            GlideUtils.loadBD(item.img, imgGoodsCover)
-            tvUseNow.text = "立即使用"
-            GlideUtils.loadBD(item.markImg, ivVipTips)
+
+
             tvMoney.text = item.getShowMoney()
             tvExtendsTips.text = item.getBottomTips()
             tvGoodsTitle.text = item.couponName
-            tvTimeStart.text = TimeUtils.MillisToStr(item.validityBeginTime)
-            tvTimeEnd.text = TimeUtils.MillisToStr(item.validityEndTime)
+            tvTimeStart.text = TimeUtils.MillisToStr(item.validityBeginTime).plus("起\n")
+                .plus(TimeUtils.MillisToStr(item.validityEndTime))
+            tvVipTips.text = item.markName
             tvTips.text = item.getTips()
             ivExtends.setOnClickListener {
                 if (!gExtends.isVisible) {

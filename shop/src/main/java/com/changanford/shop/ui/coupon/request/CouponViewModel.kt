@@ -3,6 +3,7 @@ package com.changanford.shop.ui.coupon.request
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.bean.ListMainBean
 import com.changanford.common.net.*
@@ -15,7 +16,7 @@ import com.changanford.shop.bean.CouponData
 
 class CouponViewModel : BaseViewModel() {
 
-    var  couponListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponData>>> = MutableLiveData()
+    var  couponListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponsItemBean>>> = MutableLiveData()
     var page =1
     fun getCouponList(isLoadMore:Boolean,type:Int){
 
@@ -34,11 +35,11 @@ class CouponViewModel : BaseViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<ShopNetWorkApi>().getCouponList(body.header(rKey),body.body(rKey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<ListMainBean<CouponData>>(it, true, isLoadMore, "")
+                    val updateUiState = UpdateUiState<ListMainBean<CouponsItemBean>>(it, true, isLoadMore, "")
                     couponListLiveData.postValue(updateUiState)
                 }
                 .onWithMsgFailure {
-                    val updateUiState = UpdateUiState<ListMainBean<CouponData>>(false, it, isLoadMore)
+                    val updateUiState = UpdateUiState<ListMainBean<CouponsItemBean>>(false, it, isLoadMore)
                     couponListLiveData.postValue(updateUiState)
                     it?.toast()
                 }

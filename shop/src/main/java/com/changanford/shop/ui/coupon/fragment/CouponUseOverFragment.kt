@@ -3,20 +3,23 @@ package com.changanford.shop.ui.coupon.fragment
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.loadmore.TheHellLoadMoreView
 import com.changanford.shop.databinding.BaseRecyclerViewBinding
+import com.changanford.shop.databinding.BaseRecyclerViewGrayBinding
 import com.changanford.shop.ui.coupon.adapter.CouponCanUseAdapter
+import com.changanford.shop.ui.coupon.adapter.CouponUseOverAdapter
 import com.changanford.shop.ui.coupon.request.CouponViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
-class CouponUseOverFragment : BaseFragment<BaseRecyclerViewBinding, CouponViewModel>(),
+class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, CouponViewModel>(),
     OnRefreshListener {
 
-    val couponCanUseAdapter: CouponCanUseAdapter by lazy {
-        CouponCanUseAdapter()
+    val couponCanUseAdapter: CouponUseOverAdapter by lazy {
+        CouponUseOverAdapter()
 
     }
     private val customLoadMoreView: TheHellLoadMoreView by lazy {
@@ -36,13 +39,15 @@ class CouponUseOverFragment : BaseFragment<BaseRecyclerViewBinding, CouponViewMo
     }
 
     override fun initView() {
+        setLoadSir(binding.smartLayout)
         binding.smartLayout.setOnRefreshListener(this)
         binding.recyclerView.adapter = couponCanUseAdapter
+        binding.smartLayout.setEnableLoadMore(false)
         couponCanUseAdapter.loadMoreModule.setOnLoadMoreListener {
-            viewModel.getCouponList(true, 1)
+            viewModel.getCouponList(true, 2)
         }
         couponCanUseAdapter.loadMoreModule.loadMoreView = customLoadMoreView
-        viewModel.getCouponList(false, 1)
+        viewModel.getCouponList(false, 2)
     }
 
     override fun initData() {
@@ -57,6 +62,11 @@ class CouponUseOverFragment : BaseFragment<BaseRecyclerViewBinding, CouponViewMo
                     couponCanUseAdapter.loadMoreModule.loadMoreComplete()
                     it.data.dataList?.let { it1 -> couponCanUseAdapter.addData(it1) }
                 } else {
+                    if(it.data==null||it.data.dataList==null||it.data.dataList!!.size==0){
+                        showEmpty()
+                    }else{
+                        showContent()
+                    }
                     binding.smartLayout.finishRefresh()
                     couponCanUseAdapter.setNewInstance(it.data.dataList)
                 }
@@ -71,6 +81,10 @@ class CouponUseOverFragment : BaseFragment<BaseRecyclerViewBinding, CouponViewMo
 
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        viewModel.getCouponList(false, 1)
+        viewModel.getCouponList(false, 2)
+    }
+
+    override fun onRetryBtnClick() {
+
     }
 }
