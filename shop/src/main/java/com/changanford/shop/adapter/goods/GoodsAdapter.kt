@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.utilext.load
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsBinding
 
@@ -13,19 +14,24 @@ import com.changanford.shop.databinding.ItemGoodsBinding
 class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGoodsBinding>>(R.layout.item_goods){
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsBinding>, item: GoodsItemBean) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
+        holder.dataBinding?.apply{
             //维保商品数据需要转换处理
             item.mallWbGoodsId?.apply {
                 if("0"!=this)item.maintenanceToGoods()
             }
-            dataBinding.model=item
-            dataBinding.executePendingBindings()
-            dataBinding.imgGoodsCover.load(item.getImgPath())
-            dataBinding.tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
-            dataBinding.inVip.model=item
-            dataBinding.tvIntegral.visibility=View.VISIBLE
-            setTagType(item,dataBinding)
+            imgGoodsCover.load(item.getImgPath())
+            tvOrIntegral.apply {
+                text=WCommonUtil.getRMB(item.lineFb,"")
+                visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
+            }
+
+            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
+            inVip.model=item
+            tvIntegral.visibility=View.VISIBLE
+            setTagType(item,this)
+            item.getRMB(item.normalFb)
+            model=item
+            executePendingBindings()
         }
     }
     private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){

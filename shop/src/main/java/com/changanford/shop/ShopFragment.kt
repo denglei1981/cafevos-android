@@ -15,7 +15,7 @@ import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.compose.HomeMyIntegralCompose
-import com.changanford.shop.ui.goods.ExchangeListFragment
+import com.changanford.shop.ui.goods.GoodsListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.goods.RecommendActivity
@@ -31,7 +31,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
  * A fragment representing a list of Items.
  */
 class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), OnRefreshListener {
-    private  val fragments= arrayListOf<ExchangeListFragment>()
+    private  val fragments= arrayListOf<GoodsListFragment>()
     private val mAdapter by lazy { GoodsKillAdapter() }
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
     private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
@@ -73,7 +73,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             add(GoodsTypesItemBean("0","全部"))
         }
         for(it in tabs){
-            val fragment= ExchangeListFragment.newInstance(it.mallMallTagId,it.tagType)
+            val fragment= GoodsListFragment.newInstance(it.mallMallTagId,it.tagType)
             fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }

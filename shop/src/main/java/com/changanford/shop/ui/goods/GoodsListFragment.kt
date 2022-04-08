@@ -16,14 +16,14 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @Time : 2021/9/9
  * @Description : ExchangeListFragment
  */
-class ExchangeListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>(),
+class GoodsListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>(),
     SortControl.OnSelectSortListener {
     companion object{
-        fun newInstance(itemId:String,tagType:String?=null): ExchangeListFragment {
+        fun newInstance(itemId:String,tagType:String?=null): GoodsListFragment {
             val bundle = Bundle()
             bundle.putString("tagId", itemId)
             bundle.putString("tagType", tagType)
-            val fragment= ExchangeListFragment()
+            val fragment= GoodsListFragment()
             fragment.arguments = bundle
             return fragment
         }

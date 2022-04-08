@@ -109,7 +109,7 @@ data class GoodsItemBean(
     val stock: Int = 0,
     val updateBy: Any? = null,
     val updateTime: Long = 0,
-    val vipFb: String = "0",
+    var vipFb: String = "0",
     var stockProportion: String = "0",//库存百分比 0-100
     var killStates: Int = 0,//秒杀状态 //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
     val beginTime: Long = 0,
