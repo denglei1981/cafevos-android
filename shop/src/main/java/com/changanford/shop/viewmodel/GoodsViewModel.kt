@@ -386,9 +386,9 @@ class GoodsViewModel: BaseViewModel() {
      * 使用优惠券-商品列表
      * [couponRecordId]优惠券领取id
      * */
-    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize){
+    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize,showLoading:Boolean=false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize

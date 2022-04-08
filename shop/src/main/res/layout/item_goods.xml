@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/dp_21"
                 tools:text="@string/str_vipExclusive"
-                android:text="@{model.spuPageTagType}"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_14" />
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,21 +49,20 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             itemBean=Gson().fromJson(this,CouponsItemBean::class.java).apply {
                 binding.tvCouponsDes.text=when(discountType){
                     //折扣
-                    "DISCOUNT"->"限时促销：以下商品可使用满${conditionMoney}打${couponRatio}折优惠券，最多减${couponMoney}"
+                    "DISCOUNT"->"限时促销：以下商品可使用满${conditionMoney}打${couponRatio}折的优惠券，最多减${couponMoney}"
                     //满减
-                    "FULL_MINUS"->"限时促销：以下商品可使用满${conditionMoney}减${couponMoney}优惠券"
+                    "FULL_MINUS"->"限时促销：以下商品可使用满${conditionMoney}减${couponMoney}的优惠券"
                     //立减
-                    "LEGISLATIVE_REDUCTION"->"限时促销：以下商品可使用立减${couponMoney}优惠券"
+                    "LEGISLATIVE_REDUCTION"->"限时促销：以下商品可使用立减${couponMoney}的优惠券"
 
                     else ->""
                 }
             }
-            getData()
+            getData(true)
         }
     }
     override fun initData() {
         viewModel.goodsListData.observe(this){
-            mAdapter.setList(it?.dataList)
             if(1==pageNo)mAdapter.setList(it?.dataList)
             else if(it?.dataList != null)mAdapter.addData(it.dataList)
 
@@ -74,9 +73,9 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             binding.sml.finishRefresh()
         }
     }
-    private fun getData(){
+    private fun getData(showLoading:Boolean=false){
         itemBean?.couponRecordId?.apply {
-            viewModel.useCoupons(couponRecordId = this,searchKey=searchKey, pageNo = pageNo)
+            viewModel.useCoupons(couponRecordId = this,searchKey=searchKey, pageNo = pageNo,showLoading=showLoading)
         }
     }
 
@@ -94,7 +93,8 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             HideKeyboardUtil.hideKeyboard(binding.edtSearch.windowToken)
             searchKey = v.text.toString()
-            getData()
+            binding.sml.autoRefresh()
+//            getData()
         }
         return false
     }
