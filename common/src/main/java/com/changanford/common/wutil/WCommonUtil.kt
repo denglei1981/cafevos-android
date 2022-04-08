@@ -456,8 +456,8 @@ object WCommonUtil {
      * */
     fun getRMB(fb:String?,unit:String?="¥"):String{
         var rmbPrice="0"
-        if(fb!=null){
-            val fbToFloat=fb.toFloat()
+        if(!TextUtils.isEmpty(fb)){
+            val fbToFloat=fb!!.toFloat()
             val remainder=fbToFloat%100
             rmbPrice = if(remainder>0) "${fbToFloat/100}"
             else "${fb.toInt()/100}"

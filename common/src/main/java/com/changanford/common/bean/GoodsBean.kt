@@ -788,7 +788,7 @@ data class CreateOrderBean(
 ) {
     fun getRmbBfb(payBfb: String? = this.payBfb): Float {
         "payBfb:$payBfb".wLogE("okhttp")
-        return if (TextUtils.isEmpty(payBfb)) 0f
+        return if (TextUtils.isEmpty(payBfb)) -1f
         else payBfb!!.toFloat() / 100f
     }
 }

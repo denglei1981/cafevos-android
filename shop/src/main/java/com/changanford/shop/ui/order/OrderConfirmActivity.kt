@@ -73,7 +73,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private val rbPayWayArr by lazy { arrayListOf(binding.inPayWay.rbFbAndRmb,binding.inPayWay.rbRmb,binding.inPayWay.rbCustom) }
     private var maxUseFb=0//本次最大可使用福币 默认等于用户余额
     private var totalPayFb:Int=0//支付总额 福币
-    private var minRmbProportion:Float=0f//最低使用人民币比例
+    private var minRmbProportion:Float=0f//最低使用人民币比例 0只能福币支付 -1则不限制
     private var minRmb="0"
     private var payFb:String?="0"//福币支付额度
     private var payRmb:String?="0"//人民币支付额度
@@ -255,7 +255,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         infoBean.totalPayFb=totalPayFb
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"),"#00095B")
         //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
-        var minFb:Int=WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt()
+        var minFb:Int=if(minRmbProportion>0f)WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt() else 0
         val maxFb:Int=totalPayFb -minFb
         //最大可使用福币
         maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
@@ -396,6 +396,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         binding.inPayWay.apply {
             tvMaxUseFb.setText("$maxUseFb")
             when {
+                //纯福币支付
+                minRmbProportion==0f->{
+                    rbFbAndRmb.visibility=View.VISIBLE
+                    rbCustom.visibility=View.GONE
+                    rbRmb.visibility=View.GONE
+                    clickPayWay(0)
+                }
                 maxUseFb>0 -> {
                     rbFbAndRmb.visibility=View.VISIBLE
                     rbCustom.visibility=View.VISIBLE
@@ -526,8 +533,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     }
     private fun updatePayCustom(){
         binding.inPayWay.apply {
-            rbRmb.visibility=View.VISIBLE
-            if(maxUseFb>0){
+            rbRmb.visibility=if(minRmbProportion!=0f)View.VISIBLE else View.GONE
+            if(maxUseFb>0&&minRmbProportion!=0f){
+                //是否选中自定义支付
                 val isCheck=rbCustom.isChecked
                 if(isCheck){
                     rbCustom.visibility=View.INVISIBLE
@@ -540,7 +548,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 rbRmb.visibility=View.GONE
                 payFb="0"
                 rbFbAndRmb.visibility=View.VISIBLE
-            }else{
+            }else if(minRmbProportion!=0f){
                 rbFbAndRmb.visibility=View.GONE
             }
         }
