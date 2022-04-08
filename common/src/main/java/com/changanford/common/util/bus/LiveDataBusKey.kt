@@ -261,5 +261,7 @@ object LiveDataBusKey {
     const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
     //选择优惠券回调
     const val COUPONS_CHOOSE_BACK = "coupons_choose_back"
+    //开票成功
+    const val GET_INVOICE ="get_invoice"
 }
 

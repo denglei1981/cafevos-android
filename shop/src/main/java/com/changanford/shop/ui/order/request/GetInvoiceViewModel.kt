@@ -7,6 +7,8 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.net.*
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
@@ -16,7 +18,7 @@ import java.math.BigDecimal
 class GetInvoiceViewModel : BaseViewModel() {
 
 
-    var deleteShoppingCar: MutableLiveData<String> = MutableLiveData()
+    var  invoiceLiveData: MutableLiveData<String> = MutableLiveData()
 
     fun getUserInvoiceAdd(addressId:String,invoiceHeader:String,invoiceHeaderName:String,invoiceRmb:String,mallMallOrderId:String,mallMallOrderNo:String,taxpayerIdentifier:String="",memo:String="") {
         launch(block = {
@@ -38,9 +40,9 @@ class GetInvoiceViewModel : BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>()
                 .userInvoiceAdd(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    if (it != null) {
-
-                    }
+                    "申请已提交".toast()
+                    invoiceLiveData.postValue("申请已提交")
+                    LiveDataBus.get().with(LiveDataBusKey.GET_INVOICE)
                 }
                 .onWithMsgFailure {
                     it?.toast()

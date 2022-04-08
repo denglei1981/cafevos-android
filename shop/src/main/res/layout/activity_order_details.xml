@@ -112,6 +112,6 @@
 
         <include
             android:id="@+id/in_sale_bottom"
-            layout="@layout/in_order_detail_sale_after" />
+            layout="@layout/in_order_detail_sale_after_v2" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

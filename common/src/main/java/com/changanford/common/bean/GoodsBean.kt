@@ -609,7 +609,8 @@ data class OrderItemBean(
     var rmb:String?=null,
     var busSource:String?=null,
     var isNewOrder:String?=null,
-    var price: String?=null
+    var price: String?=null,
+    var invoiced:String?=null // 发票状态
 ) {
     fun getRMBPrice(){
         rmbPrice=if(rmb!="0")rmb else getRMB(fb,"")
@@ -631,6 +632,15 @@ data class OrderItemBean(
             return specifications!!.split(",").filter { "" != it }
         }
         return arrayListOf()
+    }
+    fun getRMBExtendsUnit(fb:String?=fbCost):String{
+        if(fb!=null){
+            val fbToFloat=fb.toFloat()
+            val remainder=fbToFloat%100
+            rmbPrice = if(remainder>0) "${fbToFloat/100}"
+            else "${fb.toInt()/100}"
+        }
+        return "${rmbPrice?:"0"}"
     }
 }
 
