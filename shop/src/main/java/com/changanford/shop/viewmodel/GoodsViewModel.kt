@@ -231,7 +231,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 评价列表
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,key:String?=null,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
