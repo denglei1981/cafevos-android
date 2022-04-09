@@ -57,7 +57,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         initObserve()
         initBanner()
     }
-    override fun initData() {}
+    override fun initData() {
+        getData()
+    }
     private fun getData(){
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
@@ -265,11 +267,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun reset(isHidden:Boolean=hidden){
         if(!isHidden) {
             carControl.mMapView?.onResume()
-            getData()
+//            getData()
         }else{
             carControl.mMapView?.onPause()
-            updateControl(isHidden)
+//            updateControl(isHidden)
         }
+        updateControl(isHidden)
     }
     private fun getVideoListener():VideoView.OnStateChangeListener{
         return object :VideoView.OnStateChangeListener{
