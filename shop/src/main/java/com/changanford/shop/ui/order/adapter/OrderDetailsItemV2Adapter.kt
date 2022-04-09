@@ -49,7 +49,7 @@ class OrderDetailsItemV2Adapter() :
                 }
                 else -> {
                     tvSaleHandler.visibility = View.VISIBLE
-                    tvSaleHandler.text = "售后申请"
+                    tvSaleHandler.text = "申请售后"
                 }
             }
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品

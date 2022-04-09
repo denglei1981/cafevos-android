@@ -13,11 +13,11 @@
         android:background="@color/color_F4">
 
 
-        <include
+        <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
-            layout="@layout/layout_top_shopping"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,10 +74,10 @@
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:text="退款商品"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"

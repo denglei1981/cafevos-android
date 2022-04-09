@@ -196,6 +196,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inBottom.layoutBottom.visibility = View.GONE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_evaluate)
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
+                    BottomBShow()
                     showComment()
                 }
                 "已完成" -> {
@@ -278,6 +279,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         if (isGet) {
             binding.inSaleBottom.btnOrderShopGet.isSelected = true
             binding.inSaleBottom.btnOrderShopGet.visibility = View.VISIBLE
+            binding.inSaleBottom.btnOrderShopGet.setOnClickListener {
+
+                confirmGoods()
+            }
         } else {
             binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
         }
@@ -603,11 +608,15 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     fun showComment() {
         binding.inSaleBottom.btnOrderComment.text = "评价"
         binding.inSaleBottom.btnOrderComment.isSelected = true
+        binding.inSaleBottom.btnOrderComment.visibility=View.VISIBLE
+        binding.inSaleBottom.btnOrderShopGet.visibility=View.GONE
     }
 
     fun showNextComment() {
         binding.inSaleBottom.btnOrderComment.text = "追评"
         binding.inSaleBottom.btnOrderComment.isSelected = false
+        binding.inSaleBottom.btnOrderComment.visibility=View.VISIBLE
+        binding.inSaleBottom.btnOrderShopGet.visibility=View.GONE
     }
 
     fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
