@@ -19,7 +19,7 @@ import com.changanford.shop.ui.shoppingcart.dialog.RefundResonDialog
 import com.google.gson.Gson
 
 /***
- *    申请退款-未发货
+ *    申请退款-未发货-退整单
  * */
 @Route(path = ARouterShopPath.RefundNotShippedActivity)
 class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, RefundViewModel>() {

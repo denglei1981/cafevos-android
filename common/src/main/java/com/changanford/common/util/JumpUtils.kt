@@ -700,6 +700,9 @@ class JumpUtils {
                  // 整单退，
                 startARouter(ARouterShopPath.RefundProgressActivity,bundle,true)
             }
+            125->{ // 发货了，选一下退货还是退款
+                startARouter(ARouterShopPath.AfterSaleActivity,bundle,true)
+            }
 
             10000 -> {
                 //外部H5

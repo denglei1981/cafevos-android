@@ -5,9 +5,9 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.shop.databinding.ActivityOnlyRefundBinding
 
 /**
- *  退款状态
+ *   单个sku 退款
  * */
-class RefundStatesActivity : BaseActivity<ActivityOnlyRefundBinding, BaseViewModel>() {
+class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, BaseViewModel>() {
     override fun initView() {
 
     }
