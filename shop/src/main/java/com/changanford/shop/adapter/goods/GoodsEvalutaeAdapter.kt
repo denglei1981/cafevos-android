@@ -54,7 +54,7 @@ class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<
                 .padding(horizontal = 20.dp)) {
                 Spacer(modifier = Modifier.height(13.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    val imgArr=getImgArr()
+                    val imgArr=evalImgs?:arrayListOf()
                     val imgSize=imgArr.size
                     val maxSize=if(imgSize>=3)3 else imgSize
                     for(i in 0 until maxSize){
@@ -81,12 +81,14 @@ class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<
                         }
                         if(i!=2)Spacer(modifier = Modifier.width(8.dp))
                     }
-                    
                 }
-                Spacer(modifier = Modifier.height(18.dp))
-                Text(text = "3天后追评",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
-                Spacer(modifier = Modifier.height(11.dp))
-                Text(text = "-----",color= colorResource(R.color.color_33), fontSize = 14.sp)
+                //追评
+                reviewEval?.apply {
+                    Spacer(modifier = Modifier.height(18.dp))
+                    Text(text = evalTime?:"",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                    Spacer(modifier = Modifier.height(11.dp))
+                    Text(text = evalText?:"",color= colorResource(R.color.color_33), fontSize = 14.sp)
+                }
             }
         }
     }

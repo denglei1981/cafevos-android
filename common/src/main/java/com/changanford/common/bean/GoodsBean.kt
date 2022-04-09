@@ -505,6 +505,8 @@ data class CommentItem(
     val updateTime: String = "",
     val userId: Int = 0,
     var imgs: String?=null,
+    var evalImgs:List<String>?=null,
+    var reviewEval: ReviewEvalBean?=null,
 ){
     fun getImgArr(imgs:String?=this.imgs):List<String>{
         return if(!TextUtils.isEmpty(imgs)&&imgs!!.contains(",")){
@@ -512,7 +514,10 @@ data class CommentItem(
         }else arrayListOf(imgs?:"")
     }
 }
-
+/*
+* 追评
+* */
+data class ReviewEvalBean(var evalText:String?=null,var evalTime:String?=null)
 
 /**
  * 商品首页
