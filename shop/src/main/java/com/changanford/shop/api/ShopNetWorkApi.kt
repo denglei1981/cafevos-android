@@ -5,6 +5,7 @@ import com.changanford.common.net.CommonResponse
 import com.changanford.shop.bean.CouponData
 import com.changanford.shop.bean.InvoiceDetails
 import com.changanford.shop.bean.InvoiceInfo
+import com.changanford.shop.bean.RefundProgressBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -232,8 +233,14 @@ interface ShopNetWorkApi {
 
     /**
      *  退款进度
-
      * */
     @POST("/mall/refund/progress")
-    suspend fun  refundProgress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
+    suspend fun  refundProgress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+
+    /**
+     * 撤销退款申请
+     * */
+    @POST("/mall/cancelRefund")
+    suspend fun  cancelRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+
 }

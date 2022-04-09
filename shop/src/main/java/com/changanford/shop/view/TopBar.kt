@@ -29,6 +29,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
     private lateinit var tvTitle:TypefaceTextView
     private lateinit var imgRight:ImageView
     private lateinit var rightTV:TypefaceTextView
+
     init {
         LayoutInflater.from(context).inflate(R.layout.view_topbar, this)
         initAttributes(context, attrs)
@@ -80,6 +81,9 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
             R.id.img_right->rightListener?.onRightClick()
             R.id.tv_right->rightTvListener?.onRightTvClick()
         }
+    }
+    fun setTitle(title:String){
+        tvTitle.setText(title)
     }
     fun setActivity(activity:Activity){
         this.activity=activity
