@@ -2,12 +2,14 @@ package com.changanford.car.control
 
 import android.app.Activity
 import android.widget.ImageView
+import com.chad.library.adapter.base.util.getItemView
 import com.changanford.common.util.dk.CompleteView
 import com.changanford.common.util.dk.ErrorView
 import com.changanford.common.util.dk.PrepareView
 import com.changanford.common.util.dk.VodControlView
 import com.changanford.common.util.dk.cache.ProxyVideoCacheManager
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 
@@ -16,7 +18,7 @@ import com.dueeeke.videoplayer.player.VideoView
  * @Date: 2020/5/15
  * @Des: DK播放器辅助类
  */
-class PlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>) {
+class PlayerHelper(private val context: Activity, private val mVideoView: VideoView<*>, coverPath:String?=null) {
     /**
      * 控制器
      */
@@ -36,6 +38,8 @@ class PlayerHelper(private val context: Activity, private val mVideoView: VideoV
     }
 
     init {
+        //加载封面
+        mPrepareView.thumbImgView.load(coverPath,0)
         mController.addControlComponent(ErrorView(context))
         mController.addControlComponent(mPrepareView)
         mController.addControlComponent(CompleteView(context))
