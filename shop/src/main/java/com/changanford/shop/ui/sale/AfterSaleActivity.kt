@@ -23,7 +23,7 @@ class AfterSaleActivity : BaseActivity<ActivityAfterSaleBinding, BaseViewModel>(
     override fun initView() {
             binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
                 override fun onBackClick() {
-
+                       onBackPressed()
                 }
             })
     }
