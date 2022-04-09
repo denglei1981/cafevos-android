@@ -1,35 +1,115 @@
 package com.changanford.shop.ui.sale
 
 import android.view.LayoutInflater
+import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.PayShowBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.showTotalTag
 import com.changanford.shop.R
-import com.changanford.shop.databinding.BaseRecyclerViewBinding
+import com.changanford.shop.bean.RefundProgressBean
+import com.changanford.shop.databinding.ActivityRefundProgressBinding
 import com.changanford.shop.databinding.FooterRefundProgressBinding
 import com.changanford.shop.databinding.HeaderRefundProgressBinding
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
+import com.changanford.shop.view.TopBar
 
 /**
  *  退款进度
  * */
 @Route(path = ARouterShopPath.RefundProgressActivity)
-class RefundProgressActivity : BaseActivity<BaseRecyclerViewBinding, RefundViewModel>() {
+class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, RefundViewModel>() {
 
     val refundProgressAdapter: RefundProgressAdapter by lazy {
-        RefundProgressAdapter()
+        RefundProgressAdapter(viewModel)
     }
 
-    override fun initView() {
 
+    override fun initView() {
+        binding.tobBar.setOnBackClickListener(object : TopBar.OnBackClickListener {
+            override fun onBackClick() {
+                onBackPressed()
+            }
+        })
+        binding.tobBar.setTitle("仅退款")
+        binding.recyclerView.adapter = refundProgressAdapter
     }
 
     override fun initData() {
         val mallMallOrderId = intent.getStringExtra("value")
         if (mallMallOrderId != null) {
             viewModel.getRefundProgress(mallMallOrderId)
+            addHeadView()
+            addFooterView()
+        }
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.refundProgressLiveData.observe(this, Observer {
+            refundProgressAdapter.refundStatus = it.refundStatus // 当前状态
+            refundProgressAdapter.setNewInstance(it.refundList)
+            showFooterAndHeader(it)
+        })
+        viewModel.cancelRefundLiveData.observe(this, Observer {
+            // 撤销退款申请成功
+            this.finish()
+        })
+    }
+
+    fun showFooterAndHeader(refundProgressBean: RefundProgressBean) {
+        headNewBinding?.let {
+            viewModel.StatusEnum("MallRefundStatusEnum", refundProgressBean.refundStatus, it.tvTips)
+            when (refundProgressBean.refundStatus) {
+                "SUCCESS" -> {
+                    it.tvSubTips.visibility = View.VISIBLE
+                }
+                else -> {
+                    it.tvSubTips.visibility = View.GONE
+                    showTotalTag(
+                        this,
+                        it.tvSubTips,
+                        PayShowBean(refundProgressBean.rmbRefund, refundProgressBean.fbRefund),
+                        false
+                    )
+                }
+            }
+        }
+        footerBinding?.let { ft ->
+            ft.layoutRefundInfo.tvReasonNum.text = refundProgressBean.refundNo
+            viewModel.StatusEnum(
+                "MallRefundMethodEnum",
+                refundProgressBean.refundMethod,
+                ft.layoutRefundInfo.tvRefundType
+            )
+            viewModel.StatusEnum(
+                "MallRefundReasonEnum",
+                refundProgressBean.refundReason,
+                ft.layoutRefundInfo.tvResonShow
+            )
+            showTotalTag(
+                this,
+                ft.layoutRefundInfo.tvRefundMoney,
+                PayShowBean(refundProgressBean.rmbRefundApply, refundProgressBean.fbRefundApply),
+                false
+            )
+            when (refundProgressBean.refundStatus) {
+                "ON_GOING" -> {
+                    ft.tvHandle.visibility = View.VISIBLE
+                    ft.tvHandle.text = "撤销退款申请"
+                    ft.tvHandle.setOnClickListener {
+                        // 撤销退款申请
+                        viewModel.cancelRefund(refundProgressBean.mallMallRefundId)
+                    }
+                }
+                else -> {
+                    ft.tvHandle.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -42,7 +122,6 @@ class RefundProgressActivity : BaseActivity<BaseRecyclerViewBinding, RefundViewM
                 binding.recyclerView,
                 false
             )
-
             headNewBinding?.let {
                 refundProgressAdapter.addHeaderView(it.root, 0)
             }

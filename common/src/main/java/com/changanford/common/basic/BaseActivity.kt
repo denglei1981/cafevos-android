@@ -21,9 +21,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
+import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.createHashMap
 import com.gyf.immersionbar.ImmersionBar
 import java.lang.reflect.ParameterizedType
 
@@ -39,8 +43,8 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivity(), BaseInterface {
     lateinit var binding: VB
     lateinit var viewModel: VM
-    var isDarkFont=true
-    var isPortrait:Boolean=true
+    var isDarkFont = true
+    var isPortrait: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initData()
         observe()
     }
-    private fun handleTextSize(){
+
+    private fun handleTextSize() {
         // 加载系统默认设置，字体不随用户设置变化
         var res = super.getResources()
         var config = Configuration()
@@ -69,11 +74,12 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         var manager = curActivity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         manager.defaultDisplay.getRealMetrics(metrics)
         metrics.scaledDensity = config.fontScale * metrics.density
-        res.updateConfiguration(config,metrics)
+        res.updateConfiguration(config, metrics)
     }
+
     private fun getClassName() = javaClass.simpleName
     override fun initView(savedInstanceState: Bundle?) {
-        if(isPortrait){
+        if (isPortrait) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
@@ -84,12 +90,12 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         curActivity = this
         try {
             currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    open fun observe(){}
+    open fun observe() {}
 
     private val bindings: VB by lazy {
         val type = javaClass.genericSuperclass as ParameterizedType
@@ -104,37 +110,37 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         viewModel = ViewModelProvider(this).get(vmClass)
     }
 
-    fun <T:ViewModel> createViewModel(claaz:Class<T>) =
+    fun <T : ViewModel> createViewModel(claaz: Class<T>) =
         ViewModelProvider.AndroidViewModelFactory.getInstance(BaseApplication.INSTANT).create(claaz)
 
     /**
      * 设置状态栏透明 SDK_INT >= 21
      * @param isLightMode 是否是浅色模式，true= 状态栏文字为灰色，false = 状态栏文字白色 SDK_INT >= 23
      */
-    fun makeStateBarTransparent(isLightMode: Boolean){
-        if (Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT){
+    fun makeStateBarTransparent(isLightMode: Boolean) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return
         }
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             val option =
                 window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             window.decorView.systemUiVisibility = option
             window.statusBarColor = Color.TRANSPARENT
-        }else{
+        } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
         setLightMode(isLightMode)
 
     }
 
-    private fun setLightMode(isLightMode:Boolean){
-        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){//6.0设置状态栏字体颜色
+    private fun setLightMode(isLightMode: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0设置状态栏字体颜色
             var option = window.decorView.systemUiVisibility
-            option = if (isLightMode){
+            option = if (isLightMode) {
                 option or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }else{
+            } else {
                 option and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
             }
             window.decorView.systemUiVisibility = option
@@ -151,7 +157,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
 //        return super.dispatchTouchEvent(ev)
 //    }
 
-      private fun isShouldHideKeyboard(v: View?, event: MotionEvent): Boolean {
+    private fun isShouldHideKeyboard(v: View?, event: MotionEvent): Boolean {
         if (v != null && v is EditText) {
             val l = intArrayOf(0, 0)
             v.getLocationInWindow(l)
@@ -186,6 +192,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         val activityManager = applicationContext
             .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val packageName = applicationContext.packageName
+
         /**
          * 获取Android设备中所有正在运行的App
          */
@@ -199,4 +206,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         }
         return false
     }
+
+
+
 }

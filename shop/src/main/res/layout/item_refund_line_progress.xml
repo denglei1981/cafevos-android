@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_right"
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:text="退款成功"
-            android:textColor="@color/black"
+            android:textColor="@color/gray_999999"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_right"
             app:layout_constraintStart_toEndOf="@+id/iv_right"
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginTop="@dimen/dp_16"
-            android:textColor="@color/black"
+            android:textColor="@color/gray_999999"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/iv_right"
             app:layout_constraintTop_toBottomOf="@+id/tv_refund_states"
@@ -83,7 +84,7 @@
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_20"
             android:maxLines="2"
-            android:textColor="@color/black"
+            android:textColor="@color/gray_999999"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_right"
@@ -99,7 +100,8 @@
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_20"
             android:maxLines="2"
-            android:textColor="@color/black"
+            android:textColor="@color/gray_999999"
+            android:paddingBottom="8dp"
             android:textSize="@dimen/sp_11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_right"

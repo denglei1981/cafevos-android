@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:background="@color/white"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center_vertical"
             android:text="温馨提示"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="11dp"
-            android:paddingBottom="@dimen/dp_10"
+            android:visibility="visible"
             android:text="当前订单已拆分成多个包裹发货"
             android:textColor="@color/gray_999999"
             android:textSize="12sp" />
@@ -44,6 +45,12 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@color/color_F4" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/white" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
