@@ -609,7 +609,7 @@ data class OrderItemBean(
     val orderBrief: String = "",
     val orderImg: String = "",
     var orderStatusName: String? = "",
-    val skuName: String = "",
+    val skuName: String? = null,
     var logisticsInfo: String? = "",//物流信息
     var freightPrice: String? = "0.00",//运费 0为包邮
     var otherName: String? = "",
@@ -819,6 +819,7 @@ data class OrderSkuItem(
     var orderType: Int = 0,
     var fbPrice: String? = null,
     var rmbPrice: String? = null,
+    var orderImg:String?=null,
 ) {
     /**
      * 获取标签

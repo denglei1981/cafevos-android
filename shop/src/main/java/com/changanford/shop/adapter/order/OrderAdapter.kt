@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
@@ -33,11 +34,13 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, itemData: OrderItemBean) {
         holder.dataBinding?.apply{
             val position=holder.absoluteAdapterPosition
             initBtn(this)
-            dataFormat(this,item)
+            val item=dataFormat(this,itemData)
+            tvTotal.visibility=tvTotalPrice.visibility
+            inGoodsInfo.tvTotalNum.visibility=tvTotalPrice.visibility
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             this.model=item
             this.executePendingBindings()
@@ -85,7 +88,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     /**
      * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
     * */
-    private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
+    private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean):OrderItemBean{
         dataBinding.tvTotalPrice.visibility=View.VISIBLE
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
@@ -138,6 +141,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         //单价
                         val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                         item.apply {
+
                             this.buyNum=orderBriefBean.buyNum
                             payType=orderBriefBean.payType
                             this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
@@ -146,10 +150,11 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             this.orginPrice=orderBriefBean.orginPrice
                             this.busSourse= orderBriefBean.busSourse
                             this.hagglePrice=orderBriefBean.hagglePrice
-                            this.skuOrderVOList= arrayListOf()
-                            this.rmb=getRMB(this.fbCost)
+                            this.rmb=getRMB(this.fbCost,"")
                             this.fb= this.fbCost
                             this.totalNum=orderBriefBean.buyNum
+                            val skuItem=OrderSkuItem(skuImg=skuImg, specifications = specifications,spuName=skuName)
+                            this.skuOrderVOList= arrayListOf(skuItem)
                         }
                     }
                 }
@@ -162,8 +167,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                 }
             }
-
         }
+        return item
     }
     private fun updateBtnUI(position:Int,dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
         dataBinding.btnCancel.visibility=View.GONE
