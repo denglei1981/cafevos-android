@@ -23,8 +23,10 @@ import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.logE
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
+import com.changanford.shop.bean.RefundBean
 import com.changanford.shop.bean.SaleAfterBean
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
@@ -212,6 +214,16 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inBottom.layoutBottom.visibility = View.GONE
                     showExpress(true) // 展示物流
                 }
+                "退款中" -> {
+                    BottomGon()
+                    binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+                    binding.inRefund.conRefundProgress.setOnClickListener {
+                        JumpUtils.instans?.jump(124,dataBean.mallMallOrderId)
+
+                    }
+                    binding.inAddress.conAddress.visibility=View.GONE
+                    binding.tvOrderRemainingTime.text = dataBean.statusDesc
+                }
                 "待评价" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     //发货时间
@@ -301,6 +313,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private fun BottomBShow() {
         binding.inBottom.layoutBottom.visibility = View.GONE
         binding.inSaleBottom.layoutBottom.visibility = View.VISIBLE
+    }
+
+    private fun BottomGon() {
+        binding.inBottom.layoutBottom.visibility = View.GONE
+        binding.inSaleBottom.layoutBottom.visibility = View.GONE
     }
 
     // 支付相关按钮展示
@@ -497,7 +514,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         val fbNumber = item.payFb
 
         val starStr = "合计: "
-        val str = "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+        val str = if (TextUtils.isEmpty(item.payRmb)) {
+            "$starStr[icon] ${item.payFb}"
+        } else {
+            "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+        }
         //先设置原始文本
         text?.text = str
         //使用post方法，在TextView完成绘制流程后在消息队列中被调用
@@ -512,16 +533,6 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 val strLength = spannableString.length
                 val numberLength = fbNumber?.length
                 val startIndex = strLength - numberLength!! - 1
-//                spannableString.setSpan(
-//                    AbsoluteSizeSpan(30),
-//                    startIndex,
-//                    strLength,
-//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
-//                spannableString.setSpan(
-//                    ForegroundColorSpan(Color.parseColor("#E1A743")), startIndex, strLength,
-//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
                 spannableString.setSpan(
                     imageSpan, str.lastIndexOf("["), str.lastIndexOf("]") + 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -537,9 +548,33 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             when (invoice) {
                 "NOT_BEGIN" -> {// 未申请
                     binding.inSaleBottom.btnOrderInvoice.text = "申请发票"
+                    binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
+                        if (dataBean != null) {
+                            dataBean.addressInfo = localDataBean.orderReceiveAddress.addressName
+                            dataBean.addressId = localDataBean.orderReceiveAddress.addressId.toInt()
+                        }
+                        localDataBean.mallMallOrderId?.let {
+                            val invoiceInfo = InvoiceInfo(
+                                localDataBean.addressInfo, localDataBean.addressId.toString(),
+                                it, localDataBean.orderNo, localDataBean.getRMBExtendsUnit(),
+                                localDataBean.orderReceiveAddress.consignee,
+                                localDataBean.orderReceiveAddress.phone
+                            )
+                            val gson = Gson()
+                            val invoiceStr = gson.toJson(invoiceInfo)
+                            invoiceStr.logE()
+                            JumpUtils.instans?.jump(120, invoiceStr)
+
+
+                        }
+                    }
                 }
                 "ON_GOING" -> {// 已申请未开票
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
+                    binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
+                        JumpUtils.instans?.jump(123, localDataBean.orderNo)
+
+                    }
                 }
                 "ENDED" -> { // 已开票
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
@@ -547,14 +582,20 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             }
         }
         binding.inSaleBottom.btnOrderInvoice.visibility = View.VISIBLE
+
+
     }
 
     fun showRefund(localDataBean: OrderItemBean) {
         binding.inSaleBottom.btnOrderRefund.visibility = View.VISIBLE
         binding.inSaleBottom.btnOrderRefund.setOnClickListener {
-             // 申请退款
-
-
+            // 申请退款 0 是整单退, 1 是退单个商品
+            val gson = Gson()
+            val refundBean =
+                RefundBean(localDataBean.orderNo, localDataBean.payFb, localDataBean.payRmb, "0")
+            val refundJson = gson.toJson(refundBean)
+            refundJson.toString().logE()
+            JumpUtils.instans?.jump(121, refundJson)
         }
     }
 
@@ -581,11 +622,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 
     fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
         val tagName = item.payRmb
-
         //先设置原始文本
         text?.text = "合计".plus("  ￥${tagName}")
-
-
     }
 
     override fun onDestroy() {

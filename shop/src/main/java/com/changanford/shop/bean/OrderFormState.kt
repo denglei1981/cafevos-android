@@ -9,3 +9,7 @@ data class OrderFormState(
     val isDataValid: Boolean = false,
     val rating:Int=0
 )
+
+data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String){
+
+}

@@ -83,6 +83,8 @@ object LiveDataBusKey {
     //地址列表点击后回调
     const val MINE_CHOOSE_ADDRESS_SUCCESS = "mine:choose_address_success"
 
+    const val INVOICE_ADDRESS_SUCCESS = "INVOICE_ADDRESS_SUCCESS"
+
     //数据库中取出到缓存
     const val COOKIE_DB = "cookie_from_db"
 

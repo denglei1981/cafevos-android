@@ -155,6 +155,17 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
                     finish()
                 }
             }
+            if(isChooseAdd==2){
+                holder.itemView.setOnClickListener {
+                    // 发票选择地址,成功
+                    LiveDataBus.get().with(LiveDataBusKey.INVOICE_ADDRESS_SUCCESS)
+                        .postValue(JSON.toJSON(item).toString())//H5回调数据
+                    val intent = Intent()
+                    intent.putExtra("addressBeanItem", item)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            }
         }
     }
 

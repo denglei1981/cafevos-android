@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            app:title_text="查看发票"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +50,7 @@
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_12"
                         android:layout_marginEnd="8dp"
-                        android:text="收货地址"
+                        tools:text="收货地址"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_16"
                         app:layout_constraintEnd_toStartOf="@+id/iv_address"
@@ -91,8 +92,9 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@color/white"
+                    android:paddingEnd="4dp"
                     app:nameStr="发票类型"
-                    app:nameTextSize="@dimen/sp_13"
+                    app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -103,7 +105,9 @@
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
                     app:nameStr="发票内容"
-                    app:nameTextSize="@dimen/sp_13"
+                    app:nameTextColor="@color/black"
+                    android:paddingEnd="4dp"
+                    app:nameTextSize="@dimen/sp_14"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -113,7 +117,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
+                    app:nameTextColor="@color/black"
                     app:nameStr="发票抬头"
+                    android:paddingEnd="4dp"
                     app:nameTextSize="@dimen/sp_13"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
@@ -125,7 +131,8 @@
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
                     app:nameStr="抬头名称"
-                    app:nameTextSize="@dimen/sp_13"
+                    android:paddingEnd="4dp"
+                    app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -136,7 +143,9 @@
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
                     app:nameStr="申请时间"
+                    android:paddingEnd="4dp"
                     app:nameTextSize="@dimen/sp_13"
+                    app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -147,7 +156,8 @@
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
                     app:nameStr="开票时间"
-                    app:nameTextSize="@dimen/sp_13"
+                    android:paddingEnd="4dp"
+                    app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -158,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_20"
+
                     android:layout_marginEnd="@dimen/dp_20"
                     android:text="1.开票金额为用户实际支付的金额（不含优惠券、福币抵扣）
 2.暂时只支持纸质发票邮寄，不支持电子发票

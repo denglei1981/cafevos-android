@@ -85,10 +85,16 @@
                     android:id="@+id/in_address"
                     layout="@layout/item_in_order_only_detail_address" />
 
+                <include
+                    android:id="@+id/in_refund"
+                    layout="@layout/layout_order_refund_progress"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_shopping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"

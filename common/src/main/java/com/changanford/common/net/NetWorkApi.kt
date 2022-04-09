@@ -1123,11 +1123,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<BindCarBean>>
+
     @POST("ser/carAuth/confirmBindCar")
     suspend fun confirmBindCar(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
     // 优惠券列表
     @POST("/mall/coupon/receiveList")
     suspend fun receiveList(
@@ -1138,9 +1140,17 @@ interface NetWorkApi {
 
     // 领取优惠券
     @POST("/mall/coupon/receive")
-    suspend fun  receiveCoupons(
+    suspend fun receiveCoupons(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<*>
 
+    /**
+     * 根据类名称获取枚举
+     * */
+    @POST("/base/dict/getEnum")
+    suspend fun dictGetEnum(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<BackEnumBean>>
 }
