@@ -627,7 +627,9 @@ data class OrderItemBean(
     var invoiced: String? = null, // 发票状态
     var statusDesc: String? = null,
     var couponDiscount: String,
-    var haggleDiscount: String
+    var haggleDiscount: String,
+    var sharedFb:String,
+    var sharedRmb:String
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
