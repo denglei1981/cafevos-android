@@ -298,6 +298,7 @@ data class ConfirmOrderInfoBean(
         }
     }
 }
+
 /**
  * 商品详情
  * */
@@ -412,7 +413,6 @@ data class GoodsDetailBean(
         orginPrice = fbPer
         rmbPrice = getRMB(fbPer)
     }
-
 
 
 }
@@ -640,7 +640,9 @@ data class OrderItemBean(
     var isNewOrder: String? = null,
     var price: String? = null,
     var invoiced: String? = null, // 发票状态
-    var statusDesc:String?=null
+    var statusDesc: String? = null,
+    var couponDiscount: String,
+    var haggleDiscount: String
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
@@ -720,8 +722,9 @@ data class ShopAddressInfoBean(
     fun getAddress(): String {
         return "$provinceName$cityName$districtName$addressName"
     }
-    fun getUserInfos():String{
-        return consignee.plus("\t"+phone)
+
+    fun getUserInfos(): String {
+        return consignee.plus("\t" + phone)
     }
 }
 
@@ -872,9 +875,10 @@ data class CouponsItemBean(
     var couponSendId: String, // 发放id
     var conditionName: String
 ) {
-    fun getRmbToFb(conditionMoney:Long=this.conditionMoney):Long{
-        return conditionMoney*100
+    fun getRmbToFb(conditionMoney: Long = this.conditionMoney): Long {
+        return conditionMoney * 100
     }
+
     /**
      * 计算折扣金额
      * [couponRatio]折扣比例 0.1-9.9折 -5折
@@ -969,3 +973,20 @@ data class WxPayBean(
     val sign: String? = null,
     val timestamp: String? = null,
 )
+
+data class RefundOrderItemBean(
+    var specifications: String,
+    var spuName: String,
+    var skuImg: String,
+    var mallMallSkuId: String,
+    var buyNum: Int,
+    var price: String,
+
+) {
+    fun getTagList(): List<String> {
+        if (!TextUtils.isEmpty(specifications)) {
+            return specifications!!.split(",").filter { "" != it }
+        }
+        return arrayListOf()
+    }
+}

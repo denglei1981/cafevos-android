@@ -13,24 +13,41 @@
         android:background="@color/color_F4">
 
 
-        <include
+        <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
-            layout="@layout/layout_top_shopping"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/red"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="申请售后" />
 
-        <include
-            android:id="@+id/refund_shop"
-            layout="@layout/layout_refund_shop"
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="退款商品"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_shopping"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            tools:itemCount="2"
+            tools:listitem="@layout/in_item_order_goods_v2" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_sale_item"
@@ -40,7 +57,7 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp_20"
-            app:layout_constraintTop_toBottomOf="@+id/refund_shop">
+            app:layout_constraintTop_toBottomOf="@+id/rv_shopping">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"

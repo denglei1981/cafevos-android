@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
@@ -21,41 +22,29 @@ import com.google.gson.Gson
 /**
  *
  * */
-class OrderDetailsItemV2Adapter() :
-    BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<InItemOrderGoodsV2Binding>>(R.layout.in_item_order_goods_v2) {
+class RefundOrderItemAdapter() :
+    BaseQuickAdapter<RefundOrderItemBean, BaseDataBindingHolder<InItemOrderGoodsV2Binding>>(R.layout.in_item_order_goods_v2) {
 
     var orderStatus: String = ""
     var refundStatus: String = ""
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
-        item: OrderItemBean
+        item: RefundOrderItemBean
     ) {
         holder.dataBinding?.apply {
-            model = item
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
             showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             recyclerView.adapter = goodsAttributeAdapter
+            tvGoodsTitle.text = item.spuName
+            tvGoodsNumber.text = "×".plus(item.buyNum)
+            tvSaleHandler.visibility = View.GONE
 
-            when (orderStatus) {
-                "WAIT_SEND", "WAIT_PAY" -> {
-                    tvSaleHandler.visibility = View.VISIBLE
-                }
-                "REFUNDING" -> {
-                    tvSaleHandler.visibility = View.VISIBLE
-                    tvSaleHandler.text = "退款中"
-
-                }
-                else -> {
-                    tvSaleHandler.visibility = View.VISIBLE
-                    tvSaleHandler.text = "售后申请"
-                }
-            }
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品
                 var gson = Gson()
                 var toJson = gson.toJson(item)
-                JumpUtils.instans?.jump(125,toJson)
+                JumpUtils.instans?.jump(125, toJson)
             }
         }
     }
@@ -64,7 +53,7 @@ class OrderDetailsItemV2Adapter() :
 
     }
 
-    fun showTotalTag(text: AppCompatTextView?, item: OrderItemBean) {
+    fun showTotalTag(text: AppCompatTextView?, item: RefundOrderItemBean) {
         if (TextUtils.isEmpty(item.price)) {
             showZero(text, item)
             return
@@ -105,7 +94,7 @@ class OrderDetailsItemV2Adapter() :
         }
     }
 
-    fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
+    fun showZero(text: AppCompatTextView?, item: RefundOrderItemBean) {
         val tagName = item.price
 
         //先设置原始文本

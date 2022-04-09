@@ -65,10 +65,6 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         OrderDetailsItemV2Adapter()
     }
 
-//    val orderSaleStateAdapter: OrderSaleStateAdapter by lazy {
-//        OrderSaleStateAdapter()
-//    }
-
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -84,47 +80,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //            control.onceAgainToBuy(viewModel.orderItemLiveData.value)
 //        }
         binding.rvShopping.adapter = orderDetailsItemV2Adapter
-//        binding.inSaleBottom.rvSaleAfter.adapter = orderSaleStateAdapter
-//        showSaleAfter()
-//        orderSaleStateAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
-//            override fun onItemChildClick(
-//                adapter: BaseQuickAdapter<*, *>,
-//                view: View,
-//                position: Int
-//            ) {
-//                val item = orderSaleStateAdapter.getItem(position)
-//                when (item.id) {
-//                    1 -> { // 申请开发票
-//                        dataBean.addressInfo = dataBean.orderReceiveAddress.addressName
-//                        dataBean.addressId = dataBean.orderReceiveAddress.addressId.toInt()
-//                        dataBean.mallMallOrderId?.let {
-//                            val invoiceInfo = InvoiceInfo(
-//                                dataBean.addressInfo, dataBean.addressId.toString(),
-//                                it, dataBean.orderNo, dataBean.getRMBExtendsUnit(),
-//                                dataBean.orderReceiveAddress.consignee,
-//                                dataBean.orderReceiveAddress.phone
-//                            )
-//                            val gson = Gson()
-//                            val invoiceStr = gson.toJson(invoiceInfo)
-//                            JumpUtils.instans?.jump(120, invoiceStr)
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//        })
+
 
     }
 
-    // 底部的售后 操作按钮
-    fun showSaleAfter() {
-        val saleList: ArrayList<SaleAfterBean> = arrayListOf()
-        saleList.add(SaleAfterBean(1, "申请发票", false))
-        saleList.add(SaleAfterBean(2, "查看发票", false))
-
-//        orderSaleStateAdapter.setList(saleList)
-    }
 
     override fun initData() {
         viewModel.orderItemLiveData.observe(this, {
@@ -157,11 +116,13 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inBottom.apply {
             topBShow()
         }
-        binding.inOrderInfo.tvOther.visibility = View.VISIBLE
-        binding.inOrderInfo.tvOtherValue.visibility = View.VISIBLE
-        showShoppingInfo(dataBean.skuList)
+        binding.inOrderInfo.tvOther.visibility = View.GONE
+        binding.inOrderInfo.tvOtherValue.visibility = View.GONE
+        showShoppingInfo(dataBean)
         showTotalTag(binding.inGoodsInfo1.tvTotalPrice, dataBean)
-        binding.inGoodsInfo1.tvIntegralGoods.text = WCommonUtil.getRMBBigDecimal(dataBean.price)
+        // 商品金额原价
+        binding.inGoodsInfo1.tvIntegralGoods.text =
+            WCommonUtil.getRMBBigDecimal(dataBean.fbOfOrderPrice)
         viewModel.getOrderStatus(orderStatus, evalStatus).apply {
             dataBean.orderStatusName = this
             when (this) {
@@ -212,16 +173,19 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     dataBean.otherValue = simpleDateFormat.format(dataBean.sendTime ?: 0)
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                     binding.inBottom.layoutBottom.visibility = View.GONE
+                    BottomBShow()
                     showExpress(true) // 展示物流
+                    showInvoiceState(dataBean)
+                    showGetShop(true)
                 }
                 "退款中" -> {
                     BottomGon()
                     binding.inRefund.conRefundProgress.visibility = View.VISIBLE
                     binding.inRefund.conRefundProgress.setOnClickListener {
-                        JumpUtils.instans?.jump(124,dataBean.mallMallOrderId)
+                        JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
 
                     }
-                    binding.inAddress.conAddress.visibility=View.GONE
+                    binding.inAddress.conAddress.visibility = View.GONE
                     binding.tvOrderRemainingTime.text = dataBean.statusDesc
                 }
                 "待评价" -> {
@@ -304,9 +268,35 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
         binding.inBottom.apply {
             model = dataBean
-//            tvTotalPayFb.setText(totalPayName)
         }
         this.dataBean = dataBean
+        showCounpon()
+    }
+
+    // 是否展示确认收货
+    private fun showGetShop(isGet: Boolean) {
+        if (isGet) {
+            binding.inSaleBottom.btnOrderShopGet.isSelected = true
+            binding.inSaleBottom.btnOrderShopGet.visibility = View.VISIBLE
+        } else {
+            binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
+        }
+
+    }
+
+    // 优惠券是否展示
+    private fun showCounpon() {
+        if (TextUtils.isEmpty(dataBean.couponDiscount)) {
+            binding.inGoodsInfo1.grCoupon.visibility = View.GONE
+        } else {
+            if (dataBean.couponDiscount.toInt() > 0) {
+                binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
+                binding.inGoodsInfo1.tvCouponMoney.text =
+                    WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount)
+            } else {
+                binding.inGoodsInfo1.grCoupon.visibility = View.GONE
+            }
+        }
     }
 
     // 订单状态相关展示
@@ -411,9 +401,9 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
     }
 
-    fun showShoppingInfo(list: MutableList<OrderItemBean>) {
-
-        orderDetailsItemV2Adapter.setList(list)
+    fun showShoppingInfo(localDataBean: OrderItemBean) {
+        orderDetailsItemV2Adapter.orderStatus = localDataBean.orderStatus
+        orderDetailsItemV2Adapter.setList(localDataBean.skuList)
     }
 
     /**

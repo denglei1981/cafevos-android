@@ -19,7 +19,7 @@ import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.view.TopBar
 
 /**
- *  退款进度
+ *  退款进度整单退---> 未发货前
  * */
 @Route(path = ARouterShopPath.RefundProgressActivity)
 class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, RefundViewModel>() {

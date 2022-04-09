@@ -3,25 +3,46 @@ package com.changanford.shop.ui.sale
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.shop.databinding.ActivityAfterSaleBinding
-import com.changanford.shop.databinding.BaseRecyclerViewBinding
+import com.changanford.shop.ui.order.adapter.RefundOrderItemAdapter
+import com.changanford.shop.view.TopBar
+import com.google.gson.Gson
 
 /**
- * 商品售后
+ * 商品售后 --- 已发货 -- 并且到货了。
  * */
-
 @Route(path = ARouterShopPath.AfterSaleActivity)
 class AfterSaleActivity : BaseActivity<ActivityAfterSaleBinding, BaseViewModel>() {
 
-
+    val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
+        RefundOrderItemAdapter()
+    }
     override fun initView() {
+            binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
+                override fun onBackClick() {
 
-
+                }
+            })
     }
 
     override fun initData() {
+        val orderString = intent.getStringExtra("value")
+        val gson = Gson()
+        // 具体要退的商品
+        val orderItemBean = gson.fromJson(orderString, RefundOrderItemBean::class.java)
+        val list = arrayListOf<RefundOrderItemBean>()
+        list.add(orderItemBean)
+        binding.rvShopping.adapter=orderDetailsItemV2Adapter
+        orderDetailsItemV2Adapter.setNewInstance(list)
+        binding.tvOnlyMoney.setOnClickListener {
 
 
+        }
+        binding.tvMoneyShop.setOnClickListener {
+
+
+        }
     }
 }

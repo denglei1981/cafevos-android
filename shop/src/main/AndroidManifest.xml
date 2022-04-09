@@ -72,7 +72,7 @@
             android:name=".ui.sale.OnlyRefundActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.sale.RefundStatesActivity"
+            android:name=".ui.sale.RefundApplySingleActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderDetailsV2Activity"

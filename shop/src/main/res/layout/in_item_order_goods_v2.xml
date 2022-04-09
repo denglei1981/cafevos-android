@@ -16,9 +16,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_20">
+        android:paddingEnd="@dimen/dp_20">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goods_cover"
@@ -116,5 +115,34 @@
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
             tools:text="1200(2000福币)" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sale_handler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white_stroke_gray"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="@dimen/dp_4"
+            android:text="申请售后"
+            android:textSize="@dimen/sp_11"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_integral"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_integral" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_F4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_goods_cover" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
