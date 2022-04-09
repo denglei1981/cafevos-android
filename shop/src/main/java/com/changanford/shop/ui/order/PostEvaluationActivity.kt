@@ -1,0 +1,32 @@
+package com.changanford.shop.ui.order
+
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.basic.BaseActivity
+import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.shop.databinding.ActPostEvaluationBinding
+import com.changanford.shop.viewmodel.OrderEvaluationViewModel
+
+/**
+ * Author:wenke
+ * Email:3158817509@qq.com
+ * Create Time:2022/4/9
+ * Update Time:
+ * Note:订单评价、追评
+ */
+@Route(path = ARouterShopPath.PostEvaluationActivity)
+class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderEvaluationViewModel>() {
+    companion object{
+        fun start(orderNo:String) {
+            JumpUtils.instans?.jump(112,orderNo)
+        }
+    }
+
+    override fun initView() {
+
+    }
+
+    override fun initData() {
+
+    }
+}
