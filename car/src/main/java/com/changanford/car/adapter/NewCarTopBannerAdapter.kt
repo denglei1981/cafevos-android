@@ -62,8 +62,9 @@ class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnSta
                         "position:$position》》》渲染item>>>".wLogE()
                         releaseVideo()
                         val videoUrl=mainImg
+                        imgTop.load(topImg,0)
                         imageCarIntro.visibility=View.GONE
-                        imgTop.visibility=View.GONE
+//                        imgTop.visibility=View.INVISIBLE
                         imgBottom.visibility=View.GONE
                         videoView.visibility= View.VISIBLE
                         playerHelper = PlayerHelper(activity, videoView, coverPath = topImg).apply {
