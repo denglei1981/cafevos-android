@@ -30,6 +30,10 @@
         <activity
             android:name=".ui.order.OrderEvaluationActivity"
             android:screenOrientation="portrait" />
+        <!-- 订单评价、追评-->
+        <activity
+            android:name=".ui.order.PostEvaluationActivity"
+            android:screenOrientation="portrait" />
         <!-- 商品订单-->
         <activity
             android:name=".ui.order.OrdersGoodsActivity"

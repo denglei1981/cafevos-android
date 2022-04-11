@@ -65,7 +65,7 @@ data class GoodsItemBean(
     val spuDetail: Any? = null,
     var spuId: String = "0",
     var spuName: String = "",
-    val fb: Int? = 0,
+    val fb: String? = null,
     val fbOfLine: String? = "0",
     val imgUrl: String = "",
     var isSettedNotice: String = "",
@@ -473,7 +473,9 @@ data class PageList(
     val total: Int = 0,
     val totalPage: Int = 0
 )
-
+/**
+ * 评价
+* */
 data class CommentItem(
     val anonymous: String = "",
     val avater: String = "",
@@ -501,8 +503,21 @@ data class CommentItem(
     val spuName: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    val userId: Int = 0
-)
+    val userId: Int = 0,
+    var imgs: String?=null,
+    var evalImgs:List<String>?=null,
+    var reviewEval: ReviewEvalBean?=null,
+){
+    fun getImgArr(imgs:String?=this.imgs):List<String>{
+        return if(!TextUtils.isEmpty(imgs)&&imgs!!.contains(",")){
+            imgs.split(",").filter { ""!=it }
+        }else arrayListOf(imgs?:"")
+    }
+}
+/*
+* 追评
+* */
+data class ReviewEvalBean(var evalText:String?=null,var evalTime:String?=null)
 
 /**
  * 商品首页
@@ -556,6 +571,7 @@ data class OrderItemBean(
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
+    var mallOrderSkuId:String?=null,
     val mallMallSkuSpuSeckillRangeId: Int = 0,
     val mallMallSpuId: String = "0",
     val mallMallSpuSeckillRangeId: Int = 0,
@@ -593,13 +609,14 @@ data class OrderItemBean(
     var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
+    val payTimeDeadline:String?=null,
     var orderType: Int = 0,
     val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
     val orderBrief: String = "",
     val orderImg: String = "",
     var orderStatusName: String? = "",
-    val skuName: String = "",
+    val skuName: String? = null,
     var logisticsInfo: String? = "",//物流信息
     var freightPrice: String? = "0.00",//运费 0为包邮
     var otherName: String? = "",
@@ -630,8 +647,8 @@ data class OrderItemBean(
     var haggleDiscount: String,
     var sharedFb: String,
     var sharedRmb: String,
+    var mallRefundStatus: String? = null // 单个sku 状态
     var mallOrderSkuId: String,
-    var mallRefundStatus: String? = null, // 单个sku 状态
     var historyPackage:String?=null
 ) {
     fun getRMBPrice() {
@@ -665,7 +682,7 @@ data class OrderItemBean(
             rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
             else "${fb.toInt() / 100}"
         }
-        return "${rmbPrice ?: "0"}"
+        return rmbPrice?:"0"
     }
 }
 
@@ -790,7 +807,7 @@ data class CreateOrderBean(
 ) {
     fun getRmbBfb(payBfb: String? = this.payBfb): Float {
         "payBfb:$payBfb".wLogE("okhttp")
-        return if (TextUtils.isEmpty(payBfb)) 0f
+        return if (TextUtils.isEmpty(payBfb)) -1f
         else payBfb!!.toFloat() / 100f
     }
 }
@@ -817,6 +834,7 @@ data class OrderSkuItem(
     var orderType: Int = 0,
     var fbPrice: String? = null,
     var rmbPrice: String? = null,
+    var orderImg:String?=null,
 ) {
     /**
      * 获取标签

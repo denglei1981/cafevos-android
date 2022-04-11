@@ -16,6 +16,7 @@ class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBinding
         holder.dataBinding?.apply {
             imgCover.load(item.getImgPath())
             tvSales.setText("${item.salesCount}")
+            item.getRMB(item.priceFb)
             model=item
             executePendingBindings()
             root.setOnClickListener {

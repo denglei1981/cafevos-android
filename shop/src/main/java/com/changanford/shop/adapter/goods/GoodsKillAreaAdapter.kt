@@ -6,11 +6,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
-import com.changanford.common.listener.OnPerformListener
 import com.changanford.shop.popupwindow.SetNoticPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.WCommonUtil
@@ -27,11 +27,15 @@ class GoodsKillAreaAdapter(val viewModel:GoodsViewModel): BaseQuickAdapter<Goods
             val imgPath=if(imgUrl.contains(","))imgUrl.split(",")[0] else imgUrl
             imgCover.load(imgPath)
             val fbOfLine=item.fbOfLine
-            tvOrIntegral.visibility=if(null!=fbOfLine&&fbOfLine!="0")View.VISIBLE else View.GONE
+            tvOrIntegral.visibility=if(null!=fbOfLine&&fbOfLine!="0"){
+                tvOrIntegral.text=item.getRMB(item.fbOfLine)
+                View.VISIBLE
+            } else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")
             btnStates.setOnClickListener {
                 clickBtn(this,item)
             }
+            item.getRMB(item.fb)
             model=item
             executePendingBindings()
         }

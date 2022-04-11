@@ -20,8 +20,11 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 import kotlin.math.abs
@@ -56,8 +59,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         initObserve()
         initBanner()
+        addLiveDataBus()
     }
-    override fun initData() {}
+    override fun initData() {
+        getData()
+    }
     private fun getData(){
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
@@ -265,11 +271,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun reset(isHidden:Boolean=hidden){
         if(!isHidden) {
             carControl.mMapView?.onResume()
-            getData()
+//            getData()
         }else{
             carControl.mMapView?.onPause()
-            updateControl(isHidden)
+//            updateControl(isHidden)
         }
+        updateControl(isHidden)
     }
     private fun getVideoListener():VideoView.OnStateChangeListener{
         return object :VideoView.OnStateChangeListener{
@@ -294,5 +301,20 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         carControl.mMapView?.onDestroy()
         carControl.mLocationClient=null
         super.onDestroy()
+    }
+    private fun addLiveDataBus(){
+        //登录、退出登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when(it){
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                        getData()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        getData()
+                    }
+                    else -> {}
+                }
+            }
     }
 }

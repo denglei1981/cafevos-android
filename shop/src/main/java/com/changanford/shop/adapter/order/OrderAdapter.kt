@@ -8,20 +8,23 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
-import com.changanford.shop.ui.order.OrderEvaluationActivity
+import com.changanford.shop.ui.order.PostEvaluationActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
@@ -33,11 +36,13 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("请在MM月dd日 HH:mm 前支付")
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, item: OrderItemBean) {
+    override fun convert(holder: BaseDataBindingHolder<ItemOrdersGoodsBinding>, itemData: OrderItemBean) {
         holder.dataBinding?.apply{
             val position=holder.absoluteAdapterPosition
             initBtn(this)
-            dataFormat(this,item)
+            val item=dataFormat(this,itemData)
+            tvTotal.visibility=tvTotalPrice.visibility
+            inGoodsInfo.tvTotalNum.visibility=tvTotalPrice.visibility
             if(TextUtils.isEmpty(item.orderStatusName))item.orderStatusName=viewModel?.getOrderStatus(item.orderStatus,item.evalStatus)
             this.model=item
             this.executePendingBindings()
@@ -85,7 +90,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
     /**
      * 数据格式化（主要针对聚合列表和商品列表数据格式不统一的问题）
     * */
-    private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
+    private fun dataFormat(dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean):OrderItemBean{
         dataBinding.tvTotalPrice.visibility=View.VISIBLE
         dataBinding.inGoodsInfo.apply {
             tvCarInfo.visibility=View.GONE
@@ -138,6 +143,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         //单价
                         val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                         item.apply {
+
                             this.buyNum=orderBriefBean.buyNum
                             payType=orderBriefBean.payType
                             this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
@@ -146,10 +152,11 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             this.orginPrice=orderBriefBean.orginPrice
                             this.busSourse= orderBriefBean.busSourse
                             this.hagglePrice=orderBriefBean.hagglePrice
-                            this.skuOrderVOList= arrayListOf()
-                            this.rmb=getRMB(this.fbCost)
+                            this.rmb=getRMB(this.fbCost,"")
                             this.fb= this.fbCost
                             this.totalNum=orderBriefBean.buyNum
+                            val skuItem=OrderSkuItem(skuImg=skuImg, specifications = specifications,spuName=skuName)
+                            this.skuOrderVOList= arrayListOf(skuItem)
                         }
                     }
                 }
@@ -162,8 +169,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                 }
             }
-
         }
+        return item
     }
     private fun updateBtnUI(position:Int,dataBinding:ItemOrdersGoodsBinding,item: OrderItemBean){
         dataBinding.btnCancel.visibility=View.GONE
@@ -188,17 +195,17 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     btnInvoice.apply {//申请发票
                         visibility=View.VISIBLE
                         setOnClickListener {
-
+//                            JumpUtils.instans?.jump(120)
                         }
                     }
-                    btnConfirm.apply {//确认收货
+                    btnConfirm.apply {//评价
                         visibility=View.VISIBLE
                         setText(R.string.str_eval)
                         setOnClickListener {
                             item.apply {
                                 WBuriedUtil.clickShopOrderComment(orderNo,spuName,rmb?:fb)
                             }
-                            OrderEvaluationActivity.start(item.orderNo)
+                            PostEvaluationActivity.start(item.orderNo)
                         }
                         setBackgroundResource(R.drawable.bord_00095b_15dp)
                     }
@@ -342,6 +349,41 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             }
                         }else dataBinding.btnConfirm.visibility=View.INVISIBLE
                     }
+                    //待评价
+                    "WAIT_EVAL"->{
+                        dataBinding.apply {
+                            btnCancel.apply {//申请售后
+                                visibility=View.VISIBLE
+                                setText(R.string.str_applyRefund)
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnLogistics.apply {//查看物流
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnInvoice.apply {//申请发票
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnConfirm.apply {//评价
+                                visibility=View.VISIBLE
+                                setText(R.string.str_eval)
+                                setOnClickListener {
+                                    item.apply {
+                                        WBuriedUtil.clickShopOrderComment(orderNo,spuName,rmb?:fb)
+                                    }
+                                    PostEvaluationActivity.start(item.orderNo)
+                                }
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
+                            }
+                        }
+                    }
                     //未知
                     else ->{
                         dataBinding.btnLogistics.visibility=View.GONE
@@ -372,7 +414,9 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 "WAIT_PAY"==orderStatus -> {
                     //可支付结束时间=服务器当前时间+可支付剩余时间
 //                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
-                    text=simpleDateFormat.format(item.waitPayDuration)
+//                    val date= Date(item.payTimeDeadline)
+                    "剩余倒计时：${item.payTimeDeadline}>>>>${text}>>>>>>${Date()}".wLogE("okhttp")
+                    text=simpleDateFormat.format((item.payTimeDeadline?:"0").toLong())
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE
                 }

@@ -1,18 +1,15 @@
 package com.changanford.shop.ui.compose
 
 import android.text.TextUtils
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -22,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -211,7 +207,7 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
             Text(text = spuName, color = colorResource(R.color.color_33), fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(modifier = Modifier.height(5.dp))
             //价格
-            Text(text = "$vipFb${stringResource(com.changanford.shop.R.string.str_integral)}", color = colorResource(R.color.color_33), fontSize = 12.sp)
+            Text(text = "￥${getRMB(vipFb)}", color = colorResource(R.color.color_33), fontSize = 12.sp)
             Spacer(modifier = Modifier.height(5.dp))
             Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),
                 color = colorResource(R.color.color_33), fontSize = 10.sp)

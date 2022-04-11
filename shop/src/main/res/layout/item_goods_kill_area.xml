@@ -79,9 +79,8 @@
                 app:layout_constraintTop_toBottomOf="@id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:end_txt="@string/str_integral"
-                android:text="@{model.fb}"
-                tools:text="1300积分"
+                app:start_txt="@string/str_rmb"
+                android:text="@{model.rmbPrice}"
                 android:textColor="@color/color_00095B"
                 android:textSize="@dimen/sp_15" />
             <com.changanford.shop.view.TypefaceTextView
@@ -92,11 +91,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="1300"
-                android:text="@{model.fbOfLine}"
                 android:textColor="@color/color_cc"
                 android:textSize="@dimen/sp_10"
-                app:text_flags="0x10"
-                app:end_txt="@string/str_integral"/>
+                app:text_flags="0x10"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_stockPlusSalesCount"
                 app:layout_constraintTop_toBottomOf="@id/tv_integral"

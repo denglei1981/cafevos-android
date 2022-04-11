@@ -41,18 +41,15 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             params.width=imgWidthPx
             params.height=imgWidthPx
             imgGoodsCover.layoutParams=params
-            if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1){
+            if(itemBean.skuOrderVOList==null||itemBean.skuOrderVOList?.size==1){
+                val skuItem= if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1)itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
+                else OrderSkuItem(skuImg =itemBean.skuImg, spuName =itemBean.spuName, busSourse = itemBean.busSourse)
                 recyclerViewImgArr.visibility=View.GONE
-                val item= itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
-                //砍价订单
-//            if("2"==item.busSourse&&!TextUtils.isEmpty(item.hagglePrice)){
-//                item.fbOfUnitPrice=item.hagglePrice!!
-//            }
-                item.fbPrice=itemBean.fb
-                item.rmbPrice=itemBean.rmb
-                val orderType=item.orderType
+                skuItem.fbPrice=itemBean.fb
+                skuItem.rmbPrice=itemBean.rmb
+                val orderType=skuItem.orderType
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
-                imgGoodsCover.load(item.skuImg)
+                imgGoodsCover.load(skuItem.skuImg)
                 tvOrderType.apply {
                     visibility = when(itemBean.busSourse) {
                         "1","SECKILL" -> {//秒杀
@@ -73,18 +70,18 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 //众筹订单自带单位
 //                tvIntegral.setEndTxt(if(4==item.orderType)null else context.getString(R.string.str_integral))
                 recyclerView.apply {
-                    if(!TextUtils.isEmpty(item.specifications)){
+                    if(!TextUtils.isEmpty(skuItem.specifications)){
                         visibility= View.VISIBLE
                         layoutManager= FlowLayoutManager(context,false,true)
                         adapter= OrderGoodsAttributeAdapter().apply {
-                            val specifications=item.specifications?.split(",")?.filter { ""!= it }
+                            val specifications=skuItem.specifications?.split(",")?.filter { ""!= it }
                             setList(specifications)
                         }
                     }else{
                         visibility= View.INVISIBLE
                     }
                 }
-                model=item
+                model=skuItem
             }else {
                 recyclerViewImgArr.visibility=View.VISIBLE
                 val mAdapter=OrderGoodsImgAdapter()
@@ -92,7 +89,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 mAdapter.setList(itemBean.skuOrderVOList)
             }
             itemBean.getRMBPrice()
-            item=itemBean
+            model0=itemBean
         }
     }
     /**

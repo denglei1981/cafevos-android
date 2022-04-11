@@ -50,8 +50,8 @@
             app:layout_constraintBottom_toBottomOf="@id/img_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.priceFb}"
-            app:w_end_txt="@string/str_integral"
+            android:text="@{model.rmbPrice}"
+            app:w_start_txt="@string/str_rmb"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

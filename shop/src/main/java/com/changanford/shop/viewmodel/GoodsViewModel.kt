@@ -99,7 +99,7 @@ class GoodsViewModel: BaseViewModel() {
      * */
     fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE"){
         if("WB"==tagType){//获取维保商品数据
-            getMaintenanceGoodsList(tagId,pageNo,pageSize)
+            getMaintenanceGoodsList(tagId,pageNo,pageSize, ascOrDesc = ascOrDesc,mallSortType=mallSortType)
             return
         }
         viewModelScope.launch {
@@ -127,7 +127,7 @@ class GoodsViewModel: BaseViewModel() {
      * 维保商品
      * [tagId]分类id
      * */
-   private fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize){
+   private fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE"){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -135,6 +135,8 @@ class GoodsViewModel: BaseViewModel() {
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
                     it["tagId"]=tagId
+                    it["ascOrDesc"]=ascOrDesc
+                    it["mallSortType"]=mallSortType
                 }
                 val randomKey = getRandomKey()
                 shopApiService.maintenanceGoodsList(body.header(randomKey), body.body(randomKey))
@@ -229,7 +231,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 评价列表
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,key:String?=null,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -386,9 +388,9 @@ class GoodsViewModel: BaseViewModel() {
      * 使用优惠券-商品列表
      * [couponRecordId]优惠券领取id
      * */
-    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize){
+    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize,showLoading:Boolean=false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize

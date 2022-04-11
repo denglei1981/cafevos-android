@@ -59,19 +59,30 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         dataBean.allSkuStock=dataBean.stock
         dataBean.getRMB()
         //初始化 skuCode
-        var skuCodeInitValue: String
-        if(dataBean.stock>0&&dataBean.skuVos.size==1){//当只有一个sku的时候默认选中
-            dataBean.skuVos[0].apply {
+        var skuCodeInitValue =""
+        val skuVos=dataBean.skuVos
+//        //当只有一个sku的时候默认选中
+        if(dataBean.stock>0&&skuVos.size==1){
+            skuVos[0].apply {
                 skuCodeInitValue=skuCode
                 dataBean.skuImg=skuImg
             }
         }else{
-            skuCodeInitValue="${dataBean.spuId}-"
-            dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
-            skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+            //默认选中最低sku
+            skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
+                if(it.isNotEmpty()){
+                    it[0].apply {
+                        skuCodeInitValue=skuCode
+                        dataBean.skuImg=skuImg
+                    }
+                }
+            }
+            if(TextUtils.isEmpty(skuCodeInitValue)){
+                skuCodeInitValue="${dataBean.spuId}-"
+                dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+                skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+            }
         }
-//        getSkuTxt(skuCodeInitValue)
-        val fbLine=dataBean.fbLine//划线积分
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         //品牌参数
         val param=dataBean.param

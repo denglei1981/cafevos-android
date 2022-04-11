@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="item"
+            name="model0"
             type="com.changanford.common.bean.OrderItemBean" />
         <variable
             name="model"
@@ -25,7 +25,8 @@
             android:layout_height="@dimen/dp_90"
             android:src="@mipmap/image_h_one_default"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
         <com.changanford.shop.view.TypefaceTextView
             tools:visibility="visible"
             android:visibility="gone"
@@ -105,11 +106,14 @@
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_14"
                 app:w_start_txt="@string/str_rmb"
-                android:text="@{item.rmbPrice}" />
+                android:text="@{model0.rmbPrice}" />
             <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_totalNum"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{item.totalNum}"
+                android:text="@{model0.totalNum}"
                 app:w_start_txt="@string/str_common"
                 app:w_end_txt="@string/str_a"
                 android:textColor="@color/color_74889D"

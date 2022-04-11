@@ -21,8 +21,10 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             }
             imgGoodsCover.load(item.getImgPath())
             tvOrIntegral.apply {
-                text=WCommonUtil.getRMB(item.lineFb,"")
-                visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
+                visibility=if(item.getLineFbEmpty()) View.GONE else{
+                    text=WCommonUtil.getRMB(item.lineFb,"")
+                    View.VISIBLE
+                }
             }
 
             item.vipFb=WCommonUtil.getRMB(item.vipFb,"")

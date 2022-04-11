@@ -10,8 +10,10 @@ import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.ActUseCouponsBinding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -43,27 +45,32 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             topBar.setActivity(this@UseCouponsActivity)
             sml.setOnRefreshLoadMoreListener(this@UseCouponsActivity)
             recyclerView.adapter=mAdapter
+            mAdapter.setEmptyView(R.layout.view_empty)
+            mAdapter.setOnItemClickListener { _, _, position ->
+                mAdapter.data[position].apply {
+                    GoodsDetailsActivity.start(getJdType(),getJdValue())
+                }
+            }
             edtSearch.setOnEditorActionListener(this@UseCouponsActivity)
         }
         intent.getStringExtra("itemBean")?.apply {
             itemBean=Gson().fromJson(this,CouponsItemBean::class.java).apply {
                 binding.tvCouponsDes.text=when(discountType){
                     //折扣
-                    "DISCOUNT"->"限时促销：以下商品可使用满${conditionMoney}打${couponRatio}折优惠券，最多减${couponMoney}"
+                    "DISCOUNT"->"限时促销：以下商品可使用满${conditionMoney}打${couponRatio}折的优惠券，最多减${couponMoney}"
                     //满减
-                    "FULL_MINUS"->"限时促销：以下商品可使用满${conditionMoney}减${couponMoney}优惠券"
+                    "FULL_MINUS"->"限时促销：以下商品可使用满${conditionMoney}减${couponMoney}的优惠券"
                     //立减
-                    "LEGISLATIVE_REDUCTION"->"限时促销：以下商品可使用立减${couponMoney}优惠券"
+                    "LEGISLATIVE_REDUCTION"->"限时促销：以下商品可使用立减${couponMoney}的优惠券"
 
                     else ->""
                 }
             }
-            getData()
+            getData(true)
         }
     }
     override fun initData() {
         viewModel.goodsListData.observe(this){
-            mAdapter.setList(it?.dataList)
             if(1==pageNo)mAdapter.setList(it?.dataList)
             else if(it?.dataList != null)mAdapter.addData(it.dataList)
 
@@ -74,9 +81,9 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             binding.sml.finishRefresh()
         }
     }
-    private fun getData(){
+    private fun getData(showLoading:Boolean=false){
         itemBean?.couponRecordId?.apply {
-            viewModel.useCoupons(couponRecordId = this,searchKey=searchKey, pageNo = pageNo)
+            viewModel.useCoupons(couponRecordId = this,searchKey=searchKey, pageNo = pageNo,showLoading=showLoading)
         }
     }
 
@@ -94,7 +101,8 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             HideKeyboardUtil.hideKeyboard(binding.edtSearch.windowToken)
             searchKey = v.text.toString()
-            getData()
+            binding.sml.autoRefresh()
+//            getData()
         }
         return false
     }
