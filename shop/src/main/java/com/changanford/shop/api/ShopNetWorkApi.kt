@@ -2,10 +2,7 @@ package com.changanford.shop.api
 
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
-import com.changanford.shop.bean.CouponData
-import com.changanford.shop.bean.InvoiceDetails
-import com.changanford.shop.bean.InvoiceInfo
-import com.changanford.shop.bean.RefundProgressBean
+import com.changanford.shop.bean.*
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -247,7 +244,7 @@ interface ShopNetWorkApi {
      * 查看包裹详情
      * */
     @POST("/logistics/getLogisticsByOrderNo")
-    suspend fun  getLogisticsByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+    suspend fun  getLogisticsByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<PackMainData>
 
     /**
      *  填写物流信息
