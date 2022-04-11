@@ -5,19 +5,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.bean.NoSendSkuData
-import com.changanford.shop.databinding.*
-import com.changanford.shop.ui.shoppingcart.adapter.MultipleImgsAdapter
+import com.changanford.shop.databinding.ActivityMultiplePackageBinding
+import com.changanford.shop.databinding.FooterMultiplePackageBinding
+import com.changanford.shop.databinding.HeaderMultiplePackageBinding
 import com.changanford.shop.ui.shoppingcart.adapter.MultipleNoSendImgsAdapter
 import com.changanford.shop.ui.shoppingcart.adapter.MultiplePackageAdapter
 import com.changanford.shop.ui.shoppingcart.request.MultiplePackageViewModel
-import com.changanford.shop.ui.shoppingcart.request.ShoppingCartViewModel
 import com.changanford.shop.view.TopBar
-import com.google.gson.Gson
 
 /**
  *  多包裹发货
