@@ -79,9 +79,10 @@ class OrderDetailsItemV2Adapter() :
                     }
                     else -> {
                         item.orderNo = orderNo
+
                         val gson = Gson()
                         val toJson = gson.toJson(item)
-                        JumpUtils.instans?.jump(125, toJson)
+                        JumpUtils.instans?.jump(121, toJson)
                     }
                 }
 

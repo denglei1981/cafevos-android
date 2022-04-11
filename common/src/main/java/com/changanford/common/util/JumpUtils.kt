@@ -695,8 +695,8 @@ class JumpUtils {
                     gson.fromJson(orderString, RefundOrderItemBean::class.java)
                 if (orderItemBean.refundType == "allOrderRefund") { // 整单退
                     startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
-                } else {
-                    startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
+                } else {// 发货了，选一下退货还是退款
+                    startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
                 }
 
             }
@@ -712,16 +712,16 @@ class JumpUtils {
                 // 整单退退款进度
                 startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
             }
-            125 -> { // 发货了，选一下退货还是退款
-                startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
-            }
-            126 -> { // 申请退货退款
+//            125 -> { // 发货了，选一下退货还是退款
+//                startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
+//            }
+            125 -> { // 申请单个退货退款
                 startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
             }
-            127 -> {// 单个sku 退款
+            126 -> {// 单个sku 退款进度
                 startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
             }
-            128 -> { // 多包裹信息
+            127 -> { // 多包裹信息
                 startARouter(ARouterShopPath.MultiplePackageActivity, bundle, true)
             }
             10000 -> {
