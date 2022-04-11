@@ -16,7 +16,7 @@ import com.changanford.shop.viewmodel.OrderEvaluationViewModel
  * @Time : 2021/9/23 0023
  * @Description : 订单评价
  */
-@Deprecated("请使用PostEvaluationActivity")
+@Deprecated("请使用 PostEvaluationActivity")
 @Route(path = ARouterShopPath.OrderEvaluationActivity)
 class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvaluationViewModel>() {
     companion object{

@@ -450,6 +450,7 @@ class OrderViewModel: BaseViewModel() {
                 if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价"
                 else "已完成"
             }
+            "WAIT_EVAL"->"待评价"
             "CLOSED"->"已关闭"
             "REFUNDING"->"退款中"
             "AFERT_SALE_FINISH"->"售后已处理"

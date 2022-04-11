@@ -16,7 +16,7 @@ import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
-import com.changanford.shop.ui.order.OrderEvaluationActivity
+import com.changanford.shop.ui.order.PostEvaluationActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.TypefaceTextView
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -196,14 +196,14 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
 
                         }
                     }
-                    btnConfirm.apply {//确认收货
+                    btnConfirm.apply {//评价
                         visibility=View.VISIBLE
                         setText(R.string.str_eval)
                         setOnClickListener {
                             item.apply {
                                 WBuriedUtil.clickShopOrderComment(orderNo,spuName,rmb?:fb)
                             }
-                            OrderEvaluationActivity.start(item.orderNo)
+                            PostEvaluationActivity.start(item.orderNo)
                         }
                         setBackgroundResource(R.drawable.bord_00095b_15dp)
                     }
@@ -346,6 +346,41 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 }
                             }
                         }else dataBinding.btnConfirm.visibility=View.INVISIBLE
+                    }
+                    //待评价
+                    "WAIT_EVAL"->{
+                        dataBinding.apply {
+                            btnCancel.apply {//申请售后
+                                visibility=View.VISIBLE
+                                setText(R.string.str_applyRefund)
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnLogistics.apply {//查看物流
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnInvoice.apply {//申请发票
+                                visibility=View.VISIBLE
+                                setOnClickListener {
+
+                                }
+                            }
+                            btnConfirm.apply {//评价
+                                visibility=View.VISIBLE
+                                setText(R.string.str_eval)
+                                setOnClickListener {
+                                    item.apply {
+                                        WBuriedUtil.clickShopOrderComment(orderNo,spuName,rmb?:fb)
+                                    }
+                                    PostEvaluationActivity.start(item.orderNo)
+                                }
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
+                            }
+                        }
                     }
                     //未知
                     else ->{
