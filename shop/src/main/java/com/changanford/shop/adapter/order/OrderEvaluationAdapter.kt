@@ -17,6 +17,7 @@ import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logD
 import com.changanford.shop.R
 import com.changanford.shop.adapter.PostPicAdapter
+import com.changanford.shop.bean.OrderFormState
 import com.changanford.shop.bean.PostEvaluationBean
 import com.changanford.shop.databinding.ItemPostEvaluationBinding
 import com.changanford.shop.utils.WCommonUtil.onTextChanged
@@ -25,7 +26,8 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 
 
 class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
-    private val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
+    val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
+    val selectPicArr =arrayListOf<OrderFormState>()
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemPostEvaluationBinding>, item: OrderItemBean) {
         holder.dataBinding?.apply {
@@ -34,25 +36,32 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
             executePendingBindings()
             imgGoodsCover.load(item.skuImg)
             edtContent.onTextChanged {
-                updatePostBean(this, item, position)
+                updatePostBean(this,position)
             }
-            updatePostBean(this, item, position)
+            ratingBar.setOnRatingChangeListener { _, _, _ ->
+                updatePostBean(this, position)
+            }
+            updatePostBean(this, position)
             initPic(this,position)
         }
     }
     fun initBean(){
+        selectPicArr.clear()
         data.forEach { item ->
-            val itemBean=PostEvaluationBean(mallMallOrderSkuId= item.mallMallSkuId)
+            val itemBean=PostEvaluationBean(mallMallOrderSkuId= item.mallOrderSkuId)
             postBean.add(itemBean)
+            selectPicArr.add(OrderFormState())
         }
     }
-    private fun updatePostBean(dataBinding:ItemPostEvaluationBinding,item: OrderItemBean,position:Int){
+    private fun updatePostBean(dataBinding:ItemPostEvaluationBinding,position:Int){
         dataBinding.apply {
-            val imgArr= arrayListOf<String>()
+            val content=edtContent.text.toString()
+            tvContentLength.setText("${content.length}")
             postBean[position].apply {
+                selectPicArr[position].getImgPaths()
                 anonymous=if(checkBox.isChecked)"YES" else "NO"
-                evalScore=ratingBar.right
-                evalText=edtContent.text.toString()
+                evalScore=ratingBar.rating.toInt()
+                evalText=content
             }
         }
     }
@@ -63,22 +72,21 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
             layoutManager=manager
             postPicAdapter.draggableModule.isDragEnabled = true
             adapter= postPicAdapter
-            postPicAdapter.setList(postBean[pos].selectPics)
+            postPicAdapter.setList(selectPicArr[pos].selectPics)
         }
         postPicAdapter.setOnItemClickListener { _, _, position ->
             val holder = dataBinding.recyclerView.findViewHolderForLayoutPosition(position)
-            val selectList=postBean[pos].selectPics?: arrayListOf()
+            val selectList=selectPicArr[pos].selectPics?: arrayListOf()
             if (holder != null && holder.itemViewType == 0x9843) {//添加
-                PictureUtil.openGallery(
-                    activity,
-                    selectList,
+                PictureUtil.openGallery(activity,selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
                             result?.apply {
                                 selectList.clear()
                                 selectList.addAll(this)
-                                postBean[pos].selectPics=selectList
+                                selectPicArr[pos].selectPics=selectList
                                 postPicAdapter.setList(selectList)
+                                updatePostBean(dataBinding,pos)
                             }
                         }
                         override fun onCancel() {}
@@ -88,11 +96,11 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
             }
         }
         postPicAdapter.setOnItemChildClickListener { _, view, position ->
-            val selectList=postBean[pos].selectPics?: arrayListOf()
+            val selectList=selectPicArr[pos].selectPics?: arrayListOf()
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
-                postBean[pos].selectPics=selectList
+                selectPicArr[pos].selectPics=selectList
                 postPicAdapter.notifyDataSetChanged()
             }
         }

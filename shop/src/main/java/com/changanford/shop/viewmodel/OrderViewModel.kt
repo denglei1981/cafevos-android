@@ -12,6 +12,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
+import com.changanford.shop.bean.PostEvaluationBean
 import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
@@ -455,6 +456,28 @@ class OrderViewModel: BaseViewModel() {
             "REFUNDING"->"退款中"
             "AFERT_SALE_FINISH"->"售后已处理"
             else ->"未知"
+        }
+    }
+    /**
+     * 发布评价、追评
+     * [orderNo]订单号
+     * [evalList]评价列表
+     * [reviewEval]是否追评 YES NO
+     * */
+    fun postEvaluation(orderNo:String,evalList:ArrayList<PostEvaluationBean>,reviewEval:Boolean=false) {
+        viewModelScope.launch {
+            fetchRequest(true){
+                body.clear()
+                body["orderNo"]=orderNo
+                body["evalList"]=evalList
+                body["reviewEval"]=if(reviewEval)"YES" else "NO"
+                val randomKey = getRandomKey()
+                shopApiService.orderEval(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                it?.toast()
+            }.onSuccess {
+                responseData.postValue(ResponseBean(true))
+            }
         }
     }
 }

@@ -2,9 +2,7 @@ package com.changanford.shop.api
 
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
-import com.changanford.shop.bean.CouponData
 import com.changanford.shop.bean.InvoiceDetails
-import com.changanford.shop.bean.InvoiceInfo
 import com.changanford.shop.bean.RefundProgressBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -54,7 +52,7 @@ interface ShopNetWorkApi {
     @POST("/mall/seckills/spus/{mallMallSpuSeckillRangeId}/noticesSetting")
     suspend fun setKillNotices(@Path("mallMallSpuSeckillRangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
     /**
-     *秒订单评价
+     *订单评价
      * */
     @POST("/mall/eval/create")
     suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>

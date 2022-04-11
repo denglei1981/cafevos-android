@@ -571,6 +571,7 @@ data class OrderItemBean(
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
+    var mallOrderSkuId:String?=null,
     val mallMallSkuSpuSeckillRangeId: Int = 0,
     val mallMallSpuId: String = "0",
     val mallMallSpuSeckillRangeId: Int = 0,
