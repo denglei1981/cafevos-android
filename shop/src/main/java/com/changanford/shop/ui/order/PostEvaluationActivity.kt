@@ -34,7 +34,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
 
     private var orderNo=""
     private val uploadViewModel by lazy { UploadViewModel() }
-    private var reviewEval=true//是否追评
+    private var reviewEval=false//是否追评
     private var upI=0
     private lateinit var dialog: LoadDialog
     private val mAdapter by lazy { OrderEvaluationAdapter(this,reviewEval) }
