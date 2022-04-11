@@ -193,7 +193,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     btnInvoice.apply {//申请发票
                         visibility=View.VISIBLE
                         setOnClickListener {
-
+//                            JumpUtils.instans?.jump(120)
                         }
                     }
                     btnConfirm.apply {//评价
