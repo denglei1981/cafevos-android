@@ -41,16 +41,18 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
         }
     }
     fun initBean(){
-        data.forEach {
-            val itemBean=PostEvaluationBean()
+        data.forEach { item ->
+            val itemBean=PostEvaluationBean(mallMallOrderSkuId= item.mallMallSkuId)
             postBean.add(itemBean)
         }
     }
     private fun updatePostBean(dataBinding:ItemPostEvaluationBinding,item: OrderItemBean,position:Int){
         dataBinding.apply {
             val imgArr= arrayListOf<String>()
-            postBean[position].selectPics?.forEach {
-                imgArr.add(it.path)
+            postBean[position].apply {
+                anonymous=if(checkBox.isChecked)"YES" else "NO"
+                evalScore=ratingBar.right
+                evalText=edtContent.text.toString()
             }
         }
     }
