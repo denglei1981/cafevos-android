@@ -28,7 +28,7 @@ object PictureUtil {
      * 获取最终地址
      */
     fun getFinallyPath(media: LocalMedia): String {
-        var path = ""
+        val path = ""
         return if (media.isCut && !media.isCompressed) {
             media.cutPath
         } else if (media.isCompressed || media.isCut && media.isCompressed) {
@@ -86,7 +86,8 @@ object PictureUtil {
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
         maxVideoTime: Int = 4 * 60,
         minVideoTime: Int = 3,
-        maxNum: Int = 9
+        maxNum: Int = 9,
+        isPreviewImage:Boolean=false
     ) {
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
@@ -110,7 +111,7 @@ object PictureUtil {
                 PictureConfig.MULTIPLE
             )// 多选 or 单选
             .isSingleDirectReturn(true)
-            .isPreviewImage(false)
+            .isPreviewImage(isPreviewImage)
             .isPreviewVideo(false)
             .isEnablePreviewAudio(false)
             .isCamera(true)

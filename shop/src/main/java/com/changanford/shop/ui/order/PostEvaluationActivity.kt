@@ -22,7 +22,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             JumpUtils.instans?.jump(112,orderNo)
         }
     }
-    private val mAdapter by lazy { OrderEvaluationAdapter() }
+    private val mAdapter by lazy { OrderEvaluationAdapter(this) }
     private var orderNo=""
     override fun initView() {
         binding.apply {
@@ -38,6 +38,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)
+            mAdapter.initBean()
         }
     }
 }

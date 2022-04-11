@@ -1,5 +1,7 @@
 package com.changanford.shop.bean
 
+import com.luck.picture.lib.entity.LocalMedia
+
 data class OrderFormState(
     val content:String?=null,
     val contentLength:Int=0,
@@ -15,6 +17,7 @@ data class PostEvaluationBean(
     var evalText: String? = null,//评价内容
     var imgUrls: List<String>? = null,
     var mallMallOrderSkuId:String?= null,//订单skuId
+    var selectPics:ArrayList<LocalMedia>?=null
 )
 data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String){
 
