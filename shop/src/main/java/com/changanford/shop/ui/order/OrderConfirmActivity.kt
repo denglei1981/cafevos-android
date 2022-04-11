@@ -259,10 +259,12 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
         var minFb:Int=if(minRmbProportion>0f)WCommonUtil.getHeatNumUP("${totalPayFb*minRmbProportion}",0).toInt() else 0
         val maxFb:Int=totalPayFb -minFb
+        //用户余额
+        val fbBalance=infoBean.fbBalance?:0
         //最大可使用福币
-        maxUseFb=if((infoBean.fbBalance?:0)>=maxFb)maxFb else {
-            minFb= totalPayFb-maxUseFb
-            infoBean.fbBalance?:0
+        maxUseFb=if(fbBalance>=maxFb)maxFb else {
+            minFb= totalPayFb-fbBalance
+            fbBalance
         }
         binding.inPayWay.apply {
             minRmb=getRMB("$minFb")
