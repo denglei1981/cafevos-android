@@ -45,7 +45,7 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             }
             tvSeckillStatus.setBackgroundResource(if("ON_GOING"==status)R.drawable.shadow_cc00095b_2dp
             else R.drawable.shadow_6600095b_2dp)
-            item.getRMB(item.fbPrice)
+            item.getRMB(item.seckillFb)
             model=item
             executePendingBindings()
         }
