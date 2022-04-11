@@ -17,10 +17,10 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
     private val dp15 by lazy { ScreenUtils.dp2px(context,15f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemKillGoodsBinding>, item: GoodsItemBean) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
+        holder.dataBinding?.apply{
             val position=holder.absoluteAdapterPosition
             val status=item.seckillStatus
+
             item.seckillStatuTxt=getsStatus(status)
             //总库存=销量+当前库存
             val totalStock:Int=(item.seckillStock?:0)+item.sekillCount
@@ -31,8 +31,11 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
             val sekillCount=item.sekillCount
             val robbedPercentage= WCommonUtil.getPercentage(sekillCount.toDouble(),totalStock.toDouble(),0)
             item.robbedPercentage=robbedPercentage
-            dataBinding.imgCover.load(item.getImgPath())
-            dataBinding.tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else View.VISIBLE
+            imgCover.load(item.getImgPath())
+            tvOrIntegral.visibility=if(item.getLineFbEmpty()) View.GONE else {
+                tvOrIntegral.text=item.getRMB(item.lineFb)
+                View.VISIBLE
+            }
 //            val seckillNumLimit=item.seckillNumLimit?:"0"
 //            dataBinding.tvSeckillNumLimit.visibility=if("0"!=seckillNumLimit)View.VISIBLE else View.INVISIBLE
             when (position) {
@@ -40,10 +43,11 @@ class GoodsKillAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<It
                 data.size-1 -> ScreenUtils.setMargin(holder.itemView,0,0,dp15,0)
                 else -> ScreenUtils.setMargin(holder.itemView,0,0,9,0)
             }
-            dataBinding.tvSeckillStatus.setBackgroundResource(if("ON_GOING"==status)R.drawable.shadow_cc00095b_2dp
+            tvSeckillStatus.setBackgroundResource(if("ON_GOING"==status)R.drawable.shadow_cc00095b_2dp
             else R.drawable.shadow_6600095b_2dp)
-            dataBinding.model=item
-            dataBinding.executePendingBindings()
+            item.getRMB(item.fbPrice)
+            model=item
+            executePendingBindings()
         }
     }
     /**

@@ -57,8 +57,8 @@
                     android:id="@+id/tv_integral"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12"
-                    android:text="@{model.seckillFb}"
-                    app:end_txt="@string/str_integral"
+                    android:text="@{model.rmbPrice}"
+                    app:start_txt="@string/str_rmb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <com.changanford.shop.view.TypefaceTextView
@@ -68,9 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="1600"
-                    android:text="@{model.lineFb}"
                     app:text_flags="0x10"
-                    app:end_txt="@string/str_integral"
                     android:textColor="@color/color_BDC7D2"
                     android:textSize="@dimen/sp_10" />
             </androidx.appcompat.widget.LinearLayoutCompat>

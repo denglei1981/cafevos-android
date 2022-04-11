@@ -65,7 +65,7 @@ data class GoodsItemBean(
     val spuDetail: Any? = null,
     var spuId: String = "0",
     var spuName: String = "",
-    val fb: Int? = 0,
+    val fb: String? = null,
     val fbOfLine: String? = "0",
     val imgUrl: String = "",
     var isSettedNotice: String = "",
