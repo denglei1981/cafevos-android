@@ -23,6 +23,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         }
     }
     private val mAdapter by lazy { OrderEvaluationAdapter() }
+    private var orderNo=""
     override fun initView() {
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
@@ -32,7 +33,8 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
 
     override fun initData() {
         intent.getStringExtra("orderNo")?.apply {
-            viewModel.getOrderDetail(this)
+            orderNo=this
+            viewModel.getOrderDetail(orderNo)
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)

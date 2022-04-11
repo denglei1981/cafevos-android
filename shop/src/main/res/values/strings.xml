@@ -28,7 +28,8 @@
     <string name="str_vipExclusive">会员专享</string>
     <string name="str_fromEnd">距结束</string>
     <string name="str_fromStart">距开始</string>
-    <string name="str_zero">00</string>
+    <string name="str_zero2">00</string>
+    <string name="str_zero">0</string>
     <string name="str_colon">:</string>
     <string name="str_haveToRemind">已设置提醒</string>
     <string name="str_submitOrder">提交订单</string>

@@ -57,6 +57,7 @@
             android:id="@+id/ratingBar"
             android:isIndicator="false"
             style="@style/AndRatingBarStyle"
+            android:rating="5"
             android:minHeight="@dimen/dp_24"
             app:bgDrawable="@mipmap/shop_order_star_0"
             app:starDrawable="@mipmap/shop_order_star_1"
@@ -100,7 +101,6 @@
             app:layout_constraintBottom_toBottomOf="@id/edt_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="13/500"
             app:end_txt="@string/str_xeb"
             android:textColor="@color/color_cc"
             android:textSize="@dimen/sp_10" />

@@ -11,8 +11,9 @@ import com.changanford.shop.databinding.ItemPostEvaluationBinding
 class OrderEvaluationAdapter: BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemPostEvaluationBinding>, item: OrderItemBean) {
-        holder.dataBinding.apply {
-
+        holder.dataBinding?.apply {
+            model=item
+            executePendingBindings()
         }
     }
 }

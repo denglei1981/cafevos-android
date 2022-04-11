@@ -39,10 +39,10 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
 //        WCommonUtil.setEditTextInhibitInputSpeChat(binding.edtContent,speChat)
         val evaluationContent=binding.edtContent
         val contentLength=binding.tvContentLength
-        viewModel.orderFormState.observe(this,{
+        viewModel.orderFormState.observe(this) {
             contentLength.setText("${it.contentLength}")
             btnSubmit.setBtnEnabled(it.isDataValid)
-        })
+        }
         viewModel.evalDataChanged(evaluationContent.text.toString(),0)
         evaluationContent.onTextChanged {
             viewModel.evalDataChanged(it.s.toString(),binding.ratingBar.rating.toInt())
@@ -56,10 +56,10 @@ class OrderEvaluationActivity:BaseActivity<ActOrderEvaluationBinding, OrderEvalu
             binding.tvScore.text="$rating$ratingStr"
             viewModel.evalDataChanged(evaluationContent.text.toString(),rating.toInt())
         }
-        viewModel.responseData.observe(this,{
+        viewModel.responseData.observe(this) {
             ToastUtils.reToast(R.string.str_evaluationSuccess)
-           this.finish()
-        })
+            this.finish()
+        }
         btnSubmit.setOnClickListener {
             val anonymous=if(binding.checkBox.isChecked)"YES" else "NO"
             viewModel.orderEval(orderNo,binding.ratingBar.rating.toInt(),anonymous,binding.edtContent.text.toString())
