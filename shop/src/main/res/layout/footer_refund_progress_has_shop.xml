@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_F4"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/color_F4" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/white" />
+
+        <include
+            android:id="@+id/layout_refund_info"
+            layout="@layout/layout_refund_single_shop_info" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_120"
+            android:background="@color/color_F4"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_handle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_vertical"
+
+                android:layout_weight="1"
+                android:background="@drawable/shape_00095b_20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:visibility="visible"
+
+                tools:text="申请退款" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_input_order"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/bord_00095b_1dp"
+                android:gravity="center"
+                android:text="填写物流信息"
+                android:textColor="@color/color_00095B"
+                android:visibility="visible"
+                tools:text="撤销退款申请" />
+
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

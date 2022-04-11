@@ -1,5 +1,8 @@
 package com.changanford.shop.bean
 
+import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.RefundOrderItemBean
+
 data class SaleAfterBean(val id: Int, val name: String, val isSelected: Boolean) {
 }
 
@@ -55,9 +58,10 @@ data class RefundProgressBean(
     val refundStatus: String,
     val rmbRefund: String?=null,
     val rmbRefundApply: String,
-    val sku: Any,
+    var sku: RefundOrderItemBean?=null,
     val refundLogMap: RefundOutStautsBean,
-    var refundList: MutableList<RefundStautsBean>? = mutableListOf()
+    var refundList: MutableList<RefundStautsBean>? = mutableListOf(),
+    var refundDescText:String
 )
 
 data class RefundOutStautsBean(

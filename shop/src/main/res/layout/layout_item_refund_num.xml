@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_goodsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_goods_cover"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/image_h_one_default"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:background="@drawable/shadow_b300095b_2dp"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_32"
+            android:minHeight="@dimen/dp_16"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_11"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/img_goods_cover"
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
+            tools:text="秒杀"
+            tools:visibility="visible" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goods_title"
+            style="@style/style_txt_ellipsize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
+
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_goods_cover"
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
+            tools:text="无线蓝牙耳机 降噪耳机全新苹噪机 降噪耳机全新苹噪耳机 降噪耳机全新苹噪耳" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_attribute" />
+
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_carInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/color_74889D"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+            tools:text="预约时间：2021-09-08  24:12:09"
+            tools:visibility="gone" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_14"
+            app:end_txt="@string/str_integral"
+            app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
+            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            tools:text="1200(2000福币)" />
+
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_F4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_goods_cover" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

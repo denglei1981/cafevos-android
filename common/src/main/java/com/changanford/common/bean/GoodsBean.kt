@@ -579,7 +579,7 @@ data class OrderItemBean(
     val memo: String = "",
     val nickName: String = "",
     val `operator`: String = "",
-    val orderNo: String = "",
+    var orderNo: String = "",
     var orderStatus: String = "",
     var orderTime: Long? = 0,
     var orderTimeTxt: String? = "",
@@ -646,8 +646,10 @@ data class OrderItemBean(
     var statusDesc: String? = null,
     var couponDiscount: String,
     var haggleDiscount: String,
-    var sharedFb:String,
-    var sharedRmb:String
+    var sharedFb: String,
+    var sharedRmb: String,
+    var mallOrderSkuId: String,
+    var mallRefundStatus: String? = null // 单个sku 状态
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
@@ -978,6 +980,7 @@ data class WxPayBean(
     val sign: String? = null,
     val timestamp: String? = null,
 )
+
 // // CONTAIN_GOODS 退货退款
 // ONLY_COST  仅退款
 // （如果是单个sku退，则需要传此参数 ， refundType =  allOrderRefund 的情况，singleRefundType参数和skuItem参数可不传）
@@ -986,16 +989,23 @@ data class RefundOrderItemBean(
     var spuName: String,
     var skuImg: String,
     var mallMallSkuId: String,
+    var mallOrderSkuId: String,
     var buyNum: Int,
     var price: String,
-    var singleRefundType:String,
-    var sharedFb:String,
-    var sharedRmb:String
+    var singleRefundType: String,
+    var sharedFb: String,
+    var sharedRmb: String,
+    var orderNo: String,
+    var refundType:String
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {
             return specifications!!.split(",").filter { "" != it }
         }
         return arrayListOf()
+    }
+
+    fun getSaleNum(): String {
+        return "申请数量: ".plus(buyNum)
     }
 }

@@ -52,6 +52,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:gravity="center_vertical|end"
+                android:maxLines="1"
+                android:maxLength="30"
                 android:hint="请填写"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_logistics_company_tips"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +66,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_20"
+                android:maxLines="1"
+                android:maxLength="50"
                 android:text="物流单号"
+
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +92,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
+            android:id="@+id/ll_refund_notes"
             layout="@layout/layout_refund_notes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
