@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -28,6 +29,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
     val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
     val selectPicArr =arrayListOf<OrderFormState>()
+    var postBeanLiveData = MutableLiveData<MutableList<PostEvaluationBean>>()
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemPostEvaluationBinding>, item: OrderItemBean) {
         holder.dataBinding?.apply {
@@ -62,7 +64,9 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
                 anonymous=if(checkBox.isChecked)"YES" else "NO"
                 evalScore=ratingBar.rating.toInt()
                 evalText=content
+                updateStatus()
             }
+            postBeanLiveData.postValue(postBean)
         }
     }
     private fun initPic(dataBinding:ItemPostEvaluationBinding,pos:Int){

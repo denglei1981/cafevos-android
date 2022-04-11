@@ -1,5 +1,6 @@
 package com.changanford.shop.bean
 
+import android.text.TextUtils
 import com.changanford.common.util.PictureUtil
 import com.luck.picture.lib.entity.LocalMedia
 
@@ -27,7 +28,16 @@ data class PostEvaluationBean(
     var evalText: String? = null,//评价内容
     var imgUrls: List<String>? = null,
     var mallMallOrderSkuId:String?= null,//订单skuId
-)
+    var isComplete:Boolean=false,
+){
+    /**
+     * 是否完成（评分、评价内容为必填项）
+    * */
+    fun updateStatus():Boolean{
+        isComplete=!TextUtils.isEmpty(evalText)&&evalScore!=null&&evalScore!!>0
+        return isComplete
+    }
+}
 data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String){
 
 }

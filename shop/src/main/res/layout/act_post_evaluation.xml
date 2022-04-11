@@ -30,7 +30,7 @@
             tools:listitem="@layout/item_post_evaluation"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <com.changanford.shop.view.btn.BtnView
-            android:enabled="true"
+            android:enabled="false"
             android:id="@+id/btn_submit"
             android:layout_margin="@dimen/dp_20"
             style="@style/style_btn"

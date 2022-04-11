@@ -66,6 +66,10 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             getString(R.string.str_evaluationSuccess).toast()
             this.finish()
         }
+        mAdapter.postBeanLiveData.observe(this){
+            val isComplete=it.find {item-> !item.isComplete }
+            binding.btnSubmit.setBtnEnabled(isComplete==null)
+        }
     }
     private fun submitEvaluation(){
         dialog.show()
