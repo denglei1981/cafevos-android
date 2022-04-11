@@ -5,6 +5,7 @@ import android.text.Spanned
 import android.text.TextUtils
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.BackEnumBean
@@ -64,7 +65,19 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
         val refunInfoStr = intent.getStringExtra("value")
         val gson = Gson()
         refundBean = gson.fromJson<RefundBean>(refunInfoStr, RefundBean::class.java)
-        showTotalTag(binding.tvRefundMoney, refundBean!!)
+        refundBean?.let {
+            viewModel.getOrderDetail(it.orderNo)
+        }
+
+
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.refundorderItemLiveData.observe(this, Observer {
+            refundBean =RefundBean(it.orderNo,it.payRmb,it.payFb,"allOrderRefund")
+            showTotalTag(binding.tvRefundMoney, refundBean!!)
+        })
     }
 
     fun showZero(text: AppCompatTextView?, item: RefundBean) {

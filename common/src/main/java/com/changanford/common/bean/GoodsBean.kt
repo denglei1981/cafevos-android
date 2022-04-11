@@ -976,7 +976,8 @@ data class RefundOrderItemBean(
     var singleRefundType: String,
     var sharedFb: String,
     var sharedRmb: String,
-    var orderNo: String
+    var orderNo: String,
+    var refundType:String
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {

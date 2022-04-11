@@ -588,7 +588,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             // 申请退款 0 是整单退, 1 是退单个商品
             val gson = Gson()
             val refundBean =
-                RefundBean(localDataBean.orderNo, localDataBean.payFb, localDataBean.payRmb, "0")
+                RefundBean(localDataBean.orderNo, localDataBean.payFb, localDataBean.payRmb, "allOrderRefund")
             val refundJson = gson.toJson(refundBean)
             refundJson.toString().logE()
             JumpUtils.instans?.jump(121, refundJson)

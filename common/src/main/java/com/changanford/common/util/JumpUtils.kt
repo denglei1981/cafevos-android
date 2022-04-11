@@ -15,6 +15,7 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.bean.JumpDataBean
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
@@ -32,6 +33,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
+import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -687,7 +689,16 @@ class JumpUtils {
                 startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
             121 -> {// 申请退款--- 未发货
-                startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
+                val gson = Gson()
+                val orderString = bundle.getString("value")
+                val orderItemBean: RefundOrderItemBean =
+                    gson.fromJson(orderString, RefundOrderItemBean::class.java)
+                if (orderItemBean.refundType == "allOrderRefund") { // 整单退
+                    startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
+                } else {
+                    startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
+                }
+
             }
             122 -> { // 跳优惠券弹窗
                 val getCoupopPop =

@@ -2,8 +2,10 @@ package com.changanford.shop.ui.sale.request
 
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -13,6 +15,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.bean.RefundStautsBean
+import kotlinx.coroutines.launch
 
 
 class RefundViewModel : BaseViewModel() {
@@ -166,30 +169,56 @@ class RefundViewModel : BaseViewModel() {
                 }
         })
     }
+
     var fillInLogisticsLiveData: MutableLiveData<String> = MutableLiveData()
+
     /**
      *  填写物流信息
      * */
-    fun fillInLogistics(mallMallRefundId:String?,logisticsCompany:String,logisticsNo:String,logisticsDescImg:MutableList<String>,logisticsDescText:String="") {
+    fun fillInLogistics(
+        mallMallRefundId: String?,
+        logisticsCompany: String,
+        logisticsNo: String,
+        logisticsDescImg: MutableList<String>,
+        logisticsDescText: String = ""
+    ) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             mallMallRefundId?.let {
                 body["mallMallRefundId"] = mallMallRefundId
             }
-            body["logisticsCompany"]=logisticsCompany
-            body["logisticsNo"]=logisticsNo
-            if(!TextUtils.isEmpty(logisticsDescText)){
-                body["logisticsDescText"]=logisticsDescText
+            body["logisticsCompany"] = logisticsCompany
+            body["logisticsNo"] = logisticsNo
+            if (!TextUtils.isEmpty(logisticsDescText)) {
+                body["logisticsDescText"] = logisticsDescText
             }
 
-            if(logisticsDescImg.size>0){
-                body["logisticsDescImg"]=logisticsDescImg
+            if (logisticsDescImg.size > 0) {
+                body["logisticsDescImg"] = logisticsDescImg
             }
             ApiClient.createApi<ShopNetWorkApi>()
                 .fillInLogistics(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     fillInLogisticsLiveData.postValue("成功")
+                }
+                .onWithMsgFailure {
+                    it?.toast()
+                }
+        })
+    }
+
+    var refundorderItemLiveData: MutableLiveData<OrderItemBean> = MutableLiveData()
+    fun getOrderDetail(orderNo: String, showLoading: Boolean = false) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            body["orderNo"] = orderNo
+            val randomKey = getRandomKey()
+            ApiClient.createApi<ShopNetWorkApi>()
+                .orderDetail(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    refundorderItemLiveData.postValue(it)
                 }
                 .onWithMsgFailure {
                     it?.toast()
