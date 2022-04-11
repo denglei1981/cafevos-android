@@ -6,6 +6,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toast
+import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
 import com.changanford.shop.databinding.ActPostEvaluationBinding
@@ -37,6 +38,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     private var upI=0
     private lateinit var dialog: LoadDialog
     override fun initView() {
+        AndroidBug5497Workaround.assistActivity(this)
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
             recyclerView.adapter=mAdapter
