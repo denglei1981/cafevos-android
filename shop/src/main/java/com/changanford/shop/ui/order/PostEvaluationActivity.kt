@@ -34,6 +34,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     private var orderNo=""
     private val uploadViewModel by lazy { UploadViewModel() }
     private var reviewEval=false//是否追评
+    private var upI=0
     private lateinit var dialog: LoadDialog
     override fun initView() {
         binding.apply {
@@ -68,24 +69,25 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     }
     private fun submitEvaluation(){
         dialog.show()
-       var upI=0
+        uploadPic(0)
+    }
+    private fun uploadPic(pos:Int=0){
         val postBean=mAdapter.postBean
-        for ((i,item)in mAdapter.selectPicArr.withIndex()){
-            //上传图片
-            uploadViewModel.uploadFile(this,item.imgPathArr,object : UploadPicCallback{
-                override fun onUploadSuccess(files: ArrayList<String>) {
-                    upI++
-                    postBean[i].imgUrls=files
-                    if(upI==postBean.size){//图片以上传完成
-                        viewModel.postEvaluation(orderNo,postBean,reviewEval)
-                        dialog.dismiss()
-                    }
-                }
-                override fun onUploadFailed(errCode: String) {
+        val item=mAdapter.selectPicArr[pos]
+        //上传图片
+        uploadViewModel.uploadFile(this,item.imgPathArr,object : UploadPicCallback {
+            override fun onUploadSuccess(files: ArrayList<String>) {
+                upI++
+                postBean[pos].imgUrls=files
+                if(upI==postBean.size){//图片以上传完成
+                    viewModel.postEvaluation(orderNo,postBean,reviewEval)
                     dialog.dismiss()
-                }
-                override fun onuploadFileprogress(progress: Long) {}
-            })
-        }
+                }else uploadPic(pos+1)
+            }
+            override fun onUploadFailed(errCode: String) {
+                dialog.dismiss()
+            }
+            override fun onuploadFileprogress(progress: Long) {}
+        })
     }
 }

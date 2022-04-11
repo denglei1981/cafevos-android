@@ -31,28 +31,16 @@ class UploadViewModel:BaseViewModel() {
      * 获取上传图片得凭证
      */
    private lateinit var upimgs: ArrayList<String>
-
-    private fun getOSS(
-        context: Context,
-        upfiles: List<String>,
-        count: Int,
-        callback: UploadPicCallback
-    ) {
+    private fun getOSS(context: Context,upfiles: List<String>,count: Int,callback: UploadPicCallback) {
         viewModelScope.launch {
             val body = HashMap<String, Any>()
             val rkey = getRandomKey()
             fetchRequest {
                 apiService.getOSS(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                initAliYunOss(context, it!!)//
+                initAliYunOss(context, it!!)
                 upimgs = ArrayList()
-                uploadImgs(
-                    context,
-                    upfiles,
-                    it,
-                    count,
-                    callback
-                )
+                uploadImgs(context,upfiles,it,count,callback)
             }.onFailure {
                 val msg = "上传失败"
                 msg.toast()
@@ -72,13 +60,7 @@ class UploadViewModel:BaseViewModel() {
         )
     }
 
-    private fun uploadImgs(
-        context: Context,
-        upfiles: List<String>,
-        stsBean: STSBean,
-        count: Int,
-        callback: UploadPicCallback
-    ) {
+    private fun uploadImgs(context: Context,upfiles: List<String>,stsBean: STSBean,count: Int,callback: UploadPicCallback) {
         val size = upfiles.size
         AliYunOssUploadOrDownFileConfig.getInstance(context).initOss(
             stsBean.endpoint, stsBean.accessKeyId,
