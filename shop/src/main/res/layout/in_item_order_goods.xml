@@ -25,7 +25,8 @@
             android:layout_height="@dimen/dp_90"
             android:src="@mipmap/image_h_one_default"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
         <com.changanford.shop.view.TypefaceTextView
             tools:visibility="visible"
             android:visibility="gone"

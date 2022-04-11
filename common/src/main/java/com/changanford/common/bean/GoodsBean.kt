@@ -8,6 +8,7 @@ import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
+import java.util.*
 
 /**
  * @Author : wenke
@@ -609,6 +610,7 @@ data class OrderItemBean(
     var preferentialFbOfUnitPrice: String? = null,
     val receiveTime: Any? = null,
     val waitPayDuration: Long = 0,//待支付有效时间
+    val payTimeDeadline:String?=null,
     var orderType: Int = 0,
     val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
