@@ -3,6 +3,7 @@ package com.changanford.shop.ui.order
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
@@ -33,6 +34,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     private var orderNo=""
     private val uploadViewModel by lazy { UploadViewModel() }
     private var reviewEval=false//是否追评
+    private lateinit var dialog: LoadDialog
     override fun initView() {
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
@@ -43,6 +45,10 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                     submitEvaluation()
                 }, {})
         }
+        dialog = LoadDialog(this)
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setLoadingText("图片上传中..")
     }
 
     override fun initData() {
@@ -61,6 +67,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         }
     }
     private fun submitEvaluation(){
+        dialog.show()
        var upI=0
         val postBean=mAdapter.postBean
         for ((i,item)in mAdapter.selectPicArr.withIndex()){
@@ -71,9 +78,12 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                     postBean[i].imgUrls=files
                     if(upI==postBean.size){//图片以上传完成
                         viewModel.postEvaluation(orderNo,postBean,reviewEval)
+                        dialog.dismiss()
                     }
                 }
-                override fun onUploadFailed(errCode: String) {}
+                override fun onUploadFailed(errCode: String) {
+                    dialog.dismiss()
+                }
                 override fun onuploadFileprogress(progress: Long) {}
             })
         }
