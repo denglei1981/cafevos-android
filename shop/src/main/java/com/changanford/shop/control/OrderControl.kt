@@ -41,7 +41,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             params.width=imgWidthPx
             params.height=imgWidthPx
             imgGoodsCover.layoutParams=params
-            if(itemBean.isNewOrder!="YES"&&itemBean.skuOrderVOList?.size==1){
+            if(itemBean.skuOrderVOList==null||itemBean.skuOrderVOList?.size==1){
                 val skuItem= if(itemBean.skuOrderVOList!=null&&itemBean.skuOrderVOList!!.size==1)itemBean.skuOrderVOList?.get(0)?: OrderSkuItem()
                 else OrderSkuItem(skuImg =itemBean.skuImg, spuName =itemBean.spuName, busSourse = itemBean.busSourse)
                 recyclerViewImgArr.visibility=View.GONE
