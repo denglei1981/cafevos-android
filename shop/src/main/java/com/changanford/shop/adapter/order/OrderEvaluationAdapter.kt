@@ -37,13 +37,13 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
             model=item
             executePendingBindings()
             imgGoodsCover.load(item.skuImg)
+            updatePostBean(this, position)
             edtContent.onTextChanged {
                 updatePostBean(this,position)
             }
             ratingBar.setOnRatingChangeListener { _, _, _ ->
                 updatePostBean(this, position)
             }
-            updatePostBean(this, position)
             initPic(this,position)
         }
     }
@@ -58,13 +58,15 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
     private fun updatePostBean(dataBinding:ItemPostEvaluationBinding,position:Int){
         dataBinding.apply {
             val content=edtContent.text.toString()
+            val rating=ratingBar.rating.toInt()
             tvContentLength.setText("${content.length}")
             postBean[position].apply {
                 selectPicArr[position].getImgPaths()
                 anonymous=if(checkBox.isChecked)"YES" else "NO"
-                evalScore=ratingBar.rating.toInt()
+                evalScore=rating
                 evalText=content
                 updateStatus()
+                dataBinding.tvScore.text=getEvalText(context,rating)
             }
             postBeanLiveData.postValue(postBean)
         }

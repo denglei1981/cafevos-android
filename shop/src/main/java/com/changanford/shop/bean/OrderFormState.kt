@@ -1,7 +1,9 @@
 package com.changanford.shop.bean
 
+import android.content.Context
 import android.text.TextUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.shop.R
 import com.luck.picture.lib.entity.LocalMedia
 
 data class OrderFormState(
@@ -36,6 +38,16 @@ data class PostEvaluationBean(
     fun updateStatus():Boolean{
         isComplete=!TextUtils.isEmpty(evalText)&&evalScore!=null&&evalScore!!>0
         return isComplete
+    }
+    fun getEvalText(context:Context,rating:Int=evalScore?:0): String {
+        val ratingStr= when {
+            rating == 0->""
+            rating < 3 -> context.getString(R.string.str_badReview)
+            rating > 3 ->context.getString(R.string.str_goodReview)
+            rating==3 ->context.getString(R.string.str_mediumReview)
+            else ->""
+        }
+        return ratingStr
     }
 }
 data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String){
