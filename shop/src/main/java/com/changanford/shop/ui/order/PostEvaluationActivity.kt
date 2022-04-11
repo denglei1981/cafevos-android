@@ -31,16 +31,18 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             JumpUtils.instans?.jump(112,orderNo)
         }
     }
-    private val mAdapter by lazy { OrderEvaluationAdapter(this) }
+
     private var orderNo=""
     private val uploadViewModel by lazy { UploadViewModel() }
-    private var reviewEval=false//是否追评
+    private var reviewEval=true//是否追评
     private var upI=0
     private lateinit var dialog: LoadDialog
+    private val mAdapter by lazy { OrderEvaluationAdapter(this,reviewEval) }
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
+            if(reviewEval)topBar.setTitle(getString(R.string.str_releasedAfterReview))
             recyclerView.adapter=mAdapter
             btnSubmit.clicks().throttleFirst(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -69,13 +71,17 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             this.finish()
         }
         mAdapter.postBeanLiveData.observe(this){
-            val isComplete=it.find {item-> !item.isComplete }
+            val isComplete= it.find { item-> !item.isComplete }
             binding.btnSubmit.setBtnEnabled(isComplete==null)
         }
     }
     private fun submitEvaluation(){
-        dialog.show()
-        uploadPic(0)
+        if(reviewEval){
+            viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
+        }else{
+            dialog.show()
+            uploadPic(0)
+        }
     }
     private fun uploadPic(pos:Int=0){
         val postBean=mAdapter.postBean
@@ -91,6 +97,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                 }else uploadPic(pos+1)
             }
             override fun onUploadFailed(errCode: String) {
+                upI=0
                 dialog.dismiss()
             }
             override fun onuploadFileprogress(progress: Long) {}

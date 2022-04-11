@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
 
-class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
+class OrderEvaluationAdapter(val activity:Activity, private val reviewEval:Boolean=false): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
     val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
     val selectPicArr =arrayListOf<OrderFormState>()
     var postBeanLiveData = MutableLiveData<MutableList<PostEvaluationBean>>()
@@ -41,10 +42,22 @@ class OrderEvaluationAdapter(val activity:Activity): BaseQuickAdapter<OrderItemB
             edtContent.onTextChanged {
                 updatePostBean(this,position)
             }
-            ratingBar.setOnRatingChangeListener { _, _, _ ->
-                updatePostBean(this, position)
+            val visibilityView: Int
+            //追评
+            if(reviewEval){
+                visibilityView=View.GONE
+            }else{
+                visibilityView=View.VISIBLE
+                ratingBar.setOnRatingChangeListener { _, _, _ ->
+                    updatePostBean(this, position)
+                }
+                initPic(this,position)
             }
-            initPic(this,position)
+            checkBox.visibility=visibilityView
+            recyclerView.visibility=visibilityView
+            ratingBar.visibility=visibilityView
+            tvTitle.visibility=visibilityView
+            tvScore.visibility=visibilityView
         }
     }
     fun initBean(){

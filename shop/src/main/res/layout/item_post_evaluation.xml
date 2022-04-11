@@ -80,7 +80,7 @@
             android:id="@+id/edt_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_140"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:background="@drawable/shadow_f9_5dp"
             android:gravity="start|top"
             android:hint="@string/str_pleaseEnterComments"
