@@ -9,10 +9,12 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
+import com.changanford.shop.bean.PostEvaluationListBean
 import com.changanford.shop.databinding.ActPostEvaluationBinding
 import com.changanford.shop.listener.UploadPicCallback
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.changanford.shop.viewmodel.UploadViewModel
+import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -29,6 +31,9 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     companion object{
         fun start(orderNo:String) {
             JumpUtils.instans?.jump(112,orderNo)
+        }
+        fun start(item:PostEvaluationListBean) {
+            JumpUtils.instans?.jump(112,Gson().toJson(item))
         }
     }
 
@@ -57,9 +62,18 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     }
 
     override fun initData() {
-        intent.getStringExtra("orderNo")?.apply {
-            orderNo=this
-            viewModel.getOrderDetail(orderNo)
+        intent.getStringExtra("info")?.apply {
+            if(this.startsWith("{")){
+                Gson().fromJson(this,PostEvaluationListBean::class.java).let {
+                    orderNo=it.orderNo
+                    reviewEval=it.reviewEval?:false
+//                    if(reviewEval&&)viewModel.orderItemLiveData.postValue()
+                }
+            }else {
+                orderNo=this
+                viewModel.getOrderDetail(orderNo)
+            }
+
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)

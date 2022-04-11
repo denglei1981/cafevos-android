@@ -2,6 +2,7 @@ package com.changanford.shop.bean
 
 import android.content.Context
 import android.text.TextUtils
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.PictureUtil
 import com.changanford.shop.R
 import com.luck.picture.lib.entity.LocalMedia
@@ -21,6 +22,11 @@ data class OrderFormState(
         }
     }
 }
+data class PostEvaluationListBean(
+    var orderNo:String,//订单号
+    var reviewEval:Boolean?=false,//是否追评
+    var orderSkuItems:List<OrderItemBean>?=null,//追评的列表 主要需要 skuImg、spuName
+)
 /**
  * 发布评价
 * */

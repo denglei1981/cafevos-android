@@ -646,7 +646,7 @@ class JumpUtils {
             }
             112 -> {//商品订单评价
                 if (!TextUtils.isEmpty(value)) {
-                    bundle.putString("orderNo", value)
+                    bundle.putString("info", value)
                     startARouter(ARouterShopPath.PostEvaluationActivity, bundle, true)
                 }
             }
