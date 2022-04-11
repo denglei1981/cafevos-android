@@ -68,7 +68,6 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             uploadViewModel.uploadFile(this,item.imgPathArr,object : UploadPicCallback{
                 override fun onUploadSuccess(files: ArrayList<String>) {
                     upI++
-                    var imgUrls=files
                     postBean[i].imgUrls=files
                     if(upI==postBean.size){//图片以上传完成
                         viewModel.postEvaluation(orderNo,postBean,reviewEval)
