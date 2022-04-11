@@ -35,6 +35,7 @@ import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
 import com.changanford.shop.ui.sale.adapter.OrderSaleStateAdapter
+import com.changanford.shop.ui.shoppingcart.MultiplePackageActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -174,7 +175,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.tvOrderRemainingTime.setText(R.string.prompt_hasBeenShipped)
                     binding.inBottom.layoutBottom.visibility = View.GONE
                     BottomBShow()
-                    showExpress(true) // 展示物流
+                    showExpress(dataBean, true) // 展示物流
                     showInvoiceState(dataBean)
                     showGetShop(true)
                 }
@@ -183,7 +184,6 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inRefund.conRefundProgress.visibility = View.VISIBLE
                     binding.inRefund.conRefundProgress.setOnClickListener {
                         JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
-
                     }
                     binding.inAddress.conAddress.visibility = View.GONE
                     binding.tvOrderRemainingTime.text = dataBean.statusDesc
@@ -407,6 +407,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
     fun showShoppingInfo(localDataBean: OrderItemBean) {
+        orderDetailsItemV2Adapter.orderNo = localDataBean.orderNo
         orderDetailsItemV2Adapter.orderStatus = localDataBean.orderStatus
         orderDetailsItemV2Adapter.setList(localDataBean.skuList)
     }
@@ -595,28 +596,31 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
     // 物流状态
-    fun showExpress(needShow: Boolean) {
+    fun showExpress(localDataBean: OrderItemBean, needShow: Boolean) {
         if (needShow) {
             binding.inSaleBottom.btnOrderExpress.visibility = View.VISIBLE
         } else {
             binding.inSaleBottom.btnOrderExpress.visibility = View.GONE
         }
         binding.inSaleBottom.btnOrderExpress.text = "查看物流"
+        binding.inSaleBottom.btnOrderExpress.setOnClickListener {
+            MultiplePackageActivity.start(localDataBean.orderNo)
+        }
     }
 
     // 评价
     fun showComment() {
         binding.inSaleBottom.btnOrderComment.text = "评价"
         binding.inSaleBottom.btnOrderComment.isSelected = true
-        binding.inSaleBottom.btnOrderComment.visibility=View.VISIBLE
-        binding.inSaleBottom.btnOrderShopGet.visibility=View.GONE
+        binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
+        binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
     }
 
     fun showNextComment() {
         binding.inSaleBottom.btnOrderComment.text = "追评"
         binding.inSaleBottom.btnOrderComment.isSelected = false
-        binding.inSaleBottom.btnOrderComment.visibility=View.VISIBLE
-        binding.inSaleBottom.btnOrderShopGet.visibility=View.GONE
+        binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
+        binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
     }
 
     fun showZero(text: AppCompatTextView?, item: OrderItemBean) {

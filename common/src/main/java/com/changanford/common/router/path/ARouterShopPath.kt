@@ -29,17 +29,19 @@ object ARouterShopPath {
 
     const val AfterSaleActivity = "/shop/AfterSaleActivity" // 商品售后
 
-    const val InvoiceActivity="/shop/InvoiceActivity" // 申请发票
+    const val InvoiceActivity = "/shop/InvoiceActivity" // 申请发票
 
-    const val RefundNotShippedActivity="/shop/RefundNotShippedActivity" // 申请退款
+    const val RefundNotShippedActivity = "/shop/RefundNotShippedActivity" // 申请退款
 
-    const val InvoiceLookActivity ="/shop/InvoiceLookActivity" // 查看发票详情
+    const val InvoiceLookActivity = "/shop/InvoiceLookActivity" // 查看发票详情
 
-    const val RefundProgressActivity ="/shop/RefundProgressActivity" // 退款进度
+    const val RefundProgressActivity = "/shop/RefundProgressActivity" // 退款进度
 
-    const val RefundApplySingleActivity ="/shop/RefundApplySingleActivity"//单个sku 退款申请
+    const val RefundApplySingleActivity = "/shop/RefundApplySingleActivity"//单个sku 退款申请
 
+    const val RefundProgressHasShopActivity = "/shop/RefundProgressHasShopActivity" // 退款进度  单个sku
 
+    const val MultiplePackageActivity ="/shop/MultiplePackageActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

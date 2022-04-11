@@ -26,8 +26,10 @@ object LiveDataBusKey {
      */
     //分享
     const val WEB_SHARE = "agentWeb_shareTo"
+
     //分享-微信小程序
     const val WEB_SMALL_PROGRAM_WX_SHARE = "agentWeb_shareToSmallProgram"
+
     //设置头部
     const val WEB_SET_NAV_TITLE = "agentWeb_setNavTitle"
 
@@ -225,7 +227,7 @@ object LiveDataBusKey {
 
     const val CHOOSELOCATION = "chooselocation" //选择定位poi返回时
 
-    const val CREATE_LOCATION="create_loccation" // 自定义位置
+    const val CREATE_LOCATION = "create_loccation" // 自定义位置
 
     const val CHOOSELOCATIONNOTHING = "chooselocationnothing" //选择不显示定位poi返回时
     const val ColseCHOOSELOCATION = "colsechooselocation" //关闭一级页面
@@ -249,21 +251,30 @@ object LiveDataBusKey {
 
     const val SHOP_CREATE_ORDER_BACK = "shop_create_order_back"//商品创建订单回调
 
-    const val CHANGE_TEACH_INFO="CHANGE_TEACH_INFO" // 自定义位置
+    const val CHANGE_TEACH_INFO = "CHANGE_TEACH_INFO" // 自定义位置
 
 
-    const val CIRCLE_CREATE_QUESTION="CIRCLE_CREATE_QUESTION" // 创建问题
+    const val CIRCLE_CREATE_QUESTION = "CIRCLE_CREATE_QUESTION" // 创建问题
 
-    const val REMOVE_CAR="remove_car" // 移除爱车。
-    const val AGGREE_CAR="AGGREE_CAR" // 弹窗认车。
+    const val REMOVE_CAR = "remove_car" // 移除爱车。
+    const val AGGREE_CAR = "AGGREE_CAR" // 弹窗认车。
 
     //银联支付
     const val WEB_OPEN_UNION_PAY = "agentWeb_openUnionPay"
+
     //银联支付回调-暂只代表云闪付
     const val WEB_OPEN_UNION_PAY_BACK = "agentWeb_unionPayBack"
+
     //选择优惠券回调
     const val COUPONS_CHOOSE_BACK = "coupons_choose_back"
+
     //开票成功
-    const val GET_INVOICE ="get_invoice"
+    const val GET_INVOICE = "get_invoice"
+
+    // 单sku 申请退货 --成功
+    const val SINGLE_REFUND = "single_refund"
+
+    // 填写物流信息
+    const val FILL_IN_LOGISTICS = "fillInLogistics"
 }
 

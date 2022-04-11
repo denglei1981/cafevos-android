@@ -65,7 +65,7 @@
             android:name=".ui.sale.AfterSaleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.sale.OnlyRefundActivity"
+            android:name=".ui.sale.RefundProgressHasShopActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.sale.RefundApplySingleActivity"
@@ -85,6 +85,12 @@
         <activity
             android:name=".ui.sale.RefundProgressActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.shoppingcart.MultiplePackageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.sale.RefundLogisticsActivity"
+            android:screenOrientation="portrait"
+            />
         <!--================================= 商城 End-->
     </application>
 </manifest>

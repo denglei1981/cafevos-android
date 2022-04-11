@@ -1,8 +1,10 @@
 package com.changanford.shop.ui.sale.request
 
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -19,12 +21,17 @@ class RefundViewModel : BaseViewModel() {
     var invoiceLiveData: MutableLiveData<String> = MutableLiveData()
 
     var refundProgressLiveData: MutableLiveData<RefundProgressBean> = MutableLiveData()
-    fun getRefund(refundType: String, orderNo: String, refundReason: String) {
+
+    var refundSingleLiveData: MutableLiveData<String> = MutableLiveData()
+    val stsBean = MutableLiveData<STSBean>()
+
+
+    fun getRefund(orderNo: String, refundReason: String) {
         // 退款
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            body["refundType"] = refundType
+            body["refundType"] = "ALL_ORDER"
             body["allOrderRefund"] = HashMap<String, String>().also {
                 it["orderNo"] = orderNo
                 it["refundReason"] = refundReason
@@ -34,7 +41,7 @@ class RefundViewModel : BaseViewModel() {
                 .onSuccess {
                     "申请已提交".toast()
                     invoiceLiveData.postValue("申请已提交")
-                    LiveDataBus.get().with(LiveDataBusKey.GET_INVOICE)
+
                 }
                 .onWithMsgFailure {
                     it?.toast()
@@ -45,11 +52,16 @@ class RefundViewModel : BaseViewModel() {
     /**
      *  退款中的数据。
      * */
-    fun getRefundProgress(mallMallOrderId: String = "") {
+    fun getRefundProgress(mallMallOrderId: String = "", mallMallOrderSkuId: String = "") {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            body["mallMallOrderId"] = mallMallOrderId
+            if (!TextUtils.isEmpty(mallMallOrderId)) {
+                body["mallMallOrderId"] = mallMallOrderId
+            }
+            if (!TextUtils.isEmpty(mallMallOrderSkuId)) {
+                body["mallMallOrderSkuId"] = mallMallOrderSkuId
+            }
             ApiClient.createApi<ShopNetWorkApi>()
                 .refundProgress(body.header(rKey), body.body(rKey))
                 .onSuccess {
@@ -75,11 +87,13 @@ class RefundViewModel : BaseViewModel() {
                 }
         })
     }
+
+
     /**
      *  撤销退款申请
      * */
     var cancelRefundLiveData: MutableLiveData<String> = MutableLiveData()
-    fun cancelRefund(mallMallRefundId:String){
+    fun cancelRefund(mallMallRefundId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
@@ -88,6 +102,94 @@ class RefundViewModel : BaseViewModel() {
                 .cancelRefund(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     cancelRefundLiveData.postValue("成功")
+                }
+                .onWithMsgFailure {
+                    it?.toast()
+                }
+        })
+    }
+
+    fun getOSS() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    stsBean.value = it
+                }
+                .onFailure {
+
+                }
+        })
+    }
+
+    /**
+     *  单个sku 退款
+     * */
+    fun getSingleRefund(
+        orderNo: String,
+        refundReason: String,
+        mallMallOrderSkuId: String,
+        refundMethod: String,
+        refundNum: String,
+        refundDescText: String = "",
+        refundDescImgs: MutableList<String>
+    ) {
+        // 退款
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            body["refundType"] = "SINGLE"
+            body["singleRefund"] = HashMap<String, Any>().also {
+                it["mallMallOrderSkuId"] = mallMallOrderSkuId
+                it["orderNo"] = orderNo
+                it["refundReason"] = refundReason
+                if (!TextUtils.isEmpty(refundDescText)) {
+                    it["refundDescText"] = refundDescText
+                }
+                // 退款方式 --- 仅退款， 退货退款
+                it["refundMethod"] = refundMethod
+                it["refundNum"] = refundNum // 退款数量
+                if (refundDescImgs.size > 0) {
+                    it["refundDescImgs"] = refundDescImgs
+                }
+
+            }
+            ApiClient.createApi<ShopNetWorkApi>()
+                .applyRefund(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    "申请已提交".toast()
+                    refundSingleLiveData.postValue("申请已提交")
+                }
+                .onWithMsgFailure {
+                    it?.toast()
+                }
+        })
+    }
+    var fillInLogisticsLiveData: MutableLiveData<String> = MutableLiveData()
+    /**
+     *  填写物流信息
+     * */
+    fun fillInLogistics(mallMallRefundId:String?,logisticsCompany:String,logisticsNo:String,logisticsDescImg:MutableList<String>,logisticsDescText:String="") {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            mallMallRefundId?.let {
+                body["mallMallRefundId"] = mallMallRefundId
+            }
+            body["logisticsCompany"]=logisticsCompany
+            body["logisticsNo"]=logisticsNo
+            if(!TextUtils.isEmpty(logisticsDescText)){
+                body["logisticsDescText"]=logisticsDescText
+            }
+
+            if(logisticsDescImg.size>0){
+                body["logisticsDescImg"]=logisticsDescImg
+            }
+            ApiClient.createApi<ShopNetWorkApi>()
+                .fillInLogistics(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    fillInLogisticsLiveData.postValue("成功")
                 }
                 .onWithMsgFailure {
                     it?.toast()

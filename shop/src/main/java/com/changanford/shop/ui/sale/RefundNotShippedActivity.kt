@@ -42,7 +42,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
 
             if (canRefund()) {
                 refundBean?.let {
-                    viewModel.getRefund("ALL_ORDER", it.orderNo, backEnumBean!!.code)
+                    viewModel.getRefund(it.orderNo, backEnumBean!!.code)
                 }
 
             }

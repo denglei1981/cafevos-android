@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_10">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:text="退款信息"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="退款信息" />
+
+       <include
+           android:id="@+id/layout_shop"
+           layout="@layout/layout_item_refund_num"
+
+           />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_refund_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_24">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_num_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退款编号"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="退款编号" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reason_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:drawablePadding="8dp"
+                android:gravity="end|center_vertical"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_refund_num_tips"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_refund_num_tips"
+                app:layout_constraintTop_toTopOf="@+id/tv_refund_num_tips"
+                tools:text="0000000000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_type_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_28"
+                android:text="退款类型"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_refund_num_tips"
+                tools:text="退款类型" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:text="12"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="@id/tv_refund_type_tips"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_refund_type_tips" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_reson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_28"
+                android:text="退款原因"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_refund_type_tips"
+                tools:text="退款原因" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reson_show"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:drawablePadding="8dp"
+                android:gravity="end|center_vertical"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_refund_reson"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_refund_reson"
+                app:layout_constraintTop_toTopOf="@+id/tv_refund_reson"
+                tools:text="3000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_money_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_28"
+                android:text="申请金额"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_refund_reson"
+                tools:text="申请金额" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:drawablePadding="8dp"
+                android:gravity="end|center_vertical"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_refund_money_tips"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_refund_money_tips"
+                app:layout_constraintTop_toTopOf="@+id/tv_refund_money_tips"
+                tools:text="自行寄回" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@color/color_F4"
+                app:layout_constraintTop_toBottomOf="@+id/tv_refund_way_tips" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_supply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="20dp"
+                android:text="补充描述"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="补充说明" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:background="@null"
+                android:gravity="start|top"
+                android:maxHeight="100dp"
+                android:minHeight="@dimen/dp_75"
+                android:paddingStart="4dp"
+                android:paddingTop="4dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_img"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:background="@color/white"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/tv_refund_way_tips" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

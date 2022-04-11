@@ -42,8 +42,8 @@ class RefundOrderItemAdapter() :
             tvSaleHandler.visibility = View.GONE
 
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品
-                var gson = Gson()
-                var toJson = gson.toJson(item)
+                val gson = Gson()
+                val toJson = gson.toJson(item)
                 JumpUtils.instans?.jump(125, toJson)
             }
         }

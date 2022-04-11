@@ -687,24 +687,31 @@ class JumpUtils {
                 startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
             121 -> {// 申请退款--- 未发货
-               startARouter(ARouterShopPath.RefundNotShippedActivity,bundle,true)
+                startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
             }
             122 -> { // 跳优惠券弹窗
-                val getCoupopPop = GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
+                val getCoupopPop =
+                    GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
                 getCoupopPop.showPopupWindow()
             }
-            123->{ // 查看发票详情
+            123 -> { // 查看发票详情
                 startARouter(ARouterShopPath.InvoiceLookActivity, bundle, true)
             }
-            124->{
-                 // 整单退，
-                startARouter(ARouterShopPath.RefundProgressActivity,bundle,true)
+            124 -> {
+                // 整单退退款进度
+                startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
             }
-            125->{ // 发货了，选一下退货还是退款
-                startARouter(ARouterShopPath.AfterSaleActivity,bundle,true)
+            125 -> { // 发货了，选一下退货还是退款
+                startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
             }
-            126->{ // 申请退货退款
-                startARouter(ARouterShopPath.RefundApplySingleActivity,bundle,true)
+            126 -> { // 申请退货退款
+                startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
+            }
+            127 -> {// 单个sku 退款
+                startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
+            }
+            128 -> { // 多包裹信息
+                startARouter(ARouterShopPath.MultiplePackageActivity, bundle, true)
             }
             10000 -> {
                 //外部H5
@@ -742,7 +749,7 @@ class JumpUtils {
     private fun mineDaySign() {
         currentViewModelScope?.launch {
             fetchRequest {
-                var body = HashMap<String, Any>()
+                val body = HashMap<String, Any>()
                 var rkey = getRandomKey()
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {

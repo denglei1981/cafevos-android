@@ -243,4 +243,16 @@ interface ShopNetWorkApi {
     @POST("/mall/cancelRefund")
     suspend fun  cancelRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
 
+    /**
+     * 查看包裹详情
+     * */
+    @POST("/logistics/getLogisticsByOrderNo")
+    suspend fun  getLogisticsByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+
+    /**
+     *  填写物流信息
+     * */
+    @POST("/mall/fillInLogistics")
+    suspend fun  fillInLogistics(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+
 }

@@ -24,7 +24,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top">
@@ -37,7 +38,6 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_top">
@@ -60,9 +60,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="11dp"
+                    android:lineSpacingMultiplier="1.2"
                     android:paddingBottom="@dimen/dp_10"
-                    android:text="当前订单已拆分成多个包裹发货"
-                    android:textColor="@color/gray_999999"
+                    android:text="1. 退款金额不包含优惠及折扣;\n2. 混合支付的订单，退款会按比例分别退回支付的福币和现金;\n3. 退款后预计1-5个工作日内退回到支付账户"
+                    android:textColor="@color/color_99"
                     android:textSize="12sp" />
 
                 <View
@@ -106,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="20dp"
+                    android:text="退款信息"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -196,6 +198,12 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_refund_money_tips"
                         tools:text="3000" />
 
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/g_refund_way"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="tv_refund_way,tv_refund_way_tips" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_refund_way_tips"
                         android:layout_width="wrap_content"
@@ -217,7 +225,8 @@
                         android:layout_marginEnd="@dimen/dp_20"
                         android:drawablePadding="8dp"
                         android:gravity="end|center_vertical"
-                        android:textColor="@color/gray_999999"
+                        android:text="自行寄回"
+                        android:textColor="@color/black"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_refund_way_tips"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -234,15 +243,13 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_F4"
-                    android:paddingBottom="@dimen/dp_40">
+                    android:layout_height="120dp"
+                    android:background="@color/color_F4">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_handle"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/dp_40"
-                        android:layout_marginTop="73dp"
                         android:background="@drawable/shape_00095b_20dp"
                         android:gravity="center"
                         android:text="申请退款"

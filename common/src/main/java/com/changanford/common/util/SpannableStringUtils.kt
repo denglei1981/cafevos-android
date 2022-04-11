@@ -56,6 +56,20 @@ object SpannableStringUtils {
         return spannableString
     }
 
+
+     fun getSpanNOBoldString(
+        hinStr: String,
+        start: Int,
+        end: Int,
+        colorRes: Int
+    ): SpannableStringBuilder? {
+        val sb = SpannableStringBuilder()
+        sb.append(hinStr)
+        val colorSpan = ForegroundColorSpan(BaseApplication.INSTANT.resources.getColor(colorRes))
+        sb.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        sb.setSpan(StyleSpan(Typeface.NORMAL), 0, hinStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return sb
+    }
     /**
      * 设置文字不同颜色
      * @return
