@@ -631,7 +631,8 @@ data class OrderItemBean(
     var sharedFb: String,
     var sharedRmb: String,
     var mallOrderSkuId: String,
-    var mallRefundStatus: String? = null // 单个sku 状态
+    var mallRefundStatus: String? = null, // 单个sku 状态
+    var historyPackage:String?=null
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")

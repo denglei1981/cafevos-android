@@ -36,6 +36,7 @@ import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
 import com.changanford.shop.ui.sale.adapter.OrderSaleStateAdapter
 import com.changanford.shop.ui.shoppingcart.MultiplePackageActivity
+import com.changanford.shop.ui.shoppingcart.request.NoLogisticsInfoActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
@@ -604,8 +605,15 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
         binding.inSaleBottom.btnOrderExpress.text = "查看物流"
         binding.inSaleBottom.btnOrderExpress.setOnClickListener {
-            MultiplePackageActivity.start(localDataBean.orderNo)
+            localDataBean.historyPackage?.let {hs->
+                if(hs=="NO"){
+                    MultiplePackageActivity.start(localDataBean.orderNo)
+                }else{
+                    startActivity(Intent(this@OrderDetailsV2Activity,NoLogisticsInfoActivity::class.java))
+                }
+            }
         }
+
     }
 
     // 评价
