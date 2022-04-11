@@ -8,7 +8,6 @@ import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
-import java.util.*
 
 /**
  * @Author : wenke
@@ -648,7 +647,6 @@ data class OrderItemBean(
     var haggleDiscount: String,
     var sharedFb: String,
     var sharedRmb: String,
-    var mallOrderSkuId: String,
     var mallRefundStatus: String? = null // 单个sku 状态
 ) {
     fun getRMBPrice() {
@@ -682,7 +680,7 @@ data class OrderItemBean(
             rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
             else "${fb.toInt() / 100}"
         }
-        return "${rmbPrice ?: "0"}"
+        return rmbPrice?:"0"
     }
 }
 
