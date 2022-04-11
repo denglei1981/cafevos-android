@@ -6,7 +6,6 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.listener.UploadPicCallback
@@ -86,7 +85,7 @@ class UploadViewModel:BaseViewModel() {
             stsBean.accessKeySecret, stsBean.securityToken
         )
         val path = createFileName(upfiles[count], stsBean.tempFilePath)
-        upimgs.add(GlideUtils.handleImgUrl(path))
+        upimgs.add(path)
         AliYunOssUploadOrDownFileConfig.getInstance(context)
             .uploadFile(stsBean.bucketName, path, upfiles[count], "", 0)
         AliYunOssUploadOrDownFileConfig.getInstance(context).setOnUploadFile(object :
