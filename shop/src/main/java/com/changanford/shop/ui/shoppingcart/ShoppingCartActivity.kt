@@ -219,7 +219,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             shoppingCartAdapter.checkMap[it.key] = isCheck
         }
         shoppingCartAdapter.notifyDataSetChanged()
-        shoppingCartAdapter.data.size.toString().toast()
+//        shoppingCartAdapter.data.size.toString().toast()
         if (isCheck) {
             // 加入所有的商品
             if (shoppingEdit) {

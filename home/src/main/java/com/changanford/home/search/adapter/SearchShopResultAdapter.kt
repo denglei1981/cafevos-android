@@ -4,6 +4,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.home.bean.SearchShopBean
 import com.changanford.home.R
 import com.google.android.material.imageview.ShapeableImageView
@@ -15,9 +16,9 @@ class SearchShopResultAdapter :
         val ivShopping = holder.getView<ShapeableImageView>(R.id.iv_shopping)
         GlideUtils.loadBD(item.spuImgs, ivShopping)
         holder.setText(R.id.tv_author_name, item.spuName)
-        var tvSubTitle = holder.getView<AppCompatTextView>(R.id.tv_sub_title)
+        val tvSubTitle = holder.getView<AppCompatTextView>(R.id.tv_sub_title)
 
-        tvSubTitle.text = item.normalFb.plus("福币")
+        tvSubTitle.text =WCommonUtil.getRMB(item.normalFb)
 
 
     }
