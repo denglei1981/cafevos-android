@@ -36,6 +36,10 @@ object ARouterShopPath {
     const val InvoiceLookActivity ="/shop/InvoiceLookActivity" // 查看发票详情
 
     const val RefundProgressActivity ="/shop/RefundProgressActivity" // 退款进度
+
+    const val RefundApplySingleActivity ="/shop/RefundApplySingleActivity"//单个sku 退款申请
+
+
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

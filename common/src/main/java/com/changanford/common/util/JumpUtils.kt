@@ -703,7 +703,9 @@ class JumpUtils {
             125->{ // 发货了，选一下退货还是退款
                 startARouter(ARouterShopPath.AfterSaleActivity,bundle,true)
             }
-
+            126->{ // 申请退货退款
+                startARouter(ARouterShopPath.RefundApplySingleActivity,bundle,true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {
