@@ -7,10 +7,11 @@ import com.changanford.common.net.*
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
+import com.changanford.shop.bean.PackMainData
 
 class MultiplePackageViewModel: BaseViewModel() {
 
-    var refundSingleLiveData: MutableLiveData<String> = MutableLiveData()
+    var packMainDataLiveData: MutableLiveData<PackMainData> = MutableLiveData()
 
 
     fun getMultiplePackInfo(orderNo: String) {
@@ -22,7 +23,7 @@ class MultiplePackageViewModel: BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>()
                 .getLogisticsByOrderNo(body.header(rKey), body.body(rKey))
                 .onSuccess {
-
+                    packMainDataLiveData.postValue(it)
 
                 }
                 .onWithMsgFailure {

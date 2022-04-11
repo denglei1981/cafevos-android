@@ -41,7 +41,7 @@ class OrderDetailsItemV2Adapter() :
 
             when (orderStatus) {
                 "WAIT_SEND", "WAIT_PAY" -> {
-                    tvSaleHandler.visibility = View.VISIBLE
+                    tvSaleHandler.visibility = View.GONE
                 }
                 "REFUNDING" -> {
                     tvSaleHandler.visibility = View.VISIBLE
