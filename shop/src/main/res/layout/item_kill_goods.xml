@@ -17,7 +17,7 @@
             app:yOffset="@dimen/dp_5"
             app:bgColor="@color/white"
             app:shadowRadius="@dimen/dp_5"
-            app:shadowColor="#122D384C"
+            app:shadowColor="#14949494"
             app:blurRadius="@dimen/dp_5"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
