@@ -661,7 +661,8 @@ data class OrderItemBean(
     var historyPackage:String?=null,
     var reviewEval:Boolean?=false,
     var canReview:String="NO",
-    var mallMallspuId:String=""
+    var mallMallspuId:String="",
+    var packageJump:PackageJumpBean?=null,
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
@@ -697,7 +698,10 @@ data class OrderItemBean(
         return rmbPrice?:"0"
     }
 }
-
+data class PackageJumpBean(
+    val jumpCode:Int=0,
+    val jumpVal:String?=null,
+)
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,
