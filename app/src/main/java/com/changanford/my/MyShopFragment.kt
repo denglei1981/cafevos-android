@@ -10,6 +10,7 @@ import com.changanford.common.utilext.load
 import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.databinding.ItemMyShopBinding
 import com.changanford.my.viewmodel.ActViewModel
+import com.changanford.shop.utils.WCommonUtil
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -114,7 +115,7 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
                 }
                 it.itemName.text = item.spuName
-                it.itemIntegral.text = "${item.normalFb}福币"
+                it.itemIntegral.text = WCommonUtil.getRMB(item.normalFb)
                 it.itemCollectNum.text = "${item.count}人收藏"
             }
             holder.itemView.setOnClickListener {

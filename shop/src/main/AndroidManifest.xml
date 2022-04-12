@@ -92,9 +92,12 @@
         <activity
             android:name=".ui.shoppingcart.MultiplePackageActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.sale.RefundLogisticsActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.sale.RefundLogisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.shoppingcart.request.NoLogisticsInfoActivity"
+            android:screenOrientation="portrait" />
         <!--================================= 商城 End-->
     </application>
 </manifest>

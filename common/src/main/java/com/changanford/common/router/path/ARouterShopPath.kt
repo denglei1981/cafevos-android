@@ -42,6 +42,8 @@ object ARouterShopPath {
     const val RefundProgressHasShopActivity = "/shop/RefundProgressHasShopActivity" // 退款进度  单个sku
 
     const val MultiplePackageActivity ="/shop/MultiplePackageActivity"
+
+    const val NoLogisticsInfoActivity="/shop/NoLogisticsInfoActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////
