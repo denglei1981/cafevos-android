@@ -26,7 +26,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.BuildConfig
 import com.changanford.shop.R
-import com.changanford.shop.adapter.goods.GoodsEvalutaeAdapter
+import com.changanford.shop.adapter.goods.GoodsEvaluationAdapter
 import com.changanford.shop.databinding.ActGoodsEvaluateBinding
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.gson.Gson
@@ -48,7 +48,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
             goodsInfo?.let { JumpUtils.instans?.jump(111,it) }
         }
     }
-    private val mAdapter by lazy { GoodsEvalutaeAdapter() }
+    private val mAdapter by lazy { GoodsEvaluationAdapter() }
     private var pageNo=1
     private var spuId:String="0"
     private var spuPageType:String?=null
@@ -81,17 +81,19 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
         }
     }
     override fun initData() {
+        viewModel.getGoodsEvalInfo(spuId)
         viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType)
         viewModel.commentLiveData.observe(this) {
             it?.apply {
-                if (1 == pageNo) mAdapter.setList(dataList)
-                else dataList?.let { it1 -> mAdapter.addData(it1) }
-                binding.model = this
+                //基础信息
+                if(type==1){
+                    binding.model = this
+                }else{
+                    if (1 == pageNo) mAdapter.setList(dataList)
+                    else if(dataList !=null)mAdapter.addData(dataList!!)
+                    binding.smartRl.setEnableLoadMore(mAdapter.data.size >= total)
+                }
             }
-            if (it?.dataList == null || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
-                false
-            )
-            else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.apply {
                 finishLoadMore()
                 finishRefresh()

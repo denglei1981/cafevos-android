@@ -26,7 +26,7 @@ import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
 import java.text.SimpleDateFormat
 
 
-class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
+class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
     private val anonymousUsers by lazy { context.getString(R.string.str_anonymousUsers) }
     private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context)-56)/3 }
     @SuppressLint("SimpleDateFormat")

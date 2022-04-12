@@ -3,8 +3,8 @@ package com.changanford.shop.api
 import com.changanford.common.bean.*
 import com.changanford.common.net.CommonResponse
 import com.changanford.shop.bean.InvoiceDetails
+import com.changanford.shop.bean.PackMainData
 import com.changanford.shop.bean.RefundProgressBean
-import com.changanford.shop.bean.*
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -59,11 +59,15 @@ interface ShopNetWorkApi {
     suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
 
     /**
+     *评价列表基础信息
+     * */
+    @POST("/mall/eval/info")
+    suspend fun goodsEvalInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+    /**
      *评价列表
      * */
     @POST("/mall/eval/list")
     suspend fun goodsEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
-
     /**
      *评价列表-维保
      * */

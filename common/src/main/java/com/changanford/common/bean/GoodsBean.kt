@@ -466,7 +466,8 @@ data class CommentBean(
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
-    val totalPage: Int = 0
+    val totalPage: Int = 0,
+    var type:Int=0,
 )
 /**
  * 评价

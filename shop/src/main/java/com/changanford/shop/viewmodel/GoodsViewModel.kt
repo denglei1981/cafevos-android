@@ -229,6 +229,24 @@ class GoodsViewModel: BaseViewModel() {
         }
     }
     /**
+     * 评价列表基础信息
+     * */
+    fun getGoodsEvalInfo(spuId:String){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["mallMallSpuId"]=spuId
+                val randomKey = getRandomKey()
+                shopApiService.goodsEvalInfo(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                it?.type=1
+                commentLiveData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        }
+    }
+    /**
      * 评价列表
      * [queryType] ALL  HAVE_IMG  REVIEWS  PRAISE NEGATIVE
      * */
@@ -251,7 +269,7 @@ class GoodsViewModel: BaseViewModel() {
             }.onSuccess {
                 commentLiveData.postValue(it)
             }.onWithMsgFailure {
-                commentLiveData.postValue(null)
+                it?.toast()
             }
         }
     }
