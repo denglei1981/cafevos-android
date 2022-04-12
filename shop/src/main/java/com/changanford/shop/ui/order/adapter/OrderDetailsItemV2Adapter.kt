@@ -41,7 +41,7 @@ class OrderDetailsItemV2Adapter() :
             recyclerView.adapter = goodsAttributeAdapter
 
             when (orderStatus) {
-                "WAIT_SEND", "WAIT_PAY" -> {
+                "WAIT_SEND", "WAIT_PAY","CLOSED" -> {
                     tvSaleHandler.visibility = View.GONE
                 }
                 "REFUNDING" -> {
