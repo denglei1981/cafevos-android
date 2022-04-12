@@ -74,12 +74,14 @@ class OrderEvaluationAdapter(val activity:Activity, private val reviewEval:Boole
             val rating=ratingBar.rating.toInt()
             tvContentLength.setText("${content.length}")
             postBean[position].apply {
-                selectPicArr[position].getImgPaths()
-                anonymous=if(checkBox.isChecked)"YES" else "NO"
-                evalScore=rating
                 evalText=content
-                updateStatus()
-                dataBinding.tvScore.text=getEvalText(context,rating)
+                if(!reviewEval){
+                    selectPicArr[position].getImgPaths()
+                    anonymous=if(checkBox.isChecked)"YES" else "NO"
+                    evalScore=rating
+                    dataBinding.tvScore.text=getEvalText(context,rating)
+                }
+                updateStatus(reviewEval)
             }
             postBeanLiveData.postValue(postBean)
         }

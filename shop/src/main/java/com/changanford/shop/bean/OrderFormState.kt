@@ -2,7 +2,6 @@ package com.changanford.shop.bean
 
 import android.content.Context
 import android.text.TextUtils
-import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.PictureUtil
 import com.changanford.shop.R
 import com.luck.picture.lib.entity.LocalMedia
@@ -25,7 +24,12 @@ data class OrderFormState(
 data class PostEvaluationListBean(
     var orderNo:String,//订单号
     var reviewEval:Boolean?=false,//是否追评
-    var orderSkuItems:List<OrderItemBean>?=null,//追评的列表 主要需要 skuImg、spuName
+    var orderSkuItems:List<EvaluationSkuItem>?=null,//追评的列表 主要需要 skuImg、spuName、mallOrderSkuId
+)
+data class EvaluationSkuItem(
+    var skuImg:String?=null,
+    var spuName:String?=null,
+    var mallOrderSkuId:String?=null,
 )
 /**
  * 发布评价
@@ -41,8 +45,8 @@ data class PostEvaluationBean(
     /**
      * 是否完成（评分、评价内容为必填项）
     * */
-    fun updateStatus():Boolean{
-        isComplete=!TextUtils.isEmpty(evalText)&&evalScore!=null&&evalScore!!>0
+    fun updateStatus(reviewEval:Boolean=false):Boolean{
+        isComplete=!TextUtils.isEmpty(evalText)&&(reviewEval||(evalScore!=null&&evalScore!!>0))
         return isComplete
     }
     fun getEvalText(context:Context,rating:Int=evalScore?:0): String {

@@ -2,14 +2,15 @@ package com.changanford.shop.ui.order
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
-import com.changanford.shop.bean.PostEvaluationListBean
 import com.changanford.shop.databinding.ActPostEvaluationBinding
 import com.changanford.shop.listener.UploadPicCallback
 import com.changanford.shop.viewmodel.OrderViewModel
@@ -32,7 +33,12 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         fun start(orderNo:String) {
             JumpUtils.instans?.jump(112,orderNo)
         }
-        fun start(item:PostEvaluationListBean) {
+        /**
+         * [reviewEval]是否追评
+         *  "{\"orderNo\": \"M0565984864114180096\",\"skuList\":[{\"skuImg\":\"pg\",\"mallOrderSkuId\":104,\"mallMallspuId\":1292,\"spuName\": \"石头\"}],\"reviewEval\": false}"
+        * */
+        fun start(reviewEval:Boolean,item:OrderItemBean) {
+            item.reviewEval=reviewEval
             JumpUtils.instans?.jump(112,Gson().toJson(item))
         }
     }
@@ -63,11 +69,12 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
 
     override fun initData() {
         intent.getStringExtra("info")?.apply {
+            "订单评价：${this}".wLogE("okhttp")
             if(this.startsWith("{")){
-                Gson().fromJson(this,PostEvaluationListBean::class.java).let {
+                Gson().fromJson(this,OrderItemBean::class.java).let {
                     orderNo=it.orderNo
                     reviewEval=it.reviewEval?:false
-//                    if(reviewEval&&)viewModel.orderItemLiveData.postValue()
+                    if(reviewEval)viewModel.orderItemLiveData.postValue(it)
                 }
             }else {
                 orderNo=this
