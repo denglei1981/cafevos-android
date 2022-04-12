@@ -93,12 +93,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_18"
-            app:layout_constraintTop_toBottomOf="@+id/tv_freight"
             android:text="优惠券"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_13"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tv_freight" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_coupon_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_coupon_tips"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_coupon_tips"
+            app:start_txt="@string/str_rmb" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gr_coupon"
@@ -107,44 +117,36 @@
             app:constraint_referenced_ids="tv_coupon_tips,tv_coupon_money"
 
             />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_haggle_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_haggle_tips"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_haggle_tips"
-            app:start_txt="@string/str_rmb" />
+            app:layout_constraintTop_toTopOf="@+id/tv_haggle_tips"
+            app:start_txt="@string/str_rmb"
+            tools:text="20" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_haggle_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_18"
-            app:layout_constraintTop_toBottomOf="@+id/tv_coupon_tips"
             android:text="砍价优惠"
             android:textColor="@color/text_colorv6"
             android:textSize="@dimen/sp_13"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tv_coupon_tips" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gr_haggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="tv_haggle_money,tv_haggle_tips"
-            />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_coupon_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_haggle_tips"
-            app:start_txt="@string/str_rmb" />
+            app:constraint_referenced_ids="tv_haggle_money,tv_haggle_tips" />
 
 
         <com.changanford.shop.view.TypefaceTextView
@@ -155,6 +157,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_coupon_money" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_haggle_money" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
