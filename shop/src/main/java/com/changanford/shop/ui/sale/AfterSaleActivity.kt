@@ -46,13 +46,13 @@ class AfterSaleActivity : BaseActivity<ActivityAfterSaleBinding, BaseViewModel>(
              orderItemBean.singleRefundType="ONLY_COST"
             val gson =Gson()
             val toJson = gson.toJson(orderItemBean)
-            JumpUtils.instans?.jump(126,toJson)
+            JumpUtils.instans?.jump(125,toJson)
         }
         binding.tvMoneyShop.setOnClickListener {
             orderItemBean.singleRefundType="CONTAIN_GOODS"
             val gson =Gson()
             val toJson = gson.toJson(orderItemBean)
-            JumpUtils.instans?.jump(126,toJson)
+            JumpUtils.instans?.jump(125,toJson)
         }
     }
 

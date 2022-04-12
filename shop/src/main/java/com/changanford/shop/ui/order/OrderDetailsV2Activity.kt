@@ -85,12 +85,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //        }
         binding.rvShopping.adapter = orderDetailsItemV2Adapter
 
-        orderDetailsItemV2Adapter.setOnItemClickListener(object : OnItemClickListener{
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val orderItem= orderDetailsItemV2Adapter.getItem(position = position)
-                GoodsDetailsActivity.start(orderItem.mallMallspuId)
-            }
-        })
+//        orderDetailsItemV2Adapter.setOnItemClickListener(object : OnItemClickListener{
+//            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+//
+//            }
+//        })
 
     }
 

@@ -20,11 +20,14 @@ import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartInvaildAdapter
 import com.changanford.shop.ui.shoppingcart.request.ShoppingCartViewModel
 import com.changanford.shop.utils.WCommonUtil
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import java.math.BigDecimal
 
 @Route(path = ARouterShopPath.ShoppingCartActivity)
 @SuppressLint("SetTextI18n")
-class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingCartViewModel>() {
+class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingCartViewModel>(),
+    OnRefreshListener {
 
     val shoppingCartAdapter: ShoppingCartAdapter by lazy {
         ShoppingCartAdapter(this, object : ShoppingCartAdapter.ShopBackListener {
@@ -71,14 +74,15 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 "完成" -> {
                     shoppingEdit = false
                     binding.layoutTop.tvRight.text = "编辑"
-                    if (shoppingCartAdapter.shopList.size > 0) {
-                        binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
-                        binding.tvOver.isSelected = true
-                    } else {
-                        binding.tvOver.text = "结算"
-                        binding.tvOver.isSelected = false
-                    }
-                    binding.tvBalance.visibility = View.VISIBLE
+                    getOver()
+//                    if (shoppingCartAdapter.shopList.size > 0) {
+//                        binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
+//                        binding.tvOver.isSelected = true
+//                    } else {
+//                        binding.tvOver.text = "结算"
+//                        binding.tvOver.isSelected = false
+//                    }
+//                    binding.tvBalance.visibility = View.VISIBLE
                 }
             }
 
@@ -88,11 +92,13 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
 
     override fun initData() {
         viewModel.getShoppingCartList()
+        binding.smartLayout.setOnRefreshListener(this)
         binding.checkStatus.setOnCheckedChangeListener { buttonView, isChecked ->
             allCheck(isCheck = isChecked)
         }
-
-
+        binding.layoutEmpty.tvEmpty.setOnClickListener {
+            this.finish()
+        }
         binding.tvOver.setOnClickListener {
             // 跳转到结算
             val menuTxt = binding.tvOver.text
@@ -141,13 +147,21 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
 
     override fun observe() {
         super.observe()
+        viewModel.emptyLiveData.observe(this, Observer {
+            if (it) {
+                binding.layoutEmpty.conEmpty.visibility = View.VISIBLE
+            } else {
+                binding.layoutEmpty.conEmpty.visibility = View.GONE
+            }
+        })
         viewModel.goodsListLiveData.observe(this, Observer {
+            binding.smartLayout.finishRefresh()
             it.forEach {
                 shoppingCartAdapter.checkMap[it.mallMallUserSkuId] = false
             }
 
-                setTvTitle(it.size)
-                setTitle()
+            setTvTitle(it.size)
+            setTitle()
 
             shoppingCartAdapter.setList(it)
         })
@@ -188,12 +202,27 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
 
 
     fun setTvTitle(count: Int) {
-        if(count>0){
-            binding.layoutTop.tvTitle.text = "购物车(${count})"
-        }else{
-            binding.layoutTop.tvTitle.text = "购物车"
-        }
 
+        binding.layoutTop.tvTitle.text = "购物车(${count})"
+
+
+    }
+
+    fun getOver() {
+        binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
+        binding.tvOver.isSelected = true
+        var totalFbPrice: BigDecimal = BigDecimal(0)
+        shoppingCartAdapter.shopList.forEach {
+            val bb = BigDecimal(it.fbPer)
+            val buyNum = it.num
+            buyNum?.let {
+                val thisPrice = bb.multiply(BigDecimal(it))
+                totalFbPrice = totalFbPrice.add(thisPrice)
+            }
+        }
+        binding.tvBalance.visibility = View.VISIBLE
+        binding.tvBalance.text =
+            "合计 ￥(${WCommonUtil.getRMBBigDecimal(totalFbPrice.toString())})"
     }
 
     fun setTitle() {
@@ -204,22 +233,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 binding.tvBalance.visibility = View.GONE
             } else {
                 // 加入所有的商品
-                binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
-                binding.tvOver.isSelected = true
-                var totalFbPrice: BigDecimal = BigDecimal(0)
-                shoppingCartAdapter.shopList.forEach {
-                    val bb = BigDecimal(it.fbPer)
-                    val buyNum = it.num
-                    buyNum?.let {
-                        val thisPrice = bb.multiply(BigDecimal(it))
-                        totalFbPrice = totalFbPrice.add(thisPrice)
-                    }
-
-
-                }
-                binding.tvBalance.visibility = View.VISIBLE
-                binding.tvBalance.text =
-                    "合计 ￥(${WCommonUtil.getRMBBigDecimal(totalFbPrice.toString())})"
+                getOver()
             }
 
         } else {
@@ -267,5 +281,10 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
         }
 
 
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        shoppingCartAdapter.shopList.clear()
+        viewModel.getShoppingCartList()
     }
 }

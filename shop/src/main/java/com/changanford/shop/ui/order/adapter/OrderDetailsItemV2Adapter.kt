@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.InItemOrderGoodsV2Binding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
 import com.changanford.shop.utils.WCommonUtil
 import com.google.gson.Gson
@@ -69,6 +70,9 @@ class OrderDetailsItemV2Adapter() :
                         tvSaleHandler.text = "退款关闭"
                     }
                 }
+            }
+            imgGoodsCover.setOnClickListener {
+                GoodsDetailsActivity.start(item.mallMallspuId)
             }
 
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品
