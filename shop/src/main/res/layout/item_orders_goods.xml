@@ -100,22 +100,22 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
         <View
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_15"
             android:visibility="invisible"
             android:id="@+id/view_n"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0_1"
             android:layout_height="@dimen/dp_30" />
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginEnd="@dimen/dp_20"
             style="?android:attr/borderlessButtonStyle"
             tools:visibility="visible"
             android:visibility="invisible"
             android:id="@+id/btn_confirm"
+            android:layout_marginEnd="@dimen/dp_5"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/view_n"
             app:layout_constraintTop_toTopOf="@+id/view_n"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_00095b_15dp"

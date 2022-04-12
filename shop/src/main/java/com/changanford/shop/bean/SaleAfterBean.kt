@@ -7,11 +7,11 @@ data class SaleAfterBean(val id: Int, val name: String, val isSelected: Boolean)
 
 data class InvoiceInfo(
     var addressInfo: String = "",
-    var addressId: String,
-    val mallMallOrderId: String,
-    val mallMallOrderNo: String,
-    val invoiceRmb: String,
-    var userName: String,
+    var addressId: String= "",
+    val mallMallOrderId: String= "",
+    val mallMallOrderNo: String= "",
+    val invoiceRmb: String= "",
+    var userName: String= "",
     var phone: String= "",
     var userInfo: String = "",
 )
