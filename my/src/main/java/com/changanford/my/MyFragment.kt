@@ -20,6 +20,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MedalAdapter
@@ -28,6 +29,7 @@ import com.changanford.my.adapter.MyFastInAdapter
 import com.changanford.my.bean.MyFastInData
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -57,6 +59,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
         myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
         myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
+
+        val gson= Gson()
+        gson.toJson(myFastInAdapter.data).logE()
+
+
         binding.fastIn.adapter = myFastInAdapter
         binding.menuRec.isSaveEnabled = false
         binding.menuRec.adapter = menuAdapter

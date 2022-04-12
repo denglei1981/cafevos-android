@@ -631,7 +631,6 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             JumpUtils.instans?.jump(121, refundJson)
         }
     }
-
     // 物流状态
     fun showExpress(localDataBean: OrderItemBean, needShow: Boolean) {
         if (needShow) {
@@ -643,7 +642,14 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inSaleBottom.btnOrderExpress.setOnClickListener {
             localDataBean.historyPackage?.let {hs->
                 if(hs=="NO"){
-                    MultiplePackageActivity.start(localDataBean.orderNo)
+                    if(localDataBean.packageJump==null){
+                        MultiplePackageActivity.start(localDataBean.orderNo)
+                    }else{
+                        localDataBean.packageJump?.apply {
+                            JumpUtils.instans?.jump(jumpCode,jumpVal)
+                        }
+                    }
+
                 }else{
                     startActivity(Intent(this@OrderDetailsV2Activity,NoLogisticsInfoActivity::class.java))
                 }
