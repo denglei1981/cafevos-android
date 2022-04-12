@@ -1,6 +1,5 @@
 package com.changanford.shop.bean
 
-import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.RefundOrderItemBean
 
 data class SaleAfterBean(val id: Int, val name: String, val isSelected: Boolean) {
@@ -13,7 +12,7 @@ data class InvoiceInfo(
     val mallMallOrderNo: String,
     val invoiceRmb: String,
     var userName: String,
-    var phone: String,
+    var phone: String= "",
     var userInfo: String = "",
 )
 

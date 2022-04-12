@@ -47,7 +47,6 @@
             tools:text="1600"
             android:text="@{model.fbPrice}"
             android:drawablePadding="@dimen/dp_3"
-            app:end_txt="@string/str_integral"
             android:textStyle="bold"
             android:drawableStart="@mipmap/ic_shop_fb_42"
             android:textColor="@color/colorWhite"

@@ -217,7 +217,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 0,1->{
                     if(invoiced=="NOT_BEGIN"){
                         val invoiceInfo = InvoiceInfo(
-                            addressInfo, addressId.toString(),
+                            addressInfo, "$addressId",
                             mallMallOrderId?:"0", orderNo, getRMBExtendsUnit(),
                             orderReceiveAddress.consignee,
                             orderReceiveAddress.phone

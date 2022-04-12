@@ -705,8 +705,8 @@ data class PackageJumpBean(
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,
-    var phone: String,
-    var consignee: String
+    var phone: String="",
+    var consignee: String=""
     /**用户名字*/
 ) {
     fun getUserInfo(): String {
