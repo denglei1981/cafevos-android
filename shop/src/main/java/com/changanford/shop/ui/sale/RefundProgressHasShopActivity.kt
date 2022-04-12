@@ -10,6 +10,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.PayShowBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
@@ -26,6 +28,13 @@ import com.changanford.shop.view.TopBar
 @Route(path = ARouterShopPath.RefundProgressHasShopActivity)
 class RefundProgressHasShopActivity :
     BaseActivity<ActivityRefundProgressBinding, RefundViewModel>() {
+
+
+    companion object{
+        fun start(mallOrderSkuId:String){
+           JumpUtils.instans?.jump(126,mallOrderSkuId)
+        }
+    }
     val refundProgressAdapter: RefundProgressAdapter by lazy {
         RefundProgressAdapter(viewModel)
     }
