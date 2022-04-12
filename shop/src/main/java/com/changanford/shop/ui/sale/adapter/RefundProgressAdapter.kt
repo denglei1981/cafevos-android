@@ -29,8 +29,7 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
             tvShoperTips.text=item.operationDesc
             baseViewModel.StatusEnum("MallRefundDetailStatusEnum",item.refundDetailStatus,tvShoperStates)
             baseViewModel.StatusEnum("MallRefundStatusEnum",item.refundStauts,tvRefundStates)
-
-            if(refundStatus==item.refundStauts){
+            if(holder.absoluteAdapterPosition==0){
                 tvRefundStates.setTextColor(ContextCompat.getColor(context,R.color.black))
                 tvShoperStates.setTextColor(ContextCompat.getColor(context,R.color.black))
                 tvShoperTips.setTextColor(ContextCompat.getColor(context,R.color.black))
@@ -43,7 +42,6 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
                 tvTime.setTextColor(ContextCompat.getColor(context,R.color.gray_999999))
                 ivRight.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.icon_shopping_line_uncheck))
             }
-
         }
 
     }

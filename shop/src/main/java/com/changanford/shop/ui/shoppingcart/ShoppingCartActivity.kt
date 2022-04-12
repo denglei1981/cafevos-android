@@ -117,7 +117,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                     shoppingCartAdapter.shopList.forEach {
                         mallUserSkuIds.add(it.mallMallUserSkuId.toString())
                     }
-                    viewModel.deleteCartShopping(mallUserSkuIds)
+                    viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds)
                 }
             }
         }
@@ -129,7 +129,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             shoppingCartInvaildAdapter.data.forEach {
                 mallUserSkuIds.add(it.mallMallUserSkuId.toString())
             }
-            viewModel.deleteCartShopping(mallUserSkuIds = mallUserSkuIds)
+            viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds = mallUserSkuIds,false)
         }
         shoppingCartInvaildAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
             override fun onItemChildClick(
@@ -139,7 +139,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             ) { // 一条一条删除
                 val mallUserSkuIds: ArrayList<String> = arrayListOf()
                 mallUserSkuIds.add(shoppingCartInvaildAdapter.getItem(position = position).mallMallUserSkuId.toString())
-                viewModel.deleteCartShopping(mallUserSkuIds = mallUserSkuIds)
+                viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds = mallUserSkuIds)
             }
         })
 

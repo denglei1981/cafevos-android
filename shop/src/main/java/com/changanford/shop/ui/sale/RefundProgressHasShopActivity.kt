@@ -21,20 +21,23 @@ import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
 import com.changanford.shop.view.TopBar
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *  申请退款  已发货， 仅退款 ，退款退货
  * */
 @Route(path = ARouterShopPath.RefundProgressHasShopActivity)
 class RefundProgressHasShopActivity :
-    BaseActivity<ActivityRefundProgressBinding, RefundViewModel>() {
+    BaseActivity<ActivityRefundProgressBinding, RefundViewModel>(), OnRefreshListener {
 
 
-    companion object{
-        fun start(mallOrderSkuId:String){
-           JumpUtils.instans?.jump(126,mallOrderSkuId)
+    companion object {
+        fun start(mallOrderSkuId: String) {
+            JumpUtils.instans?.jump(126, mallOrderSkuId)
         }
     }
+
     val refundProgressAdapter: RefundProgressAdapter by lazy {
         RefundProgressAdapter(viewModel)
     }
@@ -52,12 +55,14 @@ class RefundProgressHasShopActivity :
         binding.tobBar.setTitle("仅退款")
         binding.recyclerView.adapter = refundProgressAdapter
         binding.smartLayout.setEnableLoadMore(false)
+        binding.smartLayout.setOnRefreshListener(this)
     }
 
+    var mallMallOrderSkuId: String? = ""
     override fun initData() {
-        val mallMallOrderSkuId = intent.getStringExtra("value")
+        mallMallOrderSkuId = intent.getStringExtra("value")
         if (mallMallOrderSkuId != null) {
-            viewModel.getRefundProgress("", mallMallOrderSkuId)
+            viewModel.getRefundProgress("", mallMallOrderSkuId!!)
             addHeadView()
             addFooterView()
         }
@@ -66,9 +71,11 @@ class RefundProgressHasShopActivity :
     override fun observe() {
         super.observe()
         viewModel.refundProgressLiveData.observe(this, Observer {
+            binding.smartLayout.finishRefresh()
             refundProgressAdapter.refundStatus = it.refundStatus // 当前状态
             refundProgressAdapter.setNewInstance(it.refundList)
             showFooterAndHeader(it)
+
         })
         viewModel.cancelRefundLiveData.observe(this, Observer {
             // 撤销退款申请成功
@@ -97,11 +104,11 @@ class RefundProgressHasShopActivity :
         }
         footerBinding?.let { ft ->
             ft.layoutRefundInfo.tvReasonNum.text = refundProgressBean.refundNo
-            viewModel.StatusEnum(
-                "MallRefundMethodEnum",
-                refundProgressBean.refundMethod,
-                ft.layoutRefundInfo.tvRefundType
-            )
+//            viewModel.StatusEnum(
+//                "MallRefundMethodEnum",
+//                refundProgressBean.refundMethod,
+//                ft.layoutRefundInfo.tvRefundType
+//            )
             viewModel.StatusEnum(
                 "MallRefundReasonEnum",
                 refundProgressBean.refundReason,
@@ -116,6 +123,7 @@ class RefundProgressHasShopActivity :
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
                     ft.tvHandle.visibility = View.VISIBLE
+                    ft.tvInputOrder.visibility = View.VISIBLE
                     ft.tvHandle.text = "撤销退款申请"
                     ft.tvHandle.setOnClickListener {
                         // 撤销退款申请
@@ -130,10 +138,10 @@ class RefundProgressHasShopActivity :
                             RefundLogisticsActivity::class.java
                         )
                         startActivity(intent)
-
                     }
                 }
                 else -> {
+                    ft.tvInputOrder.visibility = View.GONE
                     ft.tvHandle.visibility = View.GONE
                 }
             }
@@ -153,6 +161,20 @@ class RefundProgressHasShopActivity :
             }
             ft.layoutRefundInfo.tvContent.text = refundProgressBean.refundDescText
 
+
+            when (refundProgressBean.refundMethod) {
+                "ONLY_COST" -> { // 仅退款
+                    binding.tobBar.setTitle("仅退款")
+                    ft.tvInputOrder.visibility = View.GONE
+                    ft.layoutRefundInfo.tvRefundType.text = "仅退款"
+                }
+                "CONTAIN_GOODS" -> {
+                    binding.tobBar.setTitle("退款进度")
+                    ft.tvInputOrder.visibility = View.VISIBLE
+                    ft.layoutRefundInfo.tvRefundType.text = "退货退款"
+                }
+
+            }
         }
     }
 
@@ -183,6 +205,13 @@ class RefundProgressHasShopActivity :
             footerBinding?.let {
                 refundProgressAdapter.addFooterView(it.root)
             }
+        }
+
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        mallMallOrderSkuId?.let {
+            viewModel.getRefundProgress("", it)
         }
 
     }

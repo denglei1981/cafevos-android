@@ -1049,16 +1049,17 @@ data class RefundOrderItemBean(
     var sharedFb: String,
     var sharedRmb: String,
     var orderNo: String,
-    var refundType:String
+    var refundType:String,
+    var refundNum:String
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {
-            return specifications!!.split(",").filter { "" != it }
+            return specifications.split(",").filter { "" != it }
         }
         return arrayListOf()
     }
 
     fun getSaleNum(): String {
-        return "申请数量: ".plus(buyNum)
+        return "申请数量: ".plus(refundNum)
     }
 }
