@@ -202,4 +202,38 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             })
         }
     }
+    /**
+     * 订单列表按钮操作
+     * [type]
+    * */
+    fun orderListBtnClick(type:Int,item: OrderItemBean){
+        item.apply {
+            when(type){
+                //申请发票
+                0->{
+
+                }
+                //查看发票
+                1->{
+
+                }
+                //查看物流
+                2->{
+
+                }
+                //申请售后
+                3->{
+
+                }
+                //申请退款
+                4->{
+
+                }
+                //售后详情
+                5->{
+
+                }
+            }
+        }
+    }
 }
