@@ -47,7 +47,7 @@
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"
             android:id="@+id/tv_goodsTitle"
-            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_10"
             tools:text="TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle"
             style="@style/style_txt_ellipsize"
             android:text="@{model.spuName}"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_txt_ellipsize"
@@ -67,10 +67,10 @@
             android:id="@+id/in_vip"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             layout="@layout/in_goods_vip"/>
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.changanford.shop.view.TypefaceTextView
