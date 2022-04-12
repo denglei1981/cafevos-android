@@ -33,6 +33,7 @@ import com.changanford.shop.databinding.ActivityRefundLogisticsBinding
 import com.changanford.shop.databinding.BaseRecyclerViewBinding
 import com.changanford.shop.ui.sale.adapter.RefundApplyPicAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
+import com.changanford.shop.view.TopBar
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -163,8 +164,12 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
             if (canHandle()) {
                 addApply()
             }
-
         }
+        binding.layoutTop.setOnBackClickListener(object :TopBar.OnBackClickListener{
+            override fun onBackClick() {
+                onBackPressed()
+            }
+        })
     }
 
     private fun canHandle(): Boolean {
@@ -181,7 +186,7 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
             return false
         }
 
-        return true;
+        return true
     }
 
     override fun observe() {

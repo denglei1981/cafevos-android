@@ -13,10 +13,11 @@
         android:background="@color/color_F4">
 
 
-        <include
+        <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
-            layout="@layout/layout_top_shopping"
+            app:title_text="填写物流"
             android:layout_width="0dp"
+            android:background="@color/white"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +40,7 @@
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_20"
                 android:text="物流公司"
+                android:background="@null"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +54,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:gravity="center_vertical|end"
+                android:background="@null"
                 android:maxLines="1"
                 android:maxLength="30"
                 android:hint="请填写"
@@ -84,6 +87,7 @@
                 android:layout_marginEnd="@dimen/dp_20"
                 android:gravity="center_vertical|end"
                 android:hint="请填写"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_logistics_num_tips"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_logistics_num_tips"

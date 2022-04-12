@@ -17,6 +17,8 @@ class ShoppingCartViewModel : BaseViewModel() {
     var goodsInvaildListLiveData: MutableLiveData<MutableList<GoodsDetailBean>> = MutableLiveData() // 失效商品
     var deleteShoppingCar: MutableLiveData<String> = MutableLiveData()
 
+    var emptyLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
     fun getShoppingCartList() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -24,9 +26,7 @@ class ShoppingCartViewModel : BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>()
                 .getShoppingCartList(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    if (it != null) {
                         showGoodList(it)
-                    }
                 }
                 .onWithMsgFailure {
                     it?.toast()
@@ -34,10 +34,15 @@ class ShoppingCartViewModel : BaseViewModel() {
         })
     }
 
-    fun showGoodList(goodList: MutableList<GoodsDetailBean>) {
+    fun showGoodList(goodList: MutableList<GoodsDetailBean>?) {
+        if(goodList==null||goodList.size<=0){
+            emptyLiveData.postValue(true)
+        }else{
+            emptyLiveData.postValue(false)
+        }
         val canBuyGoodList: MutableList<GoodsDetailBean> = mutableListOf()
         val invaildGoodList: MutableList<GoodsDetailBean> = mutableListOf()
-        goodList.forEach {
+        goodList?.forEach {
             if (it.mallSkuState == "0" && it.stock ==0) {
                 invaildGoodList.add(it)
             } else {

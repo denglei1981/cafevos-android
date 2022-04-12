@@ -713,9 +713,6 @@ class JumpUtils {
                 // 整单退退款进度 start 已实现
                 startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
             }
-//            125 -> { // 发货了，选一下退货还是退款
-//                startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
-//            }
             125 -> { // 申请单个退货退款
                 startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
             }

@@ -57,6 +57,7 @@ class ShoppingCartAdapter(
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
+            addSubtractView.setMax(item.stock,true)
             item.num?.let { n ->
                 addSubtractView.setNumber(n, false)
                 if (n > 1) {
@@ -90,6 +91,12 @@ class ShoppingCartAdapter(
                                     } else {
                                         addSubtractView.setReduceAddGrayOrBlack(false)
                                     }
+                                    if (n >= item.stock) { // 库存不足
+                                        addSubtractView.setAddGrayOrBlack(false)
+                                    } else {
+                                        addSubtractView.setAddGrayOrBlack(true)
+                                    }
+
                                 }
 
                             }
