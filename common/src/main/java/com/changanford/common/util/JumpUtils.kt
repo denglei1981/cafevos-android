@@ -686,7 +686,7 @@ class JumpUtils {
             119 -> { // 购物车
                 startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
             }
-            120 -> { // 申请发票
+            120 -> { // 申请发票  start 已实现
                 startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
             121 -> {// 申请退款--- 未发货
@@ -706,11 +706,11 @@ class JumpUtils {
                     GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
                 getCoupopPop.showPopupWindow()
             }
-            123 -> { // 查看发票详情
+            123 -> { // 查看发票详情 start 已实现
                 startARouter(ARouterShopPath.InvoiceLookActivity, bundle, true)
             }
             124 -> {
-                // 整单退退款进度
+                // 整单退退款进度 start 已实现
                 startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
             }
 //            125 -> { // 发货了，选一下退货还是退款
@@ -719,10 +719,10 @@ class JumpUtils {
             125 -> { // 申请单个退货退款
                 startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
             }
-            126 -> {// 单个sku 退款进度
+            126 -> {// 单个sku 退款进度  start 已实现
                 startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
             }
-            127 -> { // 多包裹信息
+            127 -> { // 多包裹信息  start 已实现
                 startARouter(ARouterShopPath.MultiplePackageActivity, bundle, true)
             }
             10000 -> {
