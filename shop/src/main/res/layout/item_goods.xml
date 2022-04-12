@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_txt_ellipsize"
@@ -92,7 +92,6 @@
                 android:textSize="@dimen/sp_11" />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <com.changanford.common.ui.view.WTextView
-            android:layout_marginTop="@dimen/dp_5"
             android:id="@+id/tv_sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
