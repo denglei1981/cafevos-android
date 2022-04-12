@@ -183,8 +183,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
             binding.authStatusLayout.authReason.visibility = View.GONE
             when (carItemBean.authStatus) {
                 1, 2 -> {//审核中
-                    binding.authStatusLayout.authStatus.text =
-                        if (carItemBean.authStatus == 2) "换绑审核中" else "审核中"
+                    binding.authStatusLayout.authStatus.text =  "审核中"
+//                    binding.authStatusLayout.authStatus.text = if (carItemBean.authStatus == 2) "换绑审核中" else "审核中"
                     binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
                     binding.checkLayout.visibility = View.GONE
                     isClick = false

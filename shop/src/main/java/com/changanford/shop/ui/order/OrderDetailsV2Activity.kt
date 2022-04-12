@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
@@ -33,6 +34,7 @@ import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
 import com.changanford.shop.ui.sale.adapter.OrderSaleStateAdapter
 import com.changanford.shop.ui.shoppingcart.MultiplePackageActivity
@@ -83,6 +85,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //        }
         binding.rvShopping.adapter = orderDetailsItemV2Adapter
 
+        orderDetailsItemV2Adapter.setOnItemClickListener(object : OnItemClickListener{
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val orderItem= orderDetailsItemV2Adapter.getItem(position = position)
+                GoodsDetailsActivity.start(orderItem.mallMallspuId)
+            }
+        })
 
     }
 
@@ -214,6 +222,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         View.INVISIBLE
                     showExpress(dataBean,true)
                     showComment(dataBean,true) // 展示追评
+                    showInvoiceState(dataBean)
+                    BottomBShow()
                 }
                 "售后已处理" -> {
                     totalPayName = R.string.str_realPayTotalAmount
@@ -234,9 +244,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 "已关闭" -> {
                     binding.inOrderInfo.layoutOrderClose.visibility = View.GONE
                     binding.tvOrderRemainingTime.text = dataBean.evalStatusDetail
-                    binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
-                    if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility =
-                        View.INVISIBLE
+                    if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility = View.INVISIBLE
+                    BottomGon()
                 }
             }
         }
@@ -322,6 +331,20 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 binding.inGoodsInfo1.grCoupon.visibility = View.GONE
             }
         }
+    }
+
+
+    fun showBuyAgain(){
+        binding.inSaleBottom.btnOrderBuyAgain.visibility=View.VISIBLE
+        binding.inSaleBottom.btnOrderBuyAgain.setOnClickListener {
+
+
+        }
+        binding.inSaleBottom.btnOrderComment.visibility=View.GONE
+        binding.inSaleBottom.btnOrderExpress.visibility=View.GONE
+        binding.inSaleBottom.btnOrderInvoice.visibility=View.GONE
+
+
     }
 
     // 订单状态相关展示
@@ -638,18 +661,22 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     // 评价
     fun showComment(localDataBean: OrderItemBean,isNextComment:Boolean) {
         if(isNextComment){
-            binding.inSaleBottom.btnOrderComment.text = "追加评价"
-            binding.inSaleBottom.btnOrderComment.isSelected = false
+            if(localDataBean.canReview=="YES"){
+                binding.inSaleBottom.btnOrderComment.text = "追加评价"
+                binding.inSaleBottom.btnOrderComment.isSelected = false
+            }
         }else{
             binding.inSaleBottom.btnOrderComment.text = "评价"
             binding.inSaleBottom.btnOrderComment.isSelected = true
         }
-
         binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
         binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
         binding.inSaleBottom.btnOrderComment.setOnClickListener {
-
-            PostEvaluationActivity.start(localDataBean.orderNo)
+             if(localDataBean.canReview=="YES"){
+                 PostEvaluationActivity.start(true,localDataBean)
+             }else{
+                 PostEvaluationActivity.start(localDataBean.orderNo)
+             }
         }
     }
 

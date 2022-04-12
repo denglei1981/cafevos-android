@@ -75,7 +75,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
     override fun observe() {
         super.observe()
         viewModel.refundorderItemLiveData.observe(this, Observer {
-            refundBean =RefundBean(it.orderNo,it.payRmb,it.payFb,"allOrderRefund")
+            refundBean =RefundBean(it.orderNo,it.payFb,it.payRmb,"allOrderRefund")
             showTotalTag(binding.tvRefundMoney, refundBean!!)
         })
     }
