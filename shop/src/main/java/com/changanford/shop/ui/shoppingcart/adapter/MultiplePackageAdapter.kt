@@ -1,10 +1,12 @@
 package com.changanford.shop.ui.shoppingcart.adapter
 
+import android.text.TextUtils
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.bean.CouponData
 import com.changanford.shop.bean.LogisticsItems
@@ -26,6 +28,11 @@ class MultiplePackageAdapter() :
             db.tvPackageState.text = item.pakage.status
             db.tvMoreInfo.text = item.pakage.context
             db.tvPackageName.text = "包裹".plus(holder.layoutPosition + 1)
+            db.tvMore.setOnClickListener {
+                if (!TextUtils.isEmpty(item.jumpDataType)) {
+                    JumpUtils.instans?.jump(item.jumpDataType!!.toInt(), item.jumpDataValue)
+                }
+            }
         }
     }
 

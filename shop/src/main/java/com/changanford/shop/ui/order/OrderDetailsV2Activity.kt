@@ -599,12 +599,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                                 localDataBean.orderReceiveAddress.consignee,
                                 localDataBean.orderReceiveAddress.phone
                             )
-                            val gson = Gson()
-                            val invoiceStr = gson.toJson(invoiceInfo)
-                            invoiceStr.logE()
-                            JumpUtils.instans?.jump(120, invoiceStr)
-
-
+                            InvoiceActivity.start(invoiceInfo)
                         }
                     }
                 }

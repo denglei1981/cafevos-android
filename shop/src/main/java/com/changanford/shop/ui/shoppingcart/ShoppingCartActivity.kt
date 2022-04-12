@@ -145,10 +145,10 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             it.forEach {
                 shoppingCartAdapter.checkMap[it.mallMallUserSkuId] = false
             }
-            if (it.size > 0) {
-                setTvTitle(it.size.toString())
+
+                setTvTitle(it.size)
                 setTitle()
-            }
+
             shoppingCartAdapter.setList(it)
         })
         viewModel.goodsInvaildListLiveData.observe(this, Observer {
@@ -187,8 +187,13 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
     }
 
 
-    fun setTvTitle(count: String) {
-        binding.layoutTop.tvTitle.text = "购物车(${count})"
+    fun setTvTitle(count: Int) {
+        if(count>0){
+            binding.layoutTop.tvTitle.text = "购物车(${count})"
+        }else{
+            binding.layoutTop.tvTitle.text = "购物车"
+        }
+
     }
 
     fun setTitle() {

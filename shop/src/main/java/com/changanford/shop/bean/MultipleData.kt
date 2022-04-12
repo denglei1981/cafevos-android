@@ -25,7 +25,7 @@ data class PackageSkuBean(
     val spuName: String
 )
 
-data class  LogisticsItems(var pakage: PackageInfo,var pakageOrderSkus:MutableList<PackageSkuBean>)
+data class  LogisticsItems(var pakage: PackageInfo,var pakageOrderSkus:MutableList<PackageSkuBean>,var jumpDataType:String?="",var jumpDataValue:String?="")
 data class  PackMainData(var logisticsItems:MutableList<LogisticsItems>,var noSendSkuDTOs:MutableList<NoSendSkuData>?= mutableListOf())
 
 data class NoSendSkuData(
