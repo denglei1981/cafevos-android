@@ -247,7 +247,8 @@ data class ConfirmOrderBean(
     var totalBuyNum: Int = 0,//总购买数量
     var addressInfo: String? = null,
     var addressId: Int? = null,
-    var totalOriginalFb: Int? = null,//总价
+    var totalOriginalFb: Int = 0,//原总价
+    var totalFb: Int = 0,//现总价
     var freightPrice: String? = "0.00",//运费
     var vinCode: String? = null,//维保商品 VIN码
     var models: String? = null,//车型
@@ -263,7 +264,7 @@ data class ConfirmOrderBean(
     fun getTotalPayFbPrice(couponsFb: String, isFb: Boolean = false): Int {
         val multiple = if (isFb) 1 else 100
         totalPayFbPrice = WCommonUtil.getHeatNumUP(
-            "${(totalOriginalFb ?: 0) + ((freightPrice ?: "0").toFloat() * 100) - (couponsFb.toFloat() * multiple)}",
+            "${(totalFb ?: 0) + ((freightPrice ?: "0").toFloat() * 100) - (couponsFb.toFloat() * multiple)}",
             0
         ).toInt()
         return if (totalPayFbPrice > 0) totalPayFbPrice else 0

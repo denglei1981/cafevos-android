@@ -55,7 +55,6 @@
             android:layout_height="wrap_content"
             app:start_txt="@string/str_reduction"
             android:text="@{model.preferentialFb}"
-            app:end_txt="@string/str_integral"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
