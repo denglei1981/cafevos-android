@@ -17,9 +17,11 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
+import com.changanford.shop.bean.InvoiceInfo
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
+import com.changanford.shop.ui.order.InvoiceActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 
@@ -211,11 +213,17 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             when(type){
                 //申请发票
                 0->{
-
+                    val invoiceInfo = InvoiceInfo(
+                        addressInfo, addressId.toString(),
+                        mallMallOrderId?:"0", orderNo, getRMBExtendsUnit(),
+                        orderReceiveAddress.consignee,
+                        orderReceiveAddress.phone
+                    )
+                    InvoiceActivity.start(invoiceInfo)
                 }
                 //查看发票
                 1->{
-
+                    JumpUtils.instans?.jump(123,orderNo)
                 }
                 //查看物流
                 2->{
