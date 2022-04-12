@@ -128,6 +128,18 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         }
         return true
     }
+    fun showNumState(num:Int){
+        if(num>=orderItemBean.buyNum){
+            binding.addSubtractView.setAddGrayOrBlack(false)
+        }else{
+            binding.addSubtractView.setAddGrayOrBlack(true)
+        }
+        if(num<=1){
+            binding.addSubtractView.setReduceAddGrayOrBlack(false)
+        }else{
+            binding.addSubtractView.setReduceAddGrayOrBlack(true)
+        }
+    }
 
     override fun initData() {
         val orderString = intent.getStringExtra("value")
@@ -138,6 +150,13 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         list.add(orderItemBean)
         binding.addSubtractView.setNumber(orderItemBean.buyNum, false)
         binding.addSubtractView.setMax(orderItemBean.buyNum, true)
+        binding.addSubtractView.setEditBlean(false)
+        showNumState(orderItemBean.buyNum)
+        binding.addSubtractView.numberLiveData.observe(this, Observer { num->
+            showNumState(num)
+
+
+        })
         when (orderItemBean.singleRefundType) {
             "ONLY_COST" -> {
                 binding.layoutTop.setTitle("仅退款")

@@ -123,7 +123,7 @@ class RefundProgressHasShopActivity :
                     }
                     ft.tvInputOrder.setOnClickListener {
                         // 填写物流信息
-                        var intent = Intent()
+                        val intent = Intent()
                         intent.putExtra("value", refundProgressBean.mallMallRefundId)
                         intent.setClass(
                             this@RefundProgressHasShopActivity,
