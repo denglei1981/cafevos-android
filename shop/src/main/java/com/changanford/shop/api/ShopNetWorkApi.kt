@@ -92,7 +92,7 @@ interface ShopNetWorkApi {
      *商城订单列表-退款
      * */
     @POST("/mall/orderRefund/list")
-    suspend fun shopOrderRefundList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    suspend fun shopOrderRefundList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderRefundBean>
     /**
      *所有订单
      * */

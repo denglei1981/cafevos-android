@@ -702,6 +702,39 @@ data class PackageJumpBean(
     val jumpCode:Int=0,
     val jumpVal:String?=null,
 )
+data class ShopOrderRefundBean(
+    val dataList: List<OrderRefundItemBean>?=null,
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0,
+    var nowTime: Long? = 0,
+)
+/**
+ * 退款item
+* */
+data class OrderRefundItemBean(
+    val fbRefund: Any? = null,
+    val fbRefundApply: Int = 0,
+    val mallMallOrderId: Int = 0,
+    val mallMallRefundId: Int = 0,
+    val orderNo: String = "",
+    val refundMethod: String = "",
+    val refundNo: String = "",
+    val refundNum: Int = 0,
+    val refundSkus: List<RefundSku> = listOf(),
+    val refundStatus: String = "",
+    val refundType: String = "",
+    val rmbRefund: Any? = null,
+    val rmbRefundApply: Int = 0
+)
+
+data class RefundSku(
+    val refundNum: Int = 0,
+    val skuImg: String = "",
+    val specifications: String = "",
+    val spuName: String = ""
+)
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,

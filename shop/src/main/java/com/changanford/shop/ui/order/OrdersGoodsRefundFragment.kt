@@ -3,7 +3,7 @@ package com.changanford.shop.ui.order
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.R
-import com.changanford.shop.adapter.order.OrderAdapter
+import com.changanford.shop.adapter.order.OrderRefundAdapter
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -15,20 +15,19 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
  * @Time : 2021/9/24 0024
  * @Description : OrdersGoodsFragment
  */
-class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderViewModel>(),
+class OrdersGoodsRefundFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderViewModel>(),
     OnRefreshLoadMoreListener {
     companion object{
-        fun newInstance(statesId:Int): OrdersGoodsFragment {
+        fun newInstance(statesId:Int): OrdersGoodsRefundFragment {
             val bundle = Bundle()
             bundle.putInt("statesId", statesId)
-            val fragment= OrdersGoodsFragment()
+            val fragment= OrdersGoodsRefundFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
-    private val mAdapter by lazy { OrderAdapter(-1,viewModel=viewModel) }
+    private val mAdapter by lazy { OrderRefundAdapter() }
     private var pageNo=1
-    private var statesId=-1
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty_order)
@@ -38,23 +37,13 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }
     override fun initData() {
-        if(arguments!=null){
-            statesId= requireArguments().getInt("statesId", -1)
-            mAdapter.orderSource=statesId
-//            viewModel.getShopOrderList(statesId,pageNo,showLoading = -1==statesId)
-        }
-        viewModel.shopOrderData.observe(this) {
-            it?.let {
-                mAdapter.nowTime = it.nowTime
-                if (1 == pageNo) mAdapter.setList(it.dataList)
-                else mAdapter.addData(it.dataList)
+        viewModel.refundBeanLiveData.observe(this) {
+            it?.dataList?.let {dataList->
+                if (1 == pageNo) mAdapter.setList(dataList)
+                else mAdapter.addData(dataList)
             }
-            //            if(null==it|| it.dataList.isEmpty())pageNo--
-            if (null == it || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
-                false
-            )
-            else binding.smartRl.setEnableLoadMore(true)
             binding.smartRl.apply {
+                setEnableLoadMore(mAdapter.data.size < it?.total?:0)
                 when (state) {
                     RefreshState.Refreshing -> finishRefresh()
                     RefreshState.Loading -> finishLoadMore()
@@ -70,15 +59,15 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
     override fun onStart() {
         super.onStart()
         pageNo=1
-        viewModel.getShopOrderList(statesId,pageNo,showLoading = (-1==statesId&&mAdapter.data.size<1))
+        viewModel.getShopOrderRefundList(pageNo)
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
         pageNo=1
-        viewModel.getShopOrderList(statesId,pageNo)
+        viewModel.getShopOrderRefundList(pageNo)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageNo++
-        viewModel.getShopOrderList(statesId,pageNo)
+        viewModel.getShopOrderRefundList(pageNo)
     }
 }

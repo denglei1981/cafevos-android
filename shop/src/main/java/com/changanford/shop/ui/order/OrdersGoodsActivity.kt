@@ -35,8 +35,10 @@ class OrdersGoodsActivity:BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
         val states=intent.getIntExtra("states",0)
         val tabTitles= arrayListOf(getString(R.string.str_all),getString(R.string.str_toBePaid),getString(R.string.str_toSendGoods),getString(R.string.str_forGoods),getString(R.string.str_toEvaluate),getString(R.string.str_refundOrAfterSale))
         val fragments= arrayListOf<Fragment>()
-        for(i in 0 until tabTitles.size){
-            fragments.add(OrdersGoodsFragment.newInstance(i-1))
+        val tabSize=tabTitles.size
+        for(i in 0 until tabSize){
+            if(i<tabSize-1)fragments.add(OrdersGoodsFragment.newInstance(i-1))
+            else fragments.add(OrdersGoodsRefundFragment.newInstance(i-1))
         }
         binding.viewPager2.apply {
             adapter= ViewPage2AdapterAct(this@OrdersGoodsActivity,fragments)
