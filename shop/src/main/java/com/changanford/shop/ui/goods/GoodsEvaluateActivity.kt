@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.QueryTypeCountBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
@@ -75,24 +76,24 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
             recyclerView.adapter=mAdapter
             mAdapter.setEmptyView(R.layout.view_empty)
             smartRl.setOnRefreshLoadMoreListener(this@GoodsEvaluateActivity)
-            composeView.setContent {
-                SelectTag()
-            }
         }
     }
     override fun initData() {
-        viewModel.getGoodsEvalInfo(spuId)
-        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType)
+        viewModel.getGoodsEvalInfo(spuId,spuPageType=spuPageType)
+        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType, showLoading = true)
+        viewModel.commentInfoLiveData.observe(this){
+            it?.apply {
+                binding.model = this
+                binding.composeView.setContent {
+                    SelectTag(queryTypeCount)
+                }
+            }
+        }
         viewModel.commentLiveData.observe(this) {
             it?.apply {
-                //基础信息
-                if(type==1){
-                    binding.model = this
-                }else{
-                    if (1 == pageNo) mAdapter.setList(dataList)
-                    else if(dataList !=null)mAdapter.addData(dataList!!)
-                    binding.smartRl.setEnableLoadMore(mAdapter.data.size >= total)
-                }
+                if (1 == pageNo) mAdapter.setList(dataList)
+                else if(dataList !=null)mAdapter.addData(dataList!!)
+                binding.smartRl.setEnableLoadMore(mAdapter.data.size >= total)
             }
             binding.smartRl.apply {
                 finishLoadMore()
@@ -112,9 +113,10 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     }
 
     @Composable
-    private fun SelectTag(){
+    private fun SelectTag(info: QueryTypeCountBean?){
+        if(info==null)return
         selectedTag = remember { mutableStateOf("ALL") }
-        val tags= arrayOf("全部","有图0","追评0","好评0","差评0")
+        val tags= arrayOf("全部","有图${info.HAVE_IMG}","追评${info.REVIEWS}","好评${info.PRAISE}","差评${info.NEGATIVE}")
         val queryTypeArr= arrayOf("ALL","HAVE_IMG","REVIEWS","PRAISE","NEGATIVE")
         Row(modifier = Modifier
             .fillMaxWidth()

@@ -29,7 +29,7 @@
             android:layout_marginStart="@dimen/dp_18"
             app:layout_constraintStart_toEndOf="@id/img_avatar"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@id/ratingBar"
@@ -39,7 +39,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_12" />
         <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_3"
             app:layout_constraintTop_toBottomOf="@id/tv_userName"
             app:layout_constraintStart_toStartOf="@id/tv_userName"
             android:layout_width="0dp"
