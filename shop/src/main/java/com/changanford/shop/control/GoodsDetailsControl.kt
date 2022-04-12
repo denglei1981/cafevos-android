@@ -62,26 +62,36 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
         var skuCodeInitValue =""
         val skuVos=dataBean.skuVos
 //        //当只有一个sku的时候默认选中
+//        if(dataBean.stock>0&&skuVos.size==1){
+//            skuVos[0].apply {
+//                skuCodeInitValue=skuCode
+//                dataBean.skuImg=skuImg
+//            }
+//        }else{
+//            //默认选中最低sku
+//            skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
+//                if(it.isNotEmpty()){
+//                    it[0].apply {
+//                        skuCodeInitValue=skuCode
+//                        dataBean.skuImg=skuImg
+//                    }
+//                }
+//            }
+//            if(TextUtils.isEmpty(skuCodeInitValue)){
+//                skuCodeInitValue="${dataBean.spuId}-"
+//                dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+//                skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
+//            }
+//        }
         if(dataBean.stock>0&&skuVos.size==1){
             skuVos[0].apply {
                 skuCodeInitValue=skuCode
                 dataBean.skuImg=skuImg
             }
         }else{
-            //默认选中最低sku
-            skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
-                if(it.isNotEmpty()){
-                    it[0].apply {
-                        skuCodeInitValue=skuCode
-                        dataBean.skuImg=skuImg
-                    }
-                }
-            }
-            if(TextUtils.isEmpty(skuCodeInitValue)){
-                skuCodeInitValue="${dataBean.spuId}-"
-                dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
-                skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
-            }
+            skuCodeInitValue="${dataBean.spuId}-"
+            dataBean.attributes.forEach { _ -> skuCodeInitValue+="0-" }
+            skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
         }
         BannerControl.bindingBannerFromDetail(headerBinding.banner,dataBean.imgs,0)
         //品牌参数
@@ -330,11 +340,13 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
     }
     /**
      * 加入购物车
+     * [source]0详情 1规格弹窗 (只有在规格弹窗的情况下加购物车)
     * */
-    fun addShoppingCart(){
+    fun addShoppingCart(source:Int=0){
         getSkuTxt(popupWindow?._skuCode?:skuCode)
         skuCode.apply {
-            if(isInvalidSelectAttrs(this))createAttribute()
+//            if(isInvalidSelectAttrs(this))createAttribute()
+            if(source==0||isInvalidSelectAttrs(this))createAttribute()
             else dataBean.apply {
                 viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
                     override fun onFinish(code: Int) {
