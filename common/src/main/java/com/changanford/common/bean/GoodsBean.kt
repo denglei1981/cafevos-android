@@ -714,10 +714,10 @@ data class ShopOrderRefundBean(
  * 退款item
 * */
 data class OrderRefundItemBean(
-    val fbRefund: Any? = null,
-    val fbRefundApply: Int = 0,
-    val mallMallOrderId: Int = 0,
-    val mallMallRefundId: Int = 0,
+    val fbRefund: String? = null,
+    val fbRefundApply: String? = null,
+    val mallMallOrderId: String = "0",
+    val mallMallRefundId: String ="0",
     val orderNo: String = "",
     val refundMethod: String = "",
     val refundNo: String = "",
@@ -725,8 +725,8 @@ data class OrderRefundItemBean(
     val refundSkus: List<OrderSkuItem> = listOf(),
     val refundStatus: String = "",
     val refundType: String = "",
-    val rmbRefund: Any? = null,
-    val rmbRefundApply: Int = 0,
+    val rmbRefund: String? = null,
+    val rmbRefundApply: String? = null,
     var busSourse:String?="",
 ){
     fun getRefundStatusTxt():String{

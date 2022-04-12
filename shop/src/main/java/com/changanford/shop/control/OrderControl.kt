@@ -103,6 +103,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 val skuItem=itemBean.refundSkus[0]
                 imgGoodsCover.load(skuItem.skuImg)
                 tvGoodsTitle.text=skuItem.spuName
+                tvTotalNum.visibility=View.VISIBLE
                 tvTotalNum.setText("${skuItem.refundNum}")
                 tvOrderType.apply {
                     visibility = when(itemBean.busSourse) {

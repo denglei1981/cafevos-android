@@ -53,7 +53,6 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         AndroidBug5497Workaround.assistActivity(this)
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
-            if(reviewEval)topBar.setTitle(getString(R.string.str_releasedAfterReview))
             recyclerView.adapter=mAdapter
             btnSubmit.clicks().throttleFirst(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -74,7 +73,11 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                 Gson().fromJson(this,OrderItemBean::class.java).let {
                     orderNo=it.orderNo
                     reviewEval=it.reviewEval?:false
-                    if(reviewEval)viewModel.orderItemLiveData.postValue(it)
+                    mAdapter.reviewEval=reviewEval
+                    if(reviewEval){
+                        binding.topBar.setTitle(getString(R.string.str_releasedAfterReview))
+                        viewModel.orderItemLiveData.postValue(it)
+                    }
                 }
             }else {
                 orderNo=this

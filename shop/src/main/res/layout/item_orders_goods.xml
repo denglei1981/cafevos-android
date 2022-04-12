@@ -180,6 +180,8 @@
         <com.changanford.shop.view.TypefaceTextView
             android:layout_marginStart="@dimen/dp_20"
             android:id="@+id/tv_orderType"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/dp_30"
@@ -190,5 +192,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_n"
             tools:text="请在09月05日 15:09 前支付" />
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/composeView"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/view_n"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_n"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
