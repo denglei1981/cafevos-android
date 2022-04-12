@@ -81,15 +81,14 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
         }
     }
     override fun initData() {
-        viewModel.getGoodsEvalList(spuId,pageNo,key=selectedTag?.value,spuPageType=spuPageType)
+        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType)
         viewModel.commentLiveData.observe(this) {
             it?.apply {
-                val dataList = pageList?.dataList
                 if (1 == pageNo) mAdapter.setList(dataList)
                 else dataList?.let { it1 -> mAdapter.addData(it1) }
                 binding.model = this
             }
-            if (it?.pageList == null || mAdapter.data.size >= it.pageList?.total!!) binding.smartRl.setEnableLoadMore(
+            if (it?.dataList == null || mAdapter.data.size >= it.total) binding.smartRl.setEnableLoadMore(
                 false
             )
             else binding.smartRl.setEnableLoadMore(true)
@@ -102,18 +101,19 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         pageNo=1
-        viewModel.getGoodsEvalList(spuId,pageNo,key=selectedTag?.value,spuPageType=spuPageType)
+        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageNo++
-        viewModel.getGoodsEvalList(spuId,pageNo,key=selectedTag?.value,spuPageType=spuPageType)
+        viewModel.getGoodsEvalList(spuId,pageNo, queryType =selectedTag?.value,spuPageType=spuPageType)
     }
 
     @Composable
     private fun SelectTag(){
-        selectedTag = remember { mutableStateOf("0") }
+        selectedTag = remember { mutableStateOf("ALL") }
         val tags= arrayOf("全部","有图0","追评0","好评0","差评0")
+        val queryTypeArr= arrayOf("ALL","HAVE_IMG","REVIEWS","PRAISE","NEGATIVE")
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)) {
@@ -121,13 +121,13 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
                 Box(modifier = Modifier
                     .weight(1f)
                     .height(24.dp)
-                    .background(color = colorResource(if(selectedTag?.value=="$i")R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
+                    .background(color = colorResource(if(selectedTag?.value==queryTypeArr[i])R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
                     .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
-                        selectedTag?.value="$i"
+                        selectedTag?.value=queryTypeArr[i]
                         binding.smartRl.autoRefresh()
                     },
                     contentAlignment = Alignment.Center) {
-                    Text(text = item, fontSize = 10.sp, color = if(selectedTag?.value=="$i") Color.Companion.White else colorResource(R.color.color_66))
+                    Text(text = item, fontSize = 10.sp, color = if(selectedTag?.value==queryTypeArr[i]) Color.Companion.White else colorResource(R.color.color_66))
                 }
                 if(i!=tags.size-1)Spacer(modifier = Modifier.width(8.dp))
             }

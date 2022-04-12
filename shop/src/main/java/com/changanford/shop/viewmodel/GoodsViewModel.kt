@@ -230,8 +230,9 @@ class GoodsViewModel: BaseViewModel() {
     }
     /**
      * 评价列表
+     * [queryType] ALL  HAVE_IMG  REVIEWS  PRAISE NEGATIVE
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,key:String?=null,pageSize:Int=this.pageSize){
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,queryType:String?=null,pageSize:Int=this.pageSize){
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -242,6 +243,7 @@ class GoodsViewModel: BaseViewModel() {
                         it["mallWbGoodsId"] = spuId
                     }
                     it["mallMallSpuId"] = spuId
+                    it["queryType"] = queryType?:"ALL"
                 }
                 val randomKey = getRandomKey()
                 if(WConstant.maintenanceType==spuPageType)shopApiService.goodsEvalListWb(body.header(randomKey), body.body(randomKey))
