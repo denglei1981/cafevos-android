@@ -45,7 +45,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
             }
             btnCart.setOnClickListener {
                 dismiss()
-                control.addShoppingCart()
+                control.addShoppingCart(1)
             }
         }
 
@@ -55,6 +55,13 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         viewDataBinding.model=dataBean
         dataBean.skuVos.forEach { it.skuCodeArr=it.skuCode.split("-") }
         mAdapter.skuVos=dataBean.skuVos
+
+        //没有选中sku时默认选中最低sku （113新增）
+        if(control.isInvalidSelectAttrs(_skuCode)){
+            dataBean.skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
+                _skuCode=it[0].skuCode
+            }
+        }
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)

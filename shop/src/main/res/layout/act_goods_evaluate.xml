@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.changanford.common.bean.CommentBean" />
+            type="com.changanford.common.bean.CommentInfoBean" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

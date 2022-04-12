@@ -7,7 +7,7 @@
         </shape>
     </item>
     <item
-        android:top="@dimen/dp_0_5">
+        android:bottom="@dimen/dp_0_5">
         <!-- 主体背景颜色值 -->
         <shape>
             <solid android:color="@color/white"/>

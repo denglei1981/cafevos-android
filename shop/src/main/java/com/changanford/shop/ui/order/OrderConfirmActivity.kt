@@ -262,14 +262,21 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //用户余额
         val fbBalance=infoBean.fbBalance?:0
         //最大可使用福币
-        maxUseFb=if(fbBalance>=maxFb)maxFb else {
-            minFb= totalPayFb-fbBalance
-            fbBalance
+        maxUseFb= when {
+            fbBalance>=maxFb -> maxFb
+            minRmbProportion!=0f -> {
+                minFb= totalPayFb-fbBalance
+                fbBalance
+            }
+            else -> {
+                minFb=0
+                fbBalance
+            }
         }
         binding.inPayWay.apply {
             minRmb=getRMB("$minFb")
             minRmb=if(minRmb.toFloat()>0f)"+¥$minRmb" else ""
-            rbFbAndRmb.text="$maxUseFb$minRmb"
+            rbFbAndRmb.text=if(minRmbProportion!=0f)"$maxUseFb$minRmb" else "$totalPayFb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
         "totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
@@ -554,6 +561,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                 rbFbAndRmb.visibility=View.VISIBLE
             }else if(minRmbProportion!=0f){
                 rbFbAndRmb.visibility=View.GONE
+            }else if(minRmbProportion==0f){//纯福币支付
+//                rbFbAndRmb.visibility=View.VISIBLE
+//                payFb="$totalPayFb"
             }
         }
     }

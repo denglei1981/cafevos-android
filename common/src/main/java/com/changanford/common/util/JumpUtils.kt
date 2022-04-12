@@ -646,6 +646,7 @@ class JumpUtils {
             }
             112 -> {//商品订单评价
                 if (!TextUtils.isEmpty(value)) {
+                    // "{\"orderNo\": \"M0565984864114180096\",\"skuList\":[{\"skuImg\":\"pg\",\"mallOrderSkuId\":104,\"mallMallspuId\":1292,\"spuName\": \"石头\"}],\"reviewEval\": false}"
                     bundle.putString("info", value)
                     startARouter(ARouterShopPath.PostEvaluationActivity, bundle, true)
                 }

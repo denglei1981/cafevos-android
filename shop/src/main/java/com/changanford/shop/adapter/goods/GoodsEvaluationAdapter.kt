@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,7 @@ import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
 import java.text.SimpleDateFormat
 
 
-class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
+class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
     private val anonymousUsers by lazy { context.getString(R.string.str_anonymousUsers) }
     private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context)-56)/3 }
     @SuppressLint("SimpleDateFormat")
@@ -65,16 +66,16 @@ class GoodsEvalutaeAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<
                                 contentDescription =null,modifier = Modifier
                                     .size(imgWidth.dp)
                                     .clip(RoundedCornerShape(5.dp)))
-                            if(imgSize>3){
+                            if(i==2&&imgSize>3){
                                 Row(modifier = Modifier.padding(bottom = 4.dp, end = 4.dp)) {
                                     Box(modifier = Modifier
-                                        .padding(horizontal = 13.dp)
                                         .height(18.dp)
+                                        .defaultMinSize(minWidth = 40.dp)
                                         .background(
                                             color = colorResource(R.color.color_4D000000),
-                                            shape = RoundedCornerShape(6.dp)
+                                            shape = RoundedCornerShape(10.dp)
                                         ), contentAlignment = Alignment.Center) {
-                                        Text(text = "+${imgSize}")
+                                        Text(text = "+${imgSize}",color= Color.White, fontSize = 12.sp)
                                     }
                                 }
                             }

@@ -40,6 +40,8 @@ class GoodsViewModel: BaseViewModel() {
     var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
     //秒杀列表
     var killGoodsListData =MutableLiveData<GoodsListBean?>()
+    //评价列表基础信息
+    var commentInfoLiveData =MutableLiveData<CommentInfoBean?>()
     //评价列表
     var commentLiveData =MutableLiveData<CommentBean?>()
     //商品收藏状态
@@ -231,11 +233,30 @@ class GoodsViewModel: BaseViewModel() {
         }
     }
     /**
-     * 评价列表
+     * 评价列表基础信息
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,key:String?=null,pageSize:Int=this.pageSize){
+    fun getGoodsEvalInfo(spuId:String,spuPageType:String?=null){
         viewModelScope.launch {
             fetchRequest {
+                body.clear()
+                body[if(WConstant.maintenanceType!=spuPageType)"mallMallSpuId" else "mallWbGoodsId"]=spuId
+                val randomKey = getRandomKey()
+                if(WConstant.maintenanceType!=spuPageType) shopApiService.goodsEvalInfo(body.header(randomKey), body.body(randomKey))
+                else  shopApiService.goodsEvalInfoWb(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                commentInfoLiveData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        }
+    }
+    /**
+     * 评价列表
+     * [queryType] ALL  HAVE_IMG  REVIEWS  PRAISE NEGATIVE
+     * */
+    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,queryType:String?=null,pageSize:Int=this.pageSize,showLoading:Boolean=false){
+        viewModelScope.launch {
+            fetchRequest(showLoading = showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -244,6 +265,7 @@ class GoodsViewModel: BaseViewModel() {
                         it["mallWbGoodsId"] = spuId
                     }
                     it["mallMallSpuId"] = spuId
+                    it["queryType"] = queryType?:"ALL"
                 }
                 val randomKey = getRandomKey()
                 if(WConstant.maintenanceType==spuPageType)shopApiService.goodsEvalListWb(body.header(randomKey), body.body(randomKey))
@@ -251,7 +273,7 @@ class GoodsViewModel: BaseViewModel() {
             }.onSuccess {
                 commentLiveData.postValue(it)
             }.onWithMsgFailure {
-                commentLiveData.postValue(null)
+                it?.toast()
             }
         }
     }
