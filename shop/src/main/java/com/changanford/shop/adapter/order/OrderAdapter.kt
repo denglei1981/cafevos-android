@@ -3,6 +3,7 @@ package com.changanford.shop.adapter.order
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -183,21 +184,18 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         visibility=View.VISIBLE
                         setText(R.string.str_applyRefund)
                         setOnClickListener {
-
+                            control.orderBtnClick(3,item)
                         }
                     }
                     btnLogistics.apply {//查看物流
                         visibility=View.VISIBLE
                         setOnClickListener {
+                            control.orderBtnClick(2,item)
+                        }
+                    }
+                    //申请发票
+                    initBtnLogistics(btnInvoice, item)
 
-                        }
-                    }
-                    btnInvoice.apply {//申请发票
-                        visibility=View.VISIBLE
-                        setOnClickListener {
-//                            JumpUtils.instans?.jump(120)
-                        }
-                    }
                     btnConfirm.apply {//评价
                         visibility=View.VISIBLE
                         setText(R.string.str_eval)
@@ -237,18 +235,16 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         dataBinding.apply {
                             btnCancel.visibility=View.GONE
                             btnLogistics.visibility=View.GONE
-                            btnInvoice.apply {//申请发票
-                                visibility=View.VISIBLE
-                                setOnClickListener {
 
-                                }
-                            }
+                            //申请发票
+                            initBtnLogistics(btnInvoice, item)
+
                             btnConfirm.apply {//申请退款
                                 visibility=View.VISIBLE
                                 setText(R.string.str_applyARefund)
                                 setBackgroundResource(R.drawable.bord_99_15dp)
                                 setOnClickListener {
-
+                                    control.orderBtnClick(4,item)
                                 }
                             }
                         }
@@ -269,21 +265,18 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 visibility=View.VISIBLE
                                 setText(R.string.str_applyRefund)
                                 setOnClickListener {
-
+                                    control.orderBtnClick(3,item)
                                 }
                             }
                             btnLogistics.apply {//查看物流
                                 visibility=View.VISIBLE
                                 setOnClickListener {
-
+                                    control.orderBtnClick(2,item)
                                 }
                             }
-                            btnInvoice.apply {//申请发票
-                                visibility=View.VISIBLE
-                                setOnClickListener {
+                            //申请发票
+                            initBtnLogistics(btnInvoice, item)
 
-                                }
-                            }
                             btnConfirm.apply {//确认收货
                                 visibility=View.VISIBLE
                                 setText(R.string.str_confirmGoods)
@@ -301,25 +294,21 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 visibility=View.VISIBLE
                                 setText(R.string.str_applyRefund)
                                 setOnClickListener {
-
+                                    control.orderBtnClick(3,item)
                                 }
                             }
                             btnLogistics.apply {//查看物流
                                 visibility=View.VISIBLE
                                 setOnClickListener {
-
+                                    control.orderBtnClick(2,item)
                                 }
                             }
-                            btnInvoice.apply {//申请发票
-                                visibility=View.VISIBLE
-                                setOnClickListener {
-
-                                }
-                            }
+                            //申请发票
+                            initBtnLogistics(btnInvoice, item)
                         }
                         if("2"!=item.busSourse){
                             dataBinding.btnConfirm.apply {
-                                visibility=View.VISIBLE
+                                visibility=View.GONE
                                 setText(R.string.str_onceAgainToBuy)
                                 setBackgroundResource(R.drawable.bord_00095b_15dp)
                                 setOnClickListener {
@@ -329,7 +318,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                     control.onceAgainToBuy(item)
                                 }
                             }
-                        }else dataBinding.btnConfirm.visibility=View.INVISIBLE
+                        }else dataBinding.btnConfirm.visibility=View.GONE
                     }
                     //已关闭->可再次购买
                     "CLOSED"->{
@@ -338,7 +327,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         dataBinding.btnCancel.visibility=View.GONE
                         if("2"!=item.busSourse){
                             dataBinding.btnConfirm.apply {
-                                visibility=View.VISIBLE
+                                visibility=View.INVISIBLE
                                 setText(R.string.str_onceAgainToBuy)
                                 setOnClickListener {
                                     item.apply {
@@ -356,21 +345,18 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 visibility=View.VISIBLE
                                 setText(R.string.str_applyRefund)
                                 setOnClickListener {
-
+                                    control.orderBtnClick(3,item)
                                 }
                             }
                             btnLogistics.apply {//查看物流
                                 visibility=View.VISIBLE
                                 setOnClickListener {
-
+                                    control.orderBtnClick(2,item)
                                 }
                             }
-                            btnInvoice.apply {//申请发票
-                                visibility=View.VISIBLE
-                                setOnClickListener {
+                            //申请发票
+                            initBtnLogistics(btnInvoice, item)
 
-                                }
-                            }
                             btnConfirm.apply {//评价
                                 visibility=View.VISIBLE
                                 setText(R.string.str_eval)
@@ -395,7 +381,15 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             }
         }
     }
-
+    private fun initBtnLogistics(btnInvoice: AppCompatButton, item: OrderItemBean){
+        btnInvoice.apply {
+            visibility=View.VISIBLE
+            setText(if(item.invoiced=="NOT_BEGIN")R.string.str_applyInvoice else R.string.str_lookInvoice)
+            setOnClickListener {
+                control.orderBtnClick(0,item)
+            }
+        }
+    }
     /**
      * 评价状态
      * [evalStatus]WAIT_EVAL 待评价 、WAIT_CHECK 待审核 、ON_SHELVE 已上架 、UNDER_SHELVE 已下架 、CHECK_FAILURE 审核不通过

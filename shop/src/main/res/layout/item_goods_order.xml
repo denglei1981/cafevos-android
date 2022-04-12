@@ -81,7 +81,7 @@
             app:end_txt="@string/str_right_parentheses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.fbPrice}"
+            android:text="@{model.orginPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.AddSubtractView

@@ -191,10 +191,10 @@ class OrderViewModel: BaseViewModel() {
         }
         createOrderBean.postValue(bean)
     }
-    private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL",)
+    private val queryType= arrayOf("ALL","WAIT_PAY","WAIT_SEND","WAIT_RECEIVE","WATI_EVAL","REFUND")
     /**
      * 商品订单列表
-     * [orderStatus]0全部 1待付款,2待发货,3待收货,4待评价
+     * [orderStatus]0全部 1待付款,2待发货,3待收货,4待评价 5售后退款
      * evalStatus 0待评价
      * */
     fun getShopOrderList(orderStatus:Int,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
@@ -203,18 +203,21 @@ class OrderViewModel: BaseViewModel() {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
+                var typeI=orderStatus+1
+                if(typeI<0||typeI>=queryType.size)typeI=0
                 body["queryParams"]=HashMap<String,Any>().also {
-                    var typeI=orderStatus+1
-                    if(typeI<0||typeI>=queryType.size)typeI=0
                     it["queryType"] = queryType[typeI]
+                    it["isWb"]="NO"
 //                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
 //                    else if(3==orderStatus)it["evalStatus"] =0
                 }
                 val randomKey = getRandomKey()
-                shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
+                if(typeI!=5) shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
+                else shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
+
             }.onWithMsgFailure {
                 shopOrderData.postValue(null)
-                ToastUtils.showLongToast(it,MyApp.mContext)
+                it?.toast()
             }
             responseBean.onSuccess {
                 val timestamp=responseBean.timestamp?:System.currentTimeMillis().toString()

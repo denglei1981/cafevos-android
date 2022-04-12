@@ -75,6 +75,15 @@
             android:background="@color/color_ee"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
+        <View
+            android:layout_marginEnd="@dimen/dp_20"
+            android:visibility="invisible"
+            android:id="@+id/view_n"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30" />
         <androidx.appcompat.widget.AppCompatButton
             android:layout_marginEnd="@dimen/dp_20"
             style="?android:attr/borderlessButtonStyle"
@@ -83,8 +92,7 @@
             android:id="@+id/btn_confirm"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:layout_constraintTop_toTopOf="@+id/view_n"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_00095b_15dp"
             android:layout_width="wrap_content"
@@ -100,7 +108,7 @@
             android:id="@+id/btn_cancel"
             android:gravity="center"
             android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/view_n"
             app:layout_constraintEnd_toStartOf="@id/btn_confirm"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_99_15dp"
@@ -117,7 +125,7 @@
             android:id="@+id/btn_logistics"
             android:gravity="center"
             android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/view_n"
             app:layout_constraintEnd_toStartOf="@id/btn_cancel"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_99_15dp"
@@ -134,7 +142,7 @@
             android:id="@+id/btn_invoice"
             android:gravity="center"
             android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/view_n"
             app:layout_constraintEnd_toStartOf="@id/btn_logistics"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_99_15dp"
@@ -154,9 +162,9 @@
             android:gravity="center_vertical"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_10"
-            app:layout_constraintBottom_toBottomOf="@id/btn_confirm"
+            app:layout_constraintBottom_toBottomOf="@id/view_n"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/view_n"
             tools:text="请在09月05日 15:09 前支付" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

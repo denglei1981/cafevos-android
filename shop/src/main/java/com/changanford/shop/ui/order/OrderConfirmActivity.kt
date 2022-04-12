@@ -118,8 +118,13 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         val skuItems= arrayListOf<ConfirmOrderInfoBean>()
         var totalBuyNum=0
         var totalOriginalFb=0
+        var totalFb=0
         dataListBean?.forEach {
-            it.getRMB()
+            //秒杀情况下 原价=现价
+            if("SECKILL"==it.spuPageType){
+                it.orginPrice=it.fbPrice
+            }
+            it.getRMB(it.orginPrice)
             val spuPageType=it.spuPageType
             val skuItem=ConfirmOrderInfoBean(skuId = it.skuId, num = it.buyNum, vin = it.vinCode,
                 mallMallHaggleUserGoodsId = it.mallMallHaggleUserGoodsId, carModel = it.models)
@@ -127,10 +132,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             skuItems.add(skuItem)
             totalBuyNum+=it.buyNum
             //单价（原价）
-//            val originalPrice=(it.orginPrice?:it.fbPrice).toInt()
-            val originalPrice=it.fbPrice.toInt()
+            val originalPrice=(it.orginPrice?:it.fbPrice).toInt()
             //原总商品价 单价*购买数量
             totalOriginalFb+=originalPrice*it.buyNum
+            totalFb+=(it.fbPrice.toInt())*it.buyNum
             //本条数据为维保商品
             if(WConstant.maintenanceType==spuPageType&&TextUtils.isEmpty(infoBean.vinCode)){
                 infoBean.vinCode=it.vinCode
@@ -139,6 +144,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         }
         infoBean.totalBuyNum=totalBuyNum
         infoBean.totalOriginalFb=totalOriginalFb
+        infoBean.totalFb=totalFb
         bindInfo()
         //获取优惠券信息
         viewModel.confirmOrder(orderConfirmType,skuItems)
@@ -279,11 +285,11 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             rbFbAndRmb.text=if(minRmbProportion!=0f)"$maxUseFb$minRmb" else "$totalPayFb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
-        "totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>totalOriginalFb:${infoBean.totalOriginalFb}".wLogE("okhttp")
+        ("totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>>" +
+                ">totalFb:${infoBean.totalFb}>totalOriginalFb:${infoBean.totalOriginalFb}").wLogE("okhttp")
         initPayWay()
     }
     private fun bindInfo(){
-//        maxUseFb=infoBean.fbBalance?:0
         //地址信息
         viewModel.addressList.observe(this) { addressList ->
             //默认获取地址列表的默认收货地址
@@ -302,9 +308,19 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
         //维保商品
         manageMaintenance()
 
+
         //订单信息 商品金额运费
         binding.inOrderInfo.apply {
             tvAmountValue.text=WCommonUtil.getRMB("${infoBean.totalOriginalFb}")
+            //是否有砍价
+            dataListBean?.find { it.spuPageType=="2" }?.let {
+                tvMemberDiscount.visibility=View.VISIBLE
+                tvMemberDiscount.setText(R.string.str_bargainingFavorable)
+                tvMemberDiscountValue.visibility=View.VISIBLE
+                //砍价优惠=原总价-减现总价（注：前提砍价不能加入购物车）
+                val preferentialFb=infoBean.totalOriginalFb-infoBean.totalFb
+                tvMemberDiscountValue.setText(WCommonUtil.getRMB("$preferentialFb"))
+            }
         }
     }
     fun onClick(v:View){

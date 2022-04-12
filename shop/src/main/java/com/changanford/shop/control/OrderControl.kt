@@ -17,11 +17,15 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
+import com.changanford.shop.bean.InvoiceInfo
+import com.changanford.shop.bean.RefundBean
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
+import com.changanford.shop.ui.order.InvoiceActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
 import com.changanford.shop.viewmodel.OrderViewModel
+import com.google.gson.Gson
 
 
 /**
@@ -200,6 +204,50 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                     })
                 }
             })
+        }
+    }
+    /**
+     * 订单列表按钮操作
+     * [type]
+    * */
+    fun orderBtnClick(type:Int,item: OrderItemBean){
+        item.apply {
+            when(type){
+                //申请发票 、查看发票
+                0,1->{
+                    if(invoiced=="NOT_BEGIN"){
+                        val invoiceInfo = InvoiceInfo(
+                            addressInfo, "$addressId",
+                            mallMallOrderId?:"0", orderNo, getRMBExtendsUnit(),
+                            orderReceiveAddress.consignee,
+                            orderReceiveAddress.phone
+                        )
+                        InvoiceActivity.start(invoiceInfo)
+                    }else  JumpUtils.instans?.jump(123,orderNo)
+
+                }
+                //查看物流
+                2->{
+                    packageJump?.apply {
+                        JumpUtils.instans?.jump(jumpCode,jumpVal)
+                    }
+                }
+                //申请售后-到订单详情
+                3->{
+                    JumpUtils.instans?.jump(5,orderNo)
+                }
+                //申请退款
+                4->{
+                    val gson = Gson()
+                    val refundBean =RefundBean(orderNo, payFb, payRmb, "allOrderRefund")
+                    val refundJson = gson.toJson(refundBean)
+                    JumpUtils.instans?.jump(121,refundJson)
+                }
+                //售后详情
+                5->{
+
+                }
+            }
         }
     }
 }
