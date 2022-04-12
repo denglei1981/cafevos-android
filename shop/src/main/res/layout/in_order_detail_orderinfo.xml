@@ -34,15 +34,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="4dp"
             android:gravity="end"
             android:text="@{model.orderNo}"
             android:textColor="@color/color_33"
             android:textIsSelectable="true"
             android:textSize="@dimen/sp_13"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_copy"
             app:layout_constraintStart_toEndOf="@id/tv_orderNo"
             app:layout_constraintTop_toTopOf="@id/tv_orderNo"
             tools:text="DD73240911002" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/shape_f2f4f9_16dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="复制"
+            android:textColor="@color/color_00095B"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_orderNo_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_orderNo_value" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_orderTime"
@@ -82,9 +98,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_24"
                 android:text="@string/str_payType"
-                android:visibility="gone"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_13"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,10 +110,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
                 android:gravity="end"
-                android:visibility="gone"
                 android:text="@string/str_integralPay"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_13"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_payment"
                 app:layout_constraintTop_toTopOf="@id/tv_payment" />
@@ -107,9 +123,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_24"
-                android:visibility="gone"
                 android:textColor="@color/text_colorv6"
                 android:textSize="@dimen/sp_13"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_payment"
                 tools:text="@string/str_payTime" />
@@ -120,10 +136,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
                 android:gravity="end"
-                android:visibility="gone"
-
                 android:textColor="@color/color_33"
+
                 android:textSize="@dimen/sp_13"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_other"
                 app:layout_constraintTop_toTopOf="@id/tv_other"
