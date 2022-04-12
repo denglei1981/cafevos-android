@@ -48,12 +48,12 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
             } else {
                 val index = holder.layoutPosition
                 val lastIndex = index - 1
-                if (lastIndex >= 1) {
-                    val item1 = getItem(lastIndex)
-                    if (item1.refundStauts == getItem(holder.layoutPosition).refundStauts) {
-                        ivRight.visibility = View.GONE
+                if (lastIndex >= 0) {
+                    val item1 = getItem(lastIndex-1)
+                    if (item1.refundStauts == getItem(lastIndex).refundStauts) {
+                        ivRight.visibility = View.INVISIBLE
                     } else {
-                        ivRight.visibility = View.GONE
+                        ivRight.visibility = View.VISIBLE
                     }
                 }
 
