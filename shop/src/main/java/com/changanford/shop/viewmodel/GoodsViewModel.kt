@@ -9,6 +9,8 @@ import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
@@ -401,8 +403,10 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.addShoppingCart(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 it?.toast()
+
             }.onSuccess {
                 listener?.onFinish(0)
+                LiveDataBus.get().with(LiveDataBusKey.ADD_TO_SHOPPING_CAR).postValue("success")
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.changanford.shop.ui.shoppingcart.adapter
 
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,10 +13,10 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.databinding.ItemShoppingCartBinding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.launchWithCatch
 
 /**
@@ -58,7 +57,20 @@ class ShoppingCartAdapter(
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
-            item.num?.let { addSubtractView.setNumber(it, false) }
+            item.num?.let { n ->
+                addSubtractView.setNumber(n, false)
+                if (n > 1) {
+                    addSubtractView.setReduceAddGrayOrBlack(true)
+                } else {
+                    addSubtractView.setReduceAddGrayOrBlack(false)
+                }
+            }
+            addSubtractView.setEditBlean(false)
+            imgGoodsCover.setOnClickListener {
+
+                GoodsDetailsActivity.start(item.mallMallSpuId)
+
+            }
 
             addSubtractView.numberLiveData.observe(lifecycleOwner11, Observer {
                 //数量变化
@@ -72,6 +84,14 @@ class ShoppingCartAdapter(
                         val rKey = getRandomKey()
                         ApiClient.createApi<ShopNetWorkApi>()
                             .userSkuNumChange(body.header(rKey), body.body(rKey)).also { cr ->
+                                item.num?.let { n ->
+                                    if (n > 1) {
+                                        addSubtractView.setReduceAddGrayOrBlack(true)
+                                    } else {
+                                        addSubtractView.setReduceAddGrayOrBlack(false)
+                                    }
+                                }
+
                             }
                     }
                 }

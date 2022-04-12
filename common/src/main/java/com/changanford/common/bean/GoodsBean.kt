@@ -583,7 +583,7 @@ data class OrderItemBean(
     val mallMallSkuId: String = "0",
     var mallOrderSkuId:String?=null,
     val mallMallSkuSpuSeckillRangeId: Int = 0,
-    val mallMallSpuId: String = "0",
+    val mallMallSpuId: String = "0",// 没有用
     val mallMallSpuSeckillRangeId: Int = 0,
     val memo: String = "",
     val nickName: String = "",
@@ -660,6 +660,8 @@ data class OrderItemBean(
     var mallRefundStatus: String? = null, // 单个sku 状态
     var historyPackage:String?=null,
     var reviewEval:Boolean?=false,
+    var canReview:String="NO",
+    var mallMallspuId:String=""
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")

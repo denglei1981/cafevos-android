@@ -276,5 +276,7 @@ object LiveDataBusKey {
 
     // 填写物流信息
     const val FILL_IN_LOGISTICS = "fillInLogistics"
+    // 加入购物车成功
+    const val  ADD_TO_SHOPPING_CAR="add_to_shopping_car"
 }
 

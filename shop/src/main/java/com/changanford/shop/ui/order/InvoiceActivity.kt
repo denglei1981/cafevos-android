@@ -17,6 +17,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.INVOICE_ADDRESS_SUCCESS
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
@@ -30,6 +31,14 @@ import com.google.gson.Gson
 // 发票 信息
 @Route(path = ARouterShopPath.InvoiceActivity)
 class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewModel>() {
+
+    companion object{
+        fun start(invoiceInfo:InvoiceInfo){
+            val gson = Gson()
+            val invoiceStr = gson.toJson(invoiceInfo)
+            JumpUtils.instans?.jump(120, invoiceStr)
+        }
+    }
 
     override fun initView() {
         binding.topbar.setOnBackClickListener(object : TopBar.OnBackClickListener {
@@ -49,9 +58,6 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         val invoiceInfoStr = intent.getStringExtra("value")
         val gson = Gson()
         invoiceInfo = gson.fromJson<InvoiceInfo>(invoiceInfoStr, InvoiceInfo::class.java)
-
-
-
 
         showPerson()
         binding.tvGetInvoice.setOnClickListener { // 申请开票

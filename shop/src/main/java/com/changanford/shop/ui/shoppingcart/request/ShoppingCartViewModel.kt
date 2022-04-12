@@ -24,7 +24,6 @@ class ShoppingCartViewModel : BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>()
                 .getShoppingCartList(body.header(rKey), body.body(rKey))
                 .onSuccess {
-
                     if (it != null) {
                         showGoodList(it)
                     }

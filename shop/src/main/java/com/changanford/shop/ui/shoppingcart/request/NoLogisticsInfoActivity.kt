@@ -9,11 +9,12 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.shop.databinding.ActivityMultiplePackageBinding
+import com.changanford.shop.databinding.ActivityNoLogisticsInfoBinding
 import com.changanford.shop.view.TopBar
 
 @Route(path = ARouterShopPath.NoLogisticsInfoActivity)
 class NoLogisticsInfoActivity:
-    BaseActivity<ActivityMultiplePackageBinding, MultiplePackageViewModel>()  {
+    BaseActivity<ActivityNoLogisticsInfoBinding, MultiplePackageViewModel>()  {
     companion object{
        fun start(activity: Activity){
            JumpUtils.instans?.jump(128)

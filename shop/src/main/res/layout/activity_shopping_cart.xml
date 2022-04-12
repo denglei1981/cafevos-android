@@ -9,7 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+
+        >
 
         <include
             android:id="@+id/layout_top"
@@ -19,6 +21,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <include
+            android:id="@+id/layout_empty"
+            layout="@layout/empty_by_shopping_cart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"

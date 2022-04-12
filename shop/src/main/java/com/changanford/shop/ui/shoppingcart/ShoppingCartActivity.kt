@@ -9,8 +9,12 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.shop.databinding.ActivityShoppingCartBinding
+import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartInvaildAdapter
@@ -23,7 +27,7 @@ import java.math.BigDecimal
 class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingCartViewModel>() {
 
     val shoppingCartAdapter: ShoppingCartAdapter by lazy {
-        ShoppingCartAdapter(this,object : ShoppingCartAdapter.ShopBackListener {
+        ShoppingCartAdapter(this, object : ShoppingCartAdapter.ShopBackListener {
             override fun check() {
                 setTitle()
             }
@@ -69,15 +73,17 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                     binding.layoutTop.tvRight.text = "编辑"
                     if (shoppingCartAdapter.shopList.size > 0) {
                         binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
+                        binding.tvOver.isSelected = true
                     } else {
                         binding.tvOver.text = "结算"
+                        binding.tvOver.isSelected = false
                     }
-                    binding.tvOver.isSelected = true
                     binding.tvBalance.visibility = View.VISIBLE
                 }
             }
 
         }
+
     }
 
     override fun initData() {
@@ -139,10 +145,10 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             it.forEach {
                 shoppingCartAdapter.checkMap[it.mallMallUserSkuId] = false
             }
-            if (it.size > 0) {
-                setTvTitle(it.size.toString())
+
+                setTvTitle(it.size)
                 setTitle()
-            }
+
             shoppingCartAdapter.setList(it)
         })
         viewModel.goodsInvaildListLiveData.observe(this, Observer {
@@ -159,18 +165,36 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             shoppingCartAdapter.shopList.clear()
             if (shoppingCartAdapter.shopList.size > 0) {
                 binding.tvOver.text = "删除(${shoppingCartAdapter.shopList.size})"
+                binding.tvOver.isSelected = true
             } else {
                 binding.tvOver.text = "删除"
+                binding.tvOver.isSelected = false
             }
         })
+        // 加入购物车成功
+        LiveDataBus.get().with(LiveDataBusKey.ADD_TO_SHOPPING_CAR).observe(this) {
+            // 刷新购物车数据
+            shoppingCartAdapter.shopList.clear()
+            viewModel.getShoppingCartList()
+        }
+
+        //下单回调
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this) {
+            // 刷新购物车数据
+            shoppingCartAdapter.shopList.clear()
+            viewModel.getShoppingCartList()
+        }
     }
 
 
-    fun setTvTitle(count: String) {
-        binding.layoutTop.tvTitle.text = "购物车(${count})"
+    fun setTvTitle(count: Int) {
+        if(count>0){
+            binding.layoutTop.tvTitle.text = "购物车(${count})"
+        }else{
+            binding.layoutTop.tvTitle.text = "购物车"
+        }
+
     }
-
-
 
     fun setTitle() {
         if (shoppingCartAdapter.shopList.size > 0) {
@@ -181,14 +205,14 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             } else {
                 // 加入所有的商品
                 binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"
-                binding.tvOver.isSelected = false
-                var totalFbPrice: BigDecimal= BigDecimal(0)
+                binding.tvOver.isSelected = true
+                var totalFbPrice: BigDecimal = BigDecimal(0)
                 shoppingCartAdapter.shopList.forEach {
-                    val bb=BigDecimal(it.fbPer)
-                    val buyNum=it.num
+                    val bb = BigDecimal(it.fbPer)
+                    val buyNum = it.num
                     buyNum?.let {
-                        val thisPrice =bb.multiply(BigDecimal(it))
-                        totalFbPrice= totalFbPrice.add(thisPrice)
+                        val thisPrice = bb.multiply(BigDecimal(it))
+                        totalFbPrice = totalFbPrice.add(thisPrice)
                     }
 
 
