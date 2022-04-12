@@ -643,12 +643,13 @@ data class OrderItemBean(
     var price: String? = null,
     var invoiced: String? = null, // 发票状态
     var statusDesc: String? = null,
-    var couponDiscount: String,
-    var haggleDiscount: String,
-    var sharedFb: String,
-    var sharedRmb: String,
+    var couponDiscount: String="",
+    var haggleDiscount: String?=null,
+    var sharedFb: String?=null,
+    var sharedRmb: String?=null,
     var mallRefundStatus: String? = null, // 单个sku 状态
-    var historyPackage:String?=null
+    var historyPackage:String?=null,
+    var reviewEval:Boolean?=false,
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")

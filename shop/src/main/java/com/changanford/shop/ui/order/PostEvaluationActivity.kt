@@ -2,17 +2,20 @@ package com.changanford.shop.ui.order
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
 import com.changanford.shop.databinding.ActPostEvaluationBinding
 import com.changanford.shop.listener.UploadPicCallback
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.changanford.shop.viewmodel.UploadViewModel
+import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -30,17 +33,27 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         fun start(orderNo:String) {
             JumpUtils.instans?.jump(112,orderNo)
         }
+        /**
+         * [reviewEval]是否追评
+         *  "{\"orderNo\": \"M0565984864114180096\",\"skuList\":[{\"skuImg\":\"pg\",\"mallOrderSkuId\":104,\"mallMallspuId\":1292,\"spuName\": \"石头\"}],\"reviewEval\": false}"
+        * */
+        fun start(reviewEval:Boolean,item:OrderItemBean) {
+            item.reviewEval=reviewEval
+            JumpUtils.instans?.jump(112,Gson().toJson(item))
+        }
     }
-    private val mAdapter by lazy { OrderEvaluationAdapter(this) }
+
     private var orderNo=""
     private val uploadViewModel by lazy { UploadViewModel() }
     private var reviewEval=false//是否追评
     private var upI=0
     private lateinit var dialog: LoadDialog
+    private val mAdapter by lazy { OrderEvaluationAdapter(this,reviewEval) }
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.apply {
             topBar.setActivity(this@PostEvaluationActivity)
+            if(reviewEval)topBar.setTitle(getString(R.string.str_releasedAfterReview))
             recyclerView.adapter=mAdapter
             btnSubmit.clicks().throttleFirst(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -55,9 +68,19 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     }
 
     override fun initData() {
-        intent.getStringExtra("orderNo")?.apply {
-            orderNo=this
-            viewModel.getOrderDetail(orderNo)
+        intent.getStringExtra("info")?.apply {
+            "订单评价：${this}".wLogE("okhttp")
+            if(this.startsWith("{")){
+                Gson().fromJson(this,OrderItemBean::class.java).let {
+                    orderNo=it.orderNo
+                    reviewEval=it.reviewEval?:false
+                    if(reviewEval)viewModel.orderItemLiveData.postValue(it)
+                }
+            }else {
+                orderNo=this
+                viewModel.getOrderDetail(orderNo)
+            }
+
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)
@@ -69,13 +92,17 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             this.finish()
         }
         mAdapter.postBeanLiveData.observe(this){
-            val isComplete=it.find {item-> !item.isComplete }
+            val isComplete= it.find { item-> !item.isComplete }
             binding.btnSubmit.setBtnEnabled(isComplete==null)
         }
     }
     private fun submitEvaluation(){
-        dialog.show()
-        uploadPic(0)
+        if(reviewEval){
+            viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
+        }else{
+            dialog.show()
+            uploadPic(0)
+        }
     }
     private fun uploadPic(pos:Int=0){
         val postBean=mAdapter.postBean
@@ -91,6 +118,7 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                 }else uploadPic(pos+1)
             }
             override fun onUploadFailed(errCode: String) {
+                upI=0
                 dialog.dismiss()
             }
             override fun onuploadFileprogress(progress: Long) {}

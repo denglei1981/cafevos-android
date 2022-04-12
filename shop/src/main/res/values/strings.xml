@@ -214,4 +214,5 @@
     <string name="str_goodsNameSearch">商品名称搜索</string>
     <string name="str_score">评分</string>
     <string name="str_cover">封面</string>
+    <string name="str_releasedAfterReview">发布追评</string>
 </resources>
