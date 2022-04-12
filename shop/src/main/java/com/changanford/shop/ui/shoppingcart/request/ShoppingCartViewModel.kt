@@ -55,7 +55,7 @@ class ShoppingCartViewModel : BaseViewModel() {
         goodsInvaildListLiveData.postValue(invaildGoodList)
     }
 
-    fun deleteCartShopping(mallUserSkuIds: ArrayList<String>) {
+    fun deleteCartShopping(totalCount:Int,mallUserSkuIds: ArrayList<String>,isPost: Boolean=true) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
@@ -66,7 +66,15 @@ class ShoppingCartViewModel : BaseViewModel() {
                     // 删除成功, 重新请求 购物车数据
                     getShoppingCartList()
                     deleteShoppingCar.postValue("成功")
-                    LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(mallUserSkuIds.size)
+
+                    var lastCount=totalCount-mallUserSkuIds.size
+                    if(lastCount<=0){
+                        lastCount=0
+                    }
+                    if(isPost){
+                        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(lastCount)
+                    }
+
                 }
                 .onWithMsgFailure {
                     it?.toast()
