@@ -722,19 +722,22 @@ data class OrderRefundItemBean(
     val refundMethod: String = "",
     val refundNo: String = "",
     val refundNum: Int = 0,
-    val refundSkus: List<RefundSku> = listOf(),
+    val refundSkus: List<OrderSkuItem> = listOf(),
     val refundStatus: String = "",
     val refundType: String = "",
     val rmbRefund: Any? = null,
-    val rmbRefundApply: Int = 0
-)
-
-data class RefundSku(
-    val refundNum: Int = 0,
-    val skuImg: String = "",
-    val specifications: String = "",
-    val spuName: String = ""
-)
+    val rmbRefundApply: Int = 0,
+    var busSourse:String?="",
+){
+    fun getRefundStatusTxt():String{
+        return when(refundStatus){
+            "ON_GOING"->"退款中"
+            "SUCESS"->"退款完成"
+            "CLOSED"->"退款关闭"
+            else ->""
+        }
+    }
+}
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,
@@ -884,6 +887,7 @@ data class OrderSkuItem(
     var fbPrice: String? = null,
     var rmbPrice: String? = null,
     var orderImg:String?=null,
+    val refundNum: Int = 0,//退款数量
 ) {
     /**
      * 获取标签

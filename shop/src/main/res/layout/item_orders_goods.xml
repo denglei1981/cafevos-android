@@ -16,14 +16,38 @@
         android:layout_marginTop="@dimen/dp_10"
         android:paddingTop="@dimen/dp_16"
         android:paddingBottom="@dimen/dp_10">
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_orderNo"
-            android:layout_marginStart="@dimen/dp_20"
+        <View
+            android:id="@+id/view_start"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_height="1dp"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_tag"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:background="@drawable/border0d5dp_round_2dp_00095b"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/view_start"
+            app:layout_constraintEnd_toStartOf="@id/tv_orderNo"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp_30"
+            android:minHeight="@dimen/dp_16"
+            android:gravity="center"
+            android:text="@string/str_refund"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_11"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderNo"
+            app:layout_constraintStart_toEndOf="@id/tv_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_orderNo"
+            tools:layout_marginStart="@dimen/dp_4"
             android:text="@{model.orderNo}"
             tools:text="订单编号：DD202109110023"
             android:textColor="@color/color_74889D"

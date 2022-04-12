@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.OrderRefundItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.JumpUtils
@@ -94,6 +95,50 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
             }
             itemBean.getRMBPrice()
             model0=itemBean
+        }
+    }
+    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderRefundItemBean){
+        dataBinding.apply {
+            if(itemBean.refundSkus.size==1){
+                val skuItem=itemBean.refundSkus[0]
+                imgGoodsCover.load(skuItem.skuImg)
+                tvGoodsTitle.text=skuItem.spuName
+                tvTotalNum.setText("${skuItem.refundNum}")
+                tvOrderType.apply {
+                    visibility = when(itemBean.busSourse) {
+                        "1","SECKILL" -> {//秒杀
+                            setText(R.string.str_seckill)
+                            View.VISIBLE
+                        }
+                        "2","HAGGLE" -> {//砍价
+                            setText(R.string.str_bargaining)
+                            View.VISIBLE
+                        }
+                        "3","WB"->{//维保
+                            setText(R.string.str_maintenance)
+                            View.VISIBLE
+                        }
+                        else -> View.GONE
+                    }
+                }
+                recyclerView.apply {
+                    if(!TextUtils.isEmpty(skuItem.specifications)){
+                        visibility= View.VISIBLE
+                        layoutManager= FlowLayoutManager(context,false,true)
+                        adapter= OrderGoodsAttributeAdapter().apply {
+                            val specifications=skuItem.specifications?.split(",")?.filter { ""!= it }
+                            setList(specifications)
+                        }
+                    }else{
+                        visibility= View.INVISIBLE
+                    }
+                }
+            }else{
+                recyclerViewImgArr.visibility=View.VISIBLE
+                val mAdapter=OrderGoodsImgAdapter()
+                recyclerViewImgArr.adapter= mAdapter
+                mAdapter.setList(itemBean.refundSkus)
+            }
         }
     }
     /**
