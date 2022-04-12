@@ -6,6 +6,8 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.net.*
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
@@ -64,6 +66,7 @@ class ShoppingCartViewModel : BaseViewModel() {
                     // 删除成功, 重新请求 购物车数据
                     getShoppingCartList()
                     deleteShoppingCar.postValue("成功")
+                    LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(mallUserSkuIds.size)
                 }
                 .onWithMsgFailure {
                     it?.toast()
