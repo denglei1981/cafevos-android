@@ -724,7 +724,7 @@ class JumpUtils {
             }
             128 -> { // 使用优惠券
                 if (!TextUtils.isEmpty(value)) {
-                    bundle.putString("itemBean",value)
+                    bundle.putString("itemBean",value)//CouponsItemBean
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }

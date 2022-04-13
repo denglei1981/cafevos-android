@@ -10,6 +10,7 @@ import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.databinding.ActUseCouponsBinding
@@ -54,6 +55,7 @@ class UseCouponsActivity:BaseActivity<ActUseCouponsBinding,GoodsViewModel>(),
             edtSearch.setOnEditorActionListener(this@UseCouponsActivity)
         }
         intent.getStringExtra("itemBean")?.apply {
+            "使用优惠券：$this".wLogE("okhttp")
             itemBean=Gson().fromJson(this,CouponsItemBean::class.java).apply {
                 binding.tvCouponsDes.text=when(discountType){
                     //折扣
