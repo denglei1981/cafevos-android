@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
 import android.text.*
 import android.text.method.LinkMovementMethod
@@ -33,7 +34,10 @@ import com.bumptech.glide.request.transition.Transition
 import com.changanford.common.BuildConfig
 import com.changanford.common.R
 import com.changanford.common.bean.EditTextBean
+import com.changanford.common.bean.MediaListBean
 import com.changanford.common.listener.OnDownBitmapListener
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
@@ -463,6 +467,21 @@ object WCommonUtil {
             else "${fb.toInt()/100}"
         }
         return "${unit?:""}$rmbPrice"
+    }
+    /**
+     * 查看大图
+     * [curImageUrl]当前图片地址
+     */
+    fun toViewALargerVersion(imgPaths:List<String>,count:Int?=null,curImageUrl:String?=null){
+        val imgList= arrayListOf<MediaListBean>()
+        imgPaths.forEach {
+            imgList.add(MediaListBean(it))
+        }
+        val bundle = Bundle()
+        bundle.putSerializable("imgList", imgList)
+        bundle.putInt("count", count?:imgList.size)
+        if(curImageUrl!=null)bundle.putString("curImageUrl", curImageUrl)
+        startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
     }
 }
 @Synchronized
