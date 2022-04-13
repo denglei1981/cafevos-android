@@ -495,7 +495,7 @@ data class CommentItem(
     val evalScore: Int = 0,
     val evalStatus: String = "",
     val evalText: String = "",
-    var evalTime: Long? = 0,
+    var evalTime: Long = 0,
     var evalTimeTxt: String? = "0",
     val evalType: String = "",
     val mallMallOrderEvalId: Int = 0,
@@ -527,7 +527,7 @@ data class CommentItem(
 /*
 * 追评
 * */
-data class ReviewEvalBean(var evalText:String?=null,var evalTime:String?=null)
+data class ReviewEvalBean(var evalText:String?=null,var evalTime:Long=0)
 
 /**
  * 商品首页

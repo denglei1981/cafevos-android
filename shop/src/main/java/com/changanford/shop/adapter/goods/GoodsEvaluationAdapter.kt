@@ -28,7 +28,9 @@ import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
+import com.changanford.shop.utils.DateTimeUtil
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
@@ -93,7 +95,14 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                 //追评
                 reviewEval?.apply {
                     Spacer(modifier = Modifier.height(18.dp))
-                    Text(text = evalTime?:"",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                    //主评价时间
+                    val starDate=Date()
+                    starDate.time=item.evalTime
+                    //追评时间
+                    val endDate=Date()
+                    endDate.time=evalTime
+                    val timeStr=DateTimeUtil.formatFriendly(starDate,endDate)
+                    Text(text = "${timeStr}追评",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
                     Spacer(modifier = Modifier.height(11.dp))
                     Text(text = evalText?:"",color= colorResource(R.color.color_33), fontSize = 14.sp)
                 }
