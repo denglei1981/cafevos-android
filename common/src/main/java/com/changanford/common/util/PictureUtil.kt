@@ -87,7 +87,8 @@ object PictureUtil {
         maxVideoTime: Int = 4 * 60,
         minVideoTime: Int = 3,
         maxNum: Int = 9,
-        isPreviewImage:Boolean=false
+        isPreviewImage:Boolean=false,
+        isCompress:Boolean=false
     ) {
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
@@ -117,7 +118,7 @@ object PictureUtil {
             .isCamera(true)
             .isZoomAnim(true)
             .isEnableCrop(false)
-            .isCompress(false)
+            .isCompress(isCompress)
             .compressQuality(90)
             .synOrAsy(true)
             .isGif(true)
@@ -134,7 +135,7 @@ object PictureUtil {
             //.isPreviewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
             //.cropCompressQuality(90)// 注：已废弃 改用cutOutQuality()
             .cutOutQuality(90)// 裁剪输出质量 默认100
-            .minimumCompressSize(1024)// 小于100kb的图片不压缩
+            .minimumCompressSize(500)// 小于100kb的图片不压缩
             //.cropWH()// 裁剪宽高比，设置如果大于图片本身宽高则无效
             //.cropImageWideHigh()// 裁剪宽高比，设置如果大于图片本身宽高则无效
             //.rotateEnabled(false) // 裁剪是否可旋转图片

@@ -112,7 +112,7 @@ class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false)
                         }
                         override fun onCancel() {}
 
-                    },maxNum=10,isPreviewImage=true)
+                    },maxNum=10,isPreviewImage=true, isCompress = true)
             } else {
             }
         }
