@@ -28,7 +28,7 @@ public final class CustomLoadMoreView extends BaseLoadMoreView {
     @NotNull
     @Override
     public View getRootView(@NotNull ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.view_load_more, parent, false);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_load_more, parent, false);
     }
 
     @NotNull

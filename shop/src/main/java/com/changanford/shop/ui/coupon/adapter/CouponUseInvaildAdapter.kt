@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.widget.loadmore.TheHellLoadMoreView
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemCanUseCouponBinding
 import com.changanford.shop.databinding.ItemCanUseInvalidCouponBinding
@@ -19,6 +20,7 @@ class CouponUseInvaildAdapter() :
     LoadMoreModule {
     init {
         addChildClickViewIds(R.id.iv_extends, R.id.tv_use_now)
+        loadMoreModule.loadMoreView = TheHellLoadMoreView()
     }
 
     override fun convert(
