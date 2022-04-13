@@ -41,7 +41,7 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                 onBackPressed()
             }
         })
-        binding.tobBar.setTitle("仅退款")
+        binding.tobBar.setTitle("退款进度")
         binding.recyclerView.adapter = refundProgressAdapter
     }
 

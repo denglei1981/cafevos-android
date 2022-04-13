@@ -12,12 +12,15 @@ import com.changanford.common.bean.PayShowBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.databinding.*
+import com.changanford.shop.ui.sale.adapter.RefundImgsAdapter
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
@@ -43,9 +46,9 @@ class RefundProgressHasShopActivity :
         RefundProgressAdapter(viewModel)
     }
 //
-//    val refundSingleOrderItemAdapter: RefundSingleOrderItemAdapter by lazy {
-//        RefundSingleOrderItemAdapter()
-//    }
+    val refundImgsAdapter: RefundImgsAdapter by lazy {
+        RefundImgsAdapter()
+    }
 
     override fun initView() {
         binding.tobBar.setOnBackClickListener(object : TopBar.OnBackClickListener {
@@ -53,7 +56,6 @@ class RefundProgressHasShopActivity :
                 onBackPressed()
             }
         })
-        binding.tobBar.setTitle("仅退款")
         binding.recyclerView.adapter = refundProgressAdapter
         binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
@@ -81,6 +83,12 @@ class RefundProgressHasShopActivity :
         viewModel.cancelRefundLiveData.observe(this, Observer {
             // 撤销退款申请成功
             this.finish()
+        })
+        LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).observe(this, Observer {
+             // 刷新 进度
+            mallMallOrderSkuId?.let {
+                viewModel.getRefundProgress("", it)
+            }
         })
 
     }
@@ -121,6 +129,20 @@ class RefundProgressHasShopActivity :
                 PayShowBean(refundProgressBean.rmbRefundApply, refundProgressBean.fbRefundApply),
                 false
             )
+
+            when (refundProgressBean.refundMethod) {
+                "ONLY_COST" -> { // 仅退款
+                    binding.tobBar.setTitle("退款进度")
+                    ft.tvInputOrder.visibility = View.GONE
+                    ft.layoutRefundInfo.tvRefundType.text = "仅退款"
+                }
+                "CONTAIN_GOODS" -> {
+                    binding.tobBar.setTitle("退款进度")
+                    ft.tvInputOrder.visibility = View.VISIBLE
+                    ft.layoutRefundInfo.tvRefundType.text = "退货退款"
+                }
+
+            }
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
                     ft.tvHandle.visibility = View.VISIBLE
@@ -140,6 +162,20 @@ class RefundProgressHasShopActivity :
                         )
                         startActivity(intent)
                     }
+                    when (refundProgressBean.refundDetailStatus) {
+                        "WAIT_CHECK","OVERTIME","WAIT_RECEIVE_RETURNS" -> {
+                            ft.tvInputOrder.visibility = View.GONE
+                        }
+                        "CANCELD_REFUND"->{
+                            ft.tvInputOrder.visibility = View.GONE
+                            ft.tvHandle.visibility = View.GONE
+                        }
+                    }
+                }
+
+                "CLOSED" -> { // 退款关闭
+                    ft.tvInputOrder.visibility = View.GONE
+                    ft.tvHandle.visibility = View.GONE
                 }
                 else -> {
                     ft.tvInputOrder.visibility = View.GONE
@@ -151,7 +187,7 @@ class RefundProgressHasShopActivity :
                 val goodsAttributeAdapter = GoodsAttributeAdapter()
                 goodsAttributeAdapter.setList(list.getTagList())
 
-                val layoutManager= FlowLayoutManager(this,false,true)
+                val layoutManager = FlowLayoutManager(this, false, true)
                 ft.layoutRefundInfo.layoutShop.recyclerView.layoutManager = layoutManager
                 ft.layoutRefundInfo.layoutShop.recyclerView.adapter = goodsAttributeAdapter
                 ft.layoutRefundInfo.layoutShop.tvNum.text = list.getSaleNum()
@@ -165,20 +201,8 @@ class RefundProgressHasShopActivity :
             }
             ft.layoutRefundInfo.tvContent.text = refundProgressBean.refundDescText
 
-
-            when (refundProgressBean.refundMethod) {
-                "ONLY_COST" -> { // 仅退款
-                    binding.tobBar.setTitle("仅退款")
-                    ft.tvInputOrder.visibility = View.GONE
-                    ft.layoutRefundInfo.tvRefundType.text = "仅退款"
-                }
-                "CONTAIN_GOODS" -> {
-                    binding.tobBar.setTitle("退款进度")
-                    ft.tvInputOrder.visibility = View.VISIBLE
-                    ft.layoutRefundInfo.tvRefundType.text = "退货退款"
-                }
-
-            }
+            ft.layoutRefundInfo.rvImg.adapter=refundImgsAdapter
+            refundImgsAdapter.setNewInstance(refundProgressBean.refundDescImgs)
         }
     }
 

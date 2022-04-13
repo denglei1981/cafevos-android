@@ -192,6 +192,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showExpress(dataBean, true) // 展示物流
                     showInvoiceState(dataBean)
                     showGetShop(true)
+                    topRefundShow(dataBean,false)
                 }
                 "退款中" -> {
                     BottomGon()
@@ -292,13 +293,27 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         showCopy()
     }
 
-    private fun topRefundShow(dataBean: OrderItemBean) {
-        binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+    private fun topRefundShow(dataBean: OrderItemBean,needShow: Boolean=true) {
+
         binding.inRefund.conRefundProgress.setOnClickListener {
             JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
         }
-        binding.inAddress.conAddress.visibility = View.GONE
+        if(needShow){
+            binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+            binding.inAddress.conAddress.visibility = View.GONE
+        }else{
+            binding.inRefund.conRefundProgress.visibility = View.GONE
+            binding.inAddress.conAddress.visibility = View.VISIBLE
+        }
+
         binding.tvOrderRemainingTime.text = dataBean.statusDesc
+        dataBean.refundStatus?.let {
+            viewModel.StatusEnum(
+                "MallRefundStatusEnum",
+                it,
+                binding.inRefund.tvStatus
+            )
+        }
         binding.inRefund.tvTips.text = "退款进度"
     }
 
@@ -343,8 +358,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         } else {
             if (dataBean.couponDiscount.toInt() > 0) {
                 binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
-                binding.inGoodsInfo1.tvCouponMoney.text =
-                    WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount)
+                binding.inGoodsInfo1.tvCouponMoney.text ="-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
             } else {
                 binding.inGoodsInfo1.grCoupon.visibility = View.GONE
             }

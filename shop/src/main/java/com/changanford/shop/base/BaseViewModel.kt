@@ -1,12 +1,11 @@
 package com.changanford.shop.base
 
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.net.ApiClient
-import com.changanford.common.net.CommonResponse
-import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.*
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.createHashMap
@@ -41,5 +40,24 @@ open class BaseViewModel : ViewModel() {
                 block.invoke()
             }
         }
+    }
+    // 根据 枚举类型 获取 枚举 然后翻译成中文
+    fun StatusEnum(enumClassName: String, english: String, tvTips: TextView) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            body["className"] = enumClassName
+            ApiClient.createApi<NetWorkApi>()
+                .dictGetEnum(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    it?.forEach { en ->
+                        if (en.code == english) {
+                            tvTips.text = en.message
+                        }
+                    }
+                }
+                .onWithMsgFailure {
+                }
+        })
     }
 }

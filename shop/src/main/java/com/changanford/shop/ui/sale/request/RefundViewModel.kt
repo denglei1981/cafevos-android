@@ -73,15 +73,20 @@ class RefundViewModel : BaseViewModel() {
                     val onGoing = it?.refundLogMap?.ON_GOING
                     val closed = it?.refundLogMap?.CLOSED
                     val success = it?.refundLogMap?.SUCESS
+                    val finish =it?.refundLogMap?.FINISH
+                    if (success != null && success.size > 0) {
+                        list.addAll(success)
+                    }
+                    if(finish!=null&&finish.size>0){
+                        list.addAll(finish)
+                    }
                     if (closed != null && closed.size > 0) {
                         list.addAll(closed)
                     }
                     if (onGoing != null && onGoing.size > 0) {
                         list.addAll(onGoing)
                     }
-                    if (success != null && success.size > 0) {
-                        list.addAll(success)
-                    }
+
                     it?.refundList = list
                     refundProgressLiveData.postValue(it)
                 }
@@ -200,9 +205,10 @@ class RefundViewModel : BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>()
                 .fillInLogistics(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    fillInLogisticsLiveData.postValue("成功")
+                    fillInLogisticsLiveData.postValue("success")
                 }
                 .onWithMsgFailure {
+                    fillInLogisticsLiveData.postValue("fail")
                     it?.toast()
                 }
         })
