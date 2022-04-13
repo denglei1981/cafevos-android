@@ -222,7 +222,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
         }
         binding.tvBalance.visibility = View.VISIBLE
         binding.tvBalance.text =
-            "合计 ￥(${WCommonUtil.getRMBBigDecimal(totalFbPrice.toString())})"
+            "合计 ${WCommonUtil.getRMBBigDecimal(totalFbPrice.toString())}"
     }
 
     fun setTitle() {

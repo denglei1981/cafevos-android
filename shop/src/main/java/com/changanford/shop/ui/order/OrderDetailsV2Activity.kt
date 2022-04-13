@@ -310,7 +310,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         when(dataBean.busSource){
             "HAGGLE"->{
                 binding.inGoodsInfo1.grHaggle.visibility=View.VISIBLE
-                binding.inGoodsInfo1.tvHaggleMoney.text=WCommonUtil.getRMB(dataBean.haggleDiscount)
+                binding.inGoodsInfo1.tvHaggleMoney.text="-".plus(WCommonUtil.getRMB(dataBean.haggleDiscount))
             }
             else->{
                 binding.inGoodsInfo1.grHaggle.visibility=View.GONE
