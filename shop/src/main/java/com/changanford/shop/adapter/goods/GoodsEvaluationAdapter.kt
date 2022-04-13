@@ -42,7 +42,7 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsEvaluateBinding>, item: CommentItem) {
         holder.dataBinding?.apply {
             item.apply {
-                evalTimeTxt=sfDate.format(evalTime?:0)
+                evalTimeTxt=sfDate.format(evalTime)
                 nickName=if("YES"!=anonymous)nickName else anonymousUsers
                 imgAvatar.load(avater,R.mipmap.head_default)
                 model=item
