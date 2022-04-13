@@ -392,6 +392,7 @@ class GoodsViewModel: BaseViewModel() {
      * [num]购买数量
      * */
     fun addShoppingCart(mallMallSpuId:String,skuId:String,fbPer:String,num:Int,listener: OnPerformListener?=null,showLoading:Boolean=false){
+        if(!isLogin())return
         viewModelScope.launch {
             fetchRequest(showLoading){
                 body.clear()
@@ -403,7 +404,6 @@ class GoodsViewModel: BaseViewModel() {
                 shopApiService.addShoppingCart(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 it?.toast()
-
             }.onSuccess {
                 listener?.onFinish(0)
                 LiveDataBus.get().with(LiveDataBusKey.ADD_TO_SHOPPING_CAR).postValue("success")
