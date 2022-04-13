@@ -96,7 +96,9 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         tvTitle.setText(title)
         tvTitle.visibility = View.VISIBLE
     }
-
+    fun getRightTv():TypefaceTextView{
+        return rightTV
+    }
     fun setActivity(activity: Activity) {
         this.activity = activity
     }
