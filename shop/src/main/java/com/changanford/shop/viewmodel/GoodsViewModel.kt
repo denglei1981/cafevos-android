@@ -405,7 +405,7 @@ class GoodsViewModel: BaseViewModel() {
             }.onWithMsgFailure {
                 it?.toast()
             }.onSuccess {
-                listener?.onFinish(0)
+                listener?.onFinish(it.toString().toInt())
                 LiveDataBus.get().with(LiveDataBusKey.ADD_TO_SHOPPING_CAR).postValue("success")
             }
         }
