@@ -11,6 +11,8 @@ import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
@@ -350,11 +352,12 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             else dataBean.apply {
                 viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
                     override fun onFinish(code: Int) {
-                        dataBean.shoppingCartCount+=buyNum
-                        binding.inBottom.tvCartNumber.apply{
-                            visibility=View.VISIBLE
-                            text="${dataBean.shoppingCartCount}"
-                        }
+                        val newCarNum=dataBean.shoppingCartCount+buyNum
+                        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(newCarNum)
+//                        binding.inBottom.tvCartNumber.apply{
+//                            visibility=View.VISIBLE
+//                            text="${dataBean.shoppingCartCount}"
+//                        }
                         "加入成功！".toast()
                     }
                 })

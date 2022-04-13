@@ -538,6 +538,7 @@ data class ShopHomeBean(
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
     val mallSpuKindDtos: ArrayList<ShopRecommendBean>? = null,//推荐列表
     var totalIntegral: String? = null,//我的福币
+    var shoppingCartCount:Int?=null,//购物车数量
 )
 
 class MallIndexDto

@@ -67,7 +67,6 @@
             android:id="@+id/tv_cart_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="@dimen/dp_11"
             android:minHeight="@dimen/dp_11"
             android:gravity="center"
             android:background="@drawable/shape_f21c44_50dp"
