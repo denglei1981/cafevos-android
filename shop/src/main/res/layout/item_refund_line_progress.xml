@@ -26,9 +26,10 @@
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/color_ee"
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintBottom_toTopOf="@+id/iv_small_circle"
             app:layout_constraintEnd_toEndOf="@+id/iv_right"
-            app:layout_constraintStart_toStartOf="@+id/iv_right"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_right" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -46,9 +47,10 @@
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/color_ee"
+            android:layout_marginStart="@dimen/dp_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/iv_right"
-            app:layout_constraintStart_toStartOf="@+id/iv_right"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_small_circle" />
 
 
@@ -68,11 +70,12 @@
             android:id="@+id/tv_shoper_states"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
             android:layout_marginTop="@dimen/dp_16"
             android:textColor="@color/gray_999999"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_right"
+
             app:layout_constraintTop_toBottomOf="@+id/tv_refund_states"
             tools:text="商家已同意" />
 
@@ -80,13 +83,13 @@
             android:id="@+id/tv_shoper_tips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_20"
             android:textColor="@color/gray_999999"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_right"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
 
             app:layout_constraintTop_toBottomOf="@+id/tv_shoper_states"
             tools:text="@string/test_str" />
@@ -95,7 +98,8 @@
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_20"
             android:maxLines="2"
@@ -103,7 +107,6 @@
             android:paddingBottom="8dp"
             android:textSize="@dimen/sp_11"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_right"
             app:layout_constraintTop_toBottomOf="@+id/tv_shoper_tips"
             tools:text="2022-04-01 14:23:23" />
 

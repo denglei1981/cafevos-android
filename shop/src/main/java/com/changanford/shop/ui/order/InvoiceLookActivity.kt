@@ -42,12 +42,14 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
                         binding.ivAddress.visibility = View.VISIBLE
                         binding.tvInvoiceStates.text = "已开票"
                         binding.tvInvoiceMoney.text = "开票金额: ￥${it.invoiceRmb}"
+                        binding.llInvoiceTime.visibility=View.VISIBLE
                     }
                     "NO" -> {
                         binding.ivAddress.visibility = View.GONE
                         binding.tvInvoiceStates.text = "未开票"
                         binding.tvInvoiceMoney.text = "预计开票金额: ￥${it.invoiceRmb}"
                         binding.llInvoiceTime.setSecondText("未开票")
+                        binding.llInvoiceTime.visibility=View.GONE
                     }
                 }
                 binding.llInvoiceTaitou.setSecondText(it.invoiceHeader)

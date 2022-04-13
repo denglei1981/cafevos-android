@@ -41,7 +41,7 @@ class OrderDetailsItemV2Adapter() :
             recyclerView.adapter = goodsAttributeAdapter
 
             when (orderStatus) {
-                "WAIT_SEND", "WAIT_PAY","CLOSED" -> {
+                "WAIT_SEND", "WAIT_PAY", "CLOSED" -> {
                     tvSaleHandler.visibility = View.GONE
                 }
                 "REFUNDING" -> {
@@ -69,7 +69,15 @@ class OrderDetailsItemV2Adapter() :
                         tvSaleHandler.visibility = View.VISIBLE
                         tvSaleHandler.text = "退款关闭"
                     }
+                    else -> {
+                        tvSaleHandler.visibility = View.GONE
+                        tvSaleHandler.text = ""
+                    }
+
                 }
+            } else { // 没有退款进度
+                tvSaleHandler.visibility = View.GONE
+                tvSaleHandler.text = ""
             }
             imgGoodsCover.setOnClickListener {
                 GoodsDetailsActivity.start(item.mallMallspuId)
@@ -78,7 +86,7 @@ class OrderDetailsItemV2Adapter() :
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品
                 val itemStatus = tvSaleHandler.text.toString()
                 when (itemStatus) {
-                    "退款中","退款成功" -> {// 查询退款进度
+                    "退款中", "退款成功" -> {// 查询退款进度
                         JumpUtils.instans?.jump(126, item.mallOrderSkuId)
                     }
                     else -> {

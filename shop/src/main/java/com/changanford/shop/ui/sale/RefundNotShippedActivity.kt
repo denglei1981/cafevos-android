@@ -78,6 +78,10 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
             refundBean =RefundBean(it.orderNo,it.payFb,it.payRmb,"allOrderRefund")
             showTotalTag(binding.tvRefundMoney, refundBean!!)
         })
+        viewModel.invoiceLiveData.observe(this, Observer {
+            // 申请退款成功
+            this.finish()
+        })
     }
 
     fun showZero(text: AppCompatTextView?, item: RefundBean) {

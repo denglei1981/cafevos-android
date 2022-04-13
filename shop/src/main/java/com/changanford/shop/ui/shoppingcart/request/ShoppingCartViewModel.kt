@@ -51,6 +51,11 @@ class ShoppingCartViewModel : BaseViewModel() {
                 canBuyGoodList.add(it)
             }
         }
+        goodList?.let {
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(goodList?.size)
+
+        }
+
         goodsListLiveData.postValue(canBuyGoodList)
         goodsInvaildListLiveData.postValue(invaildGoodList)
     }
@@ -71,9 +76,9 @@ class ShoppingCartViewModel : BaseViewModel() {
                     if(lastCount<=0){
                         lastCount=0
                     }
-                    if(isPost){
-                        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(lastCount)
-                    }
+//                    if(isPost){
+//                        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(lastCount)
+//                    }
 
                 }
                 .onWithMsgFailure {

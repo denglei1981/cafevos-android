@@ -35,6 +35,8 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
             )
             baseViewModel.StatusEnum("MallRefundStatusEnum", item.refundStauts, tvRefundStates)
             if (holder.layoutPosition == 1) {
+                ivRight.visibility = View.VISIBLE
+                tvRefundStates.visibility=View.VISIBLE
                 tvRefundStates.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvShoperStates.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvShoperTips.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -51,9 +53,11 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
                 if (lastIndex >= 0) {
                     val item1 = getItem(lastIndex-1)
                     if (item1.refundStauts == getItem(lastIndex).refundStauts) {
-                        ivRight.visibility = View.INVISIBLE
+                        ivRight.visibility = View.GONE
+                        tvRefundStates.visibility=View.GONE
                     } else {
                         ivRight.visibility = View.VISIBLE
+                        tvRefundStates.visibility=View.VISIBLE
                     }
                 }
 

@@ -663,6 +663,8 @@ data class OrderItemBean(
     var canReview:String="NO",
     var mallMallspuId:String="",
     var packageJump:PackageJumpBean?=null,
+    var refundStatus:String?=""
+
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")

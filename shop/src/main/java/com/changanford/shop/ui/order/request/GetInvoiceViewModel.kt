@@ -28,7 +28,7 @@ class GetInvoiceViewModel : BaseViewModel() {
 
     var  invoiceDetailsLiveData: MutableLiveData<InvoiceDetails> = MutableLiveData()
     fun getUserInvoiceAdd(addressId:String,invoiceHeader:String,invoiceHeaderName:String,invoiceRmb:String,mallMallOrderId:String,mallMallOrderNo:String,taxpayerIdentifier:String="",memo:String="") {
-        launch(block = {
+        launch(true,block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             body["addressId"] =addressId

@@ -12,8 +12,11 @@ import com.changanford.common.bean.AddressBeanItem
 import com.changanford.common.bean.OrderReceiveAddress
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.INVOICE_ADDRESS_SUCCESS
@@ -27,6 +30,9 @@ import com.changanford.shop.ui.order.request.GetInvoiceViewModel
 import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
 
 // 发票 信息
 @Route(path = ARouterShopPath.InvoiceActivity)
@@ -60,35 +66,65 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         invoiceInfo = gson.fromJson<InvoiceInfo>(invoiceInfoStr, InvoiceInfo::class.java)
 
         showPerson()
-        binding.tvGetInvoice.setOnClickListener { // 申请开票
-            if (canGetInvoice()) {
-                if (binding.rbPerson.isChecked) { // 选择的开个人票
-                    viewModel.getUserInvoiceAdd(
-                        invoiceInfo.addressId,
-                        "个人",
-                        personName,
-                        invoiceInfo.invoiceRmb,
-                        invoiceInfo.mallMallOrderId,
-                        invoiceInfo.mallMallOrderNo
-                    )
-                }
-                if (binding.rbCompany.isChecked) { // 选择的开单位票
-                    viewModel.getUserInvoiceAdd(
-                        invoiceInfo.addressId,
-                        "单位",
-                        companyName,
-                        invoiceInfo.invoiceRmb,
-                        invoiceInfo.mallMallOrderId,
-                        invoiceInfo.mallMallOrderNo,
-                        taxpayerName
-                    )
-                }
-            }
 
-        }
+        binding.tvGetInvoice.clicks().throttleFirst(500, TimeUnit.MILLISECONDS).subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (canGetInvoice()) {
+                    if (binding.rbPerson.isChecked) { // 选择的开个人票
+                        viewModel.getUserInvoiceAdd(
+                            invoiceInfo.addressId,
+                            "个人",
+                            personName,
+                            invoiceInfo.invoiceRmb,
+                            invoiceInfo.mallMallOrderId,
+                            invoiceInfo.mallMallOrderNo
+                        )
+                    }
+                    if (binding.rbCompany.isChecked) { // 选择的开单位票
+                        viewModel.getUserInvoiceAdd(
+                            invoiceInfo.addressId,
+                            "单位",
+                            companyName,
+                            invoiceInfo.invoiceRmb,
+                            invoiceInfo.mallMallOrderId,
+                            invoiceInfo.mallMallOrderNo,
+                            taxpayerName
+                        )
+                    }
+                }
+            }, {})
+//        binding.tvGetInvoice.setOnClickListener { // 申请开票
+//            if (canGetInvoice()) {
+//                if (binding.rbPerson.isChecked) { // 选择的开个人票
+//                    viewModel.getUserInvoiceAdd(
+//                        invoiceInfo.addressId,
+//                        "个人",
+//                        personName,
+//                        invoiceInfo.invoiceRmb,
+//                        invoiceInfo.mallMallOrderId,
+//                        invoiceInfo.mallMallOrderNo
+//                    )
+//                }
+//                if (binding.rbCompany.isChecked) { // 选择的开单位票
+//                    viewModel.getUserInvoiceAdd(
+//                        invoiceInfo.addressId,
+//                        "单位",
+//                        companyName,
+//                        invoiceInfo.invoiceRmb,
+//                        invoiceInfo.mallMallOrderId,
+//                        invoiceInfo.mallMallOrderNo,
+//                        taxpayerName
+//                    )
+//                }
+//            }
+//
+//        }
         binding.conAddress.setOnClickListener {
             JumpUtils.instans?.jump(20, "2")
 
+        }
+        binding.tvNotInvoice.setOnClickListener {
+            onBackPressed()
         }
         binding.rbPerson.isChecked = true
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->

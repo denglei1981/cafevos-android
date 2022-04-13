@@ -169,7 +169,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     dataBean.otherName = getString(R.string.str_payTime)
                     val otherValue = simpleDateFormat.format(dataBean.payTime ?: 0)
                     dataBean.otherValue = otherValue
-                    binding.tvOrderRemainingTime.setText(R.string.prompt_paymentHasBeen)
+                    if(TextUtils.isEmpty(dataBean.statusDesc)){
+                        binding.tvOrderRemainingTime.text=getString(R.string.prompt_paymentHasBeen)
+                    }
+                    dataBean.statusDesc?.let {
+                        binding.tvOrderRemainingTime.text=it
+                    }
                     BottomBShow()
                     showInvoiceState(dataBean)
                     showRefund(dataBean) // 待发货 申请退款
@@ -189,12 +194,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 }
                 "退款中" -> {
                     BottomGon()
-                    binding.inRefund.conRefundProgress.visibility = View.VISIBLE
-                    binding.inRefund.conRefundProgress.setOnClickListener {
-                        JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
-                    }
-                    binding.inAddress.conAddress.visibility = View.GONE
-                    binding.tvOrderRemainingTime.text = dataBean.statusDesc
+                    topRefundShow(dataBean)
                 }
                 "待评价" -> {
                     totalPayName = R.string.str_realPayTotalAmount
@@ -242,9 +242,14 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 }
                 "已关闭" -> {
                     binding.inOrderInfo.layoutOrderClose.visibility = View.GONE
-                    binding.tvOrderRemainingTime.text = dataBean.evalStatusDetail
+                    dataBean.statusDesc?.let {
+                        binding.tvOrderRemainingTime.text = dataBean.statusDesc
+                    }
                     if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility = View.INVISIBLE
                     BottomGon()
+                    if(!TextUtils.isEmpty(dataBean.refundStatus)){
+                        topRefundShow(dataBean = dataBean)
+                    }
                 }
             }
         }
@@ -283,6 +288,16 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         showCounpon()
         showHaggle()
         showCopy()
+    }
+
+    private fun topRefundShow(dataBean: OrderItemBean) {
+        binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+        binding.inRefund.conRefundProgress.setOnClickListener {
+            JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
+        }
+        binding.inAddress.conAddress.visibility = View.GONE
+        binding.tvOrderRemainingTime.text = dataBean.statusDesc
+        binding.inRefund.tvTips.text = "退款进度"
     }
 
     private fun showCopy() {
