@@ -470,17 +470,16 @@ object WCommonUtil {
     }
     /**
      * 查看大图
-     * [curImageUrl]当前图片地址
+     * [currentPos]当前位置
      */
-    fun toViewALargerVersion(imgPaths:List<String>,count:Int?=null,curImageUrl:String?=null){
+    fun toViewALargerVersion(imgPaths:List<String>,currentPos:Int?=null){
         val imgList= arrayListOf<MediaListBean>()
         imgPaths.forEach {
             imgList.add(MediaListBean(it))
         }
         val bundle = Bundle()
         bundle.putSerializable("imgList", imgList)
-        bundle.putInt("count", count?:imgList.size)
-        if(curImageUrl!=null)bundle.putString("curImageUrl", curImageUrl)
+        bundle.putInt("count", currentPos?:0)
         startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
     }
 }

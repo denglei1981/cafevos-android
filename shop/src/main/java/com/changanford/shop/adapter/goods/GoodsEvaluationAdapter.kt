@@ -65,7 +65,7 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                     for(i in 0 until maxSize){
                         Box(modifier = Modifier.size(imgWidth.dp).clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
                             //查看大图
-                            WCommonUtil.toViewALargerVersion(imgArr,imgSize,imgArr[i])
+                            WCommonUtil.toViewALargerVersion(imgArr,i)
                         }, contentAlignment = Alignment.BottomEnd) {
                             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgArr[i]) ?: com.changanford.common.R.mipmap.head_default,
                                 builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
