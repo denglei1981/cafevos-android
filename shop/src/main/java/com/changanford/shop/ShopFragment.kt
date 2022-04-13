@@ -15,9 +15,9 @@ import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
 import com.changanford.shop.ui.compose.HomeMyIntegralCompose
-import com.changanford.shop.ui.goods.GoodsListFragment
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
+import com.changanford.shop.ui.goods.GoodsListFragment
 import com.changanford.shop.ui.goods.RecommendActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -45,8 +45,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         initKill()
         initTab()
         binding.apply {
-            inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
             smartRl.setOnRefreshListener(this@ShopFragment)
+            //搜索
+            inHeader.imgSearch.setOnClickListener {
+                JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())
+            }
+            //购物车
+            inHeader.imgBuyCar.setOnClickListener {
+                JumpUtils.instans?.jump(119)
+            }
             inTop.apply {
                 recyclerViewRecommend.adapter=recommendAdapter
                 tvAllList.setOnClickListener {
@@ -97,10 +104,6 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //            if("ON_GOING"==mAdapter.data[position].seckillStatus)GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
-        binding.inHeader.imgBuyCar.setOnClickListener {
-            JumpUtils.instans?.jump(119)
-
-        }
     }
     override fun initData() {
         viewModel.getBannerData()
@@ -113,6 +116,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             ScreenUtils.setMargin(binding.inTop.tvKillTitle,0,if (null != it && it.size > 0) dp38 else 0,9,0)
         }
         viewModel.shopHomeData.observe(this) {
+            bindCarNum(it.shoppingCartCount?:0)
             mAdapter.setList(it.indexSeckillDtoList)
             binding.inTop.apply {
                 val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
@@ -147,7 +151,19 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //        val currentItem=binding.viewpager.currentItem
 //        fragments[currentItem].startRefresh()
     }
+    private fun bindCarNum(num:Int){
+        binding.inHeader.tvCarNumber.apply {
+            visibility=if(num>0){
+                text="$num"
+                View.VISIBLE
+            } else View.GONE
+        }
+    }
     private fun addLiveDataBus(){
+        //购物车数量改变
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).observe(this) {
+            bindCarNum(it)
+        }
         //登录、退出登录回调
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {

@@ -46,6 +46,31 @@ public class DateTimeUtil {
         cDate.setTime(time);
        return formatFriendly(cDate);
     }
+    public static String formatFriendly(Date startDate,Date endDate) {
+        long diff = endDate.getTime() - startDate.getTime();
+        long r = 0;
+        if (diff > year) {
+            r = (diff / year);
+            return r + "年后";
+        }
+        if (diff > month) {
+            r = (diff / month);
+            return r + "个月后";
+        }
+        if (diff > day) {
+            r = (diff / day);
+            return r + "天后";
+        }
+        if (diff > hour) {
+            r = (diff / hour);
+            return r + "个小时后";
+        }
+        if (diff > minute) {
+            r = (diff / minute);
+            return r + "分钟后";
+        }
+        return "刚刚";
+    }
     /**
      * 将日期格式化成友好的字符串：几分钟前、几小时前、几天前、几月前、几年前、刚刚
      *

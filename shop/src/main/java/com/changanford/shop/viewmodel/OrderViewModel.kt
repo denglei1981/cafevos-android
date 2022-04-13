@@ -42,6 +42,8 @@ class OrderViewModel: BaseViewModel() {
     var createOrderBean = MutableLiveData<CreateOrderBean?>()
     //下单支付返回
     var payBackBeanLiveData = MutableLiveData<PayBackBean?>()
+    //退款售后订单列表
+    var refundBeanLiveData = MutableLiveData<ShopOrderRefundBean?>()
     /**
      * 下单
      * [addressId]收货地址id
@@ -198,23 +200,24 @@ class OrderViewModel: BaseViewModel() {
      * evalStatus 0待评价
      * */
     fun getShopOrderList(orderStatus:Int,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
+        var typeI=orderStatus+1
+        if(typeI<0||typeI>=queryType.size)typeI=0
+        if(typeI==5){
+            getShopOrderRefundList(pageNo,pageSize,showLoading)
+            return
+        }
         viewModelScope.launch {
             val responseBean=fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-                var typeI=orderStatus+1
-                if(typeI<0||typeI>=queryType.size)typeI=0
                 body["queryParams"]=HashMap<String,Any>().also {
                     it["queryType"] = queryType[typeI]
-                    it["isWb"]="NO"
 //                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
 //                    else if(3==orderStatus)it["evalStatus"] =0
                 }
                 val randomKey = getRandomKey()
-                if(typeI!=5) shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
-                else shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
-
+                shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 shopOrderData.postValue(null)
                 it?.toast()
@@ -223,6 +226,29 @@ class OrderViewModel: BaseViewModel() {
                 val timestamp=responseBean.timestamp?:System.currentTimeMillis().toString()
                 it?.nowTime= timestamp.toLong()
                 shopOrderData.postValue(it)
+            }
+        }
+    }
+    /**
+     * 退款订单列表
+    * */
+    fun getShopOrderRefundList(pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
+        viewModelScope.launch {
+            val responseBean=fetchRequest(showLoading) {
+                body.clear()
+                body["pageNo"]=pageNo
+                body["pageSize"]=pageSize
+                body["queryParams"]=HashMap<String,Any>().also {
+                    it["isWb"]="NO"
+                }
+                val randomKey = getRandomKey()
+                shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                shopOrderData.postValue(null)
+                it?.toast()
+            }
+            responseBean.onSuccess {
+                refundBeanLiveData.postValue(it)
             }
         }
     }

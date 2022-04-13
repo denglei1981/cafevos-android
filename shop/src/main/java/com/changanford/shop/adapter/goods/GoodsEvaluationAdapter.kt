@@ -3,10 +3,13 @@ package com.changanford.shop.adapter.goods
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,9 +25,12 @@ import com.changanford.common.bean.CommentItem
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
+import com.changanford.shop.utils.DateTimeUtil
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
@@ -36,7 +42,7 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsEvaluateBinding>, item: CommentItem) {
         holder.dataBinding?.apply {
             item.apply {
-                evalTimeTxt=sfDate.format(evalTime?:0)
+                evalTimeTxt=sfDate.format(evalTime)
                 nickName=if("YES"!=anonymous)nickName else anonymousUsers
                 imgAvatar.load(avater,R.mipmap.head_default)
                 model=item
@@ -59,7 +65,10 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                     val imgSize=imgArr.size
                     val maxSize=if(imgSize>=3)3 else imgSize
                     for(i in 0 until maxSize){
-                        Box(modifier = Modifier.size(imgWidth.dp), contentAlignment = Alignment.BottomEnd) {
+                        Box(modifier = Modifier.size(imgWidth.dp).clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
+                            //查看大图
+                            WCommonUtil.toViewALargerVersion(imgArr,i)
+                        }, contentAlignment = Alignment.BottomEnd) {
                             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgArr[i]) ?: com.changanford.common.R.mipmap.head_default,
                                 builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
                                 contentScale = ContentScale.Crop,
@@ -86,7 +95,14 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                 //追评
                 reviewEval?.apply {
                     Spacer(modifier = Modifier.height(18.dp))
-                    Text(text = evalTime?:"",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                    //主评价时间
+                    val starDate=Date()
+                    starDate.time=item.evalTime
+                    //追评时间
+                    val endDate=Date()
+                    endDate.time=evalTime
+                    val timeStr=DateTimeUtil.formatFriendly(starDate,endDate)
+                    Text(text = "${timeStr}追评",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
                     Spacer(modifier = Modifier.height(11.dp))
                     Text(text = evalText?:"",color= colorResource(R.color.color_33), fontSize = 14.sp)
                 }

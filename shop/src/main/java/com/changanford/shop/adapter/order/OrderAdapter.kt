@@ -14,7 +14,6 @@ import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.wutil.ScreenUtils
-import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.ItemOrdersGoodsBinding
@@ -25,7 +24,6 @@ import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: OrderViewModel?=null): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemOrdersGoodsBinding>>(R.layout.item_orders_goods){
@@ -408,8 +406,6 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 "WAIT_PAY"==orderStatus -> {
                     //可支付结束时间=服务器当前时间+可支付剩余时间
 //                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
-//                    val date= Date(item.payTimeDeadline)
-                    "剩余倒计时：${item.payTimeDeadline}>>>>${text}>>>>>>${Date()}".wLogE("okhttp")
                     text=simpleDateFormat.format((item.payTimeDeadline?:"0").toLong())
                     setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
                     visibility = View.VISIBLE

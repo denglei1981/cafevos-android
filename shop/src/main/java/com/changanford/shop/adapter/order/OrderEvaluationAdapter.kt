@@ -27,7 +27,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
 
-class OrderEvaluationAdapter(val activity:Activity, private val reviewEval:Boolean=false): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
+class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
     val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
     val selectPicArr =arrayListOf<OrderFormState>()
     var postBeanLiveData = MutableLiveData<MutableList<PostEvaluationBean>>()

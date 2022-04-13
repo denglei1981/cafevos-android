@@ -93,7 +93,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
             it?.apply {
                 if (1 == pageNo) mAdapter.setList(dataList)
                 else if(dataList !=null)mAdapter.addData(dataList!!)
-                binding.smartRl.setEnableLoadMore(mAdapter.data.size >= total)
+                binding.smartRl.setEnableLoadMore(mAdapter.data.size<total)
             }
             binding.smartRl.apply {
                 finishLoadMore()

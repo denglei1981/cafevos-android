@@ -16,14 +16,38 @@
         android:layout_marginTop="@dimen/dp_10"
         android:paddingTop="@dimen/dp_16"
         android:paddingBottom="@dimen/dp_10">
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_orderNo"
-            android:layout_marginStart="@dimen/dp_20"
+        <View
+            android:id="@+id/view_start"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_height="1dp"/>
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_tag"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:background="@drawable/border0d5dp_round_2dp_00095b"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/view_start"
+            app:layout_constraintEnd_toStartOf="@id/tv_orderNo"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/dp_30"
+            android:minHeight="@dimen/dp_16"
+            android:gravity="center"
+            android:text="@string/str_refund"
+            android:textColor="@color/color_00095B"
+            android:textSize="@dimen/sp_11"/>
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_orderNo"
+            app:layout_constraintStart_toEndOf="@id/tv_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:start_txt="@string/str_orderNo"
+            tools:layout_marginStart="@dimen/dp_4"
             android:text="@{model.orderNo}"
             tools:text="订单编号：DD202109110023"
             android:textColor="@color/color_74889D"
@@ -76,22 +100,22 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"/>
         <View
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_15"
             android:visibility="invisible"
             android:id="@+id/view_n"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0_1"
             android:layout_height="@dimen/dp_30" />
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginEnd="@dimen/dp_20"
             style="?android:attr/borderlessButtonStyle"
             tools:visibility="visible"
             android:visibility="invisible"
             android:id="@+id/btn_confirm"
+            android:layout_marginEnd="@dimen/dp_5"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/view_n"
             app:layout_constraintTop_toTopOf="@+id/view_n"
             android:minWidth="@dimen/dp_80"
             android:background="@drawable/bord_00095b_15dp"
@@ -156,6 +180,8 @@
         <com.changanford.shop.view.TypefaceTextView
             android:layout_marginStart="@dimen/dp_20"
             android:id="@+id/tv_orderType"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/dp_30"
@@ -166,5 +192,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_n"
             tools:text="请在09月05日 15:09 前支付" />
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/composeView"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/view_n"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_n"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

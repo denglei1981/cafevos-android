@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -39,6 +40,8 @@
                 android:layout_height="wrap_content"/>
             <com.changanford.common.ui.view.WTextView
                 android:id="@+id/tv_car_number"
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"

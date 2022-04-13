@@ -35,7 +35,7 @@ data class EvaluationSkuItem(
  * 发布评价
 * */
 data class PostEvaluationBean(
-    var anonymous: String?=null,//是否匿名
+    var anonymous: String="NO",//是否匿名
     var evalScore: Int? = null,//评分(0-5)
     var evalText: String? = null,//评价内容
     var imgUrls: List<String>? = null,

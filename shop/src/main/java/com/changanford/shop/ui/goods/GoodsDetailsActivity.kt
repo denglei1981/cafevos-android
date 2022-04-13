@@ -263,6 +263,14 @@ class GoodsDetailsActivity:BaseActivity<ActivityGoodsDetailsBinding, GoodsViewMo
         if(::control.isInitialized)control.onDestroy()
     }
     private fun addLiveDataBus(){
+        //购物车数量改变
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).observe(this) {
+            control.dataBean.shoppingCartCount=it
+            binding.inBottom.tvCartNumber.apply{
+                visibility=if(it>0)View.VISIBLE else View.GONE
+                text="$it"
+            }
+        }
         //下单回调
         LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this) {
             if ("2" != it && "0" != spuId) viewModel.queryGoodsDetails(spuId, false)

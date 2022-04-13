@@ -495,7 +495,7 @@ data class CommentItem(
     val evalScore: Int = 0,
     val evalStatus: String = "",
     val evalText: String = "",
-    var evalTime: Long? = 0,
+    var evalTime: Long = 0,
     var evalTimeTxt: String? = "0",
     val evalType: String = "",
     val mallMallOrderEvalId: Int = 0,
@@ -527,7 +527,7 @@ data class CommentItem(
 /*
 * 追评
 * */
-data class ReviewEvalBean(var evalText:String?=null,var evalTime:String?=null)
+data class ReviewEvalBean(var evalText:String?=null,var evalTime:Long=0)
 
 /**
  * 商品首页
@@ -538,6 +538,7 @@ data class ShopHomeBean(
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
     val mallSpuKindDtos: ArrayList<ShopRecommendBean>? = null,//推荐列表
     var totalIntegral: String? = null,//我的福币
+    var shoppingCartCount:Int?=null,//购物车数量
 )
 
 class MallIndexDto
@@ -704,6 +705,42 @@ data class PackageJumpBean(
     val jumpCode:Int=0,
     val jumpVal:String?=null,
 )
+data class ShopOrderRefundBean(
+    val dataList: List<OrderRefundItemBean>?=null,
+    val pageNo: Int = 0,
+    val pageSize: Int = 0,
+    val total: Int = 0,
+    val totalPage: Int = 0,
+    var nowTime: Long? = 0,
+)
+/**
+ * 退款item
+* */
+data class OrderRefundItemBean(
+    val fbRefund: String? = null,
+    val fbRefundApply: String? = null,
+    val mallMallOrderId: String = "0",
+    val mallMallRefundId: String ="0",
+    val orderNo: String = "",
+    val refundMethod: String = "",
+    val refundNo: String = "",
+    val refundNum: Int = 0,
+    val refundSkus: List<OrderSkuItem> = listOf(),
+    val refundStatus: String = "",
+    val refundType: String = "",
+    val rmbRefund: String? = null,
+    val rmbRefundApply: String? = null,
+    var busSourse:String?="",
+){
+    fun getRefundStatusTxt():String{
+        return when(refundStatus){
+            "ON_GOING"->"退款中"
+            "SUCESS"->"退款完成"
+            "CLOSED"->"退款关闭"
+            else ->""
+        }
+    }
+}
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,
@@ -853,6 +890,7 @@ data class OrderSkuItem(
     var fbPrice: String? = null,
     var rmbPrice: String? = null,
     var orderImg:String?=null,
+    val refundNum: Int = 0,//退款数量
 ) {
     /**
      * 获取标签
