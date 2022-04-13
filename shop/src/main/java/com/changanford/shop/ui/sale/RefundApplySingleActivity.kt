@@ -154,8 +154,6 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         showNumState(orderItemBean.buyNum)
         binding.addSubtractView.numberLiveData.observe(this, Observer { num->
             showNumState(num)
-
-
         })
         when (orderItemBean.singleRefundType) {
             "ONLY_COST" -> {

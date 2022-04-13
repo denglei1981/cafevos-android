@@ -13,6 +13,7 @@ import com.changanford.common.adapter.CouponItemAdapter
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.databinding.PopGetCouponBinding
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterShopPath.UseCouponsActivity
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toast
 
@@ -64,6 +65,7 @@ class GetCoupopBindingPop(
                     }
                     "TO_USE" -> { // 已领取
                         // 跳转到立即使用的界面
+//                        UseCouponsActivity.start(couPonItem)
                     }
                     else -> { // 用不了了
 
@@ -100,7 +102,12 @@ class GetCoupopBindingPop(
                     if (isAll) {
                         this.dismiss()
                     } else {
-                        getCouponList()
+                        if(list.size<=1){
+                            this.dismiss()
+                        }else{
+                            getCouponList()
+                        }
+
                     }
 
                 }.onWithMsgFailure {

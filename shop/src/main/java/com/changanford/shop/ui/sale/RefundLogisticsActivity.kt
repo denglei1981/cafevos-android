@@ -74,7 +74,6 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
                 "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
                 "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
                 "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-
                 PictureUtil.openGallery(
                     this,
                     selectList,
@@ -162,7 +161,11 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
         initPicAdapter()
         binding.tvHandle.setOnClickListener {
             if (canHandle()) {
-                addApply()
+                if (selectList.size > 0) { // 有图片,上传图片
+                    viewModel.getOSS()
+                } else {// 直接申请
+                    addApply()
+                }
             }
         }
         binding.layoutTop.setOnBackClickListener(object :TopBar.OnBackClickListener{
@@ -206,9 +209,14 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
             }
         })
         viewModel.fillInLogisticsLiveData.observe(this, Observer {
-            "物流信息填写成功".toast()
-            LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).postValue("success")
-            this.finish()
+            if(it=="success"){
+                "物流信息填写成功".toast()
+                LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).postValue("success")
+                this.finish()
+            }else{
+                dialog.dismiss()
+            }
+
         })
     }
 

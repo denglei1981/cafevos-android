@@ -60,13 +60,15 @@ data class RefundProgressBean(
     var sku: RefundOrderItemBean?=null,
     val refundLogMap: RefundOutStautsBean,
     var refundList: MutableList<RefundStautsBean>? = mutableListOf(),
-    var refundDescText:String
+    var refundDescText:String,
+    val refundDescImgs:MutableList<String>?= mutableListOf()
 )
 
 data class RefundOutStautsBean(
     val ON_GOING: MutableList<RefundStautsBean>? = mutableListOf(),
     val SUCESS: MutableList<RefundStautsBean>? = mutableListOf(),
-    val CLOSED: MutableList<RefundStautsBean>? = mutableListOf()
+    val CLOSED: MutableList<RefundStautsBean>? = mutableListOf(),
+    val FINISH: MutableList<RefundStautsBean>? = mutableListOf()
 )
 
 /**
