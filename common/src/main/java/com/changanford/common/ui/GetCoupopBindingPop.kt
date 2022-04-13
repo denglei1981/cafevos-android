@@ -14,8 +14,10 @@ import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.databinding.PopGetCouponBinding
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterShopPath.UseCouponsActivity
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toast
+import com.google.gson.Gson
 
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -61,11 +63,14 @@ class GetCoupopBindingPop(
                     "PENDING" -> { // 待领取
                         val list = arrayListOf<String>()
                         list.add(couPonItem.couponSendId)
-                        getCoupon(list)
+                        getCoupon(list,couponItemAdapter.data.size)
                     }
                     "TO_USE" -> { // 已领取
                         // 跳转到立即使用的界面
 //                        UseCouponsActivity.start(couPonItem)
+                        val  gson=Gson()
+                        val cou=gson.toJson(couPonItem)
+                        JumpUtils.instans?.jump(128,cou)
                     }
                     else -> { // 用不了了
 
@@ -81,7 +86,7 @@ class GetCoupopBindingPop(
                         list.add(l.couponSendId)
                     }
                 }
-                getCoupon(list, true)
+                getCoupon(list, 0)
             }
 
 
@@ -90,7 +95,7 @@ class GetCoupopBindingPop(
 
     }
 
-    fun getCoupon(list: ArrayList<String>, isAll: Boolean = false) {
+    fun getCoupon(list: ArrayList<String>, count:Int=0) {
         lifecycleOwner.launchWithCatch {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
@@ -99,17 +104,11 @@ class GetCoupopBindingPop(
                 .receiveCoupons(body.header(randomKey), body.body(randomKey))
                 .onSuccess {
                     // 领取成功,刷新下数据
-                    if (isAll) {
-                        this.dismiss()
-                    } else {
-                        if(list.size<=1){
+                        if(count<=1){
                             this.dismiss()
                         }else{
                             getCouponList()
                         }
-
-                    }
-
                 }.onWithMsgFailure {
                     it?.toast()
                 }

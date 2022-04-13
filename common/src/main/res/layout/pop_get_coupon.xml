@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_content"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="420dp"
             android:background="@drawable/shape_coupon_gradient_corner20_gray"
             android:orientation="vertical"
             android:paddingBottom="20dp"
@@ -38,18 +38,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="恭喜您获得3张优惠券" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_coupon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginBottom="8dp"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/tv_get"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_get"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_get"
@@ -84,22 +88,21 @@
             android:id="@+id/iv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-45dp"
             android:src="@drawable/image_coupop_title"
-            app:layout_constraintCircle="@+id/con_content"
-            app:layout_constraintCircleAngle="360"
-            app:layout_constraintCircleRadius="220dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/con_content" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/round_close_light"
-            app:layout_constraintTop_toBottomOf="@+id/con_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_23"
+            android:src="@drawable/round_close_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/con_content"
 
             />
 

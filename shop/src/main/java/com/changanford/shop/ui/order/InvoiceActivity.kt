@@ -38,8 +38,8 @@ import java.util.concurrent.TimeUnit
 @Route(path = ARouterShopPath.InvoiceActivity)
 class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewModel>() {
 
-    companion object{
-        fun start(invoiceInfo:InvoiceInfo){
+    companion object {
+        fun start(invoiceInfo: InvoiceInfo) {
             val gson = Gson()
             val invoiceStr = gson.toJson(invoiceInfo)
             JumpUtils.instans?.jump(120, invoiceStr)
@@ -67,7 +67,8 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
 
         showPerson()
 
-        binding.tvGetInvoice.clicks().throttleFirst(500, TimeUnit.MILLISECONDS).subscribeOn(AndroidSchedulers.mainThread())
+        binding.tvGetInvoice.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (canGetInvoice()) {
                     if (binding.rbPerson.isChecked) { // 选择的开个人票
@@ -182,6 +183,10 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
                 "请输入纳税人识别号".toast()
                 return false
             }
+        }
+        if (TextUtils.isEmpty(invoiceInfo.addressId)) {
+            "请选择发票邮寄地址".toast()
+            return false
         }
         return true
     }
