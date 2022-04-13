@@ -76,14 +76,13 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                     mAdapter.reviewEval=reviewEval
                     if(reviewEval){
                         binding.topBar.setTitle(getString(R.string.str_releasedAfterReview))
-                        viewModel.orderItemLiveData.postValue(it)
                     }
+                    viewModel.orderItemLiveData.postValue(it)
                 }
             }else {
                 orderNo=this
                 viewModel.getOrderDetail(orderNo)
             }
-
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)
@@ -100,31 +99,39 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         }
     }
     private fun submitEvaluation(){
-        if(reviewEval){
+        //查询是否有选择图片 为null 表示都没有选择图片
+        val find=if(reviewEval)null else mAdapter.selectPicArr.find { it.imgPathArr!=null&&it.imgPathArr!!.size>0 }
+        if(find==null){//追评或者没有选择图片则立即提交评价
             viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
-        }else{
+        }else{//评价 -先提交图片
             dialog.show()
             uploadPic(0)
         }
     }
     private fun uploadPic(pos:Int=0){
-        val postBean=mAdapter.postBean
-        val item=mAdapter.selectPicArr[pos]
-        //上传图片
-        uploadViewModel.uploadFile(this,item.imgPathArr,object : UploadPicCallback {
-            override fun onUploadSuccess(files: ArrayList<String>) {
-                upI++
-                postBean[pos].imgUrls=files
-                if(upI==postBean.size){//图片以上传完成
-                    viewModel.postEvaluation(orderNo,postBean,reviewEval)
+        val imgPathArr=mAdapter.selectPicArr[pos].imgPathArr
+        if(imgPathArr==null||imgPathArr.size==0)uploadSuccess(pos,null)
+        else{
+            //上传图片
+            uploadViewModel.uploadFile(this,imgPathArr,object : UploadPicCallback {
+                override fun onUploadSuccess(files: ArrayList<String>) {
+                    uploadSuccess(pos,files)
+                }
+                override fun onUploadFailed(errCode: String) {
+                    upI=0
                     dialog.dismiss()
-                }else uploadPic(pos+1)
-            }
-            override fun onUploadFailed(errCode: String) {
-                upI=0
-                dialog.dismiss()
-            }
-            override fun onuploadFileprogress(progress: Long) {}
-        })
+                }
+                override fun onuploadFileprogress(progress: Long) {}
+            })
+        }
+    }
+    private fun uploadSuccess(pos:Int,files: ArrayList<String>?=null){
+        val postBean=mAdapter.postBean
+        upI++
+        postBean[pos].imgUrls=files
+        if(upI==postBean.size){//图片以上传完成
+            viewModel.postEvaluation(orderNo,postBean,reviewEval)
+            dialog.dismiss()
+        }else uploadPic(pos+1)
     }
 }

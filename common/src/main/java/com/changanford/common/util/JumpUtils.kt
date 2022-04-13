@@ -722,6 +722,12 @@ class JumpUtils {
             127 -> { // 多包裹信息  start 已实现
                 startARouter(ARouterShopPath.MultiplePackageActivity, bundle, true)
             }
+            128 -> { // 使用优惠券
+                if (!TextUtils.isEmpty(value)) {
+                    bundle.putString("itemBean",value)
+                    startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
+                }
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty() && value.contains("http")) {

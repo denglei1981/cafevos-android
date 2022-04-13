@@ -352,12 +352,11 @@ class GoodsDetailsControl(val activity: AppCompatActivity, val binding: Activity
             else dataBean.apply {
                 viewModel.addShoppingCart(spuId,skuId,fbPrice,buyNum, listener = object :OnPerformListener{
                     override fun onFinish(code: Int) {
-                        val newCarNum=dataBean.shoppingCartCount+buyNum
-                        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(newCarNum)
-//                        binding.inBottom.tvCartNumber.apply{
-//                            visibility=View.VISIBLE
-//                            text="${dataBean.shoppingCartCount}"
-//                        }
+                        //等于2代表是新增购物车
+                        if(code==2){
+                            val newCarNum=dataBean.shoppingCartCount+1
+                            LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(newCarNum)
+                        }
                         "加入成功！".toast()
                     }
                 })
