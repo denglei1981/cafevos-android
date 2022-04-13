@@ -51,7 +51,11 @@ class ShoppingCartViewModel : BaseViewModel() {
                 canBuyGoodList.add(it)
             }
         }
-        LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(goodList?.size)
+        goodList?.let {
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(goodList?.size)
+
+        }
+
         goodsListLiveData.postValue(canBuyGoodList)
         goodsInvaildListLiveData.postValue(invaildGoodList)
     }
