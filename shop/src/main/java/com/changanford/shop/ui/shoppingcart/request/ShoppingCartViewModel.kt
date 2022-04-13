@@ -45,7 +45,7 @@ class ShoppingCartViewModel : BaseViewModel() {
         val canBuyGoodList: MutableList<GoodsDetailBean> = mutableListOf()
         val invaildGoodList: MutableList<GoodsDetailBean> = mutableListOf()
         goodList?.forEach {
-            if (it.mallSkuState == "0" && it.stock ==0) {
+            if (it.mallSkuState == "0" || it.stock <1) {
                 invaildGoodList.add(it)
             } else {
                 canBuyGoodList.add(it)

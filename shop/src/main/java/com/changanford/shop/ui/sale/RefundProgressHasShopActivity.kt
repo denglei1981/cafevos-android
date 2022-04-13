@@ -15,6 +15,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.databinding.*
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
@@ -149,6 +150,9 @@ class RefundProgressHasShopActivity :
                 GlideUtils.loadBD(list.skuImg, ft.layoutRefundInfo.layoutShop.imgGoodsCover)
                 val goodsAttributeAdapter = GoodsAttributeAdapter()
                 goodsAttributeAdapter.setList(list.getTagList())
+
+                val layoutManager= FlowLayoutManager(this,false,true)
+                ft.layoutRefundInfo.layoutShop.recyclerView.layoutManager = layoutManager
                 ft.layoutRefundInfo.layoutShop.recyclerView.adapter = goodsAttributeAdapter
                 ft.layoutRefundInfo.layoutShop.tvNum.text = list.getSaleNum()
                 ft.layoutRefundInfo.layoutShop.tvGoodsTitle.text = list.spuName

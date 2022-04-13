@@ -27,7 +27,7 @@ class MultiplePackageAdapter() :
             multipleImgsAdapter.setNewInstance(item.pakageOrderSkus)
             db.tvPackageState.text = item.pakage.status
             db.tvMoreInfo.text = item.pakage.context
-            db.tvPackageName.text = "包裹".plus(holder.layoutPosition + 1)
+            db.tvPackageName.text = "包裹".plus(holder.layoutPosition )
             db.tvMore.setOnClickListener {
                 if (!TextUtils.isEmpty(item.jumpDataType)) {
                     JumpUtils.instans?.jump(item.jumpDataType!!.toInt(), item.jumpDataValue)

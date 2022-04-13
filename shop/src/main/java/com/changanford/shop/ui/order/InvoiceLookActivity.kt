@@ -43,6 +43,7 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
                         binding.tvInvoiceStates.text = "已开票"
                         binding.tvInvoiceMoney.text = "开票金额: ￥${it.invoiceRmb}"
                         binding.llInvoiceTime.visibility=View.VISIBLE
+                        binding.llInvoiceTime.setSecondText(TimeUtils.MillisToStr(it.invoiceTime))
                     }
                     "NO" -> {
                         binding.ivAddress.visibility = View.GONE
