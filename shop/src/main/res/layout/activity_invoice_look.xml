@@ -17,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            app:title_text="查看发票"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="查看发票" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -50,12 +50,12 @@
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_12"
                         android:layout_marginEnd="8dp"
-                        tools:text="收货地址"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_16"
                         app:layout_constraintEnd_toStartOf="@+id/iv_address"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="收货地址" />
 
                     <com.changanford.shop.view.TypefaceTextView
                         android:id="@+id/tv_invoice_money"
@@ -104,9 +104,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
+                    android:paddingEnd="4dp"
                     app:nameStr="发票内容"
                     app:nameTextColor="@color/black"
-                    android:paddingEnd="4dp"
                     app:nameTextSize="@dimen/sp_14"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
@@ -117,9 +117,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
-                    app:nameTextColor="@color/black"
-                    app:nameStr="发票抬头"
                     android:paddingEnd="4dp"
+                    app:nameStr="发票抬头"
+                    app:nameTextColor="@color/black"
                     app:nameTextSize="@dimen/sp_13"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
@@ -130,8 +130,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
-                    app:nameStr="抬头名称"
                     android:paddingEnd="4dp"
+                    app:nameStr="抬头名称"
                     app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
@@ -142,10 +142,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
-                    app:nameStr="申请时间"
                     android:paddingEnd="4dp"
-                    app:nameTextSize="@dimen/sp_13"
+                    app:nameStr="申请时间"
                     app:nameTextColor="@color/black"
+                    app:nameTextSize="@dimen/sp_13"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
                     app:secondTextSize="@dimen/sp_15" />
@@ -155,8 +155,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:background="@color/white"
-                    app:nameStr="开票时间"
                     android:paddingEnd="4dp"
+                    app:nameStr="开票时间"
                     app:nameTextColor="@color/black"
                     app:secondStr="000000000"
                     app:secondTextColor="@color/black"
@@ -168,12 +168,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_20"
-
                     android:layout_marginEnd="@dimen/dp_20"
-                    android:text="1.开票金额为用户实际支付的金额（不含优惠券、福币抵扣）
-2.暂时只支持纸质发票邮寄，不支持电子发票
-3.纸质发票在订单确认收货的15个工作日内开具并邮寄，收到后请妥善保管，如退换请将发票单独邮寄
-"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="1.开票金额为用户实际支付的金额（不含优惠券、福币抵扣）'\n2.暂时只支持纸质发票邮寄，不支持电子发票\n3.纸质发票在订单确认收货的15个工作日内开具并邮寄，收到后请妥善保管，如退换请将发票单独邮寄"
                     android:textColor="#ff999999"
                     android:textSize="11sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
