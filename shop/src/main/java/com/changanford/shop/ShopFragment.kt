@@ -45,8 +45,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         initKill()
         initTab()
         binding.apply {
-            inHeader.imgSearch.setOnClickListener {JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())  }
             smartRl.setOnRefreshListener(this@ShopFragment)
+            //搜索
+            inHeader.imgSearch.setOnClickListener {
+                JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())
+            }
+            //购物车
+            inHeader.imgBuyCar.setOnClickListener {
+                JumpUtils.instans?.jump(119)
+            }
             inTop.apply {
                 recyclerViewRecommend.adapter=recommendAdapter
                 tvAllList.setOnClickListener {
@@ -97,10 +104,6 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //            if("ON_GOING"==mAdapter.data[position].seckillStatus)GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)
         }
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
-        binding.inHeader.imgBuyCar.setOnClickListener {
-            JumpUtils.instans?.jump(119)
-
-        }
     }
     override fun initData() {
         viewModel.getBannerData()
