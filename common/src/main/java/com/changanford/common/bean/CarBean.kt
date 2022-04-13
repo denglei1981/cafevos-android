@@ -127,3 +127,6 @@ class OcrRequestBean(
     var imgType: String = "HTTP_URL"
 )
 
+data class MyFastInData(var id:Int,var imgDrawable:String,var name:String) {
+}
+

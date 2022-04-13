@@ -25,9 +25,7 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
         CouponCanUseAdapter()
 
     }
-    private val customLoadMoreView: TheHellLoadMoreView by lazy {
-        TheHellLoadMoreView()
-    }
+
 
     companion object {
         fun newInstance(type: String): CouponCanUseFragment {
@@ -42,6 +40,7 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
     }
 
     override fun initView() {
+
         setLoadSir(binding.smartLayout)
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setEnableLoadMore(false)
@@ -49,7 +48,8 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
         couponCanUseAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getCouponList(true, 1)
         }
-        couponCanUseAdapter.loadMoreModule.loadMoreView = customLoadMoreView
+
+
         viewModel.getCouponList(false, 1)
         couponCanUseAdapter.setOnItemChildClickListener { adapter, view, position ->
             when(view.id){
@@ -83,6 +83,7 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
                 }
                 if (it.data.dataList == null || it.data.dataList?.size!! < 20) {
                     couponCanUseAdapter.loadMoreModule.loadMoreEnd()
+
                 }
             } else {
                 toastShow(it.message)

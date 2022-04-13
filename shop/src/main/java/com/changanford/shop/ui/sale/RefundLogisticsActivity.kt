@@ -95,7 +95,7 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
                         override fun onCancel() {
 
                         }
-                    }, maxNum = 10
+                    }, maxNum = 3
                 )
             } else {
                 val bundle = Bundle()

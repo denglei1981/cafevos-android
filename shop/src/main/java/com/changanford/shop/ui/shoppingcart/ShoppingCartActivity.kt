@@ -139,6 +139,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             ) { // 一条一条删除
                 val mallUserSkuIds: ArrayList<String> = arrayListOf()
                 mallUserSkuIds.add(shoppingCartInvaildAdapter.getItem(position = position).mallMallUserSkuId.toString())
+                shoppingCartInvaildAdapter.remove(shoppingCartInvaildAdapter.getItem(position = position))
                 viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds = mallUserSkuIds)
             }
         })

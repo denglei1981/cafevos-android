@@ -934,6 +934,7 @@ class SignViewModel : ViewModel() {
         }
     }
 
+
     fun queryOtherUserMedal(
         userId: String,
         result: (CommonResponse<ArrayList<MedalListBeanItem>>) -> Unit
@@ -1242,5 +1243,17 @@ class SignViewModel : ViewModel() {
         MConstant.userId = ""
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .postValue(UserManger.UserLoginStatus.USER_LOGIN_OUT)
+    }
+
+    fun getCov(result: (CommonResponse<MutableList<MyFastInData>>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                val body = HashMap<String, Any>()
+                body["configKey"] = "my_cov"
+                body["obj"] = true
+                val rkey = getRandomKey()
+                apiService.myCov(body.header(rkey), body.body(rkey))
+            })
+        }
     }
 }

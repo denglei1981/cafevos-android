@@ -23,10 +23,8 @@ import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.my.adapter.LabelAdapter
-import com.changanford.my.adapter.MedalAdapter
 import com.changanford.my.adapter.MenuAdapter
 import com.changanford.my.adapter.MyFastInAdapter
-import com.changanford.my.bean.MyFastInData
 import com.changanford.my.databinding.FragmentMyBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
@@ -56,12 +54,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
 //        binding.medalRec.isSaveEnabled = false
 //        binding.medalRec.adapter = medalAdapter
-        myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
-        myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
-        myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
+//        myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
+//        myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
+//        myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
 
-        val gson= Gson()
-        gson.toJson(myFastInAdapter.data).logE()
+
 
 
         binding.fastIn.adapter = myFastInAdapter
@@ -77,7 +74,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
         myFastInAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 // 跳转到优惠券
-                var item = myFastInAdapter.getItem(position)
+                val item = myFastInAdapter.getItem(position)
                 when(item.id){
                     1->{
                         JumpUtils.instans?.jump(118)
@@ -88,12 +85,16 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                     3->{
                         JumpUtils.instans?.jump(29)
                     }
-
                 }
-
             }
-
         })
+        viewModel.getCov {
+            try {
+                myFastInAdapter.setNewInstance(it.data)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
     /**

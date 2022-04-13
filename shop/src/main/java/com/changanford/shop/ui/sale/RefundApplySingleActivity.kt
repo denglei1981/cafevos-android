@@ -238,7 +238,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                         override fun onCancel() {
 
                         }
-                    }, maxNum = 10
+                    }, maxNum = 5
                 )
             } else {
                 val bundle = Bundle()

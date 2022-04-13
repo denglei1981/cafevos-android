@@ -12,7 +12,9 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toast
 import com.changanford.shop.R
+import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.databinding.InItemOrderGoodsV2Binding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
@@ -36,10 +38,12 @@ class OrderDetailsItemV2Adapter() :
             model = item
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
             showTotalTag(tvIntegral, item)
-            val goodsAttributeAdapter = GoodsAttributeAdapter()
-            goodsAttributeAdapter.setList(item.getTagList())
-            recyclerView.adapter = goodsAttributeAdapter
 
+           val layoutManager= FlowLayoutManager(context,false,true)
+            recyclerView.layoutManager = layoutManager
+            val goodsAttributeAdapter = GoodsAttributeAdapter()
+            recyclerView.adapter = goodsAttributeAdapter
+            goodsAttributeAdapter.setNewInstance(item.getTagList() as MutableList<String>)
             when (orderStatus) {
                 "WAIT_SEND", "WAIT_PAY", "CLOSED" -> {
                     tvSaleHandler.visibility = View.GONE
@@ -76,8 +80,10 @@ class OrderDetailsItemV2Adapter() :
 
                 }
             } else { // 没有退款进度
-                tvSaleHandler.visibility = View.GONE
-                tvSaleHandler.text = ""
+                if(orderStatus=="REFUNDING"){
+                    tvSaleHandler.visibility = View.GONE
+                    tvSaleHandler.text = ""
+                }
             }
             imgGoodsCover.setOnClickListener {
                 GoodsDetailsActivity.start(item.mallMallspuId)

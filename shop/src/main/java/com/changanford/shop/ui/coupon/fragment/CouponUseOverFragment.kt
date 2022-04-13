@@ -22,9 +22,7 @@ class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, C
         CouponUseOverAdapter()
 
     }
-    private val customLoadMoreView: TheHellLoadMoreView by lazy {
-        TheHellLoadMoreView()
-    }
+
 
     companion object {
         fun newInstance(type: String): CouponUseOverFragment {
@@ -46,7 +44,6 @@ class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, C
         couponCanUseAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getCouponList(true, 2)
         }
-        couponCanUseAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         viewModel.getCouponList(false, 2)
     }
 

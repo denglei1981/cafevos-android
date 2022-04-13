@@ -1153,4 +1153,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MutableList<BackEnumBean>>
+
+    /**
+     *  我的优惠券配置
+     * */
+    @POST("base/config/getConfigValueByKey")
+    suspend fun myCov(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<MyFastInData>>
 }

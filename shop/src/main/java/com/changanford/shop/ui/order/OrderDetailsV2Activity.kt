@@ -146,7 +146,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                             object : OnTimeCountListener {
                                 override fun onFinish() {
                                     createCloseOrderPop()
-                             //支付倒计时结束 刷新
+                                    //支付倒计时结束 刷新
 //                                GlobalScope.launch {
 //                                    delay(1500L)
 //                                    viewModel.getOrderDetail(orderNo)
@@ -169,11 +169,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     dataBean.otherName = getString(R.string.str_payTime)
                     val otherValue = simpleDateFormat.format(dataBean.payTime ?: 0)
                     dataBean.otherValue = otherValue
-                    if(TextUtils.isEmpty(dataBean.statusDesc)){
-                        binding.tvOrderRemainingTime.text=getString(R.string.prompt_paymentHasBeen)
+                    if (TextUtils.isEmpty(dataBean.statusDesc)) {
+                        binding.tvOrderRemainingTime.text =
+                            getString(R.string.prompt_paymentHasBeen)
                     }
                     dataBean.statusDesc?.let {
-                        binding.tvOrderRemainingTime.text=it
+                        binding.tvOrderRemainingTime.text = it
                     }
                     BottomBShow()
                     showInvoiceState(dataBean)
@@ -206,8 +207,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_eval)
                     BottomBShow()
                     showInvoiceState(dataBean)
-                    showExpress(dataBean,true)
-                    showComment(dataBean,false)
+                    showExpress(dataBean, true)
+                    showComment(dataBean, false)
                 }
                 "已完成" -> {
                     totalPayName = R.string.str_realPayTotalAmount
@@ -219,8 +220,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inBottom.btnOrderConfirm.setText(R.string.str_onceAgainToBuy)
                     if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility =
                         View.INVISIBLE
-                    showExpress(dataBean,true)
-                    showComment(dataBean,true) // 展示追评
+                    showExpress(dataBean, true)
+                    showComment(dataBean, true) // 展示追评
                     showInvoiceState(dataBean)
                     BottomBShow()
                 }
@@ -245,9 +246,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     dataBean.statusDesc?.let {
                         binding.tvOrderRemainingTime.text = dataBean.statusDesc
                     }
-                    if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility = View.INVISIBLE
+                    if ("2" == dataBean.busSourse) binding.inBottom.btnOrderConfirm.visibility =
+                        View.INVISIBLE
                     BottomGon()
-                    if(!TextUtils.isEmpty(dataBean.refundStatus)){
+                    if (!TextUtils.isEmpty(dataBean.refundStatus)) {
                         topRefundShow(dataBean = dataBean)
                     }
                 }
@@ -321,17 +323,19 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 
     }
 
-    private  fun showHaggle(){
-        when(dataBean.busSource){
-            "HAGGLE"->{
-                binding.inGoodsInfo1.grHaggle.visibility=View.VISIBLE
-                binding.inGoodsInfo1.tvHaggleMoney.text="-".plus(WCommonUtil.getRMB(dataBean.haggleDiscount))
+    private fun showHaggle() {
+        when (dataBean.busSource) {
+            "HAGGLE" -> {
+                binding.inGoodsInfo1.grHaggle.visibility = View.VISIBLE
+                binding.inGoodsInfo1.tvHaggleMoney.text =
+                    "-".plus(WCommonUtil.getRMB(dataBean.haggleDiscount))
             }
-            else->{
-                binding.inGoodsInfo1.grHaggle.visibility=View.GONE
+            else -> {
+                binding.inGoodsInfo1.grHaggle.visibility = View.GONE
             }
         }
     }
+
     // 优惠券是否展示
     private fun showCounpon() {
         if (TextUtils.isEmpty(dataBean.couponDiscount)) {
@@ -348,15 +352,15 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
 
-    fun showBuyAgain(){
-        binding.inSaleBottom.btnOrderBuyAgain.visibility=View.VISIBLE
+    fun showBuyAgain() {
+        binding.inSaleBottom.btnOrderBuyAgain.visibility = View.VISIBLE
         binding.inSaleBottom.btnOrderBuyAgain.setOnClickListener {
 
 
         }
-        binding.inSaleBottom.btnOrderComment.visibility=View.GONE
-        binding.inSaleBottom.btnOrderExpress.visibility=View.GONE
-        binding.inSaleBottom.btnOrderInvoice.visibility=View.GONE
+        binding.inSaleBottom.btnOrderComment.visibility = View.GONE
+        binding.inSaleBottom.btnOrderExpress.visibility = View.GONE
+        binding.inSaleBottom.btnOrderInvoice.visibility = View.GONE
 
 
     }
@@ -608,10 +612,9 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         }
                         localDataBean.mallMallOrderId?.let {
                             val invoiceInfo = InvoiceInfo(
-                                localDataBean.addressInfo, localDataBean.addressId.toString(),
-                                it, localDataBean.orderNo, localDataBean.getRMBExtendsUnit(),
-                                localDataBean.orderReceiveAddress.consignee,
-                                localDataBean.orderReceiveAddress.phone
+                                mallMallOrderId = it,
+                                mallMallOrderNo = localDataBean.orderNo,
+                                invoiceRmb = localDataBean.getRMBExtendsUnit()
                             )
                             InvoiceActivity.start(invoiceInfo)
                         }
@@ -628,10 +631,18 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                 }
             }
+            if (!TextUtils.isEmpty(localDataBean.fb)) {
+                localDataBean.fb?.let {
+                    if (it.toInt() > 0) {
+                        binding.inSaleBottom.btnOrderInvoice.visibility = View.VISIBLE
+                    } else {
+                        binding.inSaleBottom.btnOrderInvoice.visibility = View.GONE
+                    }
+                }
+            } else {
+                binding.inSaleBottom.btnOrderInvoice.visibility = View.GONE
+            }
         }
-        binding.inSaleBottom.btnOrderInvoice.visibility = View.VISIBLE
-
-
     }
 
     fun showRefund(localDataBean: OrderItemBean) {
@@ -640,12 +651,18 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             // 申请退款 0 是整单退, 1 是退单个商品
             val gson = Gson()
             val refundBean =
-                RefundBean(localDataBean.orderNo, localDataBean.payFb, localDataBean.payRmb, "allOrderRefund")
+                RefundBean(
+                    localDataBean.orderNo,
+                    localDataBean.payFb,
+                    localDataBean.payRmb,
+                    "allOrderRefund"
+                )
             val refundJson = gson.toJson(refundBean)
             refundJson.toString().logE()
             JumpUtils.instans?.jump(121, refundJson)
         }
     }
+
     // 物流状态
     fun showExpress(localDataBean: OrderItemBean, needShow: Boolean) {
         if (needShow) {
@@ -655,18 +672,23 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
         binding.inSaleBottom.btnOrderExpress.text = "查看物流"
         binding.inSaleBottom.btnOrderExpress.setOnClickListener {
-            localDataBean.historyPackage?.let {hs->
-                if(hs=="NO"){
-                    if(localDataBean.packageJump==null){
+            localDataBean.historyPackage?.let { hs ->
+                if (hs == "NO") {
+                    if (localDataBean.packageJump == null) {
                         MultiplePackageActivity.start(localDataBean.orderNo)
-                    }else{
+                    } else {
                         localDataBean.packageJump?.apply {
-                            JumpUtils.instans?.jump(jumpCode,jumpVal)
+                            JumpUtils.instans?.jump(jumpCode, jumpVal)
                         }
                     }
 
-                }else{
-                    startActivity(Intent(this@OrderDetailsV2Activity,NoLogisticsInfoActivity::class.java))
+                } else {
+                    startActivity(
+                        Intent(
+                            this@OrderDetailsV2Activity,
+                            NoLogisticsInfoActivity::class.java
+                        )
+                    )
                 }
             }
         }
@@ -674,27 +696,26 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
     // 评价
-    fun showComment(localDataBean: OrderItemBean,isNextComment:Boolean) {
-        if(isNextComment){
-            if(localDataBean.canReview=="YES"){
+    fun showComment(localDataBean: OrderItemBean, isNextComment: Boolean) {
+        if (isNextComment) {
+            if (localDataBean.canReview == "YES") {
                 binding.inSaleBottom.btnOrderComment.text = "追加评价"
                 binding.inSaleBottom.btnOrderComment.isSelected = false
             }
-        }else{
+        } else {
             binding.inSaleBottom.btnOrderComment.text = "评价"
             binding.inSaleBottom.btnOrderComment.isSelected = true
         }
         binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
         binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
         binding.inSaleBottom.btnOrderComment.setOnClickListener {
-             if(localDataBean.canReview=="YES"){
-                 PostEvaluationActivity.start(true,localDataBean)
-             }else{
-                 PostEvaluationActivity.start(localDataBean.orderNo)
-             }
+            if (localDataBean.canReview == "YES") {
+                PostEvaluationActivity.start(true, localDataBean)
+            } else {
+                PostEvaluationActivity.start(localDataBean.orderNo)
+            }
         }
     }
-
 
 
     fun showZero(text: AppCompatTextView?, item: OrderItemBean) {
