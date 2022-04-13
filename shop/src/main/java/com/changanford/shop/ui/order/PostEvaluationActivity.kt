@@ -76,14 +76,13 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
                     mAdapter.reviewEval=reviewEval
                     if(reviewEval){
                         binding.topBar.setTitle(getString(R.string.str_releasedAfterReview))
-                        viewModel.orderItemLiveData.postValue(it)
                     }
+                    viewModel.orderItemLiveData.postValue(it)
                 }
             }else {
                 orderNo=this
                 viewModel.getOrderDetail(orderNo)
             }
-
         }
         viewModel.orderItemLiveData.observe(this){
             mAdapter.setList(it.skuList)
@@ -100,9 +99,11 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
         }
     }
     private fun submitEvaluation(){
-        if(reviewEval){
+        //查询是否有选择图片 为null 表示都没有选择图片
+        val find=mAdapter.selectPicArr.find { it.imgPathArr!=null&&it.imgPathArr!!.size>0 }
+        if(reviewEval||find==null){//追评或者没有选择图片则立即提交评价
             viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
-        }else{
+        }else{//评价 -先提交图片
             dialog.show()
             uploadPic(0)
         }
