@@ -100,8 +100,8 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
     }
     private fun submitEvaluation(){
         //查询是否有选择图片 为null 表示都没有选择图片
-        val find=mAdapter.selectPicArr.find { it.imgPathArr!=null&&it.imgPathArr!!.size>0 }
-        if(reviewEval||find==null){//追评或者没有选择图片则立即提交评价
+        val find=if(reviewEval)null else mAdapter.selectPicArr.find { it.imgPathArr!=null&&it.imgPathArr!!.size>0 }
+        if(find==null){//追评或者没有选择图片则立即提交评价
             viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
         }else{//评价 -先提交图片
             dialog.show()
