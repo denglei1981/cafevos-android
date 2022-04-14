@@ -635,16 +635,14 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         }
                     }
                 }
-                "ON_GOING" -> {// 已申请未开票
+                "ON_GOING","ENDED" -> {// 已申请未开票
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                     binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
                         JumpUtils.instans?.jump(123, localDataBean.orderNo)
 
                     }
                 }
-                "ENDED" -> { // 已开票
-                    binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
-                }
+
             }
 
             if (!TextUtils.isEmpty(localDataBean.fb)) {
@@ -732,7 +730,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             binding.inSaleBottom.btnOrderComment.text = "评价"
             binding.inSaleBottom.btnOrderComment.isSelected = true
         }
-        binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
+        if(localDataBean.canReview=="NO"){
+            binding.inSaleBottom.btnOrderComment.visibility = View.GONE
+        }else{
+            binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
+        }
         binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
         binding.inSaleBottom.btnOrderComment.setOnClickListener {
             if (localDataBean.canReview == "YES") {

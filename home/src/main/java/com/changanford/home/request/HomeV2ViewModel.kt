@@ -129,6 +129,8 @@ class HomeV2ViewModel : BaseViewModel() {
                     if (it != null && it.size > 0) {
                         receiveListLiveData.postValue(it)
                     }
+                }.onWithMsgFailure {
+                    it?.toast()
                 }
         })
     }

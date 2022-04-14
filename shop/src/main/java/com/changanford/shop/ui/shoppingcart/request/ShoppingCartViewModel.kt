@@ -52,10 +52,8 @@ class ShoppingCartViewModel : BaseViewModel() {
             }
         }
         goodList?.let {
-            LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(goodList?.size)
-
+            LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).postValue(goodList.size)
         }
-
         goodsListLiveData.postValue(canBuyGoodList)
         goodsInvaildListLiveData.postValue(invaildGoodList)
     }

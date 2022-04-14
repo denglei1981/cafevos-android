@@ -16,10 +16,11 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/con_content"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="420dp"
             android:background="@drawable/shape_coupon_gradient_corner20_gray"
             android:orientation="vertical"
             android:paddingBottom="20dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
