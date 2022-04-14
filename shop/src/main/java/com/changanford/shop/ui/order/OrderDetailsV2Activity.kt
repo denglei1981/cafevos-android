@@ -735,6 +735,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }else{
             binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
         }
+        if(localDataBean.orderStatus=="WAIT_EVAL"){ // 待评价
+            binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
+            binding.inSaleBottom.btnOrderComment.text = "评价"
+            binding.inSaleBottom.btnOrderComment.isSelected = true
+        }
         binding.inSaleBottom.btnOrderShopGet.visibility = View.GONE
         binding.inSaleBottom.btnOrderComment.setOnClickListener {
             if (localDataBean.canReview == "YES") {

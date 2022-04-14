@@ -24,16 +24,22 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/color_00095B"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guideline4"
                 tools:text="￥15" />
-
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.27" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_get"
@@ -53,20 +59,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="立即领取" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_shop_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
+                android:ellipsize="end"
                 android:gravity="start"
-                tools:text="飞利浦剃须刀"
+                android:maxLines="1"
                 android:textColor="#ff333333"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_tips"
                 app:layout_constraintEnd_toStartOf="@+id/tv_get"
-                app:layout_constraintStart_toEndOf="@+id/tv_money"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="飞利浦剃须刀" />
 
             <TextView
                 android:id="@+id/tv_tips"
@@ -74,16 +81,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="start"
-                tools:text="飞利浦剃须刀"
                 android:textColor="@color/gray_999999"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_get"
                 app:layout_constraintStart_toStartOf="@+id/tv_shop_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_shop_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_shop_name"
+                tools:text="飞利浦剃须刀" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

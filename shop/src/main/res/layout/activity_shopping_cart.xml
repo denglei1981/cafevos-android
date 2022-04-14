@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:background="@color/color_F4"
         >
 
         <include
@@ -69,6 +69,7 @@
                         android:id="@+id/fl_invaild"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:visibility="gone"
                         android:background="@color/white">
 
                         <androidx.appcompat.widget.AppCompatTextView

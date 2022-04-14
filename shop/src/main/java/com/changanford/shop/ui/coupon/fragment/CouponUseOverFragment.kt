@@ -35,6 +35,10 @@ class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, C
             return fg
         }
     }
+    override fun onStart() {
+        super.onStart()
+        viewModel.getCouponList(true, 2)
+    }
 
     override fun initView() {
         setLoadSir(binding.smartLayout)

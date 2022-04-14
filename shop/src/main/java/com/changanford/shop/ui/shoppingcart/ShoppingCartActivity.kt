@@ -171,6 +171,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 binding.flInvaild.visibility = View.VISIBLE
                 shoppingCartInvaildAdapter.setList(it)
             } else {
+                shoppingCartInvaildAdapter.setList(it)
                 binding.flInvaild.visibility = View.GONE
             }
 

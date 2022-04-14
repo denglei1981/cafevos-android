@@ -193,6 +193,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         auth?.let {
             RouterManger.param("value", auth.vin)
                 .param("plateNum", auth.plateNum ?: "")
+                .param("authId",auth.authId)
                 .startARouter(ARouterMyPath.AddCardNumTransparentUI)
         }
     }

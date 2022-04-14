@@ -87,7 +87,8 @@ fun skipCrmCarInfo(item: CarItemBean) {
             mapOf(
                 "vin" to item.vin,
                 "status" to item.authStatus,
-                "isNeedChangeBind" to item.isNeedChangeBind
+                "isNeedChangeBind" to item.isNeedChangeBind,
+                "authId" to item.authId
             )
         )
     )
