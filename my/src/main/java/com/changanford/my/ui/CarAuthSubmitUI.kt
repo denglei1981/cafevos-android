@@ -160,8 +160,8 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         if (null == carItemBean || carItemBean?.vin?.isNullOrEmpty() == true) {
             initClick()
         } else {
-            carItemBean?.vin?.let {
-                viewModel.queryAuthCarDetail(it) {
+            carItemBean?.let {
+                viewModel.queryAuthCarDetail(it.vin,it.authId) {
                     it.onSuccess {
                         it?.let {
                             carItemBean = it

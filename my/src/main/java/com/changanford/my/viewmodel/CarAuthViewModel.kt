@@ -87,11 +87,12 @@ class CarAuthViewModel : ViewModel() {
         }
     }
 
-    fun queryAuthCarDetail(vin: String, result: (CommonResponse<CarItemBean>) -> Unit) {
+    fun queryAuthCarDetail(vin: String, authId:String,result: (CommonResponse<CarItemBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["vin"] = vin
+                body["authId"]=authId
                 var rkey = getRandomKey()
                 apiService.queryAuthDetail(body.header(rkey), body.body(rkey))
             })
@@ -117,8 +118,10 @@ class CarAuthViewModel : ViewModel() {
 
     fun changePhoneBind(
         vin: String,
+        authId:String,
         oldPhone: String? = "",
         smsCode: String? = "",
+
         result: (CommonResponse<String>) -> Unit
     ) {
         viewModelScope.launch {
@@ -128,6 +131,7 @@ class CarAuthViewModel : ViewModel() {
                     body["oldPhone"] = oldPhone ?: ""
                     body["smsCode"] = smsCode ?: ""
                     body["vin"] = vin
+                    body["authId"]=authId
                     var rKey = getRandomKey()
                     if (oldPhone.isNullOrEmpty() || smsCode.isNullOrEmpty()) {
                         apiService.changePhoneBind(body.header(rKey), body.body(rKey))

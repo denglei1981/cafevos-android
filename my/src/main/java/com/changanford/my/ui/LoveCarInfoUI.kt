@@ -131,7 +131,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
     override fun initData() {
         super.initData()
         auth.let {
-            viewModel.queryAuthCarDetail(auth.vin) {
+            viewModel.queryAuthCarDetail(auth.vin,auth.authId) {
                 it.onSuccess {
                     it?.let {
                         auth = it

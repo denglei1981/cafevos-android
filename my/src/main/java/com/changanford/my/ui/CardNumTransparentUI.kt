@@ -26,7 +26,7 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
 
 
     override fun initView() {
-        var bundle = intent.extras
+        val bundle = intent.extras
 
         binding.activityLpv.apply {
             setInputListener(this@CardNumTransparentUI)
@@ -34,7 +34,7 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
             showLastView()
         }
 
-        var plateNum = bundle?.getString("plateNum")
+        val plateNum = bundle?.getString("plateNum")
         if (!plateNum.isNullOrEmpty()) {
             inputContent = plateNum
             binding.activityLpv.initPlateInputText(plateNum)
@@ -45,22 +45,23 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
         }
 
         binding.submit.setOnClickListener {
-
             if (inputContent.isNullOrEmpty()) {
                 showToast("请输入正确的车牌")
                 return@setOnClickListener
             }
             BuriedUtil.instant?.carLicense(inputContent)
             if (bundle?.getString("value").isNullOrEmpty()) {//没有传认证车辆id 回传参数
-                LiveDataBus.get().with(MINE_CAR_CARD_NUM, String::class.java)
-                    .postValue(inputContent)
+                LiveDataBus.get().with(MINE_CAR_CARD_NUM, String::class.java).postValue(inputContent)
                 finish()
             } else {
                 bundle?.getString("value")?.let {
-                    if (bundle?.getBoolean("isUni", false)) {
+                    if (bundle.getBoolean("isUni", false)) {
                         addCarUni(it, inputContent)
                     } else {
-                        addCar(it, inputContent)
+                        val authId = bundle.getString("authId")
+                        if (authId != null) {
+                            addCar(it, inputContent,authId)
+                        }
                     }
                 }
             }
@@ -70,13 +71,14 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
     /**
      * 车主认证添加/修改车牌
      */
-    fun addCar(authCarId: String, cardNum: String) {
+    fun addCar(authCarId: String, cardNum: String,authId:String) {
 
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 body["vin"] = authCarId
                 body["plateNum"] = cardNum
+                body["authId"]=authId
                 var rkey = getRandomKey()
                 apiService.addCarCardNum(body.header(rkey), body.body(rkey))
             }.onSuccess {

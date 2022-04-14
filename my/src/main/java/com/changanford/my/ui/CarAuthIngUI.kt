@@ -144,8 +144,8 @@ class CarAuthIngUI : BaseMineUI<UiCarAuthIngBinding, CarAuthViewModel>() {
 
     override fun initData() {
         super.initData()
-        carItemBean?.vin?.let {
-            viewModel.queryAuthCarDetail(it) {
+        carItemBean?.let {
+            viewModel.queryAuthCarDetail(it.vin,it.authId) {
                 it.onSuccess {
                     it?.let {
                         carItemBean = it

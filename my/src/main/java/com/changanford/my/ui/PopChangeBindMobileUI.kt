@@ -93,7 +93,7 @@ class PopChangeBindMobileUI : BaseMineUI<PopChangeBindMobileCodeBinding, CarAuth
                     if (binding.group.visibility == View.GONE) {
                         sms = ""
                     }
-                    viewModel.changePhoneBind(carItemBean.vin, carItemBean.oldBindPhone, sms) {
+                    viewModel.changePhoneBind(carItemBean.vin,carItemBean.authId, carItemBean.oldBindPhone, sms) {
                         it.onSuccess { _ ->
                             if (sms.isNullOrEmpty()) {
                                 finish()
