@@ -1011,10 +1011,16 @@ data class CouponsItemBean(
 
     // 领取条件
     fun getCouponConditionName(): String {
+        if(TextUtils.isEmpty(conditionName)){
+            return ""
+        }
         return "领取条件: ".plus(conditionName).plus("\n")
     }
 
     fun getUseLimitStr(): String {
+        if(TextUtils.isEmpty(desc)){
+            return ""
+        }
         return "使用限制: ".plus(desc).plus("\n")
     }
 
