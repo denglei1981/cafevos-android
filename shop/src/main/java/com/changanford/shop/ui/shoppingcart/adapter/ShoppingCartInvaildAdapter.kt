@@ -29,8 +29,7 @@ class ShoppingCartInvaildAdapter(val shopBackListener: ShopBackListener) :
         holder.dataBinding?.apply {
             model = item
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
-            tvIntegral.setText("￥" + item.getRMB(item.fbPer))
-            val goodsAttributeAdapter = GoodsAttributeAdapter()
+            val goodsAttributeAdapter = GoodsAttributeGrayAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
         }

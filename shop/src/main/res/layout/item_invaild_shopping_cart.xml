@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_11"
             android:text="@{model.spuName}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="String" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5">
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_attribute"
+            android:background="@drawable/shadow_f5f5f5_11dp"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_22"
+            tools:text="红色"
+            android:text="@{model}"
+            android:maxWidth="@dimen/dp_90"
+            style="@style/style_txt_ellipsize"
+            android:textColor="@color/gray_999999"
+            android:textSize="@dimen/sp_11"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
