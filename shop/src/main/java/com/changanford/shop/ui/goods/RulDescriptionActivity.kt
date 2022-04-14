@@ -21,9 +21,8 @@ class RulDescriptionActivity:BaseActivity<ActRuleDescriptionBinding,GoodsViewMod
         }
     }
     override fun initView() {
-
+        binding.topBar.setActivity(this)
     }
-
     override fun initData() {
         viewModel.otherInfoBeanLiveData.observe(this){
             it?.content?.apply {

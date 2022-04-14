@@ -10,7 +10,6 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.MConstant
-import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
@@ -187,6 +186,6 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     }
     //规则说明
     override fun onRightTvClick() {
-        "请先配置跳转路由".toast()
+        RulDescriptionActivity.start()
     }
 }

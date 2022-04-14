@@ -213,7 +213,7 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                             //折扣金额 福币
                             val discountAmountFb=item.discountAmount(totalPrice)
                             //最大折扣
-                            if(discountAmountFb<=(item.couponMoney*100))discountAmountFb else item.getRmbToFb(item.couponMoney)
+                            if(discountAmountFb<=(item.getRmbToFb(item.couponMoney)))discountAmountFb else item.getRmbToFb(item.couponMoney)
                         }
                         //满减和立减
                         else -> item.getRmbToFb(item.couponMoney)
