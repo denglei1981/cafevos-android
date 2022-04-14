@@ -163,10 +163,10 @@ class RefundProgressHasShopActivity :
                         startActivity(intent)
                     }
                     when (refundProgressBean.refundDetailStatus) {
-                        "WAIT_CHECK","OVERTIME","WAIT_RECEIVE_RETURNS" -> {
+                        "WAIT_CHECK","OVERTIME" -> {
                             ft.tvInputOrder.visibility = View.GONE
                         }
-                        "CANCELD_REFUND"->{
+                        "CANCELD_REFUND","WAIT_RECEIVE_RETURNS"->{
                             ft.tvInputOrder.visibility = View.GONE
                             ft.tvHandle.visibility = View.GONE
                         }
