@@ -920,7 +920,7 @@ data class OrderSkuItem(
 
 data class CouponsItemBean(
     //满减条件(满多少钱可满减)
-    val conditionMoney: String = "0",
+    val conditionMoney: String? = "0",
     val couponId: String? = null,
     val couponMarkId: String? = null,
     //抵扣金额(优惠类型为满减/立减时,这是抵扣金额;优惠类型折扣时,这是最多扣减金额) 单位人民币
@@ -947,8 +947,8 @@ data class CouponsItemBean(
     var conditionName: String,
 
 ) {
-    fun getRmbToFb(conditionMoney: String = this.conditionMoney): Long {
-        return (conditionMoney.toFloat() * 100).toLong()
+    fun getRmbToFb(conditionMoney: String? = this.conditionMoney): Long {
+        return ((conditionMoney?:"0").toFloat() * 100).toLong()
     }
 
     /**
