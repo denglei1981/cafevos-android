@@ -262,7 +262,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 //申请发票 、查看发票
                 0,1->{
                     if(invoiced=="NOT_BEGIN"){
-                        val invoiceInfo = InvoiceInfo(mallMallOrderId=mallMallOrderId?:"0", mallMallOrderNo=orderNo, invoiceRmb=getRMBExtendsUnit())
+                        val invoiceInfo = InvoiceInfo(mallMallOrderId=mallMallOrderId?:"0", mallMallOrderNo=orderNo, invoiceRmb=payRmb)
                         InvoiceActivity.start(invoiceInfo)
 //                        JumpUtils.instans?.jump(120, "{\"orderNo\":\"$orderNo\"}")
                     }else  JumpUtils.instans?.jump(123,orderNo)

@@ -57,7 +57,19 @@ class ShoppingCartAdapter(
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
-            addSubtractView.setMax(item.stock,true)
+            val limitBuyNum: Int? = item.getCurrentLimitBuyNum()
+            limitBuyNum?.let {
+                val max: Int = if (item.getCurrentLimitBuyNum() in 1..item.stock) {
+                    limitBuyNum
+                } else {
+                    item.stock
+                }
+                addSubtractView.setMax(max, true)
+            }
+            if (limitBuyNum == null) {
+                addSubtractView.setMax(item.stock, true)
+            }
+
             item.num?.let { n ->
                 addSubtractView.setNumber(n, false)
                 if (n > 1) {

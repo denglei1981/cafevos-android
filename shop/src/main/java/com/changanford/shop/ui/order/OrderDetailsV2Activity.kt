@@ -192,7 +192,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showExpress(dataBean, true) // 展示物流
                     showInvoiceState(dataBean)
                     showGetShop(true)
-                    topRefundShow(dataBean,false)
+                    topRefundShow(dataBean, false)
                 }
                 "退款中" -> {
                     BottomGon()
@@ -293,15 +293,15 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         showCopy()
     }
 
-    private fun topRefundShow(dataBean: OrderItemBean,needShow: Boolean=true) {
+    private fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
 
         binding.inRefund.conRefundProgress.setOnClickListener {
             JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
         }
-        if(needShow){
+        if (needShow) {
             binding.inRefund.conRefundProgress.visibility = View.VISIBLE
             binding.inAddress.conAddress.visibility = View.GONE
-        }else{
+        } else {
             binding.inRefund.conRefundProgress.visibility = View.GONE
             binding.inAddress.conAddress.visibility = View.VISIBLE
         }
@@ -358,7 +358,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         } else {
             if (dataBean.couponDiscount.toInt() > 0) {
                 binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
-                binding.inGoodsInfo1.tvCouponMoney.text ="-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
+                binding.inGoodsInfo1.tvCouponMoney.text =
+                    "-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
             } else {
                 binding.inGoodsInfo1.grCoupon.visibility = View.GONE
             }
@@ -628,7 +629,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                             val invoiceInfo = InvoiceInfo(
                                 mallMallOrderId = it,
                                 mallMallOrderNo = localDataBean.orderNo,
-                                invoiceRmb = localDataBean.getRMBExtendsUnit()
+                                invoiceRmb = localDataBean.payRmb
                             )
                             InvoiceActivity.start(invoiceInfo)
                         }
@@ -645,6 +646,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                 }
             }
+
             if (!TextUtils.isEmpty(localDataBean.fb)) {
                 localDataBean.fb?.let {
                     if (it.toInt() > 0) {
@@ -656,6 +658,16 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             } else {
                 binding.inSaleBottom.btnOrderInvoice.visibility = View.GONE
             }
+
+            if (localDataBean.payType != "FB_PAY") {
+                if (!TextUtils.isEmpty(localDataBean.payRmb)) {
+                    binding.inSaleBottom.btnOrderInvoice.visibility = View.VISIBLE
+                } else {
+                    binding.inSaleBottom.btnOrderInvoice.visibility = View.GONE
+                }
+
+            }
+
         }
     }
 

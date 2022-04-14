@@ -10,7 +10,7 @@ data class InvoiceInfo(
     var addressId: String= "",
     val mallMallOrderId: String= "",
     val mallMallOrderNo: String= "",
-    val invoiceRmb: String= "",
+    val invoiceRmb: String?= "",
     var userName: String= "",
     var phone: String= "",
     var userInfo: String = "",
