@@ -59,37 +59,39 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)) {
-                Spacer(modifier = Modifier.height(13.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    val imgArr=evalImgs?:arrayListOf()
-                    val imgSize=imgArr.size
-                    val maxSize=if(imgSize>=3)3 else imgSize
-                    for(i in 0 until maxSize){
-                        Box(modifier = Modifier.size(imgWidth.dp).clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
-                            //查看大图
-                            WCommonUtil.toViewALargerVersion(imgArr,i)
-                        }, contentAlignment = Alignment.BottomEnd) {
-                            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgArr[i]) ?: com.changanford.common.R.mipmap.head_default,
-                                builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
-                                contentScale = ContentScale.Crop,
-                                contentDescription =null,modifier = Modifier
-                                    .size(imgWidth.dp)
-                                    .clip(RoundedCornerShape(5.dp)))
-                            if(i==2&&imgSize>3){
-                                Row(modifier = Modifier.padding(bottom = 4.dp, end = 4.dp)) {
-                                    Box(modifier = Modifier
-                                        .height(18.dp)
-                                        .defaultMinSize(minWidth = 40.dp)
-                                        .background(
-                                            color = colorResource(R.color.color_4D000000),
-                                            shape = RoundedCornerShape(10.dp)
-                                        ), contentAlignment = Alignment.Center) {
-                                        Text(text = "+${imgSize}",color= Color.White, fontSize = 12.sp)
+                val imgArr=evalImgs?:arrayListOf()
+                val imgSize=imgArr.size
+                if(imgSize>0){
+                    Spacer(modifier = Modifier.height(13.dp))
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        val maxSize=if(imgSize>=3)3 else imgSize
+                        for(i in 0 until maxSize){
+                            Box(modifier = Modifier.size(imgWidth.dp).clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
+                                //查看大图
+                                WCommonUtil.toViewALargerVersion(imgArr,i)
+                            }, contentAlignment = Alignment.BottomEnd) {
+                                Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgArr[i]) ?: com.changanford.common.R.mipmap.head_default,
+                                    builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription =null,modifier = Modifier
+                                        .size(imgWidth.dp)
+                                        .clip(RoundedCornerShape(5.dp)))
+                                if(i==2&&imgSize>3){
+                                    Row(modifier = Modifier.padding(bottom = 4.dp, end = 4.dp)) {
+                                        Box(modifier = Modifier
+                                            .height(18.dp)
+                                            .defaultMinSize(minWidth = 40.dp)
+                                            .background(
+                                                color = colorResource(R.color.color_4D000000),
+                                                shape = RoundedCornerShape(10.dp)
+                                            ), contentAlignment = Alignment.Center) {
+                                            Text(text = "+${imgSize-3}",color= Color.White, fontSize = 12.sp)
+                                        }
                                     }
                                 }
                             }
+                            if(i!=2)Spacer(modifier = Modifier.width(8.dp))
                         }
-                        if(i!=2)Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
                 //追评
