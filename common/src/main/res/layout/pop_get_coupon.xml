@@ -9,15 +9,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
 
+        >
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/con_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_coupon_gradient_corner20_gray"
-            android:maxHeight="420dp"
             android:orientation="vertical"
             android:paddingBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,11 +48,7 @@
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_marginBottom="8dp"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/tv_get"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

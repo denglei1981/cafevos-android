@@ -40,6 +40,7 @@ class GetCoupopBindingPop(
     init {
         contentView = viewDataBinding.root
         initView()
+
     }
 
 

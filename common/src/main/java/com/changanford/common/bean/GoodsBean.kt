@@ -370,9 +370,16 @@ data class GoodsDetailBean(
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
 
+
 ) {
     fun getLimitBuyNum(): Int {
         return if ("YES" == limitBuy) (limitBuyNum ?: "0").toInt() else 0
+    }
+    fun getCurrentLimitBuyNum():Int?{
+        if(TextUtils.isEmpty(limitBuyNum)){
+            return -1
+        }
+        return limitBuyNum?.toIntOrNull()
     }
 
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
@@ -691,15 +698,19 @@ data class OrderItemBean(
         return arrayListOf()
     }
 
-    fun getRMBExtendsUnit(fb: String? = fbCost): String {
-        if (fb != null) {
-            val fbToFloat = fb.toFloat()
-            val remainder = fbToFloat % 100
-            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
-            else "${fb.toInt() / 100}"
-        }
-        return rmbPrice?:"0"
-    }
+//    fun getRMBExtendsUnit(fb: String? = fbCost): String {
+//        if (fb != null) {
+//            val fbToFloat = fb.toFloat()
+//            val remainder = fbToFloat % 100
+//            rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+//            else "${fb.toInt() / 100}"
+//        }
+//        return rmbPrice?:"0"
+//    }
+
+
+
+
 }
 data class PackageJumpBean(
     val jumpCode:Int=0,

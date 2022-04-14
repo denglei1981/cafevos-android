@@ -72,25 +72,33 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
             .subscribe({
                 if (canGetInvoice()) {
                     if (binding.rbPerson.isChecked) { // 选择的开个人票
-                        viewModel.getUserInvoiceAdd(
-                            invoiceInfo.addressId,
-                            "个人",
-                            personName,
-                            invoiceInfo.invoiceRmb,
-                            invoiceInfo.mallMallOrderId,
-                            invoiceInfo.mallMallOrderNo
-                        )
+                        invoiceInfo.invoiceRmb?.let{rmb->
+                            viewModel.getUserInvoiceAdd(
+                                invoiceInfo.addressId,
+                                "个人",
+                                personName,
+                                rmb,
+                                invoiceInfo.mallMallOrderId,
+                                invoiceInfo.mallMallOrderNo
+                            )
+
+                        }
+
                     }
-                    if (binding.rbCompany.isChecked) { // 选择的开单位票
-                        viewModel.getUserInvoiceAdd(
-                            invoiceInfo.addressId,
-                            "单位",
-                            companyName,
-                            invoiceInfo.invoiceRmb,
-                            invoiceInfo.mallMallOrderId,
-                            invoiceInfo.mallMallOrderNo,
-                            taxpayerName
-                        )
+                    if (binding.rbCompany.isChecked) {
+                        // 选择的开单位票
+                        invoiceInfo.invoiceRmb?.let {rmb->
+                            viewModel.getUserInvoiceAdd(
+                                invoiceInfo.addressId,
+                                "单位",
+                                companyName,
+                                rmb,
+                                invoiceInfo.mallMallOrderId,
+                                invoiceInfo.mallMallOrderNo,
+                                taxpayerName
+                            )
+                        }
+
                     }
                 }
             }, {})
