@@ -627,7 +627,7 @@ data class OrderItemBean(
     val payTime: Long? = 0,
     val sendTime: Long? = 0,
     var preferentialFbOfUnitPrice: String? = null,
-    val receiveTime: String? = null, // 收货时间？
+    val receiveTime: String? = "", // 收货时间？
     val waitPayDuration: Long = 0,//待支付有效时间
     val payTimeDeadline: String? = null,
     var orderType: Int = 0,
@@ -674,8 +674,8 @@ data class OrderItemBean(
     var mallMallspuId: String = "",
     var packageJump: PackageJumpBean? = null,
     var refundStatus: String? = "",
-    var refundTimes: Int? = null // 申请售后次数
-
+    var refundTimes: Int? = null, // 申请售后次数
+    var timestamp:Long?=null
 
 ) {
     fun getRMBPrice() {

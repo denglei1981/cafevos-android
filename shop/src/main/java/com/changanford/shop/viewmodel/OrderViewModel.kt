@@ -293,15 +293,17 @@ class OrderViewModel: BaseViewModel() {
      * */
     fun getOrderDetail(orderNo:String,showLoading: Boolean = false) {
         viewModelScope.launch {
-            fetchRequest(showLoading){
+            val con=fetchRequest(showLoading){
                 body.clear()
                 body["orderNo"]=orderNo
                 val randomKey = getRandomKey()
                 shopApiService.orderDetail(body.header(randomKey), body.body(randomKey))
-            }.onSuccess {
-                orderItemLiveData.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
+            }
+            con.onSuccess {
+                it?.timestamp=con.timestamp?.toLong()
+                orderItemLiveData.postValue(it)
             }
         }
     }

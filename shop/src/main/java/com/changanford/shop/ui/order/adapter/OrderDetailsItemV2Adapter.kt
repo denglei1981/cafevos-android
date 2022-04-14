@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
@@ -30,6 +31,8 @@ class OrderDetailsItemV2Adapter() :
     var orderStatus: String = ""
     var refundStatus: String = ""
     var orderNo: String = ""
+    var receiveTime :String =""
+    var timestamp:String=""
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
         item: OrderItemBean
@@ -85,6 +88,15 @@ class OrderDetailsItemV2Adapter() :
                     tvSaleHandler.text = ""
                 }
             }
+
+            if(!TextUtils.isEmpty(receiveTime)&&!TextUtils.isEmpty(timestamp)){ // 到货时间不为空
+                val next7 = TimeUtils.next7(receiveTime.toLong())
+                if(timestamp.toLong()>next7||timestamp.toLong()==next7){ // 当前时间戳 比7天后的大。 // 售后按钮隐藏。
+                    tvSaleHandler.visibility = View.GONE
+                    tvSaleHandler.text = ""
+                }
+            }
+
             imgGoodsCover.setOnClickListener {
                 GoodsDetailsActivity.start(item.mallMallspuId)
             }

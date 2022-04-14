@@ -84,6 +84,7 @@ public class TimeUtils {
     public static String FORMATE_DATE_STR1 = "yyyy-MM-dd HH:mm:ss";
     public static String FORMATE_DATE_YMDHM = "yyyy-MM-dd HH:mm";
     public static String FORMATE_DATE_HM = "mm:ss";
+    public static String FORMATE_DATE_STR_O = "yyyy.MM.dd HH:mm";
 
     public static String MillisToStr(Long timeMillis) {
         if (timeMillis == null) {
@@ -93,7 +94,14 @@ public class TimeUtils {
         SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_STR);
         return sf.format(date);
     }
-
+    public static String MillisToStrO(Long timeMillis) {
+        if (timeMillis == null) {
+            return "";
+        }
+        Date date = new Timestamp(timeMillis);
+        SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_STR_O);
+        return sf.format(date);
+    }
     public static String MillisToStrHM(Long timeMillis) {
         if (timeMillis == null) {
             return "";
@@ -530,5 +538,13 @@ public class TimeUtils {
             return false;
         }
     }
+    public static Long next7(long timeStamp) {
+        Calendar c = Calendar.getInstance();
+        //过去七天
+        c.setTime(new Date(timeStamp));
+        c.add(Calendar.DATE, 7);
+        return c.getTimeInMillis(); // 获取毫秒值
+    }
+
 
 }

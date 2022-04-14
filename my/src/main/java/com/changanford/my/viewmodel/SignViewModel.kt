@@ -902,8 +902,8 @@ class SignViewModel : ViewModel() {
     fun getMenuList() {
         viewModelScope.launch {
             fetchRequest {
-                var body = HashMap<String, String>()
-                var rkey = getRandomKey()
+                val body = HashMap<String, String>()
+                val rkey = getRandomKey()
                 apiService.queryMenuList(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 menuBean.postValue(it)

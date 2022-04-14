@@ -12,6 +12,7 @@ import com.changanford.common.databinding.PopGetCouponBinding
 import com.changanford.common.net.*
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.ScreenUtils
 import com.google.gson.Gson
@@ -41,7 +42,9 @@ class GetCoupopBindingPop(
 
 
     private fun initView() {
-        setMaxHeight(ScreenUtils.getScreenHeight(context) / 4 * 3)
+
+
+        setMaxHeight(( ScreenUtils.getScreenHeight(context).toFloat() / 5*3.3).toInt())
         viewDataBinding.apply {
             rvCoupon.adapter = couponItemAdapter
             dataBean?.let {

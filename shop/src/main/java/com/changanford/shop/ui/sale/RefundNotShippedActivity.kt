@@ -53,7 +53,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
     var reson: String = ""
     fun canRefund(): Boolean {
         reson = binding.tvReason.text.toString()
-        if (TextUtils.isEmpty(reson)) {
+        if (backEnumBean==null||TextUtils.isEmpty(reson)) {
             "请选择退款原因".toast()
             return false
         }

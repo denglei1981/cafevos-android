@@ -485,6 +485,13 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     fun showShoppingInfo(localDataBean: OrderItemBean) {
         orderDetailsItemV2Adapter.orderNo = localDataBean.orderNo
         orderDetailsItemV2Adapter.orderStatus = localDataBean.orderStatus
+        localDataBean.receiveTime?.let { time ->
+            orderDetailsItemV2Adapter.receiveTime = time
+        }
+        localDataBean.timestamp?.let { time ->
+            orderDetailsItemV2Adapter.timestamp = time.toString()
+
+        }
         orderDetailsItemV2Adapter.setList(localDataBean.skuList)
     }
 
@@ -635,7 +642,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         }
                     }
                 }
-                "ON_GOING","ENDED" -> {// 已申请未开票
+                "ON_GOING", "ENDED" -> {// 已申请未开票
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                     binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
                         JumpUtils.instans?.jump(123, localDataBean.orderNo)
@@ -730,12 +737,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             binding.inSaleBottom.btnOrderComment.text = "评价"
             binding.inSaleBottom.btnOrderComment.isSelected = true
         }
-        if(localDataBean.canReview=="NO"){
+        if (localDataBean.canReview == "NO") {
             binding.inSaleBottom.btnOrderComment.visibility = View.GONE
-        }else{
+        } else {
             binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
         }
-        if(localDataBean.orderStatus=="WAIT_EVAL"){ // 待评价
+        if (localDataBean.orderStatus == "WAIT_EVAL") { // 待评价
             binding.inSaleBottom.btnOrderComment.visibility = View.VISIBLE
             binding.inSaleBottom.btnOrderComment.text = "评价"
             binding.inSaleBottom.btnOrderComment.isSelected = true

@@ -33,8 +33,8 @@ class CouponUseInvaildAdapter() :
             tvMoney.text = item.getShowMoney()
             tvExtendsTips.text = item.getBottomTips()
             tvGoodsTitle.text = item.couponName
-            tvTimeStart.text = TimeUtils.MillisToStr(item.validityBeginTime).plus("起\n")
-                .plus(TimeUtils.MillisToStr(item.validityEndTime))
+            tvTimeStart.text = TimeUtils.MillisToStrO(item.validityBeginTime).plus("起\n")
+                .plus(TimeUtils.MillisToStrO(item.validityEndTime)).plus("止")
             tvVipTips.text = item.markName
             tvTips.text = item.getTips()
             ivExtends.setOnClickListener {
