@@ -17,6 +17,7 @@ import com.changanford.shop.R
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.databinding.ItemShoppingCartBinding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
+import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.utils.launchWithCatch
 
 /**
@@ -57,18 +58,16 @@ class ShoppingCartAdapter(
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             rvGoodsProperty.adapter = goodsAttributeAdapter
-            val limitBuyNum: Int? = item.getCurrentLimitBuyNum()
-            limitBuyNum?.let {
-                val max: Int = if (item.getCurrentLimitBuyNum() in 1..item.stock) {
-                    limitBuyNum
-                } else {
-                    item.stock
-                }
-                addSubtractView.setMax(max, true)
-            }
-            if (limitBuyNum == null) {
-                addSubtractView.setMax(item.stock, true)
-            }
+            val limitBuyNum: Int = item.getCurrentLimitBuyNum()
+
+            val nowStock = item.stock
+
+            var isLimitBuyNum = false//是否限购
+            val max: Int = if (limitBuyNum in 1..nowStock) {
+                isLimitBuyNum = true
+                limitBuyNum
+            } else nowStock
+            addSubtractView.setMax(max, isLimitBuyNum)
 
             item.num?.let { n ->
                 addSubtractView.setNumber(n, false)

@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.shop.databinding.ActivityInvoiceInfoBinding
 import com.changanford.shop.databinding.ActivityInvoiceLookBinding
@@ -30,6 +31,7 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
         mallOrderNo?.let {
             viewModel.getUserInvoiceDetail(mallMallOrderNo = it)
         }
+
     }
 
     override fun observe() {
@@ -44,6 +46,12 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
                         binding.tvInvoiceMoney.text = "开票金额: ￥${it.invoiceRmb}"
                         binding.llInvoiceTime.visibility=View.VISIBLE
                         binding.llInvoiceTime.setSecondText(TimeUtils.MillisToStr(it.invoiceTime))
+                        binding.ivAddress.setOnClickListener { cl->
+                            it.jumpDataType?.let {jumpDataType->
+                                JumpUtils.instans?.jump(jumpDataType.toInt(),it.jumpDataValue)
+                            }
+
+                        }
                     }
                     "NO" -> {
                         binding.ivAddress.visibility = View.GONE
@@ -56,7 +64,7 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
                 binding.llInvoiceTaitou.setSecondText(it.invoiceHeader)
                 binding.llInvoiceContent.setSecondText("商品明细")
                 binding.llInvoiceTaitouName.setSecondText(it.invoiceHeaderName)
-                binding.llInvoiceApply.setSecondText(TimeUtils.MillisToStr(it.applyTime))
+                binding.llInvoiceApply.setSecondText(TimeUtils.MillisToStr(it.applyTime?.toLong()))
                 when(it.invoiceType){
                     1->{
                         binding.llInvoiceType.setSecondText("增值税纸质普通发票")

@@ -1,5 +1,6 @@
 package com.changanford.shop.bean
 
+import com.changanford.common.bean.BindMobileJumpData
 import com.changanford.common.bean.RefundOrderItemBean
 
 data class SaleAfterBean(val id: Int, val name: String, val isSelected: Boolean) {
@@ -20,29 +21,31 @@ data class InvoiceInfo(
  *  发票详情
  * */
 data class InvoiceDetails(
-    val addressId: Int,
-    val applyTime: Long,
-    val createBy: Any,
-    val createTime: Long,
-    val dataState: String,
-    val invoiceHeader: String,
-    val invoiceHeaderName: String,
-    val invoiceRmb: Int,
-    val invoiceStatus: String,
-    val invoiceTime: Long? = null,
-    val invoiceType: Int,
-    val logisticsId: Any,
-    val logisticsMemo: Any,
-    val logisticsNum: Any,
-    val mallMallInvoiceId: Int,
-    val mallMallOrderId: Int,
-    val mallMallOrderNo: String,
-    val memo: String,
-    val remark: Any,
-    val searchValue: Any,
-    val taxpayerIdentifier: Any,
-    val updateBy: Any,
-    val updateTime: Long
+    var addressId: String="",
+    var applyTime: String?="",
+    var createBy: String?=null,
+    var createTime: String?=null,
+    var dataState: String?=null,
+    var invoiceHeader: String,
+    var invoiceHeaderName: String,
+    var invoiceRmb: String?="",
+    var invoiceStatus: String,
+    var invoiceTime: Long? = null,
+    var invoiceType: Int,
+    var logisticsId: String?="",
+    var logisticsMemo: String?="",
+    var logisticsNum: String?="",
+    var mallMallInvoiceId: String?="",
+    var mallMallOrderId: String?="",
+    var mallMallOrderNo: String?="",
+    var memo: String?="",
+    var remark: String?="",
+    var searchValue: String?="",
+    var taxpayerIdentifier: String,
+    var updateBy: String?="",
+    var updateTime: String?="",
+    var jumpDataType: String?="",
+    var jumpDataValue:String?=""
 )
 
 

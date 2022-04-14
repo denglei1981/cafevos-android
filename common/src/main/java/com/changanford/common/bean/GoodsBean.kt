@@ -369,17 +369,14 @@ data class GoodsDetailBean(
     var vipFb: String? = null,
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
-
+    var limitSeckill:String?=""
 
 ) {
     fun getLimitBuyNum(): Int {
         return if ("YES" == limitBuy) (limitBuyNum ?: "0").toInt() else 0
     }
-    fun getCurrentLimitBuyNum():Int?{
-        if(TextUtils.isEmpty(limitBuyNum)){
-            return -1
-        }
-        return limitBuyNum?.toIntOrNull()
+    fun getCurrentLimitBuyNum():Int{
+        return if ("YES" == limitSeckill) (limitBuyNum ?: "0").toInt() else 0
     }
 
     fun getLineFbEmpty(): Boolean {  //商城划线价，后台未设置的时候需要隐藏不显示
