@@ -749,7 +749,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         }
         body["ownerName"] = name
 
-        var idCard = binding.idcardInputLayout.idcardNum.text.toString()
+        val idCard = binding.idcardInputLayout.idcardNum.text.toString()
         if (idCard.isNullOrEmpty()) {
             showToast("未识别到身份证号，请重新上传")
             return

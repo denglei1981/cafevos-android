@@ -415,13 +415,14 @@ class JumpUtils {
             50 -> {//认证详情
                 try {
                     value?.let {
-                        var json = JSON.parseObject(it)
-                        var vin = json.getString("vin")
-                        var status = json.getIntValue("status")
+                        val json = JSON.parseObject(it)
+                        val vin = json.getString("vin")
+                        val authId= json.getString("authId")
+                        val status = json.getIntValue("status")
                         var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
-                            CarItemBean(vin = vin)
+                            CarItemBean(vin = vin,authId = authId)
                         ).startARouter(
                             when {
                                 CommonUtils.isCrmSuccess(status) -> {

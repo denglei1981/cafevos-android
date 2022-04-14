@@ -934,7 +934,7 @@ data class CouponsItemBean(
     val mallMallSkuIds: List<String>? = null,
     val markImg: String = "",
     val markName: String = "",
-    val state: String = "",
+    var state: String = "",
     val type: String = "",
     val useLimit: String = "",
     val useLimitValue: String = "",
@@ -944,7 +944,8 @@ data class CouponsItemBean(
     var isAvailable: Boolean = false,//是否可用
     var discountsFb: Long = 0,//实际优惠福币
     var couponSendId: String, // 发放id
-    var conditionName: String
+    var conditionName: String,
+
 ) {
     fun getRmbToFb(conditionMoney: String = this.conditionMoney): Long {
         return (conditionMoney.toFloat() * 100).toLong()

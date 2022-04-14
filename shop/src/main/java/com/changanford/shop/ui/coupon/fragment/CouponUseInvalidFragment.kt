@@ -53,6 +53,10 @@ class CouponUseInvalidFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding
     override fun initData() {
 
     }
+    override fun onStart() {
+        super.onStart()
+        viewModel.getCouponList(true, 3)
+    }
 
     override fun observe() {
         super.observe()

@@ -1,5 +1,6 @@
 package com.changanford.common.adapter
 
+import android.text.TextUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.R
@@ -24,6 +25,10 @@ class CouponItemAdapter :
         holder.dataBinding?.let {
 
             it.tvShopName.text = item.couponName
+            if(!TextUtils.isEmpty(item.desc)){
+                it.tvTips.text=item.desc
+            }
+
             when (item.discountType) {
                 "FULL_MINUS","LEGISLATIVE_REDUCTION" -> { // 满减,立减
                     val moneyStr = "￥".plus(item.couponMoney)
@@ -45,12 +50,15 @@ class CouponItemAdapter :
             when (item.state) {
                 "PENDING" -> { // 待领取
                     it.tvGet.text = "立即领取"
+                    it.tvGet.isSelected=false
                 }
                 "TO_USE" -> { // 已领取
                     it.tvGet.text = "立即查看"
+                    it.tvGet.isSelected=true
                 }
                 else -> { // 用不了了
                     it.tvGet.text = "已过期"
+                    it.tvGet.isSelected=true
                 }
             }
         }

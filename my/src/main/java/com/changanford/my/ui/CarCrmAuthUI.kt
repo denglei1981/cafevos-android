@@ -27,7 +27,7 @@ import com.changanford.my.widget.WaitBindingCarPop
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
- *  文件名：CarCrmAuthUI
+ *  文件名：CarCrmAuthUI  爱车 列表
  *  创建者: zcy
  *  创建日期：2021/9/15 9:43
  *  描述: TODO

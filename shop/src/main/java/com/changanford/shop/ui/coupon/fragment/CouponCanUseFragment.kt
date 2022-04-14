@@ -65,6 +65,11 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.getCouponList(true, 1)
+    }
+
     override fun observe() {
         super.observe()
         viewModel.couponListLiveData.observe(this, Observer {

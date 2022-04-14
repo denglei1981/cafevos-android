@@ -23,7 +23,7 @@ import razerdp.util.animation.TranslationConfig
 class GetCoupopBindingPop(
     val fragment: Activity,
     val lifecycleOwner: LifecycleOwner,
-    private val dataBean: MutableList<CouponsItemBean>?=null
+    private val dataBean: MutableList<CouponsItemBean>? = null
 ) : BasePopupWindow(fragment) {
     val viewDataBinding: PopGetCouponBinding =
         DataBindingUtil.bind(createPopupById(R.layout.pop_get_coupon))!!
@@ -41,14 +41,14 @@ class GetCoupopBindingPop(
 
 
     private fun initView() {
-        setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
+        setMaxHeight(ScreenUtils.getScreenHeight(context) / 4 * 3)
         viewDataBinding.apply {
             rvCoupon.adapter = couponItemAdapter
             dataBean?.let {
                 couponItemAdapter.data = dataBean
                 tvTitle.text = "恭喜您获得${dataBean.size}张优惠券"
             }
-            if(dataBean==null){
+            if (dataBean == null) {
                 getCouponList(true)
             }
             ivClose.setOnClickListener {
@@ -60,15 +60,17 @@ class GetCoupopBindingPop(
                 when (couPonItem.state) {
                     "PENDING" -> { // 待领取
                         val list = arrayListOf<String>()
+                        couPonItem.state = "TO_USE"
+                        couponItemAdapter.notifyDataSetChanged()
                         list.add(couPonItem.couponSendId)
-                        getCoupon(list,couponItemAdapter.data.size)
+                        getCoupon(list, couponItemAdapter.data.size)
                     }
                     "TO_USE" -> { // 已领取
                         // 跳转到立即使用的界面
 //                        UseCouponsActivity.start(couPonItem)
-                        val  gson=Gson()
-                        val cou=gson.toJson(couPonItem)
-                        JumpUtils.instans?.jump(128,cou)
+                        val gson = Gson()
+                        val cou = gson.toJson(couPonItem)
+                        JumpUtils.instans?.jump(128, cou)
                     }
                     else -> { // 用不了了
 
@@ -93,7 +95,7 @@ class GetCoupopBindingPop(
 
     }
 
-    fun getCoupon(list: ArrayList<String>, count:Int=0) {
+    fun getCoupon(list: ArrayList<String>, count: Int = 0) {
         lifecycleOwner.launchWithCatch {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
@@ -102,27 +104,22 @@ class GetCoupopBindingPop(
                 .receiveCoupons(body.header(randomKey), body.body(randomKey))
                 .onSuccess {
                     // 领取成功,刷新下数据
-                        if(count<=1){
-                            this.dismiss()
-                        }else{
-                            getCouponList()
-                        }
                 }.onWithMsgFailure {
                     it?.toast()
                 }
         }
     }
 
-    fun getCouponList(isSelfData:Boolean=false) {
+    fun getCouponList(isSelfData: Boolean = false) {
         lifecycleOwner.launchWithCatch {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
-            body["popup"]="NO"
+            body["popup"] = "NO"
             ApiClient.createApi<NetWorkApi>()
                 .receiveList(body.header(randomKey), body.body(randomKey))
                 .onSuccess {
                     // 领取成功
-                    if(isSelfData){
+                    if (isSelfData) {
                         if (it != null) {
                             viewDataBinding.tvTitle.text = "恭喜您获得${it.size}张优惠券"
                         }
