@@ -1066,3 +1066,5 @@ data class RefundOrderItemBean(
         return "申请数量: ".plus(refundNum)
     }
 }
+
+data class OtherInfoBean(var content:String?=null)
