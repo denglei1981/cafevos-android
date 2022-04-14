@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.CountDownTimer
+import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
@@ -59,7 +61,11 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         binding.rvList.adapter=mAdapter
         binding.topBar.apply {
             setActivity(this@GoodsKillAreaActivity)
-            setOnRightTvClickListener(this@GoodsKillAreaActivity)
+            //规则说明是否可见
+            getRightTv().visibility=if(MConstant.configBean?.seckilRuleCanSee==true){
+                setOnRightTvClickListener(this@GoodsKillAreaActivity)
+                View.VISIBLE
+            } else View.GONE
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
         addObserve()
