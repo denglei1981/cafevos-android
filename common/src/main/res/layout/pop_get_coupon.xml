@@ -12,11 +12,12 @@
         android:layout_height="match_parent">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/con_content"
             android:layout_width="0dp"
-            android:layout_height="420dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/shape_coupon_gradient_corner20_gray"
+            android:maxHeight="420dp"
             android:orientation="vertical"
             android:paddingBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,8 +28,9 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_48"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -39,26 +41,25 @@
                 tools:text="恭喜您获得3张优惠券" />
 
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_coupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_get"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/tv_get"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_get"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/image_coupop_right_get"
                 android:gravity="center"
@@ -72,8 +73,9 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_tips"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="领取后可到我的优惠券里查看"
                 android:textColor="#ffffffff"
@@ -82,7 +84,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_title"
