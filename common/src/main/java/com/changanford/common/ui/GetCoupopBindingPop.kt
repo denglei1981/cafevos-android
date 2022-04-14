@@ -2,23 +2,19 @@ package com.changanford.common.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.R
 import com.changanford.common.adapter.CouponItemAdapter
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.databinding.PopGetCouponBinding
 import com.changanford.common.net.*
-import com.changanford.common.router.path.ARouterShopPath.UseCouponsActivity
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ScreenUtils
 import com.google.gson.Gson
-
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -45,6 +41,7 @@ class GetCoupopBindingPop(
 
 
     private fun initView() {
+        setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
         viewDataBinding.apply {
             rvCoupon.adapter = couponItemAdapter
             dataBean?.let {
