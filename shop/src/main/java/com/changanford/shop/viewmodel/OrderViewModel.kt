@@ -493,7 +493,8 @@ class OrderViewModel: BaseViewModel() {
      * [evalList]评价列表
      * [reviewEval]是否追评 YES NO
      * */
-    fun postEvaluation(orderNo:String,evalList:ArrayList<PostEvaluationBean>,reviewEval:Boolean=false) {
+    fun postEvaluation(orderNo:String,evalList:List<PostEvaluationBean>?,reviewEval:Boolean=false) {
+        if(evalList==null)return
         viewModelScope.launch {
             fetchRequest(true){
                 body.clear()
