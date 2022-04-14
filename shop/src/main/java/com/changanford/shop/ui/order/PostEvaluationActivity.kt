@@ -94,15 +94,24 @@ class PostEvaluationActivity:BaseActivity<ActPostEvaluationBinding, OrderViewMod
             this.finish()
         }
         mAdapter.postBeanLiveData.observe(this){
-            val isComplete= it.find { item-> !item.isComplete }
-            binding.btnSubmit.setBtnEnabled(isComplete==null)
+            //正常评价时需要评价所有商品
+            if(!reviewEval){
+                val isComplete= it.find { item-> !item.isComplete }
+                binding.btnSubmit.setBtnEnabled(isComplete==null)
+            }else{//追评可以只评一个
+                //有完成一项即可提交追评
+                val isComplete= it.find { item-> item.isComplete }
+                binding.btnSubmit.setBtnEnabled(isComplete!=null)
+            }
         }
     }
     private fun submitEvaluation(){
         //查询是否有选择图片 为null 表示都没有选择图片
         val find=if(reviewEval)null else mAdapter.selectPicArr.find { it.imgPathArr!=null&&it.imgPathArr!!.size>0 }
         if(find==null){//追评或者没有选择图片则立即提交评价
-            viewModel.postEvaluation(orderNo,mAdapter.postBean,reviewEval)
+            //只提交已完成输入的商品
+            val postBean=mAdapter.postBean.filter { it.isComplete }
+            viewModel.postEvaluation(orderNo,postBean,reviewEval)
         }else{//评价 -先提交图片
             dialog.show()
             uploadPic(0)
