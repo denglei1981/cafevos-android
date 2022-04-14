@@ -20,10 +20,7 @@ class RulDescriptionActivity:BaseActivity<ActRuleDescriptionBinding,GoodsViewMod
             RouterManger.startARouter(ARouterShopPath.RulDescriptionActivity)
         }
     }
-    override fun initView() {
-
-    }
-
+    override fun initView() {}
     override fun initData() {
         viewModel.otherInfoBeanLiveData.observe(this){
             it?.content?.apply {

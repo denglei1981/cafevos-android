@@ -59,6 +59,10 @@
         <activity
             android:name=".ui.coupon.UseCouponsActivity"
             android:screenOrientation="portrait" />
+        <!-- 规则说明-->
+        <activity
+            android:name=".ui.goods.RulDescriptionActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.shoppingcart.ShoppingCartActivity"
             android:screenOrientation="portrait" />
