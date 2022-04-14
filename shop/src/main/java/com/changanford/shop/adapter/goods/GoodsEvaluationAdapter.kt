@@ -59,9 +59,10 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)) {
-                val imgArr=evalImgs?:arrayListOf()
-                val imgSize=imgArr.size
-                if(imgSize>0){
+                //首先过滤掉空字符串
+                val imgArr=evalImgs?.filter { it!="" }
+                val imgSize=imgArr?.size
+                if(imgSize!=null&&imgSize>0){
                     Spacer(modifier = Modifier.height(13.dp))
                     Row(modifier = Modifier.fillMaxWidth()) {
                         val maxSize=if(imgSize>=3)3 else imgSize
