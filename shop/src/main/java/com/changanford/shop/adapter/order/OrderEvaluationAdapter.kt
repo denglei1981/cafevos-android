@@ -91,7 +91,8 @@ class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false)
         val postPicAdapter=PostPicAdapter(0)
         dataBinding.recyclerView.apply {
             layoutManager=manager
-            postPicAdapter.draggableModule.isDragEnabled = true
+//            //允许拖拽
+//            postPicAdapter.draggableModule.isDragEnabled = true
             adapter= postPicAdapter
             postPicAdapter.setList(selectPicArr[pos].selectPics)
         }
@@ -122,6 +123,7 @@ class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false)
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
                 selectPicArr[pos].selectPics=selectList
+                updatePostBean(dataBinding,pos)
                 postPicAdapter.notifyDataSetChanged()
             }
         }
@@ -139,12 +141,7 @@ class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false)
                 holder.itemView.alpha = 0.7f
             }
 
-            override fun onItemDragMoving(
-                source: RecyclerView.ViewHolder?,
-                from: Int,
-                target: RecyclerView.ViewHolder?,
-                to: Int
-            ) {
+            override fun onItemDragMoving(source: RecyclerView.ViewHolder?,from: Int,target: RecyclerView.ViewHolder?,to: Int) {
                 """"move from: " + source.getAdapterPosition() + " to: " + target.getAdapterPosition() """.logD()
             }
 

@@ -231,7 +231,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             newList.addAll(match)
             newList.addAll(rest)
             createOrderBean?.coupons=newList
-            bindCoupon(newList[0])
+            //默认选中最大
+            val defaultCoupons=if(match.isNotEmpty())match[0] else null
+            bindCoupon(defaultCoupons)
         }else bindCoupon(null)
 
     }
