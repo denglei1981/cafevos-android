@@ -268,4 +268,10 @@ interface ShopNetWorkApi {
     @POST("/mall/fillInLogistics")
     suspend fun  fillInLogistics(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
 
+    /**
+     *  协议文本
+     * */
+    @POST("/con/agreementHub/bizCode")
+    suspend fun agreementHub(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OtherInfoBean>
+
 }

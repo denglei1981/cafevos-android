@@ -20,6 +20,7 @@ object ARouterShopPath {
     const val PayConfirmActivity = "/shop/PayConfirmActivity"//支付确认
     const val RecommendActivity = "/shop/RecommendActivity"//商品推荐
     const val IntegralDetailsActivity = "/shop/IntegralDetailsActivity"//积分明细
+    const val RulDescriptionActivity = "/shop/RulDescriptionActivity"//规则说明
 
     const val ShoppingCartActivity = "/shop/ShoppingCartActivity" // 购物车
 

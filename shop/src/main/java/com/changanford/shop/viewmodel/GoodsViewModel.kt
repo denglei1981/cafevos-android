@@ -50,6 +50,8 @@ class GoodsViewModel: BaseViewModel() {
     var typesBean = MutableLiveData<MutableList<GoodsTypesItemBean>>()
     //商品列表
     var goodsListLiveData = MutableLiveData<MutableList<GoodsItemBean>?>()
+    //OtherInfoBean
+    var otherInfoBeanLiveData = MutableLiveData<OtherInfoBean?>()
     /**
      * 获取banner
      * */
@@ -432,6 +434,23 @@ class GoodsViewModel: BaseViewModel() {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {
                 if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+            }
+        }
+    }
+    /**
+     * 秒杀规则说明
+     * */
+    fun agreementHub(bizCode:String="mall_seckill_rule"){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["bizCode"]=bizCode
+                val randomKey = getRandomKey()
+                shopApiService.agreementHub(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                otherInfoBeanLiveData.postValue(it)
+            }.onWithMsgFailure {
+                it?.toast()
             }
         }
     }

@@ -217,4 +217,5 @@
     <string name="str_cover">封面</string>
     <string name="str_releasedAfterReview">发布追评</string>
     <string name="str_refund">退款</string>
+    <string name="str_ruleDescription">规则说明</string>
 </resources>
