@@ -379,13 +379,18 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             }
         }
     }
+    /**
+     * 申请发票-只有人民币支付才需要开票
+    * */
     private fun initBtnLogistics(btnInvoice: AppCompatButton, item: OrderItemBean){
         btnInvoice.apply {
-            visibility=View.VISIBLE
-            setText(if(item.invoiced=="NOT_BEGIN")R.string.str_applyInvoice else R.string.str_lookInvoice)
-            setOnClickListener {
-                control.orderBtnClick(0,item)
-            }
+            if((item.rmb?:"0").toFloat()>0){
+                visibility=View.VISIBLE
+                setText(if(item.invoiced=="NOT_BEGIN")R.string.str_applyInvoice else R.string.str_lookInvoice)
+                setOnClickListener {
+                    control.orderBtnClick(0,item)
+                }
+            }else  visibility=View.GONE
         }
     }
     /**
