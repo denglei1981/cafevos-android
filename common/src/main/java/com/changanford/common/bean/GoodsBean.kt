@@ -369,13 +369,14 @@ data class GoodsDetailBean(
     var vipFb: String? = null,
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
-    var limitSeckill:String?=""
+    var limitSeckill: String? = ""
 
 ) {
     fun getLimitBuyNum(): Int {
         return if ("YES" == limitBuy) (limitBuyNum ?: "0").toInt() else 0
     }
-    fun getCurrentLimitBuyNum():Int{
+
+    fun getCurrentLimitBuyNum(): Int {
         return if ("YES" == limitSeckill) (limitBuyNum ?: "0").toInt() else 0
     }
 
@@ -465,21 +466,23 @@ data class OptionVo(
  * 评价
  * */
 data class CommentBean(
-    val dataList: List<CommentItem>?=null,
+    val dataList: List<CommentItem>? = null,
     val totalEvalNum: Int = 0,
     val totalEvalScore: Float = 0f,
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
     val totalPage: Int = 0,
-    var type:Int=0,
-    var queryTypeCount:QueryTypeCountBean?=null,
+    var type: Int = 0,
+    var queryTypeCount: QueryTypeCountBean? = null,
 )
+
 data class CommentInfoBean(
     val totalEvalNum: Int = 0,
     val totalEvalScore: Float = 0f,
-    var queryTypeCount:QueryTypeCountBean?=null,
+    var queryTypeCount: QueryTypeCountBean? = null,
 )
+
 data class QueryTypeCountBean(
     val ALL: String = "0",
     val HAVE_IMG: String = "0",
@@ -487,9 +490,10 @@ data class QueryTypeCountBean(
     val PRAISE: String = "0",
     val REVIEWS: String = "0",
 )
+
 /**
  * 评价
-* */
+ * */
 data class CommentItem(
     val anonymous: String = "",
     val avater: String = "",
@@ -518,20 +522,21 @@ data class CommentItem(
     val updateBy: String = "",
     val updateTime: String = "",
     val userId: Int = 0,
-    var imgs: String?=null,
-    var evalImgs:List<String>?=null,
-    var reviewEval: ReviewEvalBean?=null,
-){
-    fun getImgArr(imgs:String?=this.imgs):List<String>{
-        return if(!TextUtils.isEmpty(imgs)&&imgs!!.contains(",")){
-            imgs.split(",").filter { ""!=it }
-        }else arrayListOf(imgs?:"")
+    var imgs: String? = null,
+    var evalImgs: List<String>? = null,
+    var reviewEval: ReviewEvalBean? = null,
+) {
+    fun getImgArr(imgs: String? = this.imgs): List<String> {
+        return if (!TextUtils.isEmpty(imgs) && imgs!!.contains(",")) {
+            imgs.split(",").filter { "" != it }
+        } else arrayListOf(imgs ?: "")
     }
 }
+
 /*
 * 追评
 * */
-data class ReviewEvalBean(var evalText:String?=null,var evalTime:Long=0)
+data class ReviewEvalBean(var evalText: String? = null, var evalTime: Long = 0)
 
 /**
  * 商品首页
@@ -542,7 +547,7 @@ data class ShopHomeBean(
     val mallTags: ArrayList<GoodsTypesItemBean>? = null,
     val mallSpuKindDtos: ArrayList<ShopRecommendBean>? = null,//推荐列表
     var totalIntegral: String? = null,//我的福币
-    var shoppingCartCount:Int?=null,//购物车数量
+    var shoppingCartCount: Int? = null,//购物车数量
 )
 
 class MallIndexDto
@@ -586,7 +591,7 @@ data class OrderItemBean(
     val mallMallSeckillRangeId: Int = 0,
     val mallMallSeckillSessionId: Int = 0,
     val mallMallSkuId: String = "0",
-    var mallOrderSkuId:String?=null,
+    var mallOrderSkuId: String? = null,
     val mallMallSkuSpuSeckillRangeId: Int = 0,
     val mallMallSpuId: String = "0",// 没有用
     val mallMallSpuSeckillRangeId: Int = 0,
@@ -622,9 +627,9 @@ data class OrderItemBean(
     val payTime: Long? = 0,
     val sendTime: Long? = 0,
     var preferentialFbOfUnitPrice: String? = null,
-    val receiveTime: Any? = null,
+    val receiveTime: String? = null, // 收货时间？
     val waitPayDuration: Long = 0,//待支付有效时间
-    val payTimeDeadline:String?=null,
+    val payTimeDeadline: String? = null,
     var orderType: Int = 0,
     val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
@@ -658,17 +663,19 @@ data class OrderItemBean(
     var price: String? = null,
     var invoiced: String? = null, // 发票状态
     var statusDesc: String? = null,
-    var couponDiscount: String="",
-    var haggleDiscount: String?=null,
-    var sharedFb: String?=null,
-    var sharedRmb: String?=null,
+    var couponDiscount: String = "",
+    var haggleDiscount: String? = null,
+    var sharedFb: String? = null,
+    var sharedRmb: String? = null,
     var mallRefundStatus: String? = null, // 单个sku 状态
-    var historyPackage:String?=null,
-    var reviewEval:Boolean?=false,
-    var canReview:String="NO",
-    var mallMallspuId:String="",
-    var packageJump:PackageJumpBean?=null,
-    var refundStatus:String?=""
+    var historyPackage: String? = null,
+    var reviewEval: Boolean? = false,
+    var canReview: String = "NO",
+    var mallMallspuId: String = "",
+    var packageJump: PackageJumpBean? = null,
+    var refundStatus: String? = "",
+    var refundTimes: Int? = null // 申请售后次数
+
 
 ) {
     fun getRMBPrice() {
@@ -706,29 +713,30 @@ data class OrderItemBean(
 //    }
 
 
-
-
 }
+
 data class PackageJumpBean(
-    val jumpCode:Int=0,
-    val jumpVal:String?=null,
+    val jumpCode: Int = 0,
+    val jumpVal: String? = null,
 )
+
 data class ShopOrderRefundBean(
-    val dataList: List<OrderRefundItemBean>?=null,
+    val dataList: List<OrderRefundItemBean>? = null,
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,
     val totalPage: Int = 0,
     var nowTime: Long? = 0,
 )
+
 /**
  * 退款item
-* */
+ * */
 data class OrderRefundItemBean(
     val fbRefund: String? = null,
     val fbRefundApply: String? = null,
     val mallMallOrderId: String = "0",
-    val mallMallRefundId: String ="0",
+    val mallMallRefundId: String = "0",
     val orderNo: String = "",
     val refundMethod: String = "",
     val refundNo: String = "",
@@ -738,22 +746,23 @@ data class OrderRefundItemBean(
     val refundType: String = "",
     val rmbRefund: String? = null,
     val rmbRefundApply: String? = null,
-    var busSourse:String?="",
-){
-    fun getRefundStatusTxt():String{
-        return when(refundStatus){
-            "ON_GOING"->"退款中"
-            "SUCESS"->"退款完成"
-            "CLOSED"->"退款关闭"
-            else ->""
+    var busSourse: String? = "",
+) {
+    fun getRefundStatusTxt(): String {
+        return when (refundStatus) {
+            "ON_GOING" -> "退款中"
+            "SUCESS" -> "退款完成"
+            "CLOSED" -> "退款关闭"
+            else -> ""
         }
     }
 }
+
 data class OrderReceiveAddress(
     var addressId: String,
     var addressName: String,
-    var phone: String="",
-    var consignee: String=""
+    var phone: String = "",
+    var consignee: String = ""
     /**用户名字*/
 ) {
     fun getUserInfo(): String {
@@ -897,7 +906,7 @@ data class OrderSkuItem(
     var orderType: Int = 0,
     var fbPrice: String? = null,
     var rmbPrice: String? = null,
-    var orderImg:String?=null,
+    var orderImg: String? = null,
     val refundNum: Int = 0,//退款数量
 ) {
     /**
@@ -946,7 +955,7 @@ data class CouponsItemBean(
     var couponSendId: String, // 发放id
     var conditionName: String,
 
-) {
+    ) {
     fun getRmbToFb(conditionMoney: String = this.conditionMoney): Long {
         return (conditionMoney.toFloat() * 100).toLong()
     }
@@ -1061,8 +1070,8 @@ data class RefundOrderItemBean(
     var sharedFb: String,
     var sharedRmb: String,
     var orderNo: String,
-    var refundType:String,
-    var refundNum:String
+    var refundType: String,
+    var refundNum: String
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {
@@ -1076,4 +1085,4 @@ data class RefundOrderItemBean(
     }
 }
 
-data class OtherInfoBean(var content:String?=null)
+data class OtherInfoBean(var content: String? = null)

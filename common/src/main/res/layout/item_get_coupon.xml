@@ -30,10 +30,11 @@
                 android:textColor="@color/color_00095B"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/guideline4"
                 tools:text="￥15" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
@@ -47,12 +48,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="@dimen/dp_11"
-                android:background="@drawable/shape_blue_819_bg"
+                tools:background="@drawable/selector_coupon_bg"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="@dimen/dp_8"
                 android:paddingBottom="4dp"
-                android:textColor="@color/white"
+                tools:textColor="@drawable/selector_color_blue_white"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +64,7 @@
                 android:id="@+id/tv_shop_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:ellipsize="end"
                 android:gravity="start"
                 android:maxLines="1"
@@ -90,10 +92,7 @@
                 tools:text="飞利浦剃须刀" />
 
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

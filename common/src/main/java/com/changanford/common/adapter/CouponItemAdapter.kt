@@ -1,6 +1,7 @@
 package com.changanford.common.adapter
 
 import android.text.TextUtils
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.R
@@ -51,9 +52,13 @@ class CouponItemAdapter :
                 "PENDING" -> { // 待领取
                     it.tvGet.text = "立即领取"
                     it.tvGet.isSelected=false
+                    it.tvGet.setTextColor(ContextCompat.getColor(context,R.color.white))
+                    it.tvGet.background=ContextCompat.getDrawable(context,R.drawable.shape_blue_819_bg)
                 }
                 "TO_USE" -> { // 已领取
                     it.tvGet.text = "立即查看"
+                    it.tvGet.setTextColor(ContextCompat.getColor(context,R.color.color_8195C8))
+                    it.tvGet.background=ContextCompat.getDrawable(context,R.drawable.shape_white_blue)
                     it.tvGet.isSelected=true
                 }
                 else -> { // 用不了了

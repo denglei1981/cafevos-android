@@ -68,9 +68,10 @@ class GetCoupopBindingPop(
                     "TO_USE" -> { // 已领取
                         // 跳转到立即使用的界面
 //                        UseCouponsActivity.start(couPonItem)
-                        val gson = Gson()
-                        val cou = gson.toJson(couPonItem)
-                        JumpUtils.instans?.jump(128, cou)
+//                        val gson = Gson()
+//                        val cou = gson.toJson(couPonItem)
+                        JumpUtils.instans?.jump(118)
+                        dismiss()
                     }
                     else -> { // 用不了了
 
@@ -104,6 +105,11 @@ class GetCoupopBindingPop(
                 .receiveCoupons(body.header(randomKey), body.body(randomKey))
                 .onSuccess {
                     // 领取成功,刷新下数据
+                    if(count==0){
+                        JumpUtils.instans?.jump(118)
+                        dismiss()
+                    }
+
                 }.onWithMsgFailure {
                     it?.toast()
                 }
