@@ -27,8 +27,8 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
 
 
     companion object {
-        fun start(mallMallOrderId:String){
-            JumpUtils.instans?.jump(124, mallMallOrderId)
+        fun start(mallMallRefundId:String){
+            JumpUtils.instans?.jump(124, mallMallRefundId)
         }
     }
     val refundProgressAdapter: RefundProgressAdapter by lazy {
@@ -46,9 +46,9 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
     }
 
     override fun initData() {
-        val mallMallOrderId = intent.getStringExtra("value")
-        if (mallMallOrderId != null) {
-            viewModel.getRefundProgress(mallMallOrderId)
+        val mallMallRefundId = intent.getStringExtra("value")
+        if (mallMallRefundId != null) {
+            viewModel.getRefundProgress(mallMallRefundId)
             addHeadView()
             addFooterView()
         }

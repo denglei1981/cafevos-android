@@ -105,7 +105,7 @@ class OrderDetailsItemV2Adapter() :
                 val itemStatus = tvSaleHandler.text.toString()
                 when (itemStatus) {
                     "退款中", "退款成功" -> {// 查询退款进度
-                        JumpUtils.instans?.jump(126, item.mallOrderSkuId)
+                        JumpUtils.instans?.jump(126, item.refundId)
                     }
                     else -> {
                         item.orderNo = orderNo
