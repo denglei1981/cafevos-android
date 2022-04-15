@@ -175,7 +175,9 @@ object MConstant {
     //埋点正式
     val BASE_URL_BURIED_PROD="https://evosmd.changanford.cn/buried"
 
-
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
+
+    //H5通用协议地址
+    var H5_PUBLIC_INSTRUCTIONS = "${H5_BASE_URL_CSCIR}/richTextAp?key=%s"
 }

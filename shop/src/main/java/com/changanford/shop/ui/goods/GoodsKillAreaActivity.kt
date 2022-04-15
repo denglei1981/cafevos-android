@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
@@ -186,6 +187,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
     }
     //规则说明
     override fun onRightTvClick() {
-        RulDescriptionActivity.start()
+        JumpUtils.instans?.jump(1,String.format(MConstant.H5_PUBLIC_INSTRUCTIONS,"mall_seckill_rule"))
+//        RulDescriptionActivity.start(getString(R.string.str_ruleDescription),"mall_seckill_rule")
     }
 }
