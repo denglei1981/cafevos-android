@@ -1,6 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +31,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
     }
 
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
-        val binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
+        var binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
         if (item.localMedias == null) {
             binding.ivFm.visibility = View.GONE
             binding.ivAddfm.visibility = View.VISIBLE
@@ -48,6 +49,15 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
                 LiveDataBus.get().with(CircleLiveBusKey.POST_EDIT).postValue(binding.tvTex)
             }
         }
+
+        if (binding.tvTex.tag is TextWatcher) {
+            binding.tvTex.removeTextChangedListener(binding.tvTex.tag as TextWatcher)
+        }
+        if (item.content.isNotEmpty() || item.content != "/null/") {
+            binding.tvTex.setText(item.content)
+        } else {
+            binding.tvTex.setText("")
+        }
         val watcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -55,24 +65,22 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-                if (binding.tvTex.hasFocus()) {
-                    item.content = p0.toString()
+            override fun afterTextChanged(editable: Editable?) {
+//                if (binding.tvTex.hasFocus()) {
+//                    item.content = editable.toString()
+//                }
+                if (!TextUtils.isEmpty(editable)) {
+                    item.content = editable.toString()
                 }
             }
 
         }
-        if (binding.tvTex.tag != null) {
-            binding.tvTex.removeTextChangedListener(watcher)
-        }
         binding.tvTex.addTextChangedListener(watcher)
         binding.tvTex.tag = watcher
-        if (item.content.isNotEmpty() || item.content != "/null/") {
-            binding.tvTex.setText(item.content)
-        }
-        if (holder.layoutPosition == data.size){
+
+        if (holder.layoutPosition == data.size) {
             holder.getView<View>(R.id.Vlast).visibility = View.VISIBLE
-        }else{
+        } else {
             holder.getView<View>(R.id.Vlast).visibility = View.GONE
         }
     }

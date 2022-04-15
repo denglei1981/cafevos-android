@@ -751,7 +751,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
                         val localMedia = result?.get(0)
                         localMedia?.let {
-                            var bundle = Bundle()
+                            val bundle = Bundle()
                             bundle.putParcelableArrayList("picList", arrayListOf(localMedia))
                             bundle.putInt("position", 0)
                             bundle.putInt("showEditType", 0)
@@ -1350,8 +1350,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                         locaPostEntity?.imageList?.get(index - 1)?.imgDesc ?: "",
                                         if (localMedia?.realPath?.isNullOrEmpty() == true) null else localMedia
                                     )
-//                                    selectList.add(longPostBean)
-
                                     //展示选择的图片
                                     longpostadapter.addData(longPostBean)
                                     longpostadapter.notifyDataSetChanged()
