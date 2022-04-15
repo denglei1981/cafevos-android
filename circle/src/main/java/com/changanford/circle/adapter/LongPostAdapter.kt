@@ -42,9 +42,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
                 binding.ivFm
             )
         }
-        if (item.content.isNotEmpty() || item.content != "/null/") {
-            binding.tvTex.setText(item.content)
-        }
+
         binding.tvTex.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 LiveDataBus.get().with(CircleLiveBusKey.POST_EDIT).postValue(binding.tvTex)
@@ -69,7 +67,9 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
         }
         binding.tvTex.addTextChangedListener(watcher)
         binding.tvTex.tag = watcher
-
+        if (item.content.isNotEmpty() || item.content != "/null/") {
+            binding.tvTex.setText(item.content)
+        }
         if (holder.layoutPosition == data.size){
             holder.getView<View>(R.id.Vlast).visibility = View.VISIBLE
         }else{
