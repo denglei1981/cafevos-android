@@ -55,16 +55,17 @@ class RefundViewModel : BaseViewModel() {
     /**
      *  退款中的数据。
      * */
-    fun getRefundProgress(mallMallOrderId: String = "", mallMallOrderSkuId: String = "") {
+    fun getRefundProgress(mallMallRefundId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            if (!TextUtils.isEmpty(mallMallOrderId)) {
-                body["mallMallOrderId"] = mallMallOrderId
-            }
-            if (!TextUtils.isEmpty(mallMallOrderSkuId)) {
-                body["mallMallOrderSkuId"] = mallMallOrderSkuId
-            }
+//            if (!TextUtils.isEmpty(mallMallOrderId)) {
+//                body["mallMallOrderId"] = mallMallOrderId
+//            }
+//            if (!TextUtils.isEmpty(mallMallOrderSkuId)) {
+//                body["mallMallOrderSkuId"] = mallMallOrderSkuId
+//            }
+            body["mallMallRefundId"]=mallMallRefundId
             ApiClient.createApi<ShopNetWorkApi>()
                 .refundProgress(body.header(rKey), body.body(rKey))
                 .onSuccess {

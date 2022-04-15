@@ -675,7 +675,8 @@ data class OrderItemBean(
     var packageJump: PackageJumpBean? = null,
     var refundStatus: String? = "",
     var refundTimes: Int? = null, // 申请售后次数
-    var timestamp:Long?=null
+    var timestamp:Long?=null,
+    var refundId:String?=null //退款id
 
 ) {
     fun getRMBPrice() {

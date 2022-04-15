@@ -29,7 +29,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
- *  申请退款  已发货， 仅退款 ，退款退货
+ *  退款进度  已发货， 仅退款 ，退款退货
  * */
 @Route(path = ARouterShopPath.RefundProgressHasShopActivity)
 class RefundProgressHasShopActivity :
@@ -37,8 +37,8 @@ class RefundProgressHasShopActivity :
 
 
     companion object {
-        fun start(mallOrderSkuId: String) {
-            JumpUtils.instans?.jump(126, mallOrderSkuId)
+        fun start(mallMallRefundId: String) {
+            JumpUtils.instans?.jump(126, mallMallRefundId)
         }
     }
 
@@ -61,11 +61,11 @@ class RefundProgressHasShopActivity :
         binding.smartLayout.setOnRefreshListener(this)
     }
 
-    var mallMallOrderSkuId: String? = ""
+    var mallMallRefundId: String? = ""
     override fun initData() {
-        mallMallOrderSkuId = intent.getStringExtra("value")
-        if (mallMallOrderSkuId != null) {
-            viewModel.getRefundProgress("", mallMallOrderSkuId!!)
+        mallMallRefundId = intent.getStringExtra("value")
+        if (mallMallRefundId != null) {
+            viewModel.getRefundProgress(mallMallRefundId!!)
             addHeadView()
             addFooterView()
         }
@@ -86,8 +86,8 @@ class RefundProgressHasShopActivity :
         })
         LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).observe(this, Observer {
              // 刷新 进度
-            mallMallOrderSkuId?.let {
-                viewModel.getRefundProgress("", it)
+            mallMallRefundId?.let {
+                viewModel.getRefundProgress(it)
             }
         })
 
@@ -238,8 +238,8 @@ class RefundProgressHasShopActivity :
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        mallMallOrderSkuId?.let {
-            viewModel.getRefundProgress("", it)
+        mallMallRefundId?.let {
+            viewModel.getRefundProgress(it)
         }
 
     }

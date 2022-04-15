@@ -296,7 +296,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
 
         binding.inRefund.conRefundProgress.setOnClickListener {
-            JumpUtils.instans?.jump(124, dataBean.mallMallOrderId)
+            JumpUtils.instans?.jump(124, dataBean.refundId)
         }
         if (needShow) {
             binding.inRefund.conRefundProgress.visibility = View.VISIBLE
