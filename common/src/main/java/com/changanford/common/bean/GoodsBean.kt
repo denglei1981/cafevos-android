@@ -369,7 +369,8 @@ data class GoodsDetailBean(
     var vipFb: String? = null,
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
-    var limitSeckill: String? = ""
+    var limitSeckill: String? = "",
+    var mallMallRefundId:String?="" // 退款id
 
 ) {
     fun getLimitBuyNum(): Int {
@@ -676,7 +677,7 @@ data class OrderItemBean(
     var refundStatus: String? = "",
     var refundTimes: Int? = null, // 申请售后次数
     var timestamp:Long?=null,
-    var refundId:String?=null //退款id
+    var mallMallRefundId:String?=null //退款id
 
 ) {
     fun getRMBPrice() {
