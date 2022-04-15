@@ -116,6 +116,7 @@ object MConstant {
      */
     var H5_TASK_RULE = "${H5_BASE_URL_CSCIR}/taskExplain"
 
+
     /**
      * https://cscir.uniplanet.cn/quanzi/#/regTerms
      * 注册协议
@@ -178,4 +179,9 @@ object MConstant {
 
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
+
+    /**
+     * 优惠券说明
+     */
+    var COUPON_TASK_RULE = "${H5_BASE_URL_CSCIR}/richTextAp?key=coupon_illustration"
 }
