@@ -38,7 +38,8 @@
     <string name="str_one">1</string>
     <string name="str_add">+</string>
     <string name="str_distribution">配送方式</string>
-    <string name="str_leaveMessage">订单留言</string>
+    <string name="str_leaveMessage">留言</string>
+    <string name="str_orderLeaveMessage">订单留言</string>
     <string name="str_optionalMore100Words">选填，100字以内</string>
     <string name="str_amountGoods">商品金额</string>
     <string name="str_memberDiscount">会员优惠</string>
