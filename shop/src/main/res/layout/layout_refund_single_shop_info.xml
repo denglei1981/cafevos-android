@@ -151,10 +151,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_spreak"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-
             android:orientation="vertical">
 
             <View

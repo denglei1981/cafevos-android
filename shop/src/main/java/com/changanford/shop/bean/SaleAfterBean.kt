@@ -63,7 +63,7 @@ data class RefundProgressBean(
     var sku: RefundOrderItemBean?=null,
     val refundLogMap: RefundOutStautsBean,
     var refundList: MutableList<RefundStautsBean>? = mutableListOf(),
-    var refundDescText:String,
+    var refundDescText:String?=null,
     val refundDescImgs:MutableList<String>?= mutableListOf()
 )
 

@@ -208,7 +208,21 @@ class RefundProgressHasShopActivity :
             ft.layoutRefundInfo.tvContent.text = refundProgressBean.refundDescText
 
             ft.layoutRefundInfo.rvImg.adapter=refundImgsAdapter
-            refundImgsAdapter.setNewInstance(refundProgressBean.refundDescImgs)
+
+            val newList=refundProgressBean.refundDescImgs?.filter { it!="" }
+
+
+            if(newList!=null&& newList.isNotEmpty()){
+                refundImgsAdapter.setNewInstance(newList as MutableList<String>?)
+                ft.layoutRefundInfo.tvSupply.visibility=View.VISIBLE
+                ft.layoutRefundInfo.llSpreak.visibility=View.VISIBLE
+            }else{
+                if (TextUtils.isEmpty(refundProgressBean.refundDescText)) {
+                    ft.layoutRefundInfo.llSpreak.visibility=View.GONE
+                 }
+            }
+
+
         }
     }
 
