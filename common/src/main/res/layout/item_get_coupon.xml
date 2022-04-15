@@ -84,6 +84,8 @@
                 android:layout_marginTop="10dp"
                 android:gravity="start"
                 android:textColor="@color/gray_999999"
+                android:maxLines="1"
+
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_get"

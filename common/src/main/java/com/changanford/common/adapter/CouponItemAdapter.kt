@@ -37,7 +37,7 @@ class CouponItemAdapter :
                     it.tvMoney.text = str
                 }
                 "DISCOUNT" -> { // 折扣
-                    val moneyStr = item.couponMoney.toString().plus("折")
+                    val moneyStr = item.couponRatio.toString().plus("折")
                     val str = SpannableStringUtils.textSizeSpan(
                         moneyStr,
                         moneyStr.length - 1,
