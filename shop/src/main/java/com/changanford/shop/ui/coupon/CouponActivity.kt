@@ -10,6 +10,8 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.wutil.ViewPage2AdapterAct
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityMyCouponBinding
@@ -36,6 +38,12 @@ class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
         CouponUseInvalidFragment.newInstance("3")
     }
     override fun initView() {
+        binding.layoutTop.setOnRightTvClickListener(object :TopBar.OnRightTvClickListener{
+            override fun onRightTvClick() {
+                JumpUtils.instans?.jump(1, MConstant.COUPON_TASK_RULE)
+            }
+
+        })
         binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
             override fun onBackClick() {
                 onBackPressed()

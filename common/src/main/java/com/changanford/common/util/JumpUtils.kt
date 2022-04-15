@@ -214,7 +214,8 @@ class JumpUtils {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
                     else -> {
-                        startARouter(ARouterMyPath.UniCarAuthUI)
+//                        startARouter(ARouterMyPath.UniCarAuthUI)
+                        toCarAuth()
                     }
                 }
             }
@@ -417,12 +418,12 @@ class JumpUtils {
                     value?.let {
                         val json = JSON.parseObject(it)
                         val vin = json.getString("vin")
-                        val authId= json.getString("authId")
+                        val authId = json.getString("authId")
                         val status = json.getIntValue("status")
                         var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
-                            CarItemBean(vin = vin,authId = authId)
+                            CarItemBean(vin = vin, authId = authId)
                         ).startARouter(
                             when {
                                 CommonUtils.isCrmSuccess(status) -> {
@@ -725,7 +726,7 @@ class JumpUtils {
             }
             128 -> { // 使用优惠券
                 if (!TextUtils.isEmpty(value)) {
-                    bundle.putString("itemBean",value)//CouponsItemBean
+                    bundle.putString("itemBean", value)//CouponsItemBean
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }
@@ -779,6 +780,59 @@ class JumpUtils {
             }
         }
 
+    }
+
+
+    private fun toCarAuth() {
+        var body = HashMap<String, Any>()
+        var rkey = getRandomKey()
+        currentViewModelScope.launch {
+            fetchRequest {
+                apiService.queryAuthCarList(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    var isAuth: Int = 0 //已登录 1 全部数据都是未通过的
+                    var failNum: Int = 0
+                    when (it.isCarOwner) {
+                        1 -> {//已认证成功
+                            isAuth = 2
+                        }
+                        else -> {
+                            it.carList?.let {
+                                it.forEach {
+                                    if (CommonUtils.isCrmFail(it.authStatus)) {
+                                        failNum++
+                                    }
+                                }
+                                isAuth = when {
+                                    it.size == 0 -> {
+                                        0
+                                    }
+                                    failNum == it.size -> {//列表数据全部失败
+                                        1
+                                    }
+                                    else -> {
+                                        3 //有认证中的数据
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // ToDo
+                    when (isAuth) {
+                        0, 1 -> {//未认证，或者是认证
+                            JumpUtils.instans?.jump(if (isAuth == 1) 41 else 17)
+                        }
+                        2, 3 -> {//有认证成功的数据
+                            JumpUtils.instans?.jump(41)
+                        }
+                    }
+
+                }
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        }
     }
 
 

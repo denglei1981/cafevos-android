@@ -99,6 +99,12 @@ class RefundProgressHasShopActivity :
             when (refundProgressBean.refundStatus) {
                 "SUCCESS" -> {
                     it.tvSubTips.visibility = View.VISIBLE
+                    showTotalTag(
+                        this,
+                        it.tvSubTips,
+                        PayShowBean(refundProgressBean.rmbRefund, refundProgressBean.fbRefund),
+                        false
+                    )
                 }
                 else -> {
                     it.tvSubTips.visibility = View.GONE

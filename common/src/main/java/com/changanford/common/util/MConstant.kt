@@ -180,4 +180,9 @@ object MConstant {
 
     //H5通用协议地址
     var H5_PUBLIC_INSTRUCTIONS = "${H5_BASE_URL_CSCIR}/richTextAp?key=%s"
+
+    /**
+     * 优惠券说明
+     */
+    var COUPON_TASK_RULE = "${H5_BASE_URL_CSCIR}/richTextAp?key=coupon_illustration"
 }
