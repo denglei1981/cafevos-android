@@ -20,6 +20,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
+import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -36,7 +37,6 @@ import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
-import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -45,7 +45,6 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
-import java.lang.Exception
 import java.lang.reflect.Field
 
 /**
@@ -102,7 +101,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         titleList.add(getString(R.string.home_recommend))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
-        titleList.add(getString(R.string.home_big_shot))
+//        titleList.add(getString(R.string.home_big_shot))
         pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
         binding.homeViewpager.adapter = pagerAdapter
         binding.homeViewpager.isSaveEnabled = false
