@@ -97,7 +97,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         fragmentList.add(recommendFragment)
         fragmentList.add(actsParentsFragment)
         fragmentList.add(newsListFragment)
-        fragmentList.add(bigShotFragment)
+//        fragmentList.add(bigShotFragment)
         titleList.add(getString(R.string.home_recommend))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
