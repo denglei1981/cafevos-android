@@ -88,13 +88,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
                 }
             }
         })
-        viewModel.getCov {
-            try {
-                myFastInAdapter.setNewInstance(it.data)
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
+
     }
 
     /**
@@ -153,6 +147,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun initData() {
         getUserInfo()
         viewModel.getMenuList()
+        viewModel.getCov {
+            try {
+                myFastInAdapter.setNewInstance(it.data)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
         viewModel.menuBean.observe(this) {
             menuBean.clear()
             menuBean.addAll(it)

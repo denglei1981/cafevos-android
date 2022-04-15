@@ -1256,4 +1256,16 @@ class SignViewModel : ViewModel() {
             })
         }
     }
+    fun receiveList(result: (CommonResponse<MutableList<CouponsItemBean>>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                val body = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                body["popup"]="YES"
+                val rkey = getRandomKey()
+                apiService.receiveList(body.header(rkey), body.body(rkey))
+            })
+        }
+
+    }
 }

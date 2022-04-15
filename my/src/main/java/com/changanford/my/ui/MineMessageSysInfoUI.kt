@@ -3,20 +3,22 @@ package com.changanford.my.ui
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.MyApp
 import com.changanford.common.bean.MessageItemData
-import com.changanford.common.net.onFailure
-import com.changanford.common.net.onSuccess
-import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
@@ -45,7 +47,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
 
     override fun initView() {
 
-        adapter = MessageAdapter(this){id,pos->
+        adapter = MessageAdapter(this,this){id,pos->
             viewModel.delUserMessage(id) {
                 it.onSuccess {
                     adapter?.data?.removeAt(pos)
@@ -164,7 +166,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
 
     }
 
-    class MessageAdapter(var mContext: Context,var func: (String,Int)->Unit) :
+    class MessageAdapter(var mContext: Context,var lifecycleOwner: LifecycleOwner,var func: (String,Int)->Unit) :
         BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoSysBinding>>(
             R.layout.item_mine_message_info_sys
         ) {
@@ -194,11 +196,37 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                         }.show()
                 }
                 it.item.setOnClickListener {
+                    //
+                    if(item.jumpDataType==122){ // 优惠券弹窗
+                        lifecycleOwner.launchWithCatch {
+                            val body = MyApp.mContext.createHashMap()
+                            val rKey = getRandomKey()
+                            ApiClient.createApi<NetWorkApi>()
+                                .receiveList(body.header(rKey), body.body(rKey))
+                                .onSuccess {list->
+                                    if(list!=null&&list.size>0){
+                                        JumpUtils.instans?.jump(
+                                            item.jumpDataType,
+                                            item.jumpDataValue
+                                        )
+                                    }else{
+                                        JumpUtils.instans?.jump(118)
+                                    }
 
-                    JumpUtils.instans?.jump(
-                        item.jumpDataType,
-                        item.jumpDataValue
-                    )
+                                }
+                                .onWithMsgFailure {
+                                    JumpUtils.instans?.jump(118)
+                                }
+
+                        }
+
+                    }else{
+                        JumpUtils.instans?.jump(
+                            item.jumpDataType,
+                            item.jumpDataValue
+                        )
+                    }
+
                 }
             }
         }
