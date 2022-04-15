@@ -30,7 +30,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
     }
 
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
-        var binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
+        val binding: LongpostItemBinding = DataBindingUtil.bind(holder.itemView)!!
         if (item.localMedias == null) {
             binding.ivFm.visibility = View.GONE
             binding.ivAddfm.visibility = View.VISIBLE

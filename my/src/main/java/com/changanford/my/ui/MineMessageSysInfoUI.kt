@@ -200,6 +200,7 @@ class MineMessageSysInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewM
                     if(item.jumpDataType==122){ // 优惠券弹窗
                         lifecycleOwner.launchWithCatch {
                             val body = MyApp.mContext.createHashMap()
+                            body["popup"]="NO"
                             val rKey = getRandomKey()
                             ApiClient.createApi<NetWorkApi>()
                                 .receiveList(body.header(rKey), body.body(rKey))
