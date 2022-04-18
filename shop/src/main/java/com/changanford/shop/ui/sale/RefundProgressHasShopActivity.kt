@@ -97,7 +97,7 @@ class RefundProgressHasShopActivity :
         headNewBinding?.let {
             viewModel.StatusEnum("MallRefundStatusEnum", refundProgressBean.refundStatus, it.tvTips)
             when (refundProgressBean.refundStatus) {
-                "SUCCESS" -> {
+                "FINISH" -> {
                     it.tvSubTips.visibility = View.VISIBLE
                     showTotalTag(
                         this,
@@ -108,12 +108,12 @@ class RefundProgressHasShopActivity :
                 }
                 else -> {
                     it.tvSubTips.visibility = View.GONE
-                    showTotalTag(
-                        this,
-                        it.tvSubTips,
-                        PayShowBean(refundProgressBean.rmbRefund, refundProgressBean.fbRefund),
-                        false
-                    )
+//                    showTotalTag(
+//                        this,
+//                        it.tvSubTips,
+//                        PayShowBean(refundProgressBean.rmbRefund, refundProgressBean.fbRefund),
+//                        false
+//                    )
                 }
             }
         }

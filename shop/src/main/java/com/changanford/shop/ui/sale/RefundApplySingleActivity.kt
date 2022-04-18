@@ -319,8 +319,10 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            LiveDataBus.get().with(LiveDataBusKey.SINGLE_REFUND).postValue("success")
-            this.finish()
+            if(it=="success"){
+                LiveDataBus.get().with(LiveDataBusKey.SINGLE_REFUND).postValue("success")
+                this.finish()
+            }
         })
     }
 

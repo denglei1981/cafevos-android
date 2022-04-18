@@ -66,7 +66,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private var timeCountControl: PayTimeCountControl? = null
 
     val orderDetailsItemV2Adapter: OrderDetailsItemV2Adapter by lazy {
-        OrderDetailsItemV2Adapter()
+        OrderDetailsItemV2Adapter(object :OrderDetailsItemV2Adapter.OrderStatusListener{
+            override fun orderStatusShow(item:OrderItemBean,needShow: Boolean) {
+                topRefundShow(dataBean,needShow)
+            }
+        })
     }
 
 
@@ -119,6 +123,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         timeCountControl?.cancel()
         val evalStatus = dataBean.evalStatus
         val orderStatus = dataBean.orderStatus
+        this.dataBean = dataBean
         //应付总额
         var totalPayName = R.string.str_copeWithTotalAmount
         binding.inOrderInfo.layoutOrderClose.visibility = View.VISIBLE
@@ -192,7 +197,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showExpress(dataBean, true) // 展示物流
                     showInvoiceState(dataBean)
                     showGetShop(true)
-                    topRefundShow(dataBean, false)
+                    topRefundShow(dataBean)
                 }
                 "退款中" -> {
                     BottomGon()
@@ -293,7 +298,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         showCopy()
     }
 
-    private fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
+     fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
 
         binding.inRefund.conRefundProgress.setOnClickListener {
             JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)

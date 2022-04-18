@@ -25,7 +25,7 @@ import com.google.gson.Gson
 /**
  *
  * */
-class OrderDetailsItemV2Adapter() :
+class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
     BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<InItemOrderGoodsV2Binding>>(R.layout.in_item_order_goods_v2) {
 
     var orderStatus: String = ""
@@ -67,18 +67,22 @@ class OrderDetailsItemV2Adapter() :
                     "ON_GOING" -> {
                         tvSaleHandler.visibility = View.VISIBLE
                         tvSaleHandler.text = "退款中"
+                        orderStatusListener.orderStatusShow(item,false)
                     }
                     "FINISH" -> {
                         tvSaleHandler.visibility = View.VISIBLE
                         tvSaleHandler.text = "退款成功"
+                        orderStatusListener.orderStatusShow(item,false)
                     }
                     "CLOSED" -> {
                         tvSaleHandler.visibility = View.VISIBLE
                         tvSaleHandler.text = "退款关闭"
+                        orderStatusListener.orderStatusShow(item,false)
                     }
                     else -> {
                         tvSaleHandler.visibility = View.GONE
                         tvSaleHandler.text = ""
+                        orderStatusListener.orderStatusShow(item,true)
                     }
 
                 }
@@ -104,7 +108,7 @@ class OrderDetailsItemV2Adapter() :
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品
                 val itemStatus = tvSaleHandler.text.toString()
                 when (itemStatus) {
-                    "退款中", "退款成功" -> {// 查询退款进度
+                    "退款中", "退款成功","退款关闭" -> {// 查询退款进度
                         JumpUtils.instans?.jump(126, item.mallMallRefundId)
                     }
                     else -> {
@@ -173,9 +177,9 @@ class OrderDetailsItemV2Adapter() :
 
     }
 
-    interface ShopBackListener {
+    interface OrderStatusListener {
 
-        fun check()
+        fun orderStatusShow(item:OrderItemBean,needShow:Boolean)
     }
 }
 

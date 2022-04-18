@@ -43,10 +43,11 @@ class RefundViewModel : BaseViewModel() {
                 .applyRefund(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     "申请已提交".toast()
-                    invoiceLiveData.postValue("申请已提交")
+                    invoiceLiveData.postValue("success")
 
                 }
                 .onWithMsgFailure {
+                    invoiceLiveData.postValue("fail")
                     it?.toast()
                 }
         })
@@ -168,9 +169,10 @@ class RefundViewModel : BaseViewModel() {
                 .applyRefund(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     "申请已提交".toast()
-                    refundSingleLiveData.postValue("申请已提交")
+                    refundSingleLiveData.postValue("success")
                 }
                 .onWithMsgFailure {
+                    refundSingleLiveData.postValue("fail")
                     it?.toast()
                 }
         })

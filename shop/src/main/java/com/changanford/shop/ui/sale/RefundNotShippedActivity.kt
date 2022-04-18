@@ -79,8 +79,12 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
             showTotalTag(binding.tvRefundMoney, refundBean!!)
         })
         viewModel.invoiceLiveData.observe(this, Observer {
+
             // 申请退款成功
-            this.finish()
+            if(it=="success"){
+                this.finish()
+            }
+
         })
     }
 
