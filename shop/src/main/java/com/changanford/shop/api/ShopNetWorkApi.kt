@@ -71,7 +71,7 @@ interface ShopNetWorkApi {
     /**
      *评价列表基础信息-维保
      * */
-    @POST("/mall/eval/info")
+    @POST("/mall/wb/evalPageInfo")
     suspend fun goodsEvalInfoWb(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentInfoBean>
     /**
      *评价列表-维保
