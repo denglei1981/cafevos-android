@@ -184,6 +184,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     BottomBShow()
                     showInvoiceState(dataBean)
                     showRefund(dataBean) // 待发货 申请退款
+                    topAllShowRefundShow(dataBean)
 
                 }
                 "待收货" -> {
@@ -197,11 +198,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showExpress(dataBean, true) // 展示物流
                     showInvoiceState(dataBean)
                     showGetShop(true)
-                    topRefundShow(dataBean)
+                    topAllShowRefundShow(dataBean)
                 }
                 "退款中" -> {
                     BottomGon()
-                    topRefundShow(dataBean)
+                    topAllShowRefundShow(dataBean)
                 }
                 "待评价" -> {
                     totalPayName = R.string.str_realPayTotalAmount
@@ -297,6 +298,30 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         showHaggle()
         showCopy()
     }
+
+    fun topAllShowRefundShow(dataBean: OrderItemBean){
+        binding.inRefund.conRefundProgress.setOnClickListener {
+            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+        }
+        if(!TextUtils.isEmpty(dataBean.refundStatus)){
+            binding.inRefund.conRefundProgress.visibility = View.VISIBLE
+            binding.inAddress.conAddress.visibility = View.VISIBLE
+        }else{
+            binding.inRefund.conRefundProgress.visibility = View.GONE
+            binding.inAddress.conAddress.visibility = View.VISIBLE
+        }
+        binding.tvOrderRemainingTime.text = dataBean.statusDesc
+        dataBean.refundStatus?.let {
+            viewModel.StatusEnum(
+                "MallRefundStatusEnum",
+                it,
+                binding.inRefund.tvStatus
+            )
+        }
+        binding.inRefund.tvTips.text = "退款进度"
+    }
+
+
 
      fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
 
