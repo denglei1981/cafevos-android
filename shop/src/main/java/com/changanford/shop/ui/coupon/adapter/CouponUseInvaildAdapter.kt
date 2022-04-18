@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.coupon.adapter
 
+import android.text.TextUtils
 import android.view.View
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -35,7 +36,13 @@ class CouponUseInvaildAdapter() :
             tvGoodsTitle.text = item.couponName
             tvTimeStart.text = TimeUtils.MillisToStrO(item.validityBeginTime).plus("起\n")
                 .plus(TimeUtils.MillisToStrO(item.validityEndTime)).plus("止")
-            tvVipTips.text = item.markName
+            if(TextUtils.isEmpty(item.markName)){
+                tvVipTips.text=""
+                tvVipTips.visibility=View.GONE
+            }else{
+                tvVipTips.visibility=View.VISIBLE
+                tvVipTips.text=item.markName
+            }
             tvTips.text = item.getTips()
             ivExtends.setOnClickListener {
                 if (!gExtends.isVisible) {
