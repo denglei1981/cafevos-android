@@ -698,7 +698,17 @@ class JumpUtils {
                     gson.fromJson(orderString, RefundOrderItemBean::class.java)
                 if (orderItemBean.refundType == "allOrderRefund") { // 整单退
                     startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
-                } else {// 发货了，选一下退货还是退款
+                } else if(orderItemBean.refundType=="onlySkuSingleRefund"){
+                    orderItemBean.singleRefundType="ONLY_COST"
+                    val gson =Gson()
+                    val toJson = gson.toJson(orderItemBean)
+                    instans?.jump(125,toJson)
+                }else if(orderItemBean.refundType=="onlySkuAllRefund"){
+                    orderItemBean.singleRefundType="CONTAIN_GOODS"
+                    val gson =Gson()
+                    val toJson = gson.toJson(orderItemBean)
+                    instans?.jump(125,toJson)
+                }else {// 发货了，选一下退货还是退款
                     startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
                 }
 
@@ -821,10 +831,10 @@ class JumpUtils {
                     // ToDo
                     when (isAuth) {
                         0, 1 -> {//未认证，或者是认证
-                            JumpUtils.instans?.jump(if (isAuth == 1) 41 else 17)
+                            instans?.jump(if (isAuth == 1) 41 else 17)
                         }
                         2, 3 -> {//有认证成功的数据
-                            JumpUtils.instans?.jump(41)
+                            instans?.jump(41)
                         }
                     }
 

@@ -90,9 +90,12 @@ class GetCoupopBindingPop(
                         list.add(l.couponSendId)
                     }
                 }
-                getCoupon(list, 0)
+                if(list.size<=0){
+                    dismiss()
+                }else{
+                    getCoupon(list, 0)
+                }
             }
-
 
         }
 
