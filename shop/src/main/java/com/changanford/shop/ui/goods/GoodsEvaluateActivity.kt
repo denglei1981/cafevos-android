@@ -26,6 +26,7 @@ import com.changanford.common.bean.ShopTagInfoBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.BuildConfig
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsEvaluationAdapter
@@ -116,6 +117,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     @Composable
     private fun SelectTag(info: QueryTypeCountBean?){
         if(info==null)return
+        val itemWidth=(ScreenUtils.getScreenWidthDp(this)-72)/5
         selectedTag = remember { mutableStateOf("ALL") }
         val tagInfoArr= arrayListOf(
             ShopTagInfoBean(tagName = "全部", tag = "ALL", tagExtension = info.ALL),
@@ -129,8 +131,9 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
             .padding(horizontal = 20.dp)) {
             for ((i,item)in tagInfoArr.withIndex()){
                 Box(modifier = Modifier
-                    .weight(1f)
+//                    .weight(1f)
                     .height(24.dp)
+                    .width(itemWidth.dp)
                     .background(color = colorResource(if(selectedTag?.value==item.tag)R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
                     .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
                         selectedTag?.value=item.tag?:""
