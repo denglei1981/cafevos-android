@@ -966,38 +966,33 @@ data class CouponsItemBean(
      * 计算折扣金额
      * [couponRatio]折扣比例 0.1-9.9折 -5折
      * */
-    fun discountAmount(
-        totalPrice: Long,
-        couponRatio: Float? = (this.couponRatio ?: "0").toFloat()
-    ): Long {
-        if (couponRatio == null || couponRatio == 0f) return totalPrice
+    fun discountAmount(totalPrice: Long,couponRatio: Float? = (this.couponRatio ?: "0").toFloat()): Long {
+        if (couponRatio == null || couponRatio == 0f) return 0
         //优惠向下
-        return WCommonUtil.getHeatNum("${totalPrice * (couponRatio / 10)}").toLong()
+        return totalPrice-WCommonUtil.getHeatNum("${totalPrice * (couponRatio / 10)}").toLong()
     }
 
     fun getShowMoney(): SpannableString {
         when (discountType) {
             "FULL_MINUS", "LEGISLATIVE_REDUCTION" -> { // 满减,立减
                 val moneyStr = "￥".plus(couponMoney)
-                val str = SpannableStringUtils.textSizeSpan(moneyStr, 0, 1, 12)
-                return str
+                return SpannableStringUtils.textSizeSpan(moneyStr, 0, 1, 12)
             }
             "DISCOUNT" -> { // 折扣
                 val moneyStr = couponRatio.toString().plus("折")
-                val str = SpannableStringUtils.textSizeSpan(
+                return SpannableStringUtils.textSizeSpan(
                     moneyStr,
                     moneyStr.length - 1,
                     moneyStr.length,
                     12
                 )
-                return str
             }
 
         }
         return SpannableStringUtils.textSizeSpan("00", 0, 1, 12)
     }
 
-    fun getCouponTypeStr(): String {
+    private fun getCouponTypeStr(): String {
         return when (type) {
             "MALL_COUPON" -> {
                 "劵类型: 商城劵\n"
@@ -1012,21 +1007,21 @@ data class CouponsItemBean(
     }
 
     // 领取条件
-    fun getCouponConditionName(): String {
+    private fun getCouponConditionName(): String {
         if(TextUtils.isEmpty(conditionName)){
             return ""
         }
         return "领取条件: ".plus(conditionName).plus("\n")
     }
 
-    fun getUseLimitStr(): String {
+    private fun getUseLimitStr(): String {
         if(TextUtils.isEmpty(desc)){
             return ""
         }
         return "使用限制: ".plus(desc).plus("\n")
     }
 
-    fun getCouponNum(): String {
+    private fun getCouponNum(): String {
         return "劵编号 ".plus(couponRecordId).plus("\n")
     }
 
@@ -1036,15 +1031,15 @@ data class CouponsItemBean(
     }
 
     fun getTips(): String {
-        when (discountType) {
+        return when (discountType) {
             "LEGISLATIVE_REDUCTION" -> { // 满减,立减
-                return "无门槛"
+                "无门槛"
             }
             "FULL_MINUS", "DISCOUNT" -> {
-                return "满${conditionMoney}元可用"
+                "满${conditionMoney}元可用"
             }
             else -> {
-                return ""
+                ""
 
             }
         }
