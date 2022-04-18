@@ -715,7 +715,7 @@ class JumpUtils {
                 // 整单退退款进度 start 已实现
                 startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
             }
-            125 -> { //
+            125 -> { //单个sku退款申请。
                 startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
             }
             126 -> {// 单个sku 退款进度  start 已实现
