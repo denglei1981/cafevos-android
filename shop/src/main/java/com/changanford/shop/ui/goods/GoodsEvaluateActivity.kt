@@ -22,6 +22,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.QueryTypeCountBean
+import com.changanford.common.bean.ShopTagInfoBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
@@ -116,24 +117,29 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     private fun SelectTag(info: QueryTypeCountBean?){
         if(info==null)return
         selectedTag = remember { mutableStateOf("ALL") }
-        val tags= arrayOf("全部","有图${info.HAVE_IMG}","追评${info.REVIEWS}","好评${info.PRAISE}","差评${info.NEGATIVE}")
-        val queryTypeArr= arrayOf("ALL","HAVE_IMG","REVIEWS","PRAISE","NEGATIVE")
+        val tagInfoArr= arrayListOf(
+            ShopTagInfoBean(tagName = "全部", tag = "ALL", tagExtension = info.ALL),
+            ShopTagInfoBean(tagName = "有图${info.HAVE_IMG}", tag = "HAVE_IMG", tagExtension = info.HAVE_IMG),
+            ShopTagInfoBean(tagName = "追评${info.REVIEWS}", tag = "REVIEWS", tagExtension = info.REVIEWS),
+            ShopTagInfoBean(tagName = "好评${info.PRAISE}", tag = "PRAISE", tagExtension = info.PRAISE),
+            ShopTagInfoBean(tagName = "差评${info.NEGATIVE}", tag = "NEGATIVE", tagExtension = info.NEGATIVE)).filter { it.tagExtension!="0" }
+
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)) {
-            for ((i,item)in tags.withIndex()){
+            for ((i,item)in tagInfoArr.withIndex()){
                 Box(modifier = Modifier
                     .weight(1f)
                     .height(24.dp)
-                    .background(color = colorResource(if(selectedTag?.value==queryTypeArr[i])R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
+                    .background(color = colorResource(if(selectedTag?.value==item.tag)R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
                     .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
-                        selectedTag?.value=queryTypeArr[i]
+                        selectedTag?.value=item.tag?:""
                         binding.smartRl.autoRefresh()
                     },
                     contentAlignment = Alignment.Center) {
-                    Text(text = item, fontSize = 10.sp, color = if(selectedTag?.value==queryTypeArr[i]) Color.Companion.White else colorResource(R.color.color_66))
+                    Text(text = item.tagName?:"", fontSize = 10.sp, color = if(selectedTag?.value==item.tag) Color.Companion.White else colorResource(R.color.color_66))
                 }
-                if(i!=tags.size-1)Spacer(modifier = Modifier.width(8.dp))
+                if(i!=tagInfoArr.size-1)Spacer(modifier = Modifier.width(8.dp))
             }
         }
     }

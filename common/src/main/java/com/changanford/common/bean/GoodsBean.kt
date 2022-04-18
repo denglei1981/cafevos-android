@@ -1094,3 +1094,5 @@ data class RefundOrderItemBean(
 }
 
 data class OtherInfoBean(var content: String? = null)
+
+data class ShopTagInfoBean(var tagId:String?=null,var tag:String?=null,var tagName:String?=null,var tagExtension:String?=null)
