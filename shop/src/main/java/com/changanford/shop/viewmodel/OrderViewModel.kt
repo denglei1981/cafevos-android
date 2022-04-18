@@ -234,7 +234,7 @@ class OrderViewModel: BaseViewModel() {
     * */
     fun getShopOrderRefundList(pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
         viewModelScope.launch {
-            val responseBean=fetchRequest(showLoading) {
+            fetchRequest(showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
@@ -244,10 +244,9 @@ class OrderViewModel: BaseViewModel() {
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
-                shopOrderData.postValue(null)
+                refundBeanLiveData.postValue(null)
                 it?.toast()
-            }
-            responseBean.onSuccess {
+            }.onSuccess {
                 refundBeanLiveData.postValue(it)
             }
         }

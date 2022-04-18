@@ -25,6 +25,7 @@ import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.InvoiceActivity
 import com.changanford.shop.ui.order.PayConfirmActivity
+import com.changanford.shop.ui.shoppingcart.MultiplePackageActivity
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 
@@ -270,9 +271,14 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 }
                 //查看物流
                 2->{
-                    packageJump?.apply {
-                        JumpUtils.instans?.jump(jumpCode,jumpVal)
+                    if(packageJump==null){
+                        MultiplePackageActivity.start(orderNo)
+                    }else{
+                        packageJump?.apply {
+                            JumpUtils.instans?.jump(jumpCode,jumpVal)
+                        }
                     }
+
                 }
                 //申请售后-到订单详情
                 3->{

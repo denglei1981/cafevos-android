@@ -188,9 +188,10 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
      * 格式优惠券信息-筛选有用 和找出最大优惠
     * */
     private fun formattingCouponsData(){
-        val couponListBean=createOrderBean?.coupons
+        //先时间排序
+        val couponListBean=createOrderBean?.coupons?.sortedWith(compareBy { it.validityEndTime})?.toMutableList()
         val skuItems=createOrderBean?.skuItems
-        if(couponListBean!=null&&couponListBean.size>0){
+        if(couponListBean!=null&& couponListBean.isNotEmpty()){
             //判断每个优惠券是否可用
             for ((i,item)in couponListBean.withIndex()){
                 item.isAvailable=false

@@ -45,14 +45,14 @@ private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
 * */
 @Composable
 fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,dataList:List<CouponsItemBean>?=null) {
-    val findItem=dataList?.find { it.isAvailable }
+    val filter=dataList?.filter { it.isAvailable }
     val default= defaultItemBean ?: if(dataList!=null&& dataList.isNotEmpty())dataList[0] else null
     val selectedTag = remember { mutableStateOf(default) }
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(20.dp)) {
-        Text(text = stringResource(if(findItem!=null) R.string.str_currentlySelect1Card else R.string.str_noCouponsAvailableMoment), color = colorResource(R.color.color_33), fontSize = 13.sp)
+        Text(text = if(filter!=null&&filter.isNotEmpty())"当前有${filter.size}张可选" else stringResource(R.string.str_noCouponsAvailableMoment), color = colorResource(R.color.color_33), fontSize = 13.sp)
         Spacer(modifier = Modifier.height(12.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp),modifier = Modifier
             .fillMaxWidth()
