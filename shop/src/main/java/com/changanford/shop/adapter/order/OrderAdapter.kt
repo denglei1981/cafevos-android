@@ -126,7 +126,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             this.skuOrderVOList = newBean.skuOrderVOList
                             this.mallMallOrderId = newBean.mallMallOrderId
                             this.rmb = newBean.rmb
-                            this.fb = newBean.fb
+                            this.fb = "${(newBean.fb?:"0").toLong()}"
                             this.totalNum = newBean.totalNum
                         }
                     }else{
