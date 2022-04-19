@@ -1,6 +1,5 @@
 package com.changanford.my.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -97,7 +96,6 @@ class TaskContentAdapter() :
 /**
  * 成长值，积分
  */
-@SuppressLint("SetTextI18n")
 fun GrowUpAndJifenViewHolder(
     holder: BaseDataBindingHolder<ItemGrowUpBinding>,
     item: GrowUpItem,
@@ -113,16 +111,18 @@ fun GrowUpAndJifenViewHolder(
         if (isGrowUp) {
             if (item.growth < 0) {
                 it.num.text = "${item.growth}"
-                it.num.setTextColor(Color.parseColor("#333333"))
+                it.num.setTextColor(Color.parseColor("#1B3B89"))
             } else {
                 it.num.text = "+${item.growth}"
-                it.num.setTextColor(Color.parseColor("#00095B"))
+                it.num.setTextColor(Color.parseColor("#333333"))
             }
         } else {
             if (item.integral < 0) {
+                it.num.setTextColor(Color.parseColor("#333333"))
                 holder.dataBinding?.num?.text = "${item.integral}"
             } else {
                 holder.dataBinding?.num?.text = "+${item.integral}"
+                it.num.setTextColor(Color.parseColor("#00095B"))
             }
         }
     }
