@@ -95,7 +95,9 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 mAdapter.setList(itemBean.skuOrderVOList)
                 mAdapter.setOnItemClickListener { _, _, _ ->
                     itemBean.apply {
-                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                        if(jumpDataType!=null){
+                            JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                        }else JumpUtils.instans?.jump(5,orderNo)
                     }
                 }
             }
@@ -145,6 +147,11 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 val mAdapter=OrderGoodsImgAdapter()
                 recyclerViewImgArr.adapter= mAdapter
                 mAdapter.setList(itemBean.refundSkus)
+                mAdapter.setOnItemClickListener { _, _, _ ->
+                    itemBean.apply {
+                        JumpUtils.instans?.jump(5,orderNo)
+                    }
+                }
             }
         }
     }
