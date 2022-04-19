@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.util.JumpUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderRefundAdapter
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
@@ -32,7 +33,13 @@ class OrdersGoodsRefundFragment:BaseFragment<FragmentOrdersgoodsListBinding, Ord
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty_order)
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsV2Activity.start(mAdapter.data[position].orderNo)
+            mAdapter.data[position].apply {
+                //整单退
+                if(refundType=="ALL_ORDER") JumpUtils.instans?.jump(124, mallMallRefundId)
+                //单SKU退
+                else JumpUtils.instans?.jump(126, mallMallRefundId)
+
+            }
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }

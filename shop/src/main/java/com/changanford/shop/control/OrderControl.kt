@@ -150,7 +150,11 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 mAdapter.setList(itemBean.refundSkus)
                 mAdapter.setOnItemClickListener { _, _, _ ->
                     itemBean.apply {
-                        JumpUtils.instans?.jump(5,orderNo)
+                        //整单退
+                        if(refundType=="ALL_ORDER")JumpUtils.instans?.jump(124, mallMallRefundId)
+                        //单SKU退
+                        else JumpUtils.instans?.jump(126, mallMallRefundId)
+
                     }
                 }
             }
