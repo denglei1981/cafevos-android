@@ -1062,7 +1062,7 @@ data class WxPayBean(
 // ONLY_COST  仅退款
 // （如果是单个sku退，则需要传此参数 ， refundType =  allOrderRefund 的情况，singleRefundType参数和skuItem参数可不传）
 data class RefundOrderItemBean(
-    var specifications: String,
+    var specifications: String="",
     var spuName: String,
     var skuImg: String,
     var mallMallSkuId: String,
