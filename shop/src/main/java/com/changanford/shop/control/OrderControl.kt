@@ -93,6 +93,11 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 val mAdapter=OrderGoodsImgAdapter()
                 recyclerViewImgArr.adapter= mAdapter
                 mAdapter.setList(itemBean.skuOrderVOList)
+                mAdapter.setOnItemClickListener { _, _, _ ->
+                    itemBean.apply {
+                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                    }
+                }
             }
             itemBean.getRMBPrice()
             model0=itemBean
