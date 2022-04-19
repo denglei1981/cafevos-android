@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -27,7 +26,6 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
-import com.changanford.car.BuildConfig
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarIconAdapter
@@ -46,6 +44,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
 import com.changanford.common.wutil.WCommonUtil
+import com.changanford.common.wutil.wLogE
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
@@ -365,6 +364,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             object : CheckRequestPermissionListener {
                 override fun onPermissionOk(permission: Permission) {
                     locationType.postValue(0)
+                    startLocation(0)
                 }
                 override fun onPermissionDenied(permission: Permission) {
                     locationType.postValue(3)
@@ -373,6 +373,7 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
             })
     }
     private fun updateLocationUi(locationTypeValue:Int?=locationType.value){
+        "更新定位UI:>>>$locationTypeValue".wLogE()
         hDealersBinding?.apply {
             if(0==locationTypeValue||5==locationTypeValue){
                 viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
@@ -391,9 +392,9 @@ class CarControl(val activity:Activity, val fragment:Fragment, val viewModel: Ca
         }
     }
     private fun startLocation(locationTypeValue:Int){
+        "开始定位>>$locationTypeValue".wLogE()
         if(locationTypeValue==0&&mLocationClient==null){
             mLocationClient = LocationClient(activity).apply {
-                if(BuildConfig.DEBUG)Log.e("wenke","开始定位")
                 //通过LocationClientOption设置LocationClient相关参数
                 val option = LocationClientOption()
                 option.isOpenGps = true
