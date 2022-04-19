@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.RefundBean
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
@@ -113,8 +115,12 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
                     }
                     else -> {
                         item.orderNo = orderNo
+                        val gsonItem = Gson()
+                        val gsonItemtoJson = gsonItem.toJson(item)
+                        val refundOrderItemBean:RefundOrderItemBean = Gson().fromJson<RefundOrderItemBean>(gsonItemtoJson,RefundOrderItemBean::class.java)
+                        val refundBean =RefundBean(item.orderNo,item.payFb,item.payRmb,"singleRefund",refundOrderItemBean)
                         val gson = Gson()
-                        val toJson = gson.toJson(item)
+                        val toJson = gson.toJson(refundBean)
                         JumpUtils.instans?.jump(121, toJson)
                     }
                 }
