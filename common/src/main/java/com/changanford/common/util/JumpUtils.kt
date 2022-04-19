@@ -13,10 +13,7 @@ import com.alibaba.fastjson.JSON
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
-import com.changanford.common.bean.CarItemBean
-import com.changanford.common.bean.JumpDataBean
-import com.changanford.common.bean.RefundOrderItemBean
-import com.changanford.common.bean.ShareBean
+import com.changanford.common.bean.*
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
@@ -694,21 +691,27 @@ class JumpUtils {
             121 -> {// 申请退款--- 未发货
                 val gson = Gson()
                 val orderString = bundle.getString("value")
-                val orderItemBean: RefundOrderItemBean =
-                    gson.fromJson(orderString, RefundOrderItemBean::class.java)
-                if (orderItemBean.refundType == "allOrderRefund") { // 整单退
+                val refundBean: RefundBean = gson.fromJson(orderString, RefundBean::class.java)
+                var orderItemBean:RefundOrderItemBean?=null
+                if(refundBean.skuItem!=null){
+                     orderItemBean= refundBean.skuItem
+                }
+                if (refundBean.refundType == "allOrderRefund") { // 整单退
                     startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
-                } else if(orderItemBean.refundType=="onlySkuSingleRefund"){
-                    orderItemBean.singleRefundType="ONLY_COST"
+                } else if(refundBean.refundType=="onlySkuSingleRefund"){
+                    orderItemBean?.singleRefundType="ONLY_COST"
                     val gson =Gson()
                     val toJson = gson.toJson(orderItemBean)
                     instans?.jump(125,toJson)
-                }else if(orderItemBean.refundType=="onlySkuAllRefund"){
-                    orderItemBean.singleRefundType="CONTAIN_GOODS"
+                }else if(refundBean.refundType=="onlySkuAllRefund"){
+                    orderItemBean?.singleRefundType="CONTAIN_GOODS"
                     val gson =Gson()
                     val toJson = gson.toJson(orderItemBean)
                     instans?.jump(125,toJson)
                 }else {// 发货了，选一下退货还是退款
+                    val gson = Gson()
+                    val toJson = gson.toJson(orderItemBean)
+                    bundle.putString("value",toJson)
                     startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
                 }
 

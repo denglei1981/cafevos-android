@@ -91,6 +91,7 @@ class GetCoupopBindingPop(
                     }
                 }
                 if(list.size<=0){
+                    JumpUtils.instans?.jump(118)
                     dismiss()
                 }else{
                     getCoupon(list, 0)

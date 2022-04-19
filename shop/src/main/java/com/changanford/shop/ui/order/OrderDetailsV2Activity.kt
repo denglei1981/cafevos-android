@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
+import com.changanford.common.bean.RefundBean
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
@@ -27,7 +28,7 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
-import com.changanford.shop.bean.RefundBean
+
 import com.changanford.shop.bean.SaleAfterBean
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
