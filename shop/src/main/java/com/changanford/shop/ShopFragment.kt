@@ -160,6 +160,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
     }
     private fun addLiveDataBus(){
+        //下单回调
+        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this) {
+            initData()
+        }
         //购物车数量改变
         LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).observe(this) {
             bindCarNum(it)
