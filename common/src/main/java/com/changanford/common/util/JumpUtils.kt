@@ -695,6 +695,7 @@ class JumpUtils {
                 var orderItemBean:RefundOrderItemBean?=null
                 if(refundBean.skuItem!=null){
                      orderItemBean= refundBean.skuItem
+                     orderItemBean?.orderNo=refundBean.orderNo
                 }
                 if (refundBean.refundType == "allOrderRefund") { // 整单退
                     startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
