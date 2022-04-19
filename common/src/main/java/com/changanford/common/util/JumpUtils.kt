@@ -834,7 +834,7 @@ class JumpUtils {
                     // ToDo
                     when (isAuth) {
                         0, 1 -> {//未认证，或者是认证
-                            instans?.jump(if (isAuth == 1) 41 else 17)
+                            startARouter(ARouterMyPath.UniCarAuthUI)
                         }
                         2, 3 -> {//有认证成功的数据
                             instans?.jump(41)
