@@ -46,8 +46,8 @@ private val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
 @Composable
 fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,dataList:List<CouponsItemBean>?=null) {
     val filter=dataList?.filter { it.isAvailable }
-    val default= defaultItemBean ?: if(dataList!=null&& dataList.isNotEmpty())dataList[0] else null
-    val selectedTag = remember { mutableStateOf(default) }
+//    val default= defaultItemBean ?: if(dataList!=null&& dataList.isNotEmpty())dataList[0] else null
+    val selectedTag = remember { mutableStateOf(defaultItemBean) }
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
