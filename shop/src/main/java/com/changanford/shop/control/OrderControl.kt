@@ -8,6 +8,7 @@ import android.widget.ImageView
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderRefundItemBean
 import com.changanford.common.bean.OrderSkuItem
+import com.changanford.common.bean.RefundBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -19,7 +20,7 @@ import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.adapter.goods.OrderGoodsAttributeAdapter
 import com.changanford.shop.adapter.order.OrderGoodsImgAdapter
 import com.changanford.shop.bean.InvoiceInfo
-import com.changanford.shop.bean.RefundBean
+
 import com.changanford.shop.databinding.InItemOrderGoodsBinding
 import com.changanford.shop.popupwindow.PublicPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
@@ -299,7 +300,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 //申请退款
                 4->{
                     val gson = Gson()
-                    val refundBean =RefundBean(orderNo, payFb, payRmb, "allOrderRefund")
+                    val refundBean = RefundBean(orderNo, payFb, payRmb, "allOrderRefund")
                     val refundJson = gson.toJson(refundBean)
                     JumpUtils.instans?.jump(121,refundJson)
                 }

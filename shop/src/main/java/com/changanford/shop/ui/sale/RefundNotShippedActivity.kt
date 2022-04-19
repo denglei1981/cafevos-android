@@ -9,11 +9,11 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.BackEnumBean
+import com.changanford.common.bean.RefundBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
-import com.changanford.shop.bean.RefundBean
 import com.changanford.shop.databinding.ActivityRefundNoShippedBinding
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.dialog.RefundResonDialog

@@ -2,6 +2,7 @@ package com.changanford.shop.bean
 
 import android.content.Context
 import android.text.TextUtils
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.PictureUtil
 import com.changanford.shop.R
 import com.luck.picture.lib.entity.LocalMedia
@@ -59,7 +60,4 @@ data class PostEvaluationBean(
         }
         return ratingStr
     }
-}
-data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String){
-
 }
