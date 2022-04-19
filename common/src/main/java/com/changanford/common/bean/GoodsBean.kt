@@ -755,6 +755,7 @@ data class OrderRefundItemBean(
             "ON_GOING" -> "退款中"
             "SUCESS" -> "退款完成"
             "CLOSED" -> "退款关闭"
+            "FINISH" -> "退款成功"
             else -> ""
         }
     }
