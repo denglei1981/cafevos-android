@@ -175,10 +175,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
                 when(it){
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
-                        getData()
-                    }
-                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS,UserManger.UserLoginStatus.USER_LOGIN_OUT->{
                         getData()
                     }
                     else -> {}
