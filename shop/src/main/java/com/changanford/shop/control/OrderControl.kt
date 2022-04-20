@@ -58,7 +58,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
                 imgGoodsCover.load(skuItem.skuImg)
                 tvOrderType.apply {
-                    visibility = when(itemBean.busSourse) {
+                    visibility = when(itemBean.busSource?:itemBean.busSourse) {
                         "1","SECKILL" -> {//秒杀
                             setText(R.string.str_seckill)
                             View.VISIBLE
@@ -115,7 +115,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 tvTotalNum.visibility=View.VISIBLE
                 tvTotalNum.setText("${skuItem.refundNum}")
                 tvOrderType.apply {
-                    visibility = when(itemBean.busSourse) {
+                    visibility = when(itemBean.busSource?:itemBean.busSourse) {
                         "1","SECKILL" -> {//秒杀
                             setText(R.string.str_seckill)
                             View.VISIBLE

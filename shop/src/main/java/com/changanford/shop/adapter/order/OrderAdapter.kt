@@ -121,6 +121,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     val newBean= Gson().fromJson(item.orderBrief, OrderItemBean::class.java)
                     if(newBean.isNewOrder=="YES"){//113以后的订单
                         item.apply {
+                            this.busSource = newBean.busSource
                             this.busSourse = newBean.busSourse
                             this.hagglePrice = newBean.hagglePrice
                             this.skuOrderVOList = newBean.skuOrderVOList
@@ -150,6 +151,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             this.specifications=specifications
                             this.orginPrice=orderBriefBean.orginPrice
                             this.busSourse= orderBriefBean.busSourse
+                            this.busSource=orderBriefBean.busSource
                             this.hagglePrice=orderBriefBean.hagglePrice
                             this.rmb=getRMB(this.fbCost,"")
                             this.fb= this.fbCost
