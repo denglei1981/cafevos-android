@@ -27,9 +27,11 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
-    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
-
+//    val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
+//    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+ // todo  正式要改过来。
+    val BASE_URL by lazy { "https://evosapiqa.changanford.cn" }
+    val H5_BASE_URL_CSCIR by lazy { "https://evosh5qa.changanford.cn/common/#"}
     //这里修改默认的环境，isCanQeck字段为true时生效
     val isDebug by lazy {
         if (isCanQeck) SPUtils.getParam(
