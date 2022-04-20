@@ -67,9 +67,9 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 获取 商城首页
      * */
-    fun getShopHomeData(){
+    fun getShopHomeData(showLoading:Boolean=false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = showLoading) {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))
