@@ -1,5 +1,6 @@
 package com.changanford.common.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -29,7 +30,7 @@ class CustomImageSpan(drawable: Drawable?) : ImageSpan(drawable!!) {
         val fm = paint.fontMetricsInt
         val drawable = drawable
 
-        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top+4
+        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top + 4
         canvas.save()
         canvas.translate(x, transY.toFloat())
         drawable.draw(canvas)
@@ -52,7 +53,7 @@ class CustomImageSpanV2(drawable: Drawable?) : ImageSpan(drawable!!) {
         val fm = paint.fontMetricsInt
         val drawable = drawable
 
-        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top+2
+        val transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.bounds.bottom / 2 + top + 2
         canvas.save()
         canvas.translate(x, transY.toFloat())
         drawable.draw(canvas)
@@ -60,26 +61,36 @@ class CustomImageSpanV2(drawable: Drawable?) : ImageSpan(drawable!!) {
     }
 }
 
-fun showTotalTag(context:Context,text: AppCompatTextView?, item: PayShowBean,isStart:Boolean=true) {
+fun showTotalTag(
+    context: Context,
+    text: AppCompatTextView?,
+    item: PayShowBean,
+    isStart: Boolean = true
+) {
     if (TextUtils.isEmpty(item.payFb)) {
-        showZero(text, item)
+        showZero(text, item, isStart, context = context)
         return
     }
     item.payFb?.let { // 福币为0
         if (it.toInt() <= 0) {
-            showZero(text, item)
+            showZero(text, item, isStart = isStart, context = context)
             return
         }
     }
     val fbNumber = item.payFb
-    var starStr=""
-    if(isStart){
-         starStr = "合计: "
+    var starStr = ""
+    if (isStart) {
+        starStr = "合计: "
     }
     val str = if (TextUtils.isEmpty(item.payRmb)) {
         "$starStr[icon] ${item.payFb}"
     } else {
-        "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+         if(item.payRmb=="0"){
+             "$starStr[icon] ${item.payFb}"
+         }else{
+             "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+         }
+
     }
     //先设置原始文本
     text?.text = str
@@ -94,7 +105,7 @@ fun showTotalTag(context:Context,text: AppCompatTextView?, item: PayShowBean,isS
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
             val strLength = spannableString.length
             val numberLength = fbNumber?.length
-            val startIndex = strLength - numberLength!! - 1
+//            val startIndex = strLength - numberLength!! - 1
             spannableString.setSpan(
                 imageSpan, str.lastIndexOf("["), str.lastIndexOf("]") + 1,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -104,8 +115,51 @@ fun showTotalTag(context:Context,text: AppCompatTextView?, item: PayShowBean,isS
     }
 }
 
-fun showZero(text: AppCompatTextView?, item: PayShowBean) {
+fun showZeroFb(context: Context, text: AppCompatTextView?) {
+    val str = "$[icon] ${0}"
+    //先设置原始文本
+    text?.text = str
+    //使用post方法，在TextView完成绘制流程后在消息队列中被调用
+    text?.post { //获取第一行的宽度
+        val stringBuilder: StringBuilder = StringBuilder(str)
+        //SpannableString的构建
+        val spannableString = SpannableString("$stringBuilder ")
+        val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
+        drawable?.apply {
+            val imageSpan = CustomImageSpanV2(this)
+            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+            spannableString.setSpan(
+                imageSpan, str.lastIndexOf("["), str.lastIndexOf("]") + 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            text.text = spannableString
+        }
+    }
+}
+
+@SuppressLint("SetTextI18n")
+fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, context: Context) {
     val tagName = item.payRmb
     //先设置原始文本
-    text?.text = "合计".plus("  ￥${tagName}")
+//    if(isStart){
+//        text?.text = "合计".plus("  ￥${tagName}")
+//    }else{
+//
+//    }
+    if (TextUtils.isEmpty(item.payRmb)) {
+        showZeroFb(context, text)
+    } else {
+        if (item.payRmb == "0") {
+            showZeroFb(context, text)
+        } else {
+            if(isStart){
+                text?.text = "合计".plus("  ￥${tagName}")
+            }else{
+                text?.text = "￥${tagName}"
+            }
+        }
+
+    }
+
+
 }

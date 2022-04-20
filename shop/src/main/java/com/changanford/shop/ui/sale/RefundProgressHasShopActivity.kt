@@ -124,11 +124,17 @@ class RefundProgressHasShopActivity :
 //                refundProgressBean.refundMethod,
 //                ft.layoutRefundInfo.tvRefundType
 //            )
-            viewModel.StatusEnum(
-                "MallRefundReasonEnum",
-                refundProgressBean.refundReason,
-                ft.layoutRefundInfo.tvResonShow
-            )
+            refundProgressBean.refundReason?.let {
+                viewModel.StatusEnum(
+                    "MallRefundReasonEnum",
+                    it,
+                    ft.layoutRefundInfo.tvResonShow
+                )
+            }
+            if(TextUtils.isEmpty(refundProgressBean.refundReason)){
+                ft.layoutRefundInfo.tvResonShow.text="--"
+            }
+
             showTotalTag(
                 this,
                 ft.layoutRefundInfo.tvRefundMoney,

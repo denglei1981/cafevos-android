@@ -56,7 +56,7 @@ data class RefundProgressBean(
     val refundDetailStatus: String,
     val refundMethod: String,
     val refundNo: String,
-    val refundReason: String,
+    val refundReason: String?=null,
     val refundStatus: String,
     val rmbRefund: String?=null,
     val rmbRefundApply: String,

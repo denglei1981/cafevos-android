@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.sale
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -98,11 +99,18 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                 refundProgressBean.refundMethod,
                 ft.layoutRefundInfo.tvRefundType
             )
-            viewModel.StatusEnum(
-                "MallRefundReasonEnum",
-                refundProgressBean.refundReason,
-                ft.layoutRefundInfo.tvResonShow
-            )
+
+            refundProgressBean.refundReason?.let {
+                viewModel.StatusEnum(
+                    "MallRefundReasonEnum",
+                    it,
+                    ft.layoutRefundInfo.tvResonShow
+                )
+            }
+            if(TextUtils.isEmpty(refundProgressBean.refundReason)){
+                ft.layoutRefundInfo.tvResonShow.text="--"
+            }
+
             showTotalTag(
                 this,
                 ft.layoutRefundInfo.tvRefundMoney,
