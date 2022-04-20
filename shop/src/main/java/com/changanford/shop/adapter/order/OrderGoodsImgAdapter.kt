@@ -29,7 +29,7 @@ class OrderGoodsImgAdapter: BaseQuickAdapter<OrderSkuItem, BaseDataBindingHolder
             imgGoodsCover.scaleType= if(orderType>2||0==orderType) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.CENTER_INSIDE
             imgGoodsCover.load(item.skuImg)
             tvOrderType.apply {
-                visibility = when(item.busSourse) {
+                visibility = when(item.busSource?:item.busSourse) {
                     "1","SECKILL" -> {//秒杀
                         setText(R.string.str_seckill)
                         View.VISIBLE

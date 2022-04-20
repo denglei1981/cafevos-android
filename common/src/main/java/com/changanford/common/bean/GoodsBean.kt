@@ -748,7 +748,8 @@ data class OrderRefundItemBean(
     val refundType: String = "",
     val rmbRefund: String? = null,
     val rmbRefundApply: String? = null,
-    var busSourse: String? = "",
+    var busSourse: String? = null,
+    var busSource: String? = null,
 ) {
     fun getRefundStatusTxt(): String {
         return when (refundStatus) {
@@ -821,7 +822,8 @@ data class AddressValueObj(
 )
 
 data class OrderBriefBean(
-    val busSourse: String = "0",
+    val busSource: String? = null,
+    val busSourse: String? = null,
     val buyNum: String = "0",
     val fbCost: String = "0",
     val payType: String = "",
@@ -888,7 +890,8 @@ data class CreateOrderBean(
 }
 
 data class OrderSkuItem(
-    val busSourse: String? = "0",
+    val busSource: String? = null,
+    val busSourse: String? = null,
     val carModel: String? = null,
     val mallMallHaggleUserGoodsId: Int? = 0,
     val num: Int = 0,

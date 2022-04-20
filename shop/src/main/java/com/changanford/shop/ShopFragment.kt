@@ -106,8 +106,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
     }
     override fun initData() {
+        getData(true)
+    }
+    private fun getData(showLoading:Boolean=false){
         viewModel.getBannerData()
-        viewModel.getShopHomeData()
+        viewModel.getShopHomeData(showLoading)
 //        viewModel.getClassification()
     }
     private fun addObserve(){
@@ -147,7 +150,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
     }
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        initData()
+        getData()
 //        val currentItem=binding.viewpager.currentItem
 //        fragments[currentItem].startRefresh()
     }
@@ -162,7 +165,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private fun addLiveDataBus(){
 //        //下单回调
 //        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this) {
-//            initData()
+//            getData()
 //        }
         //购物车数量改变
         LiveDataBus.get().with(LiveDataBusKey.SHOP_DELETE_CAR,Int::class.java).observe(this) {
@@ -172,11 +175,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
                 when(it){
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
-                        initData()
-                    }
-                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
-                        initData()
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS,UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                        getData()
                     }
                     else -> {}
                 }

@@ -26,19 +26,18 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     View.VISIBLE
                 }
             }
-
-            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
-            inVip.model=item
+//            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
+//            inVip.model=item
             tvIntegral.visibility=View.VISIBLE
-            setTagType(item,this)
             item.getRMB(item.normalFb)
+            setTagType(item,this)
             model=item
             executePendingBindings()
         }
     }
     private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){
         val tagType=item.spuPageTagType?:""
-        dataBinding.inVip.lLayoutVip.visibility=View.GONE
+//        dataBinding.inVip.lLayoutVip.visibility=View.GONE
         dataBinding.tvTagType.apply {
             visibility=View.VISIBLE
             setBackgroundResource(R.drawable.shadow_b300095b_2dp)
@@ -52,16 +51,18 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     "热销"
                 }
                 "MEMBER_DISCOUNT"->{
-                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
-                    dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
-                    dataBinding.tvIntegral.visibility=View.GONE
+                    item.getRMB(item.vipFb)
+//                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
+//                    dataBinding.inVip.tvVipTypeName.setText(R.string.str_vipDiscount)
+//                    dataBinding.tvIntegral.visibility=View.GONE
                     "会员折扣"
                 }
                 "MEMBER_EXCLUSIVE"->{
-                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
-                    dataBinding.tvIntegral.visibility=View.GONE
-                    val secondarySpuPageTagType=item.secondarySpuPageTagType
-                    dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
+                    item.getRMB(item.vipFb)
+//                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
+//                    dataBinding.tvIntegral.visibility=View.GONE
+//                    val secondarySpuPageTagType=item.secondarySpuPageTagType
+//                    dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
                     "会员专享"
                 }
                 "SECKILL"->{
@@ -73,7 +74,6 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     ""
                 }
             }
-
         }
     }
 }

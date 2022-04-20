@@ -36,7 +36,7 @@ class TypefaceTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 //        else TypefaceUtils.getTypefaceNumber(context)
 //        typeface = typefaceValue
         //行高
-        if(lineSpacingExtra==0.0f)setLineSpacing(0f,1.2f)
+//        if(lineSpacingExtra==0.0f)setLineSpacing(0f,1.2f)
         typedArray.recycle()
     }
     private fun initView(){

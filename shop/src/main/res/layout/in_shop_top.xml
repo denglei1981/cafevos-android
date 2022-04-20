@@ -11,7 +11,7 @@
             tools:background="@color/color_f6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/sp_30">
+            android:paddingBottom="@dimen/dp_30">
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                 android:paddingEnd="@dimen/dp_20"
                 android:textColor="@color/color_74889D"
                 android:text="@string/str_more"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/tvKillTitle"
                 android:layout_width="wrap_content"
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_recommendedList"
                 android:textColor="@color/color_34"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_18" />
             <com.changanford.common.ui.view.WTextView
                 android:visibility="gone"
                 tools:visibility="visible"

@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{model.spuName}"
+                android:textStyle="bold"
                 style="@style/style_txt_ellipsize"
                 tools:text="无线蓝牙耳机 降噪耳机 "
                 android:textColor="@color/color_33"
@@ -81,7 +82,7 @@
                 android:layout_height="wrap_content"
                 app:start_txt="@string/str_rmb"
                 android:text="@{model.rmbPrice}"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_15" />
             <com.changanford.shop.view.TypefaceTextView
                 android:layout_marginStart="@dimen/dp_3"

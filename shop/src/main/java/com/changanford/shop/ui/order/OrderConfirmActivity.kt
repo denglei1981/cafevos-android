@@ -440,6 +440,8 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
                     clickPayWay(0)
                 }
                 totalPayFb==0 -> {
+                    rbRmb.visibility=View.GONE
+                    rbCustom.visibility=View.GONE
                     rbFbAndRmb.visibility=View.VISIBLE
                     clickPayWay(0)
                 }
