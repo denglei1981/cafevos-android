@@ -28,7 +28,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
             }
 
 //            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
-            inVip.model=item
+//            inVip.model=item
             tvIntegral.visibility=View.VISIBLE
             item.getRMB(item.normalFb)
             setTagType(item,this)
@@ -38,7 +38,7 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
     }
     private fun setTagType(item :GoodsItemBean,dataBinding:ItemGoodsBinding){
         val tagType=item.spuPageTagType?:""
-        dataBinding.inVip.lLayoutVip.visibility=View.GONE
+//        dataBinding.inVip.lLayoutVip.visibility=View.GONE
         dataBinding.tvTagType.apply {
             visibility=View.VISIBLE
             setBackgroundResource(R.drawable.shadow_b300095b_2dp)
