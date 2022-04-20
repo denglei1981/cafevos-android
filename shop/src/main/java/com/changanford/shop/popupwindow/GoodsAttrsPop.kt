@@ -59,7 +59,7 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         //没有选中sku时默认选中最低sku （113新增）
         if(control.isInvalidSelectAttrs(_skuCode)){
             dataBean.skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
-                _skuCode=it[0].skuCode
+                if(it.isNotEmpty())_skuCode=it[0].skuCode
             }
         }
         mAdapter.setSkuCodes(_skuCode)
