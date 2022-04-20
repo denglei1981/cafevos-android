@@ -26,7 +26,6 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     View.VISIBLE
                 }
             }
-
 //            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
 //            inVip.model=item
             tvIntegral.visibility=View.VISIBLE
@@ -75,7 +74,6 @@ class GoodsAdapter: BaseQuickAdapter<GoodsItemBean, BaseDataBindingHolder<ItemGo
                     ""
                 }
             }
-
         }
     }
 }
