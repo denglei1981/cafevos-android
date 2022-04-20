@@ -30,6 +30,7 @@ object MConstant {
     val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
     val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
 
+    // TODO 打包的时候要注释
 //    val BASE_URL by lazy { "https://evosapiqa.changanford.cn" }
 //    val H5_BASE_URL_CSCIR by lazy { "https://evosh5qa.changanford.cn/common/#"}
 
