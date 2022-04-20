@@ -63,22 +63,24 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layout_top"
-                        tools:listitem="@layout/item_shopping_cart" />
+                       />
 
                     <FrameLayout
                         android:id="@+id/fl_invaild"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="30dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:background="@color/white">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_invaild"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
+                            android:layout_gravity="start|bottom"
                             android:layout_marginStart="@dimen/dp_20"
                             android:text="失效商品"
+
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_15" />
 
@@ -86,7 +88,7 @@
                             android:id="@+id/tv_clear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
+                            android:layout_gravity="end|bottom"
                             android:layout_marginEnd="@dimen/dp_20"
                             android:text="一键清空"
                             android:textColor="@color/color_74889D"

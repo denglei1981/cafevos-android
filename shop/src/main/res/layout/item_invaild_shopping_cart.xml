@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bord_f4_t_10dp"
+        android:background="@color/white"
         android:minHeight="@dimen/dp_138"
         android:paddingStart="@dimen/dp_20"
         android:paddingTop="@dimen/dp_36"
@@ -46,13 +46,16 @@
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsTitle"
             style="@style/style_txt_ellipsize"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_11"
             android:text="@{model.spuName}"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="无线蓝牙耳机 降噪耳机全新苹…" />
@@ -74,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_3"
-            android:textColor="@color/black"
+            android:textColor="@color/color_99"
             android:textSize="@dimen/sp_14"
             android:text="该商品不能购买"
             app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
@@ -90,6 +93,13 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_integral"
             app:layout_constraintEnd_toEndOf="parent" />
 
-
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/img_goodsCover"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_F4"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
