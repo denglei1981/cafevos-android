@@ -35,6 +35,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
     var orderNo: String = ""
     var receiveTime :String =""
     var timestamp:String=""
+    var refundId:String=""
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
         item: OrderItemBean
@@ -111,7 +112,12 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
                 val itemStatus = tvSaleHandler.text.toString()
                 when (itemStatus) {
                     "退款中", "退款成功","退款关闭" -> {// 查询退款进度
-                        JumpUtils.instans?.jump(126, item.mallMallRefundId)
+                        if(!TextUtils.isEmpty(item.mallMallRefundId)){
+                            JumpUtils.instans?.jump(126, item.mallMallRefundId)
+                        }else{
+                            JumpUtils.instans?.jump(124, refundId)
+                        }
+
                     }
                     else -> {
                         item.orderNo = orderNo

@@ -116,7 +116,7 @@ fun showTotalTag(
 }
 
 fun showZeroFb(context: Context, text: AppCompatTextView?) {
-    val str = "$[icon] ${0}"
+    val str = "[icon] ${0}"
     //先设置原始文本
     text?.text = str
     //使用post方法，在TextView完成绘制流程后在消息队列中被调用
