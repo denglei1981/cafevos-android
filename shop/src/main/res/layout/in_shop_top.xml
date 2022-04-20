@@ -11,7 +11,7 @@
             tools:background="@color/color_f6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/sp_30">
+            android:paddingBottom="@dimen/dp_30">
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
