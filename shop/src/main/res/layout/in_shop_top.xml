@@ -34,7 +34,7 @@
                 android:id="@+id/tvKillTitle"
                 android:layout_marginTop="@dimen/dp_38"
                 android:paddingStart="@dimen/dp_20"
-                android:textSize="@dimen/sp_18"
+                android:textSize="@dimen/sp_16"
                 android:textColor="@color/color_0F1524"
                 android:textStyle="bold"
                 android:text="@string/str_limitedTimeSecondsKill"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_recommendedList"
                 android:textColor="@color/color_34"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_16" />
             <com.changanford.common.ui.view.WTextView
                 android:visibility="gone"
                 tools:visibility="visible"
