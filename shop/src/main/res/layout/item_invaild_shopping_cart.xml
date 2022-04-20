@@ -18,7 +18,7 @@
         android:paddingStart="@dimen/dp_20"
         android:paddingTop="@dimen/dp_36"
         android:paddingEnd="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_20">
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check_status"
@@ -96,10 +96,10 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/img_goodsCover"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
             android:background="@color/color_F4"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/img_goodsCover"
+            app:layout_constraintTop_toBottomOf="@+id/img_goodsCover" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
