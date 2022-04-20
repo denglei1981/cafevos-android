@@ -143,7 +143,6 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                         //单价
                         val fbOfUnitPrice=orderBriefBean.fbOfUnitPrice?:(orderBriefBean.fbCost.toFloat()/orderBriefBean.buyNum.toInt())
                         item.apply {
-
                             this.buyNum=orderBriefBean.buyNum
                             payType=orderBriefBean.payType
                             this.fbCost="${WCommonUtil.getHeatNum(orderBriefBean.fbCost,0)}"
@@ -153,7 +152,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             this.busSourse= orderBriefBean.busSourse
                             this.busSource=orderBriefBean.busSource
                             this.hagglePrice=orderBriefBean.hagglePrice
-                            this.rmb=getRMB(this.fbCost,"")
+//                            this.rmb=getRMB(this.fbCost,"")
                             this.fb= this.fbCost
                             this.totalNum=orderBriefBean.buyNum
                             val skuItem=OrderSkuItem(skuImg=skuImg, specifications = specifications,spuName=skuName)
