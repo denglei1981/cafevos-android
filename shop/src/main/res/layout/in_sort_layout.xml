@@ -21,7 +21,7 @@
             tools:checked="true"
             tools:textStyle="bold"
             android:text="@string/str_comprehensiveRanking"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_14"
             android:textColor="@drawable/cb_text_sort"
             android:button="@null"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_1"
             android:text="@string/str_sales"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_14"
             android:textColor="@color/color_9394A0"
             android:button="@null"
             android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_2"
             android:text="@string/str_price"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_14"
             tools:checked="true"
             android:textColor="@color/color_9394A0"
             android:button="@null"
