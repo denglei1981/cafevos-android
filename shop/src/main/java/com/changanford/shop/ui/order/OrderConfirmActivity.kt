@@ -595,9 +595,14 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
     private fun updateBtnUi(){
         infoBean.apply {
             val isPrice=getPayLines()
-            if(!TextUtils.isEmpty(vinCode)){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
+            binding.inBottom.btnSubmit.apply {
+                setText(R.string.str_submitOrder)
+                //福币不足
+                if((payFb?:"0").toFloat()>fbBalance?:0)setStates(8)
+                else if(!TextUtils.isEmpty(vinCode)) updateEnabled(isAgree&&isPrice)//维保商品
+                else updateEnabled(isAgree&&null!=addressId&&isPrice)
+            }
+
         }
     }
 }
