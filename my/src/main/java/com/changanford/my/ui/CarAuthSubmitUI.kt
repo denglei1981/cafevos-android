@@ -28,6 +28,7 @@ import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.viewmodel.SignViewModel
 import com.changanford.my.widget.WaitBindingCarPop
+import com.changanford.my.widget.WaitBindingDialog
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
@@ -161,7 +162,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             initClick()
         } else {
             carItemBean?.let {
-                viewModel.queryAuthCarDetail(it.vin,it.authId) {
+                viewModel.queryAuthCarDetail(it.vin, it.authId) {
                     it.onSuccess {
                         it?.let {
                             carItemBean = it
@@ -301,17 +302,22 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         initClick()
     }
 
+    var waitBindingDialog: WaitBindingDialog? = null
     override fun observe() {
         super.observe()
         viewModel.waitCarLiveData.observe(this, Observer { data ->
-            if (data!=null&&data.isNotEmpty()) {
+            if (data != null && data.isNotEmpty()) {
                 // 弹窗
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
-                    data.forEach {
-                        WaitBindingCarPop(this, this,viewModel,it).apply {
-                            showPopupWindow()
+                    if (waitBindingDialog == null) {
+                        waitBindingDialog = WaitBindingDialog(this, this, data)
+                    }
+                    waitBindingDialog?.let { d ->
+                        if (!d.isVisible && !d.isAdded) {
+                            waitBindingDialog?.show(supportFragmentManager, "waitBindingDialog")
                         }
                     }
+
 
                 }, 500)
             }

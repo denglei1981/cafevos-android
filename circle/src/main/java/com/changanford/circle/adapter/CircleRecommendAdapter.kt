@@ -181,7 +181,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.icMultVeryPost.visibility=View.GONE
                     }
                 }
-
             } else {
                 binding.ivNine.visibility = View.GONE
                 binding.layoutOne.ivVeryPost.visibility=View.GONE
