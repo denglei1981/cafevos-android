@@ -1,20 +1,21 @@
 package com.changanford.home.request
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.bean.WResponseBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.bean.BindCarBean
-import com.changanford.home.bean.CouponItem
 import com.changanford.home.bean.FBBean
 import com.changanford.home.data.TwoAdData
+import kotlinx.coroutines.launch
 
 class HomeV2ViewModel : BaseViewModel() {
     val twoBannerLiveData = MutableLiveData<UpdateUiState<TwoAdData>>() //
@@ -128,11 +129,28 @@ class HomeV2ViewModel : BaseViewModel() {
                 .onSuccess {
                     if (it != null && it.size > 0) {
                         receiveListLiveData.postValue(it)
-                    }
+                    }else loginGetJump()
                 }.onWithMsgFailure {
+                    loginGetJump()
                     it?.toast()
                 }
         })
+    }
+    /**
+     * 登录成功获取跳转的jump（主要用于H5用户引流）
+     */
+    private fun loginGetJump() {
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                val body = java.util.HashMap<String, Any>()
+                val rkey = getRandomKey()
+                apiService.loginJump(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.apply {
+                    JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                }
+            }
+        }
     }
     fun receiveCoupon(list:ArrayList<String>) {
         launch(true, {

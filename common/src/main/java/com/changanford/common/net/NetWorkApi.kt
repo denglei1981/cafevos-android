@@ -1167,4 +1167,9 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MutableList<MyFastInData>>
+    /**
+     *  登录成功后获取跳转路由
+     * */
+    @POST("/userLoginJump/getJump")
+    suspend fun loginJump(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<JumpDataBean>
 }
