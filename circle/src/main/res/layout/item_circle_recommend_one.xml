@@ -65,7 +65,17 @@
                 app:cornerRadius="@dimen/dp_20"
                 tools:visibility="visible" />
 
-
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_mult_very_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/circle_mult_pic_very_post"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                />
         </FrameLayout>
 
 

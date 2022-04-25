@@ -184,7 +184,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 setIndicatorVisibility(View.GONE)
                                 setIndicatorGravity(IndicatorGravity.CENTER)
                                 setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
-                                setAdapter(PostBarBannerAdapter())
+                                setAdapter(PostBarBannerAdapter(mData.isGood))
                                 registerOnPageChangeCallback(object :
                                     ViewPager2.OnPageChangeCallback() {
                                     override fun onPageSelected(position: Int) {
@@ -200,9 +200,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             }
                         }
 
-                        if (mData.isGood == 1) {
-                            MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
-                        }
+//                        if (mData.isGood == 1) {
+//                            MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
+//                        }
 //                        tvTwoTitle.text = mData.title
                         //todo
                         if (!TextUtils.isEmpty(mData.title)) {

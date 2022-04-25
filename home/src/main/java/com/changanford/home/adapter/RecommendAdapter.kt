@@ -47,6 +47,17 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         when (item.itemType) {
             1 -> {//1张图
                 showPics(holder, item)
+                val veryPostIv = holder.getView<ImageView>(R.id.iv_very_post)
+                item.postsIsGood?.let { g ->
+                    if (g == 1) {
+                        veryPostIv.visibility = View.VISIBLE
+                    } else {
+                        veryPostIv.visibility = View.GONE
+                    }
+                }
+                if (item.postsIsGood == null) {
+                    veryPostIv.visibility = View.GONE
+                }
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
                 if (!TextUtils.isEmpty(item.pic)) {
                     GlideUtils.loadBD(item.pic, ivPic, R.mipmap.image_h_one_default)
@@ -56,6 +67,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             2 -> { //3张图
                 showPics(holder, item)
+                val veryPostIv = holder.getView<ImageView>(R.id.ic_mult_very_post)
+                item.postsIsGood?.let { g ->
+                    if (g == 1) {
+                        veryPostIv.visibility = View.VISIBLE
+                    } else {
+                        veryPostIv.visibility = View.GONE
+                    }
+                }
                 val tvPicSizes = holder.getView<AppCompatTextView>(R.id.tv_pic_size)
                 item.getPicLists()?.let {
                     tvPicSizes.text = it.size.toString()
@@ -95,18 +114,18 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val btnState = holder.getView<MaterialButton>(R.id.btn_state)
         val tvTagOne = holder.getView<AppCompatTextView>(R.id.tv_tag_one)
         val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
-        val  tvHomeSignUpTime=holder.getView<AppCompatTextView>(R.id.tv_home_sign_up_time)
+        val tvHomeSignUpTime = holder.getView<AppCompatTextView>(R.id.tv_home_sign_up_time)
         GlideUtils.loadBD(item.wonderfulPic, ivActs)
         tvTips.text = item.title
         tvHomeActTimes.text = item.getActTimeS()
 
         btnState.text = item.getTimeStateStr()
-        if(item.wonderfulType!=2){// 不是问卷活动
-            if(item.jumpType.toInt()==3){ // 是常规活动 及报名活动
-                tvHomeSignUpTime.visibility=View.VISIBLE
-                tvHomeSignUpTime.text=item.getSignTimes()
-            }else{
-                tvHomeSignUpTime.visibility=View.GONE
+        if (item.wonderfulType != 2) {// 不是问卷活动
+            if (item.jumpType.toInt() == 3) { // 是常规活动 及报名活动
+                tvHomeSignUpTime.visibility = View.VISIBLE
+                tvHomeSignUpTime.text = item.getSignTimes()
+            } else {
+                tvHomeSignUpTime.visibility = View.GONE
             }
         }
         when (item.wonderfulType) {
@@ -116,10 +135,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             1 -> {
                 tvTagTwo.text = "线下活动"
-                if(TextUtils.isEmpty(item.city)){
-                    tvHomeActAddress.visibility=View.GONE
-                }else{
-                    tvHomeActAddress.visibility=View.VISIBLE
+                if (TextUtils.isEmpty(item.city)) {
+                    tvHomeActAddress.visibility = View.GONE
+                } else {
+                    tvHomeActAddress.visibility = View.VISIBLE
                     tvHomeActAddress.text = item.city
                 }
 
@@ -157,12 +176,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
+
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         tvAuthorName.text = item.authors?.nickname
-        if(TextUtils.isEmpty(item.authors?.getMemberNames())){
-            tvSubtitle.visibility=View.GONE
-        }else{
-            tvSubtitle.visibility=View.VISIBLE
+        if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
+            tvSubtitle.visibility = View.GONE
+        } else {
+            tvSubtitle.visibility = View.VISIBLE
         }
         tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
@@ -179,12 +199,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvAuthorName.setOnClickListener {
             toUserHomePage(item)
         }
-        if(TextUtils.isEmpty(item.getTopic())){
-            tvContent.visibility=View.GONE
-        }else{
-            tvContent.visibility=View.VISIBLE
+        if (TextUtils.isEmpty(item.getTopic())) {
+            tvContent.visibility = View.GONE
+        } else {
+            tvContent.visibility = View.VISIBLE
             tvContent.text = item.getTopic()
         }
+
 
 
         val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
@@ -233,11 +254,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         tvCommentCount.text = item.getCommentCount()
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
-        if (TextUtils.isEmpty(item.getContent())||item.rtype==2) {
+        if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
             tvTopic.text = ""
-            tvTopic.visibility=View.GONE
+            tvTopic.visibility = View.GONE
         } else {
-            tvTopic.visibility=View.VISIBLE
+            tvTopic.visibility = View.VISIBLE
             tvTopic.text = item.getContent()
         }
         item.authors?.let {
@@ -270,14 +291,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
                 tvVideoTime.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
             }
-            2->{// 帖子
+            2 -> {// 帖子
                 tvNewsTag.visibility = View.GONE
                 if (!TextUtils.isEmpty(item.postsVideoTime)) {
                     tvVideoTime.text = item.postsVideoTime
                 }
                 tvVideoTime.visibility = View.VISIBLE
-                ivPlay.visibility = if (item.postsType==3) View.VISIBLE else View.GONE
-                tvVideoTime.visibility = if (item.postsType==3) View.VISIBLE else View.GONE
+                ivPlay.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
+                tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
             }
             else -> {
                 tvNewsTag.visibility = View.GONE
@@ -307,7 +328,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
         getFollow(authorBaseVo.authorId, followType)
-        if(followType==1){
+        if (followType == 1) {
             // 埋点 关注
             BuriedUtil.instant?.discoverFollow(authorBaseVo.nickname)
         }

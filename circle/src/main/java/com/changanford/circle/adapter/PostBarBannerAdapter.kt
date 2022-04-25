@@ -16,7 +16,7 @@ import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
-class PostBarBannerAdapter : BaseBannerAdapter<ImageList?>() {
+class PostBarBannerAdapter(val isGood: Int ) : BaseBannerAdapter<ImageList?>() {
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_post_bar_banner
     }
@@ -24,15 +24,12 @@ class PostBarBannerAdapter : BaseBannerAdapter<ImageList?>() {
         holder!!.bindData(data, position, pageSize)
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
 
-
-//
-//        binding?.ivBanner?.loadImage(
-//            data?.imgUrl,
-//            ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
-
-
         binding?.ivBanner?.load(GlideUtils.defaultHandleImageUrl(data?.imgUrl))
-
+        if(isGood==1){
+            binding?.ivVeryPost?.visibility=View.VISIBLE
+        }else{
+            binding?.ivVeryPost?.visibility=View.GONE
+        }
 
         binding?.ivBanner?.setOnClickListener {
             val pics = arrayListOf<MediaListBean>()
@@ -46,41 +43,6 @@ class PostBarBannerAdapter : BaseBannerAdapter<ImageList?>() {
         }
     }
 }
-//class PostBarBannerAdapter :
-//    BaseBannerAdapter<ImageList, PostBarBannerViewHolder>() {
-//
-//    override fun getLayoutId(viewType: Int): Int {
-//        return R.layout.item_post_bar_banner
-//    }
-//
-//    override fun createViewHolder(itemView: View?, viewType: Int): PostBarBannerViewHolder {
-//        return PostBarBannerViewHolder(itemView!!)
-//    }
-//
-//    override fun onBind(
-//        holder: PostBarBannerViewHolder?,
-//        data: ImageList?,
-//        position: Int,
-//        pageSize: Int
-//    ) {
-//        holder!!.bindData(data, position, pageSize)
-//        val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
-//        binding?.ivBanner?.loadImage(
-//            data?.imgUrl,
-//            ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
-//        binding?.ivBanner?.setOnClickListener {
-//            val pics = arrayListOf<MediaListBean>()
-//            mList.forEach {
-//                pics.add(MediaListBean("${it.imgUrl}"))
-//            }
-//            val bundle = Bundle()
-//            bundle.putSerializable("imgList", pics)
-//            bundle.putInt("count", position)
-//            startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
-//        }
-//    }
-//
-//}
 
 class PostBarBannerViewHolder(itemView: View) : BaseViewHolder<ImageList>(itemView) {
     override fun bindData(data: ImageList?, position: Int, pageSize: Int) {

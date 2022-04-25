@@ -17,6 +17,8 @@ import com.changanford.shop.bean.CouponData
 class CouponViewModel : BaseViewModel() {
 
     var  couponListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponsItemBean>>> = MutableLiveData()
+    var  couponOverListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponsItemBean>>> = MutableLiveData()
+    var  couponInvalidListLiveData: MutableLiveData<UpdateUiState<ListMainBean<CouponsItemBean>>> = MutableLiveData()
     var page =1
     fun getCouponList(isLoadMore:Boolean,type:Int){
 
@@ -36,11 +38,34 @@ class CouponViewModel : BaseViewModel() {
             ApiClient.createApi<ShopNetWorkApi>().getCouponList(body.header(rKey),body.body(rKey))
                 .onSuccess {
                     val updateUiState = UpdateUiState<ListMainBean<CouponsItemBean>>(it, true, isLoadMore, "")
-                    couponListLiveData.postValue(updateUiState)
+                    when(type){
+                        1->{
+                            couponListLiveData.postValue(updateUiState)
+                        }
+                        2->{
+                            couponOverListLiveData.postValue(updateUiState)
+                        }
+                        3->{
+                            couponInvalidListLiveData.postValue(updateUiState)
+                        }
+
+                    }
+
                 }
                 .onWithMsgFailure {
                     val updateUiState = UpdateUiState<ListMainBean<CouponsItemBean>>(false, it, isLoadMore)
-                    couponListLiveData.postValue(updateUiState)
+                    when(type){
+                        1->{
+                            couponListLiveData.postValue(updateUiState)
+                        }
+                        2->{
+                            couponOverListLiveData.postValue(updateUiState)
+                        }
+                        3->{
+                            couponInvalidListLiveData.postValue(updateUiState)
+                        }
+
+                    }
                     it?.toast()
                 }
         })

@@ -1122,7 +1122,7 @@ interface NetWorkApi {
     suspend fun waitBindCarList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<List<BindCarBean>>
+    ): CommonResponse<MutableList<BindCarBean>>
 
     @POST("ser/carAuth/confirmBindCar")
     suspend fun confirmBindCar(
@@ -1130,6 +1130,11 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<String>
 
+    @POST("ser/carAuth/batchConfirmBindCar")
+    suspend fun confirmBindCarList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
     // 优惠券列表
     @POST("/mall/coupon/receiveList")
     suspend fun receiveList(

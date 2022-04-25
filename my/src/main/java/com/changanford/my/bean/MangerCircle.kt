@@ -8,3 +8,8 @@ package com.changanford.my.bean
  *  修改描述：TODO
  */
 data class MangerCircleCheck(var index: Int, var isShow: Boolean)
+
+data class  BindingCar(var confirm:Int,var vin:String){
+
+
+}

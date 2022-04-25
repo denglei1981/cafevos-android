@@ -253,7 +253,7 @@ class CarAuthViewModel : ViewModel() {
         }
     }
 
-    val waitCarLiveData = MutableLiveData<List<BindCarBean>>()
+    val waitCarLiveData = MutableLiveData<MutableList<BindCarBean>>()
     fun isWaitBindingCar() {
         if (MConstant.token.isEmpty()) return
 

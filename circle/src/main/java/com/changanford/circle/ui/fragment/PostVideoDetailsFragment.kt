@@ -91,6 +91,12 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             tvCommentNum.text = "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
             tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+            if(mData.isGood==1){
+                ivVeryPost.visibility=View.VISIBLE
+            }else{
+                ivVeryPost.visibility=View.INVISIBLE
+            }
+
             ivLike.setImageResource(
                 if (mData.isLike == 1) {
                     R.mipmap.circle_like_image_v

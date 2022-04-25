@@ -175,13 +175,16 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
+            app:layout_constraintEnd_toStartOf="@+id/rv_user_tag"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head"
             tools:text="萨瓦迪LALA" />
@@ -209,6 +212,7 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintEnd_toStartOf="@+id/tv_follow"
             app:layout_constraintStart_toEndOf="@+id/tv_name"
             app:layout_constraintTop_toTopOf="@+id/tv_name" />
 
@@ -217,15 +221,30 @@
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="4dp"
             android:background="@drawable/shap_e5_12"
             android:gravity="center"
             android:textColor="@color/circle_app_color"
             android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintEnd_toStartOf="@+id/iv_very_post"
             app:layout_constraintStart_toEndOf="@+id/rv_user_tag"
             app:layout_constraintTop_toTopOf="@+id/tv_name"
             tools:text="关注" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_very_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_18"
+
+            android:src="@mipmap/circle_very_post"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_comment"

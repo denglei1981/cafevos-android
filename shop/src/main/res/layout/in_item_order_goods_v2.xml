@@ -127,6 +127,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="@dimen/dp_4"
             android:text="申请售后"
+            android:textColor="@color/black"
             android:textSize="@dimen/sp_11"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_integral"
