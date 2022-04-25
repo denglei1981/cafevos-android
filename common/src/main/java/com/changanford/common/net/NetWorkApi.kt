@@ -1172,4 +1172,8 @@ interface NetWorkApi {
      * */
     @POST("/userLoginJump/getJump")
     suspend fun loginJump(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<JumpDataBean>
+
+    @POST("/changeJumpStatus")
+    suspend fun changeJumpStatus(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<*>
+
 }
