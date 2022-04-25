@@ -128,6 +128,7 @@ public class TimeUtils {
         if (timeMillis == null) {
             return "";
         }
+
         Date date = new Timestamp(timeMillis);
         SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_DAY_STR);
         return sf.format(date);
