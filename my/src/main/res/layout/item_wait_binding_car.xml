@@ -85,7 +85,17 @@
             app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_vin_num">
 
-
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_weight="1"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="这是我的车"
+                android:textSize="@dimen/sp_13" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/checkbox_not"
@@ -116,17 +126,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
                 app:layout_constraintTop_toBottomOf="@+id/checkbox" />
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/checkbox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_weight="1"
-                android:button="@drawable/my_car_check_box"
-                android:gravity="center_vertical"
-                android:padding="@dimen/dp_4"
-                android:text="这是我的车"
-                android:textSize="@dimen/sp_13" />
+
         </RadioGroup>
 
         <View
