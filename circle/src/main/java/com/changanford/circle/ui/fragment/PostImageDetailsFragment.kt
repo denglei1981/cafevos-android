@@ -244,9 +244,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvTwoCity.visibility = View.VISIBLE
                                 tvTwoCity.text = mData.showCity()
                             }
-                            if (mData.isGood == 1) {
-                                MUtils.setDrawableStar(tvTwoTitle, R.mipmap.circle_very_post)
-                            }
                             ivCover.load(mData.pics)
                             ivCover.setOnClickListener {
                                 val pics = arrayListOf<MediaListBean>()
@@ -261,7 +258,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             if (!TextUtils.isEmpty(mData.title)) {
                                 tvTwoTitle.text = Html.fromHtml(mData.title)
                             }
-
+                            if(mData.isGood==1){
+                                viewLongType.ivVeryPost.visibility=View.VISIBLE
+                            }else{
+                                viewLongType.ivVeryPost.visibility=View.GONE
+                            }
                             if (mData.circleName.isNullOrEmpty()) {
                                 tvTwoFrom.visibility = View.GONE
                             } else {
