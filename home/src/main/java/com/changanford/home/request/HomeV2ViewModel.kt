@@ -142,13 +142,23 @@ class HomeV2ViewModel : BaseViewModel() {
     private fun loginGetJump() {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
-                val body = java.util.HashMap<String, Any>()
+                val body = HashMap<String, Any>()
                 val rkey = getRandomKey()
                 apiService.loginJump(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.apply {
+                    changeJumpStatus()
                     JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
                 }
+            }
+        }
+    }
+    private fun changeJumpStatus() {
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                val body = HashMap<String, Any>()
+                val rkey = getRandomKey()
+                apiService.changeJumpStatus(body.header(rkey), body.body(rkey))
             }
         }
     }
