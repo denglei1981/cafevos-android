@@ -147,8 +147,10 @@ class HomeV2ViewModel : BaseViewModel() {
                 apiService.loginJump(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.apply {
-                    changeJumpStatus()
-                    JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                    if(jumpStatus=="0"){
+                        changeJumpStatus()
+                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                    }
                 }
             }
         }

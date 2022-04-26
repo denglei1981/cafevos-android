@@ -746,12 +746,13 @@ class JumpUtils {
             }
             10000 -> {
                 //外部H5
-                if (!value.isNullOrEmpty() && value.contains("http")) {
+                if (!value.isNullOrEmpty()) {
+                    val url=if(value.startsWith("http"))value else "http://$value"
                     val intent = Intent()
                     intent.action = "android.intent.action.VIEW"
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    val content_url = Uri.parse(value)
-                    intent.data = content_url
+                    val contentUrl = Uri.parse(url)
+                    intent.data = contentUrl
                     BaseApplication.INSTANT.startActivity(intent)
                 }
             }
