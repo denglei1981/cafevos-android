@@ -55,7 +55,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{model.materialName}"
-            android:textColor="#ff999999"
+            android:textColor="#74889D"
             android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@+id/iv_car"
             app:layout_constraintStart_toStartOf="@id/tv_car_name"
